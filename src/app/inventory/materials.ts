@@ -320,7 +320,7 @@ const suspendedWhispers: Material = {
 
 const hesitationOfTheWaves: Material = {
 	name: "Hesitation of the Waves",
-	rarity: EnumRarity.Uncommon,
+	rarity: EnumRarity.Common,
 	materialType: EnumMaterialType.Talent,
 	sources: ["Houdinii's Schemes", "Hunter Exchange", "Material Selection Box",]
 }

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 // import { Geist } from "next/font/google";
 import "./globals.css";
+import styles from "./page.module.css";
 
 // const geistSans = Geist({
 //   variable: "--font-geist-sans",
@@ -23,7 +24,11 @@ export default function RootLayout({
     <html lang="en" className={''}>
       <body>
         <Sidebar/>
-        {children}</body>
+        <CurrencyBar/>
+        <div className={styles.page}>
+          {children}
+        </div>
+      </body>
     </html>
   );
 }
@@ -31,7 +36,7 @@ export default function RootLayout({
 function Sidebar() {
   return (
     <div className="sidebar">
-      <h1>Chiz.pink</h1>
+      <h2>Chiz.pink</h2>
       <nav>
         <Link href="/">Home</Link>
         <Link href="/checklist">Checklist</Link>
@@ -40,4 +45,14 @@ function Sidebar() {
       </nav>
     </div>
   );
+}
+
+function CurrencyBar() {
+  return (
+    <div className="currency-bar">
+      <Link href="/inventory" className="nav-btn">I</Link>
+      <div className="currency-box">Beetle <span>10000000</span><span className="edit-btn"></span></div>
+      <div className="currency-box">Fons <span>10000000</span><span className="edit-btn"></span></div>
+    </div>
+  )
 }

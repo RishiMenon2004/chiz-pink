@@ -1,6 +1,7 @@
 :root {
   --background: #ffffff;
-  --foreground: #171717;
+  --foreground: #3b3b3b;
+  --pink: #fc82b7;
 }
 
 html {
@@ -11,27 +12,150 @@ html {
 html,
 body {
   max-width: 100vw;
-  overflow-x: hidden;
+  overflow: hidden;
 }
 
 body {
-  min-height: 100%;
-  display: flex;
-  flex-direction: row;
-  color: var(--foreground);
+  max-height: 100vh;
+  display: grid;
+  grid-template-columns: 17.5vw auto;
+  grid-template-rows: 3rem auto;
+  grid-template-areas: "sidebar currency" "sidebar main";
+  color: black;
   background: var(--background);
   font-family: Arial, Helvetica, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+
+  transition: grid-template-columns 500ms ease-out;
 }
 
 * {
   box-sizing: border-box;
   padding: 0;
   margin: 0;
+  scrollbar-width: thin;
 }
 
 a {
   color: inherit;
   text-decoration: none;
+}
+
+.sidebar {
+  grid-area: sidebar;
+  background: var(--pink);
+
+  display: grid;
+  grid-template-rows: 4.5rem auto;
+
+  z-index: 2;
+  overflow: visible;
+
+  position: relative;
+
+  --darker-pink: color-mix(in hsl increasing hue, var(--pink) 100%, black 25%);
+  background-image:
+    linear-gradient(to bottom, transparent 4.5rem, var(--darker-pink) 80% 100%)
+    /* radial-gradient(ellipse 100% 100% at 100% 50%, transparent 80%, var(--darker-pink) 120%) */
+  ;
+
+  &::before {
+    content: "";
+    position: absolute;
+    top: 3rem;
+    left: 100%;
+    background-color: var(--pink);
+    width: 1.5rem;
+    aspect-ratio: 1;
+    clip-path: shape(
+      from 0% 100%,
+      line to 0% 0%,
+      line to 100% 0%,
+      curve to 0% 100% with 0% 0%,
+      close
+    );
+    z-index: -1;
+  }
+
+  &::after {
+    content: "";
+    height: 3rem;
+    width: 6rem;
+    position: absolute;
+    left: 100%;
+    top: 0;
+    z-index: -1;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg'><path d='M68.1396 0C71.3754 0 74.293 1.94905 75.5312 4.93848L88.7852 36.9385C90.9669 42.2059 87.0959 47.9999 81.3945 48H0V0H68.1396Z' fill='%23fc82b7'/></svg>")
+  }
+
+  h2 {
+    width: 100%;
+    padding: 0.75rem 0;
+    display: grid;
+    place-items: center;
+  }
+
+  nav {
+    width: 100% - 20px;
+    display: grid;
+    grid-auto-flow: row;
+    justify-content: start;
+    height: fit-content;
+  }
+}
+
+.currency-bar {
+  grid-area: currency;
+  background: var(--background);
+  background-image: linear-gradient(to bottom, transparent 20%, hsl(0, 0%, 80%));
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  justify-content: end;
+  padding: 0.5rem;
+  gap: 1rem;
+
+  .nav-btn {
+    height: 100%;
+    aspect-ratio: 1;
+    display: grid;
+    place-items: center;
+    border-radius: 100%;
+  }
+  
+  .currency-box {
+    width: max-content;
+    min-width: 15vw;
+    height: 100%;
+    color: white;
+    border-radius: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.35rem 1rem;
+    padding-right: 0.35rem;
+    
+    .edit-btn {
+      height: 100%;
+      aspect-ratio: 1;
+      background-color: #d0d0d0;
+      border-radius: 100%;
+      box-shadow:
+        #393939 0px 0px 1.5px 0,
+        #707070 0px 0px 0px 0.175rem,
+        hsl(0, 0%, 85%) 0.5px 0.5px 0.5px 0.5px inset,
+        hsl(0, 0%, 70%) -0.5px -0.5px 0.5px 0.5px inset
+      ;
+    }
+  }
+
+  .nav-btn,.currency-box {
+    background-color: var(--foreground);
+    box-shadow: #5c5c5c 0px -1px 2px, white 0px 1px 1px, black 0px 1px inset;
+  }
+}
+
+.sidebar, .currency-bar {
+  filter: drop-shadow(0px 0px 4px rgba(0, 0, 0, 00.6));
 }

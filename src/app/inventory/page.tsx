@@ -8,11 +8,9 @@ export const metadata: Metadata = {
 };
 
 export default function Inventory() {
-	return (<>
-		<div style={{padding: "1rem", gap: "1rem", display: "grid", gridTemplateColumns: "repeat(6, 1fr)", width: "100%", placeItems: "center"}}>
-			{Object.values(getAllMaterials()).map((material, index) => {
-				return <MaterialBlock key={index} material={material} quantity={0}/>
-			})}
-		</div>
-	</>)
+	return (<div style={{padding: "1rem", gap: "1rem", display: "grid", gridTemplateColumns: "repeat(6, 1fr)", width: "100%", height: "max-content", placeItems: "center"}}>
+		{Object.values(getAllMaterials()).map((material, index) => {
+			return <MaterialBlock key={index} material={material} quantity={0}/>
+		})}
+	</div>)
 }
