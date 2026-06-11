@@ -1,13 +1,36 @@
 .page {
-  --background: #292929;
+  --background: #1d1d1d;
   --foreground: #fff;
 
   display: block;
   grid-area: main;
   width: 100%;
   height: calc(100vh - 3rem);
-  font-family: var(--font-geist-sans);
   background-color: var(--background);
-  overflow-y: scroll;
-  overflow-x: hidden;;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.page::-webkit-scrollbar {
+  background-color: var(--background);
+  width: 1rem;
+  height: 1rem;
+}
+
+.page::-webkit-scrollbar-thumb {
+  background: #d0d0d0;
+  border-radius: 6px;
+  border: 0.25rem var(--background) solid;
+  box-shadow: 0px 0px 0px 0.125rem #707070 inset;
+  
+  &:hover {
+    background: var(--darker-pink);
+    box-shadow: 0px 0px 0px 0.125rem #d0d0d0 inset;
+  }
+}
+
+@supports not selector(::-webkit-scrollbar) {
+  .page {
+    scrollbar-color: var(--darker-pink) var(--background);
+  }
 }

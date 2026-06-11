@@ -1,13 +1,27 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-// import { Geist } from "next/font/google";
+import { Chango, Barlow_Condensed, Ephesis } from "next/font/google";
 import "./globals.css";
 import styles from "./page.module.css";
+import Image from "next/image";
 
-// const geistSans = Geist({
-//   variable: "--font-geist-sans",
-//   subsets: ["latin"],
-// });
+const syne = Chango({
+  variable: "--font-title",
+  weight: '400',
+  subsets: ["latin"],
+});
+
+const barlowCondensed = Barlow_Condensed({
+  variable: "--font-barlow-condensed",
+  weight: '500',
+  subsets: ['latin']
+})
+
+const ephesis = Ephesis({
+  variable: "--font-ephesis",
+  weight: '400',
+  subsets: ['latin']
+}) 
 /* Keeping for future ref */
 
 export const metadata: Metadata = {
@@ -21,7 +35,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={''}>
+    <html lang="en" className={`${barlowCondensed.variable} ${syne.variable} ${ephesis.variable}`}>
       <body>
         <Sidebar/>
         <CurrencyBar/>
@@ -36,23 +50,26 @@ export default function RootLayout({
 function Sidebar() {
   return (
     <div className="sidebar">
-      <h2>Chiz.pink</h2>
-      <nav>
-        <Link href="/">Home</Link>
-        <Link href="/checklist">Checklist</Link>
-        <Link href="/characters">Characters</Link>
-        <Link href="/inventory">Inventory</Link>
-      </nav>
+      <svg xmlns='http://www.w3.org/2000/svg' className="fender"><path d='M68.1396 0C71.3754 0 74.293 1.94905 75.5312 4.93848L88.7852 36.9385C90.9669 42.2059 87.0959 47.9999 81.3945 48H0V0H68.1396Z'/></svg>
+      <span className="overflow-wrapper">
+        <div className="cursive">Chiz.pink</div>
+      </span>
     </div>
   );
 }
 
 function CurrencyBar() {
+
+  const localeUS = (x: number) => x.toLocaleString("en-US")
+
   return (
     <div className="currency-bar">
-      <Link href="/inventory" className="nav-btn">I</Link>
-      <div className="currency-box">Beetle <span>10000000</span><span className="edit-btn"></span></div>
-      <div className="currency-box">Fons <span>10000000</span><span className="edit-btn"></span></div>
+      <Link href="/" className="nav-btn"><Image className="icon" src="/briefcase-solid.svg" width={512} height={512} alt="inventory icon"/></Link>
+      <Link href="/checklist" className="nav-btn"><Image className="icon" src="/briefcase-solid.svg" width={512} height={512} alt="inventory icon"/></Link>
+      <Link href="/characters" className="nav-btn"><Image className="icon" src="/briefcase-solid.svg" width={512} height={512} alt="inventory icon"/></Link>
+      <Link href="/inventory" className="nav-btn"><Image className="icon" src="/briefcase-solid.svg" width={512} height={512} alt="inventory icon"/></Link>
+      <div className="currency-box"><span>{localeUS(1000000)}</span><span className="edit-btn"></span></div>
+      <div className="currency-box"><span>{localeUS(1000000)}</span><span className="edit-btn"></span></div>
     </div>
   )
 }
