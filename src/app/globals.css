@@ -1,8 +1,9 @@
 :root {
-  --background: #ffffff;
-  --foreground: hsl(0, 0%, 20%);
+  --background: #e7e7e7;
+  --foreground: #333333;
   --pink: #ff569f;
   --darker-pink: #ff4785;
+  --ease-in-out-back: cubic-bezier(0.68, -0.6, 0.32, 1.6);
 }
 
 html {
@@ -19,7 +20,7 @@ body {
 body {
   max-height: 100vh;
   display: grid;
-  grid-template-columns: 4rem auto;
+  grid-template-columns: 6rem auto;
   grid-template-rows: 3rem auto;
   grid-template-areas: "sidebar currency" "sidebar main";
   color: black;
@@ -49,15 +50,47 @@ a {
 }
 
 .sidebar {
-  grid-area: sidebar;
-  background: var(--darker-pink);
+  --bg: var(--pink);
 
-  z-index: 2;
+  grid-area: sidebar;
+  background: var(--bg);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-direction: column;
+  padding-block: 4rem 1.5rem;
+
+  z-index: 1;
   overflow: visible;
 
   position: relative;
 
-  background-image: linear-gradient(to right, var(--pink) 40%, transparent);
+  background-image:
+    url("/sidebar.png"),
+    linear-gradient(
+      to bottom,
+      transparent 0 30%,
+      color-mix(in oklab, var(--darker-pink) 100%, #dfdffe 22%) 30%
+        calc(30% + 1px),
+      var(--darker-pink) calc(30% + 0.5px) 43%,
+      color-mix(in oklab, var(--darker-pink) 100%, #000000 20%) 45%
+        calc(45% + 0.5px),
+      transparent calc(45% + 0.5px) 55%,
+      color-mix(in oklab, var(--darker-pink) 100%, #dfdffe 22%) 30%
+        calc(55% + 1px),
+      var(--darker-pink) calc(55% + 0.5px) 63%,
+      color-mix(in oklab, var(--darker-pink) 100%, #000000 20%) 65%
+        calc(65% + 0.5px),
+      transparent calc(65% + 0.5px) 100%
+    );
+
+  background-size:
+    45vh,
+    100% 10%;
+  background-position:
+    center calc(37.5vh),
+    center calc(82.5vh);
+  background-repeat: no-repeat;
   filter: drop-shadow(2px 1px 4px hsla(0, 0%, 0%, 0.6));
 
   &::before {
@@ -65,7 +98,7 @@ a {
     position: absolute;
     top: 3rem;
     left: 100%;
-    background-color: var(--darker-pink);
+    background-color: var(--bg);
     width: 1.5rem;
     aspect-ratio: 1;
     clip-path: shape(
@@ -86,55 +119,64 @@ a {
     top: 0;
     z-index: -1;
     & > path {
-      fill: var(--darker-pink);
+      fill: var(--bg);
     }
   }
 
-  .overflow-wrapper {
-    height: 100%;
-    width: 100%;
-    display: flex;
-    place-items: end center;
-    padding: 0;
-    overflow: hidden;
-    position: relative;
-  }
-
-  .cursive {
-    position: absolute;
-    left: 0;
-    bottom: 10rem;
-    width: 100%;
-    height: fit-content;
-    margin: 0;
-    font-family: var(--font-ephesis);
-    font-weight: bold;
-    letter-spacing: 1%;
-    line-height: 0;
-    font-size: 8rem;
-    color: #ff83b8;
-    opacity: 50%;
-    text-align: center;
-    writing-mode: vertical-rl;
-    transform: rotate(182deg);
-    display: grid;
-    place-items: center;
-    user-select: none;
-  }
-  
   nav {
-    width: 100% - 20px;
+    width: 100%;
     display: grid;
     grid-auto-flow: row;
-    justify-content: start;
+    justify-content: center;
+    gap: 2rem;
     height: fit-content;
   }
+}
+
+.nav-btn {
+  width: 4rem;
+  aspect-ratio: 1;
+  display: grid;
+  place-items: center;
+  border-radius: 100%;
+
+  .icon {
+    width: 100%;
+    height: 100%;
+    border-radius: 100%;
+    background-size: cover;
+    transition-property: transform, box-shadow;
+    transition-duration: 150ms;
+    transition-timing-function: var(--ease-in-out-back);
+    box-shadow:
+      hsl(0, 0%, 85%, 0.4) 0px 1px 0.5px 1px inset,
+      hsla(0, 0%, 0%, 0.4) -1px -1px 1px 2px inset;
+  }
+}
+
+.nav-btn.active,
+.nav-btn:hover {
+  background-color: color-mix(
+    in hsl increasing hue,
+    var(--darker-pink) 100%,
+    black 50%
+  );
+
+  .icon {
+    transform: rotate(90deg);
+    box-shadow: 
+      hsl(0, 0%, 85%, 0.4) 1px 0px 0.5px 1px inset,
+      hsla(0, 0%, 0%, 0.4) -1px 1px 1px 2px inset;
+  }
+}
+
+.settings-btn {
+  justify-self: flex-end;
 }
 
 .currency-bar {
   grid-area: currency;
   background: var(--background);
-  background-image: linear-gradient(to bottom, transparent 20%, hsl(0, 0%, 80%));
   position: relative;
   display: flex;
   flex-direction: row;
@@ -142,62 +184,113 @@ a {
   padding: 0.5rem;
   padding-right: 1rem;
   gap: 0.75rem;
-  
+
   filter: drop-shadow(0px 2px 0.75px hsla(0, 0%, 4%, 0.6));
+}
 
-  .nav-btn {
-    height: 100%;
-    aspect-ratio: 1;
-    display: grid;
-    place-items: center;
-    border-radius: 100%;
+.currency-box {
+  width: fit-content;
+  height: 100%;
+  color: white;
+  border-radius: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2rem;
+  padding: 0;
+  z-index: 0;
 
-    background-image: radial-gradient(circle at center, hsl(0, 0%, 32.5%) 55%, transparent 55.5%);
-
-    .icon {
-      width: 40%;
-      height: 40%;
-    }
-  }
-  
-  .currency-box {
-    width: max-content;
-    min-width: 15vw;
-    height: 100%;
-    color: white;
-    border-radius: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: end;
+  &#dreamless_seed {
     gap: 1rem;
-    padding: 0.35rem 1rem;
-    padding-right: 0.35rem;
+  }
 
+  font-family: var(--font-barlow-condensed);
+  line-height: 0;
+  font-size: 1.25rem;
+
+  .icon {
+    z-index: 1;
+    position: relative;
+    width: 40px;
+    height: auto;
+    background-color: var(--foreground);
+    border-radius: 100%;
+    padding: 5%;
+    box-shadow:
+      hsl(0, 0%, 0%, 0.5) 0px 0px 0.5px 1px,
+      hsl(0, 0%, 44%) 0px 0.5px 0.5px 2px,
+      hsl(0, 0%, 85%, 0.4) 0px 1px 0.5px 0.5px inset,
+      hsla(0, 0%, 0%, 0.4) -0.5px -0.5px 1px 0.5px inset;
+
+    background-image: var(--bg-image);
+    background-size: cover;
+  }
+
+  input {
+    padding: 0;
+    border: none;
+    background: transparent;
     font-family: var(--font-barlow-condensed);
     line-height: 0;
-    font-size: 1.125rem;
-    
-    .edit-btn {
-      height: 100%;
-      aspect-ratio: 1;
-      background-color: #d0d0d0;
-      border-radius: 100%;
+    font-size: 1.25rem;
+    display: block;
+    text-align: center;
+    position: relative;
+    border-bottom: 2px dashed white;
+
+    letter-spacing: 5%;
+
+    margin: 0;
+
+    min-width: 4ch;
+
+    -moz-appearance: textfield;
+    appearance: textfield;
+
+    &::-webkit-outer-spin-button,
+    &::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+
+    &:focus {
+      outline: none;
+    }
+  }
+
+  .edit-btn {
+    height: calc(100% - 0.7rem);
+    margin: 0.35rem;
+    aspect-ratio: 1;
+    background-color: #d0d0d0;
+    border-radius: 100%;
+    cursor: pointer;
+    box-shadow:
+      #393939 0px 0px 1.5px 0,
+      #707070 0px 0px 0px 0.175rem,
+      hsl(0, 0%, 85%) 0.5px 0.5px 0.5px 0.5px inset,
+      hsl(0, 0%, 70%) -0.5px -0.5px 0.5px 0.5px inset;
+    border: none;
+
+    &:hover {
+      background-color: var(--darker-pink);
       box-shadow:
         #393939 0px 0px 1.5px 0,
         #707070 0px 0px 0px 0.175rem,
-        hsl(0, 0%, 85%) 0.5px 0.5px 0.5px 0.5px inset,
-        hsl(0, 0%, 70%) -0.5px -0.5px 0.5px 0.5px inset
-      ;
+        hsla(0, 0%, 85%, 0.6) 0.5px 0.5px 0.5px 0.5px inset,
+        hsla(0, 0%, 70%, 0.6) -0.5px -0.5px 0.5px 0.5px inset;
     }
-  }
 
-  .nav-btn,.currency-box {
-    background-color: var(--foreground);
-    box-shadow: #5c5c5c 0px -1px 2px, white 0px 1px 1px, black 0px 1px inset;
+    background-image: url("/currency/edit.png");
+    background-size: cover;
   }
+}
 
-  .nav-btn:hover {
-    background-color: var(--darker-pink);
-    background-image: radial-gradient(circle at center, color-mix(in hsl increasing hue, var(--pink) 100%, black 50%) 55%, transparent 55.5%);
-  }
+.nav-btn,
+.currency-box {
+  background-color: var(--foreground);
+  box-shadow:
+    hsla(0, 0%, 0%, 0.6) 0px -1px 2px,
+    white 0px 1px 1px,
+    rgba(0, 0, 0, 0.7) 0px 1px inset;
 }
