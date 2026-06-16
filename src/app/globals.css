@@ -155,7 +155,8 @@ a {
 }
 
 .nav-btn.active,
-.nav-btn:hover {
+.nav-btn:hover,
+.nav-btn:focus {
   background-color: color-mix(
     in hsl increasing hue,
     var(--darker-pink) 100%,
@@ -168,6 +169,15 @@ a {
       hsl(0, 0%, 85%, 0.4) 1px 0px 0.5px 1px inset,
       hsla(0, 0%, 0%, 0.4) -1px 1px 1px 2px inset;
   }
+}
+
+.nav-btn:focus-visible {
+  outline: 3px solid color-mix(
+    in hsl increasing hue,
+    var(--darker-pink) 100%,
+    black 50%
+  );
+  outline-offset: 5px;
 }
 
 .settings-btn {

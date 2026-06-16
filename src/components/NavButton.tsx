@@ -7,7 +7,7 @@ export default function NavButton({ href, icon, className }: { href: string, ico
 	const pathname = usePathname()
   const active = pathname === `/${href}`
 
-	return (<Link href={`/${href}`} className={`nav-btn ${active && "active"} ${className}`} style={{backgroundImage: `url("/nav/${icon}")`}}>
+	return (<Link tabIndex={1} href={`/${href}`} className={`nav-btn ${active && "active"} ${className}`} style={{backgroundImage: `url("/nav/${icon}")`}}>
 		<span
 			className="icon" style={{backgroundImage: `url("/nav/border/${icon}")`}}
 		/>
