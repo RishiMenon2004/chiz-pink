@@ -4,10 +4,11 @@ import getInventory from "@/actions/getInventory"
 import Image from "next/image"
 import { ChangeEvent, CSSProperties, FocusEvent, KeyboardEvent, MouseEvent, useEffect, useRef, useState } from "react"
 
-export default function CurrencyBox({ id, amount, icon }: { id: string, amount: number, icon: string }) {
-		const localeUS = (x: number) => x.toLocaleString("en-US")
+const localeUS = (x: number) => x.toLocaleString("en-US")
+
+export default function CurrencyBox({ id, amount, icon }: { id: string, amount: number, icon: string }) {	
 	const [isEdit, setIsEdit] = useState<boolean>(false)
-	const [currencyValue, setCurrencyValue] = useState<number>(amount)
+	const [currencyValue, setCurrencyValue] = useState<number>(amount || 0)
 	const inputBoxRef = useRef<HTMLInputElement>(null)
 	const valueDispRef = useRef<HTMLSpanElement>(null)
 	const editBtnRef = useRef<HTMLButtonElement>(null)
@@ -33,12 +34,9 @@ export default function CurrencyBox({ id, amount, icon }: { id: string, amount: 
 		if (!isEdit) toggleEdit()
 	}
 
-	const inputBoxWidthOffset = "1ch"
-
 	const changeInputWidth = () => {
 		if (valueDispRef.current && inputBoxRef.current) {
-			console.log(valueDispRef.current.clientWidth)
-			inputBoxRef.current.style.width = `calc(${valueDispRef.current.clientWidth}px + ${inputBoxWidthOffset})`
+			inputBoxRef.current.style.width = `calc(${valueDispRef.current.clientWidth}px + 0.5ch)`
 		}
 	}
 
@@ -88,9 +86,10 @@ export default function CurrencyBox({ id, amount, icon }: { id: string, amount: 
 		/>
 		<span ref={valueDispRef}
 		onClick={handleClick}
+		className="amount-display"
 		style={isEdit ? {opacity : "0", position: "absolute", pointerEvents: "none"} : {}}>
 			{Number.isNaN(currencyValue) ? 0 : localeUS(currencyValue)}
 		</span>
-		<button className="edit-btn" onClick={handleClick} ref={editBtnRef}/>
+		<button className="edit-btn" onClick={toggleEdit} ref={editBtnRef}/>
 	</div>)
 }

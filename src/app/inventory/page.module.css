@@ -1,0 +1,12 @@
+.page {
+  padding: 1rem;
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  place-items: center;
+  gap: 3rem;
+  width: fit-content;
+  margin: auto;
+  margin-top: 4rem;
+  padding-bottom: 8rem;
+  height: max-content;
+}

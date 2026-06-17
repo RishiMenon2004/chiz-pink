@@ -1,9 +1,10 @@
-import type { Metadata } from "next";
-import { Barlow_Condensed, Ephesis } from "next/font/google";
-import "./globals.css";
-import styles from "./page.module.css";
+import type { Metadata, Viewport } from "next";
+import { Barlow_Condensed, Ephesis, Syne } from "next/font/google";
+import "@/app/globals.css";
+import styles from "@/app/page.module.css";
 import NavButton from "@/components/NavButton";
 import CurrencyBar from "@/components/CurrencyBar";
+import routes from "@/database/routes";
 
 const barlowCondensed = Barlow_Condensed({
   variable: "--font-barlow-condensed",
@@ -16,12 +17,31 @@ const ephesis = Ephesis({
   weight: '400',
   subsets: ['latin']
 }) 
-/* Keeping for future ref */
+
+const syne = Syne({
+  variable: "--font-syne",
+  weight: 'variable',
+  subsets: ['latin']
+})
 
 export const metadata: Metadata = {
-  title: "Chiz.Pink | Dashboard",
+  title: {
+    template: "Chiz.Pink | %s",
+    default: routes["/"].head
+  },
   description: "Your favourite daily planner and inventory tracker :3",
+  icons: {
+    icon: "/favicon.png"
+  }
 };
+
+export const viewport: Viewport = {
+  themeColor: "#ff569f",
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: false
+}
 
 export default function RootLayout({
   children,
@@ -29,13 +49,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${barlowCondensed.variable} ${ephesis.variable}`}>
-      <body>
+    <html lang="en" className={`${barlowCondensed.variable} ${ephesis.variable} ${syne.variable}`}>
+      <body className={styles.page}>
         <Sidebar/>
         <CurrencyBar/>
-        <div className={styles.page}>
-          {children}
-        </div>
+        {children}
       </body>
     </html>
   );
@@ -45,17 +63,17 @@ function Sidebar() {
   return (
     <div className="sidebar">
       <nav>
-        <NavButton href="" icon="home.png"/>
-        <NavButton href="checklist" icon="checklist.png"/>
-        <NavButton href="characters" icon="characters.png"/>
-        <NavButton href="inventory" icon="inventory.png"/>
+        <NavButton href="" icon="home"/>
+        <NavButton href="checklist" icon="checklist"/>
+        <NavButton href="characters" icon="characters"/>
+        <NavButton href="inventory" icon="inventory"/>
       </nav>
 
       <svg xmlns='http://www.w3.org/2000/svg' className="fender">
         <path d='M68.1396 0C71.3754 0 74.293 1.94905 75.5312 4.93848L88.7852 36.9385C90.9669 42.2059 87.0959 47.9999 81.3945 48H0V0H68.1396Z'/>
       </svg>
 
-      <NavButton href="settings" icon="settings.png" className="settings-btn"/>
+      <NavButton href="settings" icon="settings"/>
     </div>
   );
 }
