@@ -8,7 +8,6 @@ export const metadata: Metadata = {
 };
 
 export default function Inventory() {
-
 	return (<div className={styles.page}>
 		<PopulateInventory/>
 	</div>)

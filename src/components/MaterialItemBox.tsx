@@ -3,7 +3,7 @@
 import { Material } from "@/database/materials";
 import Image from "next/image";
 import styles from "@/components/material.module.css";
-import { ChangeEvent, FocusEvent, useRef, useState } from "react";
+import { ChangeEvent, FocusEvent, MouseEvent, useRef, useState } from "react";
 import getInventory from "@/actions/getInventory";
 
 const getRarityStyle = (material: Material) => { switch (material.rarity) { 
@@ -30,7 +30,8 @@ export default function MaterialItemBox({ material, quantity, requiredQuantity }
 		updateInventory({ [material.id]: value || 0 })
 	}
 	
-	const handleCount = (increment: boolean) => {
+	const handleCount = (e: MouseEvent<HTMLSpanElement>, increment: boolean) => {
+		e.stopPropagation()
 		if (countRef.current) {
 			const prevAmount = parseInt(countRef.current.value)
 			const newAmount = Math.max(increment ? prevAmount + 1 : prevAmount - 1, 0)
@@ -47,17 +48,37 @@ export default function MaterialItemBox({ material, quantity, requiredQuantity }
 
 	const handleFocus = (e: FocusEvent<HTMLInputElement>) => {
 		if (e.currentTarget) {
+			e.currentTarget.focus()
 			e.currentTarget.setSelectionRange(0, 999)
 		}
 	}
+
+	const handleBoxClick = (e: MouseEvent<HTMLDivElement>) => {
+		if (material.linkedMaterials) {
+			window.alert("BOX OPEN")
+		}
+	}
 	
-	return (<div className={`${styles.materialBox} ${getRarityStyle(material)}`}>
-		<div className={`${styles.iconContainer}`}><Image src={`/materials${material.src}.png`} width={128} height={128} alt=""/></div>
+	return (<div className={`${styles.materialBox} ${getRarityStyle(material)} ${material.linkedMaterials ? styles.pointer: "" }`}>
+		<div className={`${styles.iconContainer}`} onClick={handleBoxClick}>
+			<Image src={`/materials${material.src}.png`} width={128} height={128} alt={`${material.name} icon`}/>
+		</div>
 		<span className={`${styles.label}`}>{material.name}</span>
 		<span className={`${styles.amount}`}>
-			<span className={`${styles.countBtn} ${styles.minus}`} onClick={() => handleCount(false)}/>
-			<span className={`${styles.countContainer}`}><input ref={countRef} value={itemQuantity} onChange={handleEdit} onFocus={handleFocus}/>{requiredQuantity && <span>/{requiredQuantity}</span>}</span>
-			<span className={`${styles.countBtn} ${styles.plus}`} onClick={() => handleCount(true)}/>
+			<span tabIndex={0} aria-label={`${material.name} minus one button`} className={`${styles.countBtn} ${styles.minus}`} onClick={(e) => handleCount(e, false)}/>
+			<span className={`${styles.countContainer}`}>
+				<input ref={countRef} type={"text"}
+					min="0"
+					pattern="[0-9]*"
+					inputMode="numeric"
+					value={Number.isNaN(itemQuantity) ? "" : itemQuantity}
+					onChange={handleEdit}
+					onFocus={handleFocus}
+					onClick={e => e.stopPropagation()}
+				/>
+				{requiredQuantity && <span>/{requiredQuantity}</span>}
+			</span>
+			<span tabIndex={0} aria-label={`${material.name} plus one button`} className={`${styles.countBtn} ${styles.plus}`} onClick={(e) => handleCount(e, true)}/>
 		</span>
 	</div>)
 }

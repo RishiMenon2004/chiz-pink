@@ -9,6 +9,7 @@ const localeUS = (x: number) => x.toLocaleString("en-US")
 export default function CurrencyBox({ id, amount, icon }: { id: string, amount: number, icon: string }) {	
 	const [isEdit, setIsEdit] = useState<boolean>(false)
 	const [currencyValue, setCurrencyValue] = useState<number>(amount || 0)
+	const [inputWidth, setInputWidth] = useState<string>("10px")
 	const inputBoxRef = useRef<HTMLInputElement>(null)
 	const valueDispRef = useRef<HTMLSpanElement>(null)
 	const editBtnRef = useRef<HTMLButtonElement>(null)
@@ -35,8 +36,8 @@ export default function CurrencyBox({ id, amount, icon }: { id: string, amount: 
 	}
 
 	const changeInputWidth = () => {
-		if (valueDispRef.current && inputBoxRef.current) {
-			inputBoxRef.current.style.width = `calc(${valueDispRef.current.clientWidth}px + 0.5ch)`
+		if (valueDispRef.current) {
+			setInputWidth(`calc(${valueDispRef.current.clientWidth}px + 0.5ch)`)
 		}
 	}
 
@@ -72,11 +73,13 @@ export default function CurrencyBox({ id, amount, icon }: { id: string, amount: 
 		e.currentTarget.setSelectionRange(999, 999)
 	}
 
-	return (<div className={`currency-box ${isEdit ? "edit" : ""}`} id={id}>
-		<Image className="icon" src={icon} width={128} height={128} alt={`${id} icon`}
-			style={{ "--bg-image": `url('/currency/border/${id}.png')` } as CSSProperties}
-		/>
-		<input name={id} type={"text"} ref={inputBoxRef}
+	return (<div className={`currency-box ${isEdit ? "edit" : ""}`} id={id} style={{ "--bg-image": `url('/currency/border/${id}.png')`, "--input-width": inputWidth } as CSSProperties}>
+		<Image className="icon" src={icon} width={64} height={64} alt={`${id} icon`}/>
+		<input name={id} ref={inputBoxRef}
+			type={"text"}
+			min="0"
+			pattern="[0-9]*"
+			inputMode="numeric"
 			value={Number.isNaN(currencyValue) ? "" : currencyValue}
 			style={!isEdit ? { display : "none" } : {}}
 			onChange={handleEdit}

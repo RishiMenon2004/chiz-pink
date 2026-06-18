@@ -24,7 +24,7 @@ body {
   --titlebar-height: 3rem;
 
   overflow: hidden auto;
-  padding-left: calc(var(--sidebar-width) + 1rem);
+  padding-left: calc(var(--sidebar-width));
   padding-top: calc(var(--titlebar-height) + 1rem);
 
   background-color: var(--background);
@@ -71,7 +71,6 @@ a {
 
 .sidebar {
   --bg: var(--pink);
-  grid-area: sidebar;
   background: var(--bg);
   display: flex;
   align-items: center;
@@ -111,8 +110,8 @@ a {
     45vh,
     100% 10%;
   background-position:
-    center calc(37.5dvh),
-    center calc(82.5dvh);
+    center calc(65%),
+    center calc(100% - 5rem);
   background-repeat: no-repeat;
   filter: drop-shadow(2px 1px 4px hsla(0, 0%, 0%, 0.6));
 
@@ -178,6 +177,14 @@ a {
       hsl(0, 0%, 85%, 0.4) 0px 1px 0.5px 1px inset,
       hsla(0, 0%, 0%, 0.4) -1px -1px 1px 2px inset;
   }
+
+  &.outside {
+    display: inherit;
+  }
+
+  &.inside {
+    display: none;
+  }
 }
 
 .nav-btn.active,
@@ -204,8 +211,6 @@ a {
 }
 
 .title-bar {
-  grid-area: currency;
-
   position: fixed;
   left: 0;
   top: 0;
@@ -221,7 +226,7 @@ a {
 
   background: var(--white);
 
-  filter: drop-shadow(0px 2px 10px hsla(0, 0%, 4%, 1));
+  filter: drop-shadow(0px 0px 7.5px hsl(0, 0%, 4%));
 
   h1 {
     align-self: center;
@@ -250,7 +255,7 @@ a {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0;
+  padding: 0 0.35rem 0 0;
   z-index: 0;
 
   font-family: var(--font-barlow-condensed);
@@ -259,8 +264,8 @@ a {
   .icon {
     z-index: 1;
     position: relative;
-    width: 40px;
-    height: auto;
+    height: 40px;
+    width: auto;
     background-color: var(--interactive-bg);
     border-radius: 100%;
     padding: 5%;
@@ -271,26 +276,26 @@ a {
       hsla(0, 0%, 0%, 0.4) -0.5px -0.5px 1px 0.5px inset;
 
     background-image: var(--bg-image);
-    background-size: cover;
+    background-size: 100%;
     user-select: none;
     pointer-events: none;
   }
 
   input {
-    padding: 0;
-    border: none;
-    background: transparent;
-    font-family: var(--font-barlow-condensed);
-    line-height: 0;
-    font-size: 1.25rem;
     display: block;
-    text-align: center;
-
-    letter-spacing: 5%;
-
-    margin: 0;
-
     min-width: 4ch;
+    width: var(--input-width);
+    padding: 0;
+    margin: 0;
+    border: none;
+
+    background: transparent;
+
+    font-family: var(--font-barlow-condensed);
+    font-size: inherit;
+    text-align: center;
+    line-height: 0;
+    letter-spacing: 5%;
 
     -moz-appearance: textfield;
     appearance: textfield;
@@ -358,4 +363,146 @@ a {
     hsla(0, 0%, 0%, 0.6) 0px -1px 2px,
     white 0px 1px 1px,
     rgba(0, 0, 0, 0.7) 0px 1px inset;
+}
+
+@media (max-width: 1135px) {
+  .title-bar {
+    gap: 2rem;
+  }
+
+  .currency-section {
+    width: 100%;
+  }
+
+  .currency-box {
+    width: 100%;
+
+    .amount-display,
+    input {
+      overflow: scroll;
+      scrollbar-width: none;
+      padding: 0;
+      width: fit-content;
+    }
+
+    input {
+      width: 100%;
+    }
+
+    .edit-btn {
+      margin: 0;
+    }
+  }
+}
+
+@media (max-width: 1000px) {
+  body {
+    padding-inline: 1rem;
+  }
+
+  .sidebar {
+    top: auto;
+    bottom: 0;
+    width: 100%;
+    height: 4em;
+    flex-direction: row;
+    padding-block: 0;
+    padding-inline: 5%;
+
+    background-image:
+    url("/sidebar.png"),
+    linear-gradient(
+      to right,
+      transparent 0 30%,
+      color-mix(in oklab, var(--darker-pink) 100%, #dfdffe 22%) 30%
+        calc(30% + 1px),
+      var(--darker-pink) calc(30% + 0.5px) 43%,
+      color-mix(in oklab, var(--darker-pink) 100%, #000000 20%) 45%
+        calc(45% + 0.5px),
+      transparent calc(45% + 0.5px) 55%,
+      color-mix(in oklab, var(--darker-pink) 100%, #dfdffe 22%) 30%
+        calc(55% + 1px),
+      var(--darker-pink) calc(55% + 0.5px) 63%,
+      color-mix(in oklab, var(--darker-pink) 100%, #000000 20%) 65%
+        calc(65% + 0.5px),
+      transparent calc(65% + 0.5px) 100%
+    );
+
+    background-size:
+      6rem,
+      10% 100%;
+
+    background-position: 
+      center,
+      83% center;
+
+    nav {
+      display: flex;
+      justify-content: space-between;
+    }
+  }
+
+  .nav-btn {
+    width: 3rem;
+    &.outside {
+      display: none;
+    }
+
+    &.inside {
+      display: inherit;
+    }
+  }
+
+  .title-bar {
+    margin-left: 0;
+    width: 100%;
+    padding-inline: 0.5em;
+    height: fit-content;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+
+    h1 {
+      font-size: 1em;
+      width: 100%;
+      line-height: normal;
+    }
+
+    .currency-section {
+      padding: 0;
+      justify-content: space-between;
+    }
+
+    .currency-box {
+      font-size: 1rem;
+      height: 1.5rem;
+      width: 100%;
+
+      .icon {
+        height: 1.5rem;
+        padding: 0.375rem;
+      }
+
+      input {
+        font-size: inherit;
+        width: 100% !important;
+      }
+
+      .amount-display,
+      input {
+        padding-inline: 4px;
+        text-align: center;
+      }
+
+      .amount-display {
+        width: 100%;
+        overflow: scroll;
+        scrollbar-width: none;
+      }
+
+      .edit-btn {
+        margin-right: 0;
+      }
+    }
+  }
 }

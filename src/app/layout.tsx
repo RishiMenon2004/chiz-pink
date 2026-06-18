@@ -26,7 +26,7 @@ const syne = Syne({
 
 export const metadata: Metadata = {
   title: {
-    template: "Chiz.Pink | %s",
+    template: "%s | Chiz.Pink",
     default: routes["/"].head
   },
   description: "Your favourite daily planner and inventory tracker :3",
@@ -67,13 +67,14 @@ function Sidebar() {
         <NavButton href="checklist" icon="checklist"/>
         <NavButton href="characters" icon="characters"/>
         <NavButton href="inventory" icon="inventory"/>
+        <NavButton href="settings" icon="settings" className="inside"/>
       </nav>
 
       <svg xmlns='http://www.w3.org/2000/svg' className="fender">
         <path d='M68.1396 0C71.3754 0 74.293 1.94905 75.5312 4.93848L88.7852 36.9385C90.9669 42.2059 87.0959 47.9999 81.3945 48H0V0H68.1396Z'/>
       </svg>
 
-      <NavButton href="settings" icon="settings"/>
+      <NavButton href="settings" icon="settings" className="outside"/>
     </div>
   );
 }
