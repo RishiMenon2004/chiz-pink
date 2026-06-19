@@ -19,6 +19,12 @@ const routes: RouteData = {
 		id: "characters"
 	},
 
+	"/arcs": {
+		title: "ARCS",
+		head: "Arcs",
+		id: "arcs"
+	},
+
 	"/inventory": {
 		title: "INVENTORY",
 		head:"Inventory",
