@@ -9,6 +9,6 @@ export default function PageTitle() {
   const currentRoute = routes[pathname]
 
   return (
-    <h1>{currentRoute.title}</h1>
+    <h1>{currentRoute?.title || "404"}</h1>
   )
 }
