@@ -66,6 +66,7 @@ function Sidebar() {
         <NavButton href="" icon="home"/>
         <NavButton href="checklist" icon="checklist"/>
         <NavButton href="characters" icon="characters"/>
+        <NavButton href="arcs" icon="arcs"/>
         <NavButton href="inventory" icon="inventory"/>
         <NavButton href="settings" icon="settings" className="inside"/>
       </nav>

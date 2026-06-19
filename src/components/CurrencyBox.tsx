@@ -1,19 +1,20 @@
 "use client"
 
-import getInventory from "@/actions/getInventory"
+import { Material } from "@/database/materials"
+import useInventory from "@/hooks/useInventory"
 import Image from "next/image"
 import { ChangeEvent, CSSProperties, FocusEvent, KeyboardEvent, MouseEvent, useEffect, useRef, useState } from "react"
 
 const localeUS = (x: number) => x.toLocaleString("en-US")
 
-export default function CurrencyBox({ id, amount, icon }: { id: string, amount: number, icon: string }) {	
+export default function CurrencyBox({ currency }: { currency: Material }) {	
 	const [isEdit, setIsEdit] = useState<boolean>(false)
-	const [currencyValue, setCurrencyValue] = useState<number>(amount || 0)
 	const [inputWidth, setInputWidth] = useState<string>("10px")
 	const inputBoxRef = useRef<HTMLInputElement>(null)
 	const valueDispRef = useRef<HTMLSpanElement>(null)
 	const editBtnRef = useRef<HTMLButtonElement>(null)
-	const { updateInventory } = getInventory()
+	const { inventory, updateInventory } = useInventory()
+	const currencyValue = inventory[currency.id] || 0
 
 	const toggleEdit = () => {
 		if (inputBoxRef.current) {
@@ -42,8 +43,7 @@ export default function CurrencyBox({ id, amount, icon }: { id: string, amount: 
 	}
 
 	const setCurrency = (value: number) => {
-		setCurrencyValue(value)
-		updateInventory({ [id]: value || 0 })
+		updateInventory({ [currency.id]: value || 0 })
 	}
 
 	useEffect(() => { if (isEdit) inputBoxRef?.current?.focus() }, [isEdit])
@@ -73,15 +73,15 @@ export default function CurrencyBox({ id, amount, icon }: { id: string, amount: 
 		e.currentTarget.setSelectionRange(999, 999)
 	}
 
-	return (<div className={`currency-box ${isEdit ? "edit" : ""}`} id={id} style={{ "--bg-image": `url('/currency/border/${id}.png')`, "--input-width": inputWidth } as CSSProperties}>
-		<Image className="icon" src={icon} width={64} height={64} alt={`${id} icon`}/>
-		<input name={id} ref={inputBoxRef}
+	return (<div className={`currency-box ${isEdit ? "edit" : ""}`} id={currency.id} style={{ "--bg-image": `url('/currency/border/${currency.id}.png')`, "--input-width": inputWidth } as CSSProperties}>
+		<Image className="icon" src={`/materials${currency.src}.png`} width={64} height={64} alt={`${currency.name} icon`}/>
+		<input name={currency.name} ref={inputBoxRef}
 			type={"text"}
 			min="0"
 			pattern="[0-9]*"
 			inputMode="numeric"
-			value={Number.isNaN(currencyValue) ? "" : currencyValue}
-			style={!isEdit ? { display : "none" } : {}}
+			value={currencyValue}
+			style={isEdit ? {} : { display : "none" }}
 			onChange={handleEdit}
 			onKeyDown={handleKeyDown}
 			onBlur={handleBlur}
@@ -90,8 +90,12 @@ export default function CurrencyBox({ id, amount, icon }: { id: string, amount: 
 		<span ref={valueDispRef}
 		onClick={handleClick}
 		className="amount-display"
-		style={isEdit ? {opacity : "0", position: "absolute", pointerEvents: "none"} : {}}>
-			{Number.isNaN(currencyValue) ? 0 : localeUS(currencyValue)}
+		style={isEdit ? {
+			opacity : "0",
+			position: "absolute",
+			pointerEvents: "none"
+		} : {}}>
+			{localeUS(currencyValue)}
 		</span>
 		<button className="edit-btn" onClick={toggleEdit} ref={editBtnRef}/>
 	</div>)

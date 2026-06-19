@@ -2,7 +2,8 @@
   height: max-content;
   width: fit-content;
   display: grid;
-  grid-template-columns: repeat(6, 1fr);
+  --columns: 6;
+  grid-template-columns: repeat(var(--columns), 1fr);
   place-items: center;
   gap: 2rem;
   margin: auto;
@@ -26,27 +27,63 @@
   background-image: linear-gradient(to top, rgb(174, 174, 174), transparent);
 }
 
+.multiMatContainer {
+  width: fit-content;
+	display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
+
+  flex-wrap: wrap;
+}
+
+@media (max-width: 1500) {
+  .page {
+    --columns: 5;
+  }
+}
+
+@media (max-width: 1260) {
+  .page {
+    --columns: 4;
+  }
+}
+
 @media (max-width: 1135px) {
   .page {
     gap: 2rem;
+    padding-inline: 3rem;
+  }
+
+  .multiMatContainer {
     padding-inline: 3rem;
   }
 }
 
 @media (max-width: 1000px) {
   .page {
-    grid-template-columns: repeat(3, 1fr);
-    padding-inline: 1rem;
+    --columns: 3;
+    padding-inline: 2rem;
   }
 
   .filterToolbar {
     left: 5vw;
     right: 5vw;
   }
+
+  .multiMatContainer {
+    padding-inline: 3rem;
+  }
 }
 
-@media (max-width: 400px) {
+@media (max-width: 550px) {
   .page {
+    --columns: 2;
+    gap: 1.5rem;
+    padding-inline: 1rem;
+  }
+
+  .multiMatContainer {
+    padding-inline: 1rem;
     grid-template-columns: repeat(2, 1fr);
     gap: 1.5rem;
   }

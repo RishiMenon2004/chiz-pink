@@ -1,5 +1,3 @@
-import { getMaterialList } from "./materialLists";
-
 export type Material = {
 	id: string,
 	name: string;
@@ -491,7 +489,7 @@ const harmony: Material = {
 	materialType: EnumMaterialType.WeaponAscension,
 	src: "/wpascension_harmony",
 	sources: ["Bubble Can Factory", "Hunter Exchange", "Material Selection Box",],
-	linkedMaterials: ["doves_flutter", "nestlings_longing"]
+	linkedMaterials: ["versey", "beaty"]
 }
 
 const versey: Material = {
@@ -501,7 +499,7 @@ const versey: Material = {
 	materialType: EnumMaterialType.WeaponAscension,
 	src: "/wpascension_versey",
 	sources: ["Bubble Can Factory", "Hunter Exchange", "Material Selection Box",],
-	linkedMaterials: ["doves_flutter", "nestlings_longing"]
+	linkedMaterials: ["harmony", "beaty"]
 }
 
 const beaty: Material = {
@@ -511,7 +509,7 @@ const beaty: Material = {
 	materialType: EnumMaterialType.WeaponAscension,
 	src: "/wpascension_beaty",
 	sources: ["Bubble Can Factory", "Hunter Exchange", "Material Selection Box",],
-	linkedMaterials: ["doves_flutter", "nestlings_longing"]
+	linkedMaterials: ["harmony", "versey"]
 }
 
 const liquidDreamCan: Material = {
@@ -521,7 +519,7 @@ const liquidDreamCan: Material = {
 	materialType: EnumMaterialType.WeaponAscension,
 	src: "/wpascension_liquid_dream_can",
 	sources: ["Bubble Can Factory", "Hunter Exchange", "Material Selection Box",],
-	linkedMaterials: ["doves_flutter", "nestlings_longing"]
+	linkedMaterials: ["liquid_dream_travel_kit", "liquid_dream_trial_kit"]
 }
 
 const liquidDreamTravelKit: Material = {
@@ -531,7 +529,7 @@ const liquidDreamTravelKit: Material = {
 	materialType: EnumMaterialType.WeaponAscension,
 	src: "/wpascension_liquid_dream_travel_kit",
 	sources: ["Bubble Can Factory", "Hunter Exchange", "Material Selection Box",],
-	linkedMaterials: ["doves_flutter", "nestlings_longing"]
+	linkedMaterials: ["liquid_dream_can", "liquid_dream_trial_kit"]
 }
 
 const liquidDreamTrialKit: Material = {
@@ -541,7 +539,7 @@ const liquidDreamTrialKit: Material = {
 	materialType: EnumMaterialType.WeaponAscension,
 	src: "/wpascension_liquid_dream_trial_kit",
 	sources: ["Bubble Can Factory", "Hunter Exchange", "Material Selection Box",],
-	linkedMaterials: ["doves_flutter", "nestlings_longing"]
+	linkedMaterials: ["liquid_dream_can", "liquid_dream_travel_kit"]
 }
 
 const specialColdDessert: Material = {
@@ -551,7 +549,7 @@ const specialColdDessert: Material = {
 	materialType: EnumMaterialType.WeaponAscension,
 	src: "/wpascension_special_cold_dessert",
 	sources: ["Bubble Can Factory", "Hunter Exchange", "Material Selection Box",],
-	linkedMaterials: ["doves_flutter", "nestlings_longing"]
+	linkedMaterials: ["plain_cold_dessert", "flavorless_cold_dessert"]
 }
 
 const plainColdDessert: Material = {
@@ -561,7 +559,7 @@ const plainColdDessert: Material = {
 	materialType: EnumMaterialType.WeaponAscension,
 	src: "/wpascension_plain_cold_dessert",
 	sources: ["Bubble Can Factory", "Hunter Exchange", "Material Selection Box",],
-	linkedMaterials: ["doves_flutter", "nestlings_longing"]
+	linkedMaterials: ["special_cold_dessert", "flavorless_cold_dessert"]
 }
 
 const flavorlessColdDessert: Material = {
@@ -571,7 +569,7 @@ const flavorlessColdDessert: Material = {
 	materialType: EnumMaterialType.WeaponAscension,
 	src: "/wpascension_flavorless_cold_dessert",
 	sources: ["Bubble Can Factory", "Hunter Exchange", "Material Selection Box",],
-	linkedMaterials: ["doves_flutter", "nestlings_longing"]
+	linkedMaterials: ["special_cold_dessert", "plain_cold_dessert"]
 }
 
 const collectorsDramaCore: Material = {
@@ -581,7 +579,7 @@ const collectorsDramaCore: Material = {
 	materialType: EnumMaterialType.WeaponAscension,
 	src: "/wpascension_collectors_drama_core",
 	sources: ["Bubble Can Factory", "Hunter Exchange", "Material Selection Box",],
-	linkedMaterials: ["doves_flutter", "nestlings_longing"]
+	linkedMaterials: ["master_drama_core", "beginner_drama_core"]
 }
 
 const masterDramaCore: Material = {
@@ -591,7 +589,7 @@ const masterDramaCore: Material = {
 	materialType: EnumMaterialType.WeaponAscension,
 	src: "/wpascension_master_drama_core",
 	sources: ["Bubble Can Factory", "Hunter Exchange", "Material Selection Box",],
-	linkedMaterials: ["doves_flutter", "nestlings_longing"]
+	linkedMaterials: ["collectors_drama_core", "beginner_drama_core"]
 }
 
 const beginnerDramaCore: Material = {
@@ -601,7 +599,7 @@ const beginnerDramaCore: Material = {
 	materialType: EnumMaterialType.WeaponAscension,
 	src: "/wpascension_beginner_drama_core",
 	sources: ["Bubble Can Factory", "Hunter Exchange", "Material Selection Box",],
-	linkedMaterials: ["doves_flutter", "nestlings_longing"]
+	linkedMaterials: ["collectors_drama_core", "master_drama_core"]
 }
 
 /* Weapon Experience */
@@ -612,7 +610,7 @@ const chaoticDye: Material = {
 	materialType: EnumMaterialType.WeaponExp,
 	src: "/wpexp_chaotic_dye",
 	sources: ["Houdinii's Magic Stage", "Hunter Exchange", "Material Selection Box",],
-	linkedMaterials: ["doves_flutter", "nestlings_longing"]
+	linkedMaterials: ["colorless_dye", "light_dye"]
 }
 
 const colorlessDye: Material = {
@@ -622,7 +620,7 @@ const colorlessDye: Material = {
 	materialType: EnumMaterialType.WeaponExp,
 	src: "/wpexp_colorless_dye",
 	sources: ["Houdinii's Magic Stage", "Hunter Exchange", "Material Selection Box",],
-	linkedMaterials: ["doves_flutter", "nestlings_longing"]
+	linkedMaterials: ["chaotic_dye", "light_dye"]
 }
 
 const lightDye: Material = {
@@ -632,7 +630,7 @@ const lightDye: Material = {
 	materialType: EnumMaterialType.WeaponExp,
 	src: "/wpexp_light_dye",
 	sources: ["Houdinii's Magic Stage", "Hunter Exchange", "Material Selection Box",],
-	linkedMaterials: ["doves_flutter", "nestlings_longing"]
+	linkedMaterials: ["chaotic_dye", "colorless_dye"]
 }
 
 export {

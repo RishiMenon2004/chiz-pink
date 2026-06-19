@@ -63,7 +63,7 @@ import {
 	Material
 } from "./materials"
 
-export const allMaterials = {
+export const allMaterials: {[key: string]: Material} = {
 	/* currency */
 	"beetle_coin": beetleCoin,
 	"fons": fons,
@@ -149,7 +149,7 @@ export const allMaterials = {
 	"light_dye": lightDye,
 } 
 
-export const allInventoryMaterials = {
+export const allInventoryMaterials: {[key: string]: Material} = {
 
 	/* epic */
 	"good_boy_stamp": goodBoyStamp,
