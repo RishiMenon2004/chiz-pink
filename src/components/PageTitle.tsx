@@ -1,3 +1,5 @@
+"use client"
+
 import routes from "@/database/routes"
 import { usePathname } from "next/navigation"
 
