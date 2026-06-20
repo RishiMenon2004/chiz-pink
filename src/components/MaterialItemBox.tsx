@@ -71,7 +71,7 @@ export default function MaterialItemBox({ material, requiredQuantity, canHaveMul
 
 	const isMultiMat = material.linkedMaterials && canHaveMultiMat;
 
-	const [showTooltip, setShowTooltip] = useState<{x: number, y: number} | null>(null)
+	const [showTooltip, setShowTooltip] = useState<{x: number, y: number} | false>(false)
 
 	const setAmount = useCallback((value: number) => {
 		updateInventory({ [material.id]: value })
@@ -126,6 +126,7 @@ export default function MaterialItemBox({ material, requiredQuantity, canHaveMul
 		e.stopPropagation()
 		if (isMultiMat) {
 			setShowMultiEditModal(true)
+			setTimeout(() => setShowTooltip(false))
 		}
 	}
 
@@ -141,11 +142,12 @@ export default function MaterialItemBox({ material, requiredQuantity, canHaveMul
 	}
 
 	const handleIconHover = (e: MouseEvent<HTMLDivElement>) => {
+		e.stopPropagation()
 		setShowTooltip({x: e.clientX, y: e.clientY})
 	}
-
+	
 	const handleIconUnhover = () => {
-		setShowTooltip(null)
+		setTimeout(() => setShowTooltip(false))
 	}
 
 	const displayQuantity = itemQuantity + (hadAddSub ? parseInt(addSubValue) || 0 : 0);
@@ -158,7 +160,7 @@ export default function MaterialItemBox({ material, requiredQuantity, canHaveMul
 
 	return (
 		<div className={`${styles.materialBox} ${getRarityStyle(material)} ${ isMultiMat ? styles.multi : "" }`}
-			onClick={e => e.stopPropagation()}
+			onClick={e => {e.stopPropagation()}}
 			onMouseEnter={handleIconHover}
 			onMouseLeave={handleIconUnhover}
 		>
@@ -180,7 +182,7 @@ export default function MaterialItemBox({ material, requiredQuantity, canHaveMul
 				</MaterialModalContext.Provider>, document.body
 			)}
 			
-			{(showTooltip && canHaveMultiMat) && createPortal(
+			{(showTooltip) && createPortal(
 				<TooltipContainer
 					subtext={material.materialType}
 					startingPos={showTooltip}

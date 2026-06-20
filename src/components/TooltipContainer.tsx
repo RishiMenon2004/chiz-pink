@@ -17,7 +17,7 @@ export function TooltipContainer({ subtext, startingPos, offset, children }: { s
 
 	useEffect(() => {
 		tooltipRef.current.style.transform = `translate(${startingPos.x}px, ${startingPos.y}px)`
-	}, [])
+	}, [startingPos])
 
 	return <div className="tooltip" ref={tooltipRef}>
 		{children}
