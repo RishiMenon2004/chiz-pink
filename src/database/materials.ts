@@ -10,6 +10,8 @@ export type Material = {
 	linkedMaterials?: string[]
 }
 
+export type MaterialSet = readonly [Material, Material, Material]
+
 export enum EnumRarity {
 	Common = 2,
 	Uncommon = 3,
@@ -18,13 +20,13 @@ export enum EnumRarity {
 }
 
 export enum EnumMaterialType {
-	WeeklyBossDrop = "Weekly Boss Drop",
-	CharacterExp = "Character Exp",
-	CharacterAscension = "Character Ascension",
-	BossDrop = "Boss Drop",
-	Talent = "Talent",
-	WeaponAscension = "Weapon Ascension",
-	WeaponExp = "Weapon Exp",
+	WeeklyBossDrop = "Weekly Boss Drops",
+	BossDrop = "World Boss Drops",
+	CharacterExp = "Esper XP",
+	CharacterAscension = "Esper Ascension",
+	Talent = "Esper Talent",
+	WeaponAscension = "Arc Ascension",
+	WeaponExp = "Arc XP",
 	Currency = "Currency",
 }
 
@@ -106,6 +108,8 @@ const risingHunterGuide: Material = {
 	linkedMaterials: ["elite_hunter_guide", "senior_hunter_guide"]
 }
 
+const expHunterGuideSet: MaterialSet = [eliteHunterGuide, seniorHunterGuide, risingHunterGuide]
+
 /* Character Ascension */
 const paradoxicalWhispers: Material = {
 	id: "paradoxical_whispers",
@@ -137,6 +141,8 @@ const lostWhispers: Material = {
 	linkedMaterials: ["paradoxical_whispers", "obscure_whispers"]
 }
 
+const ascWhispersSet: MaterialSet = [paradoxicalWhispers, obscureWhispers, lostWhispers]
+
 const chaosSilhouette: Material = {
 	id: "chaos_silhouette",
 	name: "Chaos Silhouette",
@@ -166,6 +172,8 @@ const fadingSilhouette: Material = {
 	sources: ["Anomaly Drop", "Crafting", "Hunter Exchange",],
 	linkedMaterials: ["chaos_silhouette", "blurred_silhouette"]
 }
+
+const ascSilhouetteSet: MaterialSet = [chaosSilhouette, blurredSilhouette, fadingSilhouette]
 
 const distortedNumeral: Material = {
 	id: "distorted_numeral",
@@ -197,6 +205,8 @@ const blurredNumeral: Material = {
 	linkedMaterials: ["distorted_numeral", "unsolved_numeral"]
 }
 
+const ascNumeralSet: MaterialSet = [distortedNumeral, unsolvedNumeral, blurredNumeral]
+
 const transcendentDelusions: Material = {
 	id: "transcendent_delusions",
 	name: "Transcendent Delusions",
@@ -226,6 +236,8 @@ const suspendedDelusions: Material = {
 	sources: ["Anomaly Drop", "Crafting", "Hunter Exchange",],
 	linkedMaterials: ["transcendent_delusions", "yearning_delusions"]
 }
+
+const ascDelusionsSet: MaterialSet = [transcendentDelusions, yearningDelusions, suspendedDelusions]
 
 /* Boss Drops - Character Ascension */
 const waterMoonPick: Material = {
@@ -322,6 +334,8 @@ const nestlingsLonging: Material = {
 	linkedMaterials: ["the_olive_branch", "doves_flutter"]
 }
 
+const talentBirdSet: MaterialSet = [theOliveBranch, dovesFlutter, nestlingsLonging]
+
 const whiteRose: Material = {
 	id: "white_rose",
 	name: "White Rose",
@@ -351,6 +365,8 @@ const fng: Material = {
 	sources: ["Houdinii's Schemes", "Hunter Exchange", "Material Selection Box",],
 	linkedMaterials: ["doves_flutter", "co"]
 }
+
+const talentRoseSet: MaterialSet = [whiteRose, co, fng]
 
 const blackHat: Material = {
 	id: "black_hat",
@@ -382,6 +398,8 @@ const firstExpectations: Material = {
 	linkedMaterials: ["black_hat", "known_weariness"]
 }
 
+const talentMagicSet: MaterialSet = [blackHat, knownWeariness, firstExpectations]
+
 const heartRacingNight: Material = {
 	id: "heart_racing_night",
 	name: "Heart-Racing Night",
@@ -412,6 +430,8 @@ const synchronicityOfThought: Material = {
 	linkedMaterials: ["heart_racing_night", "resonance_of_faith"]
 }
 
+const talentHeartSet: MaterialSet = [heartRacingNight, resonanceOfFaith, synchronicityOfThought]
+
 const theSecondSelf: Material = {
 	id: "the_second_self",
 	name: "The Second Self",
@@ -441,6 +461,8 @@ const hesitationOfTheWaves: Material = {
 	sources: ["Houdinii's Schemes", "Hunter Exchange", "Material Selection Box",],
 	linkedMaterials: ["the_second_self", "suspended_whispers"]
 }
+
+const talentTarotSet: MaterialSet = [theSecondSelf, suspendedWhispers, hesitationOfTheWaves]
 
 const dreamlessSeed: Material = {
 	id: "dreamless_seed",
@@ -482,6 +504,8 @@ const ironAppleSeed: Material = {
 	linkedMaterials: ["golden_apple_seed", "silver_apple_seed"]
 }
 
+const ascAppleSeedSet: MaterialSet = [goldenAppleSeed, silverAppleSeed, ironAppleSeed]
+
 const harmony: Material = {
 	id: "harmony",
 	name: "Harmony",
@@ -511,6 +535,8 @@ const beaty: Material = {
 	sources: ["Bubble Can Factory", "Hunter Exchange", "Material Selection Box",],
 	linkedMaterials: ["harmony", "versey"]
 }
+
+const ascMuiscSet: MaterialSet = [harmony, versey, beaty]
 
 const liquidDreamCan: Material = {
 	id: "liquid_dream_can",
@@ -542,6 +568,8 @@ const liquidDreamTrialKit: Material = {
 	linkedMaterials: ["liquid_dream_can", "liquid_dream_travel_kit"]
 }
 
+const ascLiquidDreamSet: MaterialSet = [liquidDreamCan, liquidDreamTravelKit, liquidDreamTrialKit]
+
 const specialColdDessert: Material = {
 	id: "special_cold_dessert",
 	name: "Special Cold Dessert",
@@ -572,6 +600,8 @@ const flavorlessColdDessert: Material = {
 	linkedMaterials: ["special_cold_dessert", "plain_cold_dessert"]
 }
 
+const ascColdDessertSet: MaterialSet = [specialColdDessert, plainColdDessert, flavorlessColdDessert]
+
 const collectorsDramaCore: Material = {
 	id: "collectors_drama_core",
 	name: "Collector's Drama Core",
@@ -601,6 +631,8 @@ const beginnerDramaCore: Material = {
 	sources: ["Bubble Can Factory", "Hunter Exchange", "Material Selection Box",],
 	linkedMaterials: ["collectors_drama_core", "master_drama_core"]
 }
+
+const ascDramaCoreSet: MaterialSet = [collectorsDramaCore, masterDramaCore, beginnerDramaCore]
 
 /* Weapon Experience */
 const chaoticDye: Material = {
@@ -633,6 +665,8 @@ const lightDye: Material = {
 	linkedMaterials: ["chaotic_dye", "colorless_dye"]
 }
 
+const expDyeSet: MaterialSet = [chaoticDye, colorlessDye, lightDye]
+
 export {
 	beetleCoin,
 	fons,
@@ -642,18 +676,23 @@ export {
 	eliteHunterGuide,
 	seniorHunterGuide,
 	risingHunterGuide,
+	expHunterGuideSet,
 	paradoxicalWhispers,
 	obscureWhispers,
 	lostWhispers,
+	ascWhispersSet,
 	chaosSilhouette,
 	blurredSilhouette,
 	fadingSilhouette,
+	ascSilhouetteSet,
 	distortedNumeral,
 	unsolvedNumeral,
 	blurredNumeral,
+	ascNumeralSet,
 	transcendentDelusions,
 	yearningDelusions,
 	suspendedDelusions,
+	ascDelusionsSet,
 	waterMoonPick,
 	chargingKnightSparkPlug,
 	ConfessionalFLowerSeed,
@@ -664,35 +703,46 @@ export {
 	theOliveBranch,
 	dovesFlutter,
 	nestlingsLonging,
+	talentBirdSet,
 	whiteRose,
 	co,
 	fng,
+	talentRoseSet,
 	blackHat,
 	knownWeariness,
 	firstExpectations,
+	talentMagicSet,
 	heartRacingNight,
 	resonanceOfFaith,
 	synchronicityOfThought,
+	talentHeartSet,
 	theSecondSelf,
 	suspendedWhispers,
 	hesitationOfTheWaves,
+	talentTarotSet,
 	dreamlessSeed,
 	goldenAppleSeed,
 	silverAppleSeed,
 	ironAppleSeed,
+	ascAppleSeedSet,
 	harmony,
 	versey,
 	beaty,
+	ascMuiscSet,
 	liquidDreamCan,
 	liquidDreamTravelKit,
 	liquidDreamTrialKit,
+	ascLiquidDreamSet,
 	specialColdDessert,
 	plainColdDessert,
 	flavorlessColdDessert,
+	ascColdDessertSet,
 	collectorsDramaCore,
 	masterDramaCore,
 	beginnerDramaCore,
+	ascDramaCoreSet,
 	chaoticDye,
 	colorlessDye,
-	lightDye
+	lightDye,
+	expDyeSet,
 }
