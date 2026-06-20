@@ -384,7 +384,7 @@ a {
   .close-btn {
     width: 2.5rem;
     aspect-ratio: 1;
-    margin-top: 1rem;
+    margin-top: 3rem;
     border-radius: 100%;
     background-color: var(--interactive-bg);
     border: 4px var(--darker-pink) solid;
