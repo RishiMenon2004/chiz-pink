@@ -264,6 +264,7 @@ a {
 
   font-family: var(--font-barlow-condensed);
   font-size: 1.25rem;
+  font-style: italic;
 
   .icon {
     z-index: 1;

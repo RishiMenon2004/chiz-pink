@@ -60,6 +60,7 @@
 		font-family: var(--font-barlow-condensed);
 		font-variant: slashed-zero;
 		font-size: 1.25rem;
+		font-style: italic;
 		width: 100%;
 		display: flex;
 		justify-content: space-between;
@@ -119,8 +120,9 @@
 			border: none;
 			background: transparent;
 			font-family: var(--font-barlow-condensed);
-			line-height: 0;
 			font-size: 1.25rem;
+			font-style: italic;
+			line-height: 0;
 			display: block;
 			width: 100%;
 			text-align: center;
