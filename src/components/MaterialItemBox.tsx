@@ -9,6 +9,7 @@ import useInventory from "@/hooks/useInventory";
 import ModalContainer from "./ModalContainer";
 import { createPortal } from "react-dom";
 import { allInventoryMaterials } from "@/database/materialLists";
+import { TooltipContainer } from "./TooltipContainer";
 
 // Context for managing application of child adjustments
 type MultiMatModalContextType = {
@@ -70,6 +71,7 @@ export default function MaterialItemBox({ material, requiredQuantity, canHaveMul
 
 	const isMultiMat = material.linkedMaterials && canHaveMultiMat;
 
+	const [showTooltip, setShowTooltip] = useState<{x: number, y: number} | null>(null)
 
 	const setAmount = useCallback((value: number) => {
 		updateInventory({ [material.id]: value })
@@ -138,6 +140,14 @@ export default function MaterialItemBox({ material, requiredQuantity, canHaveMul
 		setAddSubValue(e.currentTarget.value)
 	}
 
+	const handleIconHover = (e: MouseEvent<HTMLDivElement>) => {
+		setShowTooltip({x: e.clientX, y: e.clientY})
+	}
+
+	const handleIconUnhover = () => {
+		setShowTooltip(null)
+	}
+
 	const displayQuantity = itemQuantity + (hadAddSub ? parseInt(addSubValue) || 0 : 0);
 
 	const contextValue: MultiMatModalContextType = {
@@ -146,62 +156,78 @@ export default function MaterialItemBox({ material, requiredQuantity, canHaveMul
 		confirmMultiMatAmounts: () => multiMatAmountCallbacks.current.forEach(cb => cb())
 	}
 
-	/* I want the child MaterialItemBox created in the ModalContainer to update their values to the inventory when handleBoxClick is triggered. since handleBoxClick is on the parent, the displayQuantity value does not update the inventory */
-	
-	return (<div
-		className={`${styles.materialBox} ${getRarityStyle(material)} ${ isMultiMat ? styles.multi : "" }`}
-		onClick={e => e.stopPropagation()}
-	>
-		<div className={`${styles.iconContainer}`} onClick={handleBoxClick}>
-			<Image src={`/materials${material.src}.png`} width={128} height={128} alt={`${material.name} icon`}/>
-		</div>
-		{showMultiEditModal && createPortal(
-			<MaterialModalContext.Provider value={contextValue}>
-				<ModalContainer onClose={handleMultiMatClose}>
-					<div className={pageStyles.multiMatContainer}>
-						{linkedMaterials.map((linkedMaterial, index) =>{
-							return <MaterialItemBox key={index} material={linkedMaterial} canHaveMultiMat={false} hadAddSub/>
-						})}
-					</div>
-				</ModalContainer>
-			</MaterialModalContext.Provider>, document.body
-		)}
-		<span className={`${styles.label}`}>{material.name}</span>
-		<span className={`${styles.amount}`}>
-			<span tabIndex={0} aria-label={`${material.name} minus one button`} className={`${styles.countBtn} ${styles.minus}`} onClick={(e) => handleCount(e, false)}/>
-			<span className={`${styles.countContainer}`}>
-				<input ref={countRef} type={"text"}
-					min="0"
-					pattern="[0-9]*"
-					inputMode="numeric"
-					value={displayQuantity}
-					onChange={handleEdit}
-					onFocus={handleFocus}
-					onKeyDown={handleKeyDown}
-					onClick={e => e.stopPropagation()}
+	return (
+		<div className={`${styles.materialBox} ${getRarityStyle(material)} ${ isMultiMat ? styles.multi : "" }`}
+			onClick={e => e.stopPropagation()}
+			onMouseEnter={handleIconHover}
+			onMouseLeave={handleIconUnhover}
+		>
+
+			<div className={`${styles.iconContainer}`}
+			onClick={handleBoxClick}>
+				<Image src={`/materials${material.src}.png`} width={128} height={128} alt={`${material.name} icon`}/>
+			</div>
+			
+			{showMultiEditModal && createPortal(
+				<MaterialModalContext.Provider value={contextValue}>
+					<ModalContainer onClose={handleMultiMatClose}>
+						<div className={pageStyles.multiMatContainer}>
+							{linkedMaterials.map((linkedMaterial, index) =>{
+								return <MaterialItemBox key={index} material={linkedMaterial} canHaveMultiMat={false} hadAddSub/>
+							})}
+						</div>
+					</ModalContainer>
+				</MaterialModalContext.Provider>, document.body
+			)}
+			
+			{(showTooltip && canHaveMultiMat) && createPortal(
+				<TooltipContainer
+					subtext={material.materialType}
+					startingPos={showTooltip}
+					offset={isMultiMat ? {x: 24, y: -24} : {x: 8, y: -8}}
+				>
+					{material.name}
+				</TooltipContainer>, document.body
+			)}
+			
+			<span className={`${styles.label}`}>{material.name}</span>
+			
+			<span className={`${styles.amount}`}>
+				<span tabIndex={0} aria-label={`${material.name} minus one button`} className={`${styles.countBtn} ${styles.minus}`} onClick={(e) => handleCount(e, false)}/>
+				<span className={`${styles.countContainer}`}>
+					<input ref={countRef} type={"text"}
+						min="0"
+						pattern="[0-9]*"
+						inputMode="numeric"
+						value={displayQuantity}
+						onChange={handleEdit}
+						onFocus={handleFocus}
+						onKeyDown={handleKeyDown}
+						onClick={e => e.stopPropagation()}
+					/>
+					{requiredQuantity && <span>/{requiredQuantity}</span>}
+				</span>
+				<span tabIndex={0} aria-label={`${material.name} plus one button`}
+					className={`${styles.countBtn} ${styles.plus}`}
+					onClick={(e) => handleCount(e, true)}
 				/>
-				{requiredQuantity && <span>/{requiredQuantity}</span>}
 			</span>
-			<span tabIndex={0} aria-label={`${material.name} plus one button`}
-				className={`${styles.countBtn} ${styles.plus}`}
-				onClick={(e) => handleCount(e, true)}
-			/>
-		</span>
-		{ hadAddSub && <span className={`${styles.amount}`}>
-			<span className={`${styles.countBtn} ${styles.addSub}`}
-				style={{pointerEvents: "none"}}
-			/>
-			<input type="text" inputMode="numeric"
-				value={addSubValue}
-				placeholder="0"
-				onChange={handleAddSubChange}
-				onKeyDown={handleKeyDown}
-			/>
-			<span className={`${styles.countBtn}`} style={{
-				opacity: 0,
-				userSelect: "none",
-				pointerEvents: "none"
-			}}/>
-		</span>}
-	</div>)
+			{ hadAddSub && <span className={`${styles.amount}`}>
+				<span className={`${styles.countBtn} ${styles.addSub}`}
+					style={{pointerEvents: "none"}}
+				/>
+				<input type="text" inputMode="numeric"
+					value={addSubValue}
+					placeholder="0"
+					onChange={handleAddSubChange}
+					onKeyDown={handleKeyDown}
+				/>
+				<span className={`${styles.countBtn}`} style={{
+					opacity: 0,
+					userSelect: "none",
+					pointerEvents: "none"
+				}}/>
+			</span>}
+		</div>
+	)
 }

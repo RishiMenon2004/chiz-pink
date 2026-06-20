@@ -418,6 +418,30 @@ a {
   position: fixed;
   top: 0;
   left: 0;
+  
+  width: max-content;
+  max-width: 250px;
+  
+  height: fit-content;
+  
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  
+  background-color: var(--interactive-bg);
+  
+  box-shadow:
+    hsla(0, 0%, 0%, 0.6) 0px -1px 2px,
+    white 0px 0px 1px 1px,
+    rgba(0, 0, 0, 0.7) 0px 1px inset;  
+    z-index: 999;
+
+  font-weight: 700;
+
+  .subtext {
+    font-size: 0.75rem;
+    font-weight: 100;
+    margin-top: 0.25rem;
+  }
 }
 
 @media (max-width: 1135px) {

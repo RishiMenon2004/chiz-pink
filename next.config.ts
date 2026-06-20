@@ -6,7 +6,7 @@ const nextConfig: NextConfig = {
   images: {
     qualities: [50, 75, 100]
   },
-  allowedDevOrigins: ['192.168.0.44'],
+  allowedDevOrigins: [process.env.DEV_ORIGIN as string],
 };
 
 export default nextConfig;
