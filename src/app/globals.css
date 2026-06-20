@@ -476,7 +476,7 @@ a {
     padding-inline: 5%;
 
     background-image:
-    url("/sidebar.png"),
+    url("/sidebar_hr.png"),
     linear-gradient(
       to right,
       transparent 0 30%,
@@ -495,14 +495,15 @@ a {
     );
 
     background-size:
-      6rem,
+      75%,
       10% 100%;
 
     background-position: 
-      center,
-      83% center;
+      25% center,
+      calc(97.5% - 3rem) center;
 
     nav {
+      gap: unset;
       display: flex;
       justify-content: space-between;
     }
