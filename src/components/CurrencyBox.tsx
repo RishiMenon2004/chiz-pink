@@ -74,7 +74,7 @@ export default function CurrencyBox({ currency }: { currency: Material }) {
 	}
 
 	return (<div className={`currency-box ${isEdit ? "edit" : ""}`} id={currency.id} style={{ "--bg-image": `url('/currency/border/${currency.id}.png')`, "--input-width": inputWidth } as CSSProperties}>
-		<Image className="icon" src={`/materials${currency.src}.png`} width={64} height={64} alt={`${currency.name} icon`}/>
+		<Image className="icon" src={`/materials${currency.src}.png`} width={64} height={64} alt={`${currency.name} icon`} loading="eager"/>
 		<input name={currency.name} ref={inputBoxRef}
 			type={"text"}
 			min="0"
