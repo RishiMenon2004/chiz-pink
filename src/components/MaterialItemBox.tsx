@@ -115,7 +115,7 @@ export default function MaterialItemBox({ material, requiredQuantity, canHaveMul
 
 	const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
 		e.stopPropagation()
-		if (e.key === "Enter") {
+		if (e.key === "Enter" || e.key === "Escape") {
 			e.currentTarget.blur()
 		}
 	}
@@ -127,7 +127,7 @@ export default function MaterialItemBox({ material, requiredQuantity, canHaveMul
 		}
 	}
 
-	const handleMultiMatClose = (e: MouseEvent<HTMLButtonElement | HTMLDivElement>) => {
+	const handleMultiMatClose = (e: MouseEvent<HTMLElement> | KeyboardEvent<HTMLElement>) => {
 		e.stopPropagation()
 		// Confirm all children's amounts
 		multiMatAmountCallbacks.current.forEach(callback => callback())
