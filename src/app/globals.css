@@ -461,11 +461,8 @@ a {
       overflow: scroll;
       scrollbar-width: none;
       padding: 0;
-      width: fit-content;
-    }
-
-    input {
       width: 100%;
+      text-align: center;
     }
 
     .edit-btn {
@@ -480,7 +477,7 @@ a {
       right: 3vh;
       top: 3vh;
 
-      background-image: url("/materials/cross.png");
+      background-image: url("/materials/cross_white.png");
     }
   }
 }
