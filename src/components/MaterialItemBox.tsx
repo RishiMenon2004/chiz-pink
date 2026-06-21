@@ -4,7 +4,7 @@ import { Material } from "@/database/materials";
 import Image from "next/image";
 import styles from "@/components/material.module.css";
 import pageStyles from "@/app/inventory/page.module.css";
-import { ChangeEvent, FocusEvent, MouseEvent, useEffect, useRef, useState, createContext, useContext, useCallback, KeyboardEvent } from "react";
+import { ChangeEvent, FocusEvent, MouseEvent, useEffect, useRef, useState, createContext, useContext, useCallback, KeyboardEvent, PointerEvent } from "react";
 import useInventory from "@/hooks/useInventory";
 import ModalContainer from "./ModalContainer";
 import { createPortal } from "react-dom";
@@ -94,6 +94,7 @@ export default function MaterialItemBox({ material, requiredQuantity, canHaveMul
 	
 	const handleCount = (e: MouseEvent<HTMLSpanElement>, increment: boolean) => {
 		e.stopPropagation()
+		hideTooltip()
 		if (countRef.current) {
 			const prevAmount = itemQuantity
 			const newAmount = Math.max(increment ? prevAmount + 1 : prevAmount - 1, 0)
@@ -126,7 +127,7 @@ export default function MaterialItemBox({ material, requiredQuantity, canHaveMul
 		e.stopPropagation()
 		if (isMultiMat) {
 			setShowMultiEditModal(true)
-			setTimeout(() => setShowTooltip(false))
+			hideTooltip()
 		}
 	}
 
@@ -141,12 +142,14 @@ export default function MaterialItemBox({ material, requiredQuantity, canHaveMul
 		setAddSubValue(e.currentTarget.value)
 	}
 
-	const handleIconHover = (e: MouseEvent<HTMLDivElement>) => {
+	const handleIconHover = (e: PointerEvent<HTMLDivElement>) => {
 		e.stopPropagation()
-		setShowTooltip({x: e.clientX, y: e.clientY})
+		if (e.pointerType === "mouse") {
+			setShowTooltip({x: e.clientX, y: e.clientY})
+		}
 	}
 	
-	const handleIconUnhover = () => {
+	const hideTooltip = () => {
 		setTimeout(() => setShowTooltip(false))
 	}
 
@@ -160,9 +163,9 @@ export default function MaterialItemBox({ material, requiredQuantity, canHaveMul
 
 	return (
 		<div className={`${styles.materialBox} ${getRarityStyle(material)} ${ isMultiMat ? styles.multi : "" }`}
-			onClick={e => {e.stopPropagation()}}
-			onMouseEnter={handleIconHover}
-			onMouseLeave={handleIconUnhover}
+			onClick={e => {e.stopPropagation(); hideTooltip()}}
+			onPointerEnter={handleIconHover}
+			onPointerLeave={hideTooltip}
 		>
 
 			<div className={`${styles.iconContainer}`}
@@ -195,7 +198,9 @@ export default function MaterialItemBox({ material, requiredQuantity, canHaveMul
 			<span className={`${styles.label}`}>{material.name}</span>
 			
 			<span className={`${styles.amount}`}>
-				<span tabIndex={0} aria-label={`${material.name} minus one button`} className={`${styles.countBtn} ${styles.minus}`} onClick={(e) => handleCount(e, false)}/>
+				<span tabIndex={0} aria-label={`${material.name} minus one button`}
+					className={`${styles.countBtn} ${styles.minus}`}
+					onClick={(e) => handleCount(e, false)}/>
 				<span className={`${styles.countContainer}`}>
 					<input ref={countRef} type={"text"}
 						min="0"
@@ -205,7 +210,7 @@ export default function MaterialItemBox({ material, requiredQuantity, canHaveMul
 						onChange={handleEdit}
 						onFocus={handleFocus}
 						onKeyDown={handleKeyDown}
-						onClick={e => e.stopPropagation()}
+						onClick={e => {e.stopPropagation(); hideTooltip()}}
 					/>
 					{requiredQuantity && <span>/{requiredQuantity}</span>}
 				</span>
