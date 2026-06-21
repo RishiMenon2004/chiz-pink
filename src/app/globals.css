@@ -16,7 +16,7 @@ html {
 html,
 body {
   max-width: 100%;
-  max-height: 100dvh;
+  min-height: 100dvh;
 }
 
 body {
@@ -24,8 +24,8 @@ body {
   --titlebar-height: 3rem;
 
   overflow: hidden auto;
-  padding-left: calc(var(--sidebar-width));
-  padding-top: calc(var(--titlebar-height) + 1rem);
+  padding-left: var(--sidebar-width);
+  padding-top: var(--titlebar-height);
 
   background-color: var(--background);
   color: var(--foreground);
@@ -485,6 +485,7 @@ a {
 @media (max-width: 1000px) {
   body {
     padding-inline: 1rem;
+    padding-top: 4.25rem;
   }
 
   .sidebar {
