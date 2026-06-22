@@ -29,6 +29,7 @@ export default function useInventoryFilters({filter, rarity, sorting, sortRevers
 
 		default: {
 			filteredInventoryList = cachedInventoryList.filter(material => material.materialType === filter)
+			break
 		}
 	}
 
