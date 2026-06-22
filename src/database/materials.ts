@@ -107,7 +107,7 @@ const risingHunterGuide: Material = {
 	linkedMaterials: ["elite_hunter_guide", "senior_hunter_guide"]
 }
 
-const expHunterGuideSet: MaterialSet = [eliteHunterGuide, seniorHunterGuide, risingHunterGuide]
+const expHunterGuideSet: MaterialSet = [risingHunterGuide, seniorHunterGuide, eliteHunterGuide]
 
 /* Character Ascension */
 const paradoxicalWhispers: Material = {
@@ -140,7 +140,7 @@ const lostWhispers: Material = {
 	linkedMaterials: ["paradoxical_whispers", "obscure_whispers"]
 }
 
-const ascWhispersSet: MaterialSet = [paradoxicalWhispers, obscureWhispers, lostWhispers]
+const ascWhispersSet: MaterialSet = [lostWhispers, obscureWhispers, paradoxicalWhispers]
 
 const chaosSilhouette: Material = {
 	id: "chaos_silhouette",
@@ -172,7 +172,7 @@ const fadingSilhouette: Material = {
 	linkedMaterials: ["chaos_silhouette", "blurred_silhouette"]
 }
 
-const ascSilhouetteSet: MaterialSet = [chaosSilhouette, blurredSilhouette, fadingSilhouette]
+const ascSilhouetteSet: MaterialSet = [fadingSilhouette, blurredSilhouette, chaosSilhouette]
 
 const distortedNumeral: Material = {
 	id: "distorted_numeral",
@@ -204,7 +204,7 @@ const blurredNumeral: Material = {
 	linkedMaterials: ["distorted_numeral", "unsolved_numeral"]
 }
 
-const ascNumeralSet: MaterialSet = [distortedNumeral, unsolvedNumeral, blurredNumeral]
+const ascNumeralSet: MaterialSet = [blurredNumeral, unsolvedNumeral, distortedNumeral]
 
 const transcendentDelusions: Material = {
 	id: "transcendent_delusions",
@@ -236,7 +236,7 @@ const suspendedDelusions: Material = {
 	linkedMaterials: ["transcendent_delusions", "yearning_delusions"]
 }
 
-const ascDelusionsSet: MaterialSet = [transcendentDelusions, yearningDelusions, suspendedDelusions]
+const ascDelusionsSet: MaterialSet = [suspendedDelusions, yearningDelusions, transcendentDelusions]
 
 /* Boss Drops - Character Ascension */
 const waterMoonPick: Material = {
@@ -333,7 +333,7 @@ const nestlingsLonging: Material = {
 	linkedMaterials: ["the_olive_branch", "doves_flutter"]
 }
 
-const talentBirdSet: MaterialSet = [theOliveBranch, dovesFlutter, nestlingsLonging]
+const talentBirdSet: MaterialSet = [nestlingsLonging, dovesFlutter, theOliveBranch]
 
 const whiteRose: Material = {
 	id: "white_rose",
@@ -365,7 +365,7 @@ const fng: Material = {
 	linkedMaterials: ["doves_flutter", "co"]
 }
 
-const talentRoseSet: MaterialSet = [whiteRose, co, fng]
+const talentRoseSet: MaterialSet = [fng, co, whiteRose]
 
 const blackHat: Material = {
 	id: "black_hat",
@@ -397,7 +397,7 @@ const firstExpectations: Material = {
 	linkedMaterials: ["black_hat", "known_weariness"]
 }
 
-const talentMagicSet: MaterialSet = [blackHat, knownWeariness, firstExpectations]
+const talentMagicSet: MaterialSet = [firstExpectations, knownWeariness, blackHat]
 
 const heartRacingNight: Material = {
 	id: "heart_racing_night",
@@ -429,7 +429,7 @@ const synchronicityOfThought: Material = {
 	linkedMaterials: ["heart_racing_night", "resonance_of_faith"]
 }
 
-const talentHeartSet: MaterialSet = [heartRacingNight, resonanceOfFaith, synchronicityOfThought]
+const talentHeartSet: MaterialSet = [synchronicityOfThought, resonanceOfFaith, heartRacingNight]
 
 const theSecondSelf: Material = {
 	id: "the_second_self",
@@ -461,7 +461,7 @@ const hesitationOfTheWaves: Material = {
 	linkedMaterials: ["the_second_self", "suspended_whispers"]
 }
 
-const talentTarotSet: MaterialSet = [theSecondSelf, suspendedWhispers, hesitationOfTheWaves]
+const talentTarotSet: MaterialSet = [hesitationOfTheWaves, suspendedWhispers, theSecondSelf]
 
 const dreamlessSeed: Material = {
 	id: "dreamless_seed",
@@ -503,7 +503,7 @@ const ironAppleSeed: Material = {
 	linkedMaterials: ["golden_apple_seed", "silver_apple_seed"]
 }
 
-const ascAppleSeedSet: MaterialSet = [goldenAppleSeed, silverAppleSeed, ironAppleSeed]
+const ascAppleSeedSet: MaterialSet = [ironAppleSeed, silverAppleSeed, goldenAppleSeed]
 
 const harmony: Material = {
 	id: "harmony",
@@ -535,7 +535,7 @@ const beaty: Material = {
 	linkedMaterials: ["harmony", "versey"]
 }
 
-const ascMuiscSet: MaterialSet = [harmony, versey, beaty]
+const ascMuiscSet: MaterialSet = [beaty, versey, harmony]
 
 const liquidDreamCan: Material = {
 	id: "liquid_dream_can",
@@ -567,7 +567,7 @@ const liquidDreamTrialKit: Material = {
 	linkedMaterials: ["liquid_dream_can", "liquid_dream_travel_kit"]
 }
 
-const ascLiquidDreamSet: MaterialSet = [liquidDreamCan, liquidDreamTravelKit, liquidDreamTrialKit]
+const ascLiquidDreamSet: MaterialSet = [liquidDreamTrialKit, liquidDreamTravelKit, liquidDreamCan]
 
 const specialColdDessert: Material = {
 	id: "special_cold_dessert",
@@ -599,7 +599,7 @@ const flavorlessColdDessert: Material = {
 	linkedMaterials: ["special_cold_dessert", "plain_cold_dessert"]
 }
 
-const ascColdDessertSet: MaterialSet = [specialColdDessert, plainColdDessert, flavorlessColdDessert]
+const ascColdDessertSet: MaterialSet = [flavorlessColdDessert, plainColdDessert, specialColdDessert]
 
 const collectorsDramaCore: Material = {
 	id: "collectors_drama_core",
@@ -631,7 +631,7 @@ const beginnerDramaCore: Material = {
 	linkedMaterials: ["collectors_drama_core", "master_drama_core"]
 }
 
-const ascDramaCoreSet: MaterialSet = [collectorsDramaCore, masterDramaCore, beginnerDramaCore]
+const ascDramaCoreSet: MaterialSet = [beginnerDramaCore, masterDramaCore, collectorsDramaCore]
 
 /* Weapon Experience */
 const chaoticDye: Material = {
@@ -664,7 +664,7 @@ const lightDye: Material = {
 	linkedMaterials: ["chaotic_dye", "colorless_dye"]
 }
 
-const expDyeSet: MaterialSet = [chaoticDye, colorlessDye, lightDye]
+const expDyeSet: MaterialSet = [lightDye, colorlessDye, chaoticDye]
 
 export {
 	beetleCoin,
