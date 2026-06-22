@@ -96,7 +96,7 @@ export default function PopulateInventory() {
 			{/* Regular Filter */}
 			<div className={styles.filterSection}>
 				<span className={styles.filterIcon}
-					style={{"--icon-src": "url('/materials/filter.png')"} as CSSProperties}/>
+					style={{"--icon-src": "url('/materials/button_icons/filter.png')"} as CSSProperties}/>
 
 				<select name="material-type" value={filter}
 					onChange={handleFilterChange}
@@ -111,14 +111,14 @@ export default function PopulateInventory() {
 				</select>
 
 				<span className={`${styles.filterIcon} ${styles.hasHover}`}
-					style={{cursor: "pointer", "--icon-src": "url('/materials/cross.png')"} as CSSProperties}
+					style={{cursor: "pointer", "--icon-src": "url('/materials/button_icons/cross.png')"} as CSSProperties}
 					onClick={() => setFilter("default")}/>
 			</div>
 			
 			{/* Rank Filter */}
 			<div className={styles.filterSection}>
 				<span className={styles.filterIcon}
-					style={{"--icon-src": "url('/materials/filter.png')"} as CSSProperties}/>
+					style={{"--icon-src": "url('/materials/button_icons/filter.png')"} as CSSProperties}/>
 
 				<select name="rarity" value={rarityFilter}
 					onChange={handleRarityChange}
@@ -133,14 +133,14 @@ export default function PopulateInventory() {
 				</select>
 
 				<span className={`${styles.filterIcon} ${styles.hasHover}`}
-					style={{cursor: "pointer", "--icon-src": "url('/materials/cross.png')"} as CSSProperties}
+					style={{cursor: "pointer", "--icon-src": "url('/materials/button_icons/cross.png')"} as CSSProperties}
 					onClick={() => setRarityFilter("default")}/>
 			</div>
 			
 			{/* Grouping */}
 			<div className={styles.filterSection}>
 				<span className={styles.filterIcon}
-					style={{"--icon-src": "url('/materials/group.png')"} as CSSProperties}/>
+					style={{"--icon-src": "url('/materials/button_icons/group.png')"} as CSSProperties}/>
 
 				<select name="sorting" value={group}
 					onChange={handleGroupChange}
@@ -154,14 +154,14 @@ export default function PopulateInventory() {
 				</select>
 				
 				<span className={`${styles.filterIcon} ${styles.hasHover}`}
-					style={{cursor: "pointer", "--icon-src": "url('/materials/cross.png')"} as CSSProperties}
+					style={{cursor: "pointer", "--icon-src": "url('/materials/button_icons/cross.png')"} as CSSProperties}
 					onClick={() => setGroup("default")}/>
 			</div>
 
 			{/* Sorting */}
 			<div className={styles.filterSection}>
 				<span className={styles.filterIcon}
-					style={{"--icon-src": "url('/materials/sort.png')"} as CSSProperties}/>
+					style={{"--icon-src": "url('/materials/button_icons/sort.png')"} as CSSProperties}/>
 
 				<select name="sorting" value={sort}
 					onChange={handleSortingChange}
@@ -174,7 +174,7 @@ export default function PopulateInventory() {
 				</select>
 				
 				<span className={`${styles.filterIcon} ${styles.hasHover}`}
-					style={{cursor: "pointer", "--icon-src": "url('/materials/reverse_sort.png')"} as CSSProperties}
+					style={{cursor: "pointer", "--icon-src": "url('/materials/button_icons/reverse_sort.png')"} as CSSProperties}
 					onClick={() => setSortReverse(prev => !prev)}/>
 			</div>
 

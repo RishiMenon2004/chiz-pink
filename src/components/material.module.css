@@ -101,15 +101,15 @@
 			background-size: cover;
 
 			&.plus {
-				background-image: url("/materials/plus.png");
+				background-image: url("/materials/button_icons/plus.png");
 			}
 
 			&.minus {
-				background-image: url("/materials/minus.png");
+				background-image: url("/materials/button_icons/minus.png");
 			}
 
 			&.addSub {
-				background-image: url("/materials/add_sub.png");
+				background-image: url("/materials/button_icons/add_sub.png");
 			}
 		}
 
