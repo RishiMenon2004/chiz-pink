@@ -1,6 +1,6 @@
 "use client"
 
-import { InventoryFilter, InventoryRarityFilter, InventorySort } from "@/app/inventory/inventoryFilters";
+import { InventoryFilter, InventoryRarityFilter, InventorySort } from "@/database/inventoryFilters";
 import { getInventoryList } from "@/database/materialLists";
 import { EnumMaterialType, Material } from "@/database/materials";
 import useInventoryStore from "@/hooks/useInventoryStore";

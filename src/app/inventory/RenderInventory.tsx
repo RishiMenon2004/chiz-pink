@@ -4,7 +4,7 @@ import { ChangeEvent, CSSProperties, useState } from "react"
 import dynamic from "next/dynamic"
 import { EnumRarity } from "@/database/item"
 import { EnumMaterialType } from "@/database/materials"
-import { InventoryFilter, InventoryGroup, InventoryRarityFilter, InventorySort } from "./inventoryFilters"
+import { InventoryFilter, InventoryGroup, InventoryRarityFilter, InventorySort } from "@/database/inventoryFilters"
 import useInventoryFilters from "@/hooks/useInventoryFilters"
 import styles from "@/app/inventory/page.module.css"
 
@@ -17,7 +17,7 @@ enum RarityRank {
 	Epic = "S-Rank",
 }
 
-export default function PopulateInventory() {
+export default function RenderInventory() {
 	const [filter, setFilter] = useState<InventoryFilter>("default")
 	const [rarityFilter, setRarityFilter] = useState<InventoryRarityFilter>("default")
 	const [group, setGroup] = useState<InventoryGroup>("default")
