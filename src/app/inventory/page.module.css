@@ -29,103 +29,6 @@
   padding: 1rem 0 0 0;
 }
 
-.filterToolbar {
-  position: sticky;
-  top: 3rem;
-	background-color: var(--white);
-	height: 4rem;
-  width: 80%;
-  margin: auto;
-	border-radius: 0 0 1rem 1rem;
-	z-index: 1;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding-inline: 1rem;
-  gap: 1rem;
-
-  box-shadow: 0px 2px 20px hsl(0, 0, 4%);
-	
-  background-image: linear-gradient(to top, rgb(174, 174, 174), transparent);
-
-  .filterSection {
-    width: 100%;
-    border-radius: 100vh;
-    background-color: var(--interactive-bg);
-    height: 2rem;
-    box-shadow:
-      hsla(0, 0%, 0%, 0.6) 0px -1px 2px,
-      white 0px 1px 1px,
-      rgba(0, 0, 0, 0.7) 0px 1px inset;
-    
-    
-		display: flex;
-		justify-content: space-between;
-		align-items: center;
-    gap: 0.5rem;
-
-    select {
-      width: 100%;
-      height: 100%;
-      padding: 0 1rem;
-      margin-inline: auto;
-      border: none;
-      border-radius: 100vh;
-
-      background-color: var(--interactive-bg);
-      
-      font-size: 1.25rem;
-      font-family: var(--font-barlow-condensed);
-      font-style: italic;
-      line-height: 0;
-      text-align: center;
-      
-      &:focus-visible {
-        outline: none;
-      }
-    }
-
-    .filterIcon {
-      display: grid;
-			height: 1.25rem;
-			width: 1.25rem;
-			aspect-ratio: 1;
-			margin: 0.35rem;
-			border: none;
-			border-radius: 100%;
-			
-      background-color: #d0d0d0;
-      background-image: var(--icon-src);
-			
-      box-shadow:
-			#393939 0px 0px 1px 0,
-			#707070 0px 0px 0px 0.125rem,
-			hsl(0, 0%, 85%) 0.5px 0.5px 0.5px 0.5px inset,
-			hsl(0, 0%, 70%) -0.5px -0.5px 0.5px 0.5px inset;
-
-      &.hasHover {
-        &.doHover,
-        &:hover,
-        &:focus-visible {
-          outline: none;
-          background-color: var(--darker-pink);
-          box-shadow:
-            #d0d0d0 0px 0px 0px 0.125rem,
-            hsla(0, 0%, 85%, 0.6) 0.5px 0.5px 0.5px 0.5px inset,
-            hsla(0, 0%, 70%, 0.6) -0.5px -0.5px 0.5px 0.5px inset;
-        }
-      }
-
-			background-size: cover;
-    }
-  }
-
-  .pullOutTab {
-    display: none;
-    user-select: none;
-  }
-}
-
 .multiMatContainer {
   width: fit-content;
 	display: grid;
@@ -135,13 +38,13 @@
   flex-wrap: wrap;
 }
 
-@media (max-width: 1600) {
+@media (max-width: 1600px) {
   .page {
     --columns: 5;
   }
 }
 
-@media (max-width: 1320) {
+@media (max-width: 1320px) {
   .page {
     --columns: 4;
   }
@@ -152,14 +55,6 @@
     gap: 2rem;
     padding-inline: 3rem;
     padding-top: 2rem;
-  }
-
-  .filterToolbar {
-    padding-block: 1rem;
-    display: grid;
-    position: unset;
-    grid-template-columns: repeat(2, 1fr);
-    height: fit-content;
   }
 
   .multiMatContainer {
@@ -174,30 +69,6 @@
     padding-bottom: 6rem;
   }
 
-  .filterToolbar {
-    height: 3rem;
-    place-items: center;
-    align-content: end;
-
-    .pullOutTab {
-      height: 1rem;
-      display: block;
-      text-align: center;
-      grid-column: 1 / span 2;
-      width: 100%;
-      background-image: url('/button_icons/pulltab.png');
-      background-size: auto 100%;
-      background-repeat: no-repeat;
-      background-position: center;
-      color: transparent;
-      cursor: s-resize;
-    }
-
-    &.toolbarOpen {
-      height: fit-content;
-    }
-  }
-
   .multiMatContainer {
     padding-inline: 3rem;
   }
@@ -208,12 +79,6 @@
     --columns: 2;
     gap: 1.5rem;
     padding-inline: 1rem;
-  }
-
-  .filterToolbar {
-    display: flex;
-    flex-direction: column;
-    justify-content: end;
   }
 
   .multiMatContainer {

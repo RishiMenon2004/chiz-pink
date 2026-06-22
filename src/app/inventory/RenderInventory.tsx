@@ -6,7 +6,8 @@ import { EnumRarity } from "@/database/item"
 import { EnumMaterialType } from "@/database/materials"
 import { InventoryFilter, InventoryGroup, InventoryRarityFilter, InventorySort } from "@/database/inventoryFilters"
 import useInventoryFilters from "@/hooks/useInventoryFilters"
-import styles from "@/app/inventory/page.module.css"
+import styles from "./page.module.css"
+import toolbarStyles from "./filterToolbar.module.css"
 import useInventoryStore from "@/hooks/useInventoryStore"
 
 const MaterialItemBox = dynamic(() => import('@/components/MaterialItemBox'), { ssr: false })
@@ -152,11 +153,13 @@ export default function RenderInventory() {
 		}
 	}
 
+	const hasFilters = filter !== "default" || rarityFilter !== "default"
+
 	return (<>
-		<div className={`${styles.filterToolbar} ${isToolbarOpen ? styles.toolbarOpen : ""}`}>
+		<div className={`${toolbarStyles.filterToolbar} ${isToolbarOpen ? toolbarStyles.toolbarOpen : ""}`}>
 			{/* Regular Filter */}
-			<div className={styles.filterSection}>
-				<span className={styles.filterIcon}
+			<div className={toolbarStyles.filterSelection}>
+				<span className={toolbarStyles.filterIcon}
 					style={{"--icon-src": "url('/button_icons/filter.png')"} as CSSProperties}/>
 
 				<select name="material-type" value={filter}
@@ -171,14 +174,18 @@ export default function RenderInventory() {
 					})}
 				</select>
 
-				<span className={`${styles.filterIcon} ${styles.hasHover}`}
+				<span className={`${toolbarStyles.filterIcon} ${toolbarStyles.hasHover}`}
+					tabIndex={0}
 					style={{cursor: "pointer", "--icon-src": "url('/button_icons/cross.png')"} as CSSProperties}
-					onClick={() => setFilter("default")}/>
+					onClick={() => setFilter("default")}
+					onKeyDown={(e) => {
+						if (e.key === "Enter") setFilter("default")
+					}}/>
 			</div>
 			
 			{/* Rank Filter */}
-			<div className={styles.filterSection}>
-				<span className={styles.filterIcon}
+			<div className={toolbarStyles.filterSelection}>
+				<span className={toolbarStyles.filterIcon}
 					style={{"--icon-src": "url('/button_icons/filter.png')"} as CSSProperties}/>
 
 				<select name="rarity" value={rarityFilter}
@@ -193,14 +200,18 @@ export default function RenderInventory() {
 					})}
 				</select>
 
-				<span className={`${styles.filterIcon} ${styles.hasHover}`}
+				<span className={`${toolbarStyles.filterIcon} ${toolbarStyles.hasHover}`}
+					tabIndex={0}
 					style={{cursor: "pointer", "--icon-src": "url('/button_icons/cross.png')"} as CSSProperties}
-					onClick={() => setRarityFilter("default")}/>
+					onClick={() => setRarityFilter("default")}
+					onKeyDown={(e) => {
+						if (e.key === "Enter") setRarityFilter("default")
+					}}/>
 			</div>
 			
 			{/* Grouping */}
-			<div className={styles.filterSection}>
-				<span className={styles.filterIcon}
+			<div className={toolbarStyles.filterSelection}>
+				<span className={toolbarStyles.filterIcon}
 					style={{"--icon-src": "url('/button_icons/group.png')"} as CSSProperties}/>
 
 				<select name="sorting" value={group}
@@ -214,14 +225,18 @@ export default function RenderInventory() {
 					<option value={"rarity"}>By Rank</option>
 				</select>
 				
-				<span className={`${styles.filterIcon} ${styles.hasHover}`}
+				<span className={`${toolbarStyles.filterIcon} ${toolbarStyles.hasHover}`}
+					tabIndex={0}
 					style={{cursor: "pointer", "--icon-src": "url('/button_icons/cross.png')"} as CSSProperties}
-					onClick={() => setGroup("default")}/>
+					onClick={() => setGroup("default")}
+					onKeyDown={(e) => {
+						if (e.key === "Enter") setGroup("default")
+					}}/>
 			</div>
 
 			{/* Sorting */}
-			<div className={styles.filterSection}>
-				<span className={styles.filterIcon}
+			<div className={toolbarStyles.filterSelection}>
+				<span className={toolbarStyles.filterIcon}
 					style={{"--icon-src": "url('/button_icons/sort.png')"} as CSSProperties}/>
 
 				<select name="sorting" value={sort}
@@ -234,13 +249,20 @@ export default function RenderInventory() {
 					<option value={"alphabetical"}>By Name</option>
 				</select>
 				
-				<span className={`${styles.filterIcon} ${styles.hasHover} ${sortReverse && styles.doHover}`}
+				<span className={`${toolbarStyles.filterIcon} ${toolbarStyles.hasHover} ${sortReverse && toolbarStyles.doHover}`}
+					tabIndex={0}
 					style={{cursor: "pointer", "--icon-src": "url('/button_icons/reverse_sort.png')"} as CSSProperties}
-					onClick={() => setSortReverse(prev => !prev)}/>
+					onClick={() => setSortReverse(prev => !prev)}
+					onKeyDown={(e) => {
+						if (e.key === "Enter") setSortReverse(prev => !prev)
+					}}/>
 			</div>
 
-			<div className={styles.pullOutTab} onClick={() => setIsToolbarOpen(prev => !prev)}>
-				PULL TAB
+			<div className={toolbarStyles.pullOutTab} onClick={() => setIsToolbarOpen(prev => !prev)}>
+			</div>
+
+			<div className={`${toolbarStyles.clearAllContainer} ${hasFilters && toolbarStyles.show}`}>
+				<button className={toolbarStyles.clearAllBtn} disabled={!hasFilters} tabIndex={hasFilters ? 0 : -1} onClick={clearAllFilters}/>
 			</div>
 		</div>
 
