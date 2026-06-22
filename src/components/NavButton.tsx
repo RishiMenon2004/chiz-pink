@@ -32,7 +32,7 @@ export default function NavButton({ href, icon, className }: { href: string, ico
 			onPointerLeave={handleUnhover}
 		>
 			<span className="icon"
-				style={{backgroundImage: `url("/nav/border/${icon}.png")`}}
+				style={{backgroundImage: `url("/nav/borders/${icon}.png")`}}
 			/>
 			{showTooltip && createPortal(
 				<TooltipContainer

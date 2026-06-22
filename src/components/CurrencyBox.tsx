@@ -77,7 +77,7 @@ export default function CurrencyBox({ currency }: { currency: Material }) {
 		className={`currency-box ${isEdit ? "edit" : ""}`}
 		id={currency.id}
 		style={{
-			"--bg-image": `url('/currency/border/${currency.id}.png')`,
+			"--bg-image": `url('/materials/borders/${currency.id}.png')`,
 			"--input-width": inputWidth
 		} as CSSProperties}
 	>

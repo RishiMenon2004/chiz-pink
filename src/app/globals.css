@@ -356,7 +356,7 @@ a {
         hsla(0, 0%, 70%, 0.6) -0.5px -0.5px 0.5px 0.5px inset;
     }
 
-    background-image: url("/currency/edit.png");
+    background-image: url("/button_icons/edit.png");
     background-size: cover;
   }
 }
@@ -409,7 +409,7 @@ a {
       outline-offset: 5px;
     }
 
-    background-image: url("/materials/button_icons/check.png");
+    background-image: url("/button_icons/check.png");
     background-size: cover;
   }
 }
@@ -477,7 +477,7 @@ a {
       right: 3vh;
       top: 3vh;
 
-      background-image: url("/materials/button_icons/cross_white.png");
+      background-image: url("/button_icons/cross_white.png");
     }
   }
 }
