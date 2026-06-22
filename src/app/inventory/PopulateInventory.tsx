@@ -5,7 +5,7 @@ import dynamic from "next/dynamic"
 import { InventoryFilter, InventoryGroup, InventoryRarityFilter, InventorySort } from "@/app/inventory/inventoryFilters"
 import styles from "@/app/inventory/page.module.css"
 import { EnumMaterialType, EnumRarity } from "@/database/materials"
-import useFilteredInventory from "@/hooks/useFilteredInventory"
+import useInventoryFilters from "@/hooks/useInventoryFilters"
 
 const MaterialItemBox = dynamic(() => import('@/components/MaterialItemBox'), { ssr: false })
 
@@ -26,7 +26,7 @@ export default function PopulateInventory() {
 
 	const filters: {filter: InventoryFilter, rarity: InventoryRarityFilter, sorting: InventorySort, sortReverse: boolean} = {filter, rarity: rarityFilter, sorting: sort, sortReverse}
 
-	const filteredInventory = useFilteredInventory(filters)
+	const filteredInventory = useInventoryFilters(filters)
 
 	const handleFilterChange = (e: ChangeEvent<HTMLSelectElement>) => {
 		setFilter(e.currentTarget.value as InventoryFilter)
