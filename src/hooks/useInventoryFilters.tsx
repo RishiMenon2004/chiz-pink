@@ -22,7 +22,7 @@ export default function useInventoryFilters({filter, rarity, sorting, sortRevers
 		case "acquired": //TODO: Add filter and grouping after implementing planner
 		case "owned": {
 			filteredInventoryList = cachedInventoryList.filter(material => {
-				return inventory[material.id] > 0
+				return (inventory[material.id] || 0) > 0
 			})
 			break
 		}
@@ -52,7 +52,7 @@ export default function useInventoryFilters({filter, rarity, sorting, sortRevers
 
 		case "required": //TODO: Add filter and sort after implementing planner
 		case "owned": {
-			sortedInventoryList = rarityFilteredInventoryList.toSorted((a, b) => inventory[b.id] - inventory[a.id])
+			sortedInventoryList = rarityFilteredInventoryList.toSorted((a, b) => (inventory[b.id] || 0) - (inventory[a.id] || 0))
 			break
 		}
 
