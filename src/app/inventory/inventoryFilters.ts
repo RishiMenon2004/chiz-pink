@@ -1,4 +1,5 @@
-import { EnumMaterialType, EnumRarity } from "@/database/materials"
+import { EnumRarity } from "@/database/item"
+import { EnumMaterialType } from "@/database/materials"
 
 export type InventoryFilter = "default" | "owned" | "required" | "acquired" | EnumMaterialType
 

@@ -2,10 +2,11 @@
 
 import { ChangeEvent, CSSProperties, useState } from "react"
 import dynamic from "next/dynamic"
-import { InventoryFilter, InventoryGroup, InventoryRarityFilter, InventorySort } from "@/app/inventory/inventoryFilters"
-import styles from "@/app/inventory/page.module.css"
-import { EnumMaterialType, EnumRarity } from "@/database/materials"
+import { EnumRarity } from "@/database/item"
+import { EnumMaterialType } from "@/database/materials"
+import { InventoryFilter, InventoryGroup, InventoryRarityFilter, InventorySort } from "./inventoryFilters"
 import useInventoryFilters from "@/hooks/useInventoryFilters"
+import styles from "@/app/inventory/page.module.css"
 
 const MaterialItemBox = dynamic(() => import('@/components/MaterialItemBox'), { ssr: false })
 

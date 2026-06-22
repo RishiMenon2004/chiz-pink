@@ -81,7 +81,7 @@ export default function CurrencyBox({ currency }: { currency: Material }) {
 			"--input-width": inputWidth
 		} as CSSProperties}
 	>
-		<Image className="icon" src={`/materials${currency.iconSrc}.png`} width={64} height={64} alt={`${currency.name} icon`} loading="eager"/>
+		<Image className="icon" src={`/materials${currency.imageSrc}.png`} width={64} height={64} alt={`${currency.name} icon`} loading="eager"/>
 		<input name={currency.name} ref={inputBoxRef}
 			type={"text"}
 			min="0"
