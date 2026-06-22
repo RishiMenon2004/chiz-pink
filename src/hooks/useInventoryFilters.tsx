@@ -3,10 +3,10 @@
 import { InventoryFilter, InventoryRarityFilter, InventorySort } from "@/app/inventory/inventoryFilters";
 import { getInventoryList } from "@/database/materialLists";
 import { EnumMaterialType, Material } from "@/database/materials";
-import useInventory from "@/hooks/useInventory";
+import useInventoryStore from "@/hooks/useInventoryStore";
 
 export default function useInventoryFilters({filter, rarity, sorting, sortReverse}: {filter: InventoryFilter, rarity: InventoryRarityFilter, sorting: InventorySort, sortReverse: boolean} ) {
-	const { inventory } = useInventory()
+	const { inventory } = useInventoryStore()
 	const cachedInventoryList: Material[] = Object.values(getInventoryList())
 	let filteredInventoryList = cachedInventoryList
 	let rarityFilteredInventoryList = filteredInventoryList

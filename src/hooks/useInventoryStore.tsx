@@ -50,7 +50,7 @@ const getServerSnapshot = () => {
 	return SERVER_FALLBACK
 }
 
-export default function useInventory() {
+export default function useInventoryStore() {
 	const inventory = useSyncExternalStore<Inventory>(
 		subscribe,
 		getSnapshot,

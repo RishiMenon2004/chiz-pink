@@ -1,7 +1,7 @@
 "use client"
 
 import { Material } from "@/database/materials"
-import useInventory from "@/hooks/useInventory"
+import useInventoryStore from "@/hooks/useInventoryStore"
 import Image from "next/image"
 import { ChangeEvent, CSSProperties, FocusEvent, KeyboardEvent, MouseEvent, useEffect, useRef, useState } from "react"
 
@@ -13,7 +13,7 @@ export default function CurrencyBox({ currency }: { currency: Material }) {
 	const inputBoxRef = useRef<HTMLInputElement>(null)
 	const valueDispRef = useRef<HTMLSpanElement>(null)
 	const editBtnRef = useRef<HTMLButtonElement>(null)
-	const { inventory, updateInventory } = useInventory()
+	const { inventory, updateInventory } = useInventoryStore()
 	const currencyValue = inventory[currency.id] || 0
 
 	const toggleEdit = () => {

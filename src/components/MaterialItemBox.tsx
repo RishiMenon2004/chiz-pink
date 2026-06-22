@@ -5,7 +5,7 @@ import Image from "next/image";
 import styles from "@/components/material.module.css";
 import pageStyles from "@/app/inventory/page.module.css";
 import { ChangeEvent, FocusEvent, MouseEvent, useEffect, useRef, useState, createContext, useContext, useCallback, KeyboardEvent, PointerEvent } from "react";
-import useInventory from "@/hooks/useInventory";
+import useInventoryStore from "@/hooks/useInventoryStore";
 import ModalContainer from "./ModalContainer";
 import { createPortal } from "react-dom";
 import { allInventoryMaterials } from "@/database/materialLists";
@@ -66,7 +66,7 @@ export default function MaterialItemBox({ material, requiredQuantity, canHaveMul
 	const [addSubValue, setAddSubValue] = useState<string>("")
 
 	const countRef = useRef<HTMLInputElement>(null)
-	const {inventory, updateInventory} = useInventory()
+	const {inventory, updateInventory} = useInventoryStore()
 	const itemQuantity = inventory[material.id] || 0
 
 	const isMultiMat = material.linkedMaterials && canHaveMultiMat;
