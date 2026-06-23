@@ -206,6 +206,10 @@
 
     height: 3rem;
 
+    .filterSelection {
+      display: none;
+    }
+
     .pullOutTab {
       display: block;
       grid-column: 1 / span 2;
@@ -226,6 +230,10 @@
 
     &.toolbarOpen {
       height: fit-content;
+
+      .filterSelection {
+        display: flex;
+      }
     }
 
     .clearAllContainer {
@@ -240,9 +248,11 @@
 
       top: calc(100% - 4rem);
       transition: top 500ms var(--ease-in-out-back);
-
+      opacity: 0;
+      
       &.show {
         left: unset;
+        opacity: 100%;
         top: calc(100% - 0.5rem);
       }
 
