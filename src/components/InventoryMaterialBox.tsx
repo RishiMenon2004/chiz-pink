@@ -172,7 +172,9 @@ export default function MaterialItemBox({ material, requiredQuantity, canHaveMul
 			onClick={handleBoxClick}>
 				<Image src={`/materials${material.imageSrc}.png`} width={128} height={128} alt={`${material.name} icon`}/>
 			</div>
-			
+
+			<span className={`${styles.label}`}>{material.name}</span>
+
 			{showMultiEditModal && createPortal(
 				<MaterialModalContext.Provider value={contextValue}>
 					<ModalContainer onClose={handleMultiMatClose}>
@@ -194,9 +196,7 @@ export default function MaterialItemBox({ material, requiredQuantity, canHaveMul
 					{material.name}
 				</TooltipContainer>, document.body
 			)}
-			
-			<span className={`${styles.label}`}>{material.name}</span>
-			
+						
 			<span className={`${styles.amount}`}>
 				<span tabIndex={0} aria-label={`${material.name} minus one button`}
 					className={`${styles.countBtn} ${styles.minus}`}

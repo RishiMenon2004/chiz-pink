@@ -10,7 +10,7 @@ import styles from "./page.module.css"
 import toolbarStyles from "./filterToolbar.module.css"
 import useInventoryStore from "@/hooks/useInventoryStore"
 
-const MaterialItemBox = dynamic(() => import('@/components/MaterialItemBox'), { ssr: false })
+const InventoryMaterialBox = dynamic(() => import('@/components/InventoryMaterialBox'), { ssr: false })
 
 enum RarityRank {
 	Common = "C-Rank",
@@ -77,7 +77,7 @@ export default function RenderInventory() {
 							<summary>{Object.values(RarityRank).at(index)}</summary>
 							<div className={styles.materialList}>
 								{filteredRarity.map((material) => {
-									return <MaterialItemBox key={material.id} material={material}/>
+									return <InventoryMaterialBox key={material.id} material={material}/>
 								})}
 							</div>
 						</details>
@@ -96,7 +96,7 @@ export default function RenderInventory() {
 							
 								<div className={styles.materialList}>
 									{filteredType.map(material => {
-										return <MaterialItemBox key={material.id} material={material}/>
+										return <InventoryMaterialBox key={material.id} material={material}/>
 									})}
 								</div>
 						</details>
@@ -116,7 +116,7 @@ export default function RenderInventory() {
 						{ ownedMats.length > 0 ?
 							<div className={styles.materialList}>
 								{ownedMats.map(material => {
-									return <MaterialItemBox key={material.id} material={material}/>
+									return <InventoryMaterialBox key={material.id} material={material}/>
 								})}
 							</div> : <EmptyFilter>
 								S-sorry... You don&apos;t seem to own anything.
@@ -130,7 +130,7 @@ export default function RenderInventory() {
 						<summary>Not Owned</summary>
 						<div className={styles.materialList}>
 							{unownedMats.map(material => {
-								return <MaterialItemBox key={material.id} material={material}/>
+								return <InventoryMaterialBox key={material.id} material={material}/>
 							})}
 						</div>
 					</details>)
@@ -145,7 +145,7 @@ export default function RenderInventory() {
 				const groups = [
 					<div key={"default"} className={styles.materialList}>
 						{materials.map((material) => {
-							return <MaterialItemBox key={material.id} material={material}/>
+							return <InventoryMaterialBox key={material.id} material={material}/>
 						})}
 					</div>
 				]

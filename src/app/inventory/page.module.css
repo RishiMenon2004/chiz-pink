@@ -3,10 +3,10 @@
   font-weight: 600;
   margin-top: 4rem;
   margin-inline: 6rem;
-  background-color: color-mix(in srgb, var(--pink) 40%, transparent);
+  background-color: color-mix(in srgb, var(--pink) 30%, transparent);
   padding: 1rem;
   border-radius: 12px;
-  color: color-mix(in srgb, white 75%, transparent)
+  color: white;
 }
 
 .page {
@@ -20,6 +20,7 @@
   .emptyFilter {
     width: 100%;
     margin: 0;
+    padding-right: 1rem;
   }
 }
 
