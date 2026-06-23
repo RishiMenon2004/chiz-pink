@@ -5,6 +5,7 @@
   --interactive-bg: #333333;
   --pink: #ff569f;
   --darker-pink: #ff4785;
+  --warmer-pink: #ff707c;
 
   --ease-in-out-back: cubic-bezier(0.68, -0.6, 0.32, 1.6);
 }
@@ -52,7 +53,7 @@ body {
     width: 1rem;
     height: 1rem;
   }
-  
+
   &::-webkit-scrollbar-thumb {
     background: #d0d0d0;
     box-shadow: 0px 0px 0px 0.125rem #707070 inset;
@@ -103,23 +104,30 @@ a {
   left: 0;
   top: 0;
 
+  --warmer-pink-strips: hsl(350, 100%, 67%);
+
   background-image:
     url("/sidebar.png"),
     linear-gradient(
       to bottom,
       transparent 0 30%,
-      color-mix(in oklab, var(--darker-pink) 100%, #dfdffe 22%) 30%
+      color-mix(in oklab, var(--warmer-pink-strips) 100%, #dfdffe 22%) 30%
         calc(30% + 1px),
-      var(--darker-pink) calc(30% + 0.5px) 43%,
-      color-mix(in oklab, var(--darker-pink) 100%, #000000 20%) 45%
+      var(--warmer-pink-strips) calc(30% + 0.5px) 43%,
+      color-mix(in oklab, var(--warmer-pink-strips) 100%, #000000 20%) 45%
         calc(45% + 0.5px),
       transparent calc(45% + 0.5px) 55%,
-      color-mix(in oklab, var(--darker-pink) 100%, #dfdffe 22%) 30%
+      color-mix(in oklab, var(--warmer-pink-strips) 100%, #dfdffe 22%) 30%
         calc(55% + 1px),
-      var(--darker-pink) calc(55% + 0.5px) 63%,
-      color-mix(in oklab, var(--darker-pink) 100%, #000000 20%) 65%
+      var(--warmer-pink-strips) calc(55% + 0.5px) 63%,
+      color-mix(in oklab, var(--warmer-pink-strips) 100%, #000000 20%) 65%
         calc(65% + 0.5px),
       transparent calc(65% + 0.5px) 100%
+    ),
+    linear-gradient(
+      to top,
+      color-mix(in srgb, var(--warmer-pink) 90%, transparent),
+      transparent
     );
 
   background-size:
@@ -406,7 +414,7 @@ a {
       hsl(0, 0%, 15%) -0.5px -0.5px 0.5px 0.5px inset;
 
     &:hover,
-    &:focus-visible  {
+    &:focus-visible {
       background-color: var(--pink);
       border-color: var(--interactive-bg);
       outline: none;
@@ -430,24 +438,24 @@ a {
   position: fixed;
   top: 0;
   left: 0;
-  
+
   width: max-content;
   max-width: 250px;
-  
+
   height: fit-content;
-  
+
   padding: 0.5rem 1rem;
   border-radius: 0.5rem;
 
   user-select: none;
-  
+
   background-color: var(--interactive-bg);
-  
+
   box-shadow:
     hsla(0, 0%, 0%, 0.6) 0px -1px 2px,
     white 0px 0px 1px 1px,
-    rgba(0, 0, 0, 0.7) 0px 1px inset;  
-    z-index: 999;
+    rgba(0, 0, 0, 0.7) 0px 1px inset;
+  z-index: 999;
 
   font-weight: 700;
 
@@ -513,31 +521,34 @@ a {
     padding-inline: 5%;
 
     background-image:
-    url("/sidebar_hr.png"),
-    linear-gradient(
-      to right,
-      transparent 0 30%,
-      color-mix(in oklab, var(--darker-pink) 100%, #dfdffe 22%) 30%
-        calc(30% + 1px),
-      var(--darker-pink) calc(30% + 0.5px) 43%,
-      color-mix(in oklab, var(--darker-pink) 100%, #000000 20%) 45%
-        calc(45% + 0.5px),
-      transparent calc(45% + 0.5px) 55%,
-      color-mix(in oklab, var(--darker-pink) 100%, #dfdffe 22%) 30%
-        calc(55% + 1px),
-      var(--darker-pink) calc(55% + 0.5px) 63%,
-      color-mix(in oklab, var(--darker-pink) 100%, #000000 20%) 65%
-        calc(65% + 0.5px),
-      transparent calc(65% + 0.5px) 100%
-    );
+      url("/sidebar_hr.png"),
+      linear-gradient(
+        to right,
+        transparent 0 30%,
+        color-mix(in oklab, var(--warmer-pink-strips) 100%, #dfdffe 22%) 30%
+          calc(30% + 1px),
+        var(--warmer-pink-strips) calc(30% + 0.5px) 43%,
+        color-mix(in oklab, var(--warmer-pink-strips) 100%, #000000 20%) 45%
+          calc(45% + 0.5px),
+        transparent calc(45% + 0.5px) 55%,
+        color-mix(in oklab, var(--warmer-pink-strips) 100%, #dfdffe 22%) 30%
+          calc(55% + 1px),
+        var(--warmer-pink-strips) calc(55% + 0.5px) 63%,
+        color-mix(in oklab, var(--warmer-pink-strips) 100%, #000000 20%) 65%
+          calc(65% + 0.5px),
+        transparent calc(65% + 0.5px) 100%
+      ),
+      linear-gradient(to left, var(--warmer-pink), transparent);
 
     background-size:
       75%,
-      10% 100%;
+      10% 100%,
+      100%;
 
-    background-position: 
+    background-position:
       25% center,
-      calc(97.5% - 3rem) center;
+      calc(97.5% - 3rem) center,
+      right center;
 
     nav {
       gap: unset;
