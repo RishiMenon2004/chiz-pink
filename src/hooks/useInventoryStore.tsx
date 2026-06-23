@@ -23,14 +23,6 @@ function updateInventory(newInventory: Inventory) {
 	}
 }
 
-function doesInventoryExist() {
-	if (typeof window === 'undefined') return SERVER_FALLBACK
-
-	const rawValue = localStorage.getItem("inventory")
-
-	return rawValue
-}
-
 const subscribe = (callback: () => void) => {
 	window.addEventListener("storage", callback)
 	window.addEventListener("local-storage-update", callback)
@@ -62,8 +54,8 @@ export default function useInventoryStore() {
 	const inventory = useSyncExternalStore<Inventory>(
 		subscribe,
 		getSnapshot,
-		getServerSnapshot
+		getServerSnapshot,
 	)
 
-	return { inventory, updateInventory, doesInventoryExist }
+	return { inventory, updateInventory }
 }

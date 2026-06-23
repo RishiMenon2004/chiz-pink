@@ -33,7 +33,7 @@ export default function RenderInventory() {
 
 	const filters: {filter: InventoryFilter, rarity: InventoryRarityFilter, sorting: InventorySort, sortReverse: boolean} = {filter, rarity: rarityFilter, sorting: sort, sortReverse}
 
-	const {inventory: inventoryStore, doesInventoryExist} = useInventoryStore()
+	const {inventory: inventoryStore} = useInventoryStore()
 	const filteredInventory = useInventoryFilters(filters)
 
 	const handleFilterChange = (e: ChangeEvent<HTMLSelectElement>) => {
@@ -57,6 +57,8 @@ export default function RenderInventory() {
 		setFilter("default")
 		setRarityFilter("default")
 	}
+	
+	const doesInventoryExist = Object.entries(inventoryStore).length > 0
 
 	function groupInventory() {
 		if (filteredInventory.length <= 0) {
@@ -265,12 +267,11 @@ export default function RenderInventory() {
 			</div>
 		</div>
 
-		{!doesInventoryExist() ? <div>
+		{!doesInventoryExist &&
 			<EmptyFilter>
-				Seems like you&apos;re new here. W-would you like to open an account with us?
-				<a className={`btn-anchor ${styles.clickish}`}> Edit any item to get started.</a>
+				Seems like you&apos;re new here. W-would you like to open an account with us? <a className={`btn-anchor ${styles.clickish}`}>Edit any item to get started.</a>
 			</EmptyFilter>
-		</div> : <></>}
+		}
 
 		<div className={styles.page}>
 			{groupInventory()}
