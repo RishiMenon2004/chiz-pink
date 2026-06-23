@@ -68,7 +68,6 @@ body {
 
   @supports not selector(::-webkit-scrollbar) {
     & {
-      scrollbar-width: thin;
       scrollbar-color: var(--darker-pink) transparent;
     }
   }
