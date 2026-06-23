@@ -20,7 +20,7 @@ enum RarityRank {
 }
 
 export function EmptyFilter({children}: {children: ReactNode}) {
-	return <div style={{marginBlock: "1rem", opacity: 0.75}}>{children}</div>
+	return <div className={styles.emptyFilter}>{children}</div>
 }
 
 export default function RenderInventory() {
@@ -33,7 +33,7 @@ export default function RenderInventory() {
 
 	const filters: {filter: InventoryFilter, rarity: InventoryRarityFilter, sorting: InventorySort, sortReverse: boolean} = {filter, rarity: rarityFilter, sorting: sort, sortReverse}
 
-	const {inventory: inventoryStore} = useInventoryStore()
+	const {inventory: inventoryStore, doesInventoryExist} = useInventoryStore()
 	const filteredInventory = useInventoryFilters(filters)
 
 	const handleFilterChange = (e: ChangeEvent<HTMLSelectElement>) => {
@@ -58,98 +58,97 @@ export default function RenderInventory() {
 		setRarityFilter("default")
 	}
 
-	function mapMaterial() {
-		if (filteredInventory.length > 0) {
-			switch (group) {
-				case "rarity": {
-					const ranks = Object.entries(EnumRarity).filter(v => typeof v[1] === "number")
-					const groups = ranks.map((rarity, index) => {
-						const filteredRarity = filteredInventory.filter((material) => material.rarity === rarity[1])
-						if (filteredRarity.length > 0) {
-							return <details key={rarity[1]} className={styles.matGroup} open>
-								<summary>{Object.values(RarityRank).at(index)}</summary>
-								<div className={styles.materialList}>
-									{filteredRarity.map((material) => {
-										return <MaterialItemBox key={material.id} material={material}/>
-									})}
-								</div>
-							</details>
-						}
-					}).reverse()
-					return groups
-				}
-
-				case "type": {
-					const types = Object.values(EnumMaterialType)
-					const groups = types.map(type => {
-						const filteredType = filteredInventory.filter(material => material.materialType === type)
-						if (filteredType.length > 0) {
-							return <details key={type} className={styles.matGroup} open>
-								<summary>{type}</summary>
-								
-									<div className={styles.materialList}>
-										{filteredType.map(material => {
-											return <MaterialItemBox key={material.id} material={material}/>
-										})}
-									</div>
-							</details>
-						}
-					})
-					return groups
-				}
-
-				case "owned": {
-					const materials = filteredInventory
-					const ownedMats = materials.filter(mat => (inventoryStore[mat.id] || 0) > 0)
-					const unownedMats = materials.filter(mat => !ownedMats.includes(mat))
-
-					const groups = [
-						<details key={"owned"} className={styles.matGroup} open>
-							<summary>Owned</summary>
-							{ ownedMats.length > 0 ? 
-								<div className={styles.materialList}>
-									{ownedMats.map(material => {
-										return <MaterialItemBox key={material.id} material={material}/>
-									})}
-								</div>
-								: <EmptyFilter>
-									S-sorry... You don&apos;t seem to own anything.
-								</EmptyFilter>
-							}
-						</details>
-					]
-
-					if (unownedMats.length > 0 ) {
-						groups.push(<details key={"unowned"} className={styles.matGroup} open>
-							<summary>Not Owned</summary>
-							<div className={styles.materialList}>
-								{unownedMats.map(material => {
-									return <MaterialItemBox key={material.id} material={material}/>
-								})}
-							</div>
-						</details>)
-					}
-
-					return groups
-				}
-
-				case "default":
-				default: {
-					const materials = filteredInventory
-					const groups = [
-						<div key={"default"} className={styles.materialList}>
-							{materials.map((material) => {
-								return <MaterialItemBox key={material.id} material={material}/>
-							})}
-						</div>
-					]
-					return groups
-				}
-			}
-		} else {
+	function groupInventory() {
+		if (filteredInventory.length <= 0) {
 			return <EmptyFilter>
 				I-I can&apos;t seem to find anything with those filters. Would you like to <a onClick={clearAllFilters} className="btn-anchor">try again?</a>
 			</EmptyFilter>
+		}
+
+		switch (group) {
+			case "rarity": {
+				const ranks = Object.entries(EnumRarity).filter(v => typeof v[1] === "number")
+				const groups = ranks.map((rarity, index) => {
+					const filteredRarity = filteredInventory.filter((material) => material.rarity === rarity[1])
+					if (filteredRarity.length > 0) {
+						return <details key={rarity[1]} className={styles.matGroup} open>
+							<summary>{Object.values(RarityRank).at(index)}</summary>
+							<div className={styles.materialList}>
+								{filteredRarity.map((material) => {
+									return <MaterialItemBox key={material.id} material={material}/>
+								})}
+							</div>
+						</details>
+					}
+				}).reverse()
+				return groups
+			}
+
+			case "type": {
+				const types = Object.values(EnumMaterialType)
+				const groups = types.map(type => {
+					const filteredType = filteredInventory.filter(material => material.materialType === type)
+					if (filteredType.length > 0) {
+						return <details key={type} className={styles.matGroup} open>
+							<summary>{type}</summary>
+							
+								<div className={styles.materialList}>
+									{filteredType.map(material => {
+										return <MaterialItemBox key={material.id} material={material}/>
+									})}
+								</div>
+						</details>
+					}
+				})
+				return groups
+			}
+
+			case "owned": {
+				const materials = filteredInventory
+				const ownedMats = materials.filter(mat => (inventoryStore[mat.id] || 0) > 0)
+				const unownedMats = materials.filter(mat => !ownedMats.includes(mat))
+
+				const groups = [
+					<details key={"owned"} className={`${styles.matGroup} ${ownedMats.length <= 0 && styles.emptyGroup}`} open={ownedMats.length > 0}>
+						<summary>Owned</summary>
+						{ ownedMats.length > 0 ?
+							<div className={styles.materialList}>
+								{ownedMats.map(material => {
+									return <MaterialItemBox key={material.id} material={material}/>
+								})}
+							</div> : <EmptyFilter>
+								S-sorry... You don&apos;t seem to own anything.
+							</EmptyFilter>
+						}
+					</details>
+				]
+
+				if (unownedMats.length > 0 ) {
+					groups.push(<details key={"unowned"} className={styles.matGroup} open>
+						<summary>Not Owned</summary>
+						<div className={styles.materialList}>
+							{unownedMats.map(material => {
+								return <MaterialItemBox key={material.id} material={material}/>
+							})}
+						</div>
+					</details>)
+				}
+
+				return groups
+			}
+
+			case "default":
+			default: {
+				const materials = filteredInventory
+				const groups = [
+					<div key={"default"} className={styles.materialList}>
+						{materials.map((material) => {
+							return <MaterialItemBox key={material.id} material={material}/>
+						})}
+					</div>
+				]
+				return groups
+			}
 		}
 	}
 
@@ -266,8 +265,15 @@ export default function RenderInventory() {
 			</div>
 		</div>
 
+		{!doesInventoryExist() ? <div>
+			<EmptyFilter>
+				Seems like you&apos;re new here. W-would you like to open an account with us?
+				<a className={`btn-anchor ${styles.clickish}`}> Edit any item to get started.</a>
+			</EmptyFilter>
+		</div> : <></>}
+
 		<div className={styles.page}>
-			{mapMaterial()}
+			{groupInventory()}
 		</div>
 	</>)
 }
