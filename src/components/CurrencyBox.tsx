@@ -1,7 +1,7 @@
 "use client"
 
 import { Material } from "@/database/materials"
-import useInventoryStore from "@/hooks/useInventoryStore"
+import { useInventoryStore } from "@/hooks"
 import Image from "next/image"
 import { ChangeEvent, CSSProperties, FocusEvent, KeyboardEvent, MouseEvent, useEffect, useRef, useState } from "react"
 

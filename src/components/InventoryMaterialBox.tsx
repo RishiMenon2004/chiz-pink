@@ -1,15 +1,15 @@
 "use client"
 
-import { Material } from "@/database/materials";
-import Image from "next/image";
-import styles from "@/components/material.module.css";
-import pageStyles from "@/app/inventory/page.module.css";
 import { ChangeEvent, FocusEvent, MouseEvent, useEffect, useRef, useState, createContext, useContext, useCallback, KeyboardEvent, PointerEvent } from "react";
-import useInventoryStore from "@/hooks/useInventoryStore";
-import ModalContainer from "./ModalContainer";
 import { createPortal } from "react-dom";
+import Image from "next/image";
+import { useInventoryStore } from "@/hooks";
+import { Material } from "@/database/materials";
 import { allInventoryMaterials } from "@/database/materialLists";
 import { TooltipContainer } from "./TooltipContainer";
+import ModalContainer from "./ModalContainer";
+import pageStyles from "@/app/inventory/page.module.css";
+import styles from "@/components/material.module.css";
 
 // Context for managing application of child adjustments
 type MultiMatModalContextType = {

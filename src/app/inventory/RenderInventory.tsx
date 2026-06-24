@@ -1,18 +1,17 @@
 "use client"
 
-import { ChangeEvent, CSSProperties, ReactNode, useState } from "react"
+import { createContext, Dispatch, ReactNode, SetStateAction, useState } from "react"
 import dynamic from "next/dynamic"
 import { EnumRarity } from "@/database/item"
 import { EnumMaterialType } from "@/database/materials"
 import { InventoryFilter, InventoryGroup, InventoryRarityFilter, InventorySort } from "@/database/inventoryFilters"
-import useInventoryFilters from "@/hooks/useInventoryFilters"
+import { useInventoryStore, useInventoryFilters } from "@/hooks"
+import InventoryFilterToolbar from "@/components/InventoryFilterToolbar"
 import styles from "./page.module.css"
-import toolbarStyles from "./filterToolbar.module.css"
-import useInventoryStore from "@/hooks/useInventoryStore"
 
 const InventoryMaterialBox = dynamic(() => import('@/components/InventoryMaterialBox'), { ssr: false })
 
-enum RarityRank {
+export enum RarityRank {
 	Common = "C-Rank",
 	Uncommon = "B-Rank",
 	Rare = "A-Rank",
@@ -23,35 +22,32 @@ export function EmptyFilter({children}: {children: ReactNode}) {
 	return <div className={styles.emptyFilter}>{children}</div>
 }
 
+type InventoryFiltersContextType = {
+	filter: InventoryFilter;
+	setFilter: Dispatch<SetStateAction<InventoryFilter>>;
+	rarityFilter: InventoryRarityFilter;
+	setRarityFilter: Dispatch<SetStateAction<InventoryRarityFilter>>;
+	group: InventoryGroup;
+	setGroup: Dispatch<SetStateAction<InventoryGroup>>;
+	sort: InventorySort;
+	setSort: Dispatch<SetStateAction<InventorySort>>;
+	sortReverse: boolean;
+	setSortReverse: Dispatch<SetStateAction<boolean>>;
+}
+
+export const InventoryFilterContext = createContext<InventoryFiltersContextType>(null!)
+
 export default function RenderInventory() {
 	const [filter, setFilter] = useState<InventoryFilter>("default")
 	const [rarityFilter, setRarityFilter] = useState<InventoryRarityFilter>("default")
 	const [group, setGroup] = useState<InventoryGroup>("default")
 	const [sort, setSort] = useState<InventorySort>("default")
 	const [sortReverse, setSortReverse] = useState<boolean>(false)
-	const [isToolbarOpen, setIsToolbarOpen] = useState<boolean>(false)
 
 	const filters: {filter: InventoryFilter, rarity: InventoryRarityFilter, sorting: InventorySort, sortReverse: boolean} = {filter, rarity: rarityFilter, sorting: sort, sortReverse}
 
 	const {inventory: inventoryStore} = useInventoryStore()
 	const filteredInventory = useInventoryFilters(filters)
-
-	const handleFilterChange = (e: ChangeEvent<HTMLSelectElement>) => {
-		setFilter(e.currentTarget.value as InventoryFilter)
-	}
-
-	const handleRarityChange = (e: ChangeEvent<HTMLSelectElement>) => {
-		setRarityFilter(e.currentTarget.value as InventoryRarityFilter)
-	}
-
-	const handleSortingChange = (e: ChangeEvent<HTMLSelectElement>) => {
-		setSortReverse(false)
-		setSort(e.currentTarget.value as InventorySort)
-	}
-
-	const handleGroupChange = (e: ChangeEvent<HTMLSelectElement>) => {
-		setGroup(e.currentTarget.value as InventoryGroup)
-	}
 
 	const clearAllFilters = () => {
 		setFilter("default")
@@ -154,119 +150,16 @@ export default function RenderInventory() {
 		}
 	}
 
-	const hasFilters = filter !== "default" || rarityFilter !== "default"
+	const contextValue: InventoryFiltersContextType = {
+		filter, setFilter,
+		rarityFilter, setRarityFilter,
+		group, setGroup,
+		sort, setSort,
+		sortReverse, setSortReverse
+	}
 
-	return (<>
-		<div className={`${toolbarStyles.filterToolbar} ${isToolbarOpen ? toolbarStyles.toolbarOpen : ""}`}>
-			{/* Regular Filter */}
-			<div className={toolbarStyles.filterSelection}>
-				<span className={toolbarStyles.filterIcon}
-					style={{"--icon-src": "url('/button_icons/filter.png')"} as CSSProperties}/>
-
-				<select name="material-type" value={filter}
-					onChange={handleFilterChange}
-					style={{cursor: "url('/cursors/filter.png'), pointer"}}>
-					<option value={"default"} hidden>Filter By</option>
-					<option value={"owned"}>Owned</option>
-					<option value={"required"}>Required</option>
-					<option value={"acquired"}>Acquired</option> {/* TODO: Add filter and grouping after implementing planner */}
-					{Object.values(EnumMaterialType).map((type) => {
-						if (type !== EnumMaterialType.Currency) return <option value={type} key={type}>{type}</option>
-					})}
-				</select>
-
-				<span className={`${toolbarStyles.filterIcon} ${toolbarStyles.hasHover}`}
-					tabIndex={0}
-					style={{cursor: "pointer", "--icon-src": "url('/button_icons/cross.png')"} as CSSProperties}
-					onClick={() => setFilter("default")}
-					onKeyDown={(e) => {
-						if (e.key === "Enter") setFilter("default")
-					}}/>
-			</div>
-			
-			{/* Rank Filter */}
-			<div className={toolbarStyles.filterSelection}>
-				<span className={toolbarStyles.filterIcon}
-					style={{"--icon-src": "url('/button_icons/filter.png')"} as CSSProperties}/>
-
-				<select name="rarity" value={rarityFilter}
-					onChange={handleRarityChange}
-					style={{cursor: "url('/cursors/filter.png'), pointer"}}>
-					<option value={"default"}>All Ranks</option>
-
-					{Object.entries(EnumRarity).filter(v => typeof v[1] === "string").reverse().map((rarity) => {
-						const rarityKey = rarity[1] as keyof typeof RarityRank
-						const rarityDisp = RarityRank[rarityKey]
-						return <option value={rarity[0]} key={rarity[0]}>{rarityDisp}</option>
-					})}
-				</select>
-
-				<span className={`${toolbarStyles.filterIcon} ${toolbarStyles.hasHover}`}
-					tabIndex={0}
-					style={{cursor: "pointer", "--icon-src": "url('/button_icons/cross.png')"} as CSSProperties}
-					onClick={() => setRarityFilter("default")}
-					onKeyDown={(e) => {
-						if (e.key === "Enter") setRarityFilter("default")
-					}}/>
-			</div>
-			
-			{/* Grouping */}
-			<div className={toolbarStyles.filterSelection}>
-				<span className={toolbarStyles.filterIcon}
-					style={{"--icon-src": "url('/button_icons/group.png')"} as CSSProperties}/>
-
-				<select name="sorting" value={group}
-					onChange={handleGroupChange}
-					style={{cursor: "url('/cursors/group.png'), pointer"}}>
-					<option value={"default"} hidden>Group By</option>
-					<option value={"owned"}>By Owned</option>
-					<option value={"required"}>By Required</option>
-					<option value={"acquired"}>By Acquired</option> {/* TODO: Add filter and grouping after implementing planner */}
-					<option value={"type"}>By Type</option>
-					<option value={"rarity"}>By Rank</option>
-				</select>
-				
-				<span className={`${toolbarStyles.filterIcon} ${toolbarStyles.hasHover}`}
-					tabIndex={0}
-					style={{cursor: "pointer", "--icon-src": "url('/button_icons/cross.png')"} as CSSProperties}
-					onClick={() => setGroup("default")}
-					onKeyDown={(e) => {
-						if (e.key === "Enter") setGroup("default")
-					}}/>
-			</div>
-
-			{/* Sorting */}
-			<div className={toolbarStyles.filterSelection}>
-				<span className={toolbarStyles.filterIcon}
-					style={{"--icon-src": "url('/button_icons/sort.png')"} as CSSProperties}/>
-
-				<select name="sorting" value={sort}
-					onChange={handleSortingChange}
-					style={{cursor: "url('/cursors/sort.png'), pointer"}}>
-					<option value={"default"}>By Rank</option>
-					<option value={"owned"}>By Owned</option>
-					<option value={"required"}>By Required</option>
-					<option value={"type"}>By Type</option>
-					<option value={"alphabetical"}>By Name</option>
-				</select>
-				
-				<span className={`${toolbarStyles.filterIcon} ${toolbarStyles.hasHover} ${sortReverse && toolbarStyles.doHover}`}
-					tabIndex={0}
-					style={{cursor: "pointer", "--icon-src": "url('/button_icons/reverse_sort.png')"} as CSSProperties}
-					onClick={() => setSortReverse(prev => !prev)}
-					onKeyDown={(e) => {
-						if (e.key === "Enter") setSortReverse(prev => !prev)
-					}}/>
-			</div>
-
-			<div className={toolbarStyles.pullOutTab} onClick={() => setIsToolbarOpen(prev => !prev)}>
-			</div>
-
-			<div className={`${toolbarStyles.clearAllContainer} ${hasFilters && toolbarStyles.show}`}>
-				<button className={toolbarStyles.clearAllBtn} disabled={!hasFilters} tabIndex={hasFilters ? 0 : -1} onClick={clearAllFilters}/>
-			</div>
-		</div>
-
+	return (<InventoryFilterContext.Provider value={contextValue}>
+		<InventoryFilterToolbar/>
 		{!doesInventoryExist &&
 			<EmptyFilter>
 				Seems like you&apos;re new here. W-would you like to open an account with us? <a className={`btn-anchor ${styles.clickish}`}>Edit any item to get started.</a>
@@ -276,5 +169,5 @@ export default function RenderInventory() {
 		<div className={styles.page}>
 			{groupInventory()}
 		</div>
-	</>)
+	</InventoryFilterContext.Provider>)
 }
