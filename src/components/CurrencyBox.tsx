@@ -7,7 +7,7 @@ import { ChangeEvent, CSSProperties, FocusEvent, KeyboardEvent, MouseEvent, useE
 
 const localeUS = (x: number) => x.toLocaleString("en-US")
 
-export default function CurrencyBox({ currency }: { currency: Material }) {	
+export default function CurrencyBox({ currency }: { currency: Material }) {
 	const [isEdit, setIsEdit] = useState<boolean>(false)
 	const [inputWidth, setInputWidth] = useState<string>("10px")
 	const inputBoxRef = useRef<HTMLInputElement>(null)
@@ -27,7 +27,7 @@ export default function CurrencyBox({ currency }: { currency: Material }) {
 				setCurrency(newValue)
 			}
 		}
-		
+
 		setIsEdit((oldState) => !oldState)
 	}
 
@@ -81,29 +81,29 @@ export default function CurrencyBox({ currency }: { currency: Material }) {
 			"--input-width": inputWidth
 		} as CSSProperties}
 	>
-		<Image className="icon" src={`/materials${currency.imageSrc}.png`} width={64} height={64} alt={`${currency.name} icon`} loading="eager"/>
+		<Image className="icon" src={`/materials${currency.imageSrc}.png`} width={64} height={64} alt={`${currency.name} icon`} loading="eager" />
 		<input name={currency.name} ref={inputBoxRef}
 			type={"text"}
 			min="0"
 			pattern="[0-9]*"
 			inputMode="numeric"
 			value={currencyValue}
-			style={isEdit ? {} : { display : "none" }}
+			style={isEdit ? {} : { display: "none" }}
 			onChange={handleEdit}
 			onKeyDown={handleKeyDown}
 			onBlur={handleBlur}
 			onFocus={handleFocus}
 		/>
 		<span ref={valueDispRef}
-		onClick={handleClick}
-		className="amount-display"
-		style={isEdit ? {
-			opacity : "0",
-			position: "absolute",
-			pointerEvents: "none"
-		} : {}}>
+			onClick={handleClick}
+			className="amount-display"
+			style={isEdit ? {
+				opacity: "0",
+				position: "absolute",
+				pointerEvents: "none"
+			} : {}}>
 			{localeUS(currencyValue)}
 		</span>
-		<button className="edit-btn" onClick={toggleEdit} ref={editBtnRef}/>
+		<button className="edit-btn" onClick={toggleEdit} ref={editBtnRef} />
 	</div>)
 }

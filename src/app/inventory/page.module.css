@@ -1,168 +1,168 @@
 .emptyFilter {
-  font-family: var(--font-syne);
-  font-weight: 600;
-  margin-top: 4rem;
-  margin-inline: 6rem;
-  background-color: color-mix(in srgb, var(--pink) 30%, transparent);
-  padding: 1rem;
-  border-radius: 12px;
-  color: white;
+	font-family: var(--font-syne);
+	font-weight: 600;
+	margin-top: 4rem;
+	margin-inline: 6rem;
+	background-color: color-mix(in srgb, var(--pink) 30%, transparent);
+	padding: 1rem;
+	border-radius: 12px;
+	color: white;
 }
 
 .page {
-  padding-inline: 6rem;
-  padding-block: 4rem;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  width: 100%;
+	padding-inline: 6rem;
+	padding-block: 4rem;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	width: 100%;
 
-  .emptyFilter {
-    width: 100%;
-    margin: 0;
-    padding-right: 1rem;
-  }
+	.emptyFilter {
+		width: 100%;
+		margin: 0;
+		padding-right: 1rem;
+	}
 }
 
 .matGroup {
-  flex-grow: 1;
-  width: 100%;
-  /* margin-inline: auto; */
-  margin-bottom: 2rem;
-  font-family: var(--font-syne);
-  font-weight: 600;
-  background-color: var(--white);
-  border-radius: 1.625rem;
-  user-select: none;
+	flex-grow: 1;
+	width: 100%;
+	/* margin-inline: auto; */
+	margin-bottom: 2rem;
+	font-family: var(--font-syne);
+	font-weight: 600;
+	background-color: var(--white);
+	border-radius: 1.625rem;
+	user-select: none;
 
-  box-shadow:
-    0px -3px 2px -2px hsl(0, 0%, 20%) inset,
-    0px -10px 10px -2px rgb(174, 174, 174) inset,
-    0px -15px 15px -2px hsl(300, 0%, 50%) inset;
+	box-shadow:
+		0px -3px 2px -2px hsl(0, 0%, 20%) inset,
+		0px -10px 10px -2px rgb(174, 174, 174) inset,
+		0px -15px 15px -2px hsl(300, 0%, 50%) inset;
 
-  summary {
-    height: 3.25rem;
-    padding: 1rem 2rem;
-    border-radius: 100vh;
-    position: relative;
+	summary {
+		height: 3.25rem;
+		padding: 1rem 2rem;
+		border-radius: 100vh;
+		position: relative;
 
-    color: var(--interactive-bg);
+		color: var(--interactive-bg);
 
-    font-weight: 720;
-    overflow: hidden;
+		font-weight: 720;
+		overflow: hidden;
 
-    --slice-width: 75%;
+		--slice-width: 75%;
 
-    &::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      right: -3rem;
-      bottom: 60%;
-      background-image: linear-gradient(
-        -116deg,
-        color-mix(in srgb, var(--warmer-pink) 90%, transparent),
-        var(--pink) var(--slice-width),
-        transparent calc(var(--slice-width) + 1px)
-      );
+		&::before {
+			content: "";
+			position: absolute;
+			inset: 0;
+			right: -3rem;
+			bottom: 60%;
+			background-image: linear-gradient(
+				-116deg,
+				color-mix(in srgb, var(--warmer-pink) 90%, transparent),
+				var(--pink) var(--slice-width),
+				transparent calc(var(--slice-width) + 1px)
+			);
 
-      background-size: cover;
-      background-repeat: no-repeat;
-      background-position: 0 center;
-      transition: background-position 200ms var(--ease-in-out-back);
-    }
-  }
+			background-size: cover;
+			background-repeat: no-repeat;
+			background-position: 0 center;
+			transition: background-position 200ms var(--ease-in-out-back);
+		}
+	}
 
-  &:open {
-    summary {
-      border-radius: 1.625rem 1.625rem 0 0;
-      &::before {
-        background-position: 6rem center;
-      }
-    }
-  }
+	&:open {
+		summary {
+			border-radius: 1.625rem 1.625rem 0 0;
+			&::before {
+				background-position: 6rem center;
+			}
+		}
+	}
 
-  .materialList,
-  .emptyFilter {
-    margin: 0.25rem;
-    border-radius: 1.375rem;
-    background-color: var(--interactive-bg);
-    box-shadow:
-      hsla(0, 0%, 0%, 0.6) 0px -1px 2px,
-      white 0px 1px 1px,
-      rgba(0, 0, 0, 0.7) 0px 1px inset;
-  }
+	.materialList,
+	.emptyFilter {
+		margin: 0.25rem;
+		border-radius: 1.375rem;
+		background-color: var(--interactive-bg);
+		box-shadow:
+			hsla(0, 0%, 0%, 0.6) 0px -1px 2px,
+			white 0px 1px 1px,
+			rgba(0, 0, 0, 0.7) 0px 1px inset;
+	}
 
-  .materialList {
-    margin-top: 0;
-    padding: 1rem;
-    width: calc(100% - 0.5rem);
-  }
+	.materialList {
+		margin-top: 0;
+		padding: 1rem;
+		width: calc(100% - 0.5rem);
+	}
 
-  .emptyFilter {
-    width: unset;
-  }
+	.emptyFilter {
+		width: unset;
+	}
 }
 
 .materialList {
-  height: max-content;
-  width: 100%;
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(12.25rem, 1fr));
-  place-items: center;
-  gap: 2rem;
-  margin-inline: auto;
-  padding: 0;
+	height: max-content;
+	width: 100%;
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(12.25rem, 1fr));
+	place-items: center;
+	gap: 2rem;
+	margin-inline: auto;
+	padding: 0;
 }
 
 .multiMatContainer {
-  width: fit-content;
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 2rem;
+	width: fit-content;
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+	gap: 2rem;
 
-  flex-wrap: wrap;
+	flex-wrap: wrap;
 }
 
 .clickish {
-  cursor:
-    url("/cursors/edit.png") 24 24,
-    default !important;
+	cursor:
+		url("/cursors/edit.png") 24 24,
+		default !important;
 }
 
 @media (max-width: 1135px) {
-  .page,
-  .multiMatContainer {
-    padding-inline: 3rem;
-  }
+	.page,
+	.multiMatContainer {
+		padding-inline: 3rem;
+	}
 
-  .page {
-    padding-top: 3rem;
-  }
+	.page {
+		padding-top: 3rem;
+	}
 
-  .emptyFilter {
-    margin-inline: 3rem;
-  }
+	.emptyFilter {
+		margin-inline: 3rem;
+	}
 }
 
 @media (max-width: 1000px) {
-  .page {
-    padding-bottom: 6rem;
-  }
+	.page {
+		padding-bottom: 6rem;
+	}
 }
 
 @media (max-width: 550px) {
-  .page,
-  .multiMatContainer {
-    gap: 1.5rem;
-    padding-inline: 1rem;
-  }
+	.page,
+	.multiMatContainer {
+		gap: 1.5rem;
+		padding-inline: 1rem;
+	}
 
-  .emptyFilter {
-    margin-inline: 1rem;
-  }
+	.emptyFilter {
+		margin-inline: 1rem;
+	}
 
-  .multiMatContainer {
-    grid-template-columns: repeat(2, 1fr);
-  }
+	.multiMatContainer {
+		grid-template-columns: repeat(2, 1fr);
+	}
 }

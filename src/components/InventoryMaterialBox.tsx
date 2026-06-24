@@ -24,20 +24,22 @@ const useMultiMatModal = () => {
 	const context = useContext(MaterialModalContext)
 	if (!context) {
 		return {
-			registerMultiMatAmount: () => {},
-			unregisterMultiMatAmount: () => {},
-			confirmMultiMatAmounts: () => {}
+			registerMultiMatAmount: () => { },
+			unregisterMultiMatAmount: () => { },
+			confirmMultiMatAmounts: () => { }
 		}
 	}
 	return context
 }
 
-const getRarityStyle = (material: Material) => { switch (material.rarity) { 
-	default: return styles.common; 
-	case 3: return styles.uncommon;
-	case 4: return styles.rare;
-	case 5: return styles.epic
-}}
+const getRarityStyle = (material: Material) => {
+	switch (material.rarity) {
+		default: return styles.common;
+		case 3: return styles.uncommon;
+		case 4: return styles.rare;
+		case 5: return styles.epic
+	}
+}
 
 type MaterialItemBoxProps = {
 	material: Material,
@@ -66,12 +68,12 @@ export default function MaterialItemBox({ material, requiredQuantity, canHaveMul
 	const [addSubValue, setAddSubValue] = useState<string>("")
 
 	const countRef = useRef<HTMLInputElement>(null)
-	const {inventory, updateInventory} = useInventoryStore()
+	const { inventory, updateInventory } = useInventoryStore()
 	const itemQuantity = inventory[material.id] || 0
 
 	const isMultiMat = material.linkedMaterials && canHaveMultiMat;
 
-	const [showTooltip, setShowTooltip] = useState<{x: number, y: number} | false>(false)
+	const [showTooltip, setShowTooltip] = useState<{ x: number, y: number } | false>(false)
 
 	const setAmount = useCallback((value: number) => {
 		updateInventory({ [material.id]: value })
@@ -91,7 +93,7 @@ export default function MaterialItemBox({ material, requiredQuantity, canHaveMul
 			return () => modalContext.unregisterMultiMatAmount(material.id)
 		}
 	}, [hadAddSub, addSubValue, itemQuantity, material.id, modalContext, setAmount])
-	
+
 	const handleCount = (e: MouseEvent<HTMLSpanElement>, increment: boolean) => {
 		e.stopPropagation()
 		hideTooltip()
@@ -145,10 +147,10 @@ export default function MaterialItemBox({ material, requiredQuantity, canHaveMul
 	const handleIconHover = (e: PointerEvent<HTMLDivElement>) => {
 		e.stopPropagation()
 		if (e.pointerType === "mouse") {
-			setShowTooltip({x: e.clientX, y: e.clientY})
+			setShowTooltip({ x: e.clientX, y: e.clientY })
 		}
 	}
-	
+
 	const hideTooltip = () => {
 		setTimeout(() => setShowTooltip(false))
 	}
@@ -162,15 +164,15 @@ export default function MaterialItemBox({ material, requiredQuantity, canHaveMul
 	}
 
 	return (
-		<div className={`${styles.materialBox} ${getRarityStyle(material)} ${ isMultiMat ? styles.multi : "" }`}
-			onClick={e => {e.stopPropagation(); hideTooltip()}}
+		<div className={`${styles.materialBox} ${getRarityStyle(material)} ${isMultiMat ? styles.multi : ""}`}
+			onClick={e => { e.stopPropagation(); hideTooltip() }}
 			onPointerEnter={handleIconHover}
 			onPointerLeave={hideTooltip}
 		>
 
 			<div className={`${styles.iconContainer}`}
-			onClick={handleBoxClick}>
-				<Image src={`/materials${material.imageSrc}.png`} width={128} height={128} alt={`${material.name} icon`} loading="eager"/>
+				onClick={handleBoxClick}>
+				<Image src={`/materials${material.imageSrc}.png`} width={128} height={128} alt={`${material.name} icon`} loading="eager" />
 			</div>
 
 			<span className={`${styles.label}`}>{material.name}</span>
@@ -179,28 +181,28 @@ export default function MaterialItemBox({ material, requiredQuantity, canHaveMul
 				<MaterialModalContext.Provider value={contextValue}>
 					<ModalContainer onClose={handleMultiMatClose}>
 						<div className={pageStyles.multiMatContainer}>
-							{linkedMaterials.map((linkedMaterial, index) =>{
-								return <MaterialItemBox key={index} material={linkedMaterial} canHaveMultiMat={false} hadAddSub/>
+							{linkedMaterials.map((linkedMaterial, index) => {
+								return <MaterialItemBox key={index} material={linkedMaterial} canHaveMultiMat={false} hadAddSub />
 							})}
 						</div>
 					</ModalContainer>
 				</MaterialModalContext.Provider>, document.body
 			)}
-			
+
 			{(showTooltip) && createPortal(
 				<TooltipContainer
 					subtext={material.materialType}
 					startingPos={showTooltip}
-					offset={isMultiMat ? {x: 24, y: -24} : {x: 8, y: -8}}
+					offset={isMultiMat ? { x: 24, y: -24 } : { x: 8, y: -8 }}
 				>
 					{material.name}
 				</TooltipContainer>, document.body
 			)}
-						
+
 			<span className={`${styles.amount}`}>
 				<span tabIndex={0} aria-label={`${material.name} minus one button`}
 					className={`${styles.countBtn} ${styles.minus}`}
-					onClick={(e) => handleCount(e, false)}/>
+					onClick={(e) => handleCount(e, false)} />
 				<span className={`${styles.countContainer}`}>
 					<input ref={countRef} type={"text"}
 						min="0"
@@ -210,7 +212,7 @@ export default function MaterialItemBox({ material, requiredQuantity, canHaveMul
 						onChange={handleEdit}
 						onFocus={handleFocus}
 						onKeyDown={handleKeyDown}
-						onClick={e => {e.stopPropagation(); hideTooltip()}}
+						onClick={e => { e.stopPropagation(); hideTooltip() }}
 					/>
 					{requiredQuantity && <span>/{requiredQuantity}</span>}
 				</span>
@@ -219,9 +221,9 @@ export default function MaterialItemBox({ material, requiredQuantity, canHaveMul
 					onClick={(e) => handleCount(e, true)}
 				/>
 			</span>
-			{ hadAddSub && <span className={`${styles.amount}`}>
+			{hadAddSub && <span className={`${styles.amount}`}>
 				<span className={`${styles.countBtn} ${styles.addSub}`}
-					style={{pointerEvents: "none"}}
+					style={{ pointerEvents: "none" }}
 				/>
 				<input type="text" inputMode="numeric"
 					value={addSubValue}
@@ -233,7 +235,7 @@ export default function MaterialItemBox({ material, requiredQuantity, canHaveMul
 					opacity: 0,
 					userSelect: "none",
 					pointerEvents: "none"
-				}}/>
+				}} />
 			</span>}
 		</div>
 	)

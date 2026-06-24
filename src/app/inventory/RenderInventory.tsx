@@ -18,7 +18,7 @@ export enum RarityRank {
 	Epic = "S-Rank",
 }
 
-export function EmptyFilter({children}: {children: ReactNode}) {
+export function EmptyFilter({ children }: { children: ReactNode }) {
 	return <div className={styles.emptyFilter}>{children}</div>
 }
 
@@ -44,16 +44,16 @@ export default function RenderInventory() {
 	const [sort, setSort] = useState<InventorySort>("default")
 	const [sortReverse, setSortReverse] = useState<boolean>(false)
 
-	const filters: {filter: InventoryFilter, rarity: InventoryRarityFilter, sorting: InventorySort, sortReverse: boolean} = {filter, rarity: rarityFilter, sorting: sort, sortReverse}
+	const filters: { filter: InventoryFilter, rarity: InventoryRarityFilter, sorting: InventorySort, sortReverse: boolean } = { filter, rarity: rarityFilter, sorting: sort, sortReverse }
 
-	const {inventory: inventoryStore} = useInventoryStore()
+	const { inventory: inventoryStore } = useInventoryStore()
 	const filteredInventory = useInventoryFilters(filters)
 
 	const clearAllFilters = () => {
 		setFilter("default")
 		setRarityFilter("default")
 	}
-	
+
 	const doesInventoryExist = Object.entries(inventoryStore).length > 0
 
 	function groupInventory() {
@@ -73,7 +73,7 @@ export default function RenderInventory() {
 							<summary>{Object.values(RarityRank).at(index)}</summary>
 							<div className={styles.materialList}>
 								{filteredRarity.map((material) => {
-									return <InventoryMaterialBox key={material.id} material={material}/>
+									return <InventoryMaterialBox key={material.id} material={material} />
 								})}
 							</div>
 						</details>
@@ -89,12 +89,12 @@ export default function RenderInventory() {
 					if (filteredType.length > 0) {
 						return <details key={type} className={styles.matGroup} open>
 							<summary>{type}</summary>
-							
-								<div className={styles.materialList}>
-									{filteredType.map(material => {
-										return <InventoryMaterialBox key={material.id} material={material}/>
-									})}
-								</div>
+
+							<div className={styles.materialList}>
+								{filteredType.map(material => {
+									return <InventoryMaterialBox key={material.id} material={material} />
+								})}
+							</div>
 						</details>
 					}
 				})
@@ -109,10 +109,10 @@ export default function RenderInventory() {
 				const groups = [
 					<details key={"owned"} className={`${styles.matGroup} ${ownedMats.length <= 0 && styles.emptyGroup}`} open={ownedMats.length > 0}>
 						<summary>Owned</summary>
-						{ ownedMats.length > 0 ?
+						{ownedMats.length > 0 ?
 							<div className={styles.materialList}>
 								{ownedMats.map(material => {
-									return <InventoryMaterialBox key={material.id} material={material}/>
+									return <InventoryMaterialBox key={material.id} material={material} />
 								})}
 							</div> : <EmptyFilter>
 								S-sorry... You don&apos;t seem to own anything.
@@ -121,12 +121,12 @@ export default function RenderInventory() {
 					</details>
 				]
 
-				if (unownedMats.length > 0 ) {
+				if (unownedMats.length > 0) {
 					groups.push(<details key={"unowned"} className={styles.matGroup} open>
 						<summary>Not Owned</summary>
 						<div className={styles.materialList}>
 							{unownedMats.map(material => {
-								return <InventoryMaterialBox key={material.id} material={material}/>
+								return <InventoryMaterialBox key={material.id} material={material} />
 							})}
 						</div>
 					</details>)
@@ -141,7 +141,7 @@ export default function RenderInventory() {
 				const groups = [
 					<div key={"default"} className={styles.materialList}>
 						{materials.map((material) => {
-							return <InventoryMaterialBox key={material.id} material={material}/>
+							return <InventoryMaterialBox key={material.id} material={material} />
 						})}
 					</div>
 				]
@@ -159,7 +159,7 @@ export default function RenderInventory() {
 	}
 
 	return (<InventoryFilterContext.Provider value={contextValue}>
-		<InventoryFilterToolbar/>
+		<InventoryFilterToolbar />
 		{!doesInventoryExist &&
 			<EmptyFilter>
 				Seems like you&apos;re new here. W-would you like to open an account with us? <a className={`btn-anchor ${styles.clickish}`}>Edit any item to get started.</a>
