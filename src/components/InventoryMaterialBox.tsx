@@ -170,7 +170,7 @@ export default function MaterialItemBox({ material, requiredQuantity, canHaveMul
 
 			<div className={`${styles.iconContainer}`}
 			onClick={handleBoxClick}>
-				<Image src={`/materials${material.imageSrc}.png`} width={128} height={128} alt={`${material.name} icon`}/>
+				<Image src={`/materials${material.imageSrc}.png`} width={128} height={128} alt={`${material.name} icon`} loading="eager"/>
 			</div>
 
 			<span className={`${styles.label}`}>{material.name}</span>
