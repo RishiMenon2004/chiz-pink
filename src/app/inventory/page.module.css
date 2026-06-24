@@ -124,7 +124,7 @@
 	flex-wrap: wrap;
 }
 
-.clickish {
+.editCursor {
 	cursor:
 		url("/cursors/edit.png") 24 24,
 		default !important;

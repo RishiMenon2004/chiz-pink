@@ -162,7 +162,7 @@ export default function RenderInventory() {
 		<InventoryFilterToolbar />
 		{!doesInventoryExist &&
 			<EmptyFilter>
-				Seems like you&apos;re new here. W-would you like to open an account with us? <a className={`btn-anchor ${styles.clickish}`}>Edit any item to get started.</a>
+				Seems like you&apos;re new here. W-would you like to open an account with us? <a className={`btn-anchor ${styles.editCursor}`}>Edit any item to get started.</a>
 			</EmptyFilter>
 		}
 
