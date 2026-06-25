@@ -1,10 +1,10 @@
 "use client"
 
 import dynamic from "next/dynamic"
-import PageTitle from "@/components/PageTitle"
+import PageTitle from "@/components/layout/PageTitle"
 import { beetleCoin, dreamlessSeed, fons } from "@/database/materials"
 
-const CurrencyBox = dynamic(() => import('../components/CurrencyBox'), { ssr: false })
+const CurrencyBox = dynamic(() => import('@/components/layout/CurrencyBox'), { ssr: false })
 
 export default function CurrencyBar() {
 	return (
