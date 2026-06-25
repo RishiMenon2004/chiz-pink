@@ -1,5 +1,13 @@
-import styles from "./page.module.css";
+import styles from "./page.module.css"
 
 export default function Home() {
-	return (<span style={{ display: "grid", placeItems: "center", color: "white" }}></span>);
+	return (
+		<span
+			style={{
+				display: "grid",
+				placeItems: "center",
+				color: "white",
+			}}
+		></span>
+	)
 }
