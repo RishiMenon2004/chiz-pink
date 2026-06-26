@@ -8,7 +8,7 @@ import routes from "@/database/routes"
 
 const barlowCondensed = Barlow_Condensed({
 	variable: "--font-barlow-condensed",
-	weight: "500",
+	weight: ["500", "600"],
 	subsets: ["latin"],
 })
 

@@ -17,7 +17,7 @@ import Image from "next/image"
 import { useInventoryStore, useTooltip } from "@/hooks"
 import { Material } from "@/database/materials"
 import { allInventoryMaterials } from "@/database/materialLists"
-import ModalContainer from "../layout/ModalContainer"
+import ModalContainer from "@/components/layout/ModalContainer"
 import pageStyles from "@/app/inventory/page.module.css"
 import styles from "@/components/inventory/inventoryMaterial.module.css"
 
@@ -34,24 +34,27 @@ const useMultiMatModal = () => {
 	const context = useContext(MaterialModalContext)
 	if (!context) {
 		return {
-			registerMultiMatAmount: () => { },
-			unregisterMultiMatAmount: () => { },
-			confirmMultiMatAmounts: () => { },
+			registerMultiMatAmount: () => {},
+			unregisterMultiMatAmount: () => {},
+			confirmMultiMatAmounts: () => {},
 		}
 	}
 	return context
 }
 
-const getRarityStyle = (material: Material) => {
+export const getRarityStyle = (
+	material: Material,
+	styleSheet: typeof styles
+) => {
 	switch (material.rarity) {
 		default:
-			return styles.common
+			return styleSheet.common
 		case 3:
-			return styles.uncommon
+			return styleSheet.uncommon
 		case 4:
-			return styles.rare
+			return styleSheet.rare
 		case 5:
-			return styles.epic
+			return styleSheet.epic
 	}
 }
 
@@ -197,7 +200,7 @@ export default function MaterialItemBox({
 
 	return (
 		<div
-			className={`${styles.materialBox} ${getRarityStyle(material)} ${isMultiMat ? styles.multi : ""}`}
+			className={`${styles.materialBox} ${getRarityStyle(material, styles)} ${isMultiMat ? styles.multi : ""}`}
 			onClick={(e) => {
 				e.stopPropagation()
 				hideTooltip()

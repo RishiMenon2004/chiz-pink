@@ -1,5 +1,49 @@
 .materialBox {
-	background-color: red;
+	--rarity-color: grey;
+	background-color: var(--white);
 	width: fit-content;
+	height: fit-content;
+	padding: 0.125rem;
 	border-radius: 0.5rem;
+	display: flex;
+	flex-direction: column;
+
+	.iconContainer {
+		background-color: var(--interactive-bg);
+		background-image: linear-gradient(
+			to top,
+			color-mix(in srgb, var(--rarity-color) 30%, transparent)
+		);
+		box-shadow: hsla(0, 0%, 0%, 0.4) 1px 1px 2px inset;
+		border-radius: calc(0.5rem - 0.125rem);
+		padding: 0.125rem 0.25rem;
+
+		img {
+			width: 2.5rem;
+			height: auto;
+			filter: drop-shadow(black 0 0 10px);
+		}
+	}
+
+	.amount {
+		font-family: var(--font-barlow-condensed);
+		font-size: 1rem;
+		text-align: center;
+	}
+}
+
+.common {
+	--rarity-color: #5dc3ab;
+}
+
+.uncommon {
+	--rarity-color: #3f5ce2;
+}
+
+.rare {
+	--rarity-color: #d743c9;
+}
+
+.epic {
+	--rarity-color: #eaa623;
 }
