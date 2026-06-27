@@ -1,4 +1,5 @@
 import { EnumRarity, EnumStatAttribute } from "@/database/item"
+import { ascColdDessertSet, ascDelusionsSet } from "../materials"
 import { Arc, EnumArcType } from "./arc"
 
 export const whatsDesired: Arc = {
@@ -10,6 +11,8 @@ export const whatsDesired: Arc = {
 		attribute: EnumStatAttribute.CritRate,
 		baseValue: 9.6,
 	},
+	ascensionMaterial1: ascColdDessertSet,
+	ascensionMaterial2: ascDelusionsSet,
 	effect: {
 		name: "Golden Fleece",
 		description:

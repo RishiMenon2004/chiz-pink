@@ -7,6 +7,25 @@
 	border-radius: 0.5rem;
 	display: flex;
 	flex-direction: column;
+	position: relative;
+
+	cursor:
+		url("/cursors/edit.png") 24 24,
+		pointer;
+
+	& {
+		&::after {
+			content: "";
+			position: absolute;
+			inset: 0;
+			background-color: color-mix(in srgb, var(--pink) 50%, black 20%);
+			background-image: url("/button_icons/check.png");
+			background-size: 75%;
+			background-position: center 0.25rem;
+			background-repeat: no-repeat;
+			border-radius: 0.5rem;
+		}
+	}
 
 	.iconContainer {
 		background-color: var(--interactive-bg);
@@ -17,11 +36,13 @@
 		box-shadow: hsla(0, 0%, 0%, 0.4) 1px 1px 2px inset;
 		border-radius: calc(0.5rem - 0.125rem);
 		padding: 0.125rem 0.25rem;
+		user-select: none;
+		pointer-events: none;
 
 		img {
 			width: 2.5rem;
 			height: auto;
-			filter: drop-shadow(black 0 0 10px);
+			filter: drop-shadow(black 0 0 5px);
 		}
 	}
 
@@ -29,6 +50,36 @@
 		font-family: var(--font-barlow-condensed);
 		font-size: 1rem;
 		text-align: center;
+	}
+}
+
+.modalMaterialBoxContainer {
+	width: fit-content;
+	display: grid;
+	place-items: center;
+	grid-template-columns: repeat(auto-fit, minmax(12.25rem, 1fr));
+	gap: 2rem;
+
+	&:not(:has(> *:only-child)) {
+		grid-template-columns: repeat(3, 1fr);
+	}
+}
+
+@media (max-width: 1135px) {
+	.modalMaterialBoxContainer {
+		padding-inline: 3rem;
+		width: 100%;
+	}
+}
+
+@media (max-width: 550px) {
+	.modalMaterialBoxContainer {
+		gap: 1.5rem;
+		padding-inline: 1rem;
+
+		&:not(:has(> *:only-child)) {
+			grid-template-columns: repeat(2, 1fr);
+		}
 	}
 }
 

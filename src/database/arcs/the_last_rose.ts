@@ -1,4 +1,5 @@
 import { EnumRarity, EnumStatAttribute } from "../item"
+import { ascAppleSeedSet, ascWhispersSet } from "../materials"
 import { Arc, EnumArcType } from "./arc"
 
 export const theLastRose: Arc = {
@@ -10,6 +11,8 @@ export const theLastRose: Arc = {
 		attribute: EnumStatAttribute.CritRate,
 		baseValue: 16.8,
 	},
+	ascensionMaterial1: ascAppleSeedSet,
+	ascensionMaterial2: ascWhispersSet,
 	effect: {
 		name: "Bohemian Rose",
 		description:

@@ -27,6 +27,23 @@ export enum EnumStatAttribute {
 	ChargeEffeciency = "Charge Efficiency",
 }
 
+export enum EnumItemLvls {
+	Lvl1 = 1,
+	Lvl20 = 20,
+	Lvl20A = 21,
+	Lvl30 = 30,
+	Lvl30A = 31,
+	Lvl40 = 40,
+	Lvl40A = 41,
+	Lvl50 = 50,
+	Lvl50A = 51,
+	Lvl60 = 60,
+	Lvl60A = 61,
+	Lvl70 = 70,
+	Lvl70A = 71,
+	Lvl80 = 80,
+}
+
 export const getItemRarityStyle = (
 	item: Item,
 	styleSheet: { readonly [key: string]: string }
