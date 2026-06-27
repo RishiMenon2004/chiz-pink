@@ -29,6 +29,11 @@ body {
 	padding-top: var(--titlebar-height);
 
 	background-color: var(--background);
+	background-image: repeating-linear-gradient(
+		50deg,
+		transparent 0px 8px,
+		color-mix(in srgb, var(--darker-pink) 2%, transparent) 0px 18px
+	);
 	color: var(--foreground);
 
 	font-family: var(--font-syne);
@@ -103,7 +108,7 @@ a {
 	left: 0;
 	top: 0;
 
-	--warmer-pink-strips: hsl(350, 100%, 67%);
+	--warmer-pink-strips: hsl(350, 70%, 60%);
 
 	background-image:
 		url("/sidebar.png"),
@@ -131,10 +136,12 @@ a {
 
 	background-size:
 		45vh,
-		100% 10%;
+		100% 10%,
+		100%;
 	background-position:
-		center calc(65%),
-		center calc(100% - 5rem);
+		center calc(100% - 11rem),
+		center calc(100% - 5rem),
+		center;
 	background-repeat: no-repeat;
 	filter: drop-shadow(2px 1px 4px hsla(0, 0%, 0%, 0.6));
 
@@ -511,7 +518,7 @@ a {
 @media (max-width: 1000px) {
 	body {
 		padding-inline: 1rem;
-		padding-top: 4.25rem;
+		padding-block: 4.25rem 4rem;
 	}
 
 	.sidebar {

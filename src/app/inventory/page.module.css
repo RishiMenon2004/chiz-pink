@@ -145,12 +145,6 @@
 	}
 }
 
-@media (max-width: 1000px) {
-	.page {
-		padding-bottom: 6rem;
-	}
-}
-
 @media (max-width: 550px) {
 	.page,
 	.multiMatContainer {
