@@ -197,6 +197,7 @@
 @media (max-width: 1000px) {
 	.label {
 		display: block;
+		font-size: 0.75rem;
 	}
 }
 
