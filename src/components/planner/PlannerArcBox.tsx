@@ -14,6 +14,7 @@ import { eternalMemory } from "@/database/materials"
 import PlannerMaterialBox from "@/components/planner/PlannerMaterialBox"
 import styles from "@/components/planner/plannerArcBox.module.css"
 import { useTooltip } from "@/hooks"
+import { useSortable } from "@dnd-kit/react/sortable"
 
 function ItemPhaseStars({ starsActive }: { starsActive: number }) {
 	return Array.from({ length: 6 }).map((_, index) => {
@@ -50,7 +51,7 @@ const DragPoint = () => {
 			onPointerEnter={showTooltip}
 			onPointerLeave={hideTooltip}>
 			<Tooltip offset={{ x: 48, y: 32 }} subText="Drag to reorder">
-				Priority
+				Adjust Priority
 			</Tooltip>
 		</div>
 	)
@@ -59,15 +60,19 @@ const DragPoint = () => {
 const ArcBtn = ({
 	onClick,
 	icon,
+	ariaLabel,
 	children,
 }: {
 	onClick: (e: MouseEvent<HTMLElement>) => void
 	icon: string
+	ariaLabel: string
 	children: ReactNode
 }) => {
 	const { Tooltip, showTooltip, hideTooltip } = useTooltip()
 	return (
-		<div
+		<button
+			tabIndex={1}
+			aria-label={ariaLabel}
 			className={styles.arcPlannerButton}
 			style={
 				{
@@ -78,17 +83,23 @@ const ArcBtn = ({
 			onPointerLeave={hideTooltip}
 			onClick={onClick}>
 			<Tooltip offset={{ x: 48, y: 32 }}>{children}</Tooltip>
-		</div>
+		</button>
 	)
 }
 
 export default function PlannerArcBox({
 	arc,
 	numberOfItems,
+	index,
+	uid,
 }: {
 	arc: Arc
 	numberOfItems: number
+	index: number
+	uid: number
 }) {
+	const { ref, handleRef, isDragging } = useSortable({ id: uid, index })
+
 	const [currentLvl, setCurrentLvl] = useState<EnumItemLvls>(
 		EnumItemLvls.Lvl1
 	)
@@ -127,9 +138,9 @@ export default function PlannerArcBox({
 	}
 
 	return (
-		<div className={styles.arcPlannerBoxContainer}>
+		<div className={styles.arcPlannerBoxContainer} ref={ref}>
 			<div
-				className={`${styles.arcPlannerBox} ${getItemRarityStyle(arc, styles)}`}>
+				className={`${styles.arcPlannerBox} ${getItemRarityStyle(arc, styles)} ${isDragging ? styles.arcBoxDragging : ""}`}>
 				<div className={styles.arcInfoContainer}>
 					<div className={styles.arcInfoTop}>
 						<div className={styles.arcImageContainer}>
@@ -196,21 +207,26 @@ export default function PlannerArcBox({
 							</span>
 						</div>
 					</div>
-					<span
-						style={{
-							marginLeft: "2rem",
-							marginBlock: "1rem 0.5rem",
-							fontWeight: "600",
-						}}>
-						Required Materials
-					</span>
-					<div className={styles.arcRequiredMaterialsList}>
-						{materialList}
-					</div>
+					{!isDragging && (
+						<>
+							<span
+								style={{
+									marginLeft: "2rem",
+									marginBlock: "1rem 0.5rem",
+									fontWeight: "600",
+								}}>
+								Required Materials
+							</span>
+							<div className={styles.arcRequiredMaterialsList}>
+								{materialList}
+							</div>
+						</>
+					)}
 				</div>
-				<div className={styles.arcButtonsContainer}>
+				<div className={styles.arcButtonsContainer} ref={handleRef}>
 					<ArcBtn
 						icon="confirm_plan"
+						ariaLabel="Confirm Levelling Button"
 						onClick={(e: MouseEvent) => {
 							e.stopPropagation()
 							console.log("ARC ASCENDED")
@@ -220,6 +236,7 @@ export default function PlannerArcBox({
 					<DragPoint />
 					<ArcBtn
 						icon="delete"
+						ariaLabel="Delete Arc Plan Button"
 						onClick={(e: MouseEvent) => {
 							e.stopPropagation()
 							console.log("ARC ASCENDED")
