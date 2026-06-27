@@ -3,7 +3,7 @@ import { EnumRarity } from "@/database/item"
 import { EnumMaterialType } from "@/database/materials"
 import { InventoryFilter, InventoryGroup, InventoryRarityFilter, InventorySort } from "@/database/inventoryFilters"
 import { InventoryFilterContext, RarityRank } from "@/app/inventory/RenderInventory"
-import styles from "@/app/inventory/filterToolbar.module.css"
+import styles from "@/components/inventory/filterToolbar.module.css"
 
 export default function InventoryFilterToolbar() {
 	const {
