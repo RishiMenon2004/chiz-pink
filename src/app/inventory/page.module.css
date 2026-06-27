@@ -117,11 +117,11 @@
 
 .multiMatContainer {
 	width: fit-content;
+	padding-inline: 6rem;
 	display: grid;
+	place-items: center;
 	grid-template-columns: repeat(3, 1fr);
 	gap: 2rem;
-
-	flex-wrap: wrap;
 }
 
 .editCursor {
@@ -143,6 +143,11 @@
 	.emptyFilter {
 		margin-inline: 3rem;
 	}
+
+	.multiMatContainer {
+		width: 100%;
+		grid-template-columns: repeat(auto-fit, minmax(12.25rem, 1fr));
+	}
 }
 
 @media (max-width: 550px) {
@@ -156,6 +161,7 @@
 		margin-inline: 1rem;
 	}
 
+	.materialList,
 	.multiMatContainer {
 		grid-template-columns: repeat(2, 1fr);
 	}
