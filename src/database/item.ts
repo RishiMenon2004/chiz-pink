@@ -27,6 +27,22 @@ export enum EnumStatAttribute {
 	ChargeEffeciency = "Charge Efficiency",
 }
 
+export const getItemRarityStyle = (
+	item: Item,
+	styleSheet: { readonly [key: string]: string }
+) => {
+	switch (item.rarity) {
+		default:
+			return styleSheet.common
+		case 3:
+			return styleSheet.uncommon
+		case 4:
+			return styleSheet.rare
+		case 5:
+			return styleSheet.epic
+	}
+}
+
 export default interface Item {
 	id: string
 	name: string

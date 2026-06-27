@@ -20,6 +20,7 @@ import { allInventoryMaterials } from "@/database/materialLists"
 import ModalContainer from "@/components/layout/ModalContainer"
 import pageStyles from "@/app/inventory/page.module.css"
 import styles from "@/components/inventory/inventoryMaterial.module.css"
+import { getItemRarityStyle } from "@/database/item"
 
 // Context for managing application of child adjustments
 type MultiMatModalContextType = {
@@ -40,22 +41,6 @@ const useMultiMatModal = () => {
 		}
 	}
 	return context
-}
-
-export const getRarityStyle = (
-	material: Material,
-	styleSheet: typeof styles
-) => {
-	switch (material.rarity) {
-		default:
-			return styleSheet.common
-		case 3:
-			return styleSheet.uncommon
-		case 4:
-			return styleSheet.rare
-		case 5:
-			return styleSheet.epic
-	}
 }
 
 type MaterialItemBoxProps = {
@@ -87,6 +72,7 @@ export default function MaterialItemBox({
 
 		return rarityOrder
 	})
+
 	const [addSubValue, setAddSubValue] = useState<string>("")
 
 	const countRef = useRef<HTMLInputElement>(null)
@@ -200,14 +186,13 @@ export default function MaterialItemBox({
 
 	return (
 		<div
-			className={`${styles.materialBox} ${getRarityStyle(material, styles)} ${isMultiMat ? styles.multi : ""}`}
+			className={`${styles.materialBox} ${getItemRarityStyle(material, styles)} ${isMultiMat ? styles.multi : ""}`}
 			onClick={(e) => {
 				e.stopPropagation()
 				hideTooltip()
 			}}
 			onPointerEnter={showTooltip}
-			onPointerLeave={hideTooltip}
-		>
+			onPointerLeave={hideTooltip}>
 			<div className={`${styles.iconContainer}`} onClick={handleBoxClick}>
 				<Image
 					src={`/materials${material.imageSrc}.png`}
@@ -245,8 +230,7 @@ export default function MaterialItemBox({
 
 			<Tooltip
 				subText={material.materialType}
-				offset={isMultiMat ? { x: 24, y: -24 } : { x: 8, y: -8 }}
-			>
+				offset={isMultiMat ? { x: 24, y: -24 } : { x: 8, y: -8 }}>
 				{material.name}
 			</Tooltip>
 
