@@ -44,23 +44,36 @@ export enum EnumItemLvls {
 	Lvl80 = 80,
 }
 
-export const getItemRarityStyle = (
+export function getItemRarityStyle(
 	item: Item,
-	styleSheet: { readonly [key: string]: string }
-) => {
+	styleSheet?: { readonly [key: string]: string }
+) {
+	if (styleSheet) {
+		switch (item.rarity) {
+			default:
+				return styleSheet.common
+			case 3:
+				return styleSheet.uncommon
+			case 4:
+				return styleSheet.rare
+			case 5:
+				return styleSheet.epic
+		}
+	}
+
 	switch (item.rarity) {
 		default:
-			return styleSheet.common
+			return "common"
 		case 3:
-			return styleSheet.uncommon
+			return "uncommon"
 		case 4:
-			return styleSheet.rare
+			return "rare"
 		case 5:
-			return styleSheet.epic
+			return "epic"
 	}
 }
 
-export default interface Item {
+export interface Item {
 	id: string
 	name: string
 	description?: string

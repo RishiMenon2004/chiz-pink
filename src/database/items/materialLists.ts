@@ -63,7 +63,7 @@ import {
 	Material,
 } from "./materials"
 
-export const allMaterials: { [key: string]: Material } = {
+const allMaterials: Record<string, Material> = {
 	/* currency */
 	beetle_coin: beetleCoin,
 	fons: fons,
@@ -149,7 +149,7 @@ export const allMaterials: { [key: string]: Material } = {
 	light_dye: lightDye,
 }
 
-export const allInventoryMaterials: { [key: string]: Material } = {
+const allInventoryMaterials: Record<string, Material> = {
 	/* epic */
 	good_boy_stamp: goodBoyStamp,
 	dress_sleeves_of_vanity: dressSleevesOfVanity,
@@ -230,10 +230,14 @@ export const allInventoryMaterials: { [key: string]: Material } = {
 	light_dye: lightDye,
 }
 
-export function getMaterialList(): { [key: string]: Material } {
+export function getAllMaterials() {
 	return allMaterials
 }
 
-export function getInventoryList(): { [key: string]: Material } {
+export function getInventoryMaterials() {
 	return allInventoryMaterials
+}
+
+export function findMaterial(materialId: string) {
+	return allMaterials[materialId]
 }

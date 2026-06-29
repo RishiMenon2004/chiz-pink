@@ -15,12 +15,12 @@ import {
 import { createPortal } from "react-dom"
 import Image from "next/image"
 import { useInventoryStore, useTooltip } from "@/hooks"
-import { Material } from "@/database/materials"
-import { allInventoryMaterials } from "@/database/materialLists"
-import ModalContainer from "@/components/layout/ModalContainer"
+import { Material, findMaterial, getItemRarityStyle } from "@/database/items"
+import ModalContainer, {
+	ModalEventType,
+} from "@/components/layout/ModalContainer"
 import pageStyles from "@/app/inventory/page.module.css"
 import styles from "@/components/inventory/inventoryMaterial.module.css"
-import { getItemRarityStyle } from "@/database/item"
 
 // Context for managing application of child adjustments
 type MultiMatModalContextType = {
@@ -64,7 +64,7 @@ export default function MaterialItemBox({
 		if (material.linkedMaterials) {
 			rarityOrder.push(material)
 			material.linkedMaterials.forEach((materialId) => {
-				rarityOrder.push(allInventoryMaterials[materialId])
+				rarityOrder.push(findMaterial(materialId))
 			})
 
 			rarityOrder.sort((a, b) => b.rarity - a.rarity)
@@ -159,9 +159,7 @@ export default function MaterialItemBox({
 		}
 	}
 
-	const handleMultiMatClose = (
-		e: MouseEvent<HTMLElement> | KeyboardEvent<HTMLElement>
-	) => {
+	const handleMultiMatClose = (e: ModalEventType) => {
 		e.stopPropagation()
 		// Confirm all children's amounts
 		multiMatAmountCallbacks.current.forEach((callback) => callback())

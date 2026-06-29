@@ -1,0 +1,47 @@
+import { Item, EnumRarity } from "@/database/items"
+import { Material, MaterialSet } from "@/database/items/materials"
+import { EnumArcType } from "@/database/arcs"
+
+export type AbilityDecsription = {
+	section?: string
+	smallHeading?: string
+	description: string[]
+}
+
+export type Ability = {
+	name: string
+	description: AbilityDecsription[]
+	maxLvl: number
+}
+
+export type CharacterAbilitySet = {
+	basicAttack: Ability
+	skill: Ability
+	ultimate: Ability
+	support: Ability
+	passive1: Ability
+	passive2?: Ability
+	passive3?: Ability
+	lifeSkill1: Ability
+	lifeSkill2?: Ability
+}
+
+export enum EnumCharacterElement {
+	Cosmos = "Cosmos",
+	Anima = "Anima",
+	Incantation = "Incantation",
+	Chaos = "Chaos",
+	Psyche = "Psyche",
+	Lakshana = "Lakshana",
+}
+
+export interface Character extends Item {
+	rarity: EnumRarity.Rare | EnumRarity.Epic
+	element: EnumCharacterElement
+	arcType: EnumArcType
+	abilities: CharacterAbilitySet
+	ascensionMaterialSet: MaterialSet
+	ascensionBossMaterial: Material
+	talentMaterialSet: MaterialSet
+	talentBossMaterial: Material
+}

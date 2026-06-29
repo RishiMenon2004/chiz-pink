@@ -1,9 +1,18 @@
 "use client"
 
-import { Material } from "@/database/materials"
+import { Material } from "@/database/items"
 import { useInventoryStore } from "@/hooks"
 import Image from "next/image"
-import { ChangeEvent, CSSProperties, FocusEvent, KeyboardEvent, MouseEvent, useEffect, useRef, useState } from "react"
+import {
+	ChangeEvent,
+	CSSProperties,
+	FocusEvent,
+	KeyboardEvent,
+	MouseEvent,
+	useEffect,
+	useRef,
+	useState,
+} from "react"
 
 const localeUS = (x: number) => x.toLocaleString("en-US")
 
@@ -23,7 +32,9 @@ export default function CurrencyBox({ currency }: { currency: Material }) {
 				inputBoxRef.current.value = currencyValue.toString()
 			} else {
 				let newValue = parseInt(inputBoxRef.current.value)
-				if (Number.isNaN(newValue)) { newValue = 0 }
+				if (Number.isNaN(newValue)) {
+					newValue = 0
+				}
 				setCurrency(newValue)
 			}
 		}
@@ -46,12 +57,18 @@ export default function CurrencyBox({ currency }: { currency: Material }) {
 		updateInventory({ [currency.id]: value || 0 })
 	}
 
-	useEffect(() => { if (isEdit) inputBoxRef?.current?.focus() }, [isEdit])
-	useEffect(() => { changeInputWidth() }, [currencyValue])
+	useEffect(() => {
+		if (isEdit) inputBoxRef?.current?.focus()
+	}, [isEdit])
+	useEffect(() => {
+		changeInputWidth()
+	}, [currencyValue])
 
 	const handleEdit = (e: ChangeEvent<HTMLInputElement>) => {
 		if (e.currentTarget) {
-			const newValue = parseInt(e.currentTarget.value.replaceAll(/\D/g, ""))
+			const newValue = parseInt(
+				e.currentTarget.value.replaceAll(/\D/g, "")
+			)
 			setCurrency(newValue)
 		}
 	}
@@ -73,37 +90,58 @@ export default function CurrencyBox({ currency }: { currency: Material }) {
 		e.currentTarget.setSelectionRange(999, 999)
 	}
 
-	return (<div
-		className={`currency-box ${isEdit ? "edit" : ""}`}
-		id={currency.id}
-		style={{
-			"--bg-image": `url('/materials/borders/${currency.id}.png')`,
-			"--input-width": inputWidth
-		} as CSSProperties}
-	>
-		<Image className="icon" src={`/materials${currency.imageSrc}.png`} width={64} height={64} alt={`${currency.name} icon`} loading="eager" />
-		<input name={currency.name} ref={inputBoxRef}
-			type={"text"}
-			min="0"
-			pattern="[0-9]*"
-			inputMode="numeric"
-			value={currencyValue}
-			style={isEdit ? {} : { display: "none" }}
-			onChange={handleEdit}
-			onKeyDown={handleKeyDown}
-			onBlur={handleBlur}
-			onFocus={handleFocus}
-		/>
-		<span ref={valueDispRef}
-			onClick={handleClick}
-			className="amount-display"
-			style={isEdit ? {
-				opacity: "0",
-				position: "absolute",
-				pointerEvents: "none"
-			} : {}}>
-			{localeUS(currencyValue)}
-		</span>
-		<button className="edit-btn" onClick={toggleEdit} ref={editBtnRef} />
-	</div>)
+	return (
+		<div
+			className={`currency-box ${isEdit ? "edit" : ""}`}
+			id={currency.id}
+			style={
+				{
+					"--bg-image": `url('/materials/borders/${currency.id}.png')`,
+					"--input-width": inputWidth,
+				} as CSSProperties
+			}>
+			<Image
+				className="icon"
+				src={`/materials${currency.imageSrc}.png`}
+				width={64}
+				height={64}
+				alt={`${currency.name} icon`}
+				loading="eager"
+			/>
+			<input
+				name={currency.name}
+				ref={inputBoxRef}
+				type={"text"}
+				min="0"
+				pattern="[0-9]*"
+				inputMode="numeric"
+				value={currencyValue}
+				style={isEdit ? {} : { display: "none" }}
+				onChange={handleEdit}
+				onKeyDown={handleKeyDown}
+				onBlur={handleBlur}
+				onFocus={handleFocus}
+			/>
+			<span
+				ref={valueDispRef}
+				onClick={handleClick}
+				className="amount-display"
+				style={
+					isEdit
+						? {
+								opacity: "0",
+								position: "absolute",
+								pointerEvents: "none",
+							}
+						: {}
+				}>
+				{localeUS(currencyValue)}
+			</span>
+			<button
+				className="edit-btn"
+				onClick={toggleEdit}
+				ref={editBtnRef}
+			/>
+		</div>
+	)
 }

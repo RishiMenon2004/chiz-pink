@@ -1,20 +1,22 @@
 "use client"
 
 import Image from "next/image"
-import { Material } from "@/database/materials"
+import { Material, getItemRarityStyle, findMaterial } from "@/database/items"
 import styles from "./plannerMaterial.module.css"
 import { useTooltip } from "@/hooks"
 import MaterialItemBox from "@/components/inventory/InventoryMaterialBox"
-import ModalContainer from "../layout/ModalContainer"
+import ModalContainer, {
+	ModalEventType,
+} from "@/components/layout/ModalContainer"
 import { createPortal } from "react-dom"
-import { KeyboardEvent, MouseEvent, useState } from "react"
-import { allInventoryMaterials } from "@/database/materialLists"
-import { getItemRarityStyle } from "@/database/item"
+import { MouseEvent, useState } from "react"
 
 export default function PlannerMaterialBox({
 	material,
+	requiredAmount,
 }: {
 	material: Material
+	requiredAmount: number
 }) {
 	const { Tooltip, showTooltip, hideTooltip } = useTooltip()
 	const [showMaterialEditorModal, setShowMaterialEditorModal] =
@@ -24,7 +26,7 @@ export default function PlannerMaterialBox({
 		if (material.linkedMaterials) {
 			rarityOrder.push(material)
 			material.linkedMaterials.forEach((materialId) => {
-				rarityOrder.push(allInventoryMaterials[materialId])
+				rarityOrder.push(findMaterial(materialId))
 			})
 
 			rarityOrder.sort((a, b) => b.rarity - a.rarity)
@@ -41,16 +43,14 @@ export default function PlannerMaterialBox({
 		setShowMaterialEditorModal(true)
 	}
 
-	const handleCloseModal = (
-		e: MouseEvent<HTMLElement> | KeyboardEvent<HTMLElement>
-	) => {
+	const handleCloseModal = (e: ModalEventType) => {
 		e.stopPropagation()
 		setShowMaterialEditorModal(false)
 	}
 
 	return (
 		<div
-			className={`${styles.materialBox} ${getItemRarityStyle(material, styles)}`}
+			className={`${styles.materialBox} ${getItemRarityStyle(material)}`}
 			onPointerEnter={showTooltip}
 			onPointerLeave={hideTooltip}
 			onClick={handleClick}>
@@ -63,7 +63,9 @@ export default function PlannerMaterialBox({
 					alt={`Material ${material.name} Icon`}
 				/>
 			</div>
-			<span className={styles.amount}>28</span>
+			<span className={styles.amount}>
+				{requiredAmount.toLocaleString("en-us")}
+			</span>
 
 			{showMaterialEditorModal &&
 				createPortal(

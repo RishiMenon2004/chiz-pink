@@ -1,4 +1,4 @@
-import Item, { EnumRarity } from "@/database/item"
+import { Item, EnumRarity } from "@/database/items"
 
 export interface Material extends Item {
 	materialType: EnumMaterialType

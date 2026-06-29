@@ -1,5 +1,5 @@
-import { EnumRarity, EnumStatAttribute } from "../item"
-import { ascAppleSeedSet, ascWhispersSet } from "../materials"
+import { EnumRarity, EnumStatAttribute } from "@/database/items"
+import { ascAppleSeedSet, ascWhispersSet } from "@/database/items/materials"
 import { Arc, EnumArcType } from "./arc"
 
 export const theLastRose: Arc = {
@@ -7,9 +7,10 @@ export const theLastRose: Arc = {
 	name: "The Last Rose",
 	rarity: EnumRarity.Epic,
 	type: EnumArcType.Liquid,
+	baseAtk: 37,
 	mainAttribute: {
 		attribute: EnumStatAttribute.CritRate,
-		baseValue: 16.8,
+		baseValue: 9.6,
 	},
 	ascensionMaterial1: ascAppleSeedSet,
 	ascensionMaterial2: ascWhispersSet,

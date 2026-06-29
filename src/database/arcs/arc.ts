@@ -1,5 +1,4 @@
-import Item, { EnumRarity, EnumStatAttribute } from "@/database/item"
-import { MaterialSet } from "../materials"
+import { Item, EnumRarity, EnumStatAttribute, MaterialSet } from "@/database/items"
 
 export enum EnumArcType {
 	Solid = "Solid",
@@ -17,6 +16,7 @@ type MainAttrInfo = {
 export interface Arc extends Item {
 	rarity: EnumRarity.Uncommon | EnumRarity.Rare | EnumRarity.Epic
 	type: EnumArcType
+	baseAtk: number
 	mainAttribute: MainAttrInfo
 	ascensionMaterial1: MaterialSet
 	ascensionMaterial2: MaterialSet

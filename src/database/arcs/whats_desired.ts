@@ -1,5 +1,5 @@
-import { EnumRarity, EnumStatAttribute } from "@/database/item"
-import { ascColdDessertSet, ascDelusionsSet } from "../materials"
+import { EnumRarity, EnumStatAttribute } from "@/database/items"
+import { ascColdDessertSet, ascDelusionsSet } from "../items/materials"
 import { Arc, EnumArcType } from "./arc"
 
 export const whatsDesired: Arc = {
@@ -7,6 +7,7 @@ export const whatsDesired: Arc = {
 	name: "What's Desired",
 	rarity: EnumRarity.Epic,
 	type: EnumArcType.Condensate,
+	baseAtk: 37,
 	mainAttribute: {
 		attribute: EnumStatAttribute.CritRate,
 		baseValue: 9.6,

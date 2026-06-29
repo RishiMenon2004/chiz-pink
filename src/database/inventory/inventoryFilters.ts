@@ -1,5 +1,5 @@
-import { EnumRarity } from "@/database/item"
-import { EnumMaterialType } from "@/database/materials"
+import { EnumRarity } from "@/database/items/item"
+import { EnumMaterialType } from "@/database/items/materials"
 
 export type InventoryFilter =
 	| "default"

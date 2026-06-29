@@ -2,32 +2,105 @@
 
 import dynamic from "next/dynamic"
 import styles from "./page.module.css"
-import { whatsDesired } from "@/database/arcs/whats_desired"
-import { theLastRose } from "@/database/arcs/the_last_rose"
-import { Arc } from "@/database/arcs"
-import { useState } from "react"
-import { DragDropProvider } from "@dnd-kit/react"
+import { DragDropProvider, DragOverlay } from "@dnd-kit/react"
+import { Feedback } from "@dnd-kit/dom"
 import { isSortable } from "@dnd-kit/react/sortable"
+import usePlanner, { WeaponRecord } from "@/hooks/usePlannerStore"
+import { EnumItemLvls } from "@/database/items"
+import { Inventory, useInventoryStore } from "@/hooks/useInventoryStore"
+import { createContext, Dispatch, SetStateAction, useState } from "react"
+import { getAllArcs } from "@/database/arcs"
+import { createPortal } from "react-dom"
+import ModalContainer, {
+	ModalEventType,
+} from "@/components/layout/ModalContainer"
+import PlannerAddArcBox from "@/components/planner/PlannerAddArcBox"
 
 const PlannerArcBox = dynamic(
 	() => import("@/components/planner/PlannerArcBox"),
 	{ ssr: false }
 )
 
+type AddNewArcContextType = {
+	newArcRecord: Omit<WeaponRecord, "uid" | "requiredMaterials">
+	setNewArcRecord: Dispatch<
+		SetStateAction<Omit<WeaponRecord, "uid" | "requiredMaterials">>
+	>
+}
+
+export const AddNewArcContext = createContext<AddNewArcContextType>(null!)
+
+type ArcPlannerUsableMaterialsType = {
+	currentInventory: Inventory
+}
+
+export const ArcPlannerUsableMaterialsContext =
+	createContext<ArcPlannerUsableMaterialsType>(null!)
+
 export default function RenderArcsPlanner() {
-	const [plannedArcs, setPlannedArcs] = useState<
-		{ arc: Arc; items: number; uid: number }[]
-	>([
-		{ arc: whatsDesired, items: 3, uid: 200 },
-		{ arc: theLastRose, items: 6, uid: 4000 },
-		{ arc: theLastRose, items: 10, uid: 6 },
-	])
+	const { plannerData, updatePlanner, weapons } = usePlanner()
+	const { inventory } = useInventoryStore()
+
+	const [activeDragArc, setActiveDragArc] = useState<string | null>(null)
+
+	const [newArcRecord, setNewArcRecord] = useState<
+		Omit<WeaponRecord, "uid" | "requiredMaterials">
+	>(null!)
+
+	const closeModal = (e: ModalEventType) => {
+		e.stopPropagation()
+		weapons.addWeapon(newArcRecord)
+		setNewArcRecord(null!)
+	}
+
+	const cancelModal = (e: ModalEventType) => {
+		e.stopPropagation()
+		setNewArcRecord(null!)
+	}
 
 	return (
-		<div className={styles.page}>
+		<div className={`${styles.page} ${activeDragArc && styles.dragging}`}>
+			{/* =========================================================== */}
+			{/*                     Adding New Entries                      */}
+			{/* =========================================================== */}
+			<button
+				onClick={() => {
+					setNewArcRecord({
+						id: Object.values(getAllArcs())[0].id,
+						currentLvl: EnumItemLvls.Lvl1,
+						targetLvl: EnumItemLvls.Lvl80,
+					})
+				}}>
+				Add
+			</button>
+
+			<AddNewArcContext.Provider
+				value={{ newArcRecord, setNewArcRecord }}>
+				{newArcRecord &&
+					createPortal(
+						<ModalContainer
+							onClose={closeModal}
+							onCancel={cancelModal}>
+							<PlannerAddArcBox />
+						</ModalContainer>,
+						document.body
+					)}
+			</AddNewArcContext.Provider>
+			{/* =========================================================== */}
+
 			<DragDropProvider
+				plugins={(defaults) => [
+					...defaults,
+					Feedback.configure({
+						dropAnimation: null,
+					}),
+				]}
+				onDragStart={(e) =>
+					setActiveDragArc((e.operation.source?.id as string) || null)
+				}
 				onDragEnd={(e) => {
 					if (e.canceled) return
+					setActiveDragArc(null)
 
 					const { source } = e.operation
 
@@ -35,27 +108,52 @@ export default function RenderArcsPlanner() {
 						const { initialIndex, index } = source
 
 						if (initialIndex !== index) {
-							setPlannedArcs((arcs) => {
-								const newArcs = [...arcs]
-								const [removed] = newArcs.splice(
-									initialIndex,
-									1
-								)
-								newArcs.splice(index, 0, removed)
-								return newArcs
+							const newArcsList = [
+								...Object.values(plannerData.arcs),
+							]
+							const [removed] = newArcsList.splice(
+								initialIndex,
+								1
+							)
+							newArcsList.splice(index, 0, removed)
+
+							const newArcsRecord: typeof plannerData.arcs = {}
+							newArcsList.forEach((arcRecord) => {
+								newArcsRecord[arcRecord.uid] = arcRecord
+							})
+
+							updatePlanner({
+								...plannerData,
+								arcs: newArcsRecord,
 							})
 						}
 					}
 				}}>
-				{plannedArcs.map(({ arc, items, uid }, index) => (
-					<PlannerArcBox
-						key={uid}
-						arc={arc}
-						numberOfItems={items}
-						index={index}
-						uid={uid}
-					/>
-				))}
+				{/* ========================================================= */}
+				{/*                       Planner Grid                        */}
+				{/* ========================================================= */}
+				<div className={styles.plannerGrid}>
+					<ArcPlannerUsableMaterialsContext.Provider
+						value={{ currentInventory: inventory }}>
+						{Object.values(plannerData.arcs).map((arc, index) => (
+							<PlannerArcBox
+								key={arc.uid}
+								arcRecord={arc}
+								index={index}
+							/>
+						))}
+					</ArcPlannerUsableMaterialsContext.Provider>
+
+					<DragOverlay>
+						{activeDragArc && (
+							<PlannerArcBox
+								arcRecord={plannerData.arcs[activeDragArc]}
+								index={-200}
+							/>
+						)}
+					</DragOverlay>
+				</div>
+				{/* ========================================================= */}
 			</DragDropProvider>
 		</div>
 	)

@@ -2,9 +2,11 @@
 
 import dynamic from "next/dynamic"
 import PageTitle from "@/components/layout/PageTitle"
-import { beetleCoin, dreamlessSeed, fons } from "@/database/materials"
+import { beetleCoin, dreamlessSeed, fons } from "@/database/items/materials"
 
-const CurrencyBox = dynamic(() => import('@/components/layout/CurrencyBox'), { ssr: false })
+const CurrencyBox = dynamic(() => import("@/components/layout/CurrencyBox"), {
+	ssr: false,
+})
 
 export default function CurrencyBar() {
 	return (

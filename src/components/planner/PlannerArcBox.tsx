@@ -6,15 +6,21 @@ import {
 	CSSProperties,
 	MouseEvent,
 	ReactNode,
+	Ref,
 	useState,
 } from "react"
-import { Arc } from "@/database/arcs"
-import { EnumItemLvls, getItemRarityStyle } from "@/database/item"
-import { eternalMemory } from "@/database/materials"
+import {
+	EnumItemLvls,
+	getItemRarityStyle,
+	findMaterial,
+} from "@/database/items"
 import PlannerMaterialBox from "@/components/planner/PlannerMaterialBox"
 import styles from "@/components/planner/plannerArcBox.module.css"
 import { useTooltip } from "@/hooks"
 import { useSortable } from "@dnd-kit/react/sortable"
+import usePlanner, { WeaponRecord } from "@/hooks/usePlannerStore"
+import { findArc } from "@/database/arcs"
+import { useDragOperation } from "@dnd-kit/react"
 
 function ItemPhaseStars({ starsActive }: { starsActive: number }) {
 	return Array.from({ length: 6 }).map((_, index) => {
@@ -43,10 +49,11 @@ function ItemPhaseStars({ starsActive }: { starsActive: number }) {
 	})
 }
 
-const DragPoint = () => {
+const DragPoint = ({ ref }: { ref?: Ref<HTMLDivElement> }) => {
 	const { Tooltip, showTooltip, hideTooltip } = useTooltip()
 	return (
 		<div
+			ref={ref}
 			className={styles.arcBoxDragPoint}
 			onPointerEnter={showTooltip}
 			onPointerLeave={hideTooltip}>
@@ -88,36 +95,43 @@ const ArcBtn = ({
 }
 
 export default function PlannerArcBox({
-	arc,
-	numberOfItems,
+	arcRecord,
 	index,
-	uid,
 }: {
-	arc: Arc
-	numberOfItems: number
+	arcRecord: WeaponRecord
 	index: number
-	uid: number
 }) {
-	const { ref, handleRef, isDragging } = useSortable({ id: uid, index })
+	const { ref, handleRef, isDragging } = useSortable({
+		id: arcRecord.uid,
+		index,
+	})
+
+	const { source } = useDragOperation()
+
+	const { weapons } = usePlanner()
 
 	const [currentLvl, setCurrentLvl] = useState<EnumItemLvls>(
-		EnumItemLvls.Lvl1
+		arcRecord.currentLvl
 	)
-	const [targetLvl, setTargetLvl] = useState<EnumItemLvls>(EnumItemLvls.Lvl80)
-
-	const materialList = []
-
-	for (let i = 0; i < numberOfItems; i++) {
-		materialList.push(
-			<PlannerMaterialBox key={i} material={eternalMemory} />
-		)
-	}
+	const [targetLvl, setTargetLvl] = useState<EnumItemLvls>(
+		arcRecord.targetLvl
+	)
 
 	function handleCurrentChange(e: ChangeEvent<HTMLSelectElement>) {
 		setCurrentLvl(Number(e.currentTarget.value))
+		weapons.updateWeapon({
+			...arcRecord,
+			currentLvl: Number(e.currentTarget.value),
+			targetLvl,
+		} as WeaponRecord)
 	}
 	function handleTargetChange(e: ChangeEvent<HTMLSelectElement>) {
 		setTargetLvl(Number(e.currentTarget.value))
+		weapons.updateWeapon({
+			...arcRecord,
+			targetLvl: Number(e.currentTarget.value),
+			currentLvl,
+		} as WeaponRecord)
 	}
 
 	const LvlOptions = Object.keys(EnumItemLvls)
@@ -137,10 +151,30 @@ export default function PlannerArcBox({
 		return 0
 	}
 
+	const arc = findArc(arcRecord.id)
+
+	const dropPreviewOrDragOverlay = () => {
+		const classStyles = []
+
+		if (source) {
+			classStyles.push(styles.arcBoxCollapsed)
+		}
+
+		if (isDragging) {
+			if (index === -200) {
+				classStyles.push(styles.arcBoxDragging)
+			} else {
+				classStyles.push(styles.arcBoxDropPreview)
+			}
+		}
+
+		return classStyles
+	}
+
 	return (
 		<div className={styles.arcPlannerBoxContainer} ref={ref}>
 			<div
-				className={`${styles.arcPlannerBox} ${getItemRarityStyle(arc, styles)} ${isDragging ? styles.arcBoxDragging : ""}`}>
+				className={`${styles.arcPlannerBox} ${getItemRarityStyle(arc)} ${dropPreviewOrDragOverlay().join(" ")}`}>
 				<div className={styles.arcInfoContainer}>
 					<div className={styles.arcInfoTop}>
 						<div className={styles.arcImageContainer}>
@@ -207,23 +241,30 @@ export default function PlannerArcBox({
 							</span>
 						</div>
 					</div>
-					{!isDragging && (
-						<>
-							<span
-								style={{
-									marginLeft: "2rem",
-									marginBlock: "1rem 0.5rem",
-									fontWeight: "600",
-								}}>
-								Required Materials
-							</span>
-							<div className={styles.arcRequiredMaterialsList}>
-								{materialList}
-							</div>
-						</>
-					)}
+					<span
+						className={styles.arcRequiredMaterialsLabel}
+						style={{
+							marginLeft: "2rem",
+							marginBlock: "1rem 0.5rem",
+							fontWeight: "600",
+						}}>
+						Required Materials
+					</span>
+					<div className={styles.arcRequiredMaterialsList}>
+						{arcRecord.requiredMaterials.map((material) => {
+							if (material.amount > 0) {
+								return (
+									<PlannerMaterialBox
+										key={material.id}
+										material={findMaterial(material.id)}
+										requiredAmount={material.amount}
+									/>
+								)
+							}
+						})}
+					</div>
 				</div>
-				<div className={styles.arcButtonsContainer} ref={handleRef}>
+				<div className={styles.arcButtonsContainer}>
 					<ArcBtn
 						icon="confirm_plan"
 						ariaLabel="Confirm Levelling Button"
@@ -233,13 +274,13 @@ export default function PlannerArcBox({
 						}}>
 						Confirm & Develop
 					</ArcBtn>
-					<DragPoint />
+					<DragPoint ref={handleRef} />
 					<ArcBtn
 						icon="delete"
 						ariaLabel="Delete Arc Plan Button"
 						onClick={(e: MouseEvent) => {
 							e.stopPropagation()
-							console.log("ARC ASCENDED")
+							weapons.deleteWeapon(arcRecord)
 						}}>
 						Delete
 					</ArcBtn>

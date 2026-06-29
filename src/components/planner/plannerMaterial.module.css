@@ -1,5 +1,4 @@
 .materialBox {
-	--rarity-color: grey;
 	background-color: var(--white);
 	width: fit-content;
 	height: fit-content;
@@ -13,7 +12,7 @@
 		url("/cursors/edit.png") 24 24,
 		pointer;
 
-	& {
+	&.acquired {
 		&::after {
 			content: "";
 			position: absolute;
@@ -81,20 +80,4 @@
 			grid-template-columns: repeat(2, 1fr);
 		}
 	}
-}
-
-.common {
-	--rarity-color: #5dc3ab;
-}
-
-.uncommon {
-	--rarity-color: #3f5ce2;
-}
-
-.rare {
-	--rarity-color: #d743c9;
-}
-
-.epic {
-	--rarity-color: #eaa623;
 }

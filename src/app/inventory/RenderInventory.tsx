@@ -8,14 +8,13 @@ import {
 	useState,
 } from "react"
 import dynamic from "next/dynamic"
-import { EnumRarity } from "@/database/item"
-import { EnumMaterialType } from "@/database/materials"
+import { EnumRarity, EnumMaterialType } from "@/database/items"
 import {
 	InventoryFilter,
 	InventoryGroup,
 	InventoryRarityFilter,
 	InventorySort,
-} from "@/database/inventoryFilters"
+} from "@/database/inventory/inventoryFilters"
 import { useInventoryStore, useInventoryFilters } from "@/hooks"
 import InventoryFilterToolbar from "@/components/inventory/InventoryFilterToolbar"
 import styles from "./page.module.css"
@@ -105,8 +104,7 @@ export default function RenderInventory() {
 								<details
 									key={rarity[1]}
 									className={styles.matGroup}
-									open
-								>
+									open>
 									<summary>
 										{Object.values(RarityRank).at(index)}
 									</summary>
@@ -139,8 +137,7 @@ export default function RenderInventory() {
 							<details
 								key={type}
 								className={styles.matGroup}
-								open
-							>
+								open>
 								<summary>{type}</summary>
 
 								<div className={styles.materialList}>
@@ -173,8 +170,7 @@ export default function RenderInventory() {
 					<details
 						key={"owned"}
 						className={`${styles.matGroup} ${ownedMats.length <= 0 && styles.emptyGroup}`}
-						open={ownedMats.length > 0}
-					>
+						open={ownedMats.length > 0}>
 						<summary>Owned</summary>
 						{ownedMats.length > 0 ? (
 							<div className={styles.materialList}>
@@ -200,8 +196,7 @@ export default function RenderInventory() {
 						<details
 							key={"unowned"}
 							className={styles.matGroup}
-							open
-						>
+							open>
 							<summary>Not Owned</summary>
 							<div className={styles.materialList}>
 								{unownedMats.map((material) => {

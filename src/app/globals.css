@@ -476,6 +476,22 @@ a {
 	}
 }
 
+.common {
+	--rarity-color: #5dc3ab;
+}
+
+.uncommon {
+	--rarity-color: #3f5ce2;
+}
+
+.rare {
+	--rarity-color: #d743c9;
+}
+
+.epic {
+	--rarity-color: #eaa623;
+}
+
 @media (max-width: 1135px) {
 	.title-bar {
 		gap: 2rem;
@@ -507,9 +523,11 @@ a {
 		.close-btn {
 			width: 2rem;
 			position: absolute;
-			right: 3vh;
-			top: 3vh;
+			right: 2vh;
+			top: 0vw;
+		}
 
+		&:not(.use-check) > .close-btn {
 			background-image: url("/button_icons/cross_white.png");
 		}
 	}
