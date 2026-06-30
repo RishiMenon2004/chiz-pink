@@ -1,20 +1,28 @@
 "use client"
 
 import dynamic from "next/dynamic"
-import styles from "./page.module.css"
-import { DragDropProvider, DragOverlay } from "@dnd-kit/react"
-import { Feedback } from "@dnd-kit/dom"
-import { isSortable } from "@dnd-kit/react/sortable"
-import usePlanner, { WeaponRecord } from "@/hooks/usePlannerStore"
-import { EnumItemLvls } from "@/database/items"
-import { Inventory, useInventoryStore } from "@/hooks/useInventoryStore"
 import { createContext, Dispatch, SetStateAction, useState } from "react"
-import { getAllArcs } from "@/database/arcs"
 import { createPortal } from "react-dom"
+
+import { DragDropProvider, DragOverlay } from "@dnd-kit/react"
+import { isSortable } from "@dnd-kit/react/sortable"
+import { Feedback } from "@dnd-kit/dom"
+
+import usePlanner, { WeaponRecord } from "@/hooks/usePlannerStore"
+import { Inventory, useInventoryStore } from "@/hooks/useInventoryStore"
+
+import { EnumItemLvls } from "@/database/items"
+import { getAllArcsAsArray } from "@/database/arcs"
+
 import ModalContainer, {
 	ModalEventType,
 } from "@/components/layout/ModalContainer"
+import PlannerToolbar from "@/components/planner/PlannerToolbar"
 import PlannerAddArcBox from "@/components/planner/PlannerAddArcBox"
+import { EmptyFilter } from "@/app/inventory/RenderInventory"
+
+import styles from "./page.module.css"
+import toolbarStyles from "@/components/planner/plannerToolbar.module.css"
 
 const PlannerArcBox = dynamic(
 	() => import("@/components/planner/PlannerArcBox"),
@@ -27,13 +35,11 @@ type AddNewArcContextType = {
 		SetStateAction<Omit<WeaponRecord, "uid" | "requiredMaterials">>
 	>
 }
-
 export const AddNewArcContext = createContext<AddNewArcContextType>(null!)
 
 type ArcPlannerUsableMaterialsType = {
-	currentInventory: Inventory
+	cumulativeInventory: Inventory[]
 }
-
 export const ArcPlannerUsableMaterialsContext =
 	createContext<ArcPlannerUsableMaterialsType>(null!)
 
@@ -58,83 +64,99 @@ export default function RenderArcsPlanner() {
 		setNewArcRecord(null!)
 	}
 
+	const handleStartAdding = () => {
+		setNewArcRecord({
+			id: getAllArcsAsArray()[0].id,
+			currentLvl: EnumItemLvls.Lvl1,
+			targetLvl: EnumItemLvls.Lvl80,
+		})
+	}
+
 	return (
-		<div className={`${styles.page} ${activeDragArc && styles.dragging}`}>
-			{/* =========================================================== */}
-			{/*                     Adding New Entries                      */}
-			{/* =========================================================== */}
-			<button
-				onClick={() => {
-					setNewArcRecord({
-						id: Object.values(getAllArcs())[0].id,
-						currentLvl: EnumItemLvls.Lvl1,
-						targetLvl: EnumItemLvls.Lvl80,
-					})
-				}}>
-				Add
-			</button>
+		<ArcPlannerUsableMaterialsContext.Provider
+			value={{ cumulativeInventory: [inventory] }}>
+			<PlannerToolbar>
+				{/* =========================================================== */}
+				{/*                     Adding New Entries                      */}
+				{/* =========================================================== */}
+				<button
+					className={toolbarStyles.toolbarButton}
+					onClick={handleStartAdding}>
+					ADD ARC
+				</button>
 
-			<AddNewArcContext.Provider
-				value={{ newArcRecord, setNewArcRecord }}>
-				{newArcRecord &&
-					createPortal(
-						<ModalContainer
-							onClose={closeModal}
-							onCancel={cancelModal}>
-							<PlannerAddArcBox />
-						</ModalContainer>,
-						document.body
-					)}
-			</AddNewArcContext.Provider>
-			{/* =========================================================== */}
+				<AddNewArcContext.Provider
+					value={{ newArcRecord, setNewArcRecord }}>
+					{newArcRecord &&
+						createPortal(
+							<ModalContainer
+								onClose={closeModal}
+								onCancel={cancelModal}>
+								<PlannerAddArcBox onConfirm={closeModal} />
+							</ModalContainer>,
+							document.body
+						)}
+				</AddNewArcContext.Provider>
+				{/* =========================================================== */}
+			</PlannerToolbar>
 
-			<DragDropProvider
-				plugins={(defaults) => [
-					...defaults,
-					Feedback.configure({
-						dropAnimation: null,
-					}),
-				]}
-				onDragStart={(e) =>
-					setActiveDragArc((e.operation.source?.id as string) || null)
-				}
-				onDragEnd={(e) => {
-					if (e.canceled) return
-					setActiveDragArc(null)
+			{Object.entries(plannerData.arcs).length <= 0 && (
+				<EmptyFilter>
+					{"You don't have anything planned... Maybe you'd like to "}
+					<a className="btn-anchor" onClick={handleStartAdding}>
+						Add Something?
+					</a>
+				</EmptyFilter>
+			)}
 
-					const { source } = e.operation
-
-					if (isSortable(source)) {
-						const { initialIndex, index } = source
-
-						if (initialIndex !== index) {
-							const newArcsList = [
-								...Object.values(plannerData.arcs),
-							]
-							const [removed] = newArcsList.splice(
-								initialIndex,
-								1
-							)
-							newArcsList.splice(index, 0, removed)
-
-							const newArcsRecord: typeof plannerData.arcs = {}
-							newArcsList.forEach((arcRecord) => {
-								newArcsRecord[arcRecord.uid] = arcRecord
-							})
-
-							updatePlanner({
-								...plannerData,
-								arcs: newArcsRecord,
-							})
-						}
+			<div className={`${styles.page} ${activeDragArc && styles.dragging}`}>
+				<DragDropProvider
+					plugins={(defaults) => [
+						...defaults,
+						Feedback.configure({
+							dropAnimation: null,
+						}),
+					]}
+					onDragStart={(e) =>
+						setActiveDragArc(
+							(e.operation.source?.id as string) || null
+						)
 					}
-				}}>
-				{/* ========================================================= */}
-				{/*                       Planner Grid                        */}
-				{/* ========================================================= */}
-				<div className={styles.plannerGrid}>
-					<ArcPlannerUsableMaterialsContext.Provider
-						value={{ currentInventory: inventory }}>
+					onDragEnd={(e) => {
+						if (e.canceled) return
+						setActiveDragArc(null)
+
+						const { source } = e.operation
+
+						if (isSortable(source)) {
+							const { initialIndex, index } = source
+
+							if (initialIndex !== index) {
+								const newArcsList = [
+									...Object.values(plannerData.arcs),
+								]
+								const [removed] = newArcsList.splice(
+									initialIndex,
+									1
+								)
+								newArcsList.splice(index, 0, removed)
+
+								const newArcsRecord: typeof plannerData.arcs = {}
+								newArcsList.forEach((arcRecord) => {
+									newArcsRecord[arcRecord.uid] = arcRecord
+								})
+
+								updatePlanner({
+									...plannerData,
+									arcs: newArcsRecord,
+								})
+							}
+						}
+					}}>
+					{/* ========================================================= */}
+					{/*                       Planner Grid                        */}
+					{/* ========================================================= */}
+					<div className={styles.plannerGrid}>
 						{Object.values(plannerData.arcs).map((arc, index) => (
 							<PlannerArcBox
 								key={arc.uid}
@@ -142,19 +164,18 @@ export default function RenderArcsPlanner() {
 								index={index}
 							/>
 						))}
-					</ArcPlannerUsableMaterialsContext.Provider>
-
-					<DragOverlay>
-						{activeDragArc && (
-							<PlannerArcBox
-								arcRecord={plannerData.arcs[activeDragArc]}
-								index={-200}
-							/>
-						)}
-					</DragOverlay>
-				</div>
-				{/* ========================================================= */}
-			</DragDropProvider>
-		</div>
+						<DragOverlay>
+							{activeDragArc && (
+								<PlannerArcBox
+									arcRecord={plannerData.arcs[activeDragArc]}
+									index={-200}
+								/>
+							)}
+						</DragOverlay>
+					</div>
+					{/* ========================================================= */}
+				</DragDropProvider>
+			</div>
+		</ArcPlannerUsableMaterialsContext.Provider>
 	)
 }

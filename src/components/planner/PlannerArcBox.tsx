@@ -9,11 +9,7 @@ import {
 	Ref,
 	useState,
 } from "react"
-import {
-	EnumItemLvls,
-	getItemRarityStyle,
-	findMaterial,
-} from "@/database/items"
+import { EnumItemLvls, getItemRarityStyle, findMaterial } from "@/database/items"
 import PlannerMaterialBox from "@/components/planner/PlannerMaterialBox"
 import styles from "@/components/planner/plannerArcBox.module.css"
 import { useTooltip } from "@/hooks"
@@ -68,11 +64,13 @@ const ArcBtn = ({
 	onClick,
 	icon,
 	ariaLabel,
+	toolTipSubtext,
 	children,
 }: {
 	onClick: (e: MouseEvent<HTMLElement>) => void
 	icon: string
 	ariaLabel: string
+	toolTipSubtext?: string
 	children: ReactNode
 }) => {
 	const { Tooltip, showTooltip, hideTooltip } = useTooltip()
@@ -89,7 +87,9 @@ const ArcBtn = ({
 			onPointerEnter={showTooltip}
 			onPointerLeave={hideTooltip}
 			onClick={onClick}>
-			<Tooltip offset={{ x: 48, y: 32 }}>{children}</Tooltip>
+			<Tooltip offset={{ x: 48, y: 32 }} subText={toolTipSubtext || ""}>
+				{children}
+			</Tooltip>
 		</button>
 	)
 }
@@ -113,9 +113,7 @@ export default function PlannerArcBox({
 	const [currentLvl, setCurrentLvl] = useState<EnumItemLvls>(
 		arcRecord.currentLvl
 	)
-	const [targetLvl, setTargetLvl] = useState<EnumItemLvls>(
-		arcRecord.targetLvl
-	)
+	const [targetLvl, setTargetLvl] = useState<EnumItemLvls>(arcRecord.targetLvl)
 
 	function handleCurrentChange(e: ChangeEvent<HTMLSelectElement>) {
 		setCurrentLvl(Number(e.currentTarget.value))
@@ -190,9 +188,7 @@ export default function PlannerArcBox({
 							</div>
 						</div>
 						<div className={styles.arcStatsSection}>
-							<div className={styles.arcStatsName}>
-								{arc.name}
-							</div>
+							<div className={styles.arcStatsName}>{arc.name}</div>
 
 							<span className={styles.arcStatsLvlContainer}>
 								<div className={styles.arcPhases}>
@@ -268,21 +264,23 @@ export default function PlannerArcBox({
 					<ArcBtn
 						icon="confirm_plan"
 						ariaLabel="Confirm Levelling Button"
+						toolTipSubtext="Materials will be deducted from your inventory."
 						onClick={(e: MouseEvent) => {
 							e.stopPropagation()
 							console.log("ARC ASCENDED")
 						}}>
-						Confirm & Develop
+						Complete Enhancement
 					</ArcBtn>
 					<DragPoint ref={handleRef} />
 					<ArcBtn
 						icon="delete"
 						ariaLabel="Delete Arc Plan Button"
+						toolTipSubtext="Be careful! You can't undo this action."
 						onClick={(e: MouseEvent) => {
 							e.stopPropagation()
 							weapons.deleteWeapon(arcRecord)
 						}}>
-						Delete
+						Delete Arc
 					</ArcBtn>
 				</div>
 			</div>

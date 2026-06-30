@@ -8,6 +8,7 @@ import Image from "next/image"
 import { Arc, EnumArcType } from "@/database/arcs"
 import { RarityRank } from "@/app/inventory/RenderInventory"
 import { AddNewArcContext } from "@/app/arcs/RenderArcsPlanner"
+import { ModalEventType } from "../layout/ModalContainer"
 
 const LvlSelectGrid = ({
 	onChange,
@@ -25,9 +26,7 @@ const LvlSelectGrid = ({
 	return (
 		<div
 			className={styles.arcLvlSelectGrid}
-			style={
-				{ "--selected-child": findValueIndex() + 1 } as CSSProperties
-			}>
+			style={{ "--selected-child": findValueIndex() + 1 } as CSSProperties}>
 			{Object.entries(EnumItemLvls)
 				.filter((lvl) => typeof lvl[1] === "number")
 				.map((lvl, index) => {
@@ -163,13 +162,11 @@ const PlannerArcsSelect = () => {
 									className={`${styles.arcTypeFilter} ${filterQuery[1] === arcRank && styles.active}`}
 									onClick={(e) => {
 										e.stopPropagation()
-										setFilterQuery(
-											([prevType, prevRank]) => {
-												if (prevRank === arcRank)
-													return [prevType, null]
-												return [prevType, arcRank]
-											}
-										)
+										setFilterQuery(([prevType, prevRank]) => {
+											if (prevRank === arcRank)
+												return [prevType, null]
+											return [prevType, arcRank]
+										})
 									}}>
 									{Object.values(RarityRank).at(arcRank - 2)}
 								</span>
@@ -210,7 +207,11 @@ const PlannerArcsSelect = () => {
 	)
 }
 
-export default function PlannerAddArcBox() {
+export default function PlannerAddArcBox({
+	onConfirm,
+}: {
+	onConfirm: (e: ModalEventType) => void
+}) {
 	const { newArcRecord, setNewArcRecord } = useContext(AddNewArcContext)
 	return (
 		<div
@@ -228,8 +229,7 @@ export default function PlannerAddArcBox() {
 							return {
 								...prevArcRecord,
 								currentLvl: value,
-								targetLvl:
-									value > targetLvl ? value : targetLvl,
+								targetLvl: value > targetLvl ? value : targetLvl,
 							}
 						})
 					}}
@@ -251,6 +251,9 @@ export default function PlannerAddArcBox() {
 						})
 					}}
 				/>
+			</div>
+			<div className={styles.addArcConfirmButton} onClick={onConfirm}>
+				ADD
 			</div>
 		</div>
 	)

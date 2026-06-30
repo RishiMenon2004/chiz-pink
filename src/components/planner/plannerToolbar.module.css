@@ -1,0 +1,150 @@
+.plannerToolbar {
+	position: sticky;
+	top: 3rem;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 1rem;
+	z-index: 1;
+
+	height: 4rem;
+	width: 80%;
+	margin: auto;
+	padding-inline: 1rem;
+	border-radius: 0 0 1rem 1rem;
+
+	&::before {
+		content: "";
+		position: absolute;
+		inset: 0;
+		z-index: -1;
+
+		border-radius: 0 0 1rem 1rem;
+
+		background-color: var(--white);
+		background-image: linear-gradient(
+			to top,
+			rgb(174, 174, 174),
+			transparent
+		);
+		box-shadow:
+			0px -3px 2px -2px hsl(0, 0%, 20%) inset,
+			0px -10px 10px -2px rgb(174, 174, 174) inset,
+			0px -23px 15px -2px hsl(300, 0%, 50%) inset,
+			0px 2px 20px hsl(0, 0%, 4%);
+	}
+}
+
+.pullOutTab {
+	display: none;
+	user-select: none;
+}
+
+.toolbarButton {
+	display: grid;
+	place-items: center;
+
+	padding: 0.25rem 1rem;
+	padding-left: 2.25rem;
+	border: none;
+	border-radius: 100vh;
+
+	color: black;
+	font-family: var(--font-barlow-condensed);
+	font-size: 1.25rem;
+	font-weight: 700;
+
+	background-color: #d0d0d0;
+	background-image: url("/button_icons/plus.png");
+	background-size: auto 90%;
+	background-position: 0.25rem center;
+	background-repeat: no-repeat;
+
+	paint-order: stroke fill;
+
+	box-shadow:
+		#393939 0px 0px 1.5px 0,
+		var(--interactive-bg) 0px 0px 0px 0.175rem,
+		hsla(0, 0%, 0%, 0.6) 0px -1px 2px 0.175rem,
+		white 0px 1px 1px 0.175rem,
+		hsl(0, 0%, 85%) 0.5px 0.5px 0.5px 0.5px inset,
+		hsl(0, 0%, 70%) -0.5px -0.5px 0.5px 0.5px inset;
+
+	&:hover {
+		color: white;
+		-webkit-text-stroke: 4px black;
+
+		background-color: var(--pink);
+
+		box-shadow:
+			#393939 0px 0px 1.5px 0,
+			var(--interactive-bg) 0px 0px 0px 0.175rem,
+			hsla(0, 0%, 0%, 0.6) 0px -1px 2px 0.175rem,
+			white 0px 1px 1px 0.175rem,
+			hsla(0, 0%, 100%) 2px 3px 5px -2px inset,
+			hsla(0, 0%, 18%, 0.9) 0px -2px 10px -2px inset;
+	}
+}
+
+@media (max-width: 1135px) {
+	.plannerToolbar {
+		position: relative;
+		top: unset;
+		left: unset;
+		right: unset;
+		bottom: unset;
+
+		display: grid;
+		grid-template-columns: repeat(2, 1fr);
+
+		height: fit-content;
+		padding-block: 1rem;
+	}
+}
+
+@media (max-width: 1000px) {
+	.plannerToolbar {
+		place-items: center;
+		align-content: end;
+
+		height: 3rem;
+
+		.toolbarButton {
+			display: none;
+		}
+
+		.pullOutTab {
+			grid-column: 1 / span 2;
+			flex-shrink: 0;
+			display: block;
+
+			width: 100%;
+			height: 1rem;
+
+			text-align: center;
+
+			background-image: url("/button_icons/pulltab.png");
+			background-size: auto 100%;
+			background-repeat: no-repeat;
+			background-position: center;
+
+			cursor: s-resize;
+		}
+
+		&.toolbarOpen {
+			height: fit-content;
+
+			.toolbarButton {
+				display: initial;
+			}
+		}
+	}
+}
+
+@media (max-width: 550px) {
+	.plannerToolbar {
+		display: flex;
+		flex-direction: column;
+		justify-content: end;
+	}
+}

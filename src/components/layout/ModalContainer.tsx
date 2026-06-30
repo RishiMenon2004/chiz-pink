@@ -2,9 +2,7 @@
 
 import { KeyboardEvent, MouseEvent, ReactNode, useEffect } from "react"
 
-export type ModalEventType =
-	| MouseEvent<HTMLElement>
-	| KeyboardEvent<HTMLElement>
+export type ModalEventType = MouseEvent<HTMLElement> | KeyboardEvent<HTMLElement>
 
 export default function ModalContainer({
 	onClose,
@@ -39,10 +37,13 @@ export default function ModalContainer({
 
 	return (
 		<div
-			className={`modal-container ${onCancel && "use-check"}`}
+			className={`modal-container`}
 			onClick={(e) => (onCancel ? onCancel(e) : onClose(e))}>
 			{children}
-			<button className="close-btn" onClick={(e) => onClose(e)} />
+			<button
+				className="close-btn"
+				onClick={(e) => (onCancel ? onCancel(e) : onClose(e))}
+			/>
 			{onCancel && (
 				<p
 					style={{
