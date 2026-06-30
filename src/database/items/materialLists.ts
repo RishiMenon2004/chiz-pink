@@ -82,13 +82,13 @@ const allMaterials: Record<string, Material> = {
 	distorted_numeral: distortedNumeral,
 	transcendent_delusions: transcendentDelusions,
 
-	water_moon_pick: waterMoonPick,
-	charging_knight_spark_plug: chargingKnightSparkPlug,
 	confessional_flower_seed: ConfessionalFLowerSeed,
+	charging_knight_spark_plug: chargingKnightSparkPlug,
 	a_page_from_delusions_shore: aPageFromDelusionsShore,
-	tear_of_the_sea: tearOfTheSea,
+	water_moon_pick: waterMoonPick,
 	nest_guard_fragment: nestGuardFragment,
 	colorful_ticket_stub: colorfulTicketStub,
+	tear_of_the_sea: tearOfTheSea,
 
 	the_olive_branch: theOliveBranch,
 	white_rose: whiteRose,
@@ -163,13 +163,13 @@ const allInventoryMaterials: Record<string, Material> = {
 	distorted_numeral: distortedNumeral,
 	transcendent_delusions: transcendentDelusions,
 
-	water_moon_pick: waterMoonPick,
-	charging_knight_spark_plug: chargingKnightSparkPlug,
 	confessional_flower_seed: ConfessionalFLowerSeed,
+	charging_knight_spark_plug: chargingKnightSparkPlug,
 	a_page_from_delusions_shore: aPageFromDelusionsShore,
-	tear_of_the_sea: tearOfTheSea,
+	water_moon_pick: waterMoonPick,
 	nest_guard_fragment: nestGuardFragment,
 	colorful_ticket_stub: colorfulTicketStub,
+	tear_of_the_sea: tearOfTheSea,
 
 	the_olive_branch: theOliveBranch,
 	white_rose: whiteRose,
