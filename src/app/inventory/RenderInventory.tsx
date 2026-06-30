@@ -48,8 +48,9 @@ type InventoryFiltersContextType = {
 	setSortReverse: Dispatch<SetStateAction<boolean>>
 }
 
-export const InventoryFilterContext =
-	createContext<InventoryFiltersContextType>(null!)
+export const InventoryFilterContext = createContext<InventoryFiltersContextType>(
+	null!
+)
 
 export default function RenderInventory() {
 	const [filter, setFilter] = useState<InventoryFilter>("default")
@@ -80,8 +81,9 @@ export default function RenderInventory() {
 		if (filteredInventory.length <= 0) {
 			return (
 				<EmptyFilter>
-					I-I can&apos;t seem to find anything with those filters.
-					Would you like to{" "}
+					{
+						"I-I can't seem to find anything with those filters. Would you like to "
+					}
 					<a onClick={clearAllFilters} className="btn-anchor">
 						try again?
 					</a>
@@ -134,10 +136,7 @@ export default function RenderInventory() {
 					)
 					if (filteredType.length > 0) {
 						return (
-							<details
-								key={type}
-								className={styles.matGroup}
-								open>
+							<details key={type} className={styles.matGroup} open>
 								<summary>{type}</summary>
 
 								<div className={styles.materialList}>
@@ -193,10 +192,7 @@ export default function RenderInventory() {
 
 				if (unownedMats.length > 0) {
 					groups.push(
-						<details
-							key={"unowned"}
-							className={styles.matGroup}
-							open>
+						<details key={"unowned"} className={styles.matGroup} open>
 							<summary>Not Owned</summary>
 							<div className={styles.materialList}>
 								{unownedMats.map((material) => {
@@ -254,8 +250,9 @@ export default function RenderInventory() {
 
 			{!doesInventoryExist && (
 				<EmptyFilter>
-					Seems like you&apos;re new here. W-would you like to open an
-					account with us?{" "}
+					{
+						"Seems like you're new here. W-would you like to open an account with us? "
+					}
 					<a className={`btn-anchor ${styles.editCursor}`}>
 						Edit any item to get started.
 					</a>
