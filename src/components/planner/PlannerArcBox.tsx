@@ -17,6 +17,7 @@ import { useSortable } from "@dnd-kit/react/sortable"
 import usePlanner, { WeaponRecord } from "@/hooks/usePlannerStore"
 import { findArc } from "@/database/arcs"
 import { useDragOperation } from "@dnd-kit/react"
+import { RarityRank } from "@/app/inventory/RenderInventory"
 
 function ItemPhaseStars({ starsActive }: { starsActive: number }) {
 	return Array.from({ length: 6 }).map((_, index) => {
@@ -184,7 +185,7 @@ export default function PlannerArcBox({
 								loading="eager"
 							/>
 							<div className={styles.arcTypeContainer}>
-								{arc.type}
+								{`${arc.type.toLocaleUpperCase()}`}
 							</div>
 						</div>
 						<div className={styles.arcStatsSection}>
