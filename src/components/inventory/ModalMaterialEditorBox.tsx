@@ -56,7 +56,6 @@ export default function MaterialAdjustmentBox({
 	// Register/unregister amount callback with parent context
 	useEffect(() => {
 		const amountCallback = () => {
-			console.log("closemodal callback executed")
 			if (addSubValue) {
 				const adjustmentValue = parseInt(addSubValue) || 0
 				const newTotal = Math.max(itemQuantity + adjustmentValue, 0)
