@@ -22,7 +22,7 @@
 			height: 1rem;
 			z-index: 1;
 
-			background-image: url("/button_icons/craft.png");
+			background-image: url("/icons/craft.png");
 			background-size: 1rem;
 			padding-inline: 1rem 0.5rem;
 			background-position: left center;

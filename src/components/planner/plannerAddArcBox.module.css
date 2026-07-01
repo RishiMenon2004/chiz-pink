@@ -165,7 +165,7 @@
 				caret-color: var(--pink);
 
 				background-color: hsla(0, 0%, 0%, 0.3);
-				background-image: url("/button_icons/search.png");
+				background-image: url("/icons/search.png");
 				background-size: contain;
 				background-position: left center;
 				background-repeat: no-repeat;

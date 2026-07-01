@@ -283,7 +283,7 @@
 
 		cursor: grab;
 
-		background-image: url("/button_icons/drag.png");
+		background-image: url("/icons/drag.png");
 		background-size: cover;
 		background-position: center;
 		background-repeat: no-repeat;
@@ -423,7 +423,7 @@
 			width: 2.75rem;
 			height: 2rem;
 
-			background-image: url("/button_icons/drag_hr.png");
+			background-image: url("/icons/drag_hr.png");
 		}
 	}
 }
