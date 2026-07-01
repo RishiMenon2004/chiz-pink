@@ -1,22 +1,24 @@
 "use client"
 
 import Image from "next/image"
-import { Material, getItemRarityStyle, findMaterial } from "@/database/items"
-import styles from "./plannerMaterial.module.css"
+import { MouseEvent, useContext } from "react"
+
 import { useTooltip } from "@/hooks"
-import MaterialItemBox from "@/components/inventory/InventoryMaterialBox"
-import ModalContainer, {
-	ModalEventType,
-} from "@/components/layout/ModalContainer"
-import { createPortal } from "react-dom"
-import { MouseEvent, useState } from "react"
+
+import { Material, getItemRarityStyle } from "@/database/items"
+
+import { ArcPlannerUsableMaterialsContext } from "@/app/arcs/ArcDeductedInventoryProvider"
+
+import styles from "./plannerMaterial.module.css"
 
 export default function PlannerMaterialBox({
 	material,
 	requiredAmount,
+	entryIndex,
 }: {
 	material: Material
 	requiredAmount: number
+	entryIndex: number
 }) {
 	const { Tooltip, showTooltip, hideTooltip } = useTooltip()
 	const [showMaterialEditorModal, setShowMaterialEditorModal] =
@@ -48,13 +50,28 @@ export default function PlannerMaterialBox({
 		setShowMaterialEditorModal(false)
 	}
 
+	const { cumulativeInventory } = useContext(ArcPlannerUsableMaterialsContext)
+	const usableInventory = cumulativeInventory[entryIndex] || {}
+	const availableAmount = usableInventory[material.id]?.amount || 0
+	const craftedAmount = usableInventory[material.id]?.craftedAmount || 0
+	const usingCrafted = craftedAmount > 0
+
+	const remainingAmount = Math.max(
+		0,
+		requiredAmount - (availableAmount + craftedAmount)
+	)
+	const displayAmount = remainingAmount > 0 ? remainingAmount : requiredAmount
+
 	return (
 		<div
-			className={`${styles.materialBox} ${getItemRarityStyle(material)}`}
+			className={`${styles.materialBox} ${getItemRarityStyle(material)} ${remainingAmount === 0 && styles.acquired} ${usingCrafted && styles.crafted}`}
 			onPointerEnter={showTooltip}
 			onPointerLeave={hideTooltip}
 			onClick={handleClick}>
 			<div className={styles.iconContainer}>
+				{usingCrafted && (
+					<div className={styles.craftedTag}>{craftedAmount}</div>
+				)}
 				<Image
 					src={`/materials${material.imageSrc}.png`}
 					width={64}
@@ -64,7 +81,7 @@ export default function PlannerMaterialBox({
 				/>
 			</div>
 			<span className={styles.amount}>
-				{requiredAmount.toLocaleString("en-us")}
+				{displayAmount.toLocaleString("en-us")}
 			</span>
 
 			{showMaterialEditorModal &&
@@ -86,31 +103,43 @@ export default function PlannerMaterialBox({
 					document.body
 				)}
 
-			<Tooltip offset={{ x: 48, y: 32 }} subText="Click to Edit">
+			<Tooltip offset={{ x: 24, y: 0 }} subText="Click to Edit">
 				<div>{material.name}</div>
-				<hr style={{ marginBlock: "0.5rem" }} />
 				<div
 					style={{
-						fontSize: "0.9rem",
+						fontSize: "0.8rem",
 						opacity: 0.75,
-						display: "flex",
-						flexDirection: "column",
-						gap: "0.125rem",
+						fontWeight: 600,
+						marginBlock: "0.25rem",
+						marginLeft: "0.5rem",
 					}}>
+					{"Owned: "}
+					<span style={{ fontFamily: "var(--font-barlow-condensed)" }}>
+						{availableAmount}
+					</span>
+					{usingCrafted && (
+						<span style={{ fontStyle: "italic" }}>
+							{" ("}
+							<span
+								style={{
+									fontFamily: "var(--font-barlow-condensed)",
+								}}>
+								+{craftedAmount}
+							</span>
+							{" crafted)"}
+						</span>
+					)}
+				</div>
+				<hr style={{ marginBlock: "0.5rem" }} />
+				<div className={styles.tooltipSourceList}>
 					Sources:
 					{material.sources.map((source) => (
-						<div
-							key={source}
-							style={{
-								fontFamily: "--font-barlow-condensed",
-								fontWeight: "500",
-								fontStyle: "italic",
-								marginInlineStart: "0.5rem",
-							}}>
+						<div className={styles.tooltipSource} key={source}>
 							{source}
 						</div>
 					))}
 				</div>
+				<hr style={{ marginBlock: "0.5rem" }} />
 			</Tooltip>
 		</div>
 	)

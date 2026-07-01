@@ -7,17 +7,18 @@ import {
 	MouseEvent,
 	ReactNode,
 	Ref,
+	useContext,
 	useState,
 } from "react"
 import { EnumItemLvls, getItemRarityStyle, findMaterial } from "@/database/items"
 import PlannerMaterialBox from "@/components/planner/PlannerMaterialBox"
 import styles from "@/components/planner/plannerArcBox.module.css"
-import { useTooltip } from "@/hooks"
+import { useInventoryStore, useTooltip } from "@/hooks"
 import { useSortable } from "@dnd-kit/react/sortable"
 import usePlanner, { WeaponRecord } from "@/hooks/usePlannerStore"
 import { findArc } from "@/database/arcs"
 import { useDragOperation } from "@dnd-kit/react"
-import { RarityRank } from "@/app/inventory/RenderInventory"
+import { ArcPlannerUsableMaterialsContext } from "@/app/arcs/ArcDeductedInventoryProvider"
 
 function ItemPhaseStars({ starsActive }: { starsActive: number }) {
 	return Array.from({ length: 6 }).map((_, index) => {
@@ -106,8 +107,10 @@ export default function PlannerArcBox({
 		id: arcRecord.uid,
 		index,
 	})
-
 	const { source } = useDragOperation()
+
+	const { inventory, updateInventory } = useInventoryStore()
+	const { cumulativeInventory } = useContext(ArcPlannerUsableMaterialsContext)
 
 	const { weapons } = usePlanner()
 
@@ -116,21 +119,30 @@ export default function PlannerArcBox({
 	)
 	const [targetLvl, setTargetLvl] = useState<EnumItemLvls>(arcRecord.targetLvl)
 
-	function handleCurrentChange(e: ChangeEvent<HTMLSelectElement>) {
-		setCurrentLvl(Number(e.currentTarget.value))
+	function updateCurrentLvl(value: number) {
+		setCurrentLvl(value)
 		weapons.updateWeapon({
 			...arcRecord,
-			currentLvl: Number(e.currentTarget.value),
+			currentLvl: value,
 			targetLvl,
 		} as WeaponRecord)
 	}
-	function handleTargetChange(e: ChangeEvent<HTMLSelectElement>) {
-		setTargetLvl(Number(e.currentTarget.value))
+
+	function updateTargetLvl(value: number) {
+		setTargetLvl(value)
 		weapons.updateWeapon({
 			...arcRecord,
-			targetLvl: Number(e.currentTarget.value),
 			currentLvl,
+			targetLvl: value,
 		} as WeaponRecord)
+	}
+
+	function handleCurrentChange(e: ChangeEvent<HTMLSelectElement>) {
+		updateCurrentLvl(Number(e.currentTarget.value))
+		
+	}
+	function handleTargetChange(e: ChangeEvent<HTMLSelectElement>) {
+		updateTargetLvl(Number(e.currentTarget.value))
 	}
 
 	const LvlOptions = Object.keys(EnumItemLvls)
@@ -168,6 +180,55 @@ export default function PlannerArcBox({
 		}
 
 		return classStyles
+	}
+
+	const allMaterialsAcquired = () => {
+		return arcRecord.requiredMaterials.every((material) => {
+			const inventoryAmount = inventory[material.id] || 0
+			const { craftedAmount } = cumulativeInventory[index][material.id]
+			return inventoryAmount + (craftedAmount || 0) >= material.amount
+		})
+	}
+
+	const handleEnhancement = (e: MouseEvent) => {
+		e.stopPropagation()
+		const localInventory = { ...inventory }
+		const currentCumulativeInventory = cumulativeInventory[index]
+
+		if (allMaterialsAcquired()) {
+			arcRecord.requiredMaterials.forEach((material) => {
+				const inventoryAmount = localInventory[material.id] || 0
+
+				const { craftedAmount } = currentCumulativeInventory[material.id]
+
+				if (craftedAmount && craftedAmount > 0) {
+					const materialData = findMaterial(material.id)
+					const linkedMaterials =
+						materialData?.linkedMaterials?.map((linkedMaterialId) =>
+							findMaterial(linkedMaterialId)
+						) || []
+					const lowerMaterial = linkedMaterials.find(
+						(linkedMaterial) =>
+							linkedMaterial.rarity === materialData.rarity - 1
+					)?.id
+
+					if (lowerMaterial) {
+						localInventory[lowerMaterial] = Math.max(
+							0,
+							localInventory[lowerMaterial] - craftedAmount * 3
+						)
+					}
+				}
+
+				localInventory[material.id] = Math.max(
+					0,
+					inventoryAmount - material.amount
+				)
+			})
+		}
+
+		updateInventory(localInventory)
+		updateCurrentLvl(targetLvl)
 	}
 
 	return (
@@ -255,6 +316,7 @@ export default function PlannerArcBox({
 										key={material.id}
 										material={findMaterial(material.id)}
 										requiredAmount={material.amount}
+										entryIndex={index}
 									/>
 								)
 							}
@@ -265,12 +327,9 @@ export default function PlannerArcBox({
 					<ArcBtn
 						icon="confirm_plan"
 						ariaLabel="Confirm Levelling Button"
-						toolTipSubtext="Materials will be deducted from your inventory."
-						onClick={(e: MouseEvent) => {
-							e.stopPropagation()
-							console.log("ARC ASCENDED")
-						}}>
-						Complete Enhancement
+						toolTipSubtext={allMaterialsAcquired() ? "Materials will be deducted from your inventory." : "You have inadequate materials."}
+						onClick={handleEnhancement}>
+						{allMaterialsAcquired() ? "Complete Enhancement" : <s>Complete Enhancement</s>}
 					</ArcBtn>
 					<DragPoint ref={handleRef} />
 					<ArcBtn

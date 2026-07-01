@@ -9,7 +9,6 @@ import { isSortable } from "@dnd-kit/react/sortable"
 import { Feedback } from "@dnd-kit/dom"
 
 import usePlanner, { WeaponRecord } from "@/hooks/usePlannerStore"
-import { Inventory, useInventoryStore } from "@/hooks/useInventoryStore"
 
 import { EnumItemLvls } from "@/database/items"
 import { getAllArcsAsArray } from "@/database/arcs"
@@ -23,6 +22,7 @@ import { EmptyFilter } from "@/app/inventory/RenderInventory"
 
 import styles from "./page.module.css"
 import toolbarStyles from "@/components/planner/plannerToolbar.module.css"
+import { ArcDeductedInventoryProvider } from "./ArcDeductedInventoryProvider"
 
 const PlannerArcBox = dynamic(
 	() => import("@/components/planner/PlannerArcBox"),
@@ -37,15 +37,8 @@ type AddNewArcContextType = {
 }
 export const AddNewArcContext = createContext<AddNewArcContextType>(null!)
 
-type ArcPlannerUsableMaterialsType = {
-	cumulativeInventory: Inventory[]
-}
-export const ArcPlannerUsableMaterialsContext =
-	createContext<ArcPlannerUsableMaterialsType>(null!)
-
 export default function RenderArcsPlanner() {
 	const { plannerData, updatePlanner, weapons } = usePlanner()
-	const { inventory } = useInventoryStore()
 
 	const [activeDragArc, setActiveDragArc] = useState<string | null>(null)
 
@@ -73,8 +66,7 @@ export default function RenderArcsPlanner() {
 	}
 
 	return (
-		<ArcPlannerUsableMaterialsContext.Provider
-			value={{ cumulativeInventory: [inventory] }}>
+		<ArcDeductedInventoryProvider arcRecords={Object.values(plannerData.arcs)}>
 			<PlannerToolbar>
 				{/* =========================================================== */}
 				{/*                     Adding New Entries                      */}
@@ -176,6 +168,6 @@ export default function RenderArcsPlanner() {
 					{/* ========================================================= */}
 				</DragDropProvider>
 			</div>
-		</ArcPlannerUsableMaterialsContext.Provider>
+		</ArcDeductedInventoryProvider>
 	)
 }
