@@ -442,6 +442,12 @@ a {
 		background-image: url("/button_icons/check.png");
 		background-size: cover;
 	}
+
+	&.use-cross {
+		.close-btn {
+			background-image: url("/button_icons/cross_white.png");
+		}
+	}
 }
 
 .tooltip {

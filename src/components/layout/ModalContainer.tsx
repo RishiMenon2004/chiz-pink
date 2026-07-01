@@ -39,7 +39,7 @@ export default function ModalContainer({
 
 	return (
 		<div
-			className={`modal-container`}
+			className={`modal-container${onCancel ? " use-cross" : ""}`}
 			onClick={(e) => (onCancel ? onCancel(e) : onClose(e))}>
 			{children}
 			<button
