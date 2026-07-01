@@ -23,6 +23,7 @@ import getLinkedMaterials from "@/components/inventory/getLinkedMaterials"
 import styles from "@/components/inventory/inventoryMaterial.module.css"
 import pageStyles from "@/app/inventory/page.module.css"
 import usePlanner from "@/hooks/usePlannerStore"
+import { findArc } from "@/database/arcs"
 
 type MaterialItemBoxProps = {
 	material: Material
@@ -119,7 +120,13 @@ export default function MaterialItemBox({
 			onPointerEnter={showTooltip}
 			onPointerLeave={hideTooltip}>
 			<div className={`${styles.iconContainer}`} onClick={handleBoxClick}>
-				{hasRequired && <div className={styles.requirementIndicator}>{hasAcquired ? requiredQuantity : (requiredQuantity - itemQuantity)}</div>}
+				{hasRequired && (
+					<div className={styles.requirementIndicator}>
+						{hasAcquired
+							? requiredQuantity
+							: requiredQuantity - itemQuantity}
+					</div>
+				)}
 				<Image
 					src={`/materials${material.imageSrc}.png`}
 					width={128}
@@ -142,40 +149,75 @@ export default function MaterialItemBox({
 				<div>{material.name}</div>
 
 				{hasRequired && (
-					<div
-						style={{
-							fontSize: "0.8rem",
-							opacity: 0.75,
-							fontWeight: 600,
-							marginBlock: "0.25rem",
-							marginLeft: "0.5rem",
-						}}>
-						{itemQuantity < requiredQuantity && (
-							<span>
-								<span
-									style={{
-										fontFamily:
-											"var(--font-barlow-condensed)",
-										fontSize: "1rem",
-										color: "#ff486d",
-									}}>
-									{"▼ "}
-									{requiredQuantity - itemQuantity}
-								</span>
-								{" | "}
-							</span>
-						)}
-						{"Need: "}
-						<span
+					<>
+						<div
 							style={{
-								fontFamily: "var(--font-barlow-condensed)",
-								fontSize: "1rem",
+								fontSize: "0.8rem",
+								opacity: 0.75,
+								fontWeight: 600,
+								marginBlock: "0.25rem",
+								marginLeft: "0.5rem",
 							}}>
-							{requiredQuantity}
-						</span>
-						<div>Where: {requiredSources}</div>
-					</div>
+							{itemQuantity < requiredQuantity && (
+								<span>
+									<span
+										style={{
+											fontFamily:
+												"var(--font-barlow-condensed)",
+											fontSize: "1rem",
+											color: "#ff486d",
+										}}>
+										{"▼ "}
+										{requiredQuantity - itemQuantity}
+									</span>
+									{" | "}
+								</span>
+							)}
+							{"Need: "}
+							<span
+								style={{
+									fontFamily: "var(--font-barlow-condensed)",
+									fontSize: "1rem",
+								}}>
+								{requiredQuantity}
+							</span>
+						</div>
+						<div className={styles.tooltipSourceList}>
+							Needed For:
+							{requiredSources.map((source) => (
+								<div
+									className={styles.tooltipSource}
+									key={source}>
+									<Image
+										src={
+											findArc(
+												source
+													.toLowerCase()
+													.replaceAll(" ", "_")
+													.replace("'", "")
+											)
+												? "/icons/arc.png"
+												: "/icons/char.png"
+										}
+										width={16}
+										height={16}
+										alt={`${material.name} Source: Arc ${source}`}
+									/>
+									{source}
+								</div>
+							))}
+						</div>
+					</>
 				)}
+				<hr style={{ marginBlock: "0.5rem" }} />
+				<div className={styles.tooltipSourceList}>
+					Sources:
+					{material.sources.map((source) => (
+						<div className={styles.tooltipSource} key={source}>
+							{source}
+						</div>
+					))}
+				</div>
 				<hr style={{ marginBlock: "0.5rem" }} />
 			</Tooltip>
 

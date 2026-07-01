@@ -265,7 +265,7 @@ export default function RenderInventory() {
 				}
 
 				groups.push(
-					<div className={styles.materialList}>
+					<div key={"not required"} className={styles.materialList}>
 						{notRequiredMaterials.map((material) => {
 							return (
 								<InventoryMaterialBox
@@ -373,7 +373,7 @@ export default function RenderInventory() {
 				}
 
 				groups.push(
-					<div className={styles.materialList}>
+					<div key={"not required"} className={styles.materialList}>
 						{notRequiredMaterials.map((material) => {
 							return (
 								<InventoryMaterialBox

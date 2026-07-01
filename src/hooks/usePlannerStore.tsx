@@ -545,9 +545,13 @@ const getAgregatedMaterials = () => {
 					sources.push(arcName)
 				}
 
-				agregatedMaterials[material.id] = {
-					amount: amount + material.amount,
-					sources: [...sources],
+				const agregateAmount = amount + material.amount
+
+				if (agregateAmount > 0) {
+					agregatedMaterials[material.id] = {
+						amount: agregateAmount,
+						sources: [...sources],
+					}
 				}
 			})
 		})
