@@ -1,13 +1,15 @@
 "use client"
 
 import Image from "next/image"
-import { MouseEvent, useContext } from "react"
+import { MouseEvent, useContext, useMemo } from "react"
 
-import { useTooltip } from "@/hooks"
+import { useTooltip, useMaterialAdjustmentModal } from "@/hooks"
 
 import { Material, getItemRarityStyle } from "@/database/items"
 
 import { ArcPlannerUsableMaterialsContext } from "@/app/arcs/ArcDeductedInventoryProvider"
+
+import getLinkedMaterials from "@/components/inventory/getLinkedMaterials"
 
 import styles from "./plannerMaterial.module.css"
 
@@ -21,33 +23,17 @@ export default function PlannerMaterialBox({
 	entryIndex: number
 }) {
 	const { Tooltip, showTooltip, hideTooltip } = useTooltip()
-	const [showMaterialEditorModal, setShowMaterialEditorModal] =
-		useState<boolean>(false)
-	const [linkedMaterials] = useState<Material[]>(() => {
-		const rarityOrder: Material[] = []
-		if (material.linkedMaterials) {
-			rarityOrder.push(material)
-			material.linkedMaterials.forEach((materialId) => {
-				rarityOrder.push(findMaterial(materialId))
-			})
+	const { MaterialAdjustmentModal, showModal } = useMaterialAdjustmentModal()
 
-			rarityOrder.sort((a, b) => b.rarity - a.rarity)
-		} else {
-			rarityOrder.push(material)
-		}
-
-		return rarityOrder
-	})
+	const linkedMaterials = useMemo(
+		() => getLinkedMaterials(material),
+		[material]
+	)
 
 	const handleClick = (e: MouseEvent<HTMLDivElement>) => {
 		e.stopPropagation()
 		hideTooltip()
-		setShowMaterialEditorModal(true)
-	}
-
-	const handleCloseModal = (e: ModalEventType) => {
-		e.stopPropagation()
-		setShowMaterialEditorModal(false)
+		showModal()
 	}
 
 	const { cumulativeInventory } = useContext(ArcPlannerUsableMaterialsContext)
@@ -84,24 +70,10 @@ export default function PlannerMaterialBox({
 				{displayAmount.toLocaleString("en-us")}
 			</span>
 
-			{showMaterialEditorModal &&
-				createPortal(
-					<ModalContainer onClose={handleCloseModal}>
-						<div className={styles.modalMaterialBoxContainer}>
-							{linkedMaterials.map((linkedMaterial, index) => {
-								return (
-									<MaterialItemBox
-										key={index}
-										material={linkedMaterial}
-										canHaveMultiMat={false}
-										hadAddSub
-									/>
-								)
-							})}
-						</div>
-					</ModalContainer>,
-					document.body
-				)}
+			<MaterialAdjustmentModal
+				materials={linkedMaterials}
+				className={styles.modalMaterialBoxContainer}
+			/>
 
 			<Tooltip offset={{ x: 24, y: 0 }} subText="Click to Edit">
 				<div>{material.name}</div>

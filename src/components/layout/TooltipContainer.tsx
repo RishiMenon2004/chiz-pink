@@ -21,7 +21,7 @@ export function TooltipContainer({
 					y:
 						e.clientY +
 						(offset.y || 0) -
-						tooltipRef.current.clientHeight,
+						(tooltipRef.current.clientHeight / 2),
 				}
 
 				if (
@@ -43,8 +43,22 @@ export function TooltipContainer({
 	}, [tooltipRef, offset])
 
 	useEffect(() => {
-		tooltipRef.current.style.transform = `translate(${startingPos.x}px, ${startingPos.y}px)`
-	}, [startingPos])
+		const mousePos = {
+			x: startingPos.x + (offset.x || 0),
+			y: startingPos.y + (offset.y || 0) - (tooltipRef.current.clientHeight / 2),
+		}
+
+		if (
+			mousePos.x + tooltipRef.current.clientWidth >
+			document.body.clientWidth
+		) {
+			mousePos.x =
+				startingPos.x -
+				(offset.x / 2 || 0) -
+				tooltipRef.current.clientWidth
+		}
+		tooltipRef.current.style.transform = `translate(${mousePos.x}px, ${mousePos.y}px)`
+	}, [startingPos, offset])
 
 	return (
 		<div className="tooltip" ref={tooltipRef}>

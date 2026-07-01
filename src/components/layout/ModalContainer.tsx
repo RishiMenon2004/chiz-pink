@@ -4,15 +4,17 @@ import { KeyboardEvent, MouseEvent, ReactNode, useEffect } from "react"
 
 export type ModalEventType = MouseEvent<HTMLElement> | KeyboardEvent<HTMLElement>
 
+type ModalContainerType = {
+	onClose: (e: ModalEventType) => void
+	onCancel?: (e: ModalEventType) => void
+	children: ReactNode
+}
+
 export default function ModalContainer({
 	onClose,
 	onCancel,
 	children,
-}: {
-	onClose: (e: ModalEventType) => void
-	onCancel?: (e: ModalEventType) => void
-	children: ReactNode
-}) {
+}: ModalContainerType) {
 	useEffect(() => {
 		const handleGlobalKeyDown = (e: globalThis.KeyboardEvent) => {
 			if (onCancel) {
