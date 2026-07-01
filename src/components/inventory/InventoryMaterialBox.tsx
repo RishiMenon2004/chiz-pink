@@ -22,20 +22,20 @@ import getLinkedMaterials from "@/components/inventory/getLinkedMaterials"
 
 import styles from "@/components/inventory/inventoryMaterial.module.css"
 import pageStyles from "@/app/inventory/page.module.css"
+import usePlanner from "@/hooks/usePlannerStore"
 
 type MaterialItemBoxProps = {
 	material: Material
-	requiredQuantity?: number
 	canHaveMultiMat?: boolean
 }
 
 export default function MaterialItemBox({
 	material,
-	requiredQuantity,
 	canHaveMultiMat = true,
 }: MaterialItemBoxProps) {
 	const { Tooltip, showTooltip, hideTooltip } = useTooltip()
 	const { MaterialAdjustmentModal, showModal } = useMaterialAdjustmentModal()
+
 	const linkedMaterials = useMemo(
 		() => getLinkedMaterials(material),
 		[material]
@@ -44,6 +44,16 @@ export default function MaterialItemBox({
 	const countRef = useRef<HTMLInputElement>(null)
 	const { inventory, updateInventory } = useInventoryStore()
 	const itemQuantity = inventory[material.id] || 0
+
+	const { getAgregatedMaterials } = usePlanner()
+	const { amount: requiredQuantity, sources: requiredSources } =
+		getAgregatedMaterials()[material.id] || {
+			amount: 0,
+			sources: [],
+		}
+
+	const hasRequired = requiredQuantity > 0
+	const hasAcquired = itemQuantity >= requiredQuantity
 
 	const isMultiMat = material.linkedMaterials && canHaveMultiMat
 
@@ -93,9 +103,15 @@ export default function MaterialItemBox({
 		}
 	}
 
+	const ownedOrNeededStyle = hasRequired
+		? hasAcquired
+			? styles.acquired
+			: styles.needed
+		: ""
+
 	return (
 		<div
-			className={`${styles.materialBox} ${getItemRarityStyle(material, styles)} ${isMultiMat ? styles.multi : ""}`}
+			className={`${styles.materialBox} ${getItemRarityStyle(material, styles)} ${isMultiMat ? styles.multi : ""} ${ownedOrNeededStyle}`}
 			onClick={(e) => {
 				e.stopPropagation()
 				hideTooltip()
@@ -103,6 +119,7 @@ export default function MaterialItemBox({
 			onPointerEnter={showTooltip}
 			onPointerLeave={hideTooltip}>
 			<div className={`${styles.iconContainer}`} onClick={handleBoxClick}>
+				{hasRequired && <div className={styles.requirementIndicator}>{hasAcquired ? requiredQuantity : (requiredQuantity - itemQuantity)}</div>}
 				<Image
 					src={`/materials${material.imageSrc}.png`}
 					width={128}
@@ -112,7 +129,7 @@ export default function MaterialItemBox({
 				/>
 			</div>
 
-			<span className={`${styles.label}`}>{material.name}</span>
+			<span className={styles.label}>{material.name}</span>
 
 			<MaterialAdjustmentModal
 				materials={linkedMaterials}
@@ -122,7 +139,44 @@ export default function MaterialItemBox({
 			<Tooltip
 				subText={material.materialType}
 				offset={isMultiMat ? { x: 32, y: -12 } : { x: 48, y: 0 }}>
-				{material.name}
+				<div>{material.name}</div>
+
+				{hasRequired && (
+					<div
+						style={{
+							fontSize: "0.8rem",
+							opacity: 0.75,
+							fontWeight: 600,
+							marginBlock: "0.25rem",
+							marginLeft: "0.5rem",
+						}}>
+						{itemQuantity < requiredQuantity && (
+							<span>
+								<span
+									style={{
+										fontFamily:
+											"var(--font-barlow-condensed)",
+										fontSize: "1rem",
+										color: "#ff486d",
+									}}>
+									{"▼ "}
+									{requiredQuantity - itemQuantity}
+								</span>
+								{" | "}
+							</span>
+						)}
+						{"Need: "}
+						<span
+							style={{
+								fontFamily: "var(--font-barlow-condensed)",
+								fontSize: "1rem",
+							}}>
+							{requiredQuantity}
+						</span>
+						<div>Where: {requiredSources}</div>
+					</div>
+				)}
+				<hr style={{ marginBlock: "0.5rem" }} />
 			</Tooltip>
 
 			<span className={`${styles.amount}`}>
@@ -148,7 +202,6 @@ export default function MaterialItemBox({
 							hideTooltip()
 						}}
 					/>
-					{requiredQuantity && <span>/{requiredQuantity}</span>}
 				</span>
 				<span
 					tabIndex={0}

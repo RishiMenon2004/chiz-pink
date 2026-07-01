@@ -57,6 +57,14 @@ let cachedPlanner: PlannerRecord = {
 
 let lastRawValue: string | null = null
 
+export type AgregateMaterialsType = Record<
+	string,
+	{
+		amount: number
+		sources: string[]
+	}
+>
+
 const SERVER_FALLBACK: PlannerRecord = {
 	arcs: {},
 	characters: {},
@@ -81,6 +89,11 @@ function updatePlanner(
 
 function addCharacter() {}
 function updateCharacter() {}
+function deleteCharacter(char: CharacterRecord) {
+	const plannerData = JSON.parse(lastRawValue || "{}") as PlannerRecord
+	delete plannerData.characters[char.id]
+	updatePlanner({ ...plannerData })
+}
 
 const weaponPhasesMaterials = {
 	1: {
@@ -512,6 +525,41 @@ const getServerSnapshot = () => {
 	return SERVER_FALLBACK
 }
 
+const getAgregatedMaterials = () => {
+	if (typeof window === "undefined") return {} as AgregateMaterialsType
+
+	const plannerData = JSON.parse(lastRawValue || "{}") as PlannerRecord
+
+	const agregatedMaterials: AgregateMaterialsType = {}
+
+	if (plannerData.arcs) {
+		Object.values(plannerData.arcs).forEach((arc) => {
+			arc.requiredMaterials.forEach((material) => {
+				const currentAgrMaterial = agregatedMaterials[material.id] || {}
+				const sources = currentAgrMaterial.sources || []
+				const amount = currentAgrMaterial.amount || 0
+
+				const arcName = findArc(arc.id).name
+
+				if (!sources.includes(arcName)) {
+					sources.push(arcName)
+				}
+
+				agregatedMaterials[material.id] = {
+					amount: amount + material.amount,
+					sources: [...sources],
+				}
+			})
+		})
+	}
+
+	//TODO: Do the math after finishing the characters page
+	if (plannerData.characters) {
+	}
+
+	return agregatedMaterials
+}
+
 export default function usePlanner() {
 	const plannerData = useSyncExternalStore<PlannerRecord>(
 		subscribe,
@@ -522,7 +570,8 @@ export default function usePlanner() {
 	return {
 		plannerData,
 		updatePlanner,
-		characters: { addCharacter, updateCharacter },
+		getAgregatedMaterials,
+		characters: { addCharacter, updateCharacter, deleteCharacter },
 		weapons: { addWeapon, updateWeapon, deleteWeapon },
 	}
 }
