@@ -8,6 +8,7 @@ import {
 import { getInventoryMaterials } from "@/database/items"
 import { EnumMaterialType, Material } from "@/database/items/materials"
 import { useInventoryStore } from "@/hooks"
+import usePlanner from "./usePlannerStore"
 
 export function useInventoryFilters({
 	filter,
@@ -21,9 +22,8 @@ export function useInventoryFilters({
 	sortReverse: boolean
 }) {
 	const { inventory } = useInventoryStore()
-	const cachedInventoryList: Material[] = Object.values(
-		getInventoryMaterials()
-	)
+	const { getAgregatedMaterials } = usePlanner()
+	const cachedInventoryList: Material[] = Object.values(getInventoryMaterials())
 	let filteredInventoryList = cachedInventoryList
 	let rarityFilteredInventoryList = filteredInventoryList
 	let sortedInventoryList = filteredInventoryList
@@ -34,8 +34,28 @@ export function useInventoryFilters({
 			break
 		}
 
-		case "required": //TODO: Add filter and sort after implementing planner
-		case "acquired": //TODO: Add filter and grouping after implementing planner
+		case "required": {
+			const agregatedMaterials = getAgregatedMaterials()
+
+			filteredInventoryList = cachedInventoryList.filter((material) => {
+				return Object.keys(agregatedMaterials).includes(material.id)
+			})
+			break
+		}
+
+		case "acquired": {
+			const agregatedMaterials = getAgregatedMaterials()
+
+			filteredInventoryList = cachedInventoryList.filter((material) => {
+				const matAgr = agregatedMaterials[material.id]
+				if (matAgr) {
+					return inventory[material.id] >= matAgr.amount
+				}
+				return false
+			})
+			break
+		}
+
 		case "owned": {
 			filteredInventoryList = cachedInventoryList.filter((material) => {
 				return (inventory[material.id] || 0) > 0
@@ -73,7 +93,28 @@ export function useInventoryFilters({
 			break
 		}
 
-		case "required": //TODO: Add filter and sort after implementing planner
+		case "required": {
+			const agregatedMaterials = getAgregatedMaterials()
+
+			sortedInventoryList = rarityFilteredInventoryList.toSorted((a, b) => {
+				const aAgr = agregatedMaterials[a.id]
+				const bAgr = agregatedMaterials[b.id]
+
+				let aRequired = 0
+				let bRequired = 0
+
+				if (aAgr) {
+					aRequired = Math.max(aAgr.amount - (inventory[a.id] || 0), 0)
+				}
+
+				if (bAgr) {
+					bRequired = Math.max(bAgr.amount - (inventory[b.id] || 0), 0)
+				}
+
+				return bRequired - aRequired
+			})
+			break
+		}
 		case "owned": {
 			sortedInventoryList = rarityFilteredInventoryList.toSorted(
 				(a, b) => (inventory[b.id] || 0) - (inventory[a.id] || 0)
@@ -85,8 +126,7 @@ export function useInventoryFilters({
 			const types = Object.values(EnumMaterialType)
 			sortedInventoryList = rarityFilteredInventoryList.toSorted(
 				(a, b) =>
-					types.indexOf(a.materialType) -
-					types.indexOf(b.materialType)
+					types.indexOf(a.materialType) - types.indexOf(b.materialType)
 			)
 			break
 		}
