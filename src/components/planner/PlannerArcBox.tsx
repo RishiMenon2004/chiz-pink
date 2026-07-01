@@ -139,7 +139,6 @@ export default function PlannerArcBox({
 
 	function handleCurrentChange(e: ChangeEvent<HTMLSelectElement>) {
 		updateCurrentLvl(Number(e.currentTarget.value))
-		
 	}
 	function handleTargetChange(e: ChangeEvent<HTMLSelectElement>) {
 		updateTargetLvl(Number(e.currentTarget.value))
@@ -185,7 +184,8 @@ export default function PlannerArcBox({
 	const allMaterialsAcquired = () => {
 		return arcRecord.requiredMaterials.every((material) => {
 			const inventoryAmount = inventory[material.id] || 0
-			const { craftedAmount } = cumulativeInventory[index][material.id]
+			const currentCumulativeInventor = cumulativeInventory.at(index) || {}
+			const { craftedAmount } = currentCumulativeInventor[material.id] || 0
 			return inventoryAmount + (craftedAmount || 0) >= material.amount
 		})
 	}
@@ -327,9 +327,17 @@ export default function PlannerArcBox({
 					<ArcBtn
 						icon="confirm_plan"
 						ariaLabel="Confirm Levelling Button"
-						toolTipSubtext={allMaterialsAcquired() ? "Materials will be deducted from your inventory." : "You have inadequate materials."}
+						toolTipSubtext={
+							allMaterialsAcquired()
+								? "Materials will be deducted from your inventory."
+								: "You have inadequate materials."
+						}
 						onClick={handleEnhancement}>
-						{allMaterialsAcquired() ? "Complete Enhancement" : <s>Complete Enhancement</s>}
+						{allMaterialsAcquired() ? (
+							"Complete Enhancement"
+						) : (
+							<s>Complete Enhancement</s>
+						)}
 					</ArcBtn>
 					<DragPoint ref={handleRef} />
 					<ArcBtn
