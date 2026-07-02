@@ -476,3 +476,17 @@
 		}
 	}
 }
+
+@media (max-width: 550px) {
+	.plannerAddArcBox {
+		.arcLvlSelectGrid {
+			gap: 0.25rem;
+
+			p {
+				line-height: normal;
+				min-height: fit-content;
+				padding-block: 0.125rem;
+			}
+		}
+	}
+}

@@ -558,3 +558,11 @@
 		}
 	}
 }
+
+@media (max-width: 500) {
+	.arcDeleteConfirmationBox {
+		text-wrap-style: balance;
+		font-size: 1rem;
+	}
+	
+}
