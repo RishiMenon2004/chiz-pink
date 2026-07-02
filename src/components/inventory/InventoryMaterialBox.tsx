@@ -197,7 +197,7 @@ export default function MaterialItemBox({
 													.replace("'", "")
 											)
 												? "/icons/arc.png"
-												: "/icons/char.png"
+												: "/icons/character.png"
 										}
 										width={16}
 										height={16}
