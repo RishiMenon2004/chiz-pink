@@ -172,7 +172,7 @@
 }
 
 .countBtn {
-	height: 1.25rem;
+	height: 1.5rem;
 	margin: 0.35rem;
 	aspect-ratio: 1;
 	background-color: #d0d0d0;
@@ -236,9 +236,6 @@
 }
 
 .acquired {
-	/* outline: 2px solid var(--acquired-color); */
-	/* outline-offset: 4px; */
-
 	.iconContainer {
 		.requirementIndicator {
 			background-color: color-mix(
@@ -303,6 +300,11 @@
 	.label {
 		display: block;
 		font-size: 0.75rem;
+		font-weight: 720;
+	}
+
+	.countBtn {
+		height: 1.5rem;
 	}
 }
 
