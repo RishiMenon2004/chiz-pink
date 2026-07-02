@@ -229,8 +229,10 @@
 .arcButtonsContainer {
 	display: flex;
 	flex-direction: column;
-	justify-content: space-between;
+	justify-content: flex-start;
 	gap: 0.5rem;
+
+	position: relative;
 
 	padding: 0.5rem;
 	border-radius: var(--inner-radius) var(--outer-radius) var(--outer-radius)
@@ -263,6 +265,10 @@
 
 		cursor: pointer;
 
+		&:last-child {
+			margin-top: auto;
+		}
+
 		&:hover,
 		&:focus-visible {
 			background-color: var(--darker-pink);
@@ -283,6 +289,10 @@
 
 		cursor: grab;
 
+		position: absolute;
+		top: 50%;
+		transform: translateY(-50%);
+
 		background-image: url("/icons/drag.png");
 		background-size: cover;
 		background-position: center;
@@ -290,10 +300,9 @@
 	}
 }
 
+.arcBoxDisabled,
 .arcBoxDragging {
-	place-self: center;
 	position: relative;
-
 	opacity: 0.75;
 
 	&::after {
@@ -305,7 +314,15 @@
 
 		background-color: var(--darker-pink);
 		opacity: 0.25;
+		pointer-events: none;
+	}
+}
+.arcBoxDisabled {
+	opacity: 0.5;
+}
 
+.arcBoxDragging {
+	&::after {
 		outline: 4px var(--darker-pink) dashed;
 		outline-offset: 4px;
 	}
@@ -423,7 +440,18 @@
 			width: 2.75rem;
 			height: 2rem;
 
+			transform: translateX(-50%);
+			left: 50%;
+			top: unset;
+
 			background-image: url("/icons/drag_hr.png");
+		}
+
+		.arcPlannerButton {
+			&:last-child {
+				margin-right: auto;
+				margin-top: unset;
+			}
 		}
 	}
 }

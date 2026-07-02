@@ -118,6 +118,7 @@ export default function PlannerArcBox({
 		arcRecord.currentLvl
 	)
 	const [targetLvl, setTargetLvl] = useState<EnumItemLvls>(arcRecord.targetLvl)
+	const [isDisabled, setIsDisabled] = useState<boolean>(arcRecord.isDisabled)
 
 	function updateCurrentLvl(value: number) {
 		setCurrentLvl(value)
@@ -183,6 +184,9 @@ export default function PlannerArcBox({
 
 	const allMaterialsAcquired = () => {
 		return arcRecord.requiredMaterials.every((material) => {
+			if (material.amount === 0) {
+				return false
+			}
 			const inventoryAmount = inventory[material.id] || 0
 			const currentCumulativeInventor = cumulativeInventory.at(index) || {}
 			const { craftedAmount } = currentCumulativeInventor[material.id] || 0
@@ -225,16 +229,24 @@ export default function PlannerArcBox({
 					inventoryAmount - material.amount
 				)
 			})
-		}
 
-		updateInventory(localInventory)
-		updateCurrentLvl(targetLvl)
+			updateInventory(localInventory)
+			updateCurrentLvl(targetLvl)
+		}
+	}
+
+	const handleDisable = (e: MouseEvent) => {
+		e.stopPropagation()
+		setIsDisabled((prev) => {
+			weapons.updateWeapon({ ...arcRecord, isDisabled: !prev })
+			return !prev
+		})
 	}
 
 	return (
 		<div className={styles.arcPlannerBoxContainer} ref={ref}>
 			<div
-				className={`${styles.arcPlannerBox} ${getItemRarityStyle(arc)} ${dropPreviewOrDragOverlay().join(" ")}`}>
+				className={`${styles.arcPlannerBox} ${getItemRarityStyle(arc)} ${isDisabled ? styles.arcBoxDisabled : ""} ${dropPreviewOrDragOverlay().join(" ")}`}>
 				<div className={styles.arcInfoContainer}>
 					<div className={styles.arcInfoTop}>
 						<div className={styles.arcImageContainer}>
@@ -324,6 +336,15 @@ export default function PlannerArcBox({
 					</div>
 				</div>
 				<div className={styles.arcButtonsContainer}>
+					<ArcBtn
+						icon={isDisabled ? "hide" : "show"}
+						ariaLabel="Disable Arc Button"
+						toolTipSubtext={
+							"Materials will be excluded in the total."
+						}
+						onClick={handleDisable}>
+						{"Disable Arc"}
+					</ArcBtn>
 					<ArcBtn
 						icon="confirm_plan"
 						ariaLabel="Confirm Levelling Button"

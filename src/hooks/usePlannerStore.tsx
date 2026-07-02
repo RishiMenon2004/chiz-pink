@@ -40,11 +40,13 @@ export interface WeaponRecord extends Pick<Item, "id"> {
 	uid: string
 	currentLvl: EnumItemLvls
 	targetLvl: EnumItemLvls
+	isDisabled: boolean
 	requiredMaterials: {
 		id: string
 		amount: number
 	}[]
 }
+
 export type PlannerRecord = {
 	arcs: Record<string, WeaponRecord>
 	characters: Record<string, CharacterRecord>
@@ -407,8 +409,9 @@ function calcuateWeaponMaterials(
 
 function createWeaponRequiredMaterialsList(
 	weapon:
-		| Omit<WeaponRecord, "uid" | "requiredMaterials">
+		| WeaponRecord
 		| Omit<WeaponRecord, "requiredMaterials">
+		| Omit<WeaponRecord, "uid" | "requiredMaterials" | "isDisabled">
 ) {
 	const arc = findArc(weapon.id)
 	const materialValues = calcuateWeaponMaterials(
@@ -463,7 +466,9 @@ function createWeaponRequiredMaterialsList(
 	]
 }
 
-function addWeapon(weapon: Omit<WeaponRecord, "uid" | "requiredMaterials">) {
+function addWeapon(
+	weapon: Omit<WeaponRecord, "uid" | "requiredMaterials" | "isDisabled">
+) {
 	const plannerData = JSON.parse(lastRawValue || "{}") as PlannerRecord
 	const newUID = uuidv4()
 
@@ -474,6 +479,7 @@ function addWeapon(weapon: Omit<WeaponRecord, "uid" | "requiredMaterials">) {
 				...weapon,
 				uid: newUID,
 				requiredMaterials: createWeaponRequiredMaterialsList(weapon),
+				isDisabled: false,
 			},
 		},
 	})
@@ -534,6 +540,10 @@ const getAgregatedMaterials = () => {
 
 	if (plannerData.arcs) {
 		Object.values(plannerData.arcs).forEach((arc) => {
+			if (arc.isDisabled) {
+				return
+			}
+
 			arc.requiredMaterials.forEach((material) => {
 				const currentAgrMaterial = agregatedMaterials[material.id] || {}
 				const sources = currentAgrMaterial.sources || []

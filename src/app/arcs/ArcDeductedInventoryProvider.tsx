@@ -38,6 +38,10 @@ export function ArcDeductedInventoryProvider({
 		const deductedInventories = [convertedInventory] as CumulativeInventoryType[]
 
 		arcRecords.forEach((arcRecord, index) => {
+			if (arcRecord.isDisabled) {
+				deductedInventories.push({ ...localInventory })
+				return
+			}
 			arcRecord.requiredMaterials.forEach((material) => {
 				const inventoryAmount = localInventory[material.id]?.amount || 0
 				const remainingAmount = Math.max(0, inventoryAmount - material.amount)
