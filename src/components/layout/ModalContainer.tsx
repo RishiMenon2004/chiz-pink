@@ -42,22 +42,17 @@ export default function ModalContainer({
 			className={`modal-container${onCancel ? " use-cross" : ""}`}
 			onClick={(e) => (onCancel ? onCancel(e) : onClose(e))}>
 			{children}
-			<button
-				className="close-btn"
-				onClick={(e) => (onCancel ? onCancel(e) : onClose(e))}
-			/>
-			{onCancel && (
-				<p
-					style={{
-						position: "fixed",
-						bottom: "5%",
-						color: "white",
-						opacity: "0.5",
-						fontWeight: "700",
-					}}>
-					Click the empty space to exit
-				</p>
-			)}
+
+			<p
+				style={{
+					position: "fixed",
+					bottom: "5%",
+					color: "white",
+					opacity: "0.5",
+					fontWeight: "700",
+				}}>
+				Click the empty space to exit
+			</p>
 		</div>
 	)
 }

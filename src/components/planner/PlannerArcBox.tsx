@@ -19,6 +19,8 @@ import usePlanner, { WeaponRecord } from "@/hooks/usePlannerStore"
 import { findArc } from "@/database/arcs"
 import { useDragOperation } from "@dnd-kit/react"
 import { ArcPlannerUsableMaterialsContext } from "@/app/arcs/ArcDeductedInventoryProvider"
+import ModalContainer, { ModalEventType } from "../layout/ModalContainer"
+import { createPortal } from "react-dom"
 
 function ItemPhaseStars({ starsActive }: { starsActive: number }) {
 	return Array.from({ length: 6 }).map((_, index) => {
@@ -243,6 +245,24 @@ export default function PlannerArcBox({
 		})
 	}
 
+	const [showDeleteConfirmation, setShowDeleteConfirmation] =
+		useState<boolean>(false)
+
+	const handleDelete = (e: MouseEvent) => {
+		e.stopPropagation()
+		setShowDeleteConfirmation(true)
+	}
+
+	const onDeleteCancel = (e: ModalEventType) => {
+		e.stopPropagation()
+		setShowDeleteConfirmation(false)
+	}
+	const onDeleteConfim = (e: ModalEventType) => {
+		e.stopPropagation()
+		weapons.deleteWeapon(arcRecord)
+		setShowDeleteConfirmation(false)
+	}
+
 	return (
 		<div className={styles.arcPlannerBoxContainer} ref={ref}>
 			<div
@@ -365,14 +385,30 @@ export default function PlannerArcBox({
 						icon="delete"
 						ariaLabel="Delete Arc Plan Button"
 						toolTipSubtext="Be careful! You can't undo this action."
-						onClick={(e: MouseEvent) => {
-							e.stopPropagation()
-							weapons.deleteWeapon(arcRecord)
-						}}>
+						onClick={handleDelete}>
 						Delete Arc
 					</ArcBtn>
 				</div>
 			</div>
+			{showDeleteConfirmation &&
+				createPortal(
+					<ModalContainer
+						onClose={onDeleteConfim}
+						onCancel={onDeleteCancel}>
+						<div className={styles.arcDeleteConfirmationBox}>
+							<div>{
+								"A-are you sure you want to delete this Arc?"
+							}</div>
+							<div className={styles.arcDeleteBoxButtons}>
+								<button tabIndex={1} onClick={onDeleteCancel}>No</button>
+								<button tabIndex={1} onClick={onDeleteConfim}>
+									{"Yes, I'm sure"}
+								</button>
+							</div>
+						</div>
+					</ModalContainer>,
+					document.body
+				)}
 		</div>
 	)
 }

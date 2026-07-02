@@ -30,9 +30,9 @@ const PlannerArcBox = dynamic(
 )
 
 type AddNewArcContextType = {
-	newArcRecord: Omit<WeaponRecord, "uid" | "requiredMaterials">
+	newArcRecord: Omit<WeaponRecord, "uid" | "requiredMaterials" | "isDisabled">
 	setNewArcRecord: Dispatch<
-		SetStateAction<Omit<WeaponRecord, "uid" | "requiredMaterials">>
+		SetStateAction<Omit<WeaponRecord, "uid" | "requiredMaterials" | "isDisabled">>
 	>
 }
 export const AddNewArcContext = createContext<AddNewArcContextType>(null!)
@@ -43,7 +43,7 @@ export default function RenderArcsPlanner() {
 	const [activeDragArc, setActiveDragArc] = useState<string | null>(null)
 
 	const [newArcRecord, setNewArcRecord] = useState<
-		Omit<WeaponRecord, "uid" | "requiredMaterials">
+		Omit<WeaponRecord, "uid" | "requiredMaterials" | "isDisabled">
 	>(null!)
 
 	const closeModal = (e: ModalEventType) => {
