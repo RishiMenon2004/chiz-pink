@@ -396,7 +396,6 @@
 		width: 50%;
 
 		padding: 0.25rem 1rem;
-		/* padding-left: 2.25rem; */
 		margin-block: 0.5rem;
 		border: none;
 		border-radius: 100vh;
@@ -407,10 +406,6 @@
 		font-weight: 700;
 
 		background-color: #d0d0d0;
-		/* background-image: url("/button_icons/check.png");
-		background-size: auto 90%;
-		background-position: 0.25rem center;
-		background-repeat: no-repeat; */
 
 		paint-order: stroke fill;
 
@@ -422,7 +417,10 @@
 			hsl(0, 0%, 85%) 0.5px 0.5px 0.5px 0.5px inset,
 			hsl(0, 0%, 70%) -0.5px -0.5px 0.5px 0.5px inset;
 
-		&:hover {
+		&:hover,
+		&:focus-visible {
+			outline: none;
+			
 			color: white;
 			-webkit-text-stroke: 4px black;
 

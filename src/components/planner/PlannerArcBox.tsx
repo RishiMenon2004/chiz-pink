@@ -400,9 +400,9 @@ export default function PlannerArcBox({
 								"A-are you sure you want to delete this Arc?"
 							}</div>
 							<div className={styles.arcDeleteBoxButtons}>
-								<button tabIndex={1} onClick={onDeleteCancel}>No</button>
+								<button tabIndex={1} onClick={onDeleteCancel}>NO</button>
 								<button tabIndex={1} onClick={onDeleteConfim}>
-									{"Yes, I'm sure"}
+									{"YES, I'm sure"}
 								</button>
 							</div>
 						</div>
