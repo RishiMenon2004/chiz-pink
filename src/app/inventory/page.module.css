@@ -27,7 +27,6 @@
 .matGroup {
 	flex-grow: 1;
 	width: 100%;
-	/* margin-inline: auto; */
 	margin-bottom: 2rem;
 	font-family: var(--font-syne);
 	font-weight: 600;
@@ -57,7 +56,7 @@
 			content: "";
 			position: absolute;
 			inset: 0;
-			right: -3rem;
+			right: -1rem;
 			bottom: 60%;
 			background-image: linear-gradient(
 				-116deg,
@@ -140,6 +139,20 @@
 		padding-top: 3rem;
 	}
 
+	.matGroup {
+		summary {
+			--slice-width: 60%;
+		}
+
+		&:open {
+			summary {
+				&::before {
+					background-position: 3rem center;
+				}
+			}
+		}
+	}
+
 	.emptyFilter {
 		margin-inline: 3rem;
 	}
@@ -155,6 +168,12 @@
 	.multiMatContainer {
 		gap: 1.5rem;
 		padding-inline: 1rem;
+	}
+
+	.matGroup {
+		summary {
+			--slice-width: 45%;
+		}
 	}
 
 	.emptyFilter {

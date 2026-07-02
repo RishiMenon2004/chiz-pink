@@ -87,6 +87,8 @@
 			background-size: 1.125rem;
 			background-position: left center;
 			background-repeat: no-repeat;
+
+			z-index: 4;
 		}
 	}
 
@@ -220,7 +222,7 @@
 				transparent
 			);
 
-			background-image: url('/icons/less.png');
+			background-image: url("/icons/less.png");
 		}
 	}
 
@@ -245,7 +247,7 @@
 				transparent
 			);
 
-			background-image: url('/button_icons/check.png');
+			background-image: url("/button_icons/check.png");
 		}
 	}
 }
