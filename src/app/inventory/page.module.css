@@ -163,6 +163,13 @@
 	}
 }
 
+@media (max-width: 800px) {
+	.page,
+	.multiMatContainer {
+		padding-inline: 0;
+	}
+}
+
 @media (max-width: 550px) {
 	.page,
 	.multiMatContainer {
