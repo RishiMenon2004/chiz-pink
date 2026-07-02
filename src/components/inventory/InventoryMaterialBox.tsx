@@ -193,6 +193,8 @@ export default function MaterialItemBox({
 											findArc(
 												source
 													.toLowerCase()
+													.split("x")[0]
+													.trimEnd()
 													.replaceAll(" ", "_")
 													.replace("'", "")
 											)

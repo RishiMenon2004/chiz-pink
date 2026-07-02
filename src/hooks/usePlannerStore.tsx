@@ -540,9 +540,21 @@ const getAgregatedMaterials = () => {
 				const amount = currentAgrMaterial.amount || 0
 
 				const arcName = findArc(arc.id).name
+				const sourceName = sources.find((name) => name.includes(arcName))
 
-				if (!sources.includes(arcName)) {
+				if (typeof sourceName === "undefined") {
 					sources.push(arcName)
+				} else if (sourceName === arcName) {
+					const sourceIndex = sources.indexOf(arcName)
+					sources[sourceIndex] = `${arcName} x2`
+				} else {
+					const sourceIndex = sources.indexOf(sourceName)
+					if (sourceIndex !== -1) {
+						const sourceName = sources[sourceIndex]
+						const [name, number] = sourceName.split("x")
+						const count = Number(number) + 1
+						sources[sourceIndex] = [name, count].join("x")
+					}
 				}
 
 				const agregateAmount = amount + material.amount
