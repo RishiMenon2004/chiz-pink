@@ -237,7 +237,9 @@
 
 			text-align: center;
 
-			cursor: s-resize;
+			cursor:
+				url("/cursors/down.png") 16 16,
+				s-resize;
 		}
 
 		&.toolbarOpen {

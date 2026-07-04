@@ -98,7 +98,7 @@
 
 	&.multi .iconContainer {
 		cursor:
-			url("/cursors/multi-mat.png") 20 27,
+			url("/cursors/multi-mat.png") 4 26,
 			pointer;
 	}
 }
@@ -153,7 +153,7 @@
 		margin: 0;
 
 		cursor:
-			url("/cursors/edit.png") 24 24,
+			url("/cursors/edit.png") 4 26,
 			text;
 
 		-moz-appearance: textfield;
@@ -172,7 +172,7 @@
 }
 
 .countBtn {
-	height: 1.5rem;
+	height: 1.25rem;
 	margin: 0.35rem;
 	aspect-ratio: 1;
 	background-color: #d0d0d0;

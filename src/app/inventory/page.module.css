@@ -125,7 +125,7 @@
 
 .editCursor {
 	cursor:
-		url("/cursors/edit.png") 24 24,
+		url("/cursors/edit.png") 4 26,
 		default !important;
 }
 

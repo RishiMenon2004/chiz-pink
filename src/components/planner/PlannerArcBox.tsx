@@ -57,7 +57,7 @@ const DragPoint = ({ ref }: { ref?: Ref<HTMLDivElement> }) => {
 			className={styles.arcBoxDragPoint}
 			onPointerEnter={showTooltip}
 			onPointerLeave={hideTooltip}>
-			<Tooltip offset={{ x: 48, y: 32 }} subText="Drag to reorder">
+			<Tooltip offset={{ x: 32, y: 0 }} subText="Drag to reorder">
 				Adjust Priority
 			</Tooltip>
 		</div>
@@ -91,7 +91,7 @@ const ArcBtn = ({
 			onPointerEnter={showTooltip}
 			onPointerLeave={hideTooltip}
 			onClick={onClick}>
-			<Tooltip offset={{ x: 48, y: 32 }} subText={toolTipSubtext || ""}>
+			<Tooltip offset={{ x: 32, y: 0 }} subText={toolTipSubtext || ""}>
 				{children}
 			</Tooltip>
 		</button>

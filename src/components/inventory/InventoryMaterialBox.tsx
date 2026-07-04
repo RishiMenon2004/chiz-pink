@@ -145,7 +145,7 @@ export default function MaterialItemBox({
 
 			<Tooltip
 				subText={material.materialType}
-				offset={isMultiMat ? { x: 32, y: -12 } : { x: 48, y: 0 }}>
+				offset={isMultiMat ? { x: 36, y: -9 } : { x: 32, y: 0 }}>
 				<div>{material.name}</div>
 
 				{hasRequired && (

@@ -11,7 +11,7 @@
 	z-index: 0;
 
 	cursor:
-		url("/cursors/edit.png") 24 24,
+		url("/cursors/multi-mat.png") 4 26,
 		pointer;
 
 	&.crafted {

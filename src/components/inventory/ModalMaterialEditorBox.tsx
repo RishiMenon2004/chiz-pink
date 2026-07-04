@@ -131,7 +131,7 @@ export default function MaterialAdjustmentBox({
 
 			<span className={`${styles.label}`}>{material.name}</span>
 
-			<Tooltip subText={material.materialType} offset={{ x: 48, y: 0 }}>
+			<Tooltip subText={material.materialType} offset={{ x: 32, y: 0 }}>
 				{material.name}
 			</Tooltip>
 

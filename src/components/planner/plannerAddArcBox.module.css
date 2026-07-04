@@ -78,9 +78,7 @@
 
 			background-color: var(--white);
 
-			cursor:
-				url("/cursors/dropdown.png") 24 24,
-				pointer;
+			cursor: url("/cursors/dropdown.png"), pointer;
 
 			box-shadow:
 				0px 1px 2px -2px hsl(0, 0%, 20%) inset,
@@ -198,9 +196,7 @@
 						1px solid;
 
 					user-select: none;
-					cursor:
-						url("/cursors/filter.png") 0 0,
-						pointer;
+					cursor: url("/cursors/filter.png"), pointer;
 
 					&:hover {
 						background-color: color-mix(
@@ -370,7 +366,9 @@
 					hsla(0, 0%, 0%, 0.6) -1px -1px 2px inset,
 					white 1px 1px 2px inset;
 
-				cursor: default;
+				cursor:
+					url("/cursors/default.png") 2 2,
+					default;
 			}
 		}
 	}
@@ -420,7 +418,7 @@
 		&:hover,
 		&:focus-visible {
 			outline: none;
-			
+
 			color: white;
 			-webkit-text-stroke: 4px black;
 

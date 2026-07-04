@@ -169,6 +169,8 @@
 						white 0px 1px 1px,
 						rgba(0, 0, 0, 0.7) 0px 1px inset;
 
+					cursor: url("/cursors/dropdown.png"), pointer;
+
 					&:focus-visible {
 						background-color: var(--darker-pink);
 
@@ -564,5 +566,4 @@
 		text-wrap-style: balance;
 		font-size: 1rem;
 	}
-	
 }

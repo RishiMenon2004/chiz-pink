@@ -24,6 +24,10 @@ body {
 	--sidebar-width: 6rem;
 	--titlebar-height: 3rem;
 
+	cursor:
+		url("/cursors/default.png") 2 2,
+		default;
+
 	overflow: hidden auto;
 	padding-left: var(--sidebar-width);
 	padding-top: var(--titlebar-height);
@@ -195,6 +199,10 @@ a {
 	background-position: center;
 	background-repeat: no-repeat;
 
+	cursor:
+		url("/cursors/navigate.png") 28 20,
+		pointer;
+
 	.icon {
 		width: 100%;
 		height: 100%;
@@ -292,6 +300,10 @@ a {
 	font-size: 1.25rem;
 	font-style: italic;
 
+	cursor:
+		url("/cursors/edit.png") 4 26,
+		text;
+
 	.icon {
 		z-index: 1;
 		position: relative;
@@ -345,7 +357,7 @@ a {
 	.amount-display,
 	input {
 		cursor:
-			url("/cursors/edit.png") 24 24,
+			url("/cursors/edit.png") 4 26,
 			text;
 		padding-inline: 2rem;
 		padding-block: 0.35rem;

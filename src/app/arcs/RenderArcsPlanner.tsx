@@ -101,7 +101,7 @@ export default function RenderArcsPlanner() {
 				</EmptyFilter>
 			)}
 
-			<div className={`${styles.page} ${activeDragArc && styles.dragging}`}>
+			<div className={`${styles.page}${activeDragArc ? ` ${styles.dragging}` : ""}`}>
 				<DragDropProvider
 					plugins={(defaults) => [
 						...defaults,

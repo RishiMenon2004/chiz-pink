@@ -33,7 +33,7 @@ export default function NavButton({
 				style={{ backgroundImage: `url("/nav/borders/${icon}.png")` }}
 			/>
 
-			<Tooltip offset={{ x: 48, y: 32 }}>
+			<Tooltip offset={{ x: 6, y: 0 }}>
 				{routes[`/${href}`].tooltip}
 			</Tooltip>
 		</Link>

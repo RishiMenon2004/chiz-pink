@@ -77,7 +77,7 @@ export default function PlannerMaterialBox({
 				className={styles.modalMaterialBoxContainer}
 			/>
 
-			<Tooltip offset={{ x: 24, y: 0 }} subText="Click to Edit">
+			<Tooltip offset={{ x: 36, y: 0 }} subText="Click to Edit">
 				<div>{material.name}</div>
 				<div
 					style={{
