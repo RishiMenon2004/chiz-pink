@@ -34,15 +34,16 @@
 	border-radius: 1.625rem;
 	user-select: none;
 
+	overflow: hidden;
+
 	box-shadow:
 		0px -3px 2px -2px hsl(0, 0%, 20%) inset,
 		0px -10px 10px -2px rgb(174, 174, 174) inset,
 		0px -15px 15px -2px hsl(300, 0%, 50%) inset;
 
 	summary {
-		height: 3.25rem;
+		min-height: 3.25rem;
 		padding: 1rem 2rem;
-		border-radius: 100vh;
 		position: relative;
 
 		color: var(--interactive-bg);
@@ -74,7 +75,6 @@
 
 	&:open {
 		summary {
-			border-radius: 1.625rem 1.625rem 0 0;
 			&::before {
 				background-position: 6rem center;
 			}
