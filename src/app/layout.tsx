@@ -51,7 +51,6 @@ export default function RootLayout({
 			lang="en"
 			className={`${barlowCondensed.variable} ${syne.variable}`}>
 			<body className={styles.page}>
-				<SplashScreen />
 				<Sidebar />
 				<CurrencyBar />
 				{children}

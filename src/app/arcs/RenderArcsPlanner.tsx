@@ -18,13 +18,13 @@ import { getAllArcsAsArray } from "@/data/arcs"
 
 import { ModalContainer, ModalEventType } from "@/components/layout/Modal"
 import MaterialGroup from "@/components/inventory/MaterialGroup"
-import PlannerToolbar from "@/components/planner/PlannerToolbar"
+import { PullOutToolbar } from "@/components/layout/PullOutToolbar"
 import PlannerAddArcBox from "@/components/planner/arcs/PlannerAddArcBox"
 import PlannerMaterialBox from "@/components/planner/PlannerMaterialBox"
 import { EmptyFilter } from "@/app/inventory/RenderInventory"
 
 import styles from "./page.module.css"
-import toolbarStyles from "@/components/planner/plannerToolbar.module.css"
+import toolbarStyles from "@/components/layout/PullOutToolbar/pullOutToolbar.module.css"
 import arcBoxStyles from "@/components/planner/arcs/plannerArcBox.module.css"
 
 const PlannerArcBox = dynamic(
@@ -76,7 +76,7 @@ export default function RenderArcsPlanner() {
 	return (
 		<ArcDeductedInventoryProvider
 			arcRecords={Object.values(plannerData.arcs)}>
-			<PlannerToolbar>
+			<PullOutToolbar>
 				{/* =========================================================== */}
 				{/*                     Adding New Entries                      */}
 				{/* =========================================================== */}
@@ -99,7 +99,7 @@ export default function RenderArcsPlanner() {
 						)}
 				</AddNewArcContext.Provider>
 				{/* =========================================================== */}
-			</PlannerToolbar>
+			</PullOutToolbar>
 
 			{Object.entries(plannerData.arcs).length <= 0 && (
 				<EmptyFilter>

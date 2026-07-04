@@ -4,7 +4,7 @@ import {
 	InventoryFilter,
 	InventoryRarityFilter,
 	InventorySort,
-} from "@/data/inventory/inventoryFilters"
+} from "@/data/inventory/filters"
 import { getInventoryMaterials } from "@/data/items"
 import { EnumMaterialType, Material } from "@/data/items/materials"
 import { useInventoryStore, usePlannerStore } from "@/hooks"

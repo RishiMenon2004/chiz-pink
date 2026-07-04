@@ -1,16 +1,21 @@
-import { ChangeEvent, CSSProperties, useContext, useState } from "react"
+import { ChangeEvent, CSSProperties, useContext } from "react"
+
 import { EnumRarity, EnumMaterialType } from "@/data/items"
 import {
 	InventoryFilter,
 	InventoryGroup,
 	InventoryRarityFilter,
 	InventorySort,
-} from "@/data/inventory/inventoryFilters"
+} from "@/data/inventory/filters"
+
 import {
 	InventoryFilterContext,
 	RarityRank,
 } from "@/app/inventory/RenderInventory"
-import styles from "@/components/inventory/filterToolbar.module.css"
+
+import { PullOutToolbar } from "@/components/layout/PullOutToolbar"
+
+import styles from "./filterToolbar.module.css"
 
 export default function InventoryFilterToolbar() {
 	const {
@@ -25,8 +30,6 @@ export default function InventoryFilterToolbar() {
 		sortReverse,
 		setSortReverse,
 	} = useContext(InventoryFilterContext)
-
-	const [isToolbarOpen, setIsToolbarOpen] = useState<boolean>(false)
 
 	const hasFilters = filter !== "default" || rarityFilter !== "default"
 
@@ -53,8 +56,7 @@ export default function InventoryFilterToolbar() {
 	}
 
 	return (
-		<div
-			className={`${styles.filterToolbar} ${isToolbarOpen ? styles.toolbarOpen : ""}`}>
+		<PullOutToolbar>
 			{/* Regular Filter */}
 			<div className={styles.filterSelection}>
 				<span
@@ -235,10 +237,6 @@ export default function InventoryFilterToolbar() {
 			</div>
 
 			<div
-				className={styles.pullOutTab}
-				onClick={() => setIsToolbarOpen((prev) => !prev)}></div>
-
-			<div
 				className={`${styles.clearAllContainer} ${hasFilters && styles.show}`}>
 				<button
 					className={styles.clearAllBtn}
@@ -247,6 +245,6 @@ export default function InventoryFilterToolbar() {
 					onClick={clearAllFilters}
 				/>
 			</div>
-		</div>
+		</PullOutToolbar>
 	)
 }

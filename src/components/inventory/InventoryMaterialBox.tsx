@@ -20,7 +20,7 @@ import {
 import { Material, getItemRarityStyle } from "@/data/items"
 import { findArc } from "@/data/arcs"
 
-import getLinkedMaterials from "@/components/inventory/getLinkedMaterials"
+import getLinkedMaterials from "@/helpers/getLinkedMaterials"
 import styles from "@/components/inventory/inventoryMaterial.module.css"
 
 import pageStyles from "@/app/inventory/page.module.css"

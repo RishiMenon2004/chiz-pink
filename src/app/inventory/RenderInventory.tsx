@@ -15,7 +15,7 @@ import {
 	InventoryGroup,
 	InventoryRarityFilter,
 	InventorySort,
-} from "@/data/inventory/inventoryFilters"
+} from "@/data/inventory/filters"
 
 import { useInventoryStore, useInventoryFilters, usePlannerStore } from "@/hooks"
 

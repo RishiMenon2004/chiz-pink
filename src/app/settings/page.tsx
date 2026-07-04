@@ -1,10 +1,8 @@
-import routes from "@/database/routes";
-import { Metadata } from "next";
+import { RoutesData } from "@/data/routes"
+import { Metadata } from "next"
 
 export const metadata: Metadata = {
-  title: routes["/settings"].head,
-};
-
-export default function Settings() {
-	
+	title: RoutesData["/settings"].head,
 }
+
+export default function Settings() {}

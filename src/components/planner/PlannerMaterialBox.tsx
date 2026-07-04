@@ -13,7 +13,7 @@ import { Material, getItemRarityStyle } from "@/data/items"
 
 import { ArcPlannerUsableMaterialsContext } from "@/app/arcs/ArcDeductedInventoryProvider"
 
-import getLinkedMaterials from "@/components/inventory/getLinkedMaterials"
+import getLinkedMaterials from "@/helpers/getLinkedMaterials"
 
 import styles from "./plannerMaterial.module.css"
 

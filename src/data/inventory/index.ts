@@ -3,4 +3,4 @@ export type {
 	InventoryRarityFilter,
 	InventoryGroup,
 	InventorySort,
-} from "./inventoryFilters"
+} from "./filters"
