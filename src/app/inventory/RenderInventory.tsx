@@ -19,6 +19,7 @@ import { useInventoryStore, useInventoryFilters } from "@/hooks"
 import InventoryFilterToolbar from "@/components/inventory/InventoryFilterToolbar"
 import styles from "./page.module.css"
 import usePlanner from "@/hooks/usePlannerStore"
+import MaterialGroup from "@/components/inventory/MaterialGroup"
 
 const InventoryMaterialBox = dynamic(
 	() => import("@/components/inventory/InventoryMaterialBox"),
@@ -109,13 +110,11 @@ export default function RenderInventory() {
 						)
 						if (filteredRarity.length > 0) {
 							return (
-								<details
+								<MaterialGroup
 									key={rarity[1]}
-									className={styles.matGroup}
-									open>
-									<summary>
-										{Object.values(RarityRank).at(index)}
-									</summary>
+									title={String(
+										Object.values(RarityRank).at(index)
+									)}>
 									<div className={styles.materialList}>
 										{filteredRarity.map((material) => {
 											return (
@@ -126,7 +125,7 @@ export default function RenderInventory() {
 											)
 										})}
 									</div>
-								</details>
+								</MaterialGroup>
 							)
 						}
 					})
@@ -142,9 +141,7 @@ export default function RenderInventory() {
 					)
 					if (filteredType.length > 0) {
 						return (
-							<details key={type} className={styles.matGroup} open>
-								<summary>{type}</summary>
-
+							<MaterialGroup key={type} title={type}>
 								<div className={styles.materialList}>
 									{filteredType.map((material) => {
 										return (
@@ -155,7 +152,7 @@ export default function RenderInventory() {
 										)
 									})}
 								</div>
-							</details>
+							</MaterialGroup>
 						)
 					}
 				})
@@ -171,34 +168,32 @@ export default function RenderInventory() {
 				)
 
 				const groups = [
-					<details
-						key={"owned"}
-						className={`${styles.matGroup} ${ownedMats.length <= 0 && styles.emptyGroup}`}
-						open={ownedMats.length > 0}>
-						<summary>Owned</summary>
-						{ownedMats.length > 0 ? (
-							<div className={styles.materialList}>
-								{ownedMats.map((material) => {
-									return (
-										<InventoryMaterialBox
-											key={material.id}
-											material={material}
-										/>
-									)
-								})}
-							</div>
-						) : (
+					<MaterialGroup
+						key="owned"
+						isEmpty={ownedMats.length <= 0}
+						isOpen={ownedMats.length > 0}
+						emptyFalback={
 							<EmptyFilter>
 								S-sorry... You don&apos;t seem to own anything.
 							</EmptyFilter>
-						)}
-					</details>,
+						}
+						title="Owned">
+						<div className={styles.materialList}>
+							{ownedMats.map((material) => {
+								return (
+									<InventoryMaterialBox
+										key={material.id}
+										material={material}
+									/>
+								)
+							})}
+						</div>
+					</MaterialGroup>,
 				]
 
 				if (unownedMats.length > 0) {
 					groups.push(
-						<details key={"unowned"} className={styles.matGroup} open>
-							<summary>Not Owned</summary>
+						<MaterialGroup key="unowned" title="Not Owned">
 							<div className={styles.materialList}>
 								{unownedMats.map((material) => {
 									return (
@@ -209,7 +204,7 @@ export default function RenderInventory() {
 									)
 								})}
 							</div>
-						</details>
+						</MaterialGroup>
 					)
 				}
 
@@ -242,30 +237,33 @@ export default function RenderInventory() {
 					)
 
 				const groups = []
-
-				if (requiredMaterials.length > 0) {
-					groups.push(
-						<details
-							key={"required"}
-							className={styles.matGroup}
-							open>
-							<summary>Required</summary>
-							<div className={styles.materialList}>
-								{requiredMaterials.map((material) => {
-									return (
-										<InventoryMaterialBox
-											key={material.id}
-											material={material}
-										/>
-									)
-								})}
-							</div>
-						</details>
-					)
-				}
+				groups.push(
+					<MaterialGroup
+						key="required"
+						title="Required"
+						isEmpty={requiredMaterials.length <= 0}
+						emptyFalback={
+							<EmptyFilter>
+								{
+									"Hmm, looks like... you don't n-need anything right now."
+								}
+							</EmptyFilter>
+						}>
+						<div className={styles.materialList}>
+							{requiredMaterials.map((material) => {
+								return (
+									<InventoryMaterialBox
+										key={material.id}
+										material={material}
+									/>
+								)
+							})}
+						</div>
+					</MaterialGroup>
+				)
 
 				groups.push(
-					<div key={"not required"} className={styles.materialList}>
+					<div key="not required" className={styles.materialList}>
 						{notRequiredMaterials.map((material) => {
 							return (
 								<InventoryMaterialBox
@@ -330,47 +328,55 @@ export default function RenderInventory() {
 
 				const groups = []
 
-				if (acquiredMaterials.length > 0) {
-					groups.push(
-						<details
-							key={"acquired"}
-							className={styles.matGroup}
-							open>
-							<summary>Acquired</summary>
-							<div className={styles.materialList}>
-								{acquiredMaterials.map((material) => {
-									return (
-										<InventoryMaterialBox
-											key={material.id}
-											material={material}
-										/>
-									)
-								})}
-							</div>
-						</details>
-					)
-				}
-
-				if (notAcquiredMaterials.length > 0) {
-					groups.push(
-						<details
-							key={"required"}
-							className={styles.matGroup}
-							open>
-							<summary>Required</summary>
-							<div className={styles.materialList}>
-								{notAcquiredMaterials.map((material) => {
-									return (
-										<InventoryMaterialBox
-											key={material.id}
-											material={material}
-										/>
-									)
-								})}
-							</div>
-						</details>
-					)
-				}
+				groups.push(
+					<MaterialGroup
+						key="acquired"
+						title="Acquired"
+						isEmpty={acquiredMaterials.length <= 0}
+						isOpen={acquiredMaterials.length > 0}
+						emptyFalback={
+							<EmptyFilter>
+								{notAcquiredMaterials.length <= 0
+									? ""
+									: "Y-you haven't finished collecting... a-anything."}
+							</EmptyFilter>
+						}>
+						<div className={styles.materialList}>
+							{acquiredMaterials.map((material) => {
+								return (
+									<InventoryMaterialBox
+										key={material.id}
+										material={material}
+									/>
+								)
+							})}
+						</div>
+					</MaterialGroup>
+				)
+				groups.push(
+					<MaterialGroup
+						key="required"
+						title="Required"
+						isEmpty={notAcquiredMaterials.length <= 0}
+						emptyFalback={
+							<EmptyFilter>
+								{acquiredMaterials.length > 0
+									? "Oh wow! You've collected e-everything you needed!"
+									: "Hmm, looks like... you don't n-need anything right now."}
+							</EmptyFilter>
+						}>
+						<div className={styles.materialList}>
+							{notAcquiredMaterials.map((material) => {
+								return (
+									<InventoryMaterialBox
+										key={material.id}
+										material={material}
+									/>
+								)
+							})}
+						</div>
+					</MaterialGroup>
+				)
 
 				groups.push(
 					<div key={"not required"} className={styles.materialList}>
@@ -392,7 +398,7 @@ export default function RenderInventory() {
 			default: {
 				const materials = filteredInventory
 				const groups = [
-					<div key={"default"} className={styles.materialList}>
+					<div key="default" className={styles.materialList}>
 						{materials.map((material) => {
 							return (
 								<InventoryMaterialBox
