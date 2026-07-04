@@ -185,10 +185,9 @@ export default function PlannerArcBox({
 	}
 
 	const allMaterialsAcquired = () => {
+		if (targetLvl === currentLvl) return false
+		
 		return arcRecord.requiredMaterials.every((material) => {
-			if (material.amount === 0) {
-				return false
-			}
 			const inventoryAmount = inventory[material.id] || 0
 			const currentCumulativeInventor = cumulativeInventory.at(index) || {}
 			const { craftedAmount } = currentCumulativeInventor[material.id] || 0
@@ -205,7 +204,9 @@ export default function PlannerArcBox({
 			arcRecord.requiredMaterials.forEach((material) => {
 				const inventoryAmount = localInventory[material.id] || 0
 
-				const { craftedAmount } = currentCumulativeInventory[material.id]
+				const currentCumulativeMaterial =
+					currentCumulativeInventory[material.id]
+				const craftedAmount = currentCumulativeMaterial?.craftedAmount
 
 				if (craftedAmount && craftedAmount > 0) {
 					const materialData = findMaterial(material.id)
@@ -234,6 +235,25 @@ export default function PlannerArcBox({
 
 			updateInventory(localInventory)
 			updateCurrentLvl(targetLvl)
+		}
+	}
+
+	const enhancmentTooltip = (): [ReactNode, string] => {
+		if (targetLvl === currentLvl)
+			return [
+				"Enhancement Complete",
+				"You have already achieved your target!",
+			]
+		if (allMaterialsAcquired()) {
+			return [
+				"Complete Enhancement",
+				"Materials will be deducted from your inventory.",
+			]
+		} else {
+			return [
+				<s key="title">Complete Enhancement</s>,
+				"You have inadequate materials.",
+			]
 		}
 	}
 
@@ -368,17 +388,9 @@ export default function PlannerArcBox({
 					<ArcBtn
 						icon="confirm_plan"
 						ariaLabel="Confirm Levelling Button"
-						toolTipSubtext={
-							allMaterialsAcquired()
-								? "Materials will be deducted from your inventory."
-								: "You have inadequate materials."
-						}
+						toolTipSubtext={enhancmentTooltip()[1]}
 						onClick={handleEnhancement}>
-						{allMaterialsAcquired() ? (
-							"Complete Enhancement"
-						) : (
-							<s>Complete Enhancement</s>
-						)}
+						{enhancmentTooltip()[0]}
 					</ArcBtn>
 					<DragPoint ref={handleRef} />
 					<ArcBtn
@@ -396,11 +408,13 @@ export default function PlannerArcBox({
 						onClose={onDeleteConfim}
 						onCancel={onDeleteCancel}>
 						<div className={styles.arcDeleteConfirmationBox}>
-							<div>{
-								"A-are you sure you want to delete this Arc?"
-							}</div>
+							<div>
+								{"A-are you sure you want to delete this Arc?"}
+							</div>
 							<div className={styles.arcDeleteBoxButtons}>
-								<button tabIndex={1} onClick={onDeleteCancel}>NO</button>
+								<button tabIndex={1} onClick={onDeleteCancel}>
+									NO
+								</button>
 								<button tabIndex={1} onClick={onDeleteConfim}>
 									{"YES"}
 								</button>
