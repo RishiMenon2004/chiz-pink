@@ -17,8 +17,8 @@ import {
 	useTooltip,
 } from "@/hooks"
 
-import { Material, getItemRarityStyle } from "@/database/items"
-import { findArc } from "@/database/arcs"
+import { Material, getItemRarityStyle } from "@/data/items"
+import { findArc } from "@/data/arcs"
 
 import getLinkedMaterials from "@/components/inventory/getLinkedMaterials"
 import styles from "@/components/inventory/inventoryMaterial.module.css"

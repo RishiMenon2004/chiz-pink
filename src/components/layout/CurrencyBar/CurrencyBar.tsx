@@ -2,18 +2,15 @@
 
 import dynamic from "next/dynamic"
 
-import { beetleCoin, dreamlessSeed, fons } from "@/database/items/materials"
+import { beetleCoin, dreamlessSeed, fons } from "@/data/items/materials"
 
 import PageTitle from "./PageTitle"
 
 import styles from "./currencyBar.module.css"
 
-const CurrencyBox = dynamic(
-	() => import("./CurrencyBox"),
-	{
-		ssr: false,
-	}
-)
+const CurrencyBox = dynamic(() => import("./CurrencyBox"), {
+	ssr: false,
+})
 
 export function CurrencyBar() {
 	return (

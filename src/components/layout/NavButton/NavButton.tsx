@@ -3,7 +3,7 @@
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 
-import {RoutesData} from "@/database/routes"
+import { RoutesData } from "@/data/routes"
 
 import { useTooltip } from "@/hooks"
 

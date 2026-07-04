@@ -1,12 +1,12 @@
-import { EnumRarity } from "@/database/items"
-import { Character, EnumCharacterElement } from "@/database/characters"
-import { EnumArcType } from "@/database/arcs"
+import { EnumRarity } from "@/data/items"
+import { Character, EnumCharacterElement } from "@/data/characters"
+import { EnumArcType } from "@/data/arcs"
 import {
 	ascNumeralSet,
 	dressSleevesOfVanity,
 	talentMagicSet,
 	waterMoonPick,
-} from "@/database/items/materials"
+} from "@/data/items/materials"
 
 export const adler: Character = {
 	id: "adler",

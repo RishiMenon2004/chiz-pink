@@ -13,8 +13,8 @@ import { ArcDeductedInventoryProvider } from "./ArcDeductedInventoryProvider"
 import { usePlannerStore } from "@/hooks"
 import { WeaponRecord } from "@/hooks/usePlannerStore"
 
-import { EnumItemLvls, findMaterial } from "@/database/items"
-import { getAllArcsAsArray } from "@/database/arcs"
+import { EnumItemLvls, findMaterial } from "@/data/items"
+import { getAllArcsAsArray } from "@/data/arcs"
 
 import { ModalContainer, ModalEventType } from "@/components/layout/Modal"
 import MaterialGroup from "@/components/inventory/MaterialGroup"

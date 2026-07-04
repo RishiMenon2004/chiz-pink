@@ -1,5 +1,5 @@
-import { EnumRarity, EnumStatAttribute } from "@/database/items"
-import { ascDramaCoreSet, ascWhispersSet } from "@/database/items/materials"
+import { EnumRarity, EnumStatAttribute } from "@/data/items"
+import { ascDramaCoreSet, ascWhispersSet } from "@/data/items/materials"
 import { Arc, EnumArcType } from "./arc"
 
 export const marchingBeyondTime: Arc = {

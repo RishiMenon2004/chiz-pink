@@ -16,8 +16,8 @@ import { createPortal } from "react-dom"
 import { useDragOperation } from "@dnd-kit/react"
 import { useSortable } from "@dnd-kit/react/sortable"
 
-import { EnumItemLvls, getItemRarityStyle, findMaterial } from "@/database/items"
-import { findArc } from "@/database/arcs"
+import { EnumItemLvls, getItemRarityStyle, findMaterial } from "@/data/items"
+import { findArc } from "@/data/arcs"
 
 import { useInventoryStore, usePlannerStore, useTooltip } from "@/hooks"
 import { WeaponRecord } from "@/hooks/usePlannerStore"

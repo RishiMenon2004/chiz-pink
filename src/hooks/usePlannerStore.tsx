@@ -1,13 +1,13 @@
 "use client"
 
-import { findArc } from "@/database/arcs"
-import { Item, EnumItemLvls } from "@/database/items"
+import { findArc } from "@/data/arcs"
+import { Item, EnumItemLvls } from "@/data/items"
 import {
 	beetleCoin,
 	chaoticDye,
 	colorlessDye,
 	lightDye,
-} from "@/database/items/materials"
+} from "@/data/items/materials"
 import { useSyncExternalStore } from "react"
 import { v4 as uuidv4 } from "uuid"
 

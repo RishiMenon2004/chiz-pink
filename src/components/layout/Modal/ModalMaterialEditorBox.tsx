@@ -16,7 +16,7 @@ import {
 
 import { useInventoryStore, useTooltip } from "@/hooks"
 
-import { Material, getItemRarityStyle } from "@/database/items"
+import { Material, getItemRarityStyle } from "@/data/items"
 
 import styles from "@/components/inventory/inventoryMaterial.module.css"
 

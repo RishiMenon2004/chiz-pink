@@ -1,6 +1,6 @@
-import { Item, EnumRarity } from "@/database/items"
-import { Material, MaterialSet } from "@/database/items/materials"
-import { EnumArcType } from "@/database/arcs"
+import { Item, EnumRarity } from "@/data/items"
+import { Material, MaterialSet } from "@/data/items/materials"
+import { EnumArcType } from "@/data/arcs"
 
 export type AbilityDecsription = {
 	section?: string

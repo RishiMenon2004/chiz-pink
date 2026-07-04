@@ -1,6 +1,6 @@
 import { Metadata } from "next"
 
-import { RoutesData } from "@/database/routes"
+import { RoutesData } from "@/data/routes"
 
 import RenderArcsPlanner from "./RenderArcsPlanner"
 

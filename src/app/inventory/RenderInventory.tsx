@@ -9,13 +9,13 @@ import {
 	useState,
 } from "react"
 
-import { EnumRarity, EnumMaterialType, Material } from "@/database/items"
+import { EnumRarity, EnumMaterialType, Material } from "@/data/items"
 import {
 	InventoryFilter,
 	InventoryGroup,
 	InventoryRarityFilter,
 	InventorySort,
-} from "@/database/inventory/inventoryFilters"
+} from "@/data/inventory/inventoryFilters"
 
 import { useInventoryStore, useInventoryFilters, usePlannerStore } from "@/hooks"
 

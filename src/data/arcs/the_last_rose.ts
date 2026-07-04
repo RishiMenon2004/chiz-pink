@@ -1,5 +1,5 @@
-import { EnumRarity, EnumStatAttribute } from "@/database/items"
-import { ascAppleSeedSet, ascWhispersSet } from "@/database/items/materials"
+import { EnumRarity, EnumStatAttribute } from "@/data/items"
+import { ascAppleSeedSet, ascWhispersSet } from "@/data/items/materials"
 import { Arc, EnumArcType } from "./arc"
 
 export const theLastRose: Arc = {

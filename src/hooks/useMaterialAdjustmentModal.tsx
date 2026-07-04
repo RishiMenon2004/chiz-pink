@@ -11,7 +11,7 @@ import type {
 	MatAdjustmentContextType,
 } from "@/components/layout/Modal"
 
-import { Material } from "@/database/items"
+import { Material } from "@/data/items"
 import { useRef, useState } from "react"
 import { createPortal } from "react-dom"
 

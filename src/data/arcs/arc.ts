@@ -1,4 +1,4 @@
-import { Item, EnumRarity, EnumStatAttribute, MaterialSet } from "@/database/items"
+import { Item, EnumRarity, EnumStatAttribute, MaterialSet } from "@/data/items"
 
 export enum EnumArcType {
 	Solid = "Solid",

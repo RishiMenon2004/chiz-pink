@@ -1,11 +1,11 @@
 import { ChangeEvent, CSSProperties, useContext, useState } from "react"
-import { EnumRarity, EnumMaterialType } from "@/database/items"
+import { EnumRarity, EnumMaterialType } from "@/data/items"
 import {
 	InventoryFilter,
 	InventoryGroup,
 	InventoryRarityFilter,
 	InventorySort,
-} from "@/database/inventory/inventoryFilters"
+} from "@/data/inventory/inventoryFilters"
 import {
 	InventoryFilterContext,
 	RarityRank,
@@ -126,8 +126,7 @@ export default function InventoryFilterToolbar() {
 						.filter((v) => typeof v[1] === "string")
 						.reverse()
 						.map((rarity) => {
-							const rarityKey =
-								rarity[1] as keyof typeof RarityRank
+							const rarityKey = rarity[1] as keyof typeof RarityRank
 							const rarityDisp = RarityRank[rarityKey]
 							return (
 								<option value={rarity[0]} key={rarity[0]}>
@@ -225,8 +224,7 @@ export default function InventoryFilterToolbar() {
 					style={
 						{
 							cursor: "pointer",
-							"--icon-src":
-								"url('/button_icons/reverse_sort.png')",
+							"--icon-src": "url('/button_icons/reverse_sort.png')",
 						} as CSSProperties
 					}
 					onClick={() => setSortReverse((prev) => !prev)}

@@ -3,8 +3,8 @@
 import Image from "next/image"
 import { ChangeEvent, CSSProperties, useContext, useState } from "react"
 
-import { EnumItemLvls, EnumRarity, getItemRarityStyle } from "@/database/items"
-import { Arc, findArc, getAllArcs, EnumArcType } from "@/database/arcs"
+import { EnumItemLvls, EnumRarity, getItemRarityStyle } from "@/data/items"
+import { Arc, findArc, getAllArcs, EnumArcType } from "@/data/arcs"
 
 import { RarityRank } from "@/app/inventory/RenderInventory"
 import { AddNewArcContext } from "@/app/arcs/RenderArcsPlanner"

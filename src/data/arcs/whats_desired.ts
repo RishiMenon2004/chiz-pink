@@ -1,4 +1,4 @@
-import { EnumRarity, EnumStatAttribute } from "@/database/items"
+import { EnumRarity, EnumStatAttribute } from "@/data/items"
 import { ascColdDessertSet, ascDelusionsSet } from "../items/materials"
 import { Arc, EnumArcType } from "./arc"
 

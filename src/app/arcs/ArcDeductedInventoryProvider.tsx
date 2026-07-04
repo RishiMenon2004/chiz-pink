@@ -1,4 +1,4 @@
-import { EnumMaterialType, findMaterial } from "@/database/items"
+import { EnumMaterialType, findMaterial } from "@/data/items"
 import { useInventoryStore } from "@/hooks"
 import { WeaponRecord } from "@/hooks/usePlannerStore"
 import { createContext, useMemo } from "react"

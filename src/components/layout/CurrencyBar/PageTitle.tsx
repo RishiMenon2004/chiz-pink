@@ -2,7 +2,7 @@
 
 import { usePathname } from "next/navigation"
 
-import {RoutesData} from "@/database/routes"
+import { RoutesData } from "@/data/routes"
 
 import styles from "./currencyBar.module.css"
 

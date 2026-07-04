@@ -4,9 +4,9 @@ import {
 	InventoryFilter,
 	InventoryRarityFilter,
 	InventorySort,
-} from "@/database/inventory/inventoryFilters"
-import { getInventoryMaterials } from "@/database/items"
-import { EnumMaterialType, Material } from "@/database/items/materials"
+} from "@/data/inventory/inventoryFilters"
+import { getInventoryMaterials } from "@/data/items"
+import { EnumMaterialType, Material } from "@/data/items/materials"
 import { useInventoryStore, usePlannerStore } from "@/hooks"
 
 export function useInventoryFilters({

@@ -1,7 +1,7 @@
 import type { Metadata, Viewport } from "next"
 import { Barlow_Condensed, Syne } from "next/font/google"
 
-import { RoutesData } from "@/database/routes"
+import { RoutesData } from "@/data/routes"
 
 import { CurrencyBar } from "@/components/layout/CurrencyBar"
 import { Sidebar } from "@/components/layout/Sidebar"

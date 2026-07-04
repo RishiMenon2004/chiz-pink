@@ -9,7 +9,7 @@ import {
 	useInventoryStore,
 } from "@/hooks"
 
-import { Material, getItemRarityStyle } from "@/database/items"
+import { Material, getItemRarityStyle } from "@/data/items"
 
 import { ArcPlannerUsableMaterialsContext } from "@/app/arcs/ArcDeductedInventoryProvider"
 

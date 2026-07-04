@@ -12,7 +12,7 @@ import {
 	useState,
 } from "react"
 
-import { Material } from "@/database/items"
+import { Material } from "@/data/items"
 
 import { useInventoryStore } from "@/hooks"
 
