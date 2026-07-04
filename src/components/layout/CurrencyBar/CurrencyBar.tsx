@@ -1,18 +1,25 @@
 "use client"
 
 import dynamic from "next/dynamic"
-import PageTitle from "@/components/layout/PageTitle"
+
 import { beetleCoin, dreamlessSeed, fons } from "@/database/items/materials"
 
-const CurrencyBox = dynamic(() => import("@/components/layout/CurrencyBox"), {
-	ssr: false,
-})
+import PageTitle from "./PageTitle"
 
-export default function CurrencyBar() {
+import styles from "./currencyBar.module.css"
+
+const CurrencyBox = dynamic(
+	() => import("./CurrencyBox"),
+	{
+		ssr: false,
+	}
+)
+
+export function CurrencyBar() {
 	return (
-		<div className="title-bar">
+		<div className={styles.titleBar}>
 			<PageTitle />
-			<span className="currency-section">
+			<span className={styles.currencySection}>
 				<CurrencyBox currency={dreamlessSeed} />
 				<CurrencyBox currency={beetleCoin} />
 				<CurrencyBox currency={fons} />

@@ -12,18 +12,18 @@ import {
 
 import {
 	useInventoryStore,
+	usePlannerStore,
 	useMaterialAdjustmentModal,
 	useTooltip,
 } from "@/hooks"
 
 import { Material, getItemRarityStyle } from "@/database/items"
+import { findArc } from "@/database/arcs"
 
 import getLinkedMaterials from "@/components/inventory/getLinkedMaterials"
-
 import styles from "@/components/inventory/inventoryMaterial.module.css"
+
 import pageStyles from "@/app/inventory/page.module.css"
-import usePlanner from "@/hooks/usePlannerStore"
-import { findArc } from "@/database/arcs"
 
 type MaterialItemBoxProps = {
 	material: Material
@@ -46,7 +46,7 @@ export default function MaterialItemBox({
 	const { inventory, updateInventory } = useInventoryStore()
 	const itemQuantity = inventory[material.id] || 0
 
-	const { getAgregatedMaterials } = usePlanner()
+	const { getAgregatedMaterials } = usePlannerStore()
 	const { amount: requiredQuantity, sources: requiredSources } =
 		getAgregatedMaterials()[material.id] || {
 			amount: 0,

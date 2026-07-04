@@ -1,7 +1,5 @@
 "use client"
 
-import { Material } from "@/database/items"
-import { useInventoryStore } from "@/hooks"
 import Image from "next/image"
 import {
 	ChangeEvent,
@@ -13,6 +11,12 @@ import {
 	useRef,
 	useState,
 } from "react"
+
+import { Material } from "@/database/items"
+
+import { useInventoryStore } from "@/hooks"
+
+import styles from "./currencyBar.module.css"
 
 const localeUS = (x: number) => x.toLocaleString("en-US")
 
@@ -66,9 +70,7 @@ export default function CurrencyBox({ currency }: { currency: Material }) {
 
 	const handleEdit = (e: ChangeEvent<HTMLInputElement>) => {
 		if (e.currentTarget) {
-			const newValue = parseInt(
-				e.currentTarget.value.replaceAll(/\D/g, "")
-			)
+			const newValue = parseInt(e.currentTarget.value.replaceAll(/\D/g, ""))
 			setCurrency(newValue)
 		}
 	}
@@ -92,7 +94,7 @@ export default function CurrencyBox({ currency }: { currency: Material }) {
 
 	return (
 		<div
-			className={`currency-box ${isEdit ? "edit" : ""}`}
+			className={`${styles.currencyBox} ${isEdit ? styles.edit : ""}`}
 			id={currency.id}
 			style={
 				{
@@ -101,7 +103,7 @@ export default function CurrencyBox({ currency }: { currency: Material }) {
 				} as CSSProperties
 			}>
 			<Image
-				className="icon"
+				className={styles.icon}
 				src={`/materials${currency.imageSrc}.png`}
 				width={64}
 				height={64}
@@ -125,7 +127,7 @@ export default function CurrencyBox({ currency }: { currency: Material }) {
 			<span
 				ref={valueDispRef}
 				onClick={handleClick}
-				className="amount-display"
+				className={styles.amountDisplay}
 				style={
 					isEdit
 						? {
@@ -138,7 +140,7 @@ export default function CurrencyBox({ currency }: { currency: Material }) {
 				{localeUS(currencyValue)}
 			</span>
 			<button
-				className="edit-btn"
+				className={styles.editBtn}
 				onClick={toggleEdit}
 				ref={editBtnRef}
 			/>

@@ -41,3 +41,5 @@ yarn-error.log*
 next-env.d.ts
 
 certificates
+storage.json-shm
+storage.json-wal

@@ -1,14 +1,17 @@
 "use client"
 
-import styles from "./plannerAddArcBox.module.css"
-import { EnumItemLvls, EnumRarity, getItemRarityStyle } from "@/database/items"
-import { ChangeEvent, CSSProperties, useContext, useState } from "react"
-import { findArc, getAllArcs } from "@/database/arcs"
 import Image from "next/image"
-import { Arc, EnumArcType } from "@/database/arcs"
+import { ChangeEvent, CSSProperties, useContext, useState } from "react"
+
+import { EnumItemLvls, EnumRarity, getItemRarityStyle } from "@/database/items"
+import { Arc, findArc, getAllArcs, EnumArcType } from "@/database/arcs"
+
 import { RarityRank } from "@/app/inventory/RenderInventory"
 import { AddNewArcContext } from "@/app/arcs/RenderArcsPlanner"
-import { ModalEventType } from "../../layout/ModalContainer"
+
+import type { ModalEventType } from "@/components/layout/Modal"
+
+import styles from "./plannerAddArcBox.module.css"
 
 const LvlSelectGrid = ({
 	onChange,

@@ -32,7 +32,7 @@ type MaterialItemBoxProps = {
 	requiredQuantity?: number
 }
 
-export default function MaterialAdjustmentBox({
+export function MaterialAdjustmentBox({
 	material,
 	requiredQuantity,
 }: MaterialItemBoxProps) {

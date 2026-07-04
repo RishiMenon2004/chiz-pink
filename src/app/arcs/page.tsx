@@ -1,9 +1,11 @@
-import routes from "@/database/routes"
 import { Metadata } from "next"
+
+import { RoutesData } from "@/database/routes"
+
 import RenderArcsPlanner from "./RenderArcsPlanner"
 
 export const metadata: Metadata = {
-	title: routes["/arcs"].head,
+	title: RoutesData["/arcs"].head,
 }
 
 export default function ArcPlanner() {

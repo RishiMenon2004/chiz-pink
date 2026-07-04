@@ -2,18 +2,14 @@
 
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import routes from "@/database/routes"
+
+import {RoutesData} from "@/database/routes"
+
 import { useTooltip } from "@/hooks"
 
-export default function NavButton({
-	href,
-	icon,
-	className,
-}: {
-	href: string
-	icon: string
-	className?: string | undefined
-}) {
+import styles from "./navButton.module.css"
+
+export function NavButton({ href, icon }: { href: string; icon: string }) {
 	const pathname = usePathname()
 	const active = pathname === `/${href}`
 
@@ -23,18 +19,17 @@ export default function NavButton({
 		<Link
 			tabIndex={1}
 			href={`/${href}`}
-			className={`nav-btn ${active ? "active" : ""} ${className}`}
+			className={`${styles.navBtn} ${active ? styles.active : ""}`}
 			style={{ backgroundImage: `url("/nav/${icon}.png")` }}
 			onPointerEnter={showTooltip}
-			onPointerLeave={hideTooltip}
-		>
+			onPointerLeave={hideTooltip}>
 			<span
-				className="icon"
+				className={styles.icon}
 				style={{ backgroundImage: `url("/nav/borders/${icon}.png")` }}
 			/>
 
 			<Tooltip offset={{ x: 6, y: 0 }}>
-				{routes[`/${href}`].tooltip}
+				{RoutesData[`/${href}`].tooltip}
 			</Tooltip>
 		</Link>
 	)

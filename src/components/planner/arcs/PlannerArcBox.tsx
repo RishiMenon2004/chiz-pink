@@ -1,6 +1,7 @@
 "use client"
 
 import Image from "next/image"
+
 import {
 	ChangeEvent,
 	CSSProperties,
@@ -10,17 +11,23 @@ import {
 	useContext,
 	useState,
 } from "react"
-import { EnumItemLvls, getItemRarityStyle, findMaterial } from "@/database/items"
-import PlannerMaterialBox from "@/components/planner/PlannerMaterialBox"
-import styles from "./plannerArcBox.module.css"
-import { useInventoryStore, useTooltip } from "@/hooks"
-import { useSortable } from "@dnd-kit/react/sortable"
-import usePlanner, { WeaponRecord } from "@/hooks/usePlannerStore"
-import { findArc } from "@/database/arcs"
-import { useDragOperation } from "@dnd-kit/react"
-import { ArcPlannerUsableMaterialsContext } from "@/app/arcs/ArcDeductedInventoryProvider"
-import ModalContainer, { ModalEventType } from "../../layout/ModalContainer"
 import { createPortal } from "react-dom"
+
+import { useDragOperation } from "@dnd-kit/react"
+import { useSortable } from "@dnd-kit/react/sortable"
+
+import { EnumItemLvls, getItemRarityStyle, findMaterial } from "@/database/items"
+import { findArc } from "@/database/arcs"
+
+import { useInventoryStore, usePlannerStore, useTooltip } from "@/hooks"
+import { WeaponRecord } from "@/hooks/usePlannerStore"
+
+import { ArcPlannerUsableMaterialsContext } from "@/app/arcs/ArcDeductedInventoryProvider"
+
+import { ModalContainer, ModalEventType } from "@/components/layout/Modal"
+import PlannerMaterialBox from "@/components/planner/PlannerMaterialBox"
+
+import styles from "./plannerArcBox.module.css"
 
 function ItemPhaseStars({ starsActive }: { starsActive: number }) {
 	return Array.from({ length: 6 }).map((_, index) => {
@@ -117,7 +124,7 @@ export default function PlannerArcBox({
 	const { inventory, updateInventory } = useInventoryStore()
 	const { cumulativeInventory } = useContext(ArcPlannerUsableMaterialsContext)
 
-	const { weapons } = usePlanner()
+	const { weapons } = usePlannerStore()
 
 	const [currentLvl, setCurrentLvl] = useState<EnumItemLvls>(
 		arcRecord.currentLvl

@@ -10,7 +10,7 @@ type ModalContainerType = {
 	children: ReactNode
 }
 
-export default function ModalContainer({
+export function ModalContainer({
 	onClose,
 	onCancel,
 	children,
@@ -39,7 +39,7 @@ export default function ModalContainer({
 
 	return (
 		<div
-			className={`modal-container${onCancel ? " use-cross" : ""}`}
+			className="modal-container"
 			onClick={(e) => (onCancel ? onCancel(e) : onClose(e))}>
 			{children}
 

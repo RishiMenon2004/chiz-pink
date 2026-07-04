@@ -1,12 +1,16 @@
 "use client"
 
-import MaterialAdjustmentBox, {
+import {
+	ModalContainer,
+	MaterialAdjustmentBox,
 	MatAdjustmentContext,
-	MatAdjustmentContextType,
-} from "@/components/inventory/ModalMaterialEditorBox"
-import ModalContainer, {
+} from "@/components/layout/Modal"
+
+import type {
 	ModalEventType,
-} from "@/components/layout/ModalContainer"
+	MatAdjustmentContextType,
+} from "@/components/layout/Modal"
+
 import { Material } from "@/database/items"
 import { useRef, useState } from "react"
 import { createPortal } from "react-dom"

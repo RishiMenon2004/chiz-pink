@@ -1,5 +1,6 @@
 "use client"
 
+import dynamic from "next/dynamic"
 import {
 	createContext,
 	Dispatch,
@@ -7,7 +8,7 @@ import {
 	SetStateAction,
 	useState,
 } from "react"
-import dynamic from "next/dynamic"
+
 import { EnumRarity, EnumMaterialType, Material } from "@/database/items"
 import {
 	InventoryFilter,
@@ -15,11 +16,13 @@ import {
 	InventoryRarityFilter,
 	InventorySort,
 } from "@/database/inventory/inventoryFilters"
-import { useInventoryStore, useInventoryFilters } from "@/hooks"
+
+import { useInventoryStore, useInventoryFilters, usePlannerStore } from "@/hooks"
+
 import InventoryFilterToolbar from "@/components/inventory/InventoryFilterToolbar"
-import styles from "./page.module.css"
-import usePlanner from "@/hooks/usePlannerStore"
 import MaterialGroup from "@/components/inventory/MaterialGroup"
+
+import styles from "./page.module.css"
 
 const InventoryMaterialBox = dynamic(
 	() => import("@/components/inventory/InventoryMaterialBox"),
@@ -78,7 +81,7 @@ export default function RenderInventory() {
 	}
 
 	const doesInventoryExist = Object.entries(inventoryStore).length > 0
-	const { getAgregatedMaterials } = usePlanner()
+	const { getAgregatedMaterials } = usePlannerStore()
 
 	function groupInventory() {
 		const agregatedMaterials = getAgregatedMaterials()

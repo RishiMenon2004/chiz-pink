@@ -1,11 +1,14 @@
 "use client"
 
-import { TooltipContainer } from "@/components/layout/TooltipContainer"
 import { PointerEvent, ReactNode, useState } from "react"
 import { createPortal } from "react-dom"
 
+import { TooltipContainer } from "@/components/layout/Tooltip"
+
 export function useTooltip() {
-	const [isTooltipShown, setIsTooltipShown] = useState<{ x: number, y: number } | false>(false)
+	const [isTooltipShown, setIsTooltipShown] = useState<
+		{ x: number; y: number } | false
+	>(false)
 
 	const showTooltip = (e: PointerEvent<HTMLElement>) => {
 		e.stopPropagation()
@@ -18,15 +21,26 @@ export function useTooltip() {
 		setTimeout(() => setIsTooltipShown(false))
 	}
 
-	const Tooltip = ({ offset, subText, children }: { offset: { x: number, y: number }, subText?: string, children: ReactNode }) => {
-		return isTooltipShown && createPortal(
-			<TooltipContainer
-				subtext={subText}
-				startingPos={isTooltipShown}
-				offset={offset}
-			>
-				{children}
-			</TooltipContainer>, document.body
+	const Tooltip = ({
+		offset,
+		subText,
+		children,
+	}: {
+		offset: { x: number; y: number }
+		subText?: string
+		children: ReactNode
+	}) => {
+		return (
+			isTooltipShown &&
+			createPortal(
+				<TooltipContainer
+					subtext={subText}
+					startingPos={isTooltipShown}
+					offset={offset}>
+					{children}
+				</TooltipContainer>,
+				document.body
+			)
 		)
 	}
 

@@ -10,14 +10,13 @@ import { Feedback } from "@dnd-kit/dom"
 
 import { ArcDeductedInventoryProvider } from "./ArcDeductedInventoryProvider"
 
-import usePlanner, { WeaponRecord } from "@/hooks/usePlannerStore"
+import { usePlannerStore } from "@/hooks"
+import { WeaponRecord } from "@/hooks/usePlannerStore"
 
 import { EnumItemLvls, findMaterial } from "@/database/items"
 import { getAllArcsAsArray } from "@/database/arcs"
 
-import ModalContainer, {
-	ModalEventType,
-} from "@/components/layout/ModalContainer"
+import { ModalContainer, ModalEventType } from "@/components/layout/Modal"
 import MaterialGroup from "@/components/inventory/MaterialGroup"
 import PlannerToolbar from "@/components/planner/PlannerToolbar"
 import PlannerAddArcBox from "@/components/planner/arcs/PlannerAddArcBox"
@@ -45,7 +44,7 @@ export const AddNewArcContext = createContext<AddNewArcContextType>(null!)
 
 export default function RenderArcsPlanner() {
 	const { plannerData, updatePlanner, getAgregatedMaterials, weapons } =
-		usePlanner()
+		usePlannerStore()
 
 	const [activeDragArc, setActiveDragArc] = useState<string | null>(null)
 

@@ -87,6 +87,8 @@ function updatePlanner(
 	} catch (err) {
 		console.error("Local Storage Error:", err)
 	}
+
+	localStorage.setItem("lastUpdated", JSON.stringify(Date.now()))
 }
 
 function addCharacter() {}
@@ -586,7 +588,7 @@ const getAgregatedMaterials = () => {
 	return agregatedMaterials
 }
 
-export default function usePlanner() {
+export function usePlannerStore() {
 	const plannerData = useSyncExternalStore<PlannerRecord>(
 		subscribe,
 		getSnapshot,

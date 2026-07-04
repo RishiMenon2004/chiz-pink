@@ -6,7 +6,7 @@ type Route = {
 }
 type RoutesRecord = Record<string, Route>
 
-const routes: RoutesRecord = {
+export const RoutesData: RoutesRecord = {
 	"/": {
 		title: "DASHBOARD",
 		head: "Chiz.Pink | NTE Planner and Daily/Weekly Checklist",
@@ -49,5 +49,3 @@ const routes: RoutesRecord = {
 		id: "settings",
 	},
 }
-
-export default routes

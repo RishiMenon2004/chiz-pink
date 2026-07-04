@@ -21,6 +21,8 @@ function updateInventory(newInventory: Inventory) {
 	} catch (err) {
 		console.error("Local Storage Error:", err);
 	}
+
+	localStorage.setItem("lastUpdated", JSON.stringify(Date.now()))
 }
 
 const subscribe = (callback: () => void) => {

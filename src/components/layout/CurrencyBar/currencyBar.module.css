@@ -1,0 +1,242 @@
+.titleBar {
+	position: fixed;
+	left: 0;
+	top: 0;
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	width: calc(100% - var(--sidebar-width));
+	height: var(--titlebar-height);
+	padding: 0.5rem 1rem 0.5rem 8rem;
+	margin-left: var(--sidebar-width);
+
+	z-index: 2;
+
+	background: var(--white);
+
+	filter: drop-shadow(0px 0px 7.5px hsl(0, 0%, 4%));
+
+	h1 {
+		align-self: center;
+		font-family: var(--font-syne);
+		line-height: 0;
+		font-weight: 740;
+		color: var(--interactive-bg);
+		filter: drop-shadow(-0.5px -0.5px 0.5px hsla(0, 0%, 4%, 1));
+		user-select: none;
+		pointer-events: none;
+	}
+}
+
+.currencySection {
+	display: flex;
+	flex-direction: row;
+	justify-content: end;
+	gap: 0.75rem;
+}
+
+.currencyBox {
+	width: fit-content;
+	height: 100%;
+	color: white;
+	border-radius: 100vh;
+	display: flex;
+	align-items: center;
+	justify-content: flex-end;
+	padding: 0;
+	z-index: 0;
+
+	font-family: var(--font-barlow-condensed);
+	font-size: 1.25rem;
+	font-style: italic;
+
+	cursor:
+		url("/cursors/edit.png") 4 26,
+		text;
+
+	.icon {
+		z-index: 1;
+		position: relative;
+		height: 40px;
+		width: auto;
+		background-color: var(--interactive-bg);
+		border-radius: 100%;
+		padding: 5%;
+		box-shadow:
+			hsl(0, 0%, 0%, 0.5) 0px 0px 0.5px 1px,
+			hsl(0, 0%, 44%) 0px 0.5px 0.5px 2px,
+			hsl(0, 0%, 85%, 0.4) 0px 1px 0.5px 0.5px inset,
+			hsla(0, 0%, 0%, 0.4) -0.5px -0.5px 1px 0.5px inset;
+
+		background-image: var(--bg-image);
+		background-size: 100%;
+		user-select: none;
+		pointer-events: none;
+	}
+
+	input {
+		display: block;
+		min-width: 4ch;
+		width: var(--input-width);
+		padding: 0;
+		margin: 0;
+		border: none;
+
+		background: transparent;
+
+		font-family: var(--font-barlow-condensed);
+		font-size: inherit;
+		text-align: center;
+		line-height: 0;
+		letter-spacing: 5%;
+
+		-moz-appearance: textfield;
+		appearance: textfield;
+
+		&::-webkit-outer-spin-button,
+		&::-webkit-inner-spin-button {
+			-webkit-appearance: none;
+			margin: 0;
+		}
+
+		&:focus {
+			outline: none;
+		}
+	}
+
+	.amountDisplay,
+	input {
+		cursor:
+			url("/cursors/edit.png") 4 26,
+			text;
+		padding-inline: 2rem;
+		padding-block: 0.35rem;
+	}
+
+	&#dreamless_seed {
+		.amount-display,
+		input {
+			padding-inline: 1rem;
+		}
+	}
+
+	.editBtn {
+		height: calc(100% - 0.7rem);
+		margin: 0.35rem;
+		aspect-ratio: 1;
+		background-color: #d0d0d0;
+		border-radius: 100%;
+		cursor: pointer;
+		box-shadow:
+			#393939 0px 0px 1.5px 0,
+			#707070 0px 0px 0px 0.175rem,
+			hsl(0, 0%, 85%) 0.5px 0.5px 0.5px 0.5px inset,
+			hsl(0, 0%, 70%) -0.5px -0.5px 0.5px 0.5px inset;
+		border: none;
+
+		&:hover,
+		&:focus-visible {
+			outline: none;
+			background-color: var(--darker-pink);
+			box-shadow:
+				#d0d0d0 0px 0px 0px 0.175rem,
+				hsla(0, 0%, 85%, 0.6) 0.5px 0.5px 0.5px 0.5px inset,
+				hsla(0, 0%, 70%, 0.6) -0.5px -0.5px 0.5px 0.5px inset;
+		}
+
+		background-image: url("/button_icons/edit.png");
+		background-size: cover;
+	}
+}
+
+.currencyBox {
+	background-color: var(--interactive-bg);
+	box-shadow:
+		hsla(0, 0%, 0%, 0.6) 0px -1px 2px,
+		white 0px 1px 1px,
+		rgba(0, 0, 0, 0.7) 0px 1px inset;
+}
+
+@media (max-width: 1135px) {
+	.titleBar {
+		gap: 2rem;
+	}
+
+	.currencySection {
+		width: 100%;
+	}
+
+	.currencyBox {
+		width: 100%;
+		padding-right: 0.35rem;
+
+		.amountDisplay,
+		input {
+			overflow: scroll;
+			scrollbar-width: none;
+			padding: 0;
+			width: 100%;
+			text-align: center;
+		}
+
+		.editBtn {
+			margin: 0;
+		}
+	}
+}
+
+@media (max-width: 1000px) {
+	.titleBar {
+		margin-left: 0;
+		width: 100%;
+		padding-inline: 0.5em;
+		height: fit-content;
+		display: flex;
+		flex-direction: column;
+		gap: 0.5rem;
+
+		h1 {
+			font-size: 1em;
+			width: 100%;
+			line-height: normal;
+		}
+
+		.currencySection {
+			padding: 0;
+			justify-content: space-between;
+		}
+
+		.currencyBox {
+			font-size: 1rem;
+			height: 1.5rem;
+			width: 100%;
+			padding-right: 1.35rem;
+
+			.icon {
+				height: 1.5rem;
+				padding: 0.375rem;
+			}
+
+			input {
+				font-size: inherit;
+				width: 100% !important;
+			}
+
+			.amountDisplay,
+			input {
+				padding-inline: 4px;
+				text-align: center;
+			}
+
+			.amountDisplay {
+				width: 100%;
+				overflow: scroll;
+				scrollbar-width: none;
+			}
+
+			.editBtn {
+				display: none;
+			}
+		}
+	}
+}
