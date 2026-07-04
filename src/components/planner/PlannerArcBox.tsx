@@ -69,12 +69,14 @@ const ArcBtn = ({
 	icon,
 	ariaLabel,
 	toolTipSubtext,
+	disabled,
 	children,
 }: {
 	onClick: (e: MouseEvent<HTMLElement>) => void
 	icon: string
 	ariaLabel: string
 	toolTipSubtext?: string
+	disabled?: boolean
 	children: ReactNode
 }) => {
 	const { Tooltip, showTooltip, hideTooltip } = useTooltip()
@@ -90,7 +92,8 @@ const ArcBtn = ({
 			}
 			onPointerEnter={showTooltip}
 			onPointerLeave={hideTooltip}
-			onClick={onClick}>
+			onClick={onClick}
+			disabled={disabled}>
 			<Tooltip offset={{ x: 32, y: 0 }} subText={toolTipSubtext || ""}>
 				{children}
 			</Tooltip>
@@ -186,7 +189,7 @@ export default function PlannerArcBox({
 
 	const allMaterialsAcquired = () => {
 		if (targetLvl === currentLvl) return false
-		
+
 		return arcRecord.requiredMaterials.every((material) => {
 			const inventoryAmount = inventory[material.id] || 0
 			const currentCumulativeInventor = cumulativeInventory.at(index) || {}
@@ -389,6 +392,7 @@ export default function PlannerArcBox({
 						icon="confirm_plan"
 						ariaLabel="Confirm Levelling Button"
 						toolTipSubtext={enhancmentTooltip()[1]}
+						disabled={!allMaterialsAcquired()}
 						onClick={handleEnhancement}>
 						{enhancmentTooltip()[0]}
 					</ArcBtn>

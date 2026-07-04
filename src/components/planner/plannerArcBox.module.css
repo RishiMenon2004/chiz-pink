@@ -271,8 +271,17 @@
 			margin-top: auto;
 		}
 
-		&:hover,
-		&:focus-visible {
+		&:disabled {
+			opacity: 0.75;
+			filter: brightness(0.7);
+
+			cursor:
+				url("/cursors/default.png") 2 2,
+				default;
+		}
+
+		&:hover:not(:disabled),
+		&:focus-visible:not(:disabled) {
 			background-color: var(--darker-pink);
 
 			box-shadow:
