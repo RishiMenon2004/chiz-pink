@@ -40,20 +40,23 @@ export default function PlannerMaterialBox({
 		showModal()
 	}
 
-	const { cumulativeInventory } = useContext(ArcPlannerUsableMaterialsContext)
+	const { cumulativeInventory } = /*isArc ?*/ useContext(
+		ArcPlannerUsableMaterialsContext
+	) /*: useContext(CharPlannerUsableMaterialsContext)*/ //TODO: Character Planner
 	const { inventory } = useInventoryStore()
-	const usableInventory = cumulativeInventory[entryIndex === -1 ? 0 : entryIndex] || {}
+	const usableInventory =
+		cumulativeInventory[entryIndex === -1 ? 0 : entryIndex] || {}
 	const availableAmount = usableInventory[material.id]?.amount || 0
 	const ownedAmount = inventory[material.id]
 
 	let craftedAmount = usableInventory[material.id]?.craftedAmount || 0
 	let usingCrafted = craftedAmount > 0
-	
+
 	let remainingAmount = Math.max(
 		0,
 		requiredAmount - (availableAmount + craftedAmount)
 	)
-	
+
 	if (entryIndex === -1) {
 		usingCrafted = false
 		craftedAmount = 0

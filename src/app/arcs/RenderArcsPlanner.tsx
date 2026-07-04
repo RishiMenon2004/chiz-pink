@@ -8,6 +8,8 @@ import { DragDropProvider, DragOverlay } from "@dnd-kit/react"
 import { isSortable } from "@dnd-kit/react/sortable"
 import { Feedback } from "@dnd-kit/dom"
 
+import { ArcDeductedInventoryProvider } from "./ArcDeductedInventoryProvider"
+
 import usePlanner, { WeaponRecord } from "@/hooks/usePlannerStore"
 
 import { EnumItemLvls, findMaterial } from "@/database/items"
@@ -16,19 +18,18 @@ import { getAllArcsAsArray } from "@/database/arcs"
 import ModalContainer, {
 	ModalEventType,
 } from "@/components/layout/ModalContainer"
+import MaterialGroup from "@/components/inventory/MaterialGroup"
 import PlannerToolbar from "@/components/planner/PlannerToolbar"
-import PlannerAddArcBox from "@/components/planner/PlannerAddArcBox"
+import PlannerAddArcBox from "@/components/planner/arcs/PlannerAddArcBox"
+import PlannerMaterialBox from "@/components/planner/PlannerMaterialBox"
 import { EmptyFilter } from "@/app/inventory/RenderInventory"
 
 import styles from "./page.module.css"
-import arcBoxStyles from "@/components/planner/plannerArcBox.module.css"
 import toolbarStyles from "@/components/planner/plannerToolbar.module.css"
-import { ArcDeductedInventoryProvider } from "./ArcDeductedInventoryProvider"
-import MaterialGroup from "@/components/inventory/MaterialGroup"
-import PlannerMaterialBox from "@/components/planner/PlannerMaterialBox"
+import arcBoxStyles from "@/components/planner/arcs/plannerArcBox.module.css"
 
 const PlannerArcBox = dynamic(
-	() => import("@/components/planner/PlannerArcBox"),
+	() => import("@/components/planner/arcs/PlannerArcBox"),
 	{ ssr: false }
 )
 
@@ -114,7 +115,8 @@ export default function RenderArcsPlanner() {
 				className={`${styles.page}${activeDragArc ? ` ${styles.dragging}` : ""}`}>
 				{Object.values(allRequiredMaterials).length > 0 && (
 					<MaterialGroup title="Total Required Materials">
-						<div className={`${arcBoxStyles.arcRequiredMaterialsList} ${styles.arcRequiredMaterialsList}`}>
+						<div
+							className={`${arcBoxStyles.arcRequiredMaterialsList} ${styles.arcRequiredMaterialsList}`}>
 							{Object.entries(allRequiredMaterials).map(
 								([id, { amount }]) => {
 									return (
