@@ -42,7 +42,7 @@ body {
 
 	font-family: var(--font-syne);
 
-	&:has(> .modal-container) {
+	&:has(> .no-body-scroll) {
 		overflow: hidden;
 	}
 }

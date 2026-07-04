@@ -39,7 +39,7 @@ export function ModalContainer({
 
 	return (
 		<div
-			className="modal-container"
+			className="modal-container no-body-scroll"
 			onClick={(e) => (onCancel ? onCancel(e) : onClose(e))}>
 			{children}
 
