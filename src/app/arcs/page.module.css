@@ -3,6 +3,10 @@
 	padding-inline: 6rem;
 }
 
+.arcRequiredMaterialsList {
+	margin-inline: 1rem !important;
+}
+
 .plannerGrid {
 	display: grid;
 	grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));

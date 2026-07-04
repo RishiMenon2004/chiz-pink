@@ -3,7 +3,11 @@
 import Image from "next/image"
 import { MouseEvent, useContext, useMemo } from "react"
 
-import { useTooltip, useMaterialAdjustmentModal, useInventoryStore } from "@/hooks"
+import {
+	useTooltip,
+	useMaterialAdjustmentModal,
+	useInventoryStore,
+} from "@/hooks"
 
 import { Material, getItemRarityStyle } from "@/database/items"
 
@@ -38,16 +42,24 @@ export default function PlannerMaterialBox({
 
 	const { cumulativeInventory } = useContext(ArcPlannerUsableMaterialsContext)
 	const { inventory } = useInventoryStore()
-	const usableInventory = cumulativeInventory[entryIndex] || {}
+	const usableInventory = cumulativeInventory[entryIndex === -1 ? 0 : entryIndex] || {}
 	const availableAmount = usableInventory[material.id]?.amount || 0
 	const ownedAmount = inventory[material.id]
-	const craftedAmount = usableInventory[material.id]?.craftedAmount || 0
-	const usingCrafted = craftedAmount > 0
 
-	const remainingAmount = Math.max(
+	let craftedAmount = usableInventory[material.id]?.craftedAmount || 0
+	let usingCrafted = craftedAmount > 0
+	
+	let remainingAmount = Math.max(
 		0,
 		requiredAmount - (availableAmount + craftedAmount)
 	)
+	
+	if (entryIndex === -1) {
+		usingCrafted = false
+		craftedAmount = 0
+		remainingAmount = Math.max(0, requiredAmount - availableAmount)
+	}
+
 	const displayAmount = remainingAmount > 0 ? remainingAmount : requiredAmount
 
 	return (

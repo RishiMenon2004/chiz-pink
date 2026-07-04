@@ -10,7 +10,7 @@ import { Feedback } from "@dnd-kit/dom"
 
 import usePlanner, { WeaponRecord } from "@/hooks/usePlannerStore"
 
-import { EnumItemLvls } from "@/database/items"
+import { EnumItemLvls, findMaterial } from "@/database/items"
 import { getAllArcsAsArray } from "@/database/arcs"
 
 import ModalContainer, {
@@ -21,8 +21,11 @@ import PlannerAddArcBox from "@/components/planner/PlannerAddArcBox"
 import { EmptyFilter } from "@/app/inventory/RenderInventory"
 
 import styles from "./page.module.css"
+import arcBoxStyles from "@/components/planner/plannerArcBox.module.css"
 import toolbarStyles from "@/components/planner/plannerToolbar.module.css"
 import { ArcDeductedInventoryProvider } from "./ArcDeductedInventoryProvider"
+import MaterialGroup from "@/components/inventory/MaterialGroup"
+import PlannerMaterialBox from "@/components/planner/PlannerMaterialBox"
 
 const PlannerArcBox = dynamic(
 	() => import("@/components/planner/PlannerArcBox"),
@@ -32,19 +35,24 @@ const PlannerArcBox = dynamic(
 type AddNewArcContextType = {
 	newArcRecord: Omit<WeaponRecord, "uid" | "requiredMaterials" | "isDisabled">
 	setNewArcRecord: Dispatch<
-		SetStateAction<Omit<WeaponRecord, "uid" | "requiredMaterials" | "isDisabled">>
+		SetStateAction<
+			Omit<WeaponRecord, "uid" | "requiredMaterials" | "isDisabled">
+		>
 	>
 }
 export const AddNewArcContext = createContext<AddNewArcContextType>(null!)
 
 export default function RenderArcsPlanner() {
-	const { plannerData, updatePlanner, weapons } = usePlanner()
+	const { plannerData, updatePlanner, getAgregatedMaterials, weapons } =
+		usePlanner()
 
 	const [activeDragArc, setActiveDragArc] = useState<string | null>(null)
 
 	const [newArcRecord, setNewArcRecord] = useState<
 		Omit<WeaponRecord, "uid" | "requiredMaterials" | "isDisabled">
 	>(null!)
+
+	const allRequiredMaterials = getAgregatedMaterials()
 
 	const closeModal = (e: ModalEventType) => {
 		e.stopPropagation()
@@ -66,7 +74,8 @@ export default function RenderArcsPlanner() {
 	}
 
 	return (
-		<ArcDeductedInventoryProvider arcRecords={Object.values(plannerData.arcs)}>
+		<ArcDeductedInventoryProvider
+			arcRecords={Object.values(plannerData.arcs)}>
 			<PlannerToolbar>
 				{/* =========================================================== */}
 				{/*                     Adding New Entries                      */}
@@ -101,7 +110,26 @@ export default function RenderArcsPlanner() {
 				</EmptyFilter>
 			)}
 
-			<div className={`${styles.page}${activeDragArc ? ` ${styles.dragging}` : ""}`}>
+			<div
+				className={`${styles.page}${activeDragArc ? ` ${styles.dragging}` : ""}`}>
+				{Object.values(allRequiredMaterials).length > 0 && (
+					<MaterialGroup title="Total Required Materials">
+						<div className={`${arcBoxStyles.arcRequiredMaterialsList} ${styles.arcRequiredMaterialsList}`}>
+							{Object.entries(allRequiredMaterials).map(
+								([id, { amount }]) => {
+									return (
+										<PlannerMaterialBox
+											key={id}
+											material={findMaterial(id)}
+											requiredAmount={amount}
+											entryIndex={-1}
+										/>
+									)
+								}
+							)}
+						</div>
+					</MaterialGroup>
+				)}
 				<DragDropProvider
 					plugins={(defaults) => [
 						...defaults,
