@@ -147,7 +147,7 @@
 			justify-content: space-between;
 
 			& a:last-child {
-				display: initial;
+				display: grid;
 			}
 		}
 	}
