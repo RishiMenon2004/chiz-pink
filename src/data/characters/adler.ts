@@ -1,3 +1,5 @@
+import { Character } from "@/types/character"
+
 import { EnumRarity } from "@/data/items"
 import {
 	ascNumeralSet,
@@ -6,7 +8,7 @@ import {
 	waterMoonPick,
 } from "@/data/items/materials"
 import { EnumArcType } from "@/data/arcs"
-import { Character, EnumCharacterElement } from "@/data/characters"
+import { EnumCharacterElement } from "@/data/characters"
 
 export const adler: Character = {
 	id: "adler",
