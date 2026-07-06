@@ -8,35 +8,28 @@ import {
 	useEffect,
 	useRef,
 	useState,
-	useContext,
 	useCallback,
 	KeyboardEvent,
-	createContext,
 } from "react"
+
+import type { Material } from "@/types/item"
+
+import { getItemRarityStyle } from "@/data/items"
 
 import { useInventoryStore, useTooltip } from "@/hooks"
 
-import { Material, getItemRarityStyle } from "@/data/items"
+import { useMaterialAdjustmentContext } from "@/contexts"
 
-import styles from "@/components/inventory/inventoryMaterial.module.css"
+import { styles } from "@/components/inventory/MaterialBox"
 
-export type MatAdjustmentContextType = {
-	registerAdjustmentAmount: (id: string, callback: () => void) => void
-	unregisterAdjustmentAmount: (id: string) => void
-}
-
-export const MatAdjustmentContext = createContext<MatAdjustmentContextType>(null!)
-
-type MaterialItemBoxProps = {
-	material: Material
-	requiredQuantity?: number
-}
-
-export function MaterialAdjustmentBox({
+export function MaterialEditorBox({
 	material,
 	requiredQuantity,
-}: MaterialItemBoxProps) {
-	const modalContext = useContext(MatAdjustmentContext)
+}: {
+	material: Material
+	requiredQuantity?: number
+}) {
+	const modalContext = useMaterialAdjustmentContext()
 
 	const [addSubValue, setAddSubValue] = useState<string>("")
 

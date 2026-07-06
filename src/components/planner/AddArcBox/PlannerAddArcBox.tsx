@@ -1,15 +1,17 @@
 "use client"
 
 import Image from "next/image"
-import { ChangeEvent, CSSProperties, useContext, useState } from "react"
+import { ChangeEvent, CSSProperties, useState } from "react"
+
+import type { ModalEventType } from "@/types"
+import type { Arc } from "@/types/weapon"
 
 import { EnumItemLvls, EnumRarity, getItemRarityStyle } from "@/data/items"
-import { Arc, findArc, getAllArcs, EnumArcType } from "@/data/arcs"
+import { findArc, getAllArcs, EnumArcType } from "@/data/arcs"
 
-import { RarityRank } from "@/app/inventory/RenderInventory"
-import { AddNewArcContext } from "@/app/arcs/RenderArcsPlanner"
+import { getRarityName } from "@/helpers"
 
-import type { ModalEventType } from "@/components/layout/Modal"
+import { useAddArcContext } from "@/contexts"
 
 import styles from "./plannerAddArcBox.module.css"
 
@@ -73,7 +75,7 @@ const LvlSelectGrid = ({
 }
 
 const PlannerArcsSelect = () => {
-	const { newArcRecord, setNewArcRecord } = useContext(AddNewArcContext)
+	const { newArcRecord, setNewArcRecord } = useAddArcContext()
 	const [selected, setSelected] = useState<Arc>(findArc(newArcRecord.id))
 	const [dropdown, setDropdown] = useState<boolean>(false)
 	const [searchQuery, setSearchQuery] = useState<string>("")
@@ -122,7 +124,7 @@ const PlannerArcsSelect = () => {
 					/>
 				</div>
 				<p>{selected.name}</p>
-				<p>{`${Object.values(RarityRank).at(selected.rarity - 2)} ${selected.type} Arc`}</p>
+				<p>{`${getRarityName(selected.rarity - 2)} ${selected.type} Arc`}</p>
 			</div>
 			<div
 				className={`${styles.arcSelectOptionDropdown} ${!dropdown && styles.closed}`}
@@ -171,7 +173,7 @@ const PlannerArcsSelect = () => {
 											return [prevType, arcRank]
 										})
 									}}>
-									{Object.values(RarityRank).at(arcRank - 2)}
+									{getRarityName(arcRank - 2)}
 								</span>
 							)
 						})}
@@ -199,7 +201,7 @@ const PlannerArcsSelect = () => {
 								/>
 								<p>{arc.name}</p>
 								<p>
-									{`${Object.values(RarityRank).at(arc.rarity - 2)} ${arc.type} Arc`}
+									{`${getRarityName(arc.rarity - 2)} ${arc.type} Arc`}
 								</p>
 							</div>
 						)
@@ -210,12 +212,12 @@ const PlannerArcsSelect = () => {
 	)
 }
 
-export default function PlannerAddArcBox({
+export function PlannerAddArcBox({
 	onConfirm,
 }: {
 	onConfirm: (e: ModalEventType) => void
 }) {
-	const { newArcRecord, setNewArcRecord } = useContext(AddNewArcContext)
+	const { newArcRecord, setNewArcRecord } = useAddArcContext()
 	return (
 		<div
 			className={styles.plannerAddArcBox}

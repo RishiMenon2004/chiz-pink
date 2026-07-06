@@ -2,7 +2,7 @@
 
 import { useSyncExternalStore } from "react"
 
-export type Inventory = Record<string, number>
+import type { Inventory } from "@/types/inventory"
 
 let cachedInventory: Inventory = {}
 let lastRawValue: string | null = null
@@ -10,16 +10,16 @@ let lastRawValue: string | null = null
 const SERVER_FALLBACK: Inventory = {}
 
 function updateInventory(newInventory: Inventory) {
-	if (typeof window === 'undefined') return
+	if (typeof window === "undefined") return
 
 	const value = localStorage.getItem("inventory")
 	const jsonInventory = { ...JSON.parse(value || "{}"), ...newInventory }
 
 	try {
 		localStorage.setItem("inventory", JSON.stringify(jsonInventory))
-		window.dispatchEvent(new Event("local-storage-update"));
+		window.dispatchEvent(new Event("local-storage-update"))
 	} catch (err) {
-		console.error("Local Storage Error:", err);
+		console.error("Local Storage Error:", err)
 	}
 
 	localStorage.setItem("lastUpdated", JSON.stringify(Date.now()))
@@ -36,7 +36,7 @@ const subscribe = (callback: () => void) => {
 }
 
 const getSnapshot = () => {
-	if (typeof window === 'undefined') return SERVER_FALLBACK
+	if (typeof window === "undefined") return SERVER_FALLBACK
 
 	const rawValue = localStorage.getItem("inventory")
 
@@ -56,7 +56,7 @@ export function useInventoryStore() {
 	const inventory = useSyncExternalStore<Inventory>(
 		subscribe,
 		getSnapshot,
-		getServerSnapshot,
+		getServerSnapshot
 	)
 
 	return { inventory, updateInventory }

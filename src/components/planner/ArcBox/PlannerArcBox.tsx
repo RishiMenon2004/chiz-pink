@@ -8,7 +8,6 @@ import {
 	MouseEvent,
 	ReactNode,
 	Ref,
-	useContext,
 	useState,
 } from "react"
 import { createPortal } from "react-dom"
@@ -16,16 +15,18 @@ import { createPortal } from "react-dom"
 import { useDragOperation } from "@dnd-kit/react"
 import { useSortable } from "@dnd-kit/react/sortable"
 
+import type { ModalEventType } from "@/types"
+import type { WeaponRecord } from "@/types/planner"
+
 import { EnumItemLvls, getItemRarityStyle, findMaterial } from "@/data/items"
 import { findArc } from "@/data/arcs"
 
 import { useInventoryStore, usePlannerStore, useTooltip } from "@/hooks"
-import { WeaponRecord } from "@/hooks/usePlannerStore"
 
-import { ArcPlannerUsableMaterialsContext } from "@/app/arcs/ArcDeductedInventoryProvider"
+import { useArcPlannerUsableMaterialsContext } from "@/contexts"
 
-import { ModalContainer, ModalEventType } from "@/components/layout/Modal"
-import PlannerMaterialBox from "@/components/planner/PlannerMaterialBox"
+import { ModalContainer } from "@/components/layout"
+import { PlannerMaterialBox } from "@/components/planner"
 
 import styles from "./plannerArcBox.module.css"
 
@@ -108,7 +109,7 @@ const ArcBtn = ({
 	)
 }
 
-export default function PlannerArcBox({
+export function PlannerArcBox({
 	arcRecord,
 	index,
 }: {
@@ -122,7 +123,7 @@ export default function PlannerArcBox({
 	const { source } = useDragOperation()
 
 	const { inventory, updateInventory } = useInventoryStore()
-	const { cumulativeInventory } = useContext(ArcPlannerUsableMaterialsContext)
+	const { cumulativeInventory } = useArcPlannerUsableMaterialsContext()
 
 	const { weapons } = usePlannerStore()
 

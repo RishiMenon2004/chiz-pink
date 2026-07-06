@@ -4,6 +4,7 @@ type Route = {
 	tooltip: string
 	id: string
 }
+
 type RoutesRecord = Record<string, Route>
 
 export const RoutesData: RoutesRecord = {

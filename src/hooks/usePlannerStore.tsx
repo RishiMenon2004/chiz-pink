@@ -1,56 +1,24 @@
 "use client"
 
-import { findArc } from "@/data/arcs"
-import { Item, EnumItemLvls } from "@/data/items"
+import { useSyncExternalStore } from "react"
+import { v4 as uuidv4 } from "uuid"
+
+import type {
+	AgregateMaterialsType,
+	CharacterRecord,
+	PlannerRecord,
+	WeaponRecord,
+} from "@/types/planner"
+
 import {
 	beetleCoin,
 	chaoticDye,
 	colorlessDye,
 	lightDye,
 } from "@/data/items/materials"
-import { useSyncExternalStore } from "react"
-import { v4 as uuidv4 } from "uuid"
+import { findArc } from "@/data/arcs"
 
-type SkillLvl = {
-	currentLvl: number
-	targetLvl: number
-}
-
-export interface CharacterRecord extends Pick<Item, "id"> {
-	currentLvl: EnumItemLvls
-	targetLvl: EnumItemLvls
-	abilitySet: {
-		basicAttack: SkillLvl
-		skill: SkillLvl
-		ultimate: SkillLvl
-		support: SkillLvl
-		passive1: SkillLvl
-		passive2?: SkillLvl
-		passive3?: SkillLvl
-		lifeSkill1: SkillLvl
-		lifeSkill2?: SkillLvl
-	}
-	awakening: number
-	requiredMaterials: {
-		id: string
-		amount: number
-	}[]
-}
-export interface WeaponRecord extends Pick<Item, "id"> {
-	uid: string
-	currentLvl: EnumItemLvls
-	targetLvl: EnumItemLvls
-	isDisabled: boolean
-	requiredMaterials: {
-		id: string
-		amount: number
-	}[]
-}
-
-export type PlannerRecord = {
-	arcs: Record<string, WeaponRecord>
-	characters: Record<string, CharacterRecord>
-}
+import { calcuateWeaponCosts } from "@/helpers/calcuateWeaponCosts"
 
 let cachedPlanner: PlannerRecord = {
 	arcs: {},
@@ -58,14 +26,6 @@ let cachedPlanner: PlannerRecord = {
 }
 
 let lastRawValue: string | null = null
-
-export type AgregateMaterialsType = Record<
-	string,
-	{
-		amount: number
-		sources: string[]
-	}
->
 
 const SERVER_FALLBACK: PlannerRecord = {
 	arcs: {},
@@ -99,324 +59,15 @@ function deleteCharacter(char: CharacterRecord) {
 	updatePlanner({ ...plannerData })
 }
 
-const weaponPhasesMaterials = {
-	1: {
-		beetleCoin: 0,
-		exp: {
-			lightDye: 0,
-			colorlessDye: 0,
-			chaoticDye: 0,
-		},
-		ascMaterial1: {
-			common: 0,
-			uncommon: 0,
-			rare: 0,
-		},
-		ascMaterial2: {
-			common: 0,
-			uncommon: 0,
-			rare: 0,
-		},
-	},
-
-	20: {
-		beetleCoin: 10050,
-		exp: {
-			lightDye: 2,
-			colorlessDye: 1,
-			chaoticDye: 3,
-		},
-		ascMaterial1: {
-			common: 0,
-			uncommon: 0,
-			rare: 0,
-		},
-		ascMaterial2: {
-			common: 0,
-			uncommon: 0,
-			rare: 0,
-		},
-	},
-
-	21: {
-		beetleCoin: 20000,
-		exp: {
-			lightDye: 0,
-			colorlessDye: 0,
-			chaoticDye: 0,
-		},
-		ascMaterial1: {
-			common: 4,
-			uncommon: 0,
-			rare: 0,
-		},
-		ascMaterial2: {
-			common: 4,
-			uncommon: 0,
-			rare: 0,
-		},
-	},
-
-	30: {
-		beetleCoin: 26400,
-		exp: {
-			lightDye: 1,
-			colorlessDye: 3,
-			chaoticDye: 8,
-		},
-		ascMaterial1: {
-			common: 0,
-			uncommon: 0,
-			rare: 0,
-		},
-		ascMaterial2: {
-			common: 0,
-			uncommon: 0,
-			rare: 0,
-		},
-	},
-
-	31: {
-		beetleCoin: 40000,
-		exp: {
-			lightDye: 0,
-			colorlessDye: 0,
-			chaoticDye: 0,
-		},
-		ascMaterial1: {
-			common: 10,
-			uncommon: 0,
-			rare: 0,
-		},
-		ascMaterial2: {
-			common: 10,
-			uncommon: 0,
-			rare: 0,
-		},
-	},
-
-	40: {
-		beetleCoin: 56100,
-		exp: {
-			lightDye: 4,
-			colorlessDye: 2,
-			chaoticDye: 18,
-		},
-		ascMaterial1: {
-			common: 0,
-			uncommon: 0,
-			rare: 0,
-		},
-		ascMaterial2: {
-			common: 0,
-			uncommon: 0,
-			rare: 0,
-		},
-	},
-
-	41: {
-		beetleCoin: 60000,
-		exp: {
-			lightDye: 0,
-			colorlessDye: 0,
-			chaoticDye: 0,
-		},
-		ascMaterial1: {
-			common: 0,
-			uncommon: 6,
-			rare: 0,
-		},
-		ascMaterial2: {
-			common: 0,
-			uncommon: 6,
-			rare: 0,
-		},
-	},
-
-	50: {
-		beetleCoin: 98400,
-		exp: {
-			lightDye: 1,
-			colorlessDye: 3,
-			chaoticDye: 32,
-		},
-		ascMaterial1: {
-			common: 0,
-			uncommon: 0,
-			rare: 0,
-		},
-		ascMaterial2: {
-			common: 0,
-			uncommon: 0,
-			rare: 0,
-		},
-	},
-
-	51: {
-		beetleCoin: 80000,
-		exp: {
-			lightDye: 0,
-			colorlessDye: 0,
-			chaoticDye: 0,
-		},
-		ascMaterial1: {
-			common: 0,
-			uncommon: 12,
-			rare: 0,
-		},
-		ascMaterial2: {
-			common: 0,
-			uncommon: 12,
-			rare: 0,
-		},
-	},
-
-	60: {
-		beetleCoin: 160350,
-		exp: {
-			lightDye: 4,
-			colorlessDye: 1,
-			chaoticDye: 53,
-		},
-		ascMaterial1: {
-			common: 0,
-			uncommon: 0,
-			rare: 0,
-		},
-		ascMaterial2: {
-			common: 0,
-			uncommon: 0,
-			rare: 0,
-		},
-	},
-
-	61: {
-		beetleCoin: 100000,
-		exp: {
-			lightDye: 0,
-			colorlessDye: 0,
-			chaoticDye: 0,
-		},
-		ascMaterial1: {
-			common: 0,
-			uncommon: 0,
-			rare: 6,
-		},
-		ascMaterial2: {
-			common: 0,
-			uncommon: 0,
-			rare: 6,
-		},
-	},
-
-	70: {
-		beetleCoin: 261000,
-		exp: {
-			lightDye: 5,
-			colorlessDye: 3,
-			chaoticDye: 86,
-		},
-		ascMaterial1: {
-			common: 0,
-			uncommon: 0,
-			rare: 0,
-		},
-		ascMaterial2: {
-			common: 0,
-			uncommon: 0,
-			rare: 0,
-		},
-	},
-
-	71: {
-		beetleCoin: 120000,
-		exp: {
-			lightDye: 0,
-			colorlessDye: 0,
-			chaoticDye: 0,
-		},
-		ascMaterial1: {
-			common: 0,
-			uncommon: 0,
-			rare: 12,
-		},
-		ascMaterial2: {
-			common: 0,
-			uncommon: 0,
-			rare: 12,
-		},
-	},
-
-	80: {
-		beetleCoin: 425250,
-		exp: {
-			lightDye: 5,
-			colorlessDye: 2,
-			chaoticDye: 141,
-		},
-		ascMaterial1: {
-			common: 0,
-			uncommon: 0,
-			rare: 0,
-		},
-		ascMaterial2: {
-			common: 0,
-			uncommon: 0,
-			rare: 0,
-		},
-	},
-}
-
-function calcuateWeaponMaterials(
-	currentLvl: EnumItemLvls,
-	targetLvl: EnumItemLvls
-) {
-	const totals = {
-		beetleCoin: 0,
-		exp: { lightDye: 0, colorlessDye: 0, chaoticDye: 0 },
-		ascMaterial1: { common: 0, uncommon: 0, rare: 0 },
-		ascMaterial2: { common: 0, uncommon: 0, rare: 0 },
-	}
-
-	if (currentLvl >= targetLvl) {
-		return totals
-	}
-
-	Object.keys(weaponPhasesMaterials)
-		.map(Number)
-		.filter((lvl) => lvl > currentLvl && lvl <= targetLvl)
-		.forEach((lvl) => {
-			const phase =
-				weaponPhasesMaterials[lvl as keyof typeof weaponPhasesMaterials]
-
-			if (!phase) return
-
-			totals.beetleCoin += phase.beetleCoin
-
-			totals.exp.lightDye += phase.exp.lightDye
-			totals.exp.colorlessDye += phase.exp.colorlessDye
-			totals.exp.chaoticDye += phase.exp.chaoticDye
-
-			totals.ascMaterial1.common += phase.ascMaterial1.common
-			totals.ascMaterial1.uncommon += phase.ascMaterial1.uncommon
-			totals.ascMaterial1.rare += phase.ascMaterial1.rare
-
-			totals.ascMaterial2.common += phase.ascMaterial2.common
-			totals.ascMaterial2.uncommon += phase.ascMaterial2.uncommon
-			totals.ascMaterial2.rare += phase.ascMaterial2.rare
-		})
-
-	return totals
-}
-
-function createWeaponRequiredMaterialsList(
+function getWeaponRequiredMaterials(
 	weapon:
 		| WeaponRecord
 		| Omit<WeaponRecord, "requiredMaterials">
 		| Omit<WeaponRecord, "uid" | "requiredMaterials" | "isDisabled">
 ) {
 	const arc = findArc(weapon.id)
-	const materialValues = calcuateWeaponMaterials(
+	const materialValues = calcuateWeaponCosts(
+		arc.rarity,
 		weapon.currentLvl,
 		weapon.targetLvl
 	)
@@ -480,7 +131,7 @@ function addWeapon(
 			[newUID]: {
 				...weapon,
 				uid: newUID,
-				requiredMaterials: createWeaponRequiredMaterialsList(weapon),
+				requiredMaterials: getWeaponRequiredMaterials(weapon),
 				isDisabled: false,
 			},
 		},
@@ -494,7 +145,7 @@ function updateWeapon(weapon: WeaponRecord) {
 			...plannerData.arcs,
 			[weapon.uid]: {
 				...weapon,
-				requiredMaterials: createWeaponRequiredMaterialsList(weapon),
+				requiredMaterials: getWeaponRequiredMaterials(weapon),
 			},
 		},
 	})

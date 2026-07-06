@@ -1,3 +1,5 @@
+"use client"
+
 import { ReactNode, useEffect, useRef } from "react"
 
 export function TooltipContainer({
@@ -21,7 +23,7 @@ export function TooltipContainer({
 					y:
 						e.clientY +
 						(offset.y || 0) -
-						(tooltipRef.current.clientHeight / 2),
+						tooltipRef.current.clientHeight / 2,
 				}
 
 				if (
@@ -45,7 +47,10 @@ export function TooltipContainer({
 	useEffect(() => {
 		const mousePos = {
 			x: startingPos.x + (offset.x || 0),
-			y: startingPos.y + (offset.y || 0) - (tooltipRef.current.clientHeight / 2),
+			y:
+				startingPos.y +
+				(offset.y || 0) -
+				tooltipRef.current.clientHeight / 2,
 		}
 
 		if (

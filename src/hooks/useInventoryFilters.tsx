@@ -1,12 +1,15 @@
 "use client"
 
-import {
-	InventoryFilter,
-	InventoryRarityFilter,
-	InventorySort,
-} from "@/data/inventory/filters"
+import type { Material } from "@/types/item"
+import type {
+	FilterByType,
+	FilterRarityType,
+	SortByType,
+} from "@/types/inventory"
+
 import { getInventoryMaterials } from "@/data/items"
-import { EnumMaterialType, Material } from "@/data/items/materials"
+import { EnumMaterialType } from "@/data/items/materials"
+
 import { useInventoryStore, usePlannerStore } from "@/hooks"
 
 export function useInventoryFilters({
@@ -15,9 +18,9 @@ export function useInventoryFilters({
 	sorting,
 	sortReverse,
 }: {
-	filter: InventoryFilter
-	rarity: InventoryRarityFilter
-	sorting: InventorySort
+	filter: FilterByType
+	rarity: FilterRarityType
+	sorting: SortByType
 	sortReverse: boolean
 }) {
 	const { inventory } = useInventoryStore()

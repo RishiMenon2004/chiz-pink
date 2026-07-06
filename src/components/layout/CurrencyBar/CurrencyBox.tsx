@@ -12,7 +12,7 @@ import {
 	useState,
 } from "react"
 
-import { Material } from "@/data/items"
+import type { Material } from "@/types/item"
 
 import { useInventoryStore } from "@/hooks"
 
@@ -20,7 +20,7 @@ import styles from "./currencyBar.module.css"
 
 const localeUS = (x: number) => x.toLocaleString("en-US")
 
-export default function CurrencyBox({ currency }: { currency: Material }) {
+export function CurrencyBox({ currency }: { currency: Material }) {
 	const [isEdit, setIsEdit] = useState<boolean>(false)
 	const [inputWidth, setInputWidth] = useState<string>("10px")
 	const inputBoxRef = useRef<HTMLInputElement>(null)

@@ -1,3 +1,5 @@
+import type { Material } from "@/types/item"
+
 import {
 	beetleCoin,
 	fons,
@@ -60,7 +62,6 @@ import {
 	chaoticDye,
 	colorlessDye,
 	lightDye,
-	Material,
 } from "./materials"
 
 const allMaterials: Record<string, Material> = {

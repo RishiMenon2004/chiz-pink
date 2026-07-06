@@ -1,74 +1,45 @@
 "use client"
 
 import dynamic from "next/dynamic"
-import {
-	createContext,
-	Dispatch,
-	ReactNode,
-	SetStateAction,
-	useState,
-} from "react"
+import { useState } from "react"
 
-import { EnumRarity, EnumMaterialType, Material } from "@/data/items"
-import {
-	InventoryFilter,
-	InventoryGroup,
-	InventoryRarityFilter,
-	InventorySort,
-} from "@/data/inventory/filters"
+import type { Material } from "@/types/item"
+import type {
+	FilterByType,
+	GroupByType,
+	FilterRarityType,
+	SortByType,
+} from "@/types/inventory"
+
+import { EnumRarity, EnumMaterialType } from "@/data/items"
 
 import { useInventoryStore, useInventoryFilters, usePlannerStore } from "@/hooks"
 
-import InventoryFilterToolbar from "@/components/inventory/InventoryFilterToolbar"
-import MaterialGroup from "@/components/inventory/MaterialGroup"
+import { getRarityName } from "@/helpers"
+
+import { InventoryFilterContext } from "@/contexts"
+
+import { InfoBox } from "@/components/layout"
+import {InventoryFilterToolbar, MaterialGroup} from "@/components/inventory"
 
 import styles from "./page.module.css"
 
 const InventoryMaterialBox = dynamic(
-	() => import("@/components/inventory/InventoryMaterialBox"),
+	() => import("@/components/inventory").then((mod) => mod.MaterialItemBox),
 	{ ssr: false }
 )
 
-export enum RarityRank {
-	Common = "C-Rank",
-	Uncommon = "B-Rank",
-	Rare = "A-Rank",
-	Epic = "S-Rank",
-}
-
-export function EmptyFilter({ children }: { children: ReactNode }) {
-	return <div className={styles.emptyFilter}>{children}</div>
-}
-
-type InventoryFiltersContextType = {
-	filter: InventoryFilter
-	setFilter: Dispatch<SetStateAction<InventoryFilter>>
-	rarityFilter: InventoryRarityFilter
-	setRarityFilter: Dispatch<SetStateAction<InventoryRarityFilter>>
-	group: InventoryGroup
-	setGroup: Dispatch<SetStateAction<InventoryGroup>>
-	sort: InventorySort
-	setSort: Dispatch<SetStateAction<InventorySort>>
-	sortReverse: boolean
-	setSortReverse: Dispatch<SetStateAction<boolean>>
-}
-
-export const InventoryFilterContext = createContext<InventoryFiltersContextType>(
-	null!
-)
-
 export default function RenderInventory() {
-	const [filter, setFilter] = useState<InventoryFilter>("default")
-	const [rarityFilter, setRarityFilter] =
-		useState<InventoryRarityFilter>("default")
-	const [group, setGroup] = useState<InventoryGroup>("default")
-	const [sort, setSort] = useState<InventorySort>("default")
+	const [filter, setFilter] = useState<FilterByType>("default")
+	const [rarityFilter, setRarityFilter] = useState<FilterRarityType>("default")
+	const [group, setGroup] = useState<GroupByType>("default")
+	const [sort, setSort] = useState<SortByType>("default")
 	const [sortReverse, setSortReverse] = useState<boolean>(false)
 
 	const filters: {
-		filter: InventoryFilter
-		rarity: InventoryRarityFilter
-		sorting: InventorySort
+		filter: FilterByType
+		rarity: FilterRarityType
+		sorting: SortByType
 		sortReverse: boolean
 	} = { filter, rarity: rarityFilter, sorting: sort, sortReverse }
 
@@ -90,14 +61,14 @@ export default function RenderInventory() {
 
 		if (materials.length <= 0) {
 			return (
-				<EmptyFilter>
+				<InfoBox>
 					{
 						"I-I can't seem to find anything with those filters. Would you like to "
 					}
 					<a onClick={clearAllFilters} className="btn-anchor">
 						try again?
 					</a>
-				</EmptyFilter>
+				</InfoBox>
 			)
 		}
 
@@ -115,9 +86,7 @@ export default function RenderInventory() {
 							return (
 								<MaterialGroup
 									key={rarity[1]}
-									title={String(
-										Object.values(RarityRank).at(index)
-									)}>
+									title={getRarityName(index)}>
 									<div className={styles.materialList}>
 										{filteredRarity.map((material) => {
 											return (
@@ -176,9 +145,9 @@ export default function RenderInventory() {
 						isEmpty={ownedMats.length <= 0}
 						isOpen={ownedMats.length > 0}
 						emptyFalback={
-							<EmptyFilter>
+							<InfoBox>
 								S-sorry... You don&apos;t seem to own anything.
-							</EmptyFilter>
+							</InfoBox>
 						}
 						title="Owned">
 						<div className={styles.materialList}>
@@ -246,11 +215,11 @@ export default function RenderInventory() {
 						title="Required"
 						isEmpty={requiredMaterials.length <= 0}
 						emptyFalback={
-							<EmptyFilter>
+							<InfoBox>
 								{
 									"Hmm, looks like... you don't n-need anything right now."
 								}
-							</EmptyFilter>
+							</InfoBox>
 						}>
 						<div className={styles.materialList}>
 							{requiredMaterials.map((material) => {
@@ -338,11 +307,11 @@ export default function RenderInventory() {
 						isEmpty={acquiredMaterials.length <= 0}
 						isOpen={acquiredMaterials.length > 0}
 						emptyFalback={
-							<EmptyFilter>
+							<InfoBox>
 								{notAcquiredMaterials.length <= 0
 									? ""
 									: "Y-you haven't finished collecting... a-anything."}
-							</EmptyFilter>
+							</InfoBox>
 						}>
 						<div className={styles.materialList}>
 							{acquiredMaterials.map((material) => {
@@ -362,11 +331,11 @@ export default function RenderInventory() {
 						title="Required"
 						isEmpty={notAcquiredMaterials.length <= 0}
 						emptyFalback={
-							<EmptyFilter>
+							<InfoBox>
 								{acquiredMaterials.length > 0
 									? "Oh wow! You've collected e-everything you needed!"
 									: "Hmm, looks like... you don't n-need anything right now."}
-							</EmptyFilter>
+							</InfoBox>
 						}>
 						<div className={styles.materialList}>
 							{notAcquiredMaterials.map((material) => {
@@ -417,7 +386,7 @@ export default function RenderInventory() {
 		}
 	}
 
-	const contextValue: InventoryFiltersContextType = {
+	const contextValue = {
 		filter,
 		setFilter,
 		rarityFilter,
@@ -435,14 +404,14 @@ export default function RenderInventory() {
 			<InventoryFilterToolbar />
 
 			{!doesInventoryExist && (
-				<EmptyFilter>
+				<InfoBox>
 					{
 						"Seems like you're new here. W-would you like to open an account with us? "
 					}
 					<a className={`btn-anchor ${styles.editCursor}`}>
 						Edit any item to get started.
 					</a>
-				</EmptyFilter>
+				</InfoBox>
 			)}
 
 			<div className={styles.page}>{groupInventory()}</div>

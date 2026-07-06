@@ -3,7 +3,7 @@
 import { PointerEvent, ReactNode, useState } from "react"
 import { createPortal } from "react-dom"
 
-import { TooltipContainer } from "@/components/layout/Tooltip"
+import { TooltipContainer } from "@/components/layout"
 
 export function useTooltip() {
 	const [isTooltipShown, setIsTooltipShown] = useState<

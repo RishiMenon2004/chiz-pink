@@ -1,12 +1,6 @@
-import { Item, EnumRarity } from "@/data/items"
+import type { Material, MaterialSet } from "@/types/item"
 
-export interface Material extends Item {
-	materialType: EnumMaterialType
-	sources: string[]
-	linkedMaterials?: string[]
-}
-
-export type MaterialSet = readonly [Material, Material, Material]
+import { EnumRarity } from "@/data/items"
 
 export enum EnumMaterialType {
 	WeeklyBossDrop = "Weekly Boss Drops",

@@ -1,21 +1,22 @@
 "use client"
 
-import {
-	ModalContainer,
-	MaterialAdjustmentBox,
-	MatAdjustmentContext,
-} from "@/components/layout/Modal"
-
-import type {
-	ModalEventType,
-	MatAdjustmentContextType,
-} from "@/components/layout/Modal"
-
-import { Material } from "@/data/items"
 import { useRef, useState } from "react"
 import { createPortal } from "react-dom"
 
-export function useMaterialAdjustmentModal() {
+import type { ModalEventType } from "@/types"
+import type { Material } from "@/types/item"
+
+import { MatAdjustmentContext } from "@/contexts"
+
+import {
+	ModalContainer,
+	MaterialEditorBox
+} from "@/components/layout"
+
+export function useMaterialEditorModal(
+	materials: Material[],
+	className: string | undefined
+) {
 	const [showMaterialEditorModal, setShowMaterialEditorModal] =
 		useState<boolean>(false)
 
@@ -31,19 +32,14 @@ export function useMaterialAdjustmentModal() {
 		setShowMaterialEditorModal(false)
 	}
 
-	const contextValue: MatAdjustmentContextType = {
-		registerAdjustmentAmount: (id, callback) =>
+	const contextValue = {
+		registerAdjustmentAmount: (id: string, callback: () => void) =>
 			modalCallbacks.current.set(id, callback),
-		unregisterAdjustmentAmount: (id) => modalCallbacks.current.delete(id),
+		unregisterAdjustmentAmount: (id: string) =>
+			modalCallbacks.current.delete(id),
 	}
 
-	const MaterialAdjustmentModal = ({
-		materials,
-		className,
-	}: {
-		materials: Material[]
-		className: string | undefined
-	}) => {
+	const ModalComponent = () => {
 		return (
 			showMaterialEditorModal &&
 			createPortal(
@@ -52,7 +48,7 @@ export function useMaterialAdjustmentModal() {
 						<div className={className}>
 							{materials.map((material, index) => {
 								return (
-									<MaterialAdjustmentBox
+									<MaterialEditorBox
 										key={index}
 										material={material}
 									/>
@@ -66,5 +62,5 @@ export function useMaterialAdjustmentModal() {
 		)
 	}
 
-	return { MaterialAdjustmentModal, showModal }
+	return { ModalComponent, showModal }
 }

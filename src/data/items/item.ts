@@ -1,3 +1,5 @@
+import type { Item } from "@/types/item"
+
 export enum EnumRarity {
 	Common = 2,
 	Uncommon = 3,
@@ -71,12 +73,4 @@ export function getItemRarityStyle(
 		case 5:
 			return "epic"
 	}
-}
-
-export interface Item {
-	id: string
-	name: string
-	description?: string
-	rarity: EnumRarity
-	imageSrc: string
 }

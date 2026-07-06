@@ -1,7 +1,8 @@
 import { ReactNode } from "react"
+
 import styles from "@/app/inventory/page.module.css"
 
-export default function MaterialGroup({
+export function MaterialGroup({
 	title,
 	isEmpty,
 	isOpen = true,

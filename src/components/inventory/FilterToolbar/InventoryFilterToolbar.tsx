@@ -1,23 +1,23 @@
-import { ChangeEvent, CSSProperties, useContext } from "react"
+import { ChangeEvent, CSSProperties } from "react"
+
+import type {
+	FilterByType,
+	FilterRarityType,
+	GroupByType,
+	SortByType,
+} from "@/types/inventory"
 
 import { EnumRarity, EnumMaterialType } from "@/data/items"
-import {
-	InventoryFilter,
-	InventoryGroup,
-	InventoryRarityFilter,
-	InventorySort,
-} from "@/data/inventory/filters"
 
-import {
-	InventoryFilterContext,
-	RarityRank,
-} from "@/app/inventory/RenderInventory"
+import { getRarityName } from "@/helpers"
 
-import { PullOutToolbar } from "@/components/layout/PullOutToolbar"
+import { useInventoryFilterContext } from "@/contexts"
+
+import { PullOutToolbar } from "@/components/layout"
 
 import styles from "./filterToolbar.module.css"
 
-export default function InventoryFilterToolbar() {
+export function InventoryFilterToolbar() {
 	const {
 		filter,
 		setFilter,
@@ -29,25 +29,25 @@ export default function InventoryFilterToolbar() {
 		setSort,
 		sortReverse,
 		setSortReverse,
-	} = useContext(InventoryFilterContext)
+	} = useInventoryFilterContext()
 
 	const hasFilters = filter !== "default" || rarityFilter !== "default"
 
 	const handleFilterChange = (e: ChangeEvent<HTMLSelectElement>) => {
-		setFilter(e.currentTarget.value as InventoryFilter)
+		setFilter(e.currentTarget.value as FilterByType)
 	}
 
 	const handleRarityChange = (e: ChangeEvent<HTMLSelectElement>) => {
-		setRarityFilter(e.currentTarget.value as InventoryRarityFilter)
+		setRarityFilter(e.currentTarget.value as FilterRarityType)
+	}
+
+	const handleGroupChange = (e: ChangeEvent<HTMLSelectElement>) => {
+		setGroup(e.currentTarget.value as GroupByType)
 	}
 
 	const handleSortingChange = (e: ChangeEvent<HTMLSelectElement>) => {
 		setSortReverse(false)
-		setSort(e.currentTarget.value as InventorySort)
-	}
-
-	const handleGroupChange = (e: ChangeEvent<HTMLSelectElement>) => {
-		setGroup(e.currentTarget.value as InventoryGroup)
+		setSort(e.currentTarget.value as SortByType)
 	}
 
 	const clearAllFilters = () => {
@@ -125,14 +125,12 @@ export default function InventoryFilterToolbar() {
 					<option value={"default"}>All Ranks</option>
 
 					{Object.entries(EnumRarity)
-						.filter((v) => typeof v[1] === "string")
+						.filter((v) => typeof v[1] === "number")
 						.reverse()
 						.map((rarity) => {
-							const rarityKey = rarity[1] as keyof typeof RarityRank
-							const rarityDisp = RarityRank[rarityKey]
 							return (
-								<option value={rarity[0]} key={rarity[0]}>
-									{rarityDisp}
+								<option value={rarity[1]} key={rarity[0]}>
+									{getRarityName(Number(rarity[1]))}
 								</option>
 							)
 						})}

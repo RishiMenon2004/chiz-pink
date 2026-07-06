@@ -10,36 +10,39 @@ import {
 	useMemo,
 } from "react"
 
+import type { Material } from "@/types/item"
+
+import { getItemRarityStyle } from "@/data/items"
+import { findArc } from "@/data/arcs"
+
 import {
 	useInventoryStore,
 	usePlannerStore,
-	useMaterialAdjustmentModal,
+	useMaterialEditorModal,
 	useTooltip,
 } from "@/hooks"
 
-import { Material, getItemRarityStyle } from "@/data/items"
-import { findArc } from "@/data/arcs"
+import { getLinkedMaterials } from "@/helpers"
 
-import getLinkedMaterials from "@/helpers/getLinkedMaterials"
-import styles from "@/components/inventory/inventoryMaterial.module.css"
-
+import styles from "./inventoryMaterial.module.css"
 import pageStyles from "@/app/inventory/page.module.css"
 
-type MaterialItemBoxProps = {
-	material: Material
-	canHaveMultiMat?: boolean
-}
-
-export default function MaterialItemBox({
+export function MaterialItemBox({
 	material,
 	canHaveMultiMat = true,
-}: MaterialItemBoxProps) {
+}: {
+	material: Material
+	canHaveMultiMat?: boolean
+}) {
 	const { Tooltip, showTooltip, hideTooltip } = useTooltip()
-	const { MaterialAdjustmentModal, showModal } = useMaterialAdjustmentModal()
 
 	const linkedMaterials = useMemo(
 		() => getLinkedMaterials(material),
 		[material]
+	)
+	const { ModalComponent: MaterialEditor, showModal } = useMaterialEditorModal(
+		linkedMaterials,
+		pageStyles.multiMatContainer
 	)
 
 	const countRef = useRef<HTMLInputElement>(null)
@@ -138,10 +141,7 @@ export default function MaterialItemBox({
 
 			<span className={styles.label}>{material.name}</span>
 
-			<MaterialAdjustmentModal
-				materials={linkedMaterials}
-				className={pageStyles.multiMatContainer}
-			/>
+			<MaterialEditor />
 
 			<Tooltip
 				subText={material.materialType}

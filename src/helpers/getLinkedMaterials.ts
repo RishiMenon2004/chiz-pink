@@ -1,6 +1,8 @@
-import { findMaterial, Material } from "@/data/items"
+import type { Material } from "@/types/item"
 
-export default function getLinkedMaterials(material: Material) {
+import { findMaterial } from "@/data/items"
+
+export function getLinkedMaterials(material: Material) {
 	const rarityOrder: Material[] = []
 	if (material.linkedMaterials) {
 		rarityOrder.push(material)

@@ -1,5 +1,6 @@
-import { RoutesData } from "@/data/routes"
 import { Metadata } from "next"
+
+import { RoutesData } from "@/data/routes"
 
 export const metadata: Metadata = {
 	title: RoutesData["/checklist"].head,

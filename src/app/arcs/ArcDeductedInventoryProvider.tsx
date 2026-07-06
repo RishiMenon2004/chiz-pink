@@ -1,17 +1,13 @@
+import { useMemo } from "react"
+
+import type { WeaponRecord } from "@/types/planner"
+import type { CumulativeInventory } from "@/types/inventory"
+
 import { EnumMaterialType, findMaterial } from "@/data/items"
+
 import { useInventoryStore } from "@/hooks"
-import { WeaponRecord } from "@/hooks/usePlannerStore"
-import { createContext, useMemo } from "react"
 
-type CumulativeInventoryType = {
-	[x: string]: { amount: number; craftedAmount?: number }
-}
-
-type ArcPlannerUsableMaterialsType = {
-	cumulativeInventory: CumulativeInventoryType[]
-}
-export const ArcPlannerUsableMaterialsContext =
-	createContext<ArcPlannerUsableMaterialsType>(null!)
+import { ArcPlannerUsableMaterialsContext } from "@/contexts"
 
 export function ArcDeductedInventoryProvider({
 	arcRecords,
@@ -22,8 +18,8 @@ export function ArcDeductedInventoryProvider({
 }) {
 	const { inventory: currentInventory } = useInventoryStore()
 
-	const convertedInventory: CumulativeInventoryType = useMemo(() => {
-		const cumulativeInventory: CumulativeInventoryType = {}
+	const convertedInventory: CumulativeInventory = useMemo(() => {
+		const cumulativeInventory: CumulativeInventory = {}
 
 		Object.entries(currentInventory).forEach(([materialId, amount]) => {
 			cumulativeInventory[materialId] = { amount, craftedAmount: 0 }
@@ -35,9 +31,7 @@ export function ArcDeductedInventoryProvider({
 	const cumulativeInventory = useMemo(() => {
 		const localInventory = { ...convertedInventory }
 
-		const deductedInventories = [
-			convertedInventory,
-		] as CumulativeInventoryType[]
+		const deductedInventories = [convertedInventory] as CumulativeInventory[]
 
 		arcRecords.forEach((arcRecord, index) => {
 			if (arcRecord.isDisabled) {

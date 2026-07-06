@@ -1,16 +1,22 @@
+export type Inventory = Record<string, number>
+
+export type CumulativeInventory = {
+	[x: string]: { amount: number; craftedAmount?: number }
+}
+
 import { EnumRarity } from "@/data/items/item"
 import { EnumMaterialType } from "@/data/items/materials"
 
-export type InventoryFilter =
+export type FilterByType =
 	| "default"
 	| "owned"
 	| "required"
 	| "acquired"
 	| EnumMaterialType
 
-export type InventoryRarityFilter = "default" | EnumRarity
+export type FilterRarityType = "default" | EnumRarity
 
-export type InventoryGroup =
+export type GroupByType =
 	| "default"
 	| "type"
 	| "rarity"
@@ -18,7 +24,7 @@ export type InventoryGroup =
 	| "required"
 	| "acquired"
 
-export type InventorySort =
+export type SortByType =
 	| "default"
 	| "owned"
 	| "required"

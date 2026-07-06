@@ -4,11 +4,11 @@ import dynamic from "next/dynamic"
 
 import { beetleCoin, dreamlessSeed, fons } from "@/data/items/materials"
 
-import PageTitle from "./PageTitle"
+import { PageTitle } from "./PageTitle"
 
 import styles from "./currencyBar.module.css"
 
-const CurrencyBox = dynamic(() => import("./CurrencyBox"), {
+const CurrencyBox = dynamic(() => import("./CurrencyBox").then((mod) => mod.CurrencyBox), {
 	ssr: false,
 })
 

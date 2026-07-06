@@ -6,7 +6,7 @@ import { RoutesData } from "@/data/routes"
 
 import styles from "./currencyBar.module.css"
 
-export default function PageTitle() {
+export function PageTitle() {
 	const pathname = usePathname()
 
 	const currentRoute = RoutesData[pathname]

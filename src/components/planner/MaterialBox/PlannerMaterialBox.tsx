@@ -1,23 +1,21 @@
 "use client"
 
 import Image from "next/image"
-import { MouseEvent, useContext, useMemo } from "react"
+import { MouseEvent, useMemo } from "react"
 
-import {
-	useTooltip,
-	useMaterialAdjustmentModal,
-	useInventoryStore,
-} from "@/hooks"
+import type { Material } from "@/types/item"
 
-import { Material, getItemRarityStyle } from "@/data/items"
+import { getItemRarityStyle } from "@/data/items"
 
-import { ArcPlannerUsableMaterialsContext } from "@/app/arcs/ArcDeductedInventoryProvider"
+import { useTooltip, useMaterialEditorModal, useInventoryStore } from "@/hooks"
 
-import getLinkedMaterials from "@/helpers/getLinkedMaterials"
+import { getLinkedMaterials } from "@/helpers"
+
+import { useArcPlannerUsableMaterialsContext } from "@/contexts"
 
 import styles from "./plannerMaterial.module.css"
 
-export default function PlannerMaterialBox({
+export function PlannerMaterialBox({
 	material,
 	requiredAmount,
 	entryIndex,
@@ -27,12 +25,12 @@ export default function PlannerMaterialBox({
 	entryIndex: number
 }) {
 	const { Tooltip, showTooltip, hideTooltip } = useTooltip()
-	const { MaterialAdjustmentModal, showModal } = useMaterialAdjustmentModal()
-
+	
 	const linkedMaterials = useMemo(
 		() => getLinkedMaterials(material),
 		[material]
 	)
+	const { ModalComponent: MaterialEditor, showModal } = useMaterialEditorModal(linkedMaterials, styles.modalMaterialBoxContainer)
 
 	const handleClick = (e: MouseEvent<HTMLDivElement>) => {
 		e.stopPropagation()
@@ -40,9 +38,8 @@ export default function PlannerMaterialBox({
 		showModal()
 	}
 
-	const { cumulativeInventory } = /*isArc ?*/ useContext(
-		ArcPlannerUsableMaterialsContext
-	) /*: useContext(CharPlannerUsableMaterialsContext)*/ //TODO: Character Planner
+	const { cumulativeInventory } =
+		/*isArc ?*/ useArcPlannerUsableMaterialsContext() /*: useCharPlannerUsableMaterialsContext()*/ //TODO: Character Planner
 	const { inventory } = useInventoryStore()
 	const usableInventory =
 		cumulativeInventory[entryIndex === -1 ? 0 : entryIndex] || {}
@@ -87,10 +84,7 @@ export default function PlannerMaterialBox({
 				{displayAmount.toLocaleString("en-us")}
 			</span>
 
-			<MaterialAdjustmentModal
-				materials={linkedMaterials}
-				className={styles.modalMaterialBoxContainer}
-			/>
+			<MaterialEditor />
 
 			<Tooltip offset={{ x: 36, y: 0 }} subText="Click to Edit">
 				<div>{material.name}</div>

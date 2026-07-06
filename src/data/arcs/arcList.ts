@@ -1,7 +1,6 @@
-import { Arc } from "./arc"
-import { marchingBeyondTime } from "./marching_beyond_time"
-import { theLastRose } from "./the_last_rose"
-import { whatsDesired } from "./whats_desired"
+import type { Arc } from "@/types/weapon"
+
+import { marchingBeyondTime, theLastRose, whatsDesired } from "./weapons"
 
 const allArcs: Record<string, Arc> = {
 	the_last_rose: theLastRose,

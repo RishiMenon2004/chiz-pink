@@ -1,46 +1,37 @@
 "use client"
 
 import dynamic from "next/dynamic"
-import { createContext, Dispatch, SetStateAction, useState } from "react"
+import { useState } from "react"
 import { createPortal } from "react-dom"
 
 import { DragDropProvider, DragOverlay } from "@dnd-kit/react"
 import { isSortable } from "@dnd-kit/react/sortable"
 import { Feedback } from "@dnd-kit/dom"
 
-import { ArcDeductedInventoryProvider } from "./ArcDeductedInventoryProvider"
-
-import { usePlannerStore } from "@/hooks"
-import { WeaponRecord } from "@/hooks/usePlannerStore"
+import type { ModalEventType } from "@/types"
+import type { WeaponRecord } from "@/types/planner"
 
 import { EnumItemLvls, findMaterial } from "@/data/items"
 import { getAllArcsAsArray } from "@/data/arcs"
 
-import { ModalContainer, ModalEventType } from "@/components/layout/Modal"
-import MaterialGroup from "@/components/inventory/MaterialGroup"
-import { PullOutToolbar } from "@/components/layout/PullOutToolbar"
-import PlannerAddArcBox from "@/components/planner/arcs/PlannerAddArcBox"
-import PlannerMaterialBox from "@/components/planner/PlannerMaterialBox"
-import { EmptyFilter } from "@/app/inventory/RenderInventory"
+import { usePlannerStore } from "@/hooks"
+
+import { AddNewArcContext } from "@/contexts"
+
+import { InfoBox, ModalContainer, PullOutToolbar } from "@/components/layout"
+import { MaterialGroup } from "@/components/inventory/"
+import { PlannerAddArcBox, PlannerMaterialBox } from "@/components/planner"
+
+import { ArcDeductedInventoryProvider } from "./ArcDeductedInventoryProvider"
 
 import styles from "./page.module.css"
-import toolbarStyles from "@/components/layout/PullOutToolbar/pullOutToolbar.module.css"
-import arcBoxStyles from "@/components/planner/arcs/plannerArcBox.module.css"
+import { styles as toolbarStyles} from "@/components/layout/PullOutToolbar"
+import {styles as arcBoxStyles} from "@/components/planner/ArcBox"
 
 const PlannerArcBox = dynamic(
-	() => import("@/components/planner/arcs/PlannerArcBox"),
+	() => import("@/components/planner").then((mod) => mod.PlannerArcBox),
 	{ ssr: false }
 )
-
-type AddNewArcContextType = {
-	newArcRecord: Omit<WeaponRecord, "uid" | "requiredMaterials" | "isDisabled">
-	setNewArcRecord: Dispatch<
-		SetStateAction<
-			Omit<WeaponRecord, "uid" | "requiredMaterials" | "isDisabled">
-		>
-	>
-}
-export const AddNewArcContext = createContext<AddNewArcContextType>(null!)
 
 export default function RenderArcsPlanner() {
 	const { plannerData, updatePlanner, getAgregatedMaterials, weapons } =
@@ -102,12 +93,12 @@ export default function RenderArcsPlanner() {
 			</PullOutToolbar>
 
 			{Object.entries(plannerData.arcs).length <= 0 && (
-				<EmptyFilter>
+				<InfoBox>
 					{"You don't have anything planned... Maybe you'd like to "}
 					<a className="btn-anchor" onClick={handleStartAdding}>
 						Add Something?
 					</a>
-				</EmptyFilter>
+				</InfoBox>
 			)}
 
 			<div

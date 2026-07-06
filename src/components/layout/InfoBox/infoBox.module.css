@@ -1,0 +1,10 @@
+.emptyFilter {
+	font-family: var(--font-syne);
+	font-weight: 600;
+	margin-top: 4rem;
+	margin-inline: 6rem;
+	background-color: color-mix(in srgb, var(--pink) 30%, transparent);
+	padding: 1rem;
+	border-radius: 12px;
+	color: white;
+}

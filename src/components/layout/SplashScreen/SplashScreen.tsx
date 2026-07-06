@@ -1,12 +1,12 @@
 "use client"
 
+import Image from "next/image"
 import { useEffect, useRef, useState } from "react"
 
 import { useFirstVisit } from "@/hooks/useFirstVisit"
 // import { useLastSeen } from "@/hooks/useLastSeen"
 
 import styles from "./splashScreen.module.css"
-import Image from "next/image"
 
 export function SplashScreen() {
 	const { isFirstVisit } = useFirstVisit()
