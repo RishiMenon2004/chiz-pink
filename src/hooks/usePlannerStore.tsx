@@ -51,7 +51,9 @@ function updatePlanner(
 	localStorage.setItem("lastUpdated", JSON.stringify(Date.now()))
 }
 
-function addCharacter(char: Omit<CharacterRecord, | "requiredMaterials" | "isDisabled">) {}
+function addCharacter(
+	char: Omit<CharacterRecord, "requiredMaterials" | "isDisabled">
+) {}
 function updateCharacter() {}
 function deleteCharacter(char: CharacterRecord) {
 	const plannerData = JSON.parse(lastRawValue || "{}") as PlannerRecord
@@ -62,7 +64,6 @@ function deleteCharacter(char: CharacterRecord) {
 function getWeaponRequiredMaterials(
 	weapon:
 		| WeaponRecord
-		| Omit<WeaponRecord, "requiredMaterials">
 		| Omit<WeaponRecord, "uid" | "requiredMaterials" | "isDisabled">
 ) {
 	const arc = findArc(weapon.id)
@@ -184,10 +185,11 @@ const getServerSnapshot = () => {
 	return SERVER_FALLBACK
 }
 
-const getAgregatedMaterials = (type: "arc" | "char" | "both" = "both") => {
+const getAgregatedMaterials = (
+	plannerData: PlannerRecord,
+	type: "arc" | "char" | "both" = "both"
+) => {
 	if (typeof window === "undefined") return {} as AgregateMaterialsType
-
-	const plannerData = JSON.parse(lastRawValue || "{}") as PlannerRecord
 
 	const agregatedMaterials: AgregateMaterialsType = {}
 
@@ -233,7 +235,7 @@ const getAgregatedMaterials = (type: "arc" | "char" | "both" = "both") => {
 	}
 
 	//TODO: Do the math after finishing the characters page
-	if (plannerData.characters  && (type === "char" || type == "both")) {
+	if (plannerData.characters && (type === "char" || type == "both")) {
 	}
 
 	return agregatedMaterials

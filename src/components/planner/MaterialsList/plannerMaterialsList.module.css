@@ -1,0 +1,13 @@
+.materialsList {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(3.25rem, 1fr));
+	grid-template-rows: repeat(auto-fill, minmax(4rem, 1fr));
+	gap: 1rem;
+	place-items: center;
+}
+
+@container (width < 450px) {
+	.materialsList {
+		grid-template-columns: repeat(auto-fill, minmax(3rem, 1fr));
+	}
+}
