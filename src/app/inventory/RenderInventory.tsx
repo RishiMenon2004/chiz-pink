@@ -31,7 +31,8 @@ const InventoryMaterialBox = dynamic(
 
 export default function RenderInventory() {
 	const { inventory: inventoryStore } = useInventoryStore()
-	const { plannerData, getAgregatedMaterials } = usePlannerStore()
+	const { plannerData, getAggregatedMaterials } =
+		usePlannerStore()
 
 	const doesInventoryExist = Object.entries(inventoryStore).length > 0
 
@@ -55,7 +56,7 @@ export default function RenderInventory() {
 	}
 
 	function groupInventory() {
-		const agregatedMaterials = getAgregatedMaterials(plannerData)
+		const agregatedMaterials = getAggregatedMaterials(plannerData)
 
 		const materials = [...filteredInventory]
 

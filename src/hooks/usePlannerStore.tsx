@@ -185,7 +185,7 @@ const getServerSnapshot = () => {
 	return SERVER_FALLBACK
 }
 
-const getAgregatedMaterials = (
+const getAggregatedMaterials = (
 	plannerData: PlannerRecord,
 	type: "arc" | "char" | "both" = "both"
 ) => {
@@ -251,7 +251,7 @@ export function usePlannerStore() {
 	return {
 		plannerData,
 		updatePlanner,
-		getAgregatedMaterials,
+		getAggregatedMaterials,
 		characters: { addCharacter, updateCharacter, deleteCharacter },
 		weapons: { addWeapon, updateWeapon, deleteWeapon },
 	}

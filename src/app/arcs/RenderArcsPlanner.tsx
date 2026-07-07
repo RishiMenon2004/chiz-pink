@@ -35,8 +35,12 @@ const PlannerArcBox = dynamic(
 )
 
 export default function RenderArcsPlanner() {
-	const { plannerData, updatePlanner, getAgregatedMaterials, weapons } =
-		usePlannerStore()
+	const {
+		plannerData,
+		updatePlanner,
+		getAggregatedMaterials,
+		weapons,
+	} = usePlannerStore()
 
 	const [activeDragArc, setActiveDragArc] = useState<string | null>(null)
 
@@ -45,8 +49,8 @@ export default function RenderArcsPlanner() {
 	>(null!)
 
 	const allRequiredMaterials = useMemo(
-		() => Object.entries(getAgregatedMaterials(plannerData, "arc")),
-		[plannerData, getAgregatedMaterials]
+		() => Object.entries(getAggregatedMaterials(plannerData, "arc")),
+		[plannerData, getAggregatedMaterials]
 	)
 
 	const handleStartAdding = () => {

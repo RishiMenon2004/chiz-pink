@@ -24,7 +24,8 @@ export function useInventoryFilters({
 	sortReverse: boolean
 }) {
 	const { inventory } = useInventoryStore()
-	const { getAgregatedMaterials } = usePlannerStore()
+	const { plannerData, getAggregatedMaterials } =
+		usePlannerStore()
 	const cachedInventoryList: Material[] = Object.values(getInventoryMaterials())
 	let filteredInventoryList = cachedInventoryList
 	let rarityFilteredInventoryList = filteredInventoryList
@@ -37,7 +38,7 @@ export function useInventoryFilters({
 		}
 
 		case "required": {
-			const agregatedMaterials = getAgregatedMaterials()
+			const agregatedMaterials = getAggregatedMaterials(plannerData)
 
 			filteredInventoryList = cachedInventoryList.filter((material) => {
 				return Object.keys(agregatedMaterials).includes(material.id)
@@ -46,7 +47,7 @@ export function useInventoryFilters({
 		}
 
 		case "acquired": {
-			const agregatedMaterials = getAgregatedMaterials()
+			const agregatedMaterials = getAggregatedMaterials(plannerData)
 
 			filteredInventoryList = cachedInventoryList.filter((material) => {
 				const matAgr = agregatedMaterials[material.id]
@@ -96,7 +97,7 @@ export function useInventoryFilters({
 		}
 
 		case "required": {
-			const agregatedMaterials = getAgregatedMaterials()
+			const agregatedMaterials = getAggregatedMaterials(plannerData)
 
 			sortedInventoryList = rarityFilteredInventoryList.toSorted((a, b) => {
 				const aAgr = agregatedMaterials[a.id]

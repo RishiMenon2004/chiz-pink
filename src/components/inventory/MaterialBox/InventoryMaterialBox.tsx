@@ -49,9 +49,9 @@ export function MaterialItemBox({
 	const { inventory, updateInventory } = useInventoryStore()
 	const itemQuantity = inventory[material.id] || 0
 
-	const { getAgregatedMaterials } = usePlannerStore()
+	const { plannerData, getAggregatedMaterials } = usePlannerStore()
 	const { amount: requiredQuantity, sources: requiredSources } =
-		getAgregatedMaterials()[material.id] || {
+		getAggregatedMaterials(plannerData)[material.id] || {
 			amount: 0,
 			sources: [],
 		}
