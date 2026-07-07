@@ -70,6 +70,8 @@
 		hsl(0, 0%, 85%) 0.5px 0.5px 0.5px 0.5px inset,
 		hsl(0, 0%, 70%) -0.5px -0.5px 0.5px 0.5px inset;
 
+	cursor: var(--pointer-cursor);
+
 	&:hover {
 		color: white;
 		-webkit-text-stroke: 4px black;
