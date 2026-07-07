@@ -20,7 +20,7 @@ import { getRarityName } from "@/helpers"
 import { InventoryFilterContext } from "@/contexts"
 
 import { InfoBox } from "@/components/layout"
-import {InventoryFilterToolbar, MaterialGroup} from "@/components/inventory"
+import { InventoryFilterToolbar, MaterialGroup } from "@/components/inventory"
 
 import styles from "./page.module.css"
 
@@ -30,6 +30,11 @@ const InventoryMaterialBox = dynamic(
 )
 
 export default function RenderInventory() {
+	const { inventory: inventoryStore } = useInventoryStore()
+	const { getAgregatedMaterials } = usePlannerStore()
+
+	const doesInventoryExist = Object.entries(inventoryStore).length > 0
+
 	const [filter, setFilter] = useState<FilterByType>("default")
 	const [rarityFilter, setRarityFilter] = useState<FilterRarityType>("default")
 	const [group, setGroup] = useState<GroupByType>("default")
@@ -43,16 +48,11 @@ export default function RenderInventory() {
 		sortReverse: boolean
 	} = { filter, rarity: rarityFilter, sorting: sort, sortReverse }
 
-	const { inventory: inventoryStore } = useInventoryStore()
 	const filteredInventory = useInventoryFilters(filters)
-
 	const clearAllFilters = () => {
 		setFilter("default")
 		setRarityFilter("default")
 	}
-
-	const doesInventoryExist = Object.entries(inventoryStore).length > 0
-	const { getAgregatedMaterials } = usePlannerStore()
 
 	function groupInventory() {
 		const agregatedMaterials = getAgregatedMaterials()
@@ -61,7 +61,7 @@ export default function RenderInventory() {
 
 		if (materials.length <= 0) {
 			return (
-				<InfoBox>
+				<InfoBox className={styles.emptyFilter}>
 					{
 						"I-I can't seem to find anything with those filters. Would you like to "
 					}
@@ -74,34 +74,32 @@ export default function RenderInventory() {
 
 		switch (group) {
 			case "rarity": {
-				const ranks = Object.entries(EnumRarity).filter(
-					(v) => typeof v[1] === "number"
-				)
-				const groups = ranks
-					.map((rarity, index) => {
-						const filteredRarity = materials.filter(
-							(material) => material.rarity === rarity[1]
-						)
-						if (filteredRarity.length > 0) {
-							return (
-								<MaterialGroup
-									key={rarity[1]}
-									title={getRarityName(index)}>
-									<div className={styles.materialList}>
-										{filteredRarity.map((material) => {
-											return (
-												<InventoryMaterialBox
-													key={material.id}
-													material={material}
-												/>
-											)
-										})}
-									</div>
-								</MaterialGroup>
-							)
-						}
-					})
+				const ranks = Object.entries(EnumRarity)
+					.filter((v) => typeof v[1] === "number")
 					.reverse()
+				const groups = ranks.map((rarity) => {
+					const filteredRarity = materials.filter(
+						(material) => material.rarity === rarity[1]
+					)
+					if (filteredRarity.length > 0) {
+						return (
+							<MaterialGroup
+								key={rarity[1]}
+								title={getRarityName(Number(rarity[1]))}>
+								<div className={styles.materialList}>
+									{filteredRarity.map((material) => {
+										return (
+											<InventoryMaterialBox
+												key={material.id}
+												material={material}
+											/>
+										)
+									})}
+								</div>
+							</MaterialGroup>
+						)
+					}
+				})
 				return groups
 			}
 
@@ -145,7 +143,7 @@ export default function RenderInventory() {
 						isEmpty={ownedMats.length <= 0}
 						isOpen={ownedMats.length > 0}
 						emptyFalback={
-							<InfoBox>
+							<InfoBox className={styles.emptyFilter}>
 								S-sorry... You don&apos;t seem to own anything.
 							</InfoBox>
 						}
@@ -215,7 +213,7 @@ export default function RenderInventory() {
 						title="Required"
 						isEmpty={requiredMaterials.length <= 0}
 						emptyFalback={
-							<InfoBox>
+							<InfoBox className={styles.emptyFilter}>
 								{
 									"Hmm, looks like... you don't n-need anything right now."
 								}
@@ -307,7 +305,7 @@ export default function RenderInventory() {
 						isEmpty={acquiredMaterials.length <= 0}
 						isOpen={acquiredMaterials.length > 0}
 						emptyFalback={
-							<InfoBox>
+							<InfoBox className={styles.emptyFilter}>
 								{notAcquiredMaterials.length <= 0
 									? ""
 									: "Y-you haven't finished collecting... a-anything."}
@@ -331,7 +329,7 @@ export default function RenderInventory() {
 						title="Required"
 						isEmpty={notAcquiredMaterials.length <= 0}
 						emptyFalback={
-							<InfoBox>
+							<InfoBox className={styles.emptyFilter}>
 								{acquiredMaterials.length > 0
 									? "Oh wow! You've collected e-everything you needed!"
 									: "Hmm, looks like... you don't n-need anything right now."}
@@ -386,25 +384,24 @@ export default function RenderInventory() {
 		}
 	}
 
-	const contextValue = {
-		filter,
-		setFilter,
-		rarityFilter,
-		setRarityFilter,
-		group,
-		setGroup,
-		sort,
-		setSort,
-		sortReverse,
-		setSortReverse,
-	}
-
 	return (
-		<InventoryFilterContext.Provider value={contextValue}>
+		<InventoryFilterContext.Provider
+			value={{
+				filter,
+				setFilter,
+				rarityFilter,
+				setRarityFilter,
+				group,
+				setGroup,
+				sort,
+				setSort,
+				sortReverse,
+				setSortReverse,
+			}}>
 			<InventoryFilterToolbar />
 
 			{!doesInventoryExist && (
-				<InfoBox>
+				<InfoBox className={styles.emptyFilter}>
 					{
 						"Seems like you're new here. W-would you like to open an account with us? "
 					}
