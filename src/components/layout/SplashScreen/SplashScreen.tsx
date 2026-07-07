@@ -128,8 +128,10 @@ export function SplashScreen() {
 									className={styles.chiz}
 									src="/characters/full/chiz.png"
 									alt="Chiz Art - Full"
-									width={256}
-									height={256}
+									width={512}
+									height={512}
+									quality={100}
+									preload
 									loading="eager"
 									style={{
 										clipPath: `path("${imageClipPath}")`,
