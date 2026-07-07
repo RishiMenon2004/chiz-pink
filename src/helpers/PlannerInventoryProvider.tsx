@@ -7,7 +7,7 @@ import { EnumMaterialType, findMaterial } from "@/data/items"
 
 import { useInventoryStore } from "@/hooks"
 
-import { ArcPlannerUsableMaterialsContext } from "@/contexts"
+import { PlannerMaterialsContext } from "@/contexts"
 
 export function PlannerInventoryProvider({
 	arcRecords,
@@ -191,9 +191,8 @@ export function PlannerInventoryProvider({
 	}, [convertedInventory, arcRecords, charRecords])
 
 	return (
-		<ArcPlannerUsableMaterialsContext.Provider
-			value={{ cumulativeInventory }}>
+		<PlannerMaterialsContext.Provider value={cumulativeInventory}>
 			{children}
-		</ArcPlannerUsableMaterialsContext.Provider>
+		</PlannerMaterialsContext.Provider>
 	)
 }

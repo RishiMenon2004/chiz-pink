@@ -186,36 +186,13 @@
 				gap: 0.5rem;
 
 				margin-inline: 0.5rem var(--padding-right);
-
-				.arcPhaseStar {
-					.arcPhaseStarFill {
-						fill: #bababa;
-					}
-
-					.arcPhaseStarStroke {
-						stroke: #333333;
-						stroke-opacity: 0.75;
-						stroke-width: 3;
-					}
-
-					&.phaseActive {
-						.arcPhaseStarFill {
-							fill: var(--pink);
-						}
-					}
-				}
 			}
 		}
 	}
 }
 
-.arcRequiredMaterialsList {
+.arcRequiredMaterialsBox {
 	flex-grow: 1;
-	display: grid;
-	grid-template-columns: repeat(auto-fill, minmax(3.25rem, 1fr));
-	grid-template-rows: repeat(auto-fill, minmax(4rem, 1fr));
-	gap: 1rem;
-	place-items: center;
 
 	padding: 1rem;
 	margin-inline: 2rem var(--padding-right);
@@ -226,87 +203,6 @@
 	box-shadow:
 		hsla(0, 0%, 0%, 0.6) 0px 0px 2px 1px,
 		rgba(0, 0, 0, 0.7) 1px 2px 2px inset;
-}
-
-.arcButtonsContainer {
-	display: flex;
-	flex-direction: column;
-	justify-content: flex-start;
-	gap: 0.5rem;
-
-	position: relative;
-
-	padding: 0.5rem;
-	border-radius: var(--inner-radius) var(--outer-radius) var(--outer-radius)
-		var(--inner-radius);
-
-	background-color: var(--pink);
-
-	box-shadow:
-		-2.5px -3px 3px -2px hsl(334, 60%, 20%) inset,
-		3px 0px 3px -2px hsl(334, 40%, 37%) inset,
-		white -1px 3px 4px -2px inset;
-
-	.arcPlannerButton {
-		width: 2rem;
-		aspect-ratio: 1;
-		border: #707070 3px solid;
-		border-radius: 100%;
-
-		background-color: #d0d0d0;
-		background-image: var(--icon-src);
-		background-size: cover;
-		background-position: center;
-		background-repeat: no-repeat;
-
-		box-shadow:
-			hsla(0, 0%, 0%, 0.6) 0px -1px 2px,
-			white 0px 1px 1px,
-			hsl(0, 0%, 85%) 0.5px 0.5px 0.5px 0.5px inset,
-			hsl(0, 0%, 50%) -0.5px -0.5px 1px inset;
-
-		cursor: var(--pointer-cursor) !important;
-
-		&:last-child {
-			margin-top: auto;
-		}
-
-		&:disabled {
-			opacity: 0.75;
-			filter: brightness(0.7);
-
-			cursor: var(--default-cursor) !important;
-		}
-
-		&:hover:not(:disabled),
-		&:focus-visible:not(:disabled) {
-			background-color: var(--darker-pink);
-
-			box-shadow:
-				hsla(0, 0%, 0%, 0.6) 0px -1px 2px,
-				white 0px 1px 1px,
-				hsla(0, 0%, 85%, 0.6) 0.5px 0.5px 0.5px 0.5px inset,
-				hsla(0, 0%, 70%, 0.6) -0.5px -0.5px 0.5px 0.5px inset;
-
-			outline: none;
-		}
-	}
-
-	.arcBoxDragPoint {
-		width: 2rem;
-		height: 2.75rem;
-
-		cursor: grab;
-
-		position: absolute;
-		top: 50%;
-		transform: translateY(-50%);
-
-		background-image: url("/icons/drag.png");
-		background-size: cover;
-		background-position: center;
-		background-repeat: no-repeat;
-	}
 }
 
 .arcBoxDisabled,
@@ -499,51 +395,13 @@
 		}
 	}
 
-	.arcRequiredMaterialsList {
-		grid-template-columns: repeat(auto-fill, minmax(3rem, 1fr));
-
+	.arcRequiredMaterialsBox {
 		padding: 1.25rem;
 		margin-inline: 1rem;
-	}
-
-	.arcButtonsContainer {
-		flex-direction: row-reverse;
-
-		border-radius: var(--outer-radius) var(--outer-radius) var(--inner-radius)
-			var(--inner-radius);
-
-		box-shadow:
-			-3px -2.5px 3px -2px hsl(334, 60%, 20%) inset,
-			0px -3px 3px -2px hsl(334, 40%, 37%) inset,
-			white 1px 3px 4px -2px inset;
-
-		.arcBoxDragPoint {
-			width: 2.75rem;
-			height: 2rem;
-
-			transform: translateX(-50%);
-			left: 50%;
-			top: unset;
-
-			background-image: url("/icons/drag_hr.png");
-		}
-
-		.arcPlannerButton {
-			&:last-child {
-				margin-right: auto;
-				margin-top: unset;
-			}
-		}
 	}
 }
 
 @media (max-width: 1000) {
-	.arcButtonsContainer {
-		.arcBoxDragPoint {
-			display: none;
-		}
-	}
-
 	.arcDeleteConfirmationBox {
 		.arcDeleteBoxButtons {
 			button {

@@ -1,7 +1,7 @@
 "use client"
 
 import dynamic from "next/dynamic"
-import { useState } from "react"
+import { useMemo, useState } from "react"
 import { createPortal } from "react-dom"
 
 import { DragDropProvider, DragOverlay } from "@dnd-kit/react"
@@ -20,7 +20,8 @@ import { AddNewArcContext } from "@/contexts"
 
 import { InfoBox, ModalContainer, PullOutToolbar } from "@/components/layout"
 import { MaterialGroup } from "@/components/inventory/"
-import { PlannerAddArcBox, PlannerMaterialBox } from "@/components/planner"
+import { PlannerAddArcBox } from "@/components/planner"
+import { PlannerMaterialsList } from "@/components/planner/"
 
 import { PlannerInventoryProvider } from "@/helpers/PlannerInventoryProvider"
 
@@ -43,7 +44,18 @@ export default function RenderArcsPlanner() {
 		Omit<WeaponRecord, "uid" | "requiredMaterials" | "isDisabled">
 	>(null!)
 
-	const allRequiredMaterials = getAgregatedMaterials("arc")
+	const allRequiredMaterials = useMemo(
+		() => Object.entries(getAgregatedMaterials(plannerData, "arc")),
+		[plannerData, getAgregatedMaterials]
+	)
+
+	const handleStartAdding = () => {
+		setNewArcRecord({
+			id: getAllArcsAsArray()[0].id,
+			currentLvl: EnumItemLvls.Lvl1,
+			targetLvl: EnumItemLvls.Lvl80,
+		})
+	}
 
 	const closeModal = (e: ModalEventType) => {
 		e.stopPropagation()
@@ -54,14 +66,6 @@ export default function RenderArcsPlanner() {
 	const cancelModal = (e: ModalEventType) => {
 		e.stopPropagation()
 		setNewArcRecord(null!)
-	}
-
-	const handleStartAdding = () => {
-		setNewArcRecord({
-			id: getAllArcsAsArray()[0].id,
-			currentLvl: EnumItemLvls.Lvl1,
-			targetLvl: EnumItemLvls.Lvl80,
-		})
 	}
 
 	return (
@@ -102,22 +106,20 @@ export default function RenderArcsPlanner() {
 
 			<div
 				className={`${styles.page}${activeDragArc ? ` ${styles.dragging}` : ""}`}>
-				{Object.values(allRequiredMaterials).length > 0 && (
+				{allRequiredMaterials.length > 0 && (
 					<MaterialGroup title="Total Required Materials">
 						<div
-							className={`${arcBoxStyles.arcRequiredMaterialsList} ${styles.arcRequiredMaterialsList}`}>
-							{Object.entries(allRequiredMaterials).map(
-								([id, { amount }]) => {
-									return (
-										<PlannerMaterialBox
-											key={id}
-											material={findMaterial(id)}
-											requiredAmount={amount}
-											entryIndex={-1}
-										/>
-									)
-								}
-							)}
+							className={`${arcBoxStyles.arcRequiredMaterialsBox} ${styles.arcRequiredMaterialsBox}`}>
+							<PlannerMaterialsList
+								materials={allRequiredMaterials.map(
+									([id, { amount }]) => {
+										return {
+											id,
+											amount,
+										}
+									}
+								)}
+							/>
 						</div>
 					</MaterialGroup>
 				)}

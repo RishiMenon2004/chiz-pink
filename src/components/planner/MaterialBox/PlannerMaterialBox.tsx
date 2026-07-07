@@ -11,7 +11,7 @@ import { useTooltip, useMaterialEditorModal, useInventoryStore } from "@/hooks"
 
 import { getLinkedMaterials } from "@/helpers"
 
-import { useArcPlannerUsableMaterialsContext } from "@/contexts"
+import { usePlannerMaterialsContext } from "@/contexts"
 
 import styles from "./plannerMaterial.module.css"
 
@@ -25,12 +25,15 @@ export function PlannerMaterialBox({
 	entryIndex: number
 }) {
 	const { Tooltip, showTooltip, hideTooltip } = useTooltip()
-	
+
 	const linkedMaterials = useMemo(
 		() => getLinkedMaterials(material),
 		[material]
 	)
-	const { ModalComponent: MaterialEditor, showModal } = useMaterialEditorModal(linkedMaterials, styles.modalMaterialBoxContainer)
+	const { ModalComponent: MaterialEditor, showModal } = useMaterialEditorModal(
+		linkedMaterials,
+		styles.modalMaterialBoxContainer
+	)
 
 	const handleClick = (e: MouseEvent<HTMLDivElement>) => {
 		e.stopPropagation()
@@ -38,15 +41,18 @@ export function PlannerMaterialBox({
 		showModal()
 	}
 
-	const { cumulativeInventory } =
-		/*isArc ?*/ useArcPlannerUsableMaterialsContext() /*: useCharPlannerUsableMaterialsContext()*/ //TODO: Character Planner
+	const isAggregateMaterial = entryIndex === -1
+
+	const cumulativeInventory =
+		/*isArc ?*/ usePlannerMaterialsContext() /*: useCharPlannerUsableMaterialsContext()*/ //TODO: Character Planner
 	const { inventory } = useInventoryStore()
 	const usableInventory =
-		cumulativeInventory[entryIndex === -1 ? 0 : entryIndex] || {}
-	const availableAmount = usableInventory[material.id]?.amount || 0
-	const ownedAmount = inventory[material.id]
+		cumulativeInventory[isAggregateMaterial ? 0 : entryIndex] ?? {}
 
-	let craftedAmount = usableInventory[material.id]?.craftedAmount || 0
+	const availableAmount = usableInventory[material.id]?.amount ?? 0
+	const ownedAmount = inventory[material.id]
+	let craftedAmount = usableInventory[material.id]?.craftedAmount ?? 0
+
 	let usingCrafted = craftedAmount > 0
 
 	let remainingAmount = Math.max(
@@ -54,7 +60,7 @@ export function PlannerMaterialBox({
 		requiredAmount - (availableAmount + craftedAmount)
 	)
 
-	if (entryIndex === -1) {
+	if (isAggregateMaterial) {
 		usingCrafted = false
 		craftedAmount = 0
 		remainingAmount = Math.max(0, requiredAmount - availableAmount)

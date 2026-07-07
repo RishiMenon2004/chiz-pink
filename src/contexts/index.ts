@@ -1,4 +1,10 @@
-import { createContext, Dispatch, SetStateAction, useContext } from "react"
+import {
+	createContext,
+	Dispatch,
+	MouseEvent,
+	SetStateAction,
+	useContext,
+} from "react"
 
 import type {
 	CumulativeInventory,
@@ -9,12 +15,22 @@ import type {
 } from "@/types/inventory"
 import type { CharacterRecord, WeaponRecord } from "@/types/planner"
 
-export const ArcPlannerUsableMaterialsContext = createContext<{
-	cumulativeInventory: CumulativeInventory[]
-}>(null!)
+export const PlannerMaterialsContext = createContext<CumulativeInventory[]>([])
+export function usePlannerMaterialsContext() {
+	return useContext(PlannerMaterialsContext)
+}
 
-export function useArcPlannerUsableMaterialsContext() {
-	return useContext(ArcPlannerUsableMaterialsContext)
+export const PlannerBoxContext = createContext<{
+	itemRecord: CharacterRecord | WeaponRecord
+	entryIndex: number
+	allMaterialsAcquired: () => boolean
+	toggleDisable: (e: MouseEvent<HTMLElement>) => void
+	handleEnhancement: (e: MouseEvent<HTMLElement>) => void
+	handleDelete: (e: MouseEvent<HTMLElement>) => void
+	dragRef: (element: Element | null) => void
+}>(null!)
+export function usePlannerBoxContext() {
+	return useContext(PlannerBoxContext)
 }
 
 export const AddNewArcContext = createContext<{
@@ -25,7 +41,6 @@ export const AddNewArcContext = createContext<{
 		>
 	>
 }>(null!)
-
 export function useAddArcContext() {
 	return useContext(AddNewArcContext)
 }
@@ -36,7 +51,6 @@ export const AddNewCharContext = createContext<{
 		SetStateAction<Omit<CharacterRecord, "requiredMaterials" | "isDisabled">>
 	>
 }>(null!)
-
 export function useAddCharContext() {
 	return useContext(AddNewCharContext)
 }
@@ -53,7 +67,6 @@ export const InventoryFilterContext = createContext<{
 	sortReverse: boolean
 	setSortReverse: Dispatch<SetStateAction<boolean>>
 }>(null!)
-
 export function useInventoryFilterContext() {
 	return useContext(InventoryFilterContext)
 }
@@ -62,7 +75,6 @@ export const MatAdjustmentContext = createContext<{
 	registerAdjustmentAmount: (id: string, callback: () => void) => void
 	unregisterAdjustmentAmount: (id: string) => void
 }>(null!)
-
 export function useMaterialAdjustmentContext() {
 	return useContext(MatAdjustmentContext)
 }

@@ -1,0 +1,17 @@
+.phaseStar {
+	.phaseStarFill {
+		fill: #bababa;
+	}
+
+	.phaseStarStroke {
+		stroke: #333333;
+		stroke-opacity: 0.75;
+		stroke-width: 3;
+	}
+}
+
+.phaseActive {
+	.phaseStarFill {
+		fill: var(--pink);
+	}
+}
