@@ -97,9 +97,7 @@
 	}
 
 	&.multi .iconContainer {
-		cursor:
-			url("/cursors/multi-mat.png") 4 26,
-			pointer;
+		cursor: var(--multi-mat-cursor);
 	}
 }
 
@@ -152,9 +150,7 @@
 
 		margin: 0;
 
-		cursor:
-			url("/cursors/edit.png") 4 26,
-			text;
+		cursor: var(--edit-cursor) !important;
 
 		-moz-appearance: textfield;
 		appearance: textfield;
@@ -177,7 +173,7 @@
 	aspect-ratio: 1;
 	background-color: #d0d0d0;
 	border-radius: 100%;
-	cursor: pointer;
+	cursor: var(--pointer-cursor);
 	box-shadow:
 		#393939 0px 0px 1px 0,
 		#707070 0px 0px 0px 0.125rem,

@@ -16,9 +16,7 @@
 		white 0px 1px 1px,
 		rgba(0, 0, 0, 0.7) 0px 1px inset;
 
-	cursor:
-		url("/cursors/navigate.png") 28 20,
-		pointer;
+	cursor: var(--navigate-cursor);
 
 	.icon {
 		width: 100%;

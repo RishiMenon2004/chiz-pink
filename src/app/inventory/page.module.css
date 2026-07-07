@@ -1,46 +1,51 @@
 .page {
-	padding-inline: 6rem;
-	padding-block: 4rem;
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
+
 	width: 100%;
+	padding-inline: 6rem;
+	padding-block: 4rem;
 
 	.emptyFilter {
 		width: 100%;
-		margin: 0;
 		padding-right: 1rem;
+		margin: 0;
 	}
 }
 
 .matGroup {
 	flex-grow: 1;
+
 	width: 100%;
 	margin-bottom: 2rem;
+	border-radius: 1.625rem;
+
 	font-family: var(--font-syne);
 	font-weight: 600;
-	background-color: var(--white);
-	border-radius: 1.625rem;
-	user-select: none;
 
-	overflow: hidden;
+	background-color: var(--white);
 
 	box-shadow:
 		0px -3px 2px -2px hsl(0, 0%, 20%) inset,
 		0px -10px 10px -2px rgb(174, 174, 174) inset,
 		0px -15px 15px -2px hsl(300, 0%, 50%) inset;
 
+	user-select: none;
+	overflow: hidden;
+
 	summary {
-		min-height: 3.25rem;
-		padding: 1rem 2rem;
+		--slice-width: 75%;
+
 		position: relative;
 
+		min-height: 3.25rem;
+		padding: 1rem 2rem;
+
 		color: var(--interactive-bg);
-
 		font-weight: 720;
-		overflow: hidden;
 
-		--slice-width: 75%;
+		overflow: hidden;
 
 		&::before {
 			content: "";
@@ -48,16 +53,19 @@
 			inset: 0;
 			right: -1rem;
 			bottom: 60%;
+
 			background-image: linear-gradient(
 				-116deg,
 				color-mix(in srgb, var(--warmer-pink) 90%, transparent),
 				var(--pink) var(--slice-width),
 				transparent calc(var(--slice-width) + 1px)
 			);
-
 			background-size: cover;
 			background-repeat: no-repeat;
 			background-position: 0 center;
+
+			filter: drop-shadow(rgb(0, 0, 0, 0.7) 0px 0px 2px);
+
 			transition: background-position 200ms var(--ease-in-out-back);
 		}
 	}
@@ -74,7 +82,9 @@
 	.emptyFilter {
 		margin: 0.25rem;
 		border-radius: 1.375rem;
+
 		background-color: var(--interactive-bg);
+
 		box-shadow:
 			hsla(0, 0%, 0%, 0.6) 0px -1px 2px,
 			white 0px 1px 1px,
@@ -82,40 +92,41 @@
 	}
 
 	.materialList {
-		margin-top: 0;
-		padding: 1rem;
 		width: calc(100% - 0.5rem);
+		padding: 1rem;
+		margin-top: 0;
 	}
 
 	.emptyFilter {
 		width: unset;
+		outline: none;
 	}
 }
 
 .materialList {
-	height: max-content;
-	width: 100%;
 	display: grid;
 	grid-template-columns: repeat(auto-fill, minmax(12.25rem, 1fr));
 	place-items: center;
 	gap: 2rem;
-	margin-inline: auto;
+
+	width: 100%;
+	height: max-content;
 	padding: 0;
+	margin-inline: auto;
 }
 
 .multiMatContainer {
-	width: fit-content;
-	padding-inline: 6rem;
 	display: grid;
 	place-items: center;
 	grid-template-columns: repeat(3, 1fr);
 	gap: 2rem;
+
+	width: fit-content;
+	padding-inline: 6rem;
 }
 
 .editCursor {
-	cursor:
-		url("/cursors/edit.png") 4 26,
-		default !important;
+	cursor: var(--edit-cursor) !important;
 }
 
 @media (max-width: 1135px) {
@@ -142,10 +153,6 @@
 		}
 	}
 
-	.emptyFilter {
-		margin-inline: 3rem;
-	}
-
 	.multiMatContainer {
 		width: 100%;
 		grid-template-columns: repeat(auto-fit, minmax(12.25rem, 1fr));
@@ -170,10 +177,6 @@
 		summary {
 			--slice-width: 45%;
 		}
-	}
-
-	.emptyFilter {
-		margin-inline: 1rem;
 	}
 
 	.materialList,

@@ -128,9 +128,7 @@
 			background-repeat: no-repeat;
 			background-position: center;
 
-			cursor:
-				url("/cursors/down.png") 16 16,
-				s-resize;
+			cursor: var(--pull-cursor, s-resize);
 		}
 
 		&.toolbarOpen {

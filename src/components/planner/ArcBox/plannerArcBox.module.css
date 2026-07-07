@@ -169,7 +169,7 @@
 						white 0px 1px 1px,
 						rgba(0, 0, 0, 0.7) 0px 1px inset;
 
-					cursor: url("/cursors/dropdown.png"), pointer;
+					cursor: var(--dropdown-cursor);
 
 					&:focus-visible {
 						background-color: var(--darker-pink);
@@ -265,7 +265,7 @@
 			hsl(0, 0%, 85%) 0.5px 0.5px 0.5px 0.5px inset,
 			hsl(0, 0%, 50%) -0.5px -0.5px 1px inset;
 
-		cursor: pointer;
+		cursor: var(--pointer-cursor) !important;
 
 		&:last-child {
 			margin-top: auto;
@@ -275,9 +275,7 @@
 			opacity: 0.75;
 			filter: brightness(0.7);
 
-			cursor:
-				url("/cursors/default.png") 2 2,
-				default;
+			cursor: var(--default-cursor) !important;
 		}
 
 		&:hover:not(:disabled),

@@ -95,6 +95,8 @@
 			hsl(0, 0%, 70%) -0.5px -0.5px 0.5px 0.5px inset;
 
 		&.hasHover {
+			cursor: var(--pointer-cursor) !important;
+
 			&.doHover,
 			&:hover,
 			&:focus-visible {
@@ -128,6 +130,8 @@
 
 .clearAllContainer {
 	position: absolute;
+	left: calc(100% - 3.5rem);
+	bottom: 1rem;
 	z-index: -2;
 
 	display: flex;
@@ -143,9 +147,6 @@
 	background-image: linear-gradient(to right, hsl(0, 0%, 70%), transparent);
 
 	box-shadow: hsl(0, 0%, 50%) 0 0 1.5px 1px inset;
-
-	left: calc(100% - 3.5rem);
-	bottom: 1rem;
 	transition: left 500ms var(--ease-in-out-back);
 
 	&.show {
@@ -166,6 +167,8 @@
 			white 0px 1px 1px,
 			hsla(0, 0%, 91%, 0.4) 0.5px 0.5px 0.75px 0.5px inset,
 			hsla(0, 0%, 14%, 0.4) -0.5px -0.5px 0.75px 0.5px inset;
+
+		cursor: var(--pointer-cursor) !important;
 
 		&:hover,
 		&:focus-visible {

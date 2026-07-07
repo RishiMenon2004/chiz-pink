@@ -72,7 +72,7 @@ export function InventoryFilterToolbar() {
 					name="material-type"
 					value={filter}
 					onChange={handleFilterChange}
-					style={{ cursor: "url('/cursors/filter.png'), pointer" }}>
+					style={{ cursor: "var(--filter-cursor)" }}>
 					<option value={"default"} hidden>
 						Filter By
 					</option>
@@ -95,7 +95,6 @@ export function InventoryFilterToolbar() {
 					tabIndex={0}
 					style={
 						{
-							cursor: "pointer",
 							"--icon-src": "url('/button_icons/cross.png')",
 						} as CSSProperties
 					}
@@ -121,7 +120,7 @@ export function InventoryFilterToolbar() {
 					name="rarity"
 					value={rarityFilter}
 					onChange={handleRarityChange}
-					style={{ cursor: "url('/cursors/filter.png'), pointer" }}>
+					style={{ cursor: "var(--filter-cursor)" }}>
 					<option value={"default"}>All Ranks</option>
 
 					{Object.entries(EnumRarity)
@@ -141,7 +140,6 @@ export function InventoryFilterToolbar() {
 					tabIndex={0}
 					style={
 						{
-							cursor: "pointer",
 							"--icon-src": "url('/button_icons/cross.png')",
 						} as CSSProperties
 					}
@@ -167,7 +165,7 @@ export function InventoryFilterToolbar() {
 					name="sorting"
 					value={group}
 					onChange={handleGroupChange}
-					style={{ cursor: "url('/cursors/group.png'), pointer" }}>
+					style={{ cursor: "var(--group-cursor)" }}>
 					<option value={"default"} hidden>
 						Group By
 					</option>
@@ -184,7 +182,6 @@ export function InventoryFilterToolbar() {
 					tabIndex={0}
 					style={
 						{
-							cursor: "pointer",
 							"--icon-src": "url('/button_icons/cross.png')",
 						} as CSSProperties
 					}
@@ -210,7 +207,7 @@ export function InventoryFilterToolbar() {
 					name="sorting"
 					value={sort}
 					onChange={handleSortingChange}
-					style={{ cursor: "url('/cursors/sort.png'), pointer" }}>
+					style={{ cursor: "var(--sort-cursor)" }}>
 					<option value={"default"}>By Rank</option>
 					<option value={"owned"}>By Owned</option>
 					<option value={"required"}>By Required</option>
@@ -223,7 +220,6 @@ export function InventoryFilterToolbar() {
 					tabIndex={0}
 					style={
 						{
-							cursor: "pointer",
 							"--icon-src": "url('/button_icons/reverse_sort.png')",
 						} as CSSProperties
 					}

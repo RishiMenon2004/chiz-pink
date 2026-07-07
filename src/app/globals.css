@@ -8,6 +8,19 @@
 	--warmer-pink: #ff707c;
 
 	--ease-in-out-back: cubic-bezier(0.68, -0.6, 0.32, 1.6);
+
+	--default-cursor: url("/cursors/default.png") 2 2, default;
+	--pointer-cursor: url("/cursors/pointer.png") 10 10, pointer;
+	--edit-cursor: url("/cursors/edit.png") 4 26, text;
+	--multi-mat-cursor: url("/cursors/multi-mat.png") 4 26, pointer;
+	--navigate-cursor: url("/cursors/navigate.png") 28 20, pointer;
+	--dropdown-cursor: url("/cursors/dropdown.png"), pointer;
+
+	--filter-cursor: url("/cursors/filter.png"), pointer;
+	--group-cursor: url("/cursors/group.png"), pointer;
+	--sort-cursor: url("/cursors/sort.png"), pointer;
+
+	--pull-cursor: url("/cursors/down.png") 16 16;
 }
 
 html {
@@ -24,9 +37,7 @@ body {
 	--sidebar-width: 6rem;
 	--titlebar-height: 3rem;
 
-	cursor:
-		url("/cursors/default.png") 2 2,
-		default;
+	cursor: var(--default-cursor);
 
 	overflow: hidden auto;
 	padding-left: var(--sidebar-width);
@@ -90,7 +101,7 @@ a {
 		text-decoration: underline;
 		color: var(--pink);
 		font-weight: 700;
-		cursor: pointer;
+		cursor: var(--pointer-cursor);
 	}
 }
 
