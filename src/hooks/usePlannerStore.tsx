@@ -51,7 +51,7 @@ function updatePlanner(
 	localStorage.setItem("lastUpdated", JSON.stringify(Date.now()))
 }
 
-function addCharacter() {}
+function addCharacter(char: Omit<CharacterRecord, | "requiredMaterials" | "isDisabled">) {}
 function updateCharacter() {}
 function deleteCharacter(char: CharacterRecord) {
 	const plannerData = JSON.parse(lastRawValue || "{}") as PlannerRecord
@@ -184,14 +184,14 @@ const getServerSnapshot = () => {
 	return SERVER_FALLBACK
 }
 
-const getAgregatedMaterials = () => {
+const getAgregatedMaterials = (type: "arc" | "char" | "both" = "both") => {
 	if (typeof window === "undefined") return {} as AgregateMaterialsType
 
 	const plannerData = JSON.parse(lastRawValue || "{}") as PlannerRecord
 
 	const agregatedMaterials: AgregateMaterialsType = {}
 
-	if (plannerData.arcs) {
+	if (plannerData.arcs && (type === "arc" || type == "both")) {
 		Object.values(plannerData.arcs).forEach((arc) => {
 			if (arc.isDisabled) {
 				return
@@ -233,7 +233,7 @@ const getAgregatedMaterials = () => {
 	}
 
 	//TODO: Do the math after finishing the characters page
-	if (plannerData.characters) {
+	if (plannerData.characters  && (type === "char" || type == "both")) {
 	}
 
 	return agregatedMaterials

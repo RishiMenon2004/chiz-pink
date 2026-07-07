@@ -22,11 +22,11 @@ import { InfoBox, ModalContainer, PullOutToolbar } from "@/components/layout"
 import { MaterialGroup } from "@/components/inventory/"
 import { PlannerAddArcBox, PlannerMaterialBox } from "@/components/planner"
 
-import { ArcDeductedInventoryProvider } from "./ArcDeductedInventoryProvider"
+import { PlannerInventoryProvider } from "@/helpers/PlannerInventoryProvider"
 
 import styles from "./page.module.css"
-import { styles as toolbarStyles} from "@/components/layout/PullOutToolbar"
-import {styles as arcBoxStyles} from "@/components/planner/ArcBox"
+import { styles as toolbarStyles } from "@/components/layout/PullOutToolbar"
+import { styles as arcBoxStyles } from "@/components/planner/ArcBox"
 
 const PlannerArcBox = dynamic(
 	() => import("@/components/planner").then((mod) => mod.PlannerArcBox),
@@ -43,7 +43,7 @@ export default function RenderArcsPlanner() {
 		Omit<WeaponRecord, "uid" | "requiredMaterials" | "isDisabled">
 	>(null!)
 
-	const allRequiredMaterials = getAgregatedMaterials()
+	const allRequiredMaterials = getAgregatedMaterials("arc")
 
 	const closeModal = (e: ModalEventType) => {
 		e.stopPropagation()
@@ -65,8 +65,7 @@ export default function RenderArcsPlanner() {
 	}
 
 	return (
-		<ArcDeductedInventoryProvider
-			arcRecords={Object.values(plannerData.arcs)}>
+		<PlannerInventoryProvider arcRecords={Object.values(plannerData.arcs)}>
 			<PullOutToolbar>
 				{/* =========================================================== */}
 				{/*                     Adding New Entries                      */}
@@ -188,6 +187,6 @@ export default function RenderArcsPlanner() {
 					{/* ========================================================= */}
 				</DragDropProvider>
 			</div>
-		</ArcDeductedInventoryProvider>
+		</PlannerInventoryProvider>
 	)
 }

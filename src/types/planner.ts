@@ -2,7 +2,7 @@ import { Item } from "./item"
 
 import { EnumItemLvls } from "@/data/items"
 
-interface SkillLvl {
+interface SkillLvlRecord {
 	currentLvl: number
 	targetLvl: number
 }
@@ -10,16 +10,17 @@ interface SkillLvl {
 export interface CharacterRecord extends Pick<Item, "id"> {
 	currentLvl: EnumItemLvls
 	targetLvl: EnumItemLvls
+	isDisabled: boolean
 	abilitySet: {
-		basicAttack: SkillLvl
-		skill: SkillLvl
-		ultimate: SkillLvl
-		support: SkillLvl
-		passive1: SkillLvl
-		passive2?: SkillLvl
-		passive3?: SkillLvl
-		lifeSkill1: SkillLvl
-		lifeSkill2?: SkillLvl
+		basicAttack: SkillLvlRecord
+		skill: SkillLvlRecord
+		ultimate: SkillLvlRecord
+		support: SkillLvlRecord
+		passive1: boolean
+		passive2?: boolean
+		passive3?: boolean
+		lifeSkill1: SkillLvlRecord
+		lifeSkill2?: SkillLvlRecord
 	}
 	awakening: number
 	requiredMaterials: {

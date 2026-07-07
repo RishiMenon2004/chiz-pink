@@ -7,7 +7,7 @@ import type {
 	GroupByType,
 	SortByType,
 } from "@/types/inventory"
-import type { WeaponRecord } from "@/types/planner"
+import type { CharacterRecord, WeaponRecord } from "@/types/planner"
 
 export const ArcPlannerUsableMaterialsContext = createContext<{
 	cumulativeInventory: CumulativeInventory[]
@@ -28,6 +28,17 @@ export const AddNewArcContext = createContext<{
 
 export function useAddArcContext() {
 	return useContext(AddNewArcContext)
+}
+
+export const AddNewCharContext = createContext<{
+	newCharRecord: Omit<CharacterRecord, "requiredMaterials" | "isDisabled">
+	setNewCharRecord: Dispatch<
+		SetStateAction<Omit<CharacterRecord, "requiredMaterials" | "isDisabled">>
+	>
+}>(null!)
+
+export function useAddCharContext() {
+	return useContext(AddNewCharContext)
 }
 
 export const InventoryFilterContext = createContext<{
