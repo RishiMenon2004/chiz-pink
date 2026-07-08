@@ -15,8 +15,4 @@ export interface Arc extends Item {
 	mainAttribute: MainAttrInfo
 	ascensionMaterial1: MaterialSet
 	ascensionMaterial2: MaterialSet
-	effect: {
-		name: string
-		description: string
-	}
 }
