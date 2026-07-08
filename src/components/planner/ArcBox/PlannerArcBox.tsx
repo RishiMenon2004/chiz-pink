@@ -40,7 +40,7 @@ export function PlannerArcBox({
 	const { inventory, updateInventory } = useInventoryStore()
 	const cumulativeInventory = usePlannerMaterialsContext()
 
-	const { weapons } = usePlannerStore()
+	const { actions } = usePlannerStore()
 
 	const [currentLvl, setCurrentLvl] = useState<EnumItemLvls>(
 		arcRecord.currentLvl
@@ -94,13 +94,13 @@ export function PlannerArcBox({
 	}
 
 	useEffect(() => {
-		weapons.updateWeapon({
+		actions.updateWeapon({
 			...arcRecord,
 			currentLvl,
 			targetLvl,
 			isDisabled,
 		} as WeaponRecord)
-	}, [arcRecord, currentLvl, targetLvl, isDisabled, weapons])
+	}, [arcRecord, currentLvl, targetLvl, isDisabled, actions])
 
 	const handleEnhancement = (e: MouseEvent) => {
 		e.stopPropagation()
@@ -166,7 +166,7 @@ export function PlannerArcBox({
 	}
 	const onDeleteConfim = (e: ModalEventType) => {
 		e.stopPropagation()
-		weapons.deleteWeapon(arcRecord)
+		actions.deleteWeapon(arcRecord)
 		setShowDeleteConfirmation(false)
 	}
 

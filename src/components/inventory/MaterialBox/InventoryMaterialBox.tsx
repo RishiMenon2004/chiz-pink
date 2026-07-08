@@ -21,6 +21,7 @@ import {
 	useMaterialEditorModal,
 	useTooltip,
 } from "@/hooks"
+import { getAggregatedMaterials } from "@/hooks/usePlannerStore"
 
 import { getLinkedMaterials } from "@/helpers"
 
@@ -49,7 +50,7 @@ export function MaterialItemBox({
 	const { inventory, updateInventory } = useInventoryStore()
 	const itemQuantity = inventory[material.id] || 0
 
-	const { plannerData, getAggregatedMaterials } = usePlannerStore()
+	const { plannerData } = usePlannerStore()
 	const { amount: requiredQuantity, sources: requiredSources } =
 		getAggregatedMaterials(plannerData)[material.id] || {
 			amount: 0,

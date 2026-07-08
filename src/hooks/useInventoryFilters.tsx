@@ -11,6 +11,7 @@ import { getInventoryMaterials } from "@/data/items"
 import { EnumMaterialType } from "@/data/items/materials"
 
 import { useInventoryStore, usePlannerStore } from "@/hooks"
+import { getAggregatedMaterials } from "./usePlannerStore"
 
 export function useInventoryFilters({
 	filter,
@@ -24,8 +25,7 @@ export function useInventoryFilters({
 	sortReverse: boolean
 }) {
 	const { inventory } = useInventoryStore()
-	const { plannerData, getAggregatedMaterials } =
-		usePlannerStore()
+	const { plannerData } = usePlannerStore()
 	const cachedInventoryList: Material[] = Object.values(getInventoryMaterials())
 	let filteredInventoryList = cachedInventoryList
 	let rarityFilteredInventoryList = filteredInventoryList

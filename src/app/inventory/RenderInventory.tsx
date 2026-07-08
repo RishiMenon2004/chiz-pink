@@ -14,6 +14,7 @@ import type {
 import { EnumRarity, EnumMaterialType } from "@/data/items"
 
 import { useInventoryStore, useInventoryFilters, usePlannerStore } from "@/hooks"
+import { getAggregatedMaterials } from "@/hooks/usePlannerStore"
 
 import { getRarityName } from "@/helpers"
 
@@ -31,8 +32,7 @@ const InventoryMaterialBox = dynamic(
 
 export default function RenderInventory() {
 	const { inventory: inventoryStore } = useInventoryStore()
-	const { plannerData, getAggregatedMaterials } =
-		usePlannerStore()
+	const { plannerData } = usePlannerStore()
 
 	const doesInventoryExist = Object.entries(inventoryStore).length > 0
 

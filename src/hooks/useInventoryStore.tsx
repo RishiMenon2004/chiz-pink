@@ -9,20 +9,21 @@ let lastRawValue: string | null = null
 
 const SERVER_FALLBACK: Inventory = {}
 
-function updateInventory(newInventory: Inventory) {
+function updateInventory(data: Inventory) {
 	if (typeof window === "undefined") return
 
 	const value = localStorage.getItem("inventory")
-	const jsonInventory = { ...JSON.parse(value || "{}"), ...newInventory }
+	const inventoryData = { ...JSON.parse(value || "{}") } as Inventory
+	const newInventory: Inventory = {...inventoryData, ...data}
 
 	try {
-		localStorage.setItem("inventory", JSON.stringify(jsonInventory))
+		localStorage.setItem("inventory", JSON.stringify(newInventory))
+		localStorage.setItem("lastUpdated", JSON.stringify(Date.now()))
 		window.dispatchEvent(new Event("local-storage-update"))
 	} catch (err) {
 		console.error("Local Storage Error:", err)
 	}
 
-	localStorage.setItem("lastUpdated", JSON.stringify(Date.now()))
 }
 
 const subscribe = (callback: () => void) => {

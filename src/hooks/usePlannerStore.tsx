@@ -20,46 +20,11 @@ import { findArc } from "@/data/arcs"
 
 import { calcuateWeaponCosts } from "@/helpers/calcuateWeaponCosts"
 
-let cachedPlanner: PlannerRecord = {
-	arcs: {},
-	characters: {},
-}
+let cachedPlanner: PlannerRecord = { arcs: {}, characters: {} }
 
 let lastRawValue: string | null = null
 
-const SERVER_FALLBACK: PlannerRecord = {
-	arcs: {},
-	characters: {},
-}
-
-function updatePlanner(
-	data: Pick<PlannerRecord, "arcs"> | Pick<PlannerRecord, "characters">
-) {
-	if (typeof window === "undefined") return
-
-	const value = localStorage.getItem("planner")
-	const plannerData = JSON.parse(value || "{}") as PlannerRecord
-	const updatedPlanner: PlannerRecord = { ...plannerData, ...data }
-
-	try {
-		localStorage.setItem("planner", JSON.stringify(updatedPlanner))
-		window.dispatchEvent(new Event("local-storage-update"))
-	} catch (err) {
-		console.error("Local Storage Error:", err)
-	}
-
-	localStorage.setItem("lastUpdated", JSON.stringify(Date.now()))
-}
-
-function addCharacter(
-	char: Omit<CharacterRecord, "requiredMaterials" | "isDisabled">
-) {}
-function updateCharacter() {}
-function deleteCharacter(char: CharacterRecord) {
-	const plannerData = JSON.parse(lastRawValue || "{}") as PlannerRecord
-	delete plannerData.characters[char.id]
-	updatePlanner({ ...plannerData })
-}
+const SERVER_FALLBACK: PlannerRecord = { arcs: {}, characters: {} }
 
 function getWeaponRequiredMaterials(
 	weapon:
@@ -74,23 +39,11 @@ function getWeaponRequiredMaterials(
 	)
 
 	return [
-		{
-			id: beetleCoin.id,
-			amount: materialValues.beetleCoin,
-		},
+		{ id: beetleCoin.id, amount: materialValues.beetleCoin },
 
-		{
-			id: lightDye.id,
-			amount: materialValues.exp.lightDye,
-		},
-		{
-			id: colorlessDye.id,
-			amount: materialValues.exp.colorlessDye,
-		},
-		{
-			id: chaoticDye.id,
-			amount: materialValues.exp.chaoticDye,
-		},
+		{ id: lightDye.id, amount: materialValues.exp.lightDye },
+		{ id: colorlessDye.id, amount: materialValues.exp.colorlessDye },
+		{ id: chaoticDye.id, amount: materialValues.exp.chaoticDye },
 
 		{
 			id: arc.ascensionMaterial1[0].id,
@@ -120,42 +73,147 @@ function getWeaponRequiredMaterials(
 	]
 }
 
-function addWeapon(
-	weapon: Omit<WeaponRecord, "uid" | "requiredMaterials" | "isDisabled">
+export const plannerActions = {
+	updatePlanner(data: Partial<PlannerRecord>) {
+		if (typeof window === "undefined") return
+
+		const value = localStorage.getItem("planner")
+		const plannerData = JSON.parse(value || "{}") as PlannerRecord
+		const updatedPlanner: PlannerRecord = { ...plannerData, ...data }
+
+		try {
+			localStorage.setItem("planner", JSON.stringify(updatedPlanner))
+			localStorage.setItem("lastUpdated", JSON.stringify(Date.now()))
+			window.dispatchEvent(new Event("local-storage-update"))
+		} catch (err) {
+			console.error("Local Storage Error:", err)
+		}
+	},
+
+	addCharacter(
+		plannerData: PlannerRecord,
+		char: Omit<CharacterRecord, "requiredMaterials" | "isDisabled">
+	) {
+		this.updatePlanner({
+			characters: {
+				...plannerData.characters,
+				[char.id]: {
+					...char,
+					requiredMaterials: [],
+					isDisabled: false,
+				},
+			},
+		})
+	},
+	updateCharacter(plannerData: PlannerRecord, char: CharacterRecord) {
+		this.updatePlanner({
+			characters: {
+				...plannerData.characters,
+				[char.id]: {
+					...char,
+					requiredMaterials: [],
+				},
+			},
+		})
+	},
+	
+	deleteCharacter(plannerData: PlannerRecord, char: CharacterRecord) {
+		delete plannerData.characters[char.id]
+		this.updatePlanner({ ...plannerData })
+	},
+
+	addWeapon(
+		plannerData: PlannerRecord,
+		weapon: Omit<WeaponRecord, "uid" | "requiredMaterials" | "isDisabled">
+	) {
+		const newUID = uuidv4()
+
+		this.updatePlanner({
+			arcs: {
+				...plannerData.arcs,
+				[newUID]: {
+					...weapon,
+					uid: newUID,
+					requiredMaterials: getWeaponRequiredMaterials(weapon),
+					isDisabled: false,
+				},
+			},
+		})
+	},
+
+	updateWeapon(plannerData: PlannerRecord, weapon: WeaponRecord) {
+		this.updatePlanner({
+			arcs: {
+				...plannerData.arcs,
+				[weapon.uid]: {
+					...weapon,
+					requiredMaterials: getWeaponRequiredMaterials(weapon),
+				},
+			},
+		})
+	},
+
+	deleteWeapon(plannerData: PlannerRecord, weapon: WeaponRecord) {
+		delete plannerData.arcs[weapon.uid]
+
+		this.updatePlanner({ ...plannerData })
+	},
+}
+
+export function getAggregatedMaterials(
+	plannerData: PlannerRecord,
+	type: "arc" | "char" | "both" = "both"
 ) {
-	const plannerData = JSON.parse(lastRawValue || "{}") as PlannerRecord
-	const newUID = uuidv4()
+	if (typeof window === "undefined") return {} as AgregateMaterialsType
 
-	updatePlanner({
-		arcs: {
-			...plannerData.arcs,
-			[newUID]: {
-				...weapon,
-				uid: newUID,
-				requiredMaterials: getWeaponRequiredMaterials(weapon),
-				isDisabled: false,
-			},
-		},
-	})
-}
+	const agregatedMaterials: AgregateMaterialsType = {}
 
-function updateWeapon(weapon: WeaponRecord) {
-	const plannerData = JSON.parse(lastRawValue || "{}") as PlannerRecord
-	updatePlanner({
-		arcs: {
-			...plannerData.arcs,
-			[weapon.uid]: {
-				...weapon,
-				requiredMaterials: getWeaponRequiredMaterials(weapon),
-			},
-		},
-	})
-}
+	if (plannerData.arcs && (type === "arc" || type == "both")) {
+		Object.values(plannerData.arcs).forEach((arc) => {
+			if (arc.isDisabled) {
+				return
+			}
 
-function deleteWeapon(weapon: WeaponRecord) {
-	const plannerData = JSON.parse(lastRawValue || "{}") as PlannerRecord
-	delete plannerData.arcs[weapon.uid]
-	updatePlanner({ ...plannerData })
+			arc.requiredMaterials.forEach((material) => {
+				const currentAgrMaterial = agregatedMaterials[material.id] || {}
+				const sources = currentAgrMaterial.sources || []
+				const amount = currentAgrMaterial.amount || 0
+
+				const arcName = findArc(arc.id).name
+				const sourceName = sources.find((name) => name.includes(arcName))
+
+				if (typeof sourceName === "undefined") {
+					sources.push(arcName)
+				} else if (sourceName === arcName) {
+					const sourceIndex = sources.indexOf(arcName)
+					sources[sourceIndex] = `${arcName} ×2`
+				} else {
+					const sourceIndex = sources.indexOf(sourceName)
+					if (sourceIndex !== -1) {
+						const sourceName = sources[sourceIndex]
+						const [name, number] = sourceName.split("×")
+						const count = Number(number) + 1
+						sources[sourceIndex] = [name, count].join("×")
+					}
+				}
+
+				const agregateAmount = amount + material.amount
+
+				if (agregateAmount > 0) {
+					agregatedMaterials[material.id] = {
+						amount: agregateAmount,
+						sources: [...sources],
+					}
+				}
+			})
+		})
+	}
+
+	//TODO: Do the math after finishing the characters page
+	if (plannerData.characters && (type === "char" || type == "both")) {
+	}
+
+	return agregatedMaterials
 }
 
 const subscribe = (callback: () => void) => {
@@ -185,62 +243,6 @@ const getServerSnapshot = () => {
 	return SERVER_FALLBACK
 }
 
-const getAggregatedMaterials = (
-	plannerData: PlannerRecord,
-	type: "arc" | "char" | "both" = "both"
-) => {
-	if (typeof window === "undefined") return {} as AgregateMaterialsType
-
-	const agregatedMaterials: AgregateMaterialsType = {}
-
-	if (plannerData.arcs && (type === "arc" || type == "both")) {
-		Object.values(plannerData.arcs).forEach((arc) => {
-			if (arc.isDisabled) {
-				return
-			}
-
-			arc.requiredMaterials.forEach((material) => {
-				const currentAgrMaterial = agregatedMaterials[material.id] || {}
-				const sources = currentAgrMaterial.sources || []
-				const amount = currentAgrMaterial.amount || 0
-
-				const arcName = findArc(arc.id).name
-				const sourceName = sources.find((name) => name.includes(arcName))
-
-				if (typeof sourceName === "undefined") {
-					sources.push(arcName)
-				} else if (sourceName === arcName) {
-					const sourceIndex = sources.indexOf(arcName)
-					sources[sourceIndex] = `${arcName} x2`
-				} else {
-					const sourceIndex = sources.indexOf(sourceName)
-					if (sourceIndex !== -1) {
-						const sourceName = sources[sourceIndex]
-						const [name, number] = sourceName.split("x")
-						const count = Number(number) + 1
-						sources[sourceIndex] = [name, count].join("x")
-					}
-				}
-
-				const agregateAmount = amount + material.amount
-
-				if (agregateAmount > 0) {
-					agregatedMaterials[material.id] = {
-						amount: agregateAmount,
-						sources: [...sources],
-					}
-				}
-			})
-		})
-	}
-
-	//TODO: Do the math after finishing the characters page
-	if (plannerData.characters && (type === "char" || type == "both")) {
-	}
-
-	return agregatedMaterials
-}
-
 export function usePlannerStore() {
 	const plannerData = useSyncExternalStore<PlannerRecord>(
 		subscribe,
@@ -250,9 +252,25 @@ export function usePlannerStore() {
 
 	return {
 		plannerData,
-		updatePlanner,
-		getAggregatedMaterials,
-		characters: { addCharacter, updateCharacter, deleteCharacter },
-		weapons: { addWeapon, updateWeapon, deleteWeapon },
+		actions: {
+			updatePlanner: plannerActions.updatePlanner,
+			addWeapon: (
+				weapon: Omit<
+					WeaponRecord,
+					"uid" | "requiredMaterials" | "isDisabled"
+				>
+			) => plannerActions.addWeapon(plannerData, weapon),
+			updateWeapon: (weapon: WeaponRecord) =>
+				plannerActions.updateWeapon(plannerData, weapon),
+			deleteWeapon: (weapon: WeaponRecord) =>
+				plannerActions.deleteWeapon(plannerData, weapon),
+			addCharacter: (
+				char: Omit<CharacterRecord, "requiredMaterials" | "isDisabled">
+			) => plannerActions.addCharacter(plannerData, char),
+			updateCharacter: (char: CharacterRecord) =>
+				plannerActions.updateCharacter(plannerData, char),
+			deleteCharacter: (char: CharacterRecord) =>
+				plannerActions.deleteCharacter(plannerData, char),
+		},
 	}
 }

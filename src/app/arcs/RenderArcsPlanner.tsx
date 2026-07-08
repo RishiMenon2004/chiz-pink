@@ -11,10 +11,11 @@ import { Feedback } from "@dnd-kit/dom"
 import type { ModalEventType } from "@/types"
 import type { WeaponRecord } from "@/types/planner"
 
-import { EnumItemLvls, findMaterial } from "@/data/items"
+import { EnumItemLvls } from "@/data/items"
 import { getAllArcsAsArray } from "@/data/arcs"
 
 import { usePlannerStore } from "@/hooks"
+import { getAggregatedMaterials } from "@/hooks/usePlannerStore"
 
 import { AddNewArcContext } from "@/contexts"
 
@@ -35,12 +36,7 @@ const PlannerArcBox = dynamic(
 )
 
 export default function RenderArcsPlanner() {
-	const {
-		plannerData,
-		updatePlanner,
-		getAggregatedMaterials,
-		weapons,
-	} = usePlannerStore()
+	const { plannerData, actions } = usePlannerStore()
 
 	const [activeDragArc, setActiveDragArc] = useState<string | null>(null)
 
@@ -50,7 +46,7 @@ export default function RenderArcsPlanner() {
 
 	const allRequiredMaterials = useMemo(
 		() => Object.entries(getAggregatedMaterials(plannerData, "arc")),
-		[plannerData, getAggregatedMaterials]
+		[plannerData]
 	)
 
 	const handleStartAdding = () => {
@@ -63,7 +59,7 @@ export default function RenderArcsPlanner() {
 
 	const closeModal = (e: ModalEventType) => {
 		e.stopPropagation()
-		weapons.addWeapon(newArcRecord)
+		actions.addWeapon(newArcRecord)
 		setNewArcRecord(null!)
 	}
 
@@ -163,8 +159,7 @@ export default function RenderArcsPlanner() {
 									newArcsRecord[arcRecord.uid] = arcRecord
 								})
 
-								updatePlanner({
-									...plannerData,
+								actions.updatePlanner({
 									arcs: newArcsRecord,
 								})
 							}

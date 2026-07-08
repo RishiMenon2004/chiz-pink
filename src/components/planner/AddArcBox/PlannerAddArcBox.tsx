@@ -124,7 +124,7 @@ const PlannerArcsSelect = () => {
 					/>
 				</div>
 				<p>{selected.name}</p>
-				<p>{`${getRarityName(selected.rarity - 2)} ${selected.type} Arc`}</p>
+				<p>{`${getRarityName(selected.rarity)} ${selected.type} Arc`}</p>
 			</div>
 			<div
 				className={`${styles.arcSelectOptionDropdown} ${!dropdown && styles.closed}`}
@@ -173,7 +173,7 @@ const PlannerArcsSelect = () => {
 											return [prevType, arcRank]
 										})
 									}}>
-									{getRarityName(arcRank - 2)}
+									{getRarityName(arcRank)}
 								</span>
 							)
 						})}
@@ -201,7 +201,7 @@ const PlannerArcsSelect = () => {
 								/>
 								<p>{arc.name}</p>
 								<p>
-									{`${getRarityName(arc.rarity - 2)} ${arc.type} Arc`}
+									{`${getRarityName(arc.rarity)} ${arc.type} Arc`}
 								</p>
 							</div>
 						)
