@@ -117,6 +117,9 @@ a {
 	}
 
 	::picker(select) {
+		position: relative;
+		top: 0.25rem;
+
 		padding: 0.25rem;
 		border: color-mix(in srgb, var(--interactive-bg) 100%, white 10%) 1px
 			solid;
@@ -139,18 +142,19 @@ a {
 
 		border-radius: 100vh;
 		border: none;
+
 		opacity: 0.75;
 
-		&:hover,
-		&:focus {
-			background-color: var(--pink);
-		}
+		outline-offset: -2px;
 
 		&:checked {
 			background-color: color-mix(in srgb, var(--pink) 75%, transparent);
+
 			outline: var(--pink) 2px solid;
-			outline-offset: -2px;
-			max-width: 100%;
+		}
+
+		&::checkmark {
+			display: none;
 		}
 
 		&:hover,
@@ -160,8 +164,13 @@ a {
 			-webkit-text-stroke: black 3px;
 		}
 
-		&::checkmark {
-			display: none;
+		&:hover,
+		&:focus {
+			background-color: var(--pink);
+		}
+
+		&:focus-visible {
+			outline: white 2px solid;
 		}
 	}
 
