@@ -87,10 +87,18 @@ export function PlannerArcBox({
 	}
 
 	function handleCurrentChange(e: ChangeEvent<HTMLSelectElement>) {
-		setCurrentLvl(Number(e.currentTarget.value))
+		const value = Number(e.currentTarget.value)
+		setCurrentLvl(value)
+		if (value > targetLvl) {
+			setTargetLvl(value)
+		}
 	}
 	function handleTargetChange(e: ChangeEvent<HTMLSelectElement>) {
-		setTargetLvl(Number(e.currentTarget.value))
+		const value = Number(e.currentTarget.value)
+		setTargetLvl(value)
+		if (value < currentLvl) {
+			setCurrentLvl(value)
+		}
 	}
 
 	useEffect(() => {
