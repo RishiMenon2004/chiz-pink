@@ -9,6 +9,8 @@ type MainAttrInfo = {
 }
 
 export interface Arc extends Item {
+	isFeatured?: boolean
+	isPreview?: boolean
 	rarity: EnumRarity.Uncommon | EnumRarity.Rare | EnumRarity.Epic
 	type: EnumArcType
 	baseAtk: number
