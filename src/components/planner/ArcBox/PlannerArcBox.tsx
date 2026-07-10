@@ -23,6 +23,7 @@ import { ItemPhases, PlannerMaterialsList } from "@/components/planner"
 
 import styles from "./plannerArcBox.module.css"
 import { PlannerBoxButtonsContainer } from "../PlannerBoxButtonsContainer/PlannerBoxButtonsContainer"
+import { getRarityName } from "@/helpers"
 
 export function PlannerArcBox({
 	arcRecord,
@@ -202,9 +203,17 @@ export function PlannerArcBox({
 									alt={`Arc "${arc.name}" Icon`}
 									loading="eager"
 								/>
-								<div className={styles.arcTypeContainer}>
-									{`${arc.type.toLocaleUpperCase()}`}
-								</div>
+								{
+									<div className={styles.arcLabelContainer}>
+										{arc.isFeatured
+											? "FEATURED"
+											: arc.isPreview
+												? "PREVIEW"
+												: getRarityName(
+														arc.rarity
+													).toLocaleUpperCase()}
+									</div>
+								}
 							</div>
 							<div className={styles.arcStatsSection}>
 								<div className={styles.arcStatsName}>

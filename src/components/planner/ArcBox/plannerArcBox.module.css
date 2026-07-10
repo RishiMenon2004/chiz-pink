@@ -83,7 +83,7 @@
 		}
 	}
 
-	.arcTypeContainer {
+	.arcLabelContainer {
 		position: absolute;
 		bottom: 0;
 		right: 0;
@@ -217,7 +217,7 @@
 									var(--pink) 75%,
 									transparent
 								);
-								
+
 								outline: var(--pink) 2px solid;
 							}
 
@@ -422,7 +422,7 @@
 				var(--rarity-color) 0 11.5rem 0 -10rem inset;
 		}
 
-		.arcTypeContainer {
+		.arcLabelContainer {
 			top: 0;
 			bottom: unset;
 
