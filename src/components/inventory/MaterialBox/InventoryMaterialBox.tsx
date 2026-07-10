@@ -226,7 +226,7 @@ export function MaterialItemBox({
 
 			<span className={`${styles.amount}`}>
 				<span
-					tabIndex={0}
+					tabIndex={-1}
 					aria-label={`${material.name} minus one button`}
 					className={`${styles.countBtn} ${styles.minus}`}
 					onClick={(e) => handleCount(e, false)}
@@ -238,6 +238,7 @@ export function MaterialItemBox({
 						min="0"
 						pattern="[0-9]*"
 						inputMode="numeric"
+						name={`${material.name} quantity input box`}
 						value={itemQuantity}
 						onChange={handleEdit}
 						onFocus={handleFocus}
@@ -249,7 +250,7 @@ export function MaterialItemBox({
 					/>
 				</span>
 				<span
-					tabIndex={0}
+					tabIndex={-1}
 					aria-label={`${material.name} plus one button`}
 					className={`${styles.countBtn} ${styles.plus}`}
 					onClick={(e) => handleCount(e, true)}

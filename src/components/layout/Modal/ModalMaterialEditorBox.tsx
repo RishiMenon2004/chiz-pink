@@ -48,6 +48,7 @@ export function MaterialEditorBox({
 
 	// Register/unregister amount callback with parent context
 	useEffect(() => {
+		countRef.current?.focus()
 		const amountCallback = () => {
 			if (addSubValue) {
 				const adjustmentValue = parseInt(addSubValue) || 0
@@ -130,18 +131,20 @@ export function MaterialEditorBox({
 
 			<span className={`${styles.amount}`}>
 				<span
-					tabIndex={0}
+					tabIndex={-1}
 					aria-label={`${material.name} minus one button`}
 					className={`${styles.countBtn} ${styles.minus}`}
 					onClick={(e) => handleCount(e, false)}
 				/>
 				<span className={`${styles.countContainer}`}>
 					<input
+						tabIndex={1}
 						ref={countRef}
 						type={"text"}
 						min="0"
 						pattern="[0-9]*"
 						inputMode="numeric"
+						name={`${material.name} quantity input box`}
 						value={displayQuantity}
 						onChange={handleEdit}
 						onFocus={handleFocus}
@@ -154,7 +157,7 @@ export function MaterialEditorBox({
 					{requiredQuantity && <span>/{requiredQuantity}</span>}
 				</span>
 				<span
-					tabIndex={0}
+					tabIndex={-1}
 					aria-label={`${material.name} plus one button`}
 					className={`${styles.countBtn} ${styles.plus}`}
 					onClick={(e) => handleCount(e, true)}
@@ -167,8 +170,10 @@ export function MaterialEditorBox({
 					style={{ pointerEvents: "none" }}
 				/>
 				<input
+					tabIndex={2}
 					type="text"
 					inputMode="numeric"
+					name={`${material.name} quantity add/subtract box`}
 					value={addSubValue}
 					placeholder="0"
 					onChange={handleAddSubChange}
