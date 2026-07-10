@@ -80,7 +80,6 @@
 
 		@supports (appearance: base-select) {
 			position: relative;
-			grid-template-columns: 1fr auto;
 
 			&::picker-icon {
 				position: absolute;

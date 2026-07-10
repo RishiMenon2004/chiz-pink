@@ -69,7 +69,7 @@ export function InventoryFilterToolbar() {
 				/>
 
 				<select
-					name="material-type"
+					name="filter by type"
 					value={filter}
 					onChange={handleFilterChange}
 					style={{ cursor: "var(--filter-cursor)" }}>
@@ -117,7 +117,7 @@ export function InventoryFilterToolbar() {
 				/>
 
 				<select
-					name="rarity"
+					name="filter by rarity"
 					value={rarityFilter}
 					onChange={handleRarityChange}
 					style={{ cursor: "var(--filter-cursor)" }}>
@@ -162,7 +162,7 @@ export function InventoryFilterToolbar() {
 				/>
 
 				<select
-					name="sorting"
+					name="group by type"
 					value={group}
 					onChange={handleGroupChange}
 					style={{ cursor: "var(--group-cursor)" }}>
