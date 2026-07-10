@@ -171,10 +171,33 @@
 
 					cursor: var(--dropdown-cursor);
 
-					&:focus-visible {
-						background-color: var(--darker-pink);
+					@supports (appearance: base-select) {
+						position: relative;
+						grid-template-columns: 1fr auto;
 
+						&::picker-icon {
+							position: absolute;
+							right: 0.25rem;
+							content: "";
+							width: 2.5ch;
+							aspect-ratio: 1;
+							background-image: url("/icons/less.png");
+							background-size: contain;
+							background-position: center;
+							font-size: 0.75rem;
+						}
+
+						&:open {
+							background-color: var(--darker-pink);
+							&::picker-icon {
+								rotate: 180deg;
+							}
+						}
+					}
+
+					&:focus-visible {
 						outline: none;
+						background-color: var(--darker-pink);
 					}
 				}
 			}

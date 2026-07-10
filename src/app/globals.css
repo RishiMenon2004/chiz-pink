@@ -72,19 +72,20 @@ body {
 	}
 
 	&::-webkit-scrollbar {
-		background-color: var(--background);
+		background-color: transparent;
 		width: 1rem;
 		height: 1rem;
 	}
 
 	&::-webkit-scrollbar-thumb {
-		background: #d0d0d0;
+		background-color: #d0d0d0;
 		box-shadow: 0px 0px 0px 0.125rem #707070 inset;
 		border-radius: 100vh;
-		border: 0.25rem var(--background) solid;
-
+		border: 0.25rem transparent solid;
+		background-clip: content-box;
+		
 		&:hover {
-			background: var(--darker-pink);
+			background-color: var(--darker-pink);
 			box-shadow: 0px 0px 0px 0.125rem #d0d0d0 inset;
 		}
 	}
@@ -105,6 +106,67 @@ a {
 		color: var(--pink);
 		font-weight: 700;
 		cursor: var(--pointer-cursor);
+	}
+}
+
+@supports (appearance: base-select) {
+	select,
+	::picker(select),
+	option {
+		appearance: base-select;
+	}
+
+	::picker(select) {
+		width: max-content;
+		padding: 0.25rem;
+		border: color-mix(in srgb, var(--interactive-bg) 100%, white 10%) 1px
+			solid;
+		border-radius: 1rem;
+
+		background-color: var(--interactive-bg);
+
+		box-shadow: rgba(0, 0, 0, 0.5) 0 0 10px 2px;
+
+		&:popover-open {
+			display: flex;
+		}
+		flex-direction: column;
+		gap: 0.5rem;
+	}
+
+	option {
+		padding: 0.25rem 1rem;
+		align-items: flex-start;
+
+		width: 100%;
+		border-radius: 100vh;
+		border: none;
+
+		&:hover,
+		&:focus {
+			background-color: var(--pink);
+		}
+
+		&:checked {
+			background-color: color-mix(in srgb, var(--pink) 75%, transparent);
+			outline: var(--pink) 2px solid;
+			outline-offset: -2px;
+		}
+
+		&::checkmark {
+			display: none;
+		}
+	}
+
+	select {
+		text-wrap-mode: nowrap;
+		appearance: base-select;
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		flex-wrap: nowrap;
+		justify-content: center;
+		overflow: hidden;
 	}
 }
 

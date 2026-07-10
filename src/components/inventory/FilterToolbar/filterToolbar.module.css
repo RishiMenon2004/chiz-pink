@@ -55,8 +55,6 @@
 	select {
 		width: 100%;
 		height: 100%;
-		padding: 0 1rem;
-		margin-inline: auto;
 		border: none;
 		border-radius: 100vh;
 
@@ -65,12 +63,43 @@
 		font-size: 1.25rem;
 		font-family: var(--font-barlow-condensed);
 		font-style: italic;
-		line-height: 0;
 		text-align: center;
 
 		&:focus-visible {
 			outline: none;
 			background-color: var(--darker-pink);
+		}
+
+		option {
+			font-style: normal;
+
+			&:checked {
+				font-style: italic;
+			}
+		}
+
+		@supports (appearance: base-select) {
+			position: relative;
+			grid-template-columns: 1fr auto;
+
+			&::picker-icon {
+				position: absolute;
+				right: 0.25rem;
+				content: "";
+				width: 3ch;
+				aspect-ratio: 1;
+				background-image: url("/icons/less.png");
+				background-size: contain;
+				background-position: center;
+				font-size: 0.75rem;
+			}
+
+			&:open {
+				background-color: var(--darker-pink);
+				&::picker-icon {
+					rotate: 180deg;
+				}
+			}
 		}
 	}
 

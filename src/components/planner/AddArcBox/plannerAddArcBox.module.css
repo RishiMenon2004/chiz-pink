@@ -146,6 +146,10 @@
 
 			box-shadow: rgba(0, 0, 0) 0 0 10px 2px;
 
+			&::-webkit-scrollbar {
+				background-color: transparent;
+			}
+
 			&.closed {
 				display: none;
 			}
