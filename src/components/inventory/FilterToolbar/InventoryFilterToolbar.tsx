@@ -78,8 +78,7 @@ export function InventoryFilterToolbar() {
 					</option>
 					<option value={"owned"}>Owned</option>
 					<option value={"required"}>Required</option>
-					<option value={"acquired"}>Acquired</option>{" "}
-					{/* TODO: Add filter and grouping after implementing planner */}
+					<option value={"acquired"}>Acquired</option>
 					{Object.values(EnumMaterialType).map((type) => {
 						if (type !== EnumMaterialType.Currency)
 							return (
@@ -171,8 +170,7 @@ export function InventoryFilterToolbar() {
 					</option>
 					<option value={"owned"}>By Owned</option>
 					<option value={"required"}>By Required</option>
-					<option value={"acquired"}>By Acquired</option>{" "}
-					{/* TODO: Add filter and grouping after implementing planner */}
+					<option value={"acquired"}>By Acquired</option>
 					<option value={"type"}>By Type</option>
 					<option value={"rarity"}>By Rank</option>
 				</select>
