@@ -280,31 +280,31 @@
 				display: flex;
 			}
 		}
+	}
 
-		.clearAllContainer {
+	.clearAllContainer {
+		left: unset;
+		right: 1rem;
+
+		align-items: end;
+
+		width: 2.5rem;
+		height: 3.125rem;
+		border-radius: 0 0 100vh 100vh;
+
+		top: calc(100% - 4rem);
+		transition: top 500ms var(--ease-in-out-back);
+		opacity: 0;
+
+		&.show {
 			left: unset;
-			right: 1rem;
+			opacity: 100%;
+			top: calc(100% - 0.5rem);
+		}
 
-			align-items: end;
-
-			width: 2.5rem;
-			height: 3.125rem;
-			border-radius: 0 0 100vh 100vh;
-
-			top: calc(100% - 4rem);
-			transition: top 500ms var(--ease-in-out-back);
-			opacity: 0;
-
-			&.show {
-				left: unset;
-				opacity: 100%;
-				top: calc(100% - 0.5rem);
-			}
-
-			.clearAllBtn {
-				width: 100%;
-				height: unset;
-			}
+		.clearAllBtn {
+			width: 100%;
+			height: unset;
 		}
 	}
 }
