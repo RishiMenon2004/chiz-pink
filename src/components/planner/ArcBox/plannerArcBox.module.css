@@ -173,7 +173,6 @@
 
 					@supports (appearance: base-select) {
 						position: relative;
-						grid-template-columns: 1fr auto;
 
 						&::picker-icon {
 							position: absolute;
@@ -191,6 +190,56 @@
 							background-color: var(--darker-pink);
 							&::picker-icon {
 								rotate: 180deg;
+							}
+							&::picker(select) {
+								display: grid;
+								grid-template-columns: 1fr 1fr;
+								gap: 0.25rem;
+							}
+						}
+
+						option {
+							justify-content: center;
+
+							font-style: normal;
+
+							background-color: color-mix(
+								in srgb,
+								var(--pink) 30%,
+								transparent
+							);
+
+							outline-offset: -2px;
+
+							&:checked {
+								background-color: color-mix(
+									in srgb,
+									var(--pink) 75%,
+									transparent
+								);
+								
+								outline: var(--pink) 2px solid;
+							}
+
+							&:hover,
+							&:focus {
+								background: var(--pink);
+							}
+
+							&:focus-visible {
+								outline: white 2px solid;
+							}
+
+							&:nth-child(odd):not(:first-child) {
+								border-radius: 1rem 100vh 100vh 1rem;
+							}
+							&:nth-child(even):not(:last-child) {
+								border-radius: 100vh 1rem 1rem 100vh;
+							}
+
+							&:first-child,
+							&:last-child {
+								grid-column: 1 / -1;
 							}
 						}
 					}
