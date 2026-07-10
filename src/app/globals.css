@@ -83,7 +83,7 @@ body {
 		border-radius: 100vh;
 		border: 0.25rem transparent solid;
 		background-clip: content-box;
-		
+
 		&:hover {
 			background-color: var(--darker-pink);
 			box-shadow: 0px 0px 0px 0.125rem #d0d0d0 inset;
@@ -117,7 +117,6 @@ a {
 	}
 
 	::picker(select) {
-		width: max-content;
 		padding: 0.25rem;
 		border: color-mix(in srgb, var(--interactive-bg) 100%, white 10%) 1px
 			solid;
@@ -136,11 +135,11 @@ a {
 
 	option {
 		padding: 0.25rem 1rem;
-		align-items: flex-start;
+		align-items: center;
 
-		width: 100%;
 		border-radius: 100vh;
 		border: none;
+		opacity: 0.75;
 
 		&:hover,
 		&:focus {
@@ -151,6 +150,14 @@ a {
 			background-color: color-mix(in srgb, var(--pink) 75%, transparent);
 			outline: var(--pink) 2px solid;
 			outline-offset: -2px;
+			max-width: 100%;
+		}
+
+		&:hover,
+		&:focus,
+		&:checked {
+			paint-order: stroke fill;
+			-webkit-text-stroke: black 3px;
 		}
 
 		&::checkmark {
