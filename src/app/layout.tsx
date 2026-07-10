@@ -3,7 +3,7 @@ import { Barlow_Condensed, Syne } from "next/font/google"
 
 import { RoutesData } from "@/data/routes"
 
-import { CurrencyBar, Sidebar, SplashScreen } from "@/components/layout"
+import { CurrencyBar, Footer, Sidebar, SplashScreen } from "@/components/layout"
 
 import "./globals.css"
 import styles from "./page.module.css"
@@ -53,6 +53,7 @@ export default function RootLayout({
 				<Sidebar />
 				<CurrencyBar />
 				{children}
+				<Footer />
 			</body>
 		</html>
 	)

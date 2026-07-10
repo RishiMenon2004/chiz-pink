@@ -1,4 +1,6 @@
 .page {
+	flex: 1;
+
 	padding-block: 4rem;
 	padding-inline: 6rem;
 }

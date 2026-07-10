@@ -40,6 +40,10 @@ body {
 	--sidebar-width: 6rem;
 	--titlebar-height: 3rem;
 
+  display: flex;
+  flex-direction: column;
+	justify-content: flex-start;
+
 	cursor: var(--default-cursor);
 
 	overflow: hidden auto;
@@ -264,7 +268,7 @@ a {
 
 @media (max-width: 1000px) {
 	body {
-		padding-inline: 1rem;
+		padding-inline: 0;
 		padding-block: 4.25rem 4rem;
 	}
 }

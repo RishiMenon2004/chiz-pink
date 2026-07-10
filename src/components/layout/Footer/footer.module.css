@@ -1,0 +1,49 @@
+.footer {
+	left: var(--sidebar-width);
+	right: 0;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding-block: 1rem;
+	padding-inline: 2rem;
+	flex-wrap: wrap;
+	background-color: rgba(0, 0, 0, 0.25);
+	font-weight: 710;
+
+	span {
+		display: flex;
+		flex-direction: column;
+		gap: 0.5rem;
+		opacity: 0.75;
+	}
+
+	.left {
+		text-align: left;
+	}
+
+	.right {
+		text-align: right;
+	}
+
+	.small {
+		font-size: 0.75em;
+	}
+
+	.pink {
+		color: var(--pink);
+	}
+}
+
+@media (max-width: 1000px) {
+	.footer {
+		font-size: 0.75rem;
+		gap: 1rem;
+		text-wrap-style: balance;
+
+		justify-content: center;
+		.left,
+		.right {
+			text-align: center;
+		}
+	}
+}
