@@ -116,7 +116,7 @@ export const plannerActions = {
 			},
 		})
 	},
-	
+
 	deleteCharacter(plannerData: PlannerRecord, char: CharacterRecord) {
 		delete plannerData.characters[char.id]
 		this.updatePlanner({ ...plannerData })
@@ -130,13 +130,13 @@ export const plannerActions = {
 
 		this.updatePlanner({
 			arcs: {
-				...plannerData.arcs,
 				[newUID]: {
 					...weapon,
 					uid: newUID,
 					requiredMaterials: getWeaponRequiredMaterials(weapon),
 					isDisabled: false,
 				},
+				...plannerData.arcs,
 			},
 		})
 	},
