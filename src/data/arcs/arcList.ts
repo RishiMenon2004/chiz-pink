@@ -16,62 +16,6 @@ import {
 import { EnumArcType } from "./arc"
 
 const allArcs: Record<string, Arc> = {
-	the_wrong_gate: {
-		isPreview: true,
-		id: "the_wrong_gate",
-		imageSrc: "the_wrong_gate.png",
-		name: "The Wrong Gate",
-		description:
-			"Do not open that door. Do not leave this place. Wouldn't you rather stay somewhere warm?",
-		rarity: EnumRarity.Epic,
-		type: EnumArcType.Liquid,
-		baseAtk: 37,
-		mainAttribute: {
-			attribute: EnumStatAttribute.ATKBonus,
-			baseValue: 0.12,
-		},
-		ascensionMaterial1: ascAppleSeedSet,
-		ascensionMaterial2: ascSilhouetteSet,
-		effect: {
-			name: "Reverie Gate",
-			description: [
-				"Increases ATK by <lv>{0}</>.\nIncreases the allies' DMG dealt by <lv>{1}</> when the wearer heals, and increases the wearer's Anima DMG dealt by <lv>{2}</> for <lv>{3}</>s. Resets the duration when triggered again. This effect is unique within the team.",
-			],
-			values: {
-				"1": [
-					{ type: "Percent", value: 0.16 },
-					{ type: "Percent", value: 0.15 },
-					{ type: "Percent", value: 0.3 },
-					{ type: "Integer", value: 20 },
-				],
-				"2": [
-					{ type: "Percent", value: 0.2 },
-					{ type: "Percent", value: 0.1875 },
-					{ type: "Percent", value: 0.375 },
-					{ type: "Integer", value: 20 },
-				],
-				"3": [
-					{ type: "Percent", value: 0.24 },
-					{ type: "Percent", value: 0.225 },
-					{ type: "Percent", value: 0.45 },
-					{ type: "Integer", value: 20 },
-				],
-				"4": [
-					{ type: "Percent", value: 0.28 },
-					{ type: "Percent", value: 0.2625 },
-					{ type: "Percent", value: 0.525 },
-					{ type: "Integer", value: 20 },
-				],
-				"5": [
-					{ type: "Percent", value: 0.32 },
-					{ type: "Percent", value: 0.3 },
-					{ type: "Percent", value: 0.6 },
-					{ type: "Integer", value: 20 },
-				],
-			},
-		},
-	},
-
 	blushing_mirage: {
 		isFeatured: true,
 		id: "blushing_mirage",
@@ -122,6 +66,62 @@ const allArcs: Record<string, Arc> = {
 					{ type: "Percent", value: 0.32 },
 					{ type: "Percent", value: 0.512 },
 					{ type: "Percent", value: 0.192 },
+					{ type: "Integer", value: 20 },
+				],
+			},
+		},
+	},
+	
+	the_wrong_gate: {
+		isPreview: true,
+		id: "the_wrong_gate",
+		imageSrc: "the_wrong_gate.png",
+		name: "The Wrong Gate",
+		description:
+			"Do not open that door. Do not leave this place. Wouldn't you rather stay somewhere warm?",
+		rarity: EnumRarity.Epic,
+		type: EnumArcType.Liquid,
+		baseAtk: 37,
+		mainAttribute: {
+			attribute: EnumStatAttribute.ATKBonus,
+			baseValue: 0.12,
+		},
+		ascensionMaterial1: ascAppleSeedSet,
+		ascensionMaterial2: ascSilhouetteSet,
+		effect: {
+			name: "Reverie Gate",
+			description: [
+				"Increases ATK by <lv>{0}</>.\nIncreases the allies' DMG dealt by <lv>{1}</> when the wearer heals, and increases the wearer's Anima DMG dealt by <lv>{2}</> for <lv>{3}</>s. Resets the duration when triggered again. This effect is unique within the team.",
+			],
+			values: {
+				"1": [
+					{ type: "Percent", value: 0.16 },
+					{ type: "Percent", value: 0.15 },
+					{ type: "Percent", value: 0.3 },
+					{ type: "Integer", value: 20 },
+				],
+				"2": [
+					{ type: "Percent", value: 0.2 },
+					{ type: "Percent", value: 0.1875 },
+					{ type: "Percent", value: 0.375 },
+					{ type: "Integer", value: 20 },
+				],
+				"3": [
+					{ type: "Percent", value: 0.24 },
+					{ type: "Percent", value: 0.225 },
+					{ type: "Percent", value: 0.45 },
+					{ type: "Integer", value: 20 },
+				],
+				"4": [
+					{ type: "Percent", value: 0.28 },
+					{ type: "Percent", value: 0.2625 },
+					{ type: "Percent", value: 0.525 },
+					{ type: "Integer", value: 20 },
+				],
+				"5": [
+					{ type: "Percent", value: 0.32 },
+					{ type: "Percent", value: 0.3 },
+					{ type: "Percent", value: 0.6 },
 					{ type: "Integer", value: 20 },
 				],
 			},
