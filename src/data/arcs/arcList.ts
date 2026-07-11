@@ -34,9 +34,8 @@ const allArcs: Record<string, Arc> = {
 		ascensionMaterial2: ascWhispersSet,
 		effect: {
 			name: "Moonphase Shift",
-			description: [
+			description:
 				"Increases ATK by <lv>{0}</>. \nAfter casting Ultimate, increases the wearer's Cosmos DMG dealt by <lv>{1}</> and allows the wearer to ignore <lv>{2}</> of enemy DEF for <lv>{3}</>s. Resets the duration when triggered again.",
-			],
 			values: {
 				"1": [
 					{ type: "Percent", value: 0.2 },
@@ -71,7 +70,7 @@ const allArcs: Record<string, Arc> = {
 			},
 		},
 	},
-	
+
 	the_wrong_gate: {
 		isPreview: true,
 		id: "the_wrong_gate",
@@ -90,9 +89,8 @@ const allArcs: Record<string, Arc> = {
 		ascensionMaterial2: ascSilhouetteSet,
 		effect: {
 			name: "Reverie Gate",
-			description: [
+			description:
 				"Increases ATK by <lv>{0}</>.\nIncreases the allies' DMG dealt by <lv>{1}</> when the wearer heals, and increases the wearer's Anima DMG dealt by <lv>{2}</> for <lv>{3}</>s. Resets the duration when triggered again. This effect is unique within the team.",
-			],
 			values: {
 				"1": [
 					{ type: "Percent", value: 0.16 },
@@ -145,9 +143,8 @@ const allArcs: Record<string, Arc> = {
 		ascensionMaterial2: ascDelusionsSet,
 		effect: {
 			name: "Golden Fleece",
-			description: [
+			description:
 				"Increases the wearer's Lakshana DMG by <lv>{0}</>. Increases the wearer's CRIT DMG by <lv>{1}</> for <lv>{2}</>s when they cast a Redirect Skill or Ultimate. Resets the duration when triggered again.",
-			],
 			values: {
 				"1": [
 					{ type: "Percent", value: 0.2 },
@@ -194,9 +191,8 @@ const allArcs: Record<string, Arc> = {
 		ascensionMaterial2: ascDelusionsSet,
 		effect: {
 			name: "Aqua Astra",
-			description: [
+			description:
 				"Increases the wearer's Psyche DMG by <lv>{0}</>. Increases Crit DMG dealt by <lv>{1}</> for <lv>{2}</>s when dealing Psyche DMG, up to <lv>10</> stacks. Triggers at most once every <lv>0.1</>s.",
-			],
 			values: {
 				"1": [
 					{ type: "Percent", value: 0.12 },
@@ -244,9 +240,8 @@ const allArcs: Record<string, Arc> = {
 		ascensionMaterial2: ascWhispersSet,
 		effect: {
 			name: "Hypervortex",
-			description: [
+			description:
 				"Deals <lv>{0}</> increased Cosmos DMG with the wearer's Redirect Skill and Ultimate.\nIncreases the wearer's Cycle Intensity by <lv>{1}</> for <lv>{2}</>s after casting a Redirect Skill. Resets the duration when triggered again.",
-			],
 			values: {
 				"1": [
 					{ type: "Percent", value: 0.3 },
@@ -294,9 +289,8 @@ const allArcs: Record<string, Arc> = {
 		ascensionMaterial2: ascWhispersSet,
 		effect: {
 			name: "Bohemian Rose",
-			description: [
+			description:
 				"Increases ATK by <lv>{0}</>.\nGrants 1 stack of Chaos Thorn each time the wearer deals DoT. Increases CRIT DMG by <lv>{1}</> per stack for <lv>{2}</>s. Triggers at most <lv>once</> every <lv>0.3</>s, up to <lv>10</> stacks, and refreshes the duration when retriggered. Grants <lv>10</> stacks of Chaos Thorn immediately when the wearer casts a Redirect Skill.\nExtends the Broken state of a Broken enemy by <lv>{3}</>s when the wearer deals damage to them (triggers at most once per Break Effect).",
-			],
 			values: {
 				"1": [
 					{ type: "Percent", value: 0.14 },
@@ -348,9 +342,8 @@ const allArcs: Record<string, Arc> = {
 		ascensionMaterial2: ascWhispersSet,
 		effect: {
 			name: "Time Beyond Time",
-			description: [
-				"Increases ATK by <lv>{0}</>.\r\nEnters Wastelab and clears current Wastetime when the wearer casts a Redirect Skill. While in Wastelab, allies gain <lv>1</> stack of Wastetime each time they use a Redirect or Support Skill, up to <lv>3</> stacks. When the wearer uses their Ultimate in Wastelab, they exit Wastelab and consume all Wastetime, increasing Ultimate Crit DMG by <lv>{1}</>, plus an additional <lv>{2}</> per Wastetime consumed. Consuming <lv>3</> Wastetime stacks at once grants an extra <lv>{3}</> DEF Ignore for <lv>{4}</>s.",
-			],
+			description:
+				"Increases ATK by <lv>{0}</>.\nEnters Wastelab and clears current Wastetime when the wearer casts a Redirect Skill. While in Wastelab, allies gain <lv>1</> stack of Wastetime each time they use a Redirect or Support Skill, up to <lv>3</> stacks. When the wearer uses their Ultimate in Wastelab, they exit Wastelab and consume all Wastetime, increasing Ultimate Crit DMG by <lv>{1}</>, plus an additional <lv>{2}</> per Wastetime consumed. Consuming <lv>3</> Wastetime stacks at once grants an extra <lv>{3}</> DEF Ignore for <lv>{4}</>s.",
 			values: {
 				"1": [
 					{ type: "Percent", value: 0.16 },
@@ -407,9 +400,8 @@ const allArcs: Record<string, Arc> = {
 		ascensionMaterial2: ascSilhouetteSet,
 		effect: {
 			name: "Deep Blue Sorrow",
-			description: [
+			description:
 				"Increases ATK by <lv>{0}</>.\nIncreases the wearer's damage to Broken enemies by <lv>{1}</>. Restores <lv>{2}</> HP to the wearer if a Broken enemy is defeated. Triggers at most <lv>once</> every <lv>{3}</>s.",
-			],
 			values: {
 				"1": [
 					{ type: "Percent", value: 0.12 },
@@ -461,13 +453,8 @@ const allArcs: Record<string, Arc> = {
 		ascensionMaterial2: ascSilhouetteSet,
 		effect: {
 			name: "Nestbound Bird",
-			description: [
+			description:
 				"Applies Warning Gaze on enemies hit by the wearer's Ultimate. Marked enemies deal <lv>18%</> reduced damage for <lv>20</>s. Effect does not stack.",
-				"Applies Warning Gaze on enemies hit by the wearer's Ultimate. Marked enemies deal <lv>21%</> reduced damage for <lv>20</>s. Effect does not stack.",
-				"Inflicts Warning Gaze on enemies hit by the wearer's Ultimate, reducing their damage dealt by <lv>24%</> for <lv>20</>s. Effect does not stack.",
-				"Applies Warning Gaze on enemies hit by the wearer's Ultimate. Marked enemies deal <lv>27%</> reduced damage for <lv>20</>s. Effect does not stack.",
-				"Applies Warning Gaze on enemies hit by the wearer's Ultimate. Marked enemies deal <lv>30%</> reduced damage for <lv>20</>s. Effect does not stack.",
-			],
 			values: {
 				"1": [
 					{ type: "Percent", value: 0.18 },
@@ -509,9 +496,8 @@ const allArcs: Record<string, Arc> = {
 		ascensionMaterial2: ascSilhouetteSet,
 		effect: {
 			name: "Swallowtail",
-			description: [
+			description:
 				"Increases Anima DMG by <lv>{0}</>.\nIncreases the wearer's Attachment DMG by <lv>{1}</>. Increases the Attachment DMG bonus to <lv>{2}</> for <lv>{3}</>s when the wearer casts an Ultimate. Effect does not stack.",
-			],
 			values: {
 				"1": [
 					{ type: "Percent", value: 0.15 },
@@ -564,9 +550,8 @@ const allArcs: Record<string, Arc> = {
 		ascensionMaterial2: ascDelusionsSet,
 		effect: {
 			name: "Popping Candy",
-			description: [
+			description:
 				"Increases ATK by <lv>{0}</> for <lv>{1}</>s after the wearer casts an Ultimate. Effect does not stack.",
-			],
 			values: {
 				"1": [
 					{ type: "Percent", value: 0.25 },
@@ -608,9 +593,8 @@ const allArcs: Record<string, Arc> = {
 		ascensionMaterial2: ascDelusionsSet,
 		effect: {
 			name: "Motor Candy",
-			description: [
+			description:
 				"Increases <lv>{1}</> ATK every <lv>{0}</>s while the wearer is the active character, up to <lv>5</> stacks. Resets when the wearer leaves the field.",
-			],
 			values: {
 				"1": [
 					{ type: "Percent", value: 0.05 },
@@ -653,9 +637,8 @@ const allArcs: Record<string, Arc> = {
 		ascensionMaterial2: ascDelusionsSet,
 		effect: {
 			name: "Thief's Candy",
-			description: [
+			description:
 				"Increases wearer's damage by <lv>{0}</> for <lv>{1}</>s after performing a Critical Dodge, up to <lv>3</> stacks. Resets the duration when triggered again.",
-			],
 			values: {
 				"1": [
 					{ type: "Percent", value: 0.08 },
@@ -698,9 +681,8 @@ const allArcs: Record<string, Arc> = {
 		ascensionMaterial2: ascNumeralSet,
 		effect: {
 			name: "Knight's Candy",
-			description: [
+			description:
 				"Increases wearer's CRIT DMG by <lv>{0}</> for <lv>{1}</>s after landing a critical hit, up to <lv>10</> stacks. Resets the duration when triggered again.",
-			],
 			values: {
 				"1": [
 					{ type: "Percent", value: 0.04 },
@@ -742,9 +724,8 @@ const allArcs: Record<string, Arc> = {
 		ascensionMaterial2: ascNumeralSet,
 		effect: {
 			name: "Jawbreaker's Candy",
-			description: [
+			description:
 				"Increases the wearer's DMG by <lv>{0}</>. Increases this effect to <lv>{1}</> against enemies with HP below 50%.",
-			],
 			values: {
 				"1": [
 					{ type: "Percent", value: 0.22 },
@@ -787,9 +768,8 @@ const allArcs: Record<string, Arc> = {
 		ascensionMaterial2: ascSilhouetteSet,
 		effect: {
 			name: "Justice Executioner",
-			description: [
+			description:
 				"Increases ATK by <lv>{0}</>.\nIncreases damage dealt to Bosses by <lv>{1}</>.\nUnlocks Arc: Officer Whisker.\nArc: Officer Whisker — Summons Officer Whisker to assist in combat. Officer Whisker continuously attacks enemies, dealing <lv>{2}</> of the wearer's ATK as damage per hit. Lasts <lv>30</>s. Cooldown: <lv>{3}</>s.",
-			],
 			values: {
 				"1": [
 					{ type: "Percent", value: 0.15 },
@@ -842,9 +822,8 @@ const allArcs: Record<string, Arc> = {
 		ascensionMaterial2: ascSilhouetteSet,
 		effect: {
 			name: "Arachne",
-			description: [
+			description:
 				"Increases Max HP by <lv>{0}</>.\nIncreases Mental DMG dealt by <lv>{1}</> for <lv>{2}</>s after the wearer casts an Ultimate.",
-			],
 			values: {
 				"1": [
 					{ type: "Percent", value: 0.2 },
@@ -892,9 +871,8 @@ const allArcs: Record<string, Arc> = {
 		ascensionMaterial2: ascDelusionsSet,
 		effect: {
 			name: "Themed Flames",
-			description: [
+			description:
 				"Increases the wearer's Resonance DMG by <lv>{0}</>.\nAfter the wearer casts an Ultimate, increases the wearer's DMG by <lv>{1}</> for <lv>{2}</>s. Effect does not stack.",
-			],
 			values: {
 				"1": [
 					{ type: "Percent", value: 0.1 },
@@ -947,9 +925,8 @@ const allArcs: Record<string, Arc> = {
 		ascensionMaterial2: ascWhispersSet,
 		effect: {
 			name: "Prized Joy",
-			description: [
+			description:
 				"Increases the wearer's damage by <lv>{0}</> after they are hit. Grants <lv>{1}</> DEF Ignore for <lv>{2}</>s after the wearer is hit. Triggers at most once every <lv>{3}</>s.",
-			],
 			values: {
 				"1": [
 					{ type: "Percent", value: 0.24 },
@@ -1012,9 +989,8 @@ const allArcs: Record<string, Arc> = {
 		ascensionMaterial2: ascWhispersSet,
 		effect: {
 			name: "The Cat's Wish",
-			description: [
+			description:
 				"Increases ATK by <lv>{0}</>.\nAfter the wearer casts an Ultimate, increases the wearer's Ice DMG by <lv>{1}</> for <lv>{2}</>s. Effect does not stack.",
-			],
 			values: {
 				"1": [
 					{ type: "Percent", value: 100000 },
@@ -1057,9 +1033,8 @@ const allArcs: Record<string, Arc> = {
 		ascensionMaterial2: ascDelusionsSet,
 		effect: {
 			name: "Youthful Sigh",
-			description: [
+			description:
 				"Increases ATK by <lv>{0}</>.\nAfter the wearer uses a Support Skill, increases the wearer's damage by <lv>{1}</> for <lv>{2}</>s. Effect does not stack.",
-			],
 			values: {
 				"1": [
 					{ type: "Integer", value: 60 },
@@ -1116,9 +1091,8 @@ const allArcs: Record<string, Arc> = {
 		ascensionMaterial2: ascNumeralSet,
 		effect: {
 			name: "Screaming Rave",
-			description: [
+			description:
 				"Increases the wearer's damage by <lv>{0}</>.\nIncreases the wearer's DMG dealt to enemies with <lv>50%</> or less HP by <lv>{1}</> for <lv>{2}</>s after the wearer casts an Ultimate. Effect does not stack.",
-			],
 			values: {
 				"1": [
 					{ type: "Percent", value: 0.1 },
@@ -1176,9 +1150,8 @@ const allArcs: Record<string, Arc> = {
 		ascensionMaterial2: ascWhispersSet,
 		effect: {
 			name: "Ready-Ready",
-			description: [
+			description:
 				"Increases ATK by <lv>{0}</>.\nIncreases allies' DMG by <lv>{1}</> for <lv>{2}</>s after the wearer casts a Redirect Skill. Effect does not stack.",
-			],
 			values: {
 				"1": [
 					{ type: "Percent", value: 0.15 },
@@ -1236,9 +1209,8 @@ const allArcs: Record<string, Arc> = {
 		ascensionMaterial2: ascWhispersSet,
 		effect: {
 			name: "Wasted Time",
-			description: [
+			description:
 				"Increases the wearer's Charge Efficiency by <lv>{0}</>.\nIncreases the wearer's DMG by <lv>{1}</> for <lv>{2}</>s after dodging. Effect does not stack.",
-			],
 			values: {
 				"1": [
 					{ type: "Percent", value: 0.3 },
@@ -1296,9 +1268,8 @@ const allArcs: Record<string, Arc> = {
 		ascensionMaterial2: ascNumeralSet,
 		effect: {
 			name: "Camellia Society",
-			description: [
+			description:
 				"Increases the wearer's CRIT Rate by <lv>{0}</>.\nIncreases the wearer's ATK by <lv>{1}</> for <lv>{2}</>s after dealing DoT. Effect does not stack.",
-			],
 			values: {
 				"1": [
 					{ type: "Percent", value: 0.12 },
@@ -1361,9 +1332,8 @@ const allArcs: Record<string, Arc> = {
 		ascensionMaterial2: ascNumeralSet,
 		effect: {
 			name: "Good Boy's Adventure",
-			description: [
+			description:
 				"Increases ATK by <lv>{0}</>.\nIncreases the wearer's DMG by <lv>{1}</> for <lv>{2}</>s after casting an Ultimate. Effect does not stack.",
-			],
 			values: {
 				"1": [
 					{ type: "Percent", value: 0.18 },
@@ -1416,9 +1386,8 @@ const allArcs: Record<string, Arc> = {
 		ascensionMaterial2: ascNumeralSet,
 		effect: {
 			name: "The Twisted City",
-			description: [
+			description:
 				"Increases HP by <lv>{0}</>.\nIncreases the wearer's DMG by <lv>{1}</> for <lv>{2}</>s after a Redirect Skill. Effect does not stack.",
-			],
 			values: {
 				"1": [
 					{ type: "Percent", value: 0.12 },
@@ -1461,9 +1430,8 @@ const allArcs: Record<string, Arc> = {
 		ascensionMaterial2: ascDelusionsSet,
 		effect: {
 			name: "Time Bandit",
-			description: [
+			description:
 				"Increases HP by <lv>{0}</>.\nIncreases the wearer's damage by <lv>{1}</> for <lv>{2}</>s after using an Ultimate. Effect does not stack.",
-			],
 			values: {
 				"1": [
 					{ type: "Integer", value: 90 },
@@ -1505,9 +1473,8 @@ const allArcs: Record<string, Arc> = {
 		ascensionMaterial2: ascSilhouetteSet,
 		effect: {
 			name: "Fool's Spring",
-			description: [
+			description:
 				"Increases the wearer's DEF by <lv>{0}</>.\nIncreases the wearer's damage by <lv>{1}</> for <lv>{2}</>s after taking damage. Effect does not stack.",
-			],
 			values: {
 				"1": [{ type: "Percent", value: 0.18 }],
 				"2": [{ type: "Percent", value: 0.21 }],
@@ -1535,9 +1502,8 @@ const allArcs: Record<string, Arc> = {
 		ascensionMaterial2: ascWhispersSet,
 		effect: {
 			name: "A Time Will Come",
-			description: [
+			description:
 				"Increases the wearer's CRIT Rate by <lv>{0}</>.\nIncreases the wearer's damage by <lv>{1}</> for <lv>{2}</>s after dealing damage. Effect does not stack.",
-			],
 			values: {
 				"1": [
 					{ type: "Percent", value: 0.1 },
@@ -1585,9 +1551,8 @@ const allArcs: Record<string, Arc> = {
 		ascensionMaterial2: ascDelusionsSet,
 		effect: {
 			name: "Drawn Blade",
-			description: [
+			description:
 				"Increases ATK by <lv>{0}</>.\nIncreases the wearer's damage by <lv>{1}</> for <lv>{2}</>s after using a Support Skill. Effect does not stack.",
-			],
 			values: {
 				"1": [{ type: "Percent", value: 2 }],
 				"2": [{ type: "Percent", value: 2.3 }],
@@ -1615,9 +1580,8 @@ const allArcs: Record<string, Arc> = {
 		ascensionMaterial2: ascDelusionsSet,
 		effect: {
 			name: "Heavy Heart",
-			description: [
+			description:
 				"Increases the wearer's Break Effect by <lv>{0}</>.\nIncreases the wearer's damage by <lv>{1}</> for <lv>{2}</>s after breaking an enemy. Effect does not stack.",
-			],
 			values: {
 				"1": [
 					{ type: "Percent", value: 0.01 },
@@ -1664,9 +1628,8 @@ const allArcs: Record<string, Arc> = {
 		ascensionMaterial2: ascSilhouetteSet,
 		effect: {
 			name: "Clear Skies",
-			description: [
+			description:
 				"Increases ATK by <lv>{0}</>.\nIncreases the wearer's damage by <lv>{1}</> for <lv>{2}</>s after using an Ultimate. Effect does not stack.",
-			],
 			values: {
 				"1": [{ type: "Percent", value: 0.2 }],
 				"2": [{ type: "Percent", value: 0.2375 }],
@@ -1693,9 +1656,8 @@ const allArcs: Record<string, Arc> = {
 		ascensionMaterial2: ascDelusionsSet,
 		effect: {
 			name: "Watch Your Heads",
-			description: [
+			description:
 				"Increases the wearer's CRIT DMG by <lv>{0}</>.\nIncreases the wearer's damage by <lv>{1}</> for <lv>{2}</>s after taking damage. Effect does not stack.",
-			],
 			values: {
 				"1": [
 					{ type: "Percent", value: 0.1 },
@@ -1743,9 +1705,8 @@ const allArcs: Record<string, Arc> = {
 		ascensionMaterial2: ascNumeralSet,
 		effect: {
 			name: "Great Thief",
-			description: [
+			description:
 				"Increases the wearer's Break Effect by <lv>{0}</>.\nIncreases the wearer's damage by <lv>{1}</> for <lv>{2}</>s after using a Redirect Skill. Effect does not stack.",
-			],
 			values: {
 				"1": [{ type: "Integer", value: 70 }],
 				"2": [{ type: "Integer", value: 84 }],
@@ -1773,9 +1734,8 @@ const allArcs: Record<string, Arc> = {
 		ascensionMaterial2: ascNumeralSet,
 		effect: {
 			name: "The Good, The Bad, The Bitter",
-			description: [
+			description:
 				"Increases HP by <lv>{0}</>.\nIncreases the wearer's damage by <lv>{1}</> for <lv>{2}</>s after using a Support Skill. Effect does not stack.",
-			],
 			values: {
 				"1": [
 					{ type: "Percent", value: 0.26 },
@@ -1823,9 +1783,8 @@ const allArcs: Record<string, Arc> = {
 		ascensionMaterial2: ascSilhouetteSet,
 		effect: {
 			name: "Mind Royale",
-			description: [
+			description:
 				"Increases the wearer's Break Effect by <lv>{0}</>.\nIncreases the wearer's damage by <lv>{1}</> for <lv>{2}</>s after using a Redirect Skill. Effect does not stack.",
-			],
 			values: {
 				"1": [
 					{ type: "Percent", value: 0.1 },
@@ -1868,9 +1827,8 @@ const allArcs: Record<string, Arc> = {
 		ascensionMaterial2: ascSilhouetteSet,
 		effect: {
 			name: "Oraora!",
-			description: [
+			description:
 				"Increases ATK by <lv>{0}</>.\nIncreases the wearer's damage by <lv>{1}</> for <lv>{2}</>s after using a Redirect Skill. Effect does not stack.",
-			],
 			values: {
 				"1": [
 					{ type: "Percent", value: 0.02 },
@@ -1913,9 +1871,8 @@ const allArcs: Record<string, Arc> = {
 		ascensionMaterial2: ascWhispersSet,
 		effect: {
 			name: "The Forgotten",
-			description: [
+			description:
 				"Increases HP by <lv>{0}</>.\nIncreases the wearer's damage by <lv>{1}</> for <lv>{2}</>s after taking damage. Effect does not stack.",
-			],
 			values: {
 				"1": [
 					{ type: "Percent", value: 0.2 },
@@ -1958,9 +1915,8 @@ const allArcs: Record<string, Arc> = {
 		ascensionMaterial2: ascWhispersSet,
 		effect: {
 			name: "Shiny Days",
-			description: [
+			description:
 				"Increases ATK by <lv>{0}</>.\nIncreases the wearer's damage by <lv>{1}</> for <lv>{2}</>s after using a Support Skill. Effect does not stack.",
-			],
 			values: {
 				"1": [
 					{ type: "Integer", value: 48 },
@@ -2002,9 +1958,8 @@ const allArcs: Record<string, Arc> = {
 		ascensionMaterial2: ascWhispersSet,
 		effect: {
 			name: "Cosmos Daze",
-			description: [
+			description:
 				"Increases ATK by <lv>{0}</>.\nIncreases the wearer's damage by <lv>{1}</> for <lv>{2}</>s after using an Ultimate. Effect does not stack.",
-			],
 			values: {
 				"1": [
 					{ type: "Percent", value: 0.18 },
@@ -2052,9 +2007,8 @@ const allArcs: Record<string, Arc> = {
 		ascensionMaterial2: ascNumeralSet,
 		effect: {
 			name: "Umbrella",
-			description: [
+			description:
 				"Increases the wearer's DEF by <lv>{0}</>.\nIncreases the wearer's damage by <lv>{1}</> for <lv>{2}</>s after using a Redirect Skill. Effect does not stack.",
-			],
 			values: {
 				"1": [
 					{ type: "Percent", value: 0.1 },
@@ -2097,9 +2051,8 @@ const allArcs: Record<string, Arc> = {
 		ascensionMaterial2: ascDelusionsSet,
 		effect: {
 			name: "Real Music",
-			description: [
+			description:
 				"Increases ATK by <lv>{0}</>.\nIncreases the wearer's damage by <lv>{1}</> for <lv>{2}</>s after using a Support Skill. Effect does not stack.",
-			],
 			values: {
 				"1": [{ type: "Percent", value: 0.12 }],
 				"2": [{ type: "Percent", value: 0.13 }],
@@ -2126,9 +2079,8 @@ const allArcs: Record<string, Arc> = {
 		ascensionMaterial2: ascDelusionsSet,
 		effect: {
 			name: "Us",
-			description: [
+			description:
 				"Increases ATK by <lv>{0}</>.\nIncreases the wearer's damage by <lv>{1}</> for <lv>{2}</>s after using a Redirect Skill. Effect does not stack.",
-			],
 			values: {
 				"1": [{ type: "Percent", value: 0.12 }],
 				"2": [{ type: "Percent", value: 0.13 }],
@@ -2155,9 +2107,8 @@ const allArcs: Record<string, Arc> = {
 		ascensionMaterial2: ascNumeralSet,
 		effect: {
 			name: "Be Happy",
-			description: [
+			description:
 				"Increases HP by <lv>{0}</>.\nIncreases the wearer's damage by <lv>{1}</> for <lv>{2}</>s after taking damage. Effect does not stack.",
-			],
 			values: {
 				"1": [
 					{ type: "Percent", value: 0.12 },
@@ -2200,9 +2151,8 @@ const allArcs: Record<string, Arc> = {
 		ascensionMaterial2: ascSilhouetteSet,
 		effect: {
 			name: "First Step to Success",
-			description: [
+			description:
 				"Increases ATK by <lv>{0}</>.\nIncreases the wearer's damage by <lv>{1}</> for <lv>{2}</>s after using a Support Skill. Effect does not stack.",
-			],
 			values: {
 				"1": [
 					{ type: "Percent", value: 0.12 },
@@ -2249,9 +2199,8 @@ const allArcs: Record<string, Arc> = {
 		ascensionMaterial2: ascWhispersSet,
 		effect: {
 			name: "Dangerous Game",
-			description: [
+			description:
 				"Increases the wearer's Break Effect by <lv>{0}</>.\nIncreases the wearer's damage by <lv>{1}</> for <lv>{2}</>s after using a Redirect Skill. Effect does not stack.",
-			],
 			values: {
 				"1": [
 					{ type: "Integer", value: 60 },

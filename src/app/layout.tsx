@@ -10,7 +10,7 @@ import styles from "./page.module.css"
 
 const barlowCondensed = Barlow_Condensed({
 	variable: "--font-barlow-condensed",
-	weight: ["500", "600"],
+	weight: ["500", "600", "700"],
 	subsets: ["latin"],
 })
 

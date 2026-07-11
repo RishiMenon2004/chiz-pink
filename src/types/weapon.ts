@@ -27,8 +27,8 @@ export interface Arc extends Item {
 	ascensionMaterial2: MaterialSet
 	effect: {
 		name: string
-		description: string[]
-		values?: Record<
+		description: string
+		values: Record<
 			EnumArcTiers,
 			{ type: "Integer" | "Percent"; value: number }[]
 		>

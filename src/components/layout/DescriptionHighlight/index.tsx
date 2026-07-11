@@ -1,0 +1,1 @@
+export { DescriptionHighlight } from "./Highlight"
