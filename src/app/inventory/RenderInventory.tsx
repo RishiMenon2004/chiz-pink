@@ -38,18 +38,17 @@ export default function RenderInventory() {
 
 	const [filter, setFilter] = useState<FilterByType>("default")
 	const [rarityFilter, setRarityFilter] = useState<FilterRarityType>("default")
-	const [group, setGroup] = useState<GroupByType>("default")
-	const [sort, setSort] = useState<SortByType>("default")
+	const [grouping, setGrouping] = useState<GroupByType>("default")
+	const [sorting, setSorting] = useState<SortByType>("default")
 	const [sortReverse, setSortReverse] = useState<boolean>(false)
 
-	const filters: {
-		filter: FilterByType
-		rarity: FilterRarityType
-		sorting: SortByType
-		sortReverse: boolean
-	} = { filter, rarity: rarityFilter, sorting: sort, sortReverse }
+	const filteredInventory = useInventoryFilters(
+		filter,
+		rarityFilter,
+		sorting,
+		sortReverse
+	)
 
-	const filteredInventory = useInventoryFilters(filters)
 	const clearAllFilters = () => {
 		setFilter("default")
 		setRarityFilter("default")
@@ -73,7 +72,7 @@ export default function RenderInventory() {
 			)
 		}
 
-		switch (group) {
+		switch (grouping) {
 			case "rarity": {
 				const ranks = Object.entries(EnumRarity)
 					.filter((v) => typeof v[1] === "number")
@@ -392,10 +391,10 @@ export default function RenderInventory() {
 				setFilter,
 				rarityFilter,
 				setRarityFilter,
-				group,
-				setGroup,
-				sort,
-				setSort,
+				group: grouping,
+				setGroup: setGrouping,
+				sort: sorting,
+				setSort: setSorting,
 				sortReverse,
 				setSortReverse,
 			}}>
