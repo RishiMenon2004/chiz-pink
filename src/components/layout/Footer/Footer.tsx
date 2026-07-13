@@ -1,3 +1,4 @@
+import Link from "next/link"
 import styles from "./footer.module.css"
 
 export function Footer() {
@@ -8,18 +9,29 @@ export function Footer() {
 					&copy; <b className={styles.pink}>Rishi Menon</b> 2026
 				</div>
 				<div className={styles.small}>
-					<a
+					<Link
+						target="_blank"
+						rel="noopener noreferrer"
 						href="https://github.com/RishiMenon2004/chiz-pink/"
 						className="btn-anchor">
 						<b>GITHUB</b>
-					</a>
-					{" | "}
-					Made with <a
+					</Link>
+					{" | Found a "}
+					<Link
+						target="_blank"
+						rel="noopener noreferrer"
+						href="https://github.com/RishiMenon2004/chiz-pink/issues"
+						className="btn-anchor">
+						<b>BUG?</b>
+					</Link>
+					{" | Made with "}
+					<Link
+						target="_blank"
+						rel="noopener noreferrer"
 						href="https://nextjs.org/"
 						className="btn-anchor">
 						<b>NextJS</b>
-					</a>
-					{/* Report a <a href="https://github.com/RishiMenon2004/chiz-pink/issues" className="btn-anchor"><b>BUG</b></a> */}
+					</Link>
 				</div>
 			</span>
 			<span className={styles.right}>
