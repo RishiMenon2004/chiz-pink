@@ -1,4 +1,4 @@
-import { Item, MaterialSet } from "./item"
+import { DescriptionValuesRecord, Item, MaterialSet } from "./item"
 
 import { EnumRarity, EnumStatAttribute } from "@/data/items"
 import { EnumArcType } from "@/data/arcs"
@@ -28,9 +28,6 @@ export interface Arc extends Item {
 	effect: {
 		name: string
 		description: string
-		values: Record<
-			EnumArcTiers,
-			{ type: "Integer" | "Percent"; value: number }[]
-		>
+		values: DescriptionValuesRecord
 	}
 }

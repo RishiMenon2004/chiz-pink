@@ -46,7 +46,7 @@ export const adler: Character = {
 				{
 					section: "Karma",
 					description:
-						"Grants Adler <dh>1</> stack of Karma when Deliverance or Ignorance hits an enemy.\nGrants Adler <dh>2</> stacks of Karma when Liberation hits an enemy.\nMax Karma stacks: <dh>20</>.",
+						"Grants Adler <dn>1</> stack of Karma when Deliverance or Ignorance hits an enemy.\nGrants Adler <dn>2</> stacks of Karma when Liberation hits an enemy.\nMax Karma stacks: <dn>20</>.",
 				},
 			],
 			maxLvl: 10,
@@ -56,7 +56,7 @@ export const adler: Character = {
 			description: [
 				{
 					description:
-						"Need help? Summons Sunya phantoms to strike enemies, dealing <dh>1</> instance of Incantation DMG to an area, then inflicting Incantation DMG over time on enemies and granting active characters a shield with Blessing\nConsumes all stacks of Karma on skill cast. Each stack consumed grants Adler <dh>2%</> Skill DMG.",
+						"Need help? Summons Sunya phantoms to strike enemies, dealing <dn>1</> instance of Incantation DMG to an area, then inflicting Incantation DMG over time on enemies and granting active characters a shield with Blessing\nConsumes all stacks of Karma on skill cast. Each stack consumed grants Adler <dn>2%</> Skill DMG.",
 				},
 			],
 			maxLvl: 10,
@@ -86,14 +86,14 @@ export const adler: Character = {
 			description: [
 				{
 					description:
-						"<dh>Scorch Enhancement:</> Applies one of three random debuffs whenever Scorch is inflicted on a target: -20% ATK, -10% Esper Resistance, or +10% Break Efficiency, lasting for 15s. The same effect cannot stack.",
+						"<dn>Scorch Enhancement:</> Applies one of three random debuffs whenever Scorch is inflicted on a target: -20% ATK, -10% Esper Resistance, or +10% Break Efficiency, lasting for 15s. The same effect cannot stack.",
 				},
 			],
 			maxLvl: 1,
 		},
 		passive2: {
 			name: "Righteous Heart",
-			description: [{ description: "Adler DEF +<dh>20%</>" }],
+			description: [{ description: "Adler DEF +<dn>20%</>" }],
 			maxLvl: 1,
 		},
 		lifeSkill1: {
@@ -101,11 +101,11 @@ export const adler: Character = {
 			description: [
 				{
 					description:
-						"<sh>Level 1:</>Adler increases dish prices by an additional <dh>0.12</> Fons.",
+						"<sh>Level 1:</>Adler increases dish prices by an additional <dn>0.12</> Fons.",
 				},
 				{
 					description:
-						"<sh>Level 2:</>Adler reduces ingredient consumption rate by <dh>1%</>.",
+						"<sh>Level 2:</>Adler reduces ingredient consumption rate by <dn>1%</>.",
 				},
 				{
 					description:
@@ -113,11 +113,11 @@ export const adler: Character = {
 				},
 				{
 					description:
-						"<sh>Level 4:</>Adler reduces ingredient consumption rate by <dh>1%</>.",
+						"<sh>Level 4:</>Adler reduces ingredient consumption rate by <dn>1%</>.",
 				},
 				{
 					description:
-						"<sh>Level 5:</>Adler increases dish prices by an additional <dh>0.18</> Fons.",
+						"<sh>Level 5:</>Adler increases dish prices by an additional <dn>0.18</> Fons.",
 				},
 			],
 			maxLvl: 5,

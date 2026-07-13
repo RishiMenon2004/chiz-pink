@@ -1,21 +1,43 @@
-import { DescriptionHighlight } from "@/components/layout"
-import { Arc, EnumArcTiers } from "@/types/weapon"
+import { DescriptionValueType } from "@/types"
+import { DescriptionNumber, DescriptionSmallHeading } from "@/components/layout/Description"
+import { ReactNode } from "react"
+import { DescriptionValuesRecord } from "@/types/item"
 
-export function parseArcEffectDescription(arc: Arc, tier: EnumArcTiers) {
-	const description = arc.effect.description
-	const attributes = arc.effect.values[tier]
-
-	const regex = /(<lv>[^<]+<\/>)/g
+export function parseDescription(
+	description: string,
+	tier: number,
+	values?: DescriptionValuesRecord
+) {
+	const regex = /(<[a-z]+>[^<]+<\/>)/g
 
 	const parts = description.split(regex)
 
 	return parts.map((chunk, index) => {
-		if (chunk.startsWith("<lv>")) {
-			const innerContent = chunk.replace("<lv>", "").replace("</>", "")
+		if (chunk.startsWith("<") && chunk.endsWith("/>")) {
+			const tagName = chunk.match(/<([a-z]+)>/)?.[1] ?? "dn"
+			const innerContent = chunk.replace(/<[a-z]+>/, "").replace("</>", "")
+
+			const Wrapper = ({ children }: { children: ReactNode }) => {
+				switch (tagName) {
+					case "dn":
+						return <DescriptionNumber>{children}</DescriptionNumber>
+					case "sh":
+						return (
+							<DescriptionSmallHeading>
+								{children}
+							</DescriptionSmallHeading>
+						)
+					default:
+						;<>{children}</>
+				}
+			}
 
 			let displayValue: string | number = ""
 
 			if (innerContent.startsWith("{") && innerContent.endsWith("}")) {
+				const attributes: DescriptionValueType[] = values
+					? values[tier]
+					: [{ type: "Percent", value: 0 }]
 				const attrIndex = parseInt(innerContent.slice(1, -1), 10)
 				const { type, value } = attributes[attrIndex] ?? {
 					type: "Integer",
@@ -27,22 +49,18 @@ export function parseArcEffectDescription(arc: Arc, tier: EnumArcTiers) {
 				displayValue = innerContent
 			}
 
-			return (
-				<DescriptionHighlight key={index}>
-					{displayValue}
-				</DescriptionHighlight>
-			)
+			return <Wrapper key={index}>{displayValue}</Wrapper>
 		}
 
 		return (
-			<>
-				{chunk.split("\n").map((line, index) => (
-					<>
-						{index > 0 && <br />}
+			<span key={index}>
+				{chunk.split("\n").map((line, lineIndex) => (
+					<span key={lineIndex}>
+						{lineIndex > 0 && <br />}
 						{line}
-					</>
+					</span>
 				))}
-			</>
+			</span>
 		)
 	})
 }

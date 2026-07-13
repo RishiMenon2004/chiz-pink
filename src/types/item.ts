@@ -15,3 +15,7 @@ export interface Material extends Item {
 }
 
 export type MaterialSet = readonly [Material, Material, Material]
+
+export type DescriptionValuesRecord = Record<number, DescriptionValueType[]>
+
+export type DescriptionValueType = { type: "Integer" | "Percent"; value: number }

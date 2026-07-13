@@ -95,7 +95,7 @@ export const iroi: Character = {
 			description: [
 				{
 					description:
-						"<dh>Blossom Enhancement:</> Generates a Vita Bud copy when the current Vita Bud disappears. This copy cannot generate another copy.",
+						"<sh>Blossom Enhancement:</> <dn>3</>s after the current Vita Bud is generated, another Vita Bud is created. This copy cannot generate another copy.",
 				},
 			],
 			maxLvl: 1,
@@ -115,23 +115,23 @@ export const iroi: Character = {
 			description: [
 				{
 					description:
-						"<sh>Level 1:</> Iroi increases Traffic by <dh>18</>.",
+						"<sh>Level 1:</> Iroi increases Traffic by <dn>18</>.",
 				},
 				{
 					description:
-						"<sh>Level 2:</> Iroi reduces Ingredient Consumption Rate by <dh>1%</>.",
+						"<sh>Level 2:</> Iroi reduces Ingredient Consumption Rate by <dn>1%</>.",
 				},
 				{
 					description:
-						"<sh>Level 3:</> Iroi increases Traffic by <dh>18</>.",
+						"<sh>Level 3:</> Iroi increases Traffic by <dn>18</>.",
 				},
 				{
 					description:
-						"<sh>Level 4:</> Iroi reduces Ingredient Consumption Rate by <dh>1%</>.",
+						"<sh>Level 4:</> Iroi reduces Ingredient Consumption Rate by <dn>1%</>.",
 				},
 				{
 					description:
-						"<sh>Level 5:</> Iroi increases Traffic by <dh>27</>.",
+						"<sh>Level 5:</> Iroi increases Traffic by <dn>27</>.",
 				},
 			],
 			maxLvl: 5,

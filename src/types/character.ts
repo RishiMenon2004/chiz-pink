@@ -6,8 +6,7 @@ import { EnumCharacterElement } from "@/data/characters"
 
 export type AbilityDecsription = {
 	section?: string
-	smallHeading?: string
-	description: string[]
+	description: string
 }
 
 export type Ability = {
@@ -29,6 +28,7 @@ export type CharacterAbilitySet = {
 }
 
 export interface Character extends Item {
+	description: string
 	rarity: EnumRarity.Rare | EnumRarity.Epic
 	element: EnumCharacterElement
 	arcType: EnumArcType

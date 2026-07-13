@@ -1,6 +1,6 @@
 import { ReactNode } from "react"
 
-export function DescriptionHighlight({ children }: { children: ReactNode }) {
+export function DescriptionNumber({ children }: { children: ReactNode }) {
 	return (
 		<span
 			style={{

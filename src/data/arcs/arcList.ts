@@ -35,7 +35,7 @@ const allArcs: Record<string, Arc> = {
 		effect: {
 			name: "Moonphase Shift",
 			description:
-				"Increases ATK by <lv>{0}</>. \nAfter casting Ultimate, increases the wearer's Cosmos DMG dealt by <lv>{1}</> and allows the wearer to ignore <lv>{2}</> of enemy DEF for <lv>{3}</>s. Resets the duration when triggered again.",
+				"Increases ATK by <dn>{0}</>. \nAfter casting Ultimate, increases the wearer's Cosmos DMG dealt by <dn>{1}</> and allows the wearer to ignore <dn>{2}</> of enemy DEF for <dn>{3}</>s. Resets the duration when triggered again.",
 			values: {
 				"1": [
 					{ type: "Percent", value: 0.2 },
@@ -90,7 +90,7 @@ const allArcs: Record<string, Arc> = {
 		effect: {
 			name: "Reverie Gate",
 			description:
-				"Increases ATK by <lv>{0}</>.\nIncreases the allies' DMG dealt by <lv>{1}</> when the wearer heals, and increases the wearer's Anima DMG dealt by <lv>{2}</> for <lv>{3}</>s. Resets the duration when triggered again. This effect is unique within the team.",
+				"Increases ATK by <dn>{0}</>.\nIncreases the allies' DMG dealt by <dn>{1}</> when the wearer heals, and increases the wearer's Anima DMG dealt by <dn>{2}</> for <dn>{3}</>s. Resets the duration when triggered again. This effect is unique within the team.",
 			values: {
 				"1": [
 					{ type: "Percent", value: 0.16 },
@@ -144,7 +144,7 @@ const allArcs: Record<string, Arc> = {
 		effect: {
 			name: "Golden Fleece",
 			description:
-				"Increases the wearer's Lakshana DMG by <lv>{0}</>. Increases the wearer's CRIT DMG by <lv>{1}</> for <lv>{2}</>s when they cast a Redirect Skill or Ultimate. Resets the duration when triggered again.",
+				"Increases the wearer's Lakshana DMG by <dn>{0}</>. Increases the wearer's CRIT DMG by <dn>{1}</> for <dn>{2}</>s when they cast a Redirect Skill or Ultimate. Resets the duration when triggered again.",
 			values: {
 				"1": [
 					{ type: "Percent", value: 0.2 },
@@ -192,7 +192,7 @@ const allArcs: Record<string, Arc> = {
 		effect: {
 			name: "Aqua Astra",
 			description:
-				"Increases the wearer's Psyche DMG by <lv>{0}</>. Increases Crit DMG dealt by <lv>{1}</> for <lv>{2}</>s when dealing Psyche DMG, up to <lv>10</> stacks. Triggers at most once every <lv>0.1</>s.",
+				"Increases the wearer's Psyche DMG by <dn>{0}</>. Increases Crit DMG dealt by <dn>{1}</> for <dn>{2}</>s when dealing Psyche DMG, up to <dn>10</> stacks. Triggers at most once every <dn>0.1</>s.",
 			values: {
 				"1": [
 					{ type: "Percent", value: 0.12 },
@@ -241,7 +241,7 @@ const allArcs: Record<string, Arc> = {
 		effect: {
 			name: "Hypervortex",
 			description:
-				"Deals <lv>{0}</> increased Cosmos DMG with the wearer's Redirect Skill and Ultimate.\nIncreases the wearer's Cycle Intensity by <lv>{1}</> for <lv>{2}</>s after casting a Redirect Skill. Resets the duration when triggered again.",
+				"Deals <dn>{0}</> increased Cosmos DMG with the wearer's Redirect Skill and Ultimate.\nIncreases the wearer's Cycle Intensity by <dn>{1}</> for <dn>{2}</>s after casting a Redirect Skill. Resets the duration when triggered again.",
 			values: {
 				"1": [
 					{ type: "Percent", value: 0.3 },
@@ -290,7 +290,7 @@ const allArcs: Record<string, Arc> = {
 		effect: {
 			name: "Bohemian Rose",
 			description:
-				"Increases ATK by <lv>{0}</>.\nGrants 1 stack of Chaos Thorn each time the wearer deals DoT. Increases CRIT DMG by <lv>{1}</> per stack for <lv>{2}</>s. Triggers at most <lv>once</> every <lv>0.3</>s, up to <lv>10</> stacks, and refreshes the duration when retriggered. Grants <lv>10</> stacks of Chaos Thorn immediately when the wearer casts a Redirect Skill.\nExtends the Broken state of a Broken enemy by <lv>{3}</>s when the wearer deals damage to them (triggers at most once per Break Effect).",
+				"Increases ATK by <dn>{0}</>.\nGrants 1 stack of Chaos Thorn each time the wearer deals DoT. Increases CRIT DMG by <dn>{1}</> per stack for <dn>{2}</>s. Triggers at most <dn>once</> every <dn>0.3</>s, up to <dn>10</> stacks, and refreshes the duration when retriggered. Grants <dn>10</> stacks of Chaos Thorn immediately when the wearer casts a Redirect Skill.\nExtends the Broken state of a Broken enemy by <dn>{3}</>s when the wearer deals damage to them (triggers at most once per Break Effect).",
 			values: {
 				"1": [
 					{ type: "Percent", value: 0.14 },
@@ -343,7 +343,7 @@ const allArcs: Record<string, Arc> = {
 		effect: {
 			name: "Time Beyond Time",
 			description:
-				"Increases ATK by <lv>{0}</>.\nEnters Wastelab and clears current Wastetime when the wearer casts a Redirect Skill. While in Wastelab, allies gain <lv>1</> stack of Wastetime each time they use a Redirect or Support Skill, up to <lv>3</> stacks. When the wearer uses their Ultimate in Wastelab, they exit Wastelab and consume all Wastetime, increasing Ultimate Crit DMG by <lv>{1}</>, plus an additional <lv>{2}</> per Wastetime consumed. Consuming <lv>3</> Wastetime stacks at once grants an extra <lv>{3}</> DEF Ignore for <lv>{4}</>s.",
+				"Increases ATK by <dn>{0}</>.\nEnters Wastelab and clears current Wastetime when the wearer casts a Redirect Skill. While in Wastelab, allies gain <dn>1</> stack of Wastetime each time they use a Redirect or Support Skill, up to <dn>3</> stacks. When the wearer uses their Ultimate in Wastelab, they exit Wastelab and consume all Wastetime, increasing Ultimate Crit DMG by <dn>{1}</>, plus an additional <dn>{2}</> per Wastetime consumed. Consuming <dn>3</> Wastetime stacks at once grants an extra <dn>{3}</> DEF Ignore for <dn>{4}</>s.",
 			values: {
 				"1": [
 					{ type: "Percent", value: 0.16 },
@@ -401,7 +401,7 @@ const allArcs: Record<string, Arc> = {
 		effect: {
 			name: "Deep Blue Sorrow",
 			description:
-				"Increases ATK by <lv>{0}</>.\nIncreases the wearer's damage to Broken enemies by <lv>{1}</>. Restores <lv>{2}</> HP to the wearer if a Broken enemy is defeated. Triggers at most <lv>once</> every <lv>{3}</>s.",
+				"Increases ATK by <dn>{0}</>.\nIncreases the wearer's damage to Broken enemies by <dn>{1}</>. Restores <dn>{2}</> HP to the wearer if a Broken enemy is defeated. Triggers at most <dn>once</> every <dn>{3}</>s.",
 			values: {
 				"1": [
 					{ type: "Percent", value: 0.12 },
@@ -454,7 +454,7 @@ const allArcs: Record<string, Arc> = {
 		effect: {
 			name: "Nestbound Bird",
 			description:
-				"Applies Warning Gaze on enemies hit by the wearer's Ultimate. Marked enemies deal <lv>18%</> reduced damage for <lv>20</>s. Effect does not stack.",
+				"Applies Warning Gaze on enemies hit by the wearer's Ultimate. Marked enemies deal <dn>18%</> reduced damage for <dn>20</>s. Effect does not stack.",
 			values: {
 				"1": [
 					{ type: "Percent", value: 0.18 },
@@ -497,7 +497,7 @@ const allArcs: Record<string, Arc> = {
 		effect: {
 			name: "Swallowtail",
 			description:
-				"Increases Anima DMG by <lv>{0}</>.\nIncreases the wearer's Attachment DMG by <lv>{1}</>. Increases the Attachment DMG bonus to <lv>{2}</> for <lv>{3}</>s when the wearer casts an Ultimate. Effect does not stack.",
+				"Increases Anima DMG by <dn>{0}</>.\nIncreases the wearer's Attachment DMG by <dn>{1}</>. Increases the Attachment DMG bonus to <dn>{2}</> for <dn>{3}</>s when the wearer casts an Ultimate. Effect does not stack.",
 			values: {
 				"1": [
 					{ type: "Percent", value: 0.15 },
@@ -551,7 +551,7 @@ const allArcs: Record<string, Arc> = {
 		effect: {
 			name: "Popping Candy",
 			description:
-				"Increases ATK by <lv>{0}</> for <lv>{1}</>s after the wearer casts an Ultimate. Effect does not stack.",
+				"Increases ATK by <dn>{0}</> for <dn>{1}</>s after the wearer casts an Ultimate. Effect does not stack.",
 			values: {
 				"1": [
 					{ type: "Percent", value: 0.25 },
@@ -594,7 +594,7 @@ const allArcs: Record<string, Arc> = {
 		effect: {
 			name: "Motor Candy",
 			description:
-				"Increases <lv>{1}</> ATK every <lv>{0}</>s while the wearer is the active character, up to <lv>5</> stacks. Resets when the wearer leaves the field.",
+				"Increases <dn>{1}</> ATK every <dn>{0}</>s while the wearer is the active character, up to <dn>5</> stacks. Resets when the wearer leaves the field.",
 			values: {
 				"1": [
 					{ type: "Percent", value: 0.05 },
@@ -638,7 +638,7 @@ const allArcs: Record<string, Arc> = {
 		effect: {
 			name: "Thief's Candy",
 			description:
-				"Increases wearer's damage by <lv>{0}</> for <lv>{1}</>s after performing a Critical Dodge, up to <lv>3</> stacks. Resets the duration when triggered again.",
+				"Increases wearer's damage by <dn>{0}</> for <dn>{1}</>s after performing a Critical Dodge, up to <dn>3</> stacks. Resets the duration when triggered again.",
 			values: {
 				"1": [
 					{ type: "Percent", value: 0.08 },
@@ -682,7 +682,7 @@ const allArcs: Record<string, Arc> = {
 		effect: {
 			name: "Knight's Candy",
 			description:
-				"Increases wearer's CRIT DMG by <lv>{0}</> for <lv>{1}</>s after landing a critical hit, up to <lv>10</> stacks. Resets the duration when triggered again.",
+				"Increases wearer's CRIT DMG by <dn>{0}</> for <dn>{1}</>s after landing a critical hit, up to <dn>10</> stacks. Resets the duration when triggered again.",
 			values: {
 				"1": [
 					{ type: "Percent", value: 0.04 },
@@ -725,7 +725,7 @@ const allArcs: Record<string, Arc> = {
 		effect: {
 			name: "Jawbreaker's Candy",
 			description:
-				"Increases the wearer's DMG by <lv>{0}</>. Increases this effect to <lv>{1}</> against enemies with HP below 50%.",
+				"Increases the wearer's DMG by <dn>{0}</>. Increases this effect to <dn>{1}</> against enemies with HP below 50%.",
 			values: {
 				"1": [
 					{ type: "Percent", value: 0.22 },
@@ -769,7 +769,7 @@ const allArcs: Record<string, Arc> = {
 		effect: {
 			name: "Justice Executioner",
 			description:
-				"Increases ATK by <lv>{0}</>.\nIncreases damage dealt to Bosses by <lv>{1}</>.\nUnlocks Arc: Officer Whisker.\nArc: Officer Whisker — Summons Officer Whisker to assist in combat. Officer Whisker continuously attacks enemies, dealing <lv>{2}</> of the wearer's ATK as damage per hit. Lasts <lv>30</>s. Cooldown: <lv>{3}</>s.",
+				"Increases ATK by <dn>{0}</>.\nIncreases damage dealt to Bosses by <dn>{1}</>.\nUnlocks Arc: Officer Whisker.\nArc: Officer Whisker — Summons Officer Whisker to assist in combat. Officer Whisker continuously attacks enemies, dealing <dn>{2}</> of the wearer's ATK as damage per hit. Lasts <dn>30</>s. Cooldown: <dn>{3}</>s.",
 			values: {
 				"1": [
 					{ type: "Percent", value: 0.15 },
@@ -823,7 +823,7 @@ const allArcs: Record<string, Arc> = {
 		effect: {
 			name: "Arachne",
 			description:
-				"Increases Max HP by <lv>{0}</>.\nIncreases Mental DMG dealt by <lv>{1}</> for <lv>{2}</>s after the wearer casts an Ultimate.",
+				"Increases Max HP by <dn>{0}</>.\nIncreases Mental DMG dealt by <dn>{1}</> for <dn>{2}</>s after the wearer casts an Ultimate.",
 			values: {
 				"1": [
 					{ type: "Percent", value: 0.2 },
@@ -872,7 +872,7 @@ const allArcs: Record<string, Arc> = {
 		effect: {
 			name: "Themed Flames",
 			description:
-				"Increases the wearer's Resonance DMG by <lv>{0}</>.\nAfter the wearer casts an Ultimate, increases the wearer's DMG by <lv>{1}</> for <lv>{2}</>s. Effect does not stack.",
+				"Increases the wearer's Resonance DMG by <dn>{0}</>.\nAfter the wearer casts an Ultimate, increases the wearer's DMG by <dn>{1}</> for <dn>{2}</>s. Effect does not stack.",
 			values: {
 				"1": [
 					{ type: "Percent", value: 0.1 },
@@ -926,7 +926,7 @@ const allArcs: Record<string, Arc> = {
 		effect: {
 			name: "Prized Joy",
 			description:
-				"Increases the wearer's damage by <lv>{0}</> after they are hit. Grants <lv>{1}</> DEF Ignore for <lv>{2}</>s after the wearer is hit. Triggers at most once every <lv>{3}</>s.",
+				"Increases the wearer's damage by <dn>{0}</> after they are hit. Grants <dn>{1}</> DEF Ignore for <dn>{2}</>s after the wearer is hit. Triggers at most once every <dn>{3}</>s.",
 			values: {
 				"1": [
 					{ type: "Percent", value: 0.24 },
@@ -990,7 +990,7 @@ const allArcs: Record<string, Arc> = {
 		effect: {
 			name: "The Cat's Wish",
 			description:
-				"Increases ATK by <lv>{0}</>.\nAfter the wearer casts an Ultimate, increases the wearer's Ice DMG by <lv>{1}</> for <lv>{2}</>s. Effect does not stack.",
+				"Increases ATK by <dn>{0}</>.\nAfter the wearer casts an Ultimate, increases the wearer's Ice DMG by <dn>{1}</> for <dn>{2}</>s. Effect does not stack.",
 			values: {
 				"1": [
 					{ type: "Percent", value: 100000 },
@@ -1034,7 +1034,7 @@ const allArcs: Record<string, Arc> = {
 		effect: {
 			name: "Youthful Sigh",
 			description:
-				"Increases ATK by <lv>{0}</>.\nAfter the wearer uses a Support Skill, increases the wearer's damage by <lv>{1}</> for <lv>{2}</>s. Effect does not stack.",
+				"Increases ATK by <dn>{0}</>.\nAfter the wearer uses a Support Skill, increases the wearer's damage by <dn>{1}</> for <dn>{2}</>s. Effect does not stack.",
 			values: {
 				"1": [
 					{ type: "Integer", value: 60 },
@@ -1092,7 +1092,7 @@ const allArcs: Record<string, Arc> = {
 		effect: {
 			name: "Screaming Rave",
 			description:
-				"Increases the wearer's damage by <lv>{0}</>.\nIncreases the wearer's DMG dealt to enemies with <lv>50%</> or less HP by <lv>{1}</> for <lv>{2}</>s after the wearer casts an Ultimate. Effect does not stack.",
+				"Increases the wearer's damage by <dn>{0}</>.\nIncreases the wearer's DMG dealt to enemies with <dn>50%</> or less HP by <dn>{1}</> for <dn>{2}</>s after the wearer casts an Ultimate. Effect does not stack.",
 			values: {
 				"1": [
 					{ type: "Percent", value: 0.1 },
@@ -1151,7 +1151,7 @@ const allArcs: Record<string, Arc> = {
 		effect: {
 			name: "Ready-Ready",
 			description:
-				"Increases ATK by <lv>{0}</>.\nIncreases allies' DMG by <lv>{1}</> for <lv>{2}</>s after the wearer casts a Redirect Skill. Effect does not stack.",
+				"Increases ATK by <dn>{0}</>.\nIncreases allies' DMG by <dn>{1}</> for <dn>{2}</>s after the wearer casts a Redirect Skill. Effect does not stack.",
 			values: {
 				"1": [
 					{ type: "Percent", value: 0.15 },
@@ -1210,7 +1210,7 @@ const allArcs: Record<string, Arc> = {
 		effect: {
 			name: "Wasted Time",
 			description:
-				"Increases the wearer's Charge Efficiency by <lv>{0}</>.\nIncreases the wearer's DMG by <lv>{1}</> for <lv>{2}</>s after dodging. Effect does not stack.",
+				"Increases the wearer's Charge Efficiency by <dn>{0}</>.\nIncreases the wearer's DMG by <dn>{1}</> for <dn>{2}</>s after dodging. Effect does not stack.",
 			values: {
 				"1": [
 					{ type: "Percent", value: 0.3 },
@@ -1269,7 +1269,7 @@ const allArcs: Record<string, Arc> = {
 		effect: {
 			name: "Camellia Society",
 			description:
-				"Increases the wearer's CRIT Rate by <lv>{0}</>.\nIncreases the wearer's ATK by <lv>{1}</> for <lv>{2}</>s after dealing DoT. Effect does not stack.",
+				"Increases the wearer's CRIT Rate by <dn>{0}</>.\nIncreases the wearer's ATK by <dn>{1}</> for <dn>{2}</>s after dealing DoT. Effect does not stack.",
 			values: {
 				"1": [
 					{ type: "Percent", value: 0.12 },
@@ -1333,7 +1333,7 @@ const allArcs: Record<string, Arc> = {
 		effect: {
 			name: "Good Boy's Adventure",
 			description:
-				"Increases ATK by <lv>{0}</>.\nIncreases the wearer's DMG by <lv>{1}</> for <lv>{2}</>s after casting an Ultimate. Effect does not stack.",
+				"Increases ATK by <dn>{0}</>.\nIncreases the wearer's DMG by <dn>{1}</> for <dn>{2}</>s after casting an Ultimate. Effect does not stack.",
 			values: {
 				"1": [
 					{ type: "Percent", value: 0.18 },
@@ -1387,7 +1387,7 @@ const allArcs: Record<string, Arc> = {
 		effect: {
 			name: "The Twisted City",
 			description:
-				"Increases HP by <lv>{0}</>.\nIncreases the wearer's DMG by <lv>{1}</> for <lv>{2}</>s after a Redirect Skill. Effect does not stack.",
+				"Increases HP by <dn>{0}</>.\nIncreases the wearer's DMG by <dn>{1}</> for <dn>{2}</>s after a Redirect Skill. Effect does not stack.",
 			values: {
 				"1": [
 					{ type: "Percent", value: 0.12 },
@@ -1431,7 +1431,7 @@ const allArcs: Record<string, Arc> = {
 		effect: {
 			name: "Time Bandit",
 			description:
-				"Increases HP by <lv>{0}</>.\nIncreases the wearer's damage by <lv>{1}</> for <lv>{2}</>s after using an Ultimate. Effect does not stack.",
+				"Increases HP by <dn>{0}</>.\nIncreases the wearer's damage by <dn>{1}</> for <dn>{2}</>s after using an Ultimate. Effect does not stack.",
 			values: {
 				"1": [
 					{ type: "Integer", value: 90 },
@@ -1474,7 +1474,7 @@ const allArcs: Record<string, Arc> = {
 		effect: {
 			name: "Fool's Spring",
 			description:
-				"Increases the wearer's DEF by <lv>{0}</>.\nIncreases the wearer's damage by <lv>{1}</> for <lv>{2}</>s after taking damage. Effect does not stack.",
+				"Increases the wearer's DEF by <dn>{0}</>.\nIncreases the wearer's damage by <dn>{1}</> for <dn>{2}</>s after taking damage. Effect does not stack.",
 			values: {
 				"1": [{ type: "Percent", value: 0.18 }],
 				"2": [{ type: "Percent", value: 0.21 }],
@@ -1503,7 +1503,7 @@ const allArcs: Record<string, Arc> = {
 		effect: {
 			name: "A Time Will Come",
 			description:
-				"Increases the wearer's CRIT Rate by <lv>{0}</>.\nIncreases the wearer's damage by <lv>{1}</> for <lv>{2}</>s after dealing damage. Effect does not stack.",
+				"Increases the wearer's CRIT Rate by <dn>{0}</>.\nIncreases the wearer's damage by <dn>{1}</> for <dn>{2}</>s after dealing damage. Effect does not stack.",
 			values: {
 				"1": [
 					{ type: "Percent", value: 0.1 },
@@ -1552,7 +1552,7 @@ const allArcs: Record<string, Arc> = {
 		effect: {
 			name: "Drawn Blade",
 			description:
-				"Increases ATK by <lv>{0}</>.\nIncreases the wearer's damage by <lv>{1}</> for <lv>{2}</>s after using a Support Skill. Effect does not stack.",
+				"Increases ATK by <dn>{0}</>.\nIncreases the wearer's damage by <dn>{1}</> for <dn>{2}</>s after using a Support Skill. Effect does not stack.",
 			values: {
 				"1": [{ type: "Percent", value: 2 }],
 				"2": [{ type: "Percent", value: 2.3 }],
@@ -1581,7 +1581,7 @@ const allArcs: Record<string, Arc> = {
 		effect: {
 			name: "Heavy Heart",
 			description:
-				"Increases the wearer's Break Effect by <lv>{0}</>.\nIncreases the wearer's damage by <lv>{1}</> for <lv>{2}</>s after breaking an enemy. Effect does not stack.",
+				"Increases the wearer's Break Effect by <dn>{0}</>.\nIncreases the wearer's damage by <dn>{1}</> for <dn>{2}</>s after breaking an enemy. Effect does not stack.",
 			values: {
 				"1": [
 					{ type: "Percent", value: 0.01 },
@@ -1629,7 +1629,7 @@ const allArcs: Record<string, Arc> = {
 		effect: {
 			name: "Clear Skies",
 			description:
-				"Increases ATK by <lv>{0}</>.\nIncreases the wearer's damage by <lv>{1}</> for <lv>{2}</>s after using an Ultimate. Effect does not stack.",
+				"Increases ATK by <dn>{0}</>.\nIncreases the wearer's damage by <dn>{1}</> for <dn>{2}</>s after using an Ultimate. Effect does not stack.",
 			values: {
 				"1": [{ type: "Percent", value: 0.2 }],
 				"2": [{ type: "Percent", value: 0.2375 }],
@@ -1657,7 +1657,7 @@ const allArcs: Record<string, Arc> = {
 		effect: {
 			name: "Watch Your Heads",
 			description:
-				"Increases the wearer's CRIT DMG by <lv>{0}</>.\nIncreases the wearer's damage by <lv>{1}</> for <lv>{2}</>s after taking damage. Effect does not stack.",
+				"Increases the wearer's CRIT DMG by <dn>{0}</>.\nIncreases the wearer's damage by <dn>{1}</> for <dn>{2}</>s after taking damage. Effect does not stack.",
 			values: {
 				"1": [
 					{ type: "Percent", value: 0.1 },
@@ -1706,7 +1706,7 @@ const allArcs: Record<string, Arc> = {
 		effect: {
 			name: "Great Thief",
 			description:
-				"Increases the wearer's Break Effect by <lv>{0}</>.\nIncreases the wearer's damage by <lv>{1}</> for <lv>{2}</>s after using a Redirect Skill. Effect does not stack.",
+				"Increases the wearer's Break Effect by <dn>{0}</>.\nIncreases the wearer's damage by <dn>{1}</> for <dn>{2}</>s after using a Redirect Skill. Effect does not stack.",
 			values: {
 				"1": [{ type: "Integer", value: 70 }],
 				"2": [{ type: "Integer", value: 84 }],
@@ -1735,7 +1735,7 @@ const allArcs: Record<string, Arc> = {
 		effect: {
 			name: "The Good, The Bad, The Bitter",
 			description:
-				"Increases HP by <lv>{0}</>.\nIncreases the wearer's damage by <lv>{1}</> for <lv>{2}</>s after using a Support Skill. Effect does not stack.",
+				"Increases HP by <dn>{0}</>.\nIncreases the wearer's damage by <dn>{1}</> for <dn>{2}</>s after using a Support Skill. Effect does not stack.",
 			values: {
 				"1": [
 					{ type: "Percent", value: 0.26 },
@@ -1784,7 +1784,7 @@ const allArcs: Record<string, Arc> = {
 		effect: {
 			name: "Mind Royale",
 			description:
-				"Increases the wearer's Break Effect by <lv>{0}</>.\nIncreases the wearer's damage by <lv>{1}</> for <lv>{2}</>s after using a Redirect Skill. Effect does not stack.",
+				"Increases the wearer's Break Effect by <dn>{0}</>.\nIncreases the wearer's damage by <dn>{1}</> for <dn>{2}</>s after using a Redirect Skill. Effect does not stack.",
 			values: {
 				"1": [
 					{ type: "Percent", value: 0.1 },
@@ -1828,7 +1828,7 @@ const allArcs: Record<string, Arc> = {
 		effect: {
 			name: "Oraora!",
 			description:
-				"Increases ATK by <lv>{0}</>.\nIncreases the wearer's damage by <lv>{1}</> for <lv>{2}</>s after using a Redirect Skill. Effect does not stack.",
+				"Increases ATK by <dn>{0}</>.\nIncreases the wearer's damage by <dn>{1}</> for <dn>{2}</>s after using a Redirect Skill. Effect does not stack.",
 			values: {
 				"1": [
 					{ type: "Percent", value: 0.02 },
@@ -1872,7 +1872,7 @@ const allArcs: Record<string, Arc> = {
 		effect: {
 			name: "The Forgotten",
 			description:
-				"Increases HP by <lv>{0}</>.\nIncreases the wearer's damage by <lv>{1}</> for <lv>{2}</>s after taking damage. Effect does not stack.",
+				"Increases HP by <dn>{0}</>.\nIncreases the wearer's damage by <dn>{1}</> for <dn>{2}</>s after taking damage. Effect does not stack.",
 			values: {
 				"1": [
 					{ type: "Percent", value: 0.2 },
@@ -1916,7 +1916,7 @@ const allArcs: Record<string, Arc> = {
 		effect: {
 			name: "Shiny Days",
 			description:
-				"Increases ATK by <lv>{0}</>.\nIncreases the wearer's damage by <lv>{1}</> for <lv>{2}</>s after using a Support Skill. Effect does not stack.",
+				"Increases ATK by <dn>{0}</>.\nIncreases the wearer's damage by <dn>{1}</> for <dn>{2}</>s after using a Support Skill. Effect does not stack.",
 			values: {
 				"1": [
 					{ type: "Integer", value: 48 },
@@ -1959,7 +1959,7 @@ const allArcs: Record<string, Arc> = {
 		effect: {
 			name: "Cosmos Daze",
 			description:
-				"Increases ATK by <lv>{0}</>.\nIncreases the wearer's damage by <lv>{1}</> for <lv>{2}</>s after using an Ultimate. Effect does not stack.",
+				"Increases ATK by <dn>{0}</>.\nIncreases the wearer's damage by <dn>{1}</> for <dn>{2}</>s after using an Ultimate. Effect does not stack.",
 			values: {
 				"1": [
 					{ type: "Percent", value: 0.18 },
@@ -2008,7 +2008,7 @@ const allArcs: Record<string, Arc> = {
 		effect: {
 			name: "Umbrella",
 			description:
-				"Increases the wearer's DEF by <lv>{0}</>.\nIncreases the wearer's damage by <lv>{1}</> for <lv>{2}</>s after using a Redirect Skill. Effect does not stack.",
+				"Increases the wearer's DEF by <dn>{0}</>.\nIncreases the wearer's damage by <dn>{1}</> for <dn>{2}</>s after using a Redirect Skill. Effect does not stack.",
 			values: {
 				"1": [
 					{ type: "Percent", value: 0.1 },
@@ -2052,7 +2052,7 @@ const allArcs: Record<string, Arc> = {
 		effect: {
 			name: "Real Music",
 			description:
-				"Increases ATK by <lv>{0}</>.\nIncreases the wearer's damage by <lv>{1}</> for <lv>{2}</>s after using a Support Skill. Effect does not stack.",
+				"Increases ATK by <dn>{0}</>.\nIncreases the wearer's damage by <dn>{1}</> for <dn>{2}</>s after using a Support Skill. Effect does not stack.",
 			values: {
 				"1": [{ type: "Percent", value: 0.12 }],
 				"2": [{ type: "Percent", value: 0.13 }],
@@ -2080,7 +2080,7 @@ const allArcs: Record<string, Arc> = {
 		effect: {
 			name: "Us",
 			description:
-				"Increases ATK by <lv>{0}</>.\nIncreases the wearer's damage by <lv>{1}</> for <lv>{2}</>s after using a Redirect Skill. Effect does not stack.",
+				"Increases ATK by <dn>{0}</>.\nIncreases the wearer's damage by <dn>{1}</> for <dn>{2}</>s after using a Redirect Skill. Effect does not stack.",
 			values: {
 				"1": [{ type: "Percent", value: 0.12 }],
 				"2": [{ type: "Percent", value: 0.13 }],
@@ -2108,7 +2108,7 @@ const allArcs: Record<string, Arc> = {
 		effect: {
 			name: "Be Happy",
 			description:
-				"Increases HP by <lv>{0}</>.\nIncreases the wearer's damage by <lv>{1}</> for <lv>{2}</>s after taking damage. Effect does not stack.",
+				"Increases HP by <dn>{0}</>.\nIncreases the wearer's damage by <dn>{1}</> for <dn>{2}</>s after taking damage. Effect does not stack.",
 			values: {
 				"1": [
 					{ type: "Percent", value: 0.12 },
@@ -2152,7 +2152,7 @@ const allArcs: Record<string, Arc> = {
 		effect: {
 			name: "First Step to Success",
 			description:
-				"Increases ATK by <lv>{0}</>.\nIncreases the wearer's damage by <lv>{1}</> for <lv>{2}</>s after using a Support Skill. Effect does not stack.",
+				"Increases ATK by <dn>{0}</>.\nIncreases the wearer's damage by <dn>{1}</> for <dn>{2}</>s after using a Support Skill. Effect does not stack.",
 			values: {
 				"1": [
 					{ type: "Percent", value: 0.12 },
@@ -2200,7 +2200,7 @@ const allArcs: Record<string, Arc> = {
 		effect: {
 			name: "Dangerous Game",
 			description:
-				"Increases the wearer's Break Effect by <lv>{0}</>.\nIncreases the wearer's damage by <lv>{1}</> for <lv>{2}</>s after using a Redirect Skill. Effect does not stack.",
+				"Increases the wearer's Break Effect by <dn>{0}</>.\nIncreases the wearer's damage by <dn>{1}</> for <dn>{2}</>s after using a Redirect Skill. Effect does not stack.",
 			values: {
 				"1": [
 					{ type: "Integer", value: 60 },
