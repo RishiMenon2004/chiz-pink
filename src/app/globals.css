@@ -6,6 +6,7 @@
 	--pink: #ff569f;
 	--darker-pink: #ff4785;
 	--warmer-pink: #ff707c;
+	--danger-color: #ff4747;
 
 	--ease-in-out-back: cubic-bezier(0.68, -0.6, 0.32, 1.6);
 
@@ -40,8 +41,8 @@ body {
 	--sidebar-width: 6rem;
 	--titlebar-height: 3rem;
 
-  display: flex;
-  flex-direction: column;
+	display: flex;
+	flex-direction: column;
 	justify-content: flex-start;
 
 	cursor: var(--default-cursor);

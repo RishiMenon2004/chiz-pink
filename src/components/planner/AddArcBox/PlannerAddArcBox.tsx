@@ -129,12 +129,15 @@ const PlannerArcsSelect = () => {
 			<div
 				className={`${styles.arcSelectOptionDropdown} ${!dropdown && styles.closed}`}
 				onBlur={() => setDropdown(false)}>
-				<input
-					className={styles.arcSelectOptionSearchBox}
-					type="text"
-					value={searchQuery}
-					onChange={handleSearch}
-				/>
+				<span className={styles.arcSelectOptionSearchSection}>
+					<input
+						className={styles.arcSelectOptionSearchBox}
+						type="text"
+						value={searchQuery}
+						onChange={handleSearch}
+					/>
+					<button onClick={() => setDropdown(false)}>X</button>
+				</span>
 				<div className={styles.arcTypeFilterList}>
 					<div style={{ width: "100%" }}>Filter by Type:</div>
 					{Object.values(EnumArcType).map((arcType) => {
@@ -257,9 +260,14 @@ export function PlannerAddArcBox({
 					}}
 				/>
 			</div>
-			<div className={styles.addArcConfirmButton} onClick={onConfirm}>
-				ADD
-			</div>
+			<span className={styles.addArcButtonsSection}>
+				<div className={styles.addArcCancelButton} onClick={onConfirm}>
+					CANCEL
+				</div>
+				<div className={styles.addArcConfirmButton} onClick={onConfirm}>
+					ADD
+				</div>
+			</span>
 		</div>
 	)
 }
