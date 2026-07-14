@@ -1,6 +1,7 @@
 "use client"
 
 import Image from "next/image"
+import Link from "next/link"
 import { useEffect, useRef, useState } from "react"
 
 import { useFirstVisit } from "@/hooks/useFirstVisit"
@@ -52,6 +53,10 @@ export function SplashScreen() {
 		}
 	}, [isFirstVisit])
 
+	const closeSplashScreen = () => {
+		setShowWelcomeSplash(false)
+	}
+
 	return (
 		showSplashScreen && (
 			<div className={`${styles.splashContainer} no-body-scroll`}>
@@ -70,43 +75,52 @@ export function SplashScreen() {
 							<div className={styles.infoBox}>
 								<ul className="">
 									<li>
-										<a className="btn-anchor" href={"/"}>
+										<Link
+											onClick={closeSplashScreen}
+											className="btn-anchor"
+											href={"/"}>
 											Dashboard
-										</a>
+										</Link>
 										{
 											" — Track your stamina, current events and featured boards."
 										}
 									</li>
 									<li>
-										<a
+										<Link
+											onClick={closeSplashScreen}
 											className="btn-anchor"
 											href={"/checklist"}>
 											Checklist
-										</a>
+										</Link>
 										{
 											" — Your handy To-Do list for dailies and weeklies."
 										}
 									</li>
 									<li>
-										<a
+										<Link
+											onClick={closeSplashScreen}
 											className="btn-anchor"
 											href={"/characters"}>
 											Esper
-										</a>
+										</Link>
 										{" & "}
-										<a className="btn-anchor" href={"/arcs"}>
+										<Link
+											onClick={closeSplashScreen}
+											className="btn-anchor"
+											href={"/arcs"}>
 											Arc Planner
-										</a>
+										</Link>
 										{
 											" — Ascension planners for your characters and arcs."
 										}
 									</li>
 									<li>
-										<a
+										<Link
+											onClick={closeSplashScreen}
 											className="btn-anchor"
 											href={"/inventory"}>
 											Inventory
-										</a>
+										</Link>
 										{
 											" — Easy-to-use inventory for your in-game items."
 										}
@@ -114,8 +128,7 @@ export function SplashScreen() {
 								</ul>
 							</div>
 							<div className={styles.btnContainer}>
-								<button
-									onClick={() => setShowWelcomeSplash(false)}>
+								<button onClick={closeSplashScreen}>
 									{"CONTINUE >>"}
 								</button>
 							</div>
