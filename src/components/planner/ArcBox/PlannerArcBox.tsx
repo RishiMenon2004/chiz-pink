@@ -18,7 +18,7 @@ import { useInventoryStore, usePlannerStore } from "@/hooks"
 
 import { PlannerBoxContext, usePlannerMaterialsContext } from "@/contexts"
 
-import { ModalContainer } from "@/components/layout"
+import { AlertContainer, ModalContainer } from "@/components/layout"
 import { ItemPhases, PlannerMaterialsList } from "@/components/planner"
 
 import styles from "./plannerArcBox.module.css"
@@ -285,19 +285,12 @@ export function PlannerArcBox({
 					<ModalContainer
 						onClose={onDeleteConfim}
 						onCancel={onDeleteCancel}>
-						<div className={styles.arcDeleteConfirmationBox}>
-							<div>
-								{"A-are you sure you want to delete this Arc?"}
-							</div>
-							<div className={styles.arcDeleteBoxButtons}>
-								<button tabIndex={1} onClick={onDeleteCancel}>
-									NO
-								</button>
-								<button tabIndex={1} onClick={onDeleteConfim}>
-									{"YES"}
-								</button>
-							</div>
-						</div>
+						<AlertContainer
+							type="yes-no"
+							onConfirm={onDeleteConfim}
+							onCancel={onDeleteCancel}>
+							{"A-are you sure you want to delete this Arc?"}
+						</AlertContainer>
 					</ModalContainer>,
 					document.body
 				)}
