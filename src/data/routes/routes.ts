@@ -29,11 +29,25 @@ export const RoutesData: RoutesRecord = {
 		id: "characters",
 	},
 
+	"/characters/[id]": {
+		title: "CHARACTER PROFILE",
+		head: "Character Profile",
+		tooltip: "Character Profile",
+		id: "character_info",
+	},
+
 	"/arcs": {
 		title: "ARCS",
 		head: "Arcs",
 		tooltip: "Arcs Planner",
 		id: "arcs",
+	},
+
+	"/arcs/[id]": {
+		title: "ARC INFO",
+		head: "Arc Info",
+		tooltip: "Arc Info",
+		id: "arc_info",
 	},
 
 	"/inventory": {
