@@ -78,7 +78,9 @@ export const plannerActions = {
 		if (typeof window === "undefined") return
 
 		const value = localStorage.getItem("planner")
-		const plannerData = JSON.parse(value || "{}") as PlannerRecord
+		const plannerData = JSON.parse(
+			value || JSON.stringify(SERVER_FALLBACK)
+		) as PlannerRecord
 		const updatedPlanner: PlannerRecord = { ...plannerData, ...data }
 
 		try {
@@ -232,7 +234,9 @@ const getSnapshot = () => {
 	const rawValue = localStorage.getItem("planner")
 
 	if (rawValue !== lastRawValue) {
-		cachedPlanner = JSON.parse(rawValue || "{}") as PlannerRecord
+		cachedPlanner = JSON.parse(
+			rawValue || JSON.stringify(SERVER_FALLBACK)
+		) as PlannerRecord
 		lastRawValue = rawValue
 	}
 
