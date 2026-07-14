@@ -8,6 +8,11 @@
 	--warmer-pink: #ff707c;
 	--danger-color: #ff4747;
 
+	--button-background: #d0d0d0;
+	--button-border: #707070;
+
+	--dark-shadow: #393939;
+
 	--ease-in-out-back: cubic-bezier(0.68, -0.6, 0.32, 1.6);
 
 	--default-cursor: url("/cursors/default.png") 2 2, default;
@@ -83,15 +88,15 @@ body {
 	}
 
 	&::-webkit-scrollbar-thumb {
-		background-color: #d0d0d0;
-		box-shadow: 0px 0px 0px 0.125rem #707070 inset;
+		background-color: var(--button-background);
+		box-shadow: 0px 0px 0px 0.125rem var(--button-border) inset;
 		border-radius: 100vh;
 		border: 0.25rem transparent solid;
 		background-clip: content-box;
 
 		&:hover {
 			background-color: var(--darker-pink);
-			box-shadow: 0px 0px 0px 0.125rem #d0d0d0 inset;
+			box-shadow: 0px 0px 0px 0.125rem var(--button-background) inset;
 		}
 	}
 

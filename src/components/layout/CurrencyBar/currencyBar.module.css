@@ -120,12 +120,12 @@
 		height: calc(100% - 0.7rem);
 		margin: 0.35rem;
 		aspect-ratio: 1;
-		background-color: #d0d0d0;
+		background-color: var(--button-background);
 		border-radius: 100%;
 		cursor: var(--pointer-cursor);
 		box-shadow:
-			#393939 0px 0px 1.5px 0,
-			#707070 0px 0px 0px 0.175rem,
+			var(--dark-shadow) 0px 0px 1.5px 0,
+			var(--button-border) 0px 0px 0px 0.175rem,
 			hsl(0, 0%, 85%) 0.5px 0.5px 0.5px 0.5px inset,
 			hsl(0, 0%, 70%) -0.5px -0.5px 0.5px 0.5px inset;
 		border: none;
@@ -135,7 +135,7 @@
 			outline: none;
 			background-color: var(--darker-pink);
 			box-shadow:
-				#d0d0d0 0px 0px 0px 0.175rem,
+				var(--button-background) 0px 0px 0px 0.175rem,
 				hsla(0, 0%, 85%, 0.6) 0.5px 0.5px 0.5px 0.5px inset,
 				hsla(0, 0%, 70%, 0.6) -0.5px -0.5px 0.5px 0.5px inset;
 		}

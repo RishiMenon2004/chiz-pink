@@ -4,7 +4,7 @@
 	}
 
 	.phaseStarStroke {
-		stroke: #333333;
+		stroke: var(--dark-shadow);
 		stroke-opacity: 0.75;
 		stroke-width: 3;
 	}

@@ -132,10 +132,10 @@
 				font-size: 1.25rem;
 				font-weight: 700;
 
-				background-color: #d0d0d0;
+				background-color: var(--button-background);
 
 				box-shadow:
-					#393939 0px 0px 1.5px 0,
+					var(--dark-shadow) 0px 0px 1.5px 0,
 					var(--interactive-bg) 0px 0px 0px 0.175rem,
 					hsla(0, 0%, 0%, 0.6) 0px -1px 2px 0.175rem,
 					white 0px 1px 1px 0.175rem,
@@ -153,7 +153,7 @@
 					background-color: var(--pink);
 
 					box-shadow:
-						#393939 0px 0px 1.5px 0,
+						var(--dark-shadow) 0px 0px 1.5px 0,
 						var(--interactive-bg) 0px 0px 0px 0.175rem,
 						hsla(0, 0%, 0%, 0.6) 0px -1px 2px 0.175rem,
 						white 0px 1px 1px 0.175rem,
@@ -165,7 +165,7 @@
 
 		box-shadow:
 			black 0 0 50px,
-			0px -3px 2px -2px hsl(0, 0%, 20%) inset,
+			0px -3px 2px -2px var(--interactive-bg) inset,
 			0px -10px 10px -2px rgb(174, 174, 174) inset,
 			0px -23px 15px -2px hsl(300, 0%, 50%) inset,
 			0px 2px 20px hsl(0, 0%, 4%);

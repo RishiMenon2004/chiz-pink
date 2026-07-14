@@ -1,5 +1,5 @@
 .materialBox {
-	--needed-color: #ff4747;
+	--needed-color: var(--danger-color);
 	--acquired-color: #19f428;
 
 	display: grid;
@@ -12,8 +12,8 @@
 	max-width: 200px;
 
 	box-shadow:
-		0px -3px 2px -2px hsl(0, 0%, 20%) inset,
-		0px -20px 10px -2px rgb(174, 174, 174) inset,
+		0px -3px 2px -2px var(--interactive-bg) inset,
+		0px -20px 10px -2px hsl(0, 0%, 68%) inset,
 		0px -33px 15px -2px hsl(300, 0%, 50%) inset;
 
 	--rarity: #7a7a7a;
@@ -58,7 +58,7 @@
 			width: auto;
 			user-select: none;
 			pointer-events: none;
-			filter: drop-shadow(0 0 0.25rem rgba(0, 0, 0, 0.66));
+			filter: drop-shadow(0 0 0.25rem hsla(0, 0%, 0%, 0.66));
 			z-index: 0;
 			transition: height 300ms var(--ease-in-out-back);
 		}
@@ -171,12 +171,12 @@
 	height: 1.25rem;
 	margin: 0.35rem;
 	aspect-ratio: 1;
-	background-color: #d0d0d0;
+	background-color: var(--button-background);
 	border-radius: 100%;
 	cursor: var(--pointer-cursor);
 	box-shadow:
-		#393939 0px 0px 1px 0,
-		#707070 0px 0px 0px 0.125rem,
+		var(--dark-shadow) 0px 0px 1px 0,
+		var(--button-border) 0px 0px 0px 0.125rem,
 		hsl(0, 0%, 85%) 0.5px 0.5px 0.5px 0.5px inset,
 		hsl(0, 0%, 70%) -0.5px -0.5px 0.5px 0.5px inset;
 	border: none;
@@ -186,7 +186,7 @@
 		outline: none;
 		background-color: var(--darker-pink);
 		box-shadow:
-			#d0d0d0 0px 0px 0px 0.125rem,
+			var(--button-background) 0px 0px 0px 0.125rem,
 			hsla(0, 0%, 85%, 0.6) 0.5px 0.5px 0.5px 0.5px inset,
 			hsla(0, 0%, 70%, 0.6) -0.5px -0.5px 0.5px 0.5px inset;
 	}
@@ -304,21 +304,21 @@
 }
 
 .common {
-	--rarity: #5dc3ab;
+	--rarity: #76bfaa;
 	--border: url("/materials/borders/common.png");
 }
 
 .uncommon {
-	--rarity: #3f5ce2;
+	--rarity: #465bd8;
 	--border: url("/materials/borders/uncommon.png");
 }
 
 .rare {
-	--rarity: #d743c9;
+	--rarity: #c54fc1;
 	--border: url("/materials/borders/rare.png");
 }
 
 .epic {
-	--rarity: #d59246;
+	--rarity: #dea745;
 	--border: url("/materials/borders/epic.png");
 }

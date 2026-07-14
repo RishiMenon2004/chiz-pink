@@ -27,7 +27,7 @@
 	background-color: var(--white);
 
 	box-shadow:
-		0px -3px 2px -2px hsl(0, 0%, 20%) inset,
+		0px -3px 2px -2px var(--interactive-bg) inset,
 		0px -10px 10px -2px rgb(174, 174, 174) inset,
 		0px -15px 15px -2px hsl(300, 0%, 50%) inset;
 

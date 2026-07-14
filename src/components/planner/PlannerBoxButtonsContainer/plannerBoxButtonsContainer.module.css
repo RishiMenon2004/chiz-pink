@@ -20,10 +20,10 @@
 	.plannerButton {
 		width: 2rem;
 		aspect-ratio: 1;
-		border: #707070 3px solid;
+		border: var(--button-border) 3px solid;
 		border-radius: 100%;
 
-		background-color: #d0d0d0;
+		background-color: var(--button-background);
 		background-image: var(--icon-src);
 		background-size: cover;
 		background-position: center;

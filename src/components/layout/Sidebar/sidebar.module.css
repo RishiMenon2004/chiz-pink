@@ -26,13 +26,13 @@
 			color-mix(in oklab, var(--warmer-pink-strips) 100%, #dfdffe 22%) 30%
 				calc(30% + 1px),
 			var(--warmer-pink-strips) calc(30% + 0.5px) 43%,
-			color-mix(in oklab, var(--warmer-pink-strips) 100%, #000000 20%) 45%
+			color-mix(in oklab, var(--warmer-pink-strips) 100%, black 20%) 45%
 				calc(45% + 0.5px),
 			transparent calc(45% + 0.5px) 55%,
 			color-mix(in oklab, var(--warmer-pink-strips) 100%, #dfdffe 22%) 30%
 				calc(55% + 1px),
 			var(--warmer-pink-strips) calc(55% + 0.5px) 63%,
-			color-mix(in oklab, var(--warmer-pink-strips) 100%, #000000 20%) 65%
+			color-mix(in oklab, var(--warmer-pink-strips) 100%, black 20%) 65%
 				calc(65% + 0.5px),
 			transparent calc(65% + 0.5px) 100%
 		),
@@ -115,13 +115,13 @@
 				color-mix(in oklab, var(--warmer-pink-strips) 100%, #dfdffe 22%)
 					30% calc(30% + 1px),
 				var(--warmer-pink-strips) calc(30% + 0.5px) 43%,
-				color-mix(in oklab, var(--warmer-pink-strips) 100%, #000000 20%)
+				color-mix(in oklab, var(--warmer-pink-strips) 100%, black 20%)
 					45% calc(45% + 0.5px),
 				transparent calc(45% + 0.5px) 55%,
 				color-mix(in oklab, var(--warmer-pink-strips) 100%, #dfdffe 22%)
 					30% calc(55% + 1px),
 				var(--warmer-pink-strips) calc(55% + 0.5px) 63%,
-				color-mix(in oklab, var(--warmer-pink-strips) 100%, #000000 20%)
+				color-mix(in oklab, var(--warmer-pink-strips) 100%, black 20%)
 					65% calc(65% + 0.5px),
 				transparent calc(65% + 0.5px) 100%
 			),
