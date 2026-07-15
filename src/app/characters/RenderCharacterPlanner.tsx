@@ -6,7 +6,7 @@ import { createPortal } from "react-dom"
 
 import { DragDropProvider, DragOverlay } from "@dnd-kit/react"
 import { isSortable } from "@dnd-kit/react/sortable"
-import { Feedback } from "@dnd-kit/dom"
+import { DragEndEvent, DragStartEvent, Feedback } from "@dnd-kit/dom"
 
 import type { ModalEventType } from "@/types"
 import type { CharacterRecord } from "@/types/planner"
@@ -67,6 +67,40 @@ export default function RenderCharacterPlanner() {
 		setNewCharRecord(null!)
 	}
 
+	const onDragStart = (e: DragStartEvent) =>
+		setActiveDragItem((e.operation.source?.id as string) || null)
+
+	const onDragEnd = (e: DragEndEvent) => {
+		if (e.canceled) return
+		setActiveDragItem(null)
+
+		const { source } = e.operation
+
+		if (isSortable(source)) {
+			const { initialIndex, index } = source
+
+			if (initialIndex !== index) {
+				const newCharsList = [
+					...(Object.values(
+						plannerData.characters || {}
+					) as CharacterRecord[]),
+				]
+				const [removed] = newCharsList.splice(initialIndex, 1)
+				newCharsList.splice(index, 0, removed)
+
+				const newCharsRecord: typeof plannerData.characters = {}
+				newCharsList.forEach((charRecord) => {
+					newCharsRecord[charRecord.id] = charRecord
+				})
+
+				actions.updatePlanner({
+					...plannerData,
+					characters: newCharsRecord,
+				})
+			}
+		}
+	}
+
 	return (
 		<PlannerInventoryProvider charRecords={[]}>
 			<PullOutToolbar>
@@ -97,6 +131,9 @@ export default function RenderCharacterPlanner() {
 				{/* =========================================================== */}
 			</PullOutToolbar>
 
+			{/* ============================================================= */}
+			{/*                     Empty Planner Message                     */}
+			{/* ============================================================= */}
 			{Object.entries(plannerData.characters || {}).length <= 0 && (
 				<InfoBox>
 					{
@@ -107,8 +144,12 @@ export default function RenderCharacterPlanner() {
 					</a>
 				</InfoBox>
 			)}
+			{/* ============================================================= */}
 
 			<div className={styles.page}>
+				{/* =========================================================== */}
+				{/*                   Total Materials Required                  */}
+				{/* =========================================================== */}
 				{Object.values(allRequiredMaterials).length > 0 && (
 					<MaterialGroup title="Total Required Materials">
 						<div
@@ -126,6 +167,8 @@ export default function RenderCharacterPlanner() {
 						</div>
 					</MaterialGroup>
 				)}
+				{/* =========================================================== */}
+				
 				<DragDropProvider
 					plugins={(defaults) => [
 						...defaults,
@@ -133,45 +176,9 @@ export default function RenderCharacterPlanner() {
 							dropAnimation: null,
 						}),
 					]}
-					onDragStart={(e) =>
-						setActiveDragItem(
-							(e.operation.source?.id as string) || null
-						)
-					}
-					onDragEnd={(e) => {
-						if (e.canceled) return
-						setActiveDragItem(null)
-
-						const { source } = e.operation
-
-						if (isSortable(source)) {
-							const { initialIndex, index } = source
-
-							if (initialIndex !== index) {
-								const newCharsList = [
-									...(Object.values(
-										plannerData.characters || {}
-									) as CharacterRecord[]),
-								]
-								const [removed] = newCharsList.splice(
-									initialIndex,
-									1
-								)
-								newCharsList.splice(index, 0, removed)
-
-								const newCharsRecord: typeof plannerData.characters =
-									{}
-								newCharsList.forEach((charRecord) => {
-									newCharsRecord[charRecord.id] = charRecord
-								})
-
-								actions.updatePlanner({
-									...plannerData,
-									characters: newCharsRecord,
-								})
-							}
-						}
-					}}>
+					onDragStart={onDragStart}
+					onDragEnd={onDragEnd}>
+					
 					{/* ========================================================= */}
 					{/*                       Planner Grid                        */}
 					{/* ========================================================= */}
