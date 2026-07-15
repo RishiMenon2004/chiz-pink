@@ -11,9 +11,6 @@ import { DragEndEvent, DragStartEvent, Feedback } from "@dnd-kit/dom"
 import type { ModalEventType } from "@/types"
 import type { CharacterRecord } from "@/types/planner"
 
-import { EnumItemLvls } from "@/data/items"
-import { getAllCharactersAsArray } from "@/data/characters/characterList"
-
 import { usePlannerStore } from "@/hooks"
 import { getAggregatedMaterials } from "@/hooks/usePlannerStore"
 
