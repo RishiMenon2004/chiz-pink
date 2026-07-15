@@ -6,7 +6,6 @@ import { RoutesData } from "@/data/routes"
 import { CurrencyBar, Footer, Sidebar, SplashScreen } from "@/components/layout"
 
 import "./globals.css"
-import styles from "./page.module.css"
 
 const barlowCondensed = Barlow_Condensed({
 	variable: "--font-barlow-condensed",
@@ -48,7 +47,7 @@ export default function RootLayout({
 		<html
 			lang="en"
 			className={`${barlowCondensed.variable} ${syne.variable}`}>
-			<body className={styles.page}>
+			<body>
 				<SplashScreen />
 				<Sidebar />
 				<CurrencyBar />
