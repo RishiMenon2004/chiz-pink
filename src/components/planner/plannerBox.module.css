@@ -1,0 +1,112 @@
+.plannerBoxContainer {
+	container-type: inline-size;
+
+	height: 100%;
+}
+
+.plannerBox {
+	--outer-radius: 1.5rem;
+	--inner-radius: 0.5rem;
+
+	display: flex;
+	flex-direction: row;
+
+	height: 100%;
+
+	filter: drop-shadow(black 0 0 10px);
+}
+
+.infoContainer {
+	display: flex;
+	flex-direction: column;
+	flex-grow: 1;
+	justify-content: space-between;
+
+	--padding-right: 1rem;
+	--padding-left: 2rem;
+	border-radius: var(--outer-radius) var(--inner-radius) var(--inner-radius)
+		var(--outer-radius);
+
+	color: var(--interactive-bg);
+
+	background-color: var(--white);
+
+	box-shadow:
+		0px -3px 2px -2px var(--interactive-bg) inset,
+		0px -10px 10px -2px rgb(174, 174, 174) inset,
+		0px -23px 15px -2px hsl(300, 0%, 50%) inset;
+}
+
+.plannerSectionLabel {
+	margin-left: var(--padding-left);
+	margin-block: 1rem 0.5rem;
+	font-weight: 600;
+}
+
+.plannerRequiredMaterialsBox {
+	flex-grow: 1;
+
+	padding: 1rem;
+	margin-inline: var(--padding-left) var(--padding-right);
+	border-radius: 0.75rem 0.75rem 0 0;
+
+	background-color: var(--interactive-bg);
+
+	box-shadow:
+		hsla(0, 0%, 0%, 0.6) 0px 0px 2px 1px,
+		rgba(0, 0, 0, 0.7) 1px 2px 2px inset;
+}
+
+.plannerBoxDisabled,
+.plannerBoxDragging {
+	position: relative;
+	opacity: 0.75;
+
+	&::after {
+		content: "";
+		position: absolute;
+		inset: 0;
+
+		border-radius: var(--outer-radius);
+
+		background-color: var(--darker-pink);
+		opacity: 0.25;
+		pointer-events: none;
+	}
+}
+.plannerBoxDisabled {
+	opacity: 0.5;
+}
+
+.plannerBoxDragging {
+	&::after {
+		outline: 4px var(--darker-pink) dashed;
+		outline-offset: 4px;
+	}
+}
+
+.plannerBoxDropPreview {
+	box-shadow: color-mix(in srgb, var(--pink) 50%, transparent) 0 0 200px inset;
+	border: 2px solid var(--darker-pink);
+	border-radius: var(--outer-radius);
+	& > * {
+		opacity: 0;
+	}
+}
+
+@container (width < 450px) {
+	.plannerBox {
+		flex-direction: column-reverse;
+	}
+
+	.infoContainer {
+		border-radius: var(--inner-radius) var(--inner-radius) var(--outer-radius)
+			var(--outer-radius);
+		--padding-left: 1rem;
+		--padding-right: 1rem;
+	}
+
+	.plannerRequiredMaterialsBox {
+		padding: 1.25rem;
+	}
+}

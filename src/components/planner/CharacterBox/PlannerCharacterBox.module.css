@@ -1,0 +1,351 @@
+.charInfoTop {
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	z-index: 1;
+
+	--avatar-size: 7rem;
+
+	min-height: calc(var(--avatar-size) + 1rem);
+
+	.charAvatarContainer {
+		position: absolute;
+		left: -1rem;
+		top: -1rem;
+
+		z-index: 1;
+
+		width: fit-content;
+		aspect-ratio: 1;
+		border-radius: 100%;
+		padding: 1rem;
+		overflow: hidden;
+
+		background-color: var(--rarity-color);
+		background-image: url("/characters/avatar/avatar_border.png");
+		background-size: cover;
+
+		box-shadow:
+			hsla(0, 0%, 0%, 0.6) 1px -1px 4px,
+			white 2px 3px 4px 1px;
+
+		.charImageContainer {
+			position: relative;
+			z-index: 0;
+
+			display: grid;
+			place-items: center;
+
+			border-radius: 100%;
+			overflow: hidden;
+
+			background-color: var(--interactive-bg);
+
+			box-shadow:
+				hsla(0, 0%, 0%, 0.6) 0px 0px 2px 1px,
+				white 2px 3px 4px 1px;
+
+			&,
+			& img {
+				width: var(--avatar-size);
+				height: auto;
+				aspect-ratio: 1;
+			}
+
+			img {
+				transition: scale 250ms ease-out;
+				z-index: 0;
+			}
+
+			&::after {
+				content: "";
+				position: absolute;
+				inset: 0;
+				z-index: 1;
+
+				border-radius: 100%;
+
+				box-shadow: hsla(0, 0%, 0%, 0.5) 2px 2px 10px inset;
+			}
+
+			&:hover {
+				img {
+					scale: 1.15;
+					transition-timing-function: var(--ease-in-out-back);
+				}
+
+				&::after {
+					z-index: -1;
+					box-shadow: var(--rarity-color) 0 0 20px 2px inset;
+				}
+			}
+		}
+	}
+
+	.charNameBox {
+		height: fit-content;
+
+		padding-block: 0.5rem;
+		padding-inline: 0rem 1rem;
+		margin-inline: 5rem var(--padding-right);
+		border-bottom-right-radius: 0.5rem;
+
+		color: black;
+		font-family: var(--font-syne);
+		font-weight: 750;
+		text-align: center;
+		text-overflow: ellipsis;
+		overflow: hidden;
+		text-wrap: nowrap;
+
+		background-color: hsla(334, 50%, 60%, 0.25);
+
+		box-shadow: rgba(0, 0, 0, 0.2) 0 -1px 3px inset;
+	}
+
+	.charLevels {
+		display: grid;
+		grid-template-columns: repeat(2, 1fr);
+		margin-top: 0.25rem;
+		margin-left: calc(var(--avatar-size) + 1.75rem);
+		margin-right: var(--padding-right);
+		gap: 2rem;
+
+		.charLevelSection {
+			display: flex;
+			flex-direction: column;
+			gap: 0.25rem;
+
+			font-family: var(--font-barlow-condensed);
+			font-size: 1.25rem;
+			font-weight: 600;
+			font-style: italic;
+
+			.charLvlPhases {
+				display: flex;
+				flex-direction: row;
+				justify-content: space-between;
+			}
+
+			select {
+				display: grid;
+				place-items: center;
+
+				color: white;
+				font-family: inherit;
+				font-size: 1.125rem;
+				font-style: inherit;
+				text-align: center;
+
+				min-width: fit-content;
+				height: max-content;
+				padding: 0.125rem 0.5rem;
+				border: none;
+				border-radius: 100vh;
+
+				background-color: var(--interactive-bg);
+
+				box-shadow:
+					hsla(0, 0%, 0%, 0.6) 0px -1px 2px,
+					white 0px 1px 1px,
+					rgba(0, 0, 0, 0.7) 0px 1px inset;
+
+				cursor: var(--dropdown-cursor);
+
+				@supports (appearance: base-select) {
+					position: relative;
+
+					&::picker-icon {
+						position: absolute;
+						right: 0.25rem;
+						content: "";
+						width: 2.5ch;
+						aspect-ratio: 1;
+						background-image: url("/icons/less.png");
+						background-size: contain;
+						background-position: center;
+						font-size: 0.75rem;
+					}
+
+					&:open {
+						background-color: var(--darker-pink);
+						&::picker-icon {
+							rotate: 180deg;
+						}
+						&::picker(select) {
+							display: grid;
+							grid-template-columns: 1fr 1fr;
+							gap: 0.25rem;
+						}
+					}
+
+					option {
+						justify-content: center;
+
+						font-style: normal;
+
+						background-color: color-mix(
+							in srgb,
+							var(--pink) 30%,
+							transparent
+						);
+
+						outline-offset: -2px;
+
+						&:checked {
+							background-color: color-mix(
+								in srgb,
+								var(--pink) 75%,
+								transparent
+							);
+
+							outline: var(--pink) 2px solid;
+						}
+
+						&:hover,
+						&:focus {
+							background: var(--pink);
+						}
+
+						&:focus-visible {
+							outline: white 2px solid;
+						}
+
+						&:nth-child(odd):not(:first-child) {
+							border-radius: 1rem 100vh 100vh 1rem;
+						}
+						&:nth-child(even):not(:last-child) {
+							border-radius: 100vh 1rem 1rem 100vh;
+						}
+
+						&:first-child,
+						&:last-child {
+							grid-column: 1 / -1;
+						}
+					}
+				}
+
+				&:focus-visible {
+					outline: none;
+					background-color: var(--darker-pink);
+				}
+			}
+		}
+	}
+}
+
+.charStatsSection {
+	display: flex;
+	flex-direction: column;
+
+	.charStatsSubSection {
+		display: flex;
+		flex-direction: column;
+
+		.charStatsGrid {
+			margin-inline: var(--padding-left) var(--padding-right);
+			display: grid;
+			grid-template-columns: repeat(2, 1fr);
+			gap: 1rem 2rem;
+		}
+	}
+}
+
+@container (width > 700px) {
+	.charInfoTop {
+		.charLevels {
+			.charLevelSection {
+				display: grid;
+				grid-template-columns: auto 1fr;
+				grid-template-rows: 1fr 1fr;
+				gap: 0.25rem 0.75rem;
+
+				.charLevelSectionLabel {
+					grid-row: 1 / -1;
+					align-self: end;
+				}
+
+				.charLvlPhases {
+					padding-inline: 0.5rem;
+				}
+			}
+		}
+	}
+}
+
+@container (width < 450px) {
+	.charInfoTop {
+		min-height: calc(var(--avatar-size) + 2rem);
+		overflow: hidden;
+
+		.charAvatarContainer {
+			top: -0rem;
+			left: -0rem;
+
+			border-top-left-radius: var(--inner-radius);
+			border-bottom-left-radius: var(--inner-radius);
+
+			background-image: url("/characters/avatar/avatar_border_alt.png");
+		}
+
+		.charLevels {
+			display: flex;
+			flex-direction: column;
+			gap: 0.5rem;
+
+			.charLevelSection {
+				display: grid;
+				grid-template-columns: 1fr 1fr;
+				grid-template-rows: 1fr 1fr;
+				gap: 0.25rem 0.75rem;
+
+				.charLevelSectionLabel {
+					grid-row: 1 / -1;
+					align-self: end;
+
+					text-wrap-mode: nowrap;
+				}
+
+				.charLvlPhases {
+					margin-inline: 0.75rem;
+				}
+			}
+		}
+
+		.charNameBox {
+			margin-inline: calc(var(--avatar-size) / 2) 0;
+			padding-left: calc(1rem + (var(--avatar-size) / 2));
+			border-bottom-left-radius: 0.5rem;
+			border-bottom-right-radius: 0;
+		}
+
+		.charLevels {
+			margin-left: calc(var(--avatar-size) + 2.75rem);
+		}
+	}
+}
+
+@container (width < 400px) {
+	.charInfoTop {
+		.charLevels {
+			.charLevelSection {
+				display: flex;
+				flex-direction: column;
+				gap: 0;
+
+				.charLevelSectionLabel {
+					align-self: flex-start;
+					margin-bottom: 0.25rem;
+				}
+
+				.charLvlPhases {
+					display: none;
+				}
+
+				select {
+					font-size: 1.25rem;
+				}
+			}
+		}
+	}
+}

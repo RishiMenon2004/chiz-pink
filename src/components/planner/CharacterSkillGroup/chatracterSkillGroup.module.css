@@ -1,0 +1,203 @@
+.charStatInputGroup {
+	display: grid;
+	grid-template-columns: auto 1fr;
+
+	width: 100%;
+
+	gap: 0.5rem;
+
+	grid-template-areas:
+		"check labels"
+		"inputs inputs";
+
+	& > input[type="checkbox"] {
+		grid-area: check;
+
+		-webkit-appearance: none;
+		appearance: none;
+		margin: auto;
+
+		width: 1.25rem;
+		height: 1.25rem;
+
+		display: grid;
+
+		background-color: var(--interactive-bg);
+
+		position: relative;
+
+		border-radius: 100%;
+
+		box-shadow:
+			hsla(0, 0%, 0%, 0.6) 0px -1px 2px,
+			white 0px 1px 1px;
+
+		&::before {
+			content: "";
+			inset: 0;
+
+			background-image: url("/button_icons/hide.png");
+			background-size: cover;
+
+			filter: invert(1);
+		}
+
+		&:checked {
+			background-color: var(--pink);
+
+			&::before {
+				background-image: url("/button_icons/show.png");
+				background-size: cover;
+			}
+		}
+	}
+
+	.charStatInputLabels {
+		grid-area: labels;
+
+		display: flex;
+		flex-direction: column;
+
+		overflow: hidden;
+
+		.charStatInputSkill {
+			font-family: var(--font-barlow-condensed);
+			font-size: 1.25rem;
+			font-weight: 600;
+			font-style: italic;
+		}
+
+		.charStatInputName {
+			font-size: 0.75rem;
+			font-weight: 500;
+			text-wrap-mode: nowrap;
+			text-overflow: ellipsis;
+
+			overflow: hidden;
+		}
+	}
+
+	.charStatInputSelects {
+		grid-area: inputs;
+		display: flex;
+		flex-direction: row;
+		gap: 15%;
+
+		select {
+			flex-grow: 1;
+
+			display: grid;
+			place-items: center;
+
+			color: white;
+			font-family: var(--font-barlow-condensed);
+			font-size: 1.125rem;
+			font-style: italic;
+			text-align: center;
+
+			min-width: fit-content;
+			height: max-content;
+			padding: 0.25rem 0.5rem;
+			border: none;
+			border-radius: 100vh;
+
+			background-color: var(--interactive-bg);
+
+			box-shadow:
+				hsla(0, 0%, 0%, 0.6) 0px -1px 2px,
+				white 0px 1px 1px,
+				rgba(0, 0, 0, 0.7) 0px 1px inset;
+
+			cursor: var(--dropdown-cursor);
+
+			@supports (appearance: base-select) {
+				position: relative;
+
+				&::picker-icon {
+					position: absolute;
+					right: 0.25rem;
+					content: "";
+					width: 2.5ch;
+					aspect-ratio: 1;
+					background-image: url("/icons/less.png");
+					background-size: contain;
+					background-position: center;
+					font-size: 0.75rem;
+				}
+
+				&:open {
+					background-color: var(--darker-pink);
+					&::picker-icon {
+						rotate: 180deg;
+					}
+					&::picker(select) {
+						display: grid;
+						grid-template-columns: 1fr 1fr;
+						gap: 0.25rem;
+					}
+				}
+
+				option {
+					justify-content: center;
+
+					font-style: normal;
+
+					background-color: color-mix(
+						in srgb,
+						var(--pink) 30%,
+						transparent
+					);
+
+					outline-offset: -2px;
+
+					&:checked {
+						background-color: color-mix(
+							in srgb,
+							var(--pink) 75%,
+							transparent
+						);
+
+						outline: var(--pink) 2px solid;
+					}
+
+					&:hover,
+					&:focus {
+						background: var(--pink);
+					}
+
+					&:focus-visible {
+						outline: white 2px solid;
+					}
+
+					&:nth-child(odd):not(:first-child) {
+						border-radius: 1rem 100vh 100vh 1rem;
+					}
+					&:nth-child(even):not(:last-child) {
+						border-radius: 100vh 1rem 1rem 100vh;
+					}
+
+					&:first-child,
+					&:last-child:not(:nth-child(odd)) {
+						grid-column: 1 / -1;
+					}
+				}
+			}
+
+			&:focus-visible {
+				outline: none;
+				background-color: var(--darker-pink);
+			}
+		}
+	}
+}
+
+.disabled {
+	height: fit-content;
+
+	grid-template-areas: "check labels";
+
+	.charStatInputSelects {
+		display: none;
+		height: 0;
+	}
+}

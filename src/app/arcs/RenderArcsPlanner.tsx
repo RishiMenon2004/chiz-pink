@@ -24,11 +24,11 @@ import { MaterialGroup } from "@/components/inventory/"
 import { PlannerAddArcBox } from "@/components/planner"
 import { PlannerMaterialsList } from "@/components/planner/"
 
-import { PlannerInventoryProvider } from "@/helpers/PlannerInventoryProvider"
+import { PlannerInventoryProvider } from "@/helpers"
 
 import styles from "./page.module.css"
 import { styles as toolbarStyles } from "@/components/layout/PullOutToolbar"
-import { styles as arcBoxStyles } from "@/components/planner/ArcBox"
+import plannerBoxStyles from "@/components/planner/plannerBox.module.css"
 
 const PlannerArcBox = dynamic(
 	() => import("@/components/planner").then((mod) => mod.PlannerArcBox),
@@ -97,19 +97,20 @@ export default function RenderArcsPlanner() {
 
 			{Object.entries(plannerData.arcs).length <= 0 && (
 				<InfoBox>
-					{"You don't have anything planned... Maybe you'd like to "}
+					{
+						"You don't have any arcs in the planner... Maybe you'd like to "
+					}
 					<a className="btn-anchor" onClick={handleStartAdding}>
 						Add Something?
 					</a>
 				</InfoBox>
 			)}
 
-			<div
-				className={`${styles.page}${activeDragArc ? ` ${styles.dragging}` : ""}`}>
+			<div className={styles.page}>
 				{allRequiredMaterials.length > 0 && (
 					<MaterialGroup title="Total Required Materials">
 						<div
-							className={`${arcBoxStyles.arcRequiredMaterialsBox} ${styles.arcRequiredMaterialsBox}`}>
+							className={`${plannerBoxStyles.plannerRequiredMaterialsBox} ${styles.plannerRequiredMaterialsBox}`}>
 							<PlannerMaterialsList
 								materials={allRequiredMaterials.map(
 									([id, { amount }]) => {
@@ -146,7 +147,9 @@ export default function RenderArcsPlanner() {
 
 							if (initialIndex !== index) {
 								const newArcsList = [
-									...Object.values(plannerData.arcs),
+									...(Object.values(
+										plannerData.arcs || {}
+									) as WeaponRecord[]),
 								]
 								const [removed] = newArcsList.splice(
 									initialIndex,

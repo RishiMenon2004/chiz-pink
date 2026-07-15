@@ -5,7 +5,6 @@ import Image from "next/image"
 import { ChangeEvent, MouseEvent, useEffect, useState } from "react"
 import { createPortal } from "react-dom"
 
-import { useDragOperation } from "@dnd-kit/react"
 import { useSortable } from "@dnd-kit/react/sortable"
 
 import type { ModalEventType } from "@/types"
@@ -16,14 +15,16 @@ import { findArc } from "@/data/arcs"
 
 import { useInventoryStore, usePlannerStore } from "@/hooks"
 
+import { getRarityName } from "@/helpers"
+
 import { PlannerBoxContext, usePlannerMaterialsContext } from "@/contexts"
 
 import { AlertContainer, ModalContainer } from "@/components/layout"
 import { ItemPhases, PlannerMaterialsList } from "@/components/planner"
+import { PlannerBoxButtonsContainer } from "@/components/planner/PlannerBoxButtonsContainer"
 
+import plannerBoxStyles from "@/components/planner/plannerBox.module.css"
 import styles from "./plannerArcBox.module.css"
-import { PlannerBoxButtonsContainer } from "../PlannerBoxButtonsContainer/PlannerBoxButtonsContainer"
-import { getRarityName } from "@/helpers"
 
 export function PlannerArcBox({
 	arcRecord,
@@ -36,7 +37,6 @@ export function PlannerArcBox({
 		id: arcRecord.uid,
 		index,
 	})
-	const { source } = useDragOperation()
 
 	const { inventory, updateInventory } = useInventoryStore()
 	const cumulativeInventory = usePlannerMaterialsContext()
@@ -61,15 +61,11 @@ export function PlannerArcBox({
 	const dropPreviewOrDragOverlay = () => {
 		const classStyles = []
 
-		if (source) {
-			classStyles.push(styles.arcBoxCollapsed)
-		}
-
 		if (isDragging) {
 			if (index === -200) {
-				classStyles.push(styles.arcBoxDragging)
+				classStyles.push(plannerBoxStyles.plannerBoxDragging)
 			} else {
-				classStyles.push(styles.arcBoxDropPreview)
+				classStyles.push(plannerBoxStyles.plannerBoxDropPreview)
 			}
 		}
 
@@ -109,7 +105,9 @@ export function PlannerArcBox({
 			targetLvl,
 			isDisabled,
 		} as WeaponRecord)
-	}, [arcRecord, currentLvl, targetLvl, isDisabled, actions])
+		// disable warning because other deps trigger this effect unnecessarily
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [currentLvl, targetLvl, isDisabled])
 
 	const handleEnhancement = (e: MouseEvent) => {
 		e.stopPropagation()
@@ -180,7 +178,7 @@ export function PlannerArcBox({
 	}
 
 	return (
-		<div className={styles.arcPlannerBoxContainer} ref={ref}>
+		<div className={plannerBoxStyles.plannerBoxContainer} ref={ref}>
 			<PlannerBoxContext.Provider
 				value={{
 					itemRecord: arcRecord,
@@ -192,8 +190,9 @@ export function PlannerArcBox({
 					dragRef: handleRef,
 				}}>
 				<div
-					className={`${styles.arcPlannerBox} ${getItemRarityStyle(arc)} ${isDisabled ? styles.arcBoxDisabled : ""} ${dropPreviewOrDragOverlay().join(" ")}`}>
-					<div className={styles.arcInfoContainer}>
+					className={`${plannerBoxStyles.plannerBox} ${getItemRarityStyle(arc)} ${isDisabled ? plannerBoxStyles.plannerBoxDisabled : ""} ${dropPreviewOrDragOverlay().join(" ")}`}>
+					<div
+						className={`${plannerBoxStyles.infoContainer} ${styles.infoContainer}`}>
 						<div className={styles.arcInfoTop}>
 							<div className={styles.arcImageContainer}>
 								<Image
@@ -203,17 +202,15 @@ export function PlannerArcBox({
 									alt={`Arc "${arc.name}" Icon`}
 									loading="eager"
 								/>
-								{
-									<div className={styles.arcLabelContainer}>
-										{arc.isFeatured
-											? "FEATURED"
-											: arc.isPreview
-												? "PREVIEW"
-												: getRarityName(
-														arc.rarity
-													).toLocaleUpperCase()}
-									</div>
-								}
+								<div className={styles.arcLabelContainer}>
+									{arc.isFeatured
+										? "FEATURED"
+										: arc.isPreview
+											? "PREVIEW"
+											: getRarityName(
+													arc.rarity
+												).toLocaleUpperCase()}
+								</div>
 							</div>
 							<div className={styles.arcStatsSection}>
 								<div className={styles.arcStatsName}>
@@ -263,16 +260,13 @@ export function PlannerArcBox({
 								</span>
 							</div>
 						</div>
-						<span
-							className={styles.arcRequiredMaterialsLabel}
-							style={{
-								marginLeft: "2rem",
-								marginBlock: "1rem 0.5rem",
-								fontWeight: "600",
-							}}>
+						<span className={plannerBoxStyles.plannerSectionLabel}>
 							Required Materials
 						</span>
-						<div className={styles.arcRequiredMaterialsBox}>
+						<div
+							className={
+								plannerBoxStyles.plannerRequiredMaterialsBox
+							}>
 							<PlannerMaterialsList />
 						</div>
 					</div>

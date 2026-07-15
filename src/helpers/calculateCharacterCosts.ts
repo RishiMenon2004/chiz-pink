@@ -95,7 +95,11 @@ export function calculateLevelCosts(
 	return totals
 }
 
-export function calculateCharacterCosts({currentLvl, targetLvl, abilitySet}: Pick<CharacterRecord, 'currentLvl' | 'targetLvl' | 'abilitySet'>) {
+export function calculateCharacterCosts({
+	currentLvl,
+	targetLvl,
+	abilitySet,
+}: Pick<CharacterRecord, "currentLvl" | "targetLvl" | "abilitySet">) {
 	const totals = {
 		fons: 0,
 		dreamlessSeed: 0,
@@ -131,6 +135,8 @@ export function calculateCharacterCosts({currentLvl, targetLvl, abilitySet}: Pic
 	const skillMaterials: Omit<typeof totals, "exp">[] = []
 
 	for (const [skill, skillLvl] of Object.entries(abilitySet)) {
+		if (skillLvl.isDisabled) continue
+
 		let type: SkillTypes = "esper"
 
 		switch (skill) {
@@ -163,17 +169,17 @@ export function calculateCharacterCosts({currentLvl, targetLvl, abilitySet}: Pic
 		)
 	}
 
-	skillMaterials.forEach(materials => {
+	skillMaterials.forEach((materials) => {
 		totals.fons += materials.fons
 		totals.dreamlessSeed += materials.dreamlessSeed
 
 		totals.beetleCoin += materials.beetleCoin
 		totals.bossMaterial += materials.bossMaterial
-		
+
 		totals.ascMaterial.common += materials.ascMaterial.common
 		totals.ascMaterial.uncommon += materials.ascMaterial.uncommon
 		totals.ascMaterial.rare += materials.ascMaterial.rare
-		
+
 		totals.talentMaterial.common += materials.talentMaterial.common
 		totals.talentMaterial.uncommon += materials.talentMaterial.uncommon
 		totals.talentMaterial.rare += materials.talentMaterial.rare

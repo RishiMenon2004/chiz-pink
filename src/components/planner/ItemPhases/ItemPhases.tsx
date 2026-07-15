@@ -1,4 +1,4 @@
-import { getPhases } from "@/helpers/getPhases"
+import { getPhases } from "@/helpers"
 
 import styles from "./itemPhases.module.css"
 
