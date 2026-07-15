@@ -31,11 +31,13 @@ export function MaterialEditorBox({
 }) {
 	const modalContext = useMaterialAdjustmentContext()
 
-	const [addSubValue, setAddSubValue] = useState<string>("")
-
 	const countRef = useRef<HTMLInputElement>(null)
 	const { inventory, updateInventory } = useInventoryStore()
 	const itemQuantity = inventory[material.id] || 0
+	const [actualQuantity, setActualQuantity] = useState<number>(itemQuantity)
+
+	const [inputFocused, setInputFocused] = useState<boolean>(false)
+	const [addSubValue, setAddSubValue] = useState<string>("")
 
 	const { Tooltip, showTooltip, hideTooltip } = useTooltip()
 
@@ -46,19 +48,22 @@ export function MaterialEditorBox({
 		[material.id, updateInventory]
 	)
 
-	// Register/unregister amount callback with parent context
+	// Register/unregister callback with parent context
 	useEffect(() => {
-		countRef.current?.focus()
 		const amountCallback = () => {
 			if (addSubValue) {
 				const adjustmentValue = parseInt(addSubValue) || 0
-				const newTotal = Math.max(itemQuantity + adjustmentValue, 0)
+				const newTotal = Math.max(actualQuantity + adjustmentValue, 0)
 				setAmount(newTotal)
 			}
 		}
 		modalContext.registerAdjustmentAmount(material.id, amountCallback)
 		return () => modalContext.unregisterAdjustmentAmount(material.id)
-	}, [addSubValue, itemQuantity, material.id, modalContext, setAmount])
+	}, [addSubValue, actualQuantity, material.id, modalContext, setAmount])
+
+	useEffect(() => {
+		setAmount(actualQuantity)
+	}, [actualQuantity, setAmount])
 
 	const handleCount = (e: MouseEvent<HTMLSpanElement>, increment: boolean) => {
 		e.stopPropagation()
@@ -75,14 +80,16 @@ export function MaterialEditorBox({
 
 	const handleEdit = (e: ChangeEvent<HTMLInputElement>) => {
 		if (e.currentTarget) {
-			const newValue = parseInt(e.currentTarget.value.replaceAll(/\D/g, ""))
-			setAmount(newValue)
+			const newValue =
+				parseInt(e.currentTarget.value.replaceAll(/\D/g, "")) || 0
+			setActualQuantity(newValue)
 		}
 	}
 
 	const handleFocus = (e: FocusEvent<HTMLInputElement>) => {
 		if (e.currentTarget) {
 			e.currentTarget.focus()
+			setInputFocused(true)
 			e.currentTarget.setSelectionRange(0, 999)
 		}
 	}
@@ -102,7 +109,9 @@ export function MaterialEditorBox({
 		setAddSubValue(e.currentTarget.value)
 	}
 
-	const displayQuantity = itemQuantity + (parseInt(addSubValue) || 0)
+	const displayQuantity = inputFocused
+		? actualQuantity
+		: itemQuantity + (parseInt(addSubValue) || 0)
 
 	return (
 		<div
@@ -148,6 +157,7 @@ export function MaterialEditorBox({
 						value={displayQuantity}
 						onChange={handleEdit}
 						onFocus={handleFocus}
+						onBlur={() => setInputFocused(false)}
 						onKeyDown={handleKeyDown}
 						onClick={(e) => {
 							e.stopPropagation()
