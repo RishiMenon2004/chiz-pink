@@ -16,9 +16,9 @@ export interface CharacterRecord extends Pick<Item, "id"> {
 		skill: SkillLvlRecord
 		ultimate: SkillLvlRecord
 		support: SkillLvlRecord
-		passive1: boolean
-		passive2?: boolean
-		passive3?: boolean
+		passive1: SkillLvlRecord
+		passive2?: SkillLvlRecord
+		passive3?: SkillLvlRecord
 		lifeSkill1: SkillLvlRecord
 		lifeSkill2?: SkillLvlRecord
 	}

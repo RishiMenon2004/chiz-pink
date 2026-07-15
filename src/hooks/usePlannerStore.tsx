@@ -12,13 +12,16 @@ import type {
 
 import {
 	beetleCoin,
-	chaoticDye,
-	colorlessDye,
-	lightDye,
+	dreamlessSeed,
+	expDyeSet,
+	expHunterGuideSet,
+	fons,
 } from "@/data/items/materials"
 import { findArc } from "@/data/arcs"
 
 import { calcuateWeaponCosts } from "@/helpers/calcuateWeaponCosts"
+import { calculateCharacterCosts } from "@/helpers/calculateCharacterCosts"
+import { findCharacter } from "@/data/characters/characterList"
 
 let cachedPlanner: PlannerRecord = { arcs: {}, characters: {} }
 
@@ -41,9 +44,9 @@ function getWeaponRequiredMaterials(
 	return [
 		{ id: beetleCoin.id, amount: materialValues.beetleCoin },
 
-		{ id: lightDye.id, amount: materialValues.exp.lightDye },
-		{ id: colorlessDye.id, amount: materialValues.exp.colorlessDye },
-		{ id: chaoticDye.id, amount: materialValues.exp.chaoticDye },
+		{ id: expDyeSet[0].id, amount: materialValues.exp.lightDye },
+		{ id: expDyeSet[1].id, amount: materialValues.exp.colorlessDye },
+		{ id: expDyeSet[2].id, amount: materialValues.exp.chaoticDye },
 
 		{
 			id: arc.ascensionMaterial1[0].id,
@@ -69,6 +72,53 @@ function getWeaponRequiredMaterials(
 		{
 			id: arc.ascensionMaterial2[2].id,
 			amount: materialValues.ascMaterial2.rare,
+		},
+	]
+}
+function getCharRequiredMaterials(
+	character:
+		| CharacterRecord
+		| Omit<CharacterRecord, "requiredMaterials" | "isDisabled">
+) {
+	const char = findCharacter(character.id)
+	const materialValues = calculateCharacterCosts(character)
+
+	return [
+		{ id: beetleCoin.id, amount: materialValues.beetleCoin },
+
+		{ id: fons.id, amount: materialValues.fons },
+		{ id: dreamlessSeed.id, amount: materialValues.dreamlessSeed },
+
+		{ id: char.talentBossMaterial.id, amount: materialValues.bossMaterial },
+
+		{ id: expHunterGuideSet[0].id, amount: materialValues.exp.common },
+		{ id: expHunterGuideSet[1].id, amount: materialValues.exp.uncommon },
+		{ id: expHunterGuideSet[2].id, amount: materialValues.exp.rare },
+
+		{
+			id: char.ascensionMaterialSet[0].id,
+			amount: materialValues.ascMaterial.common,
+		},
+		{
+			id: char.ascensionMaterialSet[1].id,
+			amount: materialValues.ascMaterial.uncommon,
+		},
+		{
+			id: char.ascensionMaterialSet[2].id,
+			amount: materialValues.ascMaterial.rare,
+		},
+
+		{
+			id: char.talentMaterialSet[0].id,
+			amount: materialValues.talentMaterial.common,
+		},
+		{
+			id: char.talentMaterialSet[1].id,
+			amount: materialValues.talentMaterial.uncommon,
+		},
+		{
+			id: char.talentMaterialSet[2].id,
+			amount: materialValues.talentMaterial.rare,
 		},
 	]
 }
@@ -101,19 +151,20 @@ export const plannerActions = {
 				...plannerData.characters,
 				[char.id]: {
 					...char,
-					requiredMaterials: [],
+					requiredMaterials: getCharRequiredMaterials(char),
 					isDisabled: false,
 				},
 			},
 		})
 	},
+
 	updateCharacter(plannerData: PlannerRecord, char: CharacterRecord) {
 		this.updatePlanner({
 			characters: {
 				...plannerData.characters,
 				[char.id]: {
 					...char,
-					requiredMaterials: [],
+					requiredMaterials: getCharRequiredMaterials(char),
 				},
 			},
 		})
@@ -170,49 +221,64 @@ export function getAggregatedMaterials(
 
 	const agregatedMaterials: AgregateMaterialsType = {}
 
-	if (plannerData.arcs && (type === "arc" || type == "both")) {
-		Object.values(plannerData.arcs).forEach((arc) => {
+	const { arcs, characters } = plannerData
+
+	function addToAggregate(itemRecord: CharacterRecord | WeaponRecord) {
+		itemRecord.requiredMaterials.forEach((material) => {
+			const currentAgrMaterial = agregatedMaterials[material.id] || {}
+			const sources = currentAgrMaterial.sources || []
+			const amount = currentAgrMaterial.amount || 0
+
+			const itemName =
+				"uid" in itemRecord
+					? findArc(itemRecord.id).name
+					: findCharacter(itemRecord.id).name
+			const sourceName = sources.find((name) => name.includes(itemName))
+
+			if (typeof sourceName === "undefined") {
+				sources.push(itemName)
+			} else if (sourceName === itemName) {
+				const sourceIndex = sources.indexOf(itemName)
+				sources[sourceIndex] = `${itemName} ×2`
+			} else {
+				const sourceIndex = sources.indexOf(sourceName)
+				if (sourceIndex !== -1) {
+					const sourceName = sources[sourceIndex]
+					const [name, number] = sourceName.split("×")
+					const count = Number(number) + 1
+					sources[sourceIndex] = [name, count].join("×")
+				}
+			}
+
+			const agregateAmount = amount + material.amount
+
+			if (agregateAmount > 0) {
+				agregatedMaterials[material.id] = {
+					amount: agregateAmount,
+					sources: [...sources],
+				}
+			}
+		})
+	}
+
+	if (characters && (type === "char" || type == "both")) {
+		Object.values(characters).forEach((char) => {
+			if (char.isDisabled) {
+				return
+			}
+
+			addToAggregate(char)
+		})
+	}
+
+	if (arcs && (type === "arc" || type == "both")) {
+		Object.values(arcs).forEach((arc) => {
 			if (arc.isDisabled) {
 				return
 			}
 
-			arc.requiredMaterials.forEach((material) => {
-				const currentAgrMaterial = agregatedMaterials[material.id] || {}
-				const sources = currentAgrMaterial.sources || []
-				const amount = currentAgrMaterial.amount || 0
-
-				const arcName = findArc(arc.id).name
-				const sourceName = sources.find((name) => name.includes(arcName))
-
-				if (typeof sourceName === "undefined") {
-					sources.push(arcName)
-				} else if (sourceName === arcName) {
-					const sourceIndex = sources.indexOf(arcName)
-					sources[sourceIndex] = `${arcName} ×2`
-				} else {
-					const sourceIndex = sources.indexOf(sourceName)
-					if (sourceIndex !== -1) {
-						const sourceName = sources[sourceIndex]
-						const [name, number] = sourceName.split("×")
-						const count = Number(number) + 1
-						sources[sourceIndex] = [name, count].join("×")
-					}
-				}
-
-				const agregateAmount = amount + material.amount
-
-				if (agregateAmount > 0) {
-					agregatedMaterials[material.id] = {
-						amount: agregateAmount,
-						sources: [...sources],
-					}
-				}
-			})
+			addToAggregate(arc)
 		})
-	}
-
-	//TODO: Do the math after finishing the characters page
-	if (plannerData.characters && (type === "char" || type == "both")) {
 	}
 
 	return agregatedMaterials

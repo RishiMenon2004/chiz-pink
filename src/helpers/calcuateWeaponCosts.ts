@@ -13,19 +13,12 @@ export function calcuateWeaponCosts(
 		ascMaterial2: { common: 0, uncommon: 0, rare: 0 },
 	}
 
-	if (currentLvl >= targetLvl) {
-		return totals
-	}
+	if (currentLvl < targetLvl) {
+		for (const [key, phase] of Object.entries(weaponPhasesMaterials)) {
+			const lvl = Number(key)
+			if (lvl <= currentLvl || lvl > targetLvl || !phase) continue
 
-	Object.keys(weaponPhasesMaterials)
-		.map((lvl) => Number(lvl))
-		.filter((lvl) => lvl > currentLvl && lvl <= targetLvl)
-		.forEach((lvl) => {
-			const phase =
-				weaponPhasesMaterials[lvl as keyof typeof weaponPhasesMaterials]
 			const rarity = Number(weaponRarity) - 3
-
-			if (!phase) return
 
 			totals.beetleCoin += phase.beetleCoin[rarity]
 
@@ -40,7 +33,8 @@ export function calcuateWeaponCosts(
 			totals.ascMaterial2.common += phase.ascMaterial2.common[rarity]
 			totals.ascMaterial2.uncommon += phase.ascMaterial2.uncommon[rarity]
 			totals.ascMaterial2.rare += phase.ascMaterial2.rare[rarity]
-		})
+		}
+	}
 
 	return totals
 }
