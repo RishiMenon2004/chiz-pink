@@ -216,8 +216,10 @@ const PlannerArcsSelect = () => {
 }
 
 export function PlannerAddArcBox({
+	onCancel,
 	onConfirm,
 }: {
+	onCancel: (e: ModalEventType) => void
 	onConfirm: (e: ModalEventType) => void
 }) {
 	const { newArcRecord, setNewArcRecord } = useAddArcContext()
@@ -261,7 +263,7 @@ export function PlannerAddArcBox({
 				/>
 			</div>
 			<span className={styles.addArcButtonsSection}>
-				<div className={styles.addArcCancelButton} onClick={onConfirm}>
+				<div className={styles.addArcCancelButton} onClick={onCancel}>
 					CANCEL
 				</div>
 				<div className={styles.addArcConfirmButton} onClick={onConfirm}>

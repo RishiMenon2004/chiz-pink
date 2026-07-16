@@ -118,7 +118,10 @@ export default function RenderArcsPlanner() {
 							<ModalContainer
 								onClose={closeModal}
 								onCancel={cancelModal}>
-								<PlannerAddArcBox onConfirm={closeModal} />
+								<PlannerAddArcBox
+									onConfirm={closeModal}
+									onCancel={cancelModal}
+								/>
 							</ModalContainer>,
 							document.body
 						)}
