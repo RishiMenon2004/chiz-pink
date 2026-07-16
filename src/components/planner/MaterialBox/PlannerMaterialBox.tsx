@@ -43,8 +43,7 @@ export function PlannerMaterialBox({
 
 	const isAggregateMaterial = entryIndex === -1
 
-	const cumulativeInventory =
-		/*isArc ?*/ usePlannerMaterialsContext() /*: useCharPlannerUsableMaterialsContext()*/ //TODO: Character Planner
+	const cumulativeInventory = usePlannerMaterialsContext()
 	const { inventory } = useInventoryStore()
 	const usableInventory =
 		cumulativeInventory[isAggregateMaterial ? 0 : entryIndex] ?? {}

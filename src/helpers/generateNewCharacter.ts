@@ -12,22 +12,22 @@ export function generateNewCharacter() {
 		abilitySet: {
 			basicAttack: {
 				isDisabled: false,
-				currentLvl: 0,
+				currentLvl: 1,
 				targetLvl: featuredChar.abilities.basicAttack.maxLvl,
 			},
 			skill: {
 				isDisabled: false,
-				currentLvl: 0,
+				currentLvl: 1,
 				targetLvl: featuredChar.abilities.skill.maxLvl,
 			},
 			ultimate: {
 				isDisabled: false,
-				currentLvl: 0,
+				currentLvl: 1,
 				targetLvl: featuredChar.abilities.ultimate.maxLvl,
 			},
 			support: {
 				isDisabled: false,
-				currentLvl: 0,
+				currentLvl: 1,
 				targetLvl: featuredChar.abilities.support.maxLvl,
 			},
 			passive1: {

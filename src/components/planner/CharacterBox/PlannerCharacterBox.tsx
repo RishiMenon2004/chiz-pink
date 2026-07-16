@@ -8,9 +8,9 @@ import { createPortal } from "react-dom"
 import { useSortable } from "@dnd-kit/react/sortable"
 
 import { ModalEventType } from "@/types"
-import { CharacterRecord } from "@/types/planner"
+import { CharacterRecord, SkillLvlRecord } from "@/types/planner"
 
-import { EnumItemLvls, getItemRarityStyle } from "@/data/items"
+import { EnumItemLvls, findMaterial, getItemRarityStyle } from "@/data/items"
 import { findCharacter } from "@/data/characters/characterList"
 
 import { useInventoryStore, usePlannerStore } from "@/hooks"
@@ -20,10 +20,10 @@ import { PlannerBoxContext, usePlannerMaterialsContext } from "@/contexts"
 import { AlertContainer, ModalContainer } from "@/components/layout"
 import { ItemPhases, PlannerMaterialsList } from "@/components/planner"
 import { PlannerBoxButtonsContainer } from "../PlannerBoxButtonsContainer"
+import { CharacterSkillGroup } from "../CharacterSkillGroup/CharacterSkillGroup"
 
 import plannerBoxStyles from "@/components/planner/plannerBox.module.css"
 import styles from "./PlannerCharacterBox.module.css"
-import { CharacterSkillGroup } from "@/components/planner/CharacterSkillGroup/CharacterSkillGroup"
 
 export function PlannerCharacterBox({
 	charRecord,
@@ -141,13 +141,10 @@ export function PlannerCharacterBox({
 		})
 	}
 
-	const handleToggleSkill = (
-		e: ChangeEvent<HTMLInputElement>,
-		ability: keyof CharacterRecord["abilitySet"]
-	) => {
-		const isDisabled = !e.currentTarget.checked
-
+	const handleToggleSkill = (ability: keyof CharacterRecord["abilitySet"]) => {
 		if (CharacterState.abilitySet[ability]) {
+			const isDisabled = !CharacterState.abilitySet[ability].isDisabled
+
 			setCharacterState((prevState) => ({
 				...prevState,
 				abilitySet: {
@@ -167,6 +164,111 @@ export function PlannerCharacterBox({
 		// disable warning because other deps trigger this effect unnecessarily
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [CharacterState])
+
+	const handleEnhancement = (e: MouseEvent) => {
+		e.stopPropagation()
+		const localInventory = { ...inventory }
+		const currentCumulativeInventory = cumulativeInventory[index]
+
+		if (allMaterialsAcquired()) {
+			charRecord.requiredMaterials.forEach((material) => {
+				const inventoryAmount = localInventory[material.id] || 0
+
+				const currentCumulativeMaterial =
+					currentCumulativeInventory[material.id]
+				const craftedAmount = currentCumulativeMaterial?.craftedAmount
+
+				if (craftedAmount && craftedAmount > 0) {
+					const materialData = findMaterial(material.id)
+					const linkedMaterials =
+						materialData?.linkedMaterials?.map((linkedMaterialId) =>
+							findMaterial(linkedMaterialId)
+						) || []
+					const lowerMaterial = linkedMaterials.find(
+						(linkedMaterial) =>
+							linkedMaterial.rarity === materialData.rarity - 1
+					)?.id
+
+					if (lowerMaterial) {
+						localInventory[lowerMaterial] = Math.max(
+							0,
+							localInventory[lowerMaterial] - craftedAmount * 3
+						)
+					}
+				}
+
+				localInventory[material.id] = Math.max(
+					0,
+					inventoryAmount - material.amount
+				)
+			})
+
+			updateInventory(localInventory)
+			setCharacterState((prevState) => {
+				const { abilitySet } = prevState
+				const newState = {
+					...prevState,
+					currentLvl: prevState.targetLvl,
+					abilitySet: {
+						...abilitySet,
+						basicAttack: {
+							...abilitySet.basicAttack,
+							isDisabled: true,
+							currentLvl: abilitySet.basicAttack.targetLvl,
+						},
+						skill: {
+							...abilitySet.skill,
+							isDisabled: true,
+							currentLvl: abilitySet.skill.targetLvl,
+						},
+						ultimate: {
+							...abilitySet.ultimate,
+							isDisabled: true,
+							currentLvl: abilitySet.ultimate.targetLvl,
+						},
+						support: {
+							...abilitySet.support,
+							isDisabled: true,
+							currentLvl: abilitySet.support.targetLvl,
+						},
+						lifeSkill1: {
+							...abilitySet.lifeSkill1,
+							isDisabled: true,
+							currentLvl: abilitySet.lifeSkill1.targetLvl,
+						},
+						passive1: {
+							...abilitySet.passive1,
+							isDisabled: true,
+						},
+					},
+				}
+
+				if (abilitySet.lifeSkill2) {
+					newState.abilitySet.lifeSkill2 = {
+						...abilitySet.lifeSkill2,
+						isDisabled: true,
+						currentLvl: abilitySet.lifeSkill2.targetLvl,
+					}
+				}
+
+				if (abilitySet.passive2) {
+					newState.abilitySet.passive2 = {
+						...abilitySet.passive2,
+						isDisabled: true,
+					}
+				}
+
+				if (abilitySet.passive3) {
+					newState.abilitySet.passive3 = {
+						...abilitySet.passive3,
+						isDisabled: true,
+					}
+				}
+
+				return newState
+			})
+		}
+	}
 
 	const handleDisable = (e: MouseEvent) => {
 		e.stopPropagation()
@@ -196,7 +298,12 @@ export function PlannerCharacterBox({
 		setShowDeleteConfirmation(false)
 	}
 
-	const { abilitySet } = CharacterState
+	const { abilitySet } = charRecord
+
+	const getSkillLvlPreview = (skill: SkillLvlRecord, target?: boolean) =>
+		skill.isDisabled
+			? "-"
+			: String(target ? skill.targetLvl : skill.currentLvl)
 
 	return (
 		<div className={plannerBoxStyles.plannerBoxContainer} ref={ref}>
@@ -206,8 +313,13 @@ export function PlannerCharacterBox({
 					entryIndex: index,
 					allMaterialsAcquired,
 					toggleDisable: handleDisable,
-					handleEnhancement: (e: MouseEvent) => {},
+					handleEnhancement,
 					handleDelete: handleDelete,
+					changeHandlers: [
+						handleCurrentLvlChange,
+						handleTargetLvlChange,
+						handleToggleSkill,
+					],
 					dragRef: handleRef,
 				}}>
 				<div
@@ -274,98 +386,152 @@ export function PlannerCharacterBox({
 							</div>
 						</div>
 						<div className={styles.charStatsSection}>
-							<div className={styles.charStatsSubSection}>
-								<span
+							<details className={styles.charStatsSubSection}>
+								<summary
 									className={
 										plannerBoxStyles.plannerSectionLabel
 									}>
-									Esper Abilities
-								</span>
+									Esper Abilities <br />
+									<div
+										className={styles.charStatPreview}
+										onClick={(e) => {
+											e.preventDefault()
+										}}>
+										<div
+											className={styles.charStatPreviewLvl}>
+											{`${getSkillLvlPreview(abilitySet.basicAttack)} / ${getSkillLvlPreview(abilitySet.skill)} / ${getSkillLvlPreview(abilitySet.ultimate)} / ${getSkillLvlPreview(abilitySet.support)}`}
+										</div>
+										<div
+											className={
+												styles.charStatPreviewArrow
+											}
+										/>
+										<div
+											className={styles.charStatPreviewLvl}>
+											{`${getSkillLvlPreview(abilitySet.basicAttack, true)} / ${getSkillLvlPreview(abilitySet.skill, true)} / ${getSkillLvlPreview(abilitySet.ultimate, true)} / ${getSkillLvlPreview(abilitySet.support, true)}`}
+										</div>
+									</div>
+									<div
+										className={styles.charStatPreview}
+										onClick={(e) => {
+											e.preventDefault()
+										}}>
+										<div
+											className={styles.charStatPreviewLvl}>
+											{`${getSkillLvlPreview(abilitySet.passive1)} ${
+												abilitySet.passive2
+													? `/  ${getSkillLvlPreview(abilitySet.passive2 as SkillLvlRecord)}`
+													: ""
+											} ${
+												abilitySet.passive3
+													? `/  ${getSkillLvlPreview(abilitySet.passive3 as SkillLvlRecord)}`
+													: ""
+											}`}
+										</div>
+										<div
+											className={
+												styles.charStatPreviewArrow
+											}
+										/>
+										<div
+											className={styles.charStatPreviewLvl}>
+											{`${getSkillLvlPreview(abilitySet.passive1, true)} ${
+												abilitySet.passive2
+													? `/  ${getSkillLvlPreview(abilitySet.passive2 as SkillLvlRecord, true)}`
+													: ""
+											} ${
+												abilitySet.passive3
+													? `/  ${getSkillLvlPreview(abilitySet.passive3 as SkillLvlRecord, true)}`
+													: ""
+											}`}
+										</div>
+									</div>
+								</summary>
 								<div className={styles.charStatsGrid}>
 									<CharacterSkillGroup
-										charRecord={charRecord}
 										skill="basicAttack"
 										label="Basic Attack"
-										handleToggleSkill={handleToggleSkill}
-										handleCurrentLvlChange={handleCurrentLvlChange}
-										handleTargetLvlChange={handleTargetLvlChange}
 									/>
 									<CharacterSkillGroup
-										charRecord={charRecord}
 										skill="skill"
 										label="Redirect Skill"
-										handleToggleSkill={handleToggleSkill}
-										handleCurrentLvlChange={handleCurrentLvlChange}
-										handleTargetLvlChange={handleTargetLvlChange}
 									/>
 									<CharacterSkillGroup
-										charRecord={charRecord}
 										skill="ultimate"
 										label="Ultimate"
-										handleToggleSkill={handleToggleSkill}
-										handleCurrentLvlChange={handleCurrentLvlChange}
-										handleTargetLvlChange={handleTargetLvlChange}
 									/>
 									<CharacterSkillGroup
-										charRecord={charRecord}
 										skill="support"
 										label="Support Skill"
-										handleToggleSkill={handleToggleSkill}
-										handleCurrentLvlChange={handleCurrentLvlChange}
-										handleTargetLvlChange={handleTargetLvlChange}
 									/>
 									<CharacterSkillGroup
-										charRecord={charRecord}
 										skill="passive1"
-										label={charRecord.abilitySet.passive2 ? "Passive 1" : "Passive"}
-										handleToggleSkill={handleToggleSkill}
-										handleCurrentLvlChange={handleCurrentLvlChange}
-										handleTargetLvlChange={handleTargetLvlChange}
+										label={
+											abilitySet.passive2
+												? "Passive 1"
+												: "Passive"
+										}
 									/>
-									{charRecord.abilitySet.passive2 && <CharacterSkillGroup
-										charRecord={charRecord}
-										skill="passive2"
-										label="Passive 2"
-										handleToggleSkill={handleToggleSkill}
-										handleCurrentLvlChange={handleCurrentLvlChange}
-										handleTargetLvlChange={handleTargetLvlChange}
-									/>}
-									{charRecord.abilitySet.passive3 && <CharacterSkillGroup
-										charRecord={charRecord}
-										skill="passive3"
-										label="Passive 3"
-										handleToggleSkill={handleToggleSkill}
-										handleCurrentLvlChange={handleCurrentLvlChange}
-										handleTargetLvlChange={handleTargetLvlChange}
-									/>}
+									{abilitySet.passive2 && (
+										<CharacterSkillGroup
+											skill="passive2"
+											label="Passive 2"
+										/>
+									)}
+									{abilitySet.passive3 && (
+										<CharacterSkillGroup
+											skill="passive3"
+											label="Passive 3"
+										/>
+									)}
 								</div>
-							</div>
-							<div className={styles.charStatsSubSection}>
-								<span
+							</details>
+							<details className={styles.charStatsSubSection}>
+								<summary
 									className={
 										plannerBoxStyles.plannerSectionLabel
 									}>
 									Life Skills
-								</span>
+									<br />
+									<div
+										className={styles.charStatPreview}
+										onClick={(e) => {
+											e.preventDefault()
+										}}>
+										<div
+											className={styles.charStatPreviewLvl}>
+											{`${abilitySet.lifeSkill1.isDisabled ? "-" : abilitySet.lifeSkill1.currentLvl}
+												${abilitySet.lifeSkill2 && ` /  ${abilitySet.lifeSkill2.isDisabled ? "-" : abilitySet.lifeSkill2.currentLvl}`}`}
+										</div>
+										<div
+											className={
+												styles.charStatPreviewArrow
+											}
+										/>
+										<div
+											className={styles.charStatPreviewLvl}>
+											{`${abilitySet.lifeSkill1.isDisabled ? "-" : abilitySet.lifeSkill1.targetLvl}
+												${abilitySet.lifeSkill2 && ` /  ${abilitySet.lifeSkill2.isDisabled ? "-" : abilitySet.lifeSkill2.targetLvl}`}`}
+										</div>
+									</div>
+								</summary>
 								<div className={styles.charStatsGrid}>
 									<CharacterSkillGroup
-										charRecord={charRecord}
 										skill="lifeSkill1"
-										label={charRecord.abilitySet.lifeSkill2 ? "Life Skill 1" : "Life Skill"}
-										handleToggleSkill={handleToggleSkill}
-										handleCurrentLvlChange={handleCurrentLvlChange}
-										handleTargetLvlChange={handleTargetLvlChange}
+										label={
+											abilitySet.lifeSkill2
+												? "Life Skill 1"
+												: "Life Skill"
+										}
 									/>
-									{charRecord.abilitySet.passive2 && <CharacterSkillGroup
-										charRecord={charRecord}
-										skill="lifeSkill2"
-										label="Life Skill 2"
-										handleToggleSkill={handleToggleSkill}
-										handleCurrentLvlChange={handleCurrentLvlChange}
-										handleTargetLvlChange={handleTargetLvlChange}
-									/>}
+									{abilitySet.lifeSkill2 && (
+										<CharacterSkillGroup
+											skill="lifeSkill2"
+											label="Life Skill 2"
+										/>
+									)}
 								</div>
-							</div>
+							</details>
 						</div>
 						<span className={plannerBoxStyles.plannerSectionLabel}>
 							Required Materials

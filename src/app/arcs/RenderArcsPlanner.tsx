@@ -100,7 +100,7 @@ export default function RenderArcsPlanner() {
 	}
 
 	return (
-		<PlannerInventoryProvider arcRecords={Object.values(plannerData.arcs)}>
+		<PlannerInventoryProvider itemRecords={Object.values(plannerData.arcs)}>
 			<PullOutToolbar>
 				{/* =========================================================== */}
 				{/*                     Adding New Entries                      */}
@@ -163,7 +163,7 @@ export default function RenderArcsPlanner() {
 					</MaterialGroup>
 				)}
 				{/* =========================================================== */}
-				
+
 				<DragDropProvider
 					plugins={(defaults) => [
 						...defaults,
@@ -173,7 +173,6 @@ export default function RenderArcsPlanner() {
 					]}
 					onDragStart={onDragStart}
 					onDragEnd={onDragEnd}>
-					
 					{/* ========================================================= */}
 					{/*                       Planner Grid                        */}
 					{/* ========================================================= */}

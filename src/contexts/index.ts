@@ -27,6 +27,8 @@ export const PlannerBoxContext = createContext<{
 	toggleDisable: (e: MouseEvent<HTMLElement>) => void
 	handleEnhancement: (e: MouseEvent<HTMLElement>) => void
 	handleDelete: (e: MouseEvent<HTMLElement>) => void
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	changeHandlers: Array<(...args: any[]) => void>
 	dragRef: (element: Element | null) => void
 }>(null!)
 export function usePlannerBoxContext() {

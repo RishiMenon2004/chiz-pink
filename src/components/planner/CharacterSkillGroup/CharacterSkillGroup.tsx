@@ -1,37 +1,24 @@
-import { ChangeEvent } from "react"
-
 import { CharacterRecord } from "@/types/planner"
 
 import { findCharacter } from "@/data/characters/characterList"
 
 import styles from "./chatracterSkillGroup.module.css"
+import { usePlannerBoxContext } from "@/contexts"
 
 export function CharacterSkillGroup({
-	charRecord,
 	skill,
 	label,
-	handleToggleSkill,
-	handleCurrentLvlChange,
-	handleTargetLvlChange,
 }: {
-	charRecord: CharacterRecord
 	skill: keyof CharacterRecord["abilitySet"]
 	label: string
-	handleToggleSkill: (
-		e: ChangeEvent<HTMLInputElement>,
-		ability: keyof CharacterRecord["abilitySet"]
-	) => void
-	handleCurrentLvlChange: (
-		e: ChangeEvent<HTMLSelectElement>,
-		ability: typeof skill
-	) => void
-	handleTargetLvlChange: (
-		e: ChangeEvent<HTMLSelectElement>,
-		ability: typeof skill
-	) => void
 }) {
+	const { itemRecord: charRecord, changeHandlers } = usePlannerBoxContext()
+
+	const [handleCurrentLvlChange, handleTargetLvlChange, handleToggleSkill] =
+		changeHandlers
+
 	const char = findCharacter(charRecord.id)
-	const { abilitySet } = charRecord
+	const { abilitySet } = charRecord as CharacterRecord
 	const ability = abilitySet[skill]
 
 	const maxLvl = char.abilities[skill]?.maxLvl || 1
@@ -43,9 +30,11 @@ export function CharacterSkillGroup({
 				<input
 					type="checkbox"
 					checked={!ability.isDisabled}
-					onChange={(e) => handleToggleSkill(e, skill)}
+					onChange={() => handleToggleSkill(skill)}
 				/>
-				<div className={styles.charStatInputLabels}>
+				<div
+					className={styles.charStatInputLabels}
+					onClick={() => handleToggleSkill(skill)}>
 					<label className={styles.charStatInputSkill}>{label}</label>
 					<span className={styles.charStatInputName}>
 						{char.abilities[skill]?.name}
@@ -57,6 +46,9 @@ export function CharacterSkillGroup({
 							value={ability.currentLvl}
 							onChange={(e) => handleCurrentLvlChange(e, skill)}
 							tabIndex={1}>
+							{["lifeSkill1", "lifeSkill2"].includes(skill) && (
+								<option value={0}>{0}</option>
+							)}
 							{Array.from({
 								length: maxLvl,
 							}).map((_, opt) => (
@@ -65,6 +57,7 @@ export function CharacterSkillGroup({
 								</option>
 							))}
 						</select>
+						<span className={styles.charStatInputSelectArrow} />
 						<select
 							value={ability.targetLvl}
 							onChange={(e) => handleTargetLvlChange(e, skill)}

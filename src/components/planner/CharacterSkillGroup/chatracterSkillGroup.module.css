@@ -28,6 +28,8 @@
 
 		border-radius: 100%;
 
+		cursor: var(--pointer-cursor);
+
 		box-shadow:
 			hsla(0, 0%, 0%, 0.6) 0px -1px 2px,
 			white 0px 1px 1px;
@@ -36,17 +38,15 @@
 			content: "";
 			inset: 0;
 
-			background-image: url("/button_icons/hide.png");
+			background-image: url("/button_icons/hide_white.png");
 			background-size: cover;
-
-			filter: invert(1);
 		}
 
 		&:checked {
 			background-color: var(--pink);
 
 			&::before {
-				background-image: url("/button_icons/show.png");
+				background-image: url("/button_icons/show_white.png");
 				background-size: cover;
 			}
 		}
@@ -60,11 +60,17 @@
 
 		overflow: hidden;
 
+		user-select: none;
+
+		cursor: var(--pointer-cursor);
+
 		.charStatInputSkill {
 			font-family: var(--font-barlow-condensed);
 			font-size: 1.25rem;
 			font-weight: 600;
 			font-style: italic;
+
+			cursor: inherit;
 		}
 
 		.charStatInputName {
@@ -74,6 +80,8 @@
 			text-overflow: ellipsis;
 
 			overflow: hidden;
+
+			cursor: inherit;
 		}
 	}
 
@@ -81,7 +89,6 @@
 		grid-area: inputs;
 		display: flex;
 		flex-direction: row;
-		gap: 15%;
 
 		select {
 			flex-grow: 1;
@@ -187,6 +194,14 @@
 				outline: none;
 				background-color: var(--darker-pink);
 			}
+		}
+
+		.charStatInputSelectArrow {
+			width: 2rem;
+			height: 100%;
+			background-image: url("/icons/upgrade.png");
+			background-size: cover;
+			background-position: center;
 		}
 	}
 }

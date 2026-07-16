@@ -2,7 +2,7 @@ import { Item } from "./item"
 
 import { EnumItemLvls } from "@/data/items"
 
-interface SkillLvlRecord {
+export interface SkillLvlRecord {
 	isDisabled: boolean
 	currentLvl: number
 	targetLvl: number

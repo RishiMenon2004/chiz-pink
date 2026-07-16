@@ -60,8 +60,6 @@
 	background-position: 0.25rem center;
 	background-repeat: no-repeat;
 
-	paint-order: stroke fill;
-
 	box-shadow:
 		var(--dark-shadow) 0px 0px 1.5px 0,
 		var(--interactive-bg) 0px 0px 0px 0.175rem,
@@ -74,6 +72,8 @@
 
 	&:hover {
 		color: white;
+
+		paint-order: stroke fill;
 		-webkit-text-stroke: 4px black;
 
 		background-color: var(--pink);
@@ -101,6 +101,11 @@
 
 		height: fit-content;
 		padding-block: 1rem;
+
+		.toolbarButton:only-of-type {
+			grid-column: 1 / -1;
+			width: fit-content;
+		}
 	}
 }
 
@@ -113,10 +118,14 @@
 
 		.toolbarButton {
 			display: none;
+
+			&:only-of-type {
+				grid-column: 1 / -1;
+			}
 		}
 
 		.pullOutTab {
-			grid-column: 1 / span 2;
+			grid-column: 1 / -1;
 			flex-shrink: 0;
 			display: block;
 
@@ -130,14 +139,14 @@
 			background-repeat: no-repeat;
 			background-position: center;
 
-			cursor: var(--pull-cursor, s-resize);
+			cursor: var(--pull-cursor), s-resize;
 		}
 
 		&.toolbarOpen {
 			height: fit-content;
 
 			.toolbarButton {
-				display: initial;
+				display: grid;
 			}
 		}
 	}

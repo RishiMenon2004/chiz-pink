@@ -99,7 +99,7 @@ export default function RenderCharacterPlanner() {
 	}
 
 	return (
-		<PlannerInventoryProvider charRecords={[]}>
+		<PlannerInventoryProvider itemRecords={Object.values(plannerData.characters)}>
 			<PullOutToolbar>
 				{/* =========================================================== */}
 				{/*                     Adding New Entries                      */}

@@ -473,22 +473,6 @@ export const characterSkillLevelMaterials: Record<
 		},
 	},
 	life1: {
-		0: {
-			fons: 0,
-			dreamlessSeed: 0,
-			beetleCoin: 0,
-			bossMaterial: 0,
-			ascMaterial: {
-				common: 0,
-				uncommon: 0,
-				rare: 0,
-			},
-			talentMaterial: {
-				common: 0,
-				uncommon: 0,
-				rare: 0,
-			},
-		},
 		1: {
 			fons: 500,
 			dreamlessSeed: 2,

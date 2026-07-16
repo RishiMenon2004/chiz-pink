@@ -66,11 +66,18 @@ export function PlannerBoxButtonsContainer() {
 	} = usePlannerBoxContext()
 
 	const enhancmentTooltip = (): [ReactNode, string] => {
-		if (itemRecord.targetLvl === itemRecord.currentLvl)
+		const targetAchieved = Object.values(itemRecord.requiredMaterials).every(
+			(material) => {
+				return material.amount === 0
+			}
+		)
+
+		if (targetAchieved) {
 			return [
 				"Enhancement Complete",
 				"You have already achieved your target!",
 			]
+		}
 		if (allMaterialsAcquired()) {
 			return [
 				"Complete Enhancement",
