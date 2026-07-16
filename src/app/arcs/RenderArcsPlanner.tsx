@@ -57,7 +57,7 @@ export default function RenderArcsPlanner() {
 		})
 	}
 
-	const closeModal = (e: ModalEventType) => {
+	const addArc = (e: ModalEventType) => {
 		e.stopPropagation()
 		actions.addWeapon(newArcRecord)
 		setNewArcRecord(null!)
@@ -116,10 +116,10 @@ export default function RenderArcsPlanner() {
 					{newArcRecord &&
 						createPortal(
 							<ModalContainer
-								onClose={closeModal}
+								onClose={addArc}
 								onCancel={cancelModal}>
 								<PlannerAddArcBox
-									onConfirm={closeModal}
+									onConfirm={addArc}
 									onCancel={cancelModal}
 								/>
 							</ModalContainer>,
