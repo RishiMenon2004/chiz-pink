@@ -376,7 +376,7 @@ const co: Material = {
 	materialType: EnumMaterialType.Talent,
 	imageSrc: "/skill_co",
 	sources: ["Houdinii's Schemes", "Hunter Exchange", "Material Selection Box"],
-	linkedMaterials: ["doves_flutter", "fng"],
+	linkedMaterials: ["white_rose", "fng"],
 }
 
 const fng: Material = {
@@ -386,7 +386,7 @@ const fng: Material = {
 	materialType: EnumMaterialType.Talent,
 	imageSrc: "/skill_fng",
 	sources: ["Houdinii's Schemes", "Hunter Exchange", "Material Selection Box"],
-	linkedMaterials: ["doves_flutter", "co"],
+	linkedMaterials: ["white_rose", "co"],
 }
 
 const talentRoseSet: MaterialSet = [fng, co, whiteRose]
