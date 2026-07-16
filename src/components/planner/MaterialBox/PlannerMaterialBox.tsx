@@ -67,6 +67,14 @@ export function PlannerMaterialBox({
 
 	const displayAmount = remainingAmount > 0 ? remainingAmount : requiredAmount
 
+	const formatDisplayAmount = (displayAmount: number) => {
+		if (displayAmount >= 1000000) {
+			return `~${(displayAmount / 1000000).toFixed(2)}m`
+		}
+
+		return displayAmount.toLocaleString("en-us")
+	}
+
 	return (
 		<div
 			className={`${styles.materialBox} ${getItemRarityStyle(material)} ${remainingAmount === 0 && styles.acquired} ${usingCrafted && styles.crafted}`}
@@ -86,7 +94,7 @@ export function PlannerMaterialBox({
 				/>
 			</div>
 			<span className={styles.amount}>
-				{displayAmount.toLocaleString("en-us")}
+				{formatDisplayAmount(displayAmount)}
 			</span>
 
 			<MaterialEditor />
@@ -101,13 +109,25 @@ export function PlannerMaterialBox({
 						marginBlock: "0.25rem",
 						marginLeft: "0.5rem",
 					}}>
+					{displayAmount > 1000000 && (
+						<>
+							{"Need: "}
+							<span
+								style={{
+									fontFamily: "var(--font-barlow-condensed)",
+								}}>
+								{displayAmount.toLocaleString("en-us")}
+							</span>
+							<br/>
+						</>
+					)}
 					{"Owned: "}
 					<span style={{ fontFamily: "var(--font-barlow-condensed)" }}>
-						{ownedAmount}
+						{ownedAmount.toLocaleString("en-us")}
 					</span>
 					{" | Available: "}
 					<span style={{ fontFamily: "var(--font-barlow-condensed)" }}>
-						{availableAmount}
+						{(availableAmount + craftedAmount).toLocaleString("en-us")}
 					</span>
 					{usingCrafted && (
 						<span style={{ fontStyle: "italic" }}>
@@ -118,7 +138,7 @@ export function PlannerMaterialBox({
 								}}>
 								+{craftedAmount}
 							</span>
-							{" crafted)"}
+							{" from crafting)"}
 						</span>
 					)}
 				</div>
