@@ -7,7 +7,7 @@ import type { ModalEventType } from "@/types"
 import type { Arc } from "@/types/weapon"
 
 import { EnumItemLvls, EnumRarity, getItemRarityStyle } from "@/data/items"
-import { findArc, getAllArcs, EnumArcType } from "@/data/arcs"
+import { findArc, EnumArcType, getAllArcsAsArray } from "@/data/arcs"
 
 import { getRarityName } from "@/helpers"
 
@@ -83,13 +83,11 @@ const PlannerArcsSelect = () => {
 		[EnumArcType | null, EnumRarity | null]
 	>([null, null])
 
-	const allArcsValues = Object.values(getAllArcs())
-
 	const handleSearch = (e: ChangeEvent<HTMLInputElement>) => {
 		setSearchQuery(e.currentTarget.value)
 	}
 
-	const filteredArcs = allArcsValues
+	const filteredArcs = getAllArcsAsArray()
 		.filter((arc) => {
 			return filterQuery[0] ? arc.type === filterQuery[0] : true
 		})
