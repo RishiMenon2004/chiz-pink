@@ -32,7 +32,7 @@ export function TooltipContainer({
 				) {
 					mousePos.x =
 						e.clientX -
-						(offset.x / 2 || 0) -
+						(offset.x || 0) / 2 -
 						tooltipRef.current.clientWidth
 				}
 
@@ -59,7 +59,7 @@ export function TooltipContainer({
 		) {
 			mousePos.x =
 				startingPos.x -
-				(offset.x / 2 || 0) -
+				(offset.x || 0) / 2 -
 				tooltipRef.current.clientWidth
 		}
 		tooltipRef.current.style.transform = `translate(${mousePos.x}px, ${mousePos.y}px)`

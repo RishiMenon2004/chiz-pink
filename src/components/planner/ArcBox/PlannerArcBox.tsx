@@ -78,7 +78,9 @@ export function PlannerArcBox({
 		return arcRecord.requiredMaterials.every((material) => {
 			const inventoryAmount = inventory[material.id] || 0
 			const currentCumulativeInventor = cumulativeInventory.at(index) || {}
-			const { craftedAmount } = currentCumulativeInventor[material.id] || 0
+			const { craftedAmount } = currentCumulativeInventor[material.id] || {
+				craftedAmount: 0,
+			}
 			return inventoryAmount + (craftedAmount || 0) >= material.amount
 		})
 	}

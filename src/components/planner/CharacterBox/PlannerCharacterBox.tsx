@@ -74,8 +74,10 @@ export function PlannerCharacterBox({
 
 		return charRecord.requiredMaterials.every((material) => {
 			const inventoryAmount = inventory[material.id] || 0
-			const currentCumulativeInventor = cumulativeInventory.at(index) || {}
-			const { craftedAmount } = currentCumulativeInventor[material.id] || 0
+			const currentCumulativeInventory = cumulativeInventory.at(index) || {}
+			const { craftedAmount } = currentCumulativeInventory[material.id] || {
+				craftedAmount: 0,
+			}
 			return inventoryAmount + (craftedAmount || 0) >= material.amount
 		})
 	}

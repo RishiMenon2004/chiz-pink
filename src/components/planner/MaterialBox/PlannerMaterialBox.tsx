@@ -49,7 +49,7 @@ export function PlannerMaterialBox({
 		cumulativeInventory[isAggregateMaterial ? 0 : entryIndex] ?? {}
 
 	const availableAmount = usableInventory[material.id]?.amount ?? 0
-	const ownedAmount = inventory[material.id]
+	const ownedAmount = inventory[material.id] || 0 
 	let craftedAmount = usableInventory[material.id]?.craftedAmount ?? 0
 
 	let usingCrafted = craftedAmount > 0
