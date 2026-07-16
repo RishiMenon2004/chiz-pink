@@ -261,7 +261,7 @@
 			.arcSelectOptionList {
 				display: grid;
 				gap: 0.25rem;
-				overflow-y: auto;
+				overflow-y: visible;
 
 				height: 100%;
 			}
