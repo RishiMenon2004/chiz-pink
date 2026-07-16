@@ -420,15 +420,7 @@ export function PlannerCharacterBox({
 										}}>
 										<div
 											className={styles.charStatPreviewLvl}>
-											{`${getSkillLvlPreview(abilitySet.passive1)} ${
-												abilitySet.passive2
-													? `/  ${getSkillLvlPreview(abilitySet.passive2 as SkillLvlRecord)}`
-													: ""
-											} ${
-												abilitySet.passive3
-													? `/  ${getSkillLvlPreview(abilitySet.passive3 as SkillLvlRecord)}`
-													: ""
-											}`}
+											{`${getSkillLvlPreview(abilitySet.passive1)}${abilitySet.passive2 ? ` / ${getSkillLvlPreview(abilitySet.passive2)}` : ""}${abilitySet.passive3 ? ` / ${getSkillLvlPreview(abilitySet.passive3)}` : ""}`}
 										</div>
 										<div
 											className={
@@ -437,15 +429,7 @@ export function PlannerCharacterBox({
 										/>
 										<div
 											className={styles.charStatPreviewLvl}>
-											{`${getSkillLvlPreview(abilitySet.passive1, true)} ${
-												abilitySet.passive2
-													? `/  ${getSkillLvlPreview(abilitySet.passive2 as SkillLvlRecord, true)}`
-													: ""
-											} ${
-												abilitySet.passive3
-													? `/  ${getSkillLvlPreview(abilitySet.passive3 as SkillLvlRecord, true)}`
-													: ""
-											}`}
+											{`${getSkillLvlPreview(abilitySet.passive1, true)}${abilitySet.passive2 ? ` / ${getSkillLvlPreview(abilitySet.passive2, true)}` : ""}${abilitySet.passive3 ? ` / ${getSkillLvlPreview(abilitySet.passive3, true)}` : ""}`}
 										</div>
 									</div>
 								</summary>
@@ -468,11 +452,7 @@ export function PlannerCharacterBox({
 									/>
 									<CharacterSkillGroup
 										skill="passive1"
-										label={
-											abilitySet.passive2
-												? "Passive 1"
-												: "Passive"
-										}
+										label="Passive 1"
 									/>
 									{abilitySet.passive2 && (
 										<CharacterSkillGroup
@@ -502,8 +482,7 @@ export function PlannerCharacterBox({
 										}}>
 										<div
 											className={styles.charStatPreviewLvl}>
-											{`${abilitySet.lifeSkill1.isDisabled ? "-" : abilitySet.lifeSkill1.currentLvl}
-												${abilitySet.lifeSkill2 && ` /  ${abilitySet.lifeSkill2.isDisabled ? "-" : abilitySet.lifeSkill2.currentLvl}`}`}
+											{`${getSkillLvlPreview(abilitySet.lifeSkill1)}${abilitySet.lifeSkill2 ? ` / ${getSkillLvlPreview(abilitySet.lifeSkill2)}` : ""}`}
 										</div>
 										<div
 											className={
@@ -512,19 +491,14 @@ export function PlannerCharacterBox({
 										/>
 										<div
 											className={styles.charStatPreviewLvl}>
-											{`${abilitySet.lifeSkill1.isDisabled ? "-" : abilitySet.lifeSkill1.targetLvl}
-												${abilitySet.lifeSkill2 && ` /  ${abilitySet.lifeSkill2.isDisabled ? "-" : abilitySet.lifeSkill2.targetLvl}`}`}
+											{`${getSkillLvlPreview(abilitySet.lifeSkill1, true)}${abilitySet.lifeSkill2 ? ` / ${getSkillLvlPreview(abilitySet.lifeSkill2, true)}` : ""}`}
 										</div>
 									</div>
 								</summary>
 								<div className={styles.charStatsGrid}>
 									<CharacterSkillGroup
 										skill="lifeSkill1"
-										label={
-											abilitySet.lifeSkill2
-												? "Life Skill 1"
-												: "Life Skill"
-										}
+										label="Life Skill 1"
 									/>
 									{abilitySet.lifeSkill2 && (
 										<CharacterSkillGroup
