@@ -162,6 +162,8 @@ export function PlannerAddCharacterBox({
 								return key === String(charRank)
 							}
 						) ?? ["", "rare"])[1]
+							.toString()
+							.toLowerCase()
 
 						return (
 							<span
