@@ -1,7 +1,7 @@
 "use client"
 
 import Image from "next/image"
-import { ChangeEvent, CSSProperties, useState } from "react"
+import { ChangeEvent, CSSProperties, MouseEvent, useState } from "react"
 
 import type { ModalEventType } from "@/types"
 import type { Arc } from "@/types/weapon"
@@ -14,6 +14,7 @@ import { getRarityName } from "@/helpers"
 import { useAddArcContext } from "@/contexts"
 
 import styles from "./plannerAddArcBox.module.css"
+import { createSearchString } from "@/helpers/createSearchString"
 
 const LvlSelectGrid = ({
 	onChange,
@@ -87,20 +88,21 @@ const PlannerArcsSelect = () => {
 		setSearchQuery(e.currentTarget.value)
 	}
 
-	const filteredArcs = getAllArcsAsArray()
-		.filter((arc) => {
-			return filterQuery[0] ? arc.type === filterQuery[0] : true
-		})
-		.filter((arc) => {
-			return filterQuery[1] ? arc.rarity === filterQuery[1] : true
-		})
-		.filter((arc) => {
-			return arc.id
-				.replaceAll("_", "")
-				.toLocaleLowerCase()
-				.concat(arc.name.toLocaleLowerCase())
-				.includes(searchQuery.toLocaleLowerCase())
-		})
+	const filteredArcs = getAllArcsAsArray().filter((arc) => {
+		const matchesType = !filterQuery[0] || arc.type === filterQuery[0]
+		const matchesRarity = !filterQuery[1] || arc.rarity === filterQuery[1]
+		const searchTarget = createSearchString<Arc>(arc, ["id", "name"])
+		const cleanSearchQuery = searchQuery
+			.toLowerCase()
+			.replaceAll(/[_\s]/g, "")
+		const matchesSearch = searchTarget.includes(cleanSearchQuery)
+
+		return matchesType && matchesRarity && matchesSearch
+	})
+
+	const rarityFilters = Object.values(EnumRarity)
+		.filter((value) => typeof value === "number")
+		.slice(1)
 
 	return (
 		<div
@@ -139,18 +141,19 @@ const PlannerArcsSelect = () => {
 				<div className={styles.arcTypeFilterList}>
 					<div style={{ width: "100%" }}>Filter by Type:</div>
 					{Object.values(EnumArcType).map((arcType) => {
+						const isActive = filterQuery[0] === arcType
+						const toggleType = (e: MouseEvent) => {
+							e.stopPropagation()
+							setFilterQuery(([prevType, prevRank]) => {
+								if (prevType === arcType) return [null, prevRank]
+								return [arcType, prevRank]
+							})
+						}
 						return (
 							<span
 								key={arcType}
-								className={`${styles.arcTypeFilter} ${filterQuery[0] === arcType && styles.active}`}
-								onClick={(e) => {
-									e.stopPropagation()
-									setFilterQuery(([prevType, prevRank]) => {
-										if (prevType === arcType)
-											return [null, prevRank]
-										return [arcType, prevRank]
-									})
-								}}>
+								className={`${styles.arcTypeFilter} ${isActive ? styles.active : ""}`}
+								onClick={toggleType}>
 								{arcType}
 							</span>
 						)
@@ -158,41 +161,41 @@ const PlannerArcsSelect = () => {
 				</div>
 				<div className={styles.arcTypeFilterList}>
 					<div style={{ width: "100%" }}>Filter by Rank:</div>
-					{Object.values(EnumRarity)
-						.filter((value) => typeof value === "number")
-						.slice(1)
-						.map((arcRank) => {
-							return (
-								<span
-									key={arcRank}
-									className={`${styles.arcTypeFilter} ${filterQuery[1] === arcRank && styles.active}`}
-									onClick={(e) => {
-										e.stopPropagation()
-										setFilterQuery(([prevType, prevRank]) => {
-											if (prevRank === arcRank)
-												return [prevType, null]
-											return [prevType, arcRank]
-										})
-									}}>
-									{getRarityName(arcRank)}
-								</span>
-							)
-						})}
+					{rarityFilters.map((arcRank) => {
+						const isActive = filterQuery[1] === arcRank
+						const toggleRank = (e: MouseEvent) => {
+							e.stopPropagation()
+							setFilterQuery(([prevType, prevRank]) => {
+								if (prevRank === arcRank) return [prevType, null]
+								return [prevType, arcRank]
+							})
+						}
+						return (
+							<span
+								key={arcRank}
+								className={`${styles.arcTypeFilter} ${isActive ? styles.active : ""}`}
+								onClick={toggleRank}>
+								{getRarityName(arcRank)}
+							</span>
+						)
+					})}
 				</div>
 				<div className={styles.arcSelectOptionList}>
 					{filteredArcs.map((arc) => {
+						const addArc = (e: MouseEvent) => {
+							e.stopPropagation()
+							setSelected(arc)
+							setNewArcRecord((prevArcRecord) => {
+								return { ...prevArcRecord, id: arc.id }
+							})
+							setDropdown(false)
+						}
 						return (
 							<div
 								aria-roledescription="option"
 								className={styles.arcSelectOption}
 								key={arc.id}
-								onClick={() => {
-									setSelected(arc)
-									setNewArcRecord((prevArcRecord) => {
-										return { ...prevArcRecord, id: arc.id }
-									})
-									setDropdown(false)
-								}}>
+								onClick={addArc}>
 								<Image
 									src={`/arcs/${arc.imageSrc}`}
 									width={128}
@@ -225,7 +228,7 @@ export function PlannerAddArcBox({
 		<div
 			className={styles.plannerAddArcBox}
 			onClick={(e) => e.stopPropagation()}>
-			<div className={styles.addArcBoxTitle}>Adding new Arc</div>
+			<div className={styles.addArcBoxTitle}>Add Arc</div>
 			<PlannerArcsSelect />
 			<div className={styles.addArcLvlSection}>
 				<span>Current Lvl.</span>

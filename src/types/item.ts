@@ -1,6 +1,8 @@
 import { EnumMaterialType, EnumRarity } from "@/data/items"
 
 export interface Item {
+	isFeatured?: boolean
+	isPreview?: boolean
 	id: string
 	name: string
 	description?: string

@@ -1,10 +1,10 @@
 import { CharacterRecord } from "@/types/planner"
 
 import { EnumItemLvls } from "@/data/items"
-import { getAllCharactersAsArray } from "@/data/characters/characterList"
+import { findCharacter, getAllCharactersAsArray } from "@/data/characters/characterList"
 
-export function generateNewCharacter() {
-	const featuredChar = getAllCharactersAsArray()[0]
+export function generateNewCharacter(charID?: string) {
+	const featuredChar = charID ? findCharacter(charID) : getAllCharactersAsArray()[0]
 	const newChar: Omit<CharacterRecord, "requiredMaterials" | "isDisabled"> = {
 		id: featuredChar.id,
 		currentLvl: EnumItemLvls.Lvl1,

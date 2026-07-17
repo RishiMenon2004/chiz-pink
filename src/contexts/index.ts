@@ -6,6 +6,7 @@ import {
 	useContext,
 } from "react"
 
+import type { ModalEventType } from "@/types"
 import type {
 	CumulativeInventory,
 	FilterByType,
@@ -48,10 +49,7 @@ export function useAddArcContext() {
 }
 
 export const AddNewCharContext = createContext<{
-	newCharRecord: Omit<CharacterRecord, "requiredMaterials" | "isDisabled">
-	setNewCharRecord: Dispatch<
-		SetStateAction<Omit<CharacterRecord, "requiredMaterials" | "isDisabled">>
-	>
+	addCharacter: (e: ModalEventType, charId: string) => void
 }>(null!)
 export function useAddCharContext() {
 	return useContext(AddNewCharContext)

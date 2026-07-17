@@ -19,7 +19,7 @@
 
 		margin-block: 0.25rem 0.5rem;
 
-		color: black;
+		color: var(--interactive-bg);
 		font-family: var(--font-syne);
 		font-weight: 650;
 		font-size: 1.25rem;

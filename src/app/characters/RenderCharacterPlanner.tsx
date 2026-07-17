@@ -26,6 +26,7 @@ import styles from "./page.module.css"
 import { styles as toolbarStyles } from "@/components/layout/PullOutToolbar"
 import plannerBoxStyles from "@/components/planner/plannerBox.module.css"
 import { generateNewCharacter } from "@/helpers"
+import { PlannerAddCharacterBox } from "@/components/planner/AddCharacterBox/AddCharacterBox"
 
 const PlannerCharacterBox = dynamic(
 	() => import("@/components/planner").then((mod) => mod.PlannerCharacterBox),
@@ -37,31 +38,27 @@ export default function RenderCharacterPlanner() {
 
 	const [activeDragItem, setActiveDragItem] = useState<string | null>(null)
 
-	const [newCharRecord, setNewCharRecord] = useState<
-		Omit<CharacterRecord, "requiredMaterials" | "isDisabled">
-	>(null!)
+	const [showAddChar, setShowAddChar] = useState<boolean>(false)
 
 	const allRequiredMaterials = useMemo(
 		() => Object.entries(getAggregatedMaterials(plannerData, "char")),
 		[plannerData]
 	)
 
-	const emptyChar = generateNewCharacter()
-
 	const handleStartAdding = () => {
-		setNewCharRecord(emptyChar)
-		actions.addCharacter(emptyChar)
+		setShowAddChar(true)
 	}
 
-	const closeModal = (e: ModalEventType) => {
+	const addCharacter = (e: ModalEventType, charID: string) => {
 		e.stopPropagation()
-		actions.addCharacter(newCharRecord)
-		setNewCharRecord(null!)
+		const emptyChar = generateNewCharacter(charID)
+		actions.addCharacter(emptyChar)
+		setShowAddChar(false)
 	}
 
 	const cancelModal = (e: ModalEventType) => {
 		e.stopPropagation()
-		setNewCharRecord(null!)
+		setShowAddChar(false)
 	}
 
 	const onDragStart = (e: DragStartEvent) =>
@@ -99,7 +96,8 @@ export default function RenderCharacterPlanner() {
 	}
 
 	return (
-		<PlannerInventoryProvider itemRecords={Object.values(plannerData.characters)}>
+		<PlannerInventoryProvider
+			itemRecords={Object.values(plannerData.characters)}>
 			<PullOutToolbar>
 				{/* =========================================================== */}
 				{/*                     Adding New Entries                      */}
@@ -112,15 +110,15 @@ export default function RenderCharacterPlanner() {
 
 				<AddNewCharContext.Provider
 					value={{
-						newCharRecord: newCharRecord,
-						setNewCharRecord: setNewCharRecord,
+						addCharacter
 					}}>
-					{newCharRecord &&
+					{showAddChar &&
 						createPortal(
 							<ModalContainer
-								onClose={closeModal}
-								onCancel={cancelModal}>
-								<>ADD CHARACTER</>
+								onClose={cancelModal}>
+								<PlannerAddCharacterBox
+									onCancel={cancelModal}
+								/>
 							</ModalContainer>,
 							document.body
 						)}
@@ -165,7 +163,7 @@ export default function RenderCharacterPlanner() {
 					</MaterialGroup>
 				)}
 				{/* =========================================================== */}
-				
+
 				<DragDropProvider
 					plugins={(defaults) => [
 						...defaults,
@@ -175,7 +173,6 @@ export default function RenderCharacterPlanner() {
 					]}
 					onDragStart={onDragStart}
 					onDragEnd={onDragEnd}>
-					
 					{/* ========================================================= */}
 					{/*                       Planner Grid                        */}
 					{/* ========================================================= */}

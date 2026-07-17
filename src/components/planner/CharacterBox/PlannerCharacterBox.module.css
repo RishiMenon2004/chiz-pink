@@ -22,7 +22,7 @@
 		overflow: hidden;
 
 		background-color: var(--rarity-color);
-		background-image: url("/characters/avatar/avatar_border.png");
+		background-image: url("/characters/avatar/borders/planner_border.png");
 		background-size: cover;
 
 		box-shadow:
@@ -337,7 +337,7 @@
 			border-top-left-radius: var(--inner-radius);
 			border-bottom-left-radius: var(--inner-radius);
 
-			background-image: url("/characters/avatar/avatar_border_alt.png");
+			background-image: url("/characters/avatar/borders/planner_border_alt.png");
 		}
 
 		.charLevels {

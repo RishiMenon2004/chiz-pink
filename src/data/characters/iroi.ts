@@ -11,6 +11,7 @@ import { EnumArcType } from "@/data/arcs"
 import { EnumCharacterElement } from "@/data/characters"
 
 export const iroi: Character = {
+	isPreview: true,
 	id: "iroi",
 	imageSrc: "iroi.png",
 	name: "Iroi",
@@ -95,7 +96,7 @@ export const iroi: Character = {
 			description: [
 				{
 					description:
-						"<sh>Blossom Enhancement:</> <dn>3</>s after the current Vita Bud is generated, another Vita Bud is created. This copy cannot generate another copy.",
+						"<sh>Blossom Enhancement:</> Generates a Vita Bud copy when the current Vita Bud has existed for <dn>3</>s. This copy cannot generate another copy.",
 				},
 			],
 			maxLvl: 1,

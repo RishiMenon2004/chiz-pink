@@ -41,6 +41,8 @@
 	margin-left: var(--padding-left);
 	margin-block: 1rem 0.5rem;
 	font-weight: 600;
+
+	user-select: none;
 }
 
 .plannerRequiredMaterialsBox {

@@ -2,7 +2,7 @@
 
 import { KeyboardEvent, MouseEvent, ReactNode, useEffect } from "react"
 
-export type ModalEventType = MouseEvent<HTMLElement> | KeyboardEvent<HTMLElement>
+export type ModalEventType = MouseEvent | KeyboardEvent
 
 type ModalContainerType = {
 	onClose: (e: ModalEventType) => void
