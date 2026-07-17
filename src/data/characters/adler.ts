@@ -17,7 +17,7 @@ export const adler: Character = {
 	description:
 		"The perfect butler who brings peace of mind to everyone at Eibon and the neighborhood.",
 	rarity: EnumRarity.Rare,
-	element: EnumCharacterElement.Incantation,
+	element: EnumCharacterElement.INCANTATION,
 	arcType: EnumArcType.Condensate,
 	abilities: {
 		basicAttack: {

@@ -1,12 +1,12 @@
 import { EnumItemLvls } from "../items"
 
 export enum EnumCharacterElement {
-	Cosmos = "Cosmos",
-	Anima = "Anima",
-	Incantation = "Incantation",
-	Chaos = "Chaos",
-	Psyche = "Psyche",
-	Lakshana = "Lakshana",
+	COSMOS = "cosmos",
+	ANIMA = "anima",
+	INCANTATION = "incantation",
+	CHAOS = "chaos",
+	PSYCHE = "psyche",
+	LAKSHANA = "lakshana",
 }
 
 type CharLevelMaterialsType = {

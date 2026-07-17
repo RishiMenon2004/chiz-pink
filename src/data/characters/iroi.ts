@@ -17,7 +17,7 @@ export const iroi: Character = {
 	name: "Iroi",
 	description: "Oneiroi is a well-behaved kid who ticks all the boxes.",
 	rarity: EnumRarity.Epic,
-	element: EnumCharacterElement.Anima,
+	element: EnumCharacterElement.ANIMA,
 	arcType: EnumArcType.Liquid,
 	abilities: {
 		basicAttack: {
