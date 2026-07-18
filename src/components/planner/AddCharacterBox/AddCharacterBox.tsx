@@ -8,11 +8,11 @@ import { Character } from "@/types/character"
 
 import { EnumRarity, getItemRarityStyle } from "@/data/items"
 import { EnumCharacterElement } from "@/data/characters"
-import { getAllCharactersAsArray } from "@/data/characters/characterList"
+import { getAllCharactersList } from "@/data/characters/characterList"
 
 import { usePlannerStore } from "@/hooks"
 
-import { createSearchString } from "@/helpers/createSearchString"
+import { createSearchString } from "@/helpers"
 
 import { useAddCharContext } from "@/contexts"
 
@@ -73,7 +73,7 @@ export function PlannerAddCharacterBox({
 		[EnumCharacterElement | null, EnumRarity | null]
 	>([null, null])
 
-	const filteredChars = getAllCharactersAsArray().filter((char) => {
+	const filteredChars = getAllCharactersList().filter((char) => {
 		const doesPlannerHaveChar = Object.keys(plannerData.characters).includes(
 			char.id
 		)

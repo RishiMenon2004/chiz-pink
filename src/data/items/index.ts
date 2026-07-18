@@ -10,6 +10,7 @@ export { EnumMaterialType } from "./materials"
 export {
 	getAllMaterials,
 	getInventoryMaterials,
+	getInventoryMaterialsList,
 	findMaterial,
 } from "./materialLists"
 

@@ -30,8 +30,8 @@ const allArcs: Record<string, Arc> = {
 			attribute: EnumStatAttribute.CritRate,
 			baseValue: 0.096,
 		},
-		ascensionMaterial1: ascDramaCoreSet,
-		ascensionMaterial2: ascWhispersSet,
+		ascensionMaterialSet1: ascDramaCoreSet,
+		ascensionMaterialSet2: ascWhispersSet,
 		effect: {
 			name: "Moonphase Shift",
 			description:
@@ -85,8 +85,8 @@ const allArcs: Record<string, Arc> = {
 			attribute: EnumStatAttribute.ATKBonus,
 			baseValue: 0.12,
 		},
-		ascensionMaterial1: ascAppleSeedSet,
-		ascensionMaterial2: ascSilhouetteSet,
+		ascensionMaterialSet1: ascAppleSeedSet,
+		ascensionMaterialSet2: ascSilhouetteSet,
 		effect: {
 			name: "Reverie Gate",
 			description:
@@ -139,8 +139,8 @@ const allArcs: Record<string, Arc> = {
 			attribute: EnumStatAttribute.CritRate,
 			baseValue: 0.096,
 		},
-		ascensionMaterial1: ascColdDessertSet,
-		ascensionMaterial2: ascDelusionsSet,
+		ascensionMaterialSet1: ascColdDessertSet,
+		ascensionMaterialSet2: ascDelusionsSet,
 		effect: {
 			name: "Golden Fleece",
 			description:
@@ -187,8 +187,8 @@ const allArcs: Record<string, Arc> = {
 			attribute: EnumStatAttribute.ATKBonus,
 			baseValue: 0.11,
 		},
-		ascensionMaterial1: ascLiquidDreamSet,
-		ascensionMaterial2: ascDelusionsSet,
+		ascensionMaterialSet1: ascLiquidDreamSet,
+		ascensionMaterialSet2: ascDelusionsSet,
 		effect: {
 			name: "Aqua Astra",
 			description:
@@ -236,8 +236,8 @@ const allArcs: Record<string, Arc> = {
 			attribute: EnumStatAttribute.CritRate,
 			baseValue: 0.088,
 		},
-		ascensionMaterial1: ascMuiscSet,
-		ascensionMaterial2: ascWhispersSet,
+		ascensionMaterialSet1: ascMuiscSet,
+		ascensionMaterialSet2: ascWhispersSet,
 		effect: {
 			name: "Hypervortex",
 			description:
@@ -285,8 +285,8 @@ const allArcs: Record<string, Arc> = {
 			attribute: EnumStatAttribute.CritRate,
 			baseValue: 0.096,
 		},
-		ascensionMaterial1: ascAppleSeedSet,
-		ascensionMaterial2: ascWhispersSet,
+		ascensionMaterialSet1: ascAppleSeedSet,
+		ascensionMaterialSet2: ascWhispersSet,
 		effect: {
 			name: "Bohemian Rose",
 			description:
@@ -338,8 +338,8 @@ const allArcs: Record<string, Arc> = {
 			attribute: EnumStatAttribute.CritRate,
 			baseValue: 0.096,
 		},
-		ascensionMaterial1: ascDramaCoreSet,
-		ascensionMaterial2: ascWhispersSet,
+		ascensionMaterialSet1: ascDramaCoreSet,
+		ascensionMaterialSet2: ascWhispersSet,
 		effect: {
 			name: "Time Beyond Time",
 			description:
@@ -396,8 +396,8 @@ const allArcs: Record<string, Arc> = {
 			attribute: EnumStatAttribute.ATKBonus,
 			baseValue: 0.11,
 		},
-		ascensionMaterial1: ascDramaCoreSet,
-		ascensionMaterial2: ascSilhouetteSet,
+		ascensionMaterialSet1: ascDramaCoreSet,
+		ascensionMaterialSet2: ascSilhouetteSet,
 		effect: {
 			name: "Deep Blue Sorrow",
 			description:
@@ -449,8 +449,8 @@ const allArcs: Record<string, Arc> = {
 			attribute: EnumStatAttribute.ATKBonus,
 			baseValue: 0.11,
 		},
-		ascensionMaterial1: ascColdDessertSet,
-		ascensionMaterial2: ascSilhouetteSet,
+		ascensionMaterialSet1: ascColdDessertSet,
+		ascensionMaterialSet2: ascSilhouetteSet,
 		effect: {
 			name: "Nestbound Bird",
 			description:
@@ -492,8 +492,8 @@ const allArcs: Record<string, Arc> = {
 			attribute: EnumStatAttribute.ATKBonus,
 			baseValue: 0.12,
 		},
-		ascensionMaterial1: ascDramaCoreSet,
-		ascensionMaterial2: ascSilhouetteSet,
+		ascensionMaterialSet1: ascDramaCoreSet,
+		ascensionMaterialSet2: ascSilhouetteSet,
 		effect: {
 			name: "Swallowtail",
 			description:
@@ -546,8 +546,8 @@ const allArcs: Record<string, Arc> = {
 			attribute: EnumStatAttribute.CritRate,
 			baseValue: 0.088,
 		},
-		ascensionMaterial1: ascColdDessertSet,
-		ascensionMaterial2: ascDelusionsSet,
+		ascensionMaterialSet1: ascColdDessertSet,
+		ascensionMaterialSet2: ascDelusionsSet,
 		effect: {
 			name: "Popping Candy",
 			description:
@@ -589,8 +589,8 @@ const allArcs: Record<string, Arc> = {
 			attribute: EnumStatAttribute.CritDMG,
 			baseValue: 0.176,
 		},
-		ascensionMaterial1: ascLiquidDreamSet,
-		ascensionMaterial2: ascDelusionsSet,
+		ascensionMaterialSet1: ascLiquidDreamSet,
+		ascensionMaterialSet2: ascDelusionsSet,
 		effect: {
 			name: "Motor Candy",
 			description:
@@ -633,8 +633,8 @@ const allArcs: Record<string, Arc> = {
 			attribute: EnumStatAttribute.ATKBonus,
 			baseValue: 0.11,
 		},
-		ascensionMaterial1: ascMuiscSet,
-		ascensionMaterial2: ascDelusionsSet,
+		ascensionMaterialSet1: ascMuiscSet,
+		ascensionMaterialSet2: ascDelusionsSet,
 		effect: {
 			name: "Thief's Candy",
 			description:
@@ -677,8 +677,8 @@ const allArcs: Record<string, Arc> = {
 			attribute: EnumStatAttribute.ATKBonus,
 			baseValue: 0.11,
 		},
-		ascensionMaterial1: ascAppleSeedSet,
-		ascensionMaterial2: ascNumeralSet,
+		ascensionMaterialSet1: ascAppleSeedSet,
+		ascensionMaterialSet2: ascNumeralSet,
 		effect: {
 			name: "Knight's Candy",
 			description:
@@ -720,8 +720,8 @@ const allArcs: Record<string, Arc> = {
 			attribute: EnumStatAttribute.ATKBonus,
 			baseValue: 0.11,
 		},
-		ascensionMaterial1: ascAppleSeedSet,
-		ascensionMaterial2: ascNumeralSet,
+		ascensionMaterialSet1: ascAppleSeedSet,
+		ascensionMaterialSet2: ascNumeralSet,
 		effect: {
 			name: "Jawbreaker's Candy",
 			description:
@@ -764,8 +764,8 @@ const allArcs: Record<string, Arc> = {
 			attribute: EnumStatAttribute.ATKBonus,
 			baseValue: 0.11,
 		},
-		ascensionMaterial1: ascAppleSeedSet,
-		ascensionMaterial2: ascSilhouetteSet,
+		ascensionMaterialSet1: ascAppleSeedSet,
+		ascensionMaterialSet2: ascSilhouetteSet,
 		effect: {
 			name: "Justice Executioner",
 			description:
@@ -818,8 +818,8 @@ const allArcs: Record<string, Arc> = {
 			attribute: EnumStatAttribute.HPBonus,
 			baseValue: 0.165,
 		},
-		ascensionMaterial1: ascColdDessertSet,
-		ascensionMaterial2: ascSilhouetteSet,
+		ascensionMaterialSet1: ascColdDessertSet,
+		ascensionMaterialSet2: ascSilhouetteSet,
 		effect: {
 			name: "Arachne",
 			description:
@@ -867,8 +867,8 @@ const allArcs: Record<string, Arc> = {
 			attribute: EnumStatAttribute.CritDMG,
 			baseValue: 0.096,
 		},
-		ascensionMaterial1: ascLiquidDreamSet,
-		ascensionMaterial2: ascDelusionsSet,
+		ascensionMaterialSet1: ascLiquidDreamSet,
+		ascensionMaterialSet2: ascDelusionsSet,
 		effect: {
 			name: "Themed Flames",
 			description:
@@ -921,8 +921,8 @@ const allArcs: Record<string, Arc> = {
 			attribute: EnumStatAttribute.DEFBonus,
 			baseValue: 0.154,
 		},
-		ascensionMaterial1: ascAppleSeedSet,
-		ascensionMaterial2: ascWhispersSet,
+		ascensionMaterialSet1: ascAppleSeedSet,
+		ascensionMaterialSet2: ascWhispersSet,
 		effect: {
 			name: "Prized Joy",
 			description:
@@ -985,8 +985,8 @@ const allArcs: Record<string, Arc> = {
 			attribute: EnumStatAttribute.CritDMG,
 			baseValue: 0.176,
 		},
-		ascensionMaterial1: ascLiquidDreamSet,
-		ascensionMaterial2: ascWhispersSet,
+		ascensionMaterialSet1: ascLiquidDreamSet,
+		ascensionMaterialSet2: ascWhispersSet,
 		effect: {
 			name: "The Cat's Wish",
 			description:
@@ -1029,8 +1029,8 @@ const allArcs: Record<string, Arc> = {
 			attribute: EnumStatAttribute.ATKBonus,
 			baseValue: 0.12,
 		},
-		ascensionMaterial1: ascLiquidDreamSet,
-		ascensionMaterial2: ascDelusionsSet,
+		ascensionMaterialSet1: ascLiquidDreamSet,
+		ascensionMaterialSet2: ascDelusionsSet,
 		effect: {
 			name: "Youthful Sigh",
 			description:
@@ -1087,8 +1087,8 @@ const allArcs: Record<string, Arc> = {
 			attribute: EnumStatAttribute.ATKBonus,
 			baseValue: 0.11,
 		},
-		ascensionMaterial1: ascMuiscSet,
-		ascensionMaterial2: ascNumeralSet,
+		ascensionMaterialSet1: ascMuiscSet,
+		ascensionMaterialSet2: ascNumeralSet,
 		effect: {
 			name: "Screaming Rave",
 			description:
@@ -1146,8 +1146,8 @@ const allArcs: Record<string, Arc> = {
 			attribute: EnumStatAttribute.CritRate,
 			baseValue: 0.096,
 		},
-		ascensionMaterial1: ascMuiscSet,
-		ascensionMaterial2: ascWhispersSet,
+		ascensionMaterialSet1: ascMuiscSet,
+		ascensionMaterialSet2: ascWhispersSet,
 		effect: {
 			name: "Ready-Ready",
 			description:
@@ -1205,8 +1205,8 @@ const allArcs: Record<string, Arc> = {
 			attribute: EnumStatAttribute.ChargeEffeciency,
 			baseValue: 0.132,
 		},
-		ascensionMaterial1: ascMuiscSet,
-		ascensionMaterial2: ascWhispersSet,
+		ascensionMaterialSet1: ascMuiscSet,
+		ascensionMaterialSet2: ascWhispersSet,
 		effect: {
 			name: "Wasted Time",
 			description:
@@ -1264,8 +1264,8 @@ const allArcs: Record<string, Arc> = {
 			attribute: EnumStatAttribute.CritRate,
 			baseValue: 0.048,
 		},
-		ascensionMaterial1: ascDramaCoreSet,
-		ascensionMaterial2: ascNumeralSet,
+		ascensionMaterialSet1: ascDramaCoreSet,
+		ascensionMaterialSet2: ascNumeralSet,
 		effect: {
 			name: "Camellia Society",
 			description:
@@ -1328,8 +1328,8 @@ const allArcs: Record<string, Arc> = {
 			attribute: EnumStatAttribute.ATKBonus,
 			baseValue: 0.18,
 		},
-		ascensionMaterial1: ascColdDessertSet,
-		ascensionMaterial2: ascNumeralSet,
+		ascensionMaterialSet1: ascColdDessertSet,
+		ascensionMaterialSet2: ascNumeralSet,
 		effect: {
 			name: "Good Boy's Adventure",
 			description:
@@ -1382,8 +1382,8 @@ const allArcs: Record<string, Arc> = {
 			attribute: EnumStatAttribute.HPBonus,
 			baseValue: 0.15,
 		},
-		ascensionMaterial1: ascDramaCoreSet,
-		ascensionMaterial2: ascNumeralSet,
+		ascensionMaterialSet1: ascDramaCoreSet,
+		ascensionMaterialSet2: ascNumeralSet,
 		effect: {
 			name: "The Twisted City",
 			description:
@@ -1426,8 +1426,8 @@ const allArcs: Record<string, Arc> = {
 			attribute: EnumStatAttribute.HPBonus,
 			baseValue: 0.1,
 		},
-		ascensionMaterial1: ascAppleSeedSet,
-		ascensionMaterial2: ascDelusionsSet,
+		ascensionMaterialSet1: ascAppleSeedSet,
+		ascensionMaterialSet2: ascDelusionsSet,
 		effect: {
 			name: "Time Bandit",
 			description:
@@ -1469,8 +1469,8 @@ const allArcs: Record<string, Arc> = {
 			attribute: EnumStatAttribute.DEFBonus,
 			baseValue: 0.21,
 		},
-		ascensionMaterial1: ascDramaCoreSet,
-		ascensionMaterial2: ascSilhouetteSet,
+		ascensionMaterialSet1: ascDramaCoreSet,
+		ascensionMaterialSet2: ascSilhouetteSet,
 		effect: {
 			name: "Fool's Spring",
 			description:
@@ -1498,8 +1498,8 @@ const allArcs: Record<string, Arc> = {
 			attribute: EnumStatAttribute.CritRate,
 			baseValue: 0.08,
 		},
-		ascensionMaterial1: ascLiquidDreamSet,
-		ascensionMaterial2: ascWhispersSet,
+		ascensionMaterialSet1: ascLiquidDreamSet,
+		ascensionMaterialSet2: ascWhispersSet,
 		effect: {
 			name: "A Time Will Come",
 			description:
@@ -1547,8 +1547,8 @@ const allArcs: Record<string, Arc> = {
 			attribute: EnumStatAttribute.ATKBonus,
 			baseValue: 0.15,
 		},
-		ascensionMaterial1: ascLiquidDreamSet,
-		ascensionMaterial2: ascDelusionsSet,
+		ascensionMaterialSet1: ascLiquidDreamSet,
+		ascensionMaterialSet2: ascDelusionsSet,
 		effect: {
 			name: "Drawn Blade",
 			description:
@@ -1576,8 +1576,8 @@ const allArcs: Record<string, Arc> = {
 			attribute: EnumStatAttribute.BreakIntensity,
 			baseValue: 48,
 		},
-		ascensionMaterial1: ascAppleSeedSet,
-		ascensionMaterial2: ascDelusionsSet,
+		ascensionMaterialSet1: ascAppleSeedSet,
+		ascensionMaterialSet2: ascDelusionsSet,
 		effect: {
 			name: "Heavy Heart",
 			description:
@@ -1624,8 +1624,8 @@ const allArcs: Record<string, Arc> = {
 			attribute: EnumStatAttribute.ATKBonus,
 			baseValue: 0.1,
 		},
-		ascensionMaterial1: ascColdDessertSet,
-		ascensionMaterial2: ascSilhouetteSet,
+		ascensionMaterialSet1: ascColdDessertSet,
+		ascensionMaterialSet2: ascSilhouetteSet,
 		effect: {
 			name: "Clear Skies",
 			description:
@@ -1652,8 +1652,8 @@ const allArcs: Record<string, Arc> = {
 			attribute: EnumStatAttribute.CritDMG,
 			baseValue: 0.16,
 		},
-		ascensionMaterial1: ascColdDessertSet,
-		ascensionMaterial2: ascDelusionsSet,
+		ascensionMaterialSet1: ascColdDessertSet,
+		ascensionMaterialSet2: ascDelusionsSet,
 		effect: {
 			name: "Watch Your Heads",
 			description:
@@ -1701,8 +1701,8 @@ const allArcs: Record<string, Arc> = {
 			attribute: EnumStatAttribute.BreakIntensity,
 			baseValue: 48,
 		},
-		ascensionMaterial1: ascColdDessertSet,
-		ascensionMaterial2: ascNumeralSet,
+		ascensionMaterialSet1: ascColdDessertSet,
+		ascensionMaterialSet2: ascNumeralSet,
 		effect: {
 			name: "Great Thief",
 			description:
@@ -1730,8 +1730,8 @@ const allArcs: Record<string, Arc> = {
 			attribute: EnumStatAttribute.HPBonus,
 			baseValue: 0.1,
 		},
-		ascensionMaterial1: ascMuiscSet,
-		ascensionMaterial2: ascNumeralSet,
+		ascensionMaterialSet1: ascMuiscSet,
+		ascensionMaterialSet2: ascNumeralSet,
 		effect: {
 			name: "The Good, The Bad, The Bitter",
 			description:
@@ -1779,8 +1779,8 @@ const allArcs: Record<string, Arc> = {
 			attribute: EnumStatAttribute.BreakIntensity,
 			baseValue: 24,
 		},
-		ascensionMaterial1: ascMuiscSet,
-		ascensionMaterial2: ascSilhouetteSet,
+		ascensionMaterialSet1: ascMuiscSet,
+		ascensionMaterialSet2: ascSilhouetteSet,
 		effect: {
 			name: "Mind Royale",
 			description:
@@ -1823,8 +1823,8 @@ const allArcs: Record<string, Arc> = {
 			attribute: EnumStatAttribute.ATKBonus,
 			baseValue: 0.15,
 		},
-		ascensionMaterial1: ascMuiscSet,
-		ascensionMaterial2: ascSilhouetteSet,
+		ascensionMaterialSet1: ascMuiscSet,
+		ascensionMaterialSet2: ascSilhouetteSet,
 		effect: {
 			name: "Oraora!",
 			description:
@@ -1867,8 +1867,8 @@ const allArcs: Record<string, Arc> = {
 			attribute: EnumStatAttribute.HPBonus,
 			baseValue: 0.1,
 		},
-		ascensionMaterial1: ascAppleSeedSet,
-		ascensionMaterial2: ascWhispersSet,
+		ascensionMaterialSet1: ascAppleSeedSet,
+		ascensionMaterialSet2: ascWhispersSet,
 		effect: {
 			name: "The Forgotten",
 			description:
@@ -1911,8 +1911,8 @@ const allArcs: Record<string, Arc> = {
 			attribute: EnumStatAttribute.ATKBonus,
 			baseValue: 0.1,
 		},
-		ascensionMaterial1: ascLiquidDreamSet,
-		ascensionMaterial2: ascWhispersSet,
+		ascensionMaterialSet1: ascLiquidDreamSet,
+		ascensionMaterialSet2: ascWhispersSet,
 		effect: {
 			name: "Shiny Days",
 			description:
@@ -1954,8 +1954,8 @@ const allArcs: Record<string, Arc> = {
 			attribute: EnumStatAttribute.ATKBonus,
 			baseValue: 0.1,
 		},
-		ascensionMaterial1: ascDramaCoreSet,
-		ascensionMaterial2: ascWhispersSet,
+		ascensionMaterialSet1: ascDramaCoreSet,
+		ascensionMaterialSet2: ascWhispersSet,
 		effect: {
 			name: "Cosmos Daze",
 			description:
@@ -2003,8 +2003,8 @@ const allArcs: Record<string, Arc> = {
 			attribute: EnumStatAttribute.DEFBonus,
 			baseValue: 0.21,
 		},
-		ascensionMaterial1: ascAppleSeedSet,
-		ascensionMaterial2: ascNumeralSet,
+		ascensionMaterialSet1: ascAppleSeedSet,
+		ascensionMaterialSet2: ascNumeralSet,
 		effect: {
 			name: "Umbrella",
 			description:
@@ -2047,8 +2047,8 @@ const allArcs: Record<string, Arc> = {
 			attribute: EnumStatAttribute.ATKBonus,
 			baseValue: 0.08,
 		},
-		ascensionMaterial1: ascDramaCoreSet,
-		ascensionMaterial2: ascDelusionsSet,
+		ascensionMaterialSet1: ascDramaCoreSet,
+		ascensionMaterialSet2: ascDelusionsSet,
 		effect: {
 			name: "Real Music",
 			description:
@@ -2075,8 +2075,8 @@ const allArcs: Record<string, Arc> = {
 			attribute: EnumStatAttribute.ATKBonus,
 			baseValue: 0.08,
 		},
-		ascensionMaterial1: ascColdDessertSet,
-		ascensionMaterial2: ascDelusionsSet,
+		ascensionMaterialSet1: ascColdDessertSet,
+		ascensionMaterialSet2: ascDelusionsSet,
 		effect: {
 			name: "Us",
 			description:
@@ -2103,8 +2103,8 @@ const allArcs: Record<string, Arc> = {
 			attribute: EnumStatAttribute.HPBonus,
 			baseValue: 0.12,
 		},
-		ascensionMaterial1: ascLiquidDreamSet,
-		ascensionMaterial2: ascNumeralSet,
+		ascensionMaterialSet1: ascLiquidDreamSet,
+		ascensionMaterialSet2: ascNumeralSet,
 		effect: {
 			name: "Be Happy",
 			description:
@@ -2147,8 +2147,8 @@ const allArcs: Record<string, Arc> = {
 			attribute: EnumStatAttribute.ATKBonus,
 			baseValue: 0.08,
 		},
-		ascensionMaterial1: ascMuiscSet,
-		ascensionMaterial2: ascSilhouetteSet,
+		ascensionMaterialSet1: ascMuiscSet,
+		ascensionMaterialSet2: ascSilhouetteSet,
 		effect: {
 			name: "First Step to Success",
 			description:
@@ -2195,8 +2195,8 @@ const allArcs: Record<string, Arc> = {
 			attribute: EnumStatAttribute.BreakIntensity,
 			baseValue: 38,
 		},
-		ascensionMaterial1: ascAppleSeedSet,
-		ascensionMaterial2: ascWhispersSet,
+		ascensionMaterialSet1: ascAppleSeedSet,
+		ascensionMaterialSet2: ascWhispersSet,
 		effect: {
 			name: "Dangerous Game",
 			description:
@@ -2236,8 +2236,10 @@ export function getAllArcs() {
 	return allArcs
 }
 
-export function getAllArcsAsArray() {
-	return Object.values(allArcs)
+const allArcsArray = Object.values(allArcs)
+
+export function getAllArcsList() {
+	return allArcsArray
 }
 
 export function findArc(arcId: string) {

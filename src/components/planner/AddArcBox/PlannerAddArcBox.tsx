@@ -7,14 +7,13 @@ import type { ModalEventType } from "@/types"
 import type { Arc } from "@/types/weapon"
 
 import { EnumItemLvls, EnumRarity, getItemRarityStyle } from "@/data/items"
-import { findArc, EnumArcType, getAllArcsAsArray } from "@/data/arcs"
+import { findArc, EnumArcType, getAllArcsList } from "@/data/arcs"
 
-import { getRarityName } from "@/helpers"
+import { getRarityName, createSearchString } from "@/helpers"
 
 import { useAddArcContext } from "@/contexts"
 
 import styles from "./plannerAddArcBox.module.css"
-import { createSearchString } from "@/helpers/createSearchString"
 
 const LvlSelectGrid = ({
 	onChange,
@@ -88,7 +87,7 @@ const PlannerArcsSelect = () => {
 		setSearchQuery(e.currentTarget.value)
 	}
 
-	const filteredArcs = getAllArcsAsArray().filter((arc) => {
+	const filteredArcs = getAllArcsList().filter((arc) => {
 		const matchesType = !filterQuery[0] || arc.type === filterQuery[0]
 		const matchesRarity = !filterQuery[1] || arc.rarity === filterQuery[1]
 		const searchTarget = createSearchString<Arc>(arc, ["id", "name"])

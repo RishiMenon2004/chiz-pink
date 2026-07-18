@@ -21,8 +21,8 @@ export interface Arc extends Item {
 	type: EnumArcType
 	baseAtk: number
 	mainAttribute: MainAttrInfo
-	ascensionMaterial1: MaterialSet
-	ascensionMaterial2: MaterialSet
+	ascensionMaterialSet1: MaterialSet
+	ascensionMaterialSet2: MaterialSet
 	effect: {
 		name: string
 		description: string

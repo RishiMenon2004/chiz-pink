@@ -499,7 +499,7 @@ const dreamlessSeed: Material = {
 	id: "dreamless_seed",
 	name: "Dreamless Seed",
 	rarity: EnumRarity.Uncommon,
-	materialType: EnumMaterialType.Talent,
+	materialType: EnumMaterialType.Currency,
 	imageSrc: "/city_dreamless_seed",
 	sources: ["Daily Activity", "Fair Exchange", "Hunter Exchange"],
 }

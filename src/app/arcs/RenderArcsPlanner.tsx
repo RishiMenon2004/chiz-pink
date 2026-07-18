@@ -12,10 +12,12 @@ import type { ModalEventType } from "@/types"
 import type { WeaponRecord } from "@/types/planner"
 
 import { EnumItemLvls } from "@/data/items"
-import { getAllArcsAsArray } from "@/data/arcs"
+import { getAllArcsList } from "@/data/arcs"
 
 import { usePlannerStore } from "@/hooks"
 import { getAggregatedMaterials } from "@/hooks/usePlannerStore"
+
+import { PlannerInventoryProvider } from "@/helpers"
 
 import { AddNewArcContext } from "@/contexts"
 
@@ -23,8 +25,6 @@ import { InfoBox, ModalContainer, PullOutToolbar } from "@/components/layout"
 import { MaterialGroup } from "@/components/inventory/"
 import { PlannerAddArcBox } from "@/components/planner"
 import { PlannerMaterialsList } from "@/components/planner/"
-
-import { PlannerInventoryProvider } from "@/helpers"
 
 import styles from "./page.module.css"
 import { styles as toolbarStyles } from "@/components/layout/PullOutToolbar"
@@ -51,7 +51,7 @@ export default function RenderArcsPlanner() {
 
 	const handleStartAdding = () => {
 		setNewArcRecord({
-			id: getAllArcsAsArray()[0].id,
+			id: getAllArcsList()[0].id,
 			currentLvl: EnumItemLvls.Lvl1,
 			targetLvl: EnumItemLvls.Lvl80,
 		})

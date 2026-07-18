@@ -1,7 +1,6 @@
 "use client"
 
 import Image from "next/image"
-
 import { ChangeEvent, MouseEvent, useEffect, useState } from "react"
 import { createPortal } from "react-dom"
 
@@ -11,16 +10,19 @@ import { ModalEventType } from "@/types"
 import { CharacterRecord, SkillLvlRecord } from "@/types/planner"
 
 import { EnumItemLvls, findMaterial, getItemRarityStyle } from "@/data/items"
-import { findCharacter } from "@/data/characters/characterList"
+import { findCharacter } from "@/data/characters"
 
 import { useInventoryStore, usePlannerStore } from "@/hooks"
 
 import { PlannerBoxContext, usePlannerMaterialsContext } from "@/contexts"
 
 import { AlertContainer, ModalContainer } from "@/components/layout"
-import { ItemPhases, PlannerMaterialsList } from "@/components/planner"
-import { PlannerBoxButtonsContainer } from "../PlannerBoxButtonsContainer"
-import { CharacterSkillGroup } from "../CharacterSkillGroup/CharacterSkillGroup"
+import {
+	CharacterSkillGroup,
+	ItemPhases,
+	PlannerBoxButtonsContainer,
+	PlannerMaterialsList,
+} from "@/components/planner"
 
 import plannerBoxStyles from "@/components/planner/plannerBox.module.css"
 import styles from "./PlannerCharacterBox.module.css"

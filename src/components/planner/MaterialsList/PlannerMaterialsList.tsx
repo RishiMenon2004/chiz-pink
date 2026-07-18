@@ -1,7 +1,9 @@
 import { usePlannerBoxContext } from "@/contexts"
-import styles from "./plannerMaterialsList.module.css"
-import { PlannerMaterialBox } from "../MaterialBox"
 import { findMaterial } from "@/data/items"
+
+import { PlannerMaterialBox } from "@/components/planner"
+
+import styles from "./plannerMaterialsList.module.css"
 
 export function PlannerMaterialsList({
 	materials,

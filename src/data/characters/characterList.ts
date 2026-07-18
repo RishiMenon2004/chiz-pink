@@ -11,8 +11,10 @@ export function getAllCharacters() {
 	return allCharacters
 }
 
-export function getAllCharactersAsArray() {
-	return Object.values(allCharacters)
+const allCharactersArray = Object.values(allCharacters)
+
+export function getAllCharactersList() {
+	return allCharactersArray
 }
 
 export function findCharacter(charId: string) {

@@ -2,8 +2,9 @@ import { CharacterRecord } from "@/types/planner"
 
 import { findCharacter } from "@/data/characters/characterList"
 
-import styles from "./chatracterSkillGroup.module.css"
 import { usePlannerBoxContext } from "@/contexts"
+
+import styles from "./chatracterSkillGroup.module.css"
 
 export function CharacterSkillGroup({
 	skill,

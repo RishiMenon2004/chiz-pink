@@ -29,6 +29,16 @@ export interface CharacterRecord extends Pick<Item, "id"> {
 		amount: number
 	}[]
 }
+
+export type CharacterMaterialCosts = {
+	fons: number
+	dreamlessSeed: number
+	beetleCoin: number
+	bossMaterial: number
+	exp: { common: number; uncommon: number; rare: number }
+	ascMaterial: { common: number; uncommon: number; rare: number }
+	talentMaterial: { common: number; uncommon: number; rare: number }
+}
 export interface WeaponRecord extends Pick<Item, "id"> {
 	uid: string
 	currentLvl: EnumItemLvls
@@ -40,6 +50,13 @@ export interface WeaponRecord extends Pick<Item, "id"> {
 	}[]
 }
 
+export type WeaponMaterialsCost = {
+	beetleCoin: number
+	exp: { common: number; uncommon: number; rare: number }
+	ascMaterial1: { common: number; uncommon: number; rare: number }
+	ascMaterial2: { common: number; uncommon: number; rare: number }
+}
+
 export type PlannerRecord = {
 	arcs: Record<string, WeaponRecord>
 	characters: Record<string, CharacterRecord>
@@ -49,6 +66,6 @@ export type AgregateMaterialsType = Record<
 	string,
 	{
 		amount: number
-		sources: string[]
+		sources: Record<string, number>
 	}
 >

@@ -1,7 +1,8 @@
 import { MouseEvent, ReactNode } from "react"
 
-import styles from "./alertContainer.module.css"
 import { ModalEventType } from "@/types"
+
+import styles from "./alertContainer.module.css"
 
 export function AlertContainer({
 	type,

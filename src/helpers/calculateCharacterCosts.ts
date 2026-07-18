@@ -1,16 +1,17 @@
+import { CharacterMaterialCosts, CharacterRecord } from "@/types/planner"
+
+import { EnumItemLvls } from "@/data/items"
 import {
 	characterLevelMaterials,
 	characterSkillLevelMaterials,
 	SkillTypes,
 } from "@/data/characters/character"
-import { EnumItemLvls } from "@/data/items"
-import { CharacterRecord } from "@/types/planner"
 
 export function calculateSkillCosts(
 	type: keyof typeof characterSkillLevelMaterials,
 	currentLvl: number,
 	targetLvl: number
-) {
+): Omit<CharacterMaterialCosts, "exp"> {
 	const totals = {
 		fons: 0,
 		dreamlessSeed: 0,
@@ -42,13 +43,11 @@ export function calculateSkillCosts(
 			totals.beetleCoin += required.beetleCoin
 			totals.bossMaterial += required.bossMaterial
 
-			totals.ascMaterial.common += required.ascMaterial.common
-			totals.ascMaterial.uncommon += required.ascMaterial.uncommon
-			totals.ascMaterial.rare += required.ascMaterial.rare
-
-			totals.talentMaterial.common += required.talentMaterial.common
-			totals.talentMaterial.uncommon += required.talentMaterial.uncommon
-			totals.talentMaterial.rare += required.talentMaterial.rare
+			const tiers = ["common", "uncommon", "rare"] as const
+			for (const tier of tiers) {
+				totals.ascMaterial[tier] += required.ascMaterial[tier]
+				totals.talentMaterial[tier] += required.talentMaterial[tier]
+			}
 		}
 	}
 
@@ -58,7 +57,10 @@ export function calculateSkillCosts(
 export function calculateLevelCosts(
 	currentLvl: EnumItemLvls,
 	targetLvl: EnumItemLvls
-) {
+): Pick<
+	CharacterMaterialCosts,
+	"beetleCoin" | "bossMaterial" | "exp" | "ascMaterial"
+> {
 	const totals = {
 		beetleCoin: 0,
 		bossMaterial: 0,
@@ -82,13 +84,11 @@ export function calculateLevelCosts(
 			totals.beetleCoin += phase.beetleCoin
 			totals.bossMaterial += phase.bossMaterial
 
-			totals.exp.common += phase.exp.common
-			totals.exp.uncommon += phase.exp.uncommon
-			totals.exp.rare += phase.exp.rare
-
-			totals.ascMaterial.common += phase.ascMaterial.common
-			totals.ascMaterial.uncommon += phase.ascMaterial.uncommon
-			totals.ascMaterial.rare += phase.ascMaterial.rare
+			const tiers = ["common", "uncommon", "rare"] as const
+			for (const tier of tiers) {
+				totals.exp[tier] += phase.exp[tier]
+				totals.ascMaterial[tier] += phase.ascMaterial[tier]
+			}
 		}
 	}
 
@@ -99,7 +99,10 @@ export function calculateCharacterCosts({
 	currentLvl,
 	targetLvl,
 	abilitySet,
-}: Pick<CharacterRecord, "currentLvl" | "targetLvl" | "abilitySet">) {
+}: Pick<
+	CharacterRecord,
+	"currentLvl" | "targetLvl" | "abilitySet"
+>): CharacterMaterialCosts {
 	const totals = {
 		fons: 0,
 		dreamlessSeed: 0,
@@ -123,16 +126,15 @@ export function calculateCharacterCosts({
 		},
 	}
 
+	const tiers = ["common", "uncommon", "rare"] as const
 	const levelMaterials = calculateLevelCosts(currentLvl, targetLvl)
 
 	totals.beetleCoin += levelMaterials.beetleCoin
 	totals.bossMaterial += levelMaterials.bossMaterial
 
-	totals.exp.common += levelMaterials.exp.common
-	totals.exp.uncommon += levelMaterials.exp.uncommon
-	totals.exp.rare += levelMaterials.exp.rare
-
-	const skillMaterials: Omit<typeof totals, "exp">[] = []
+	for (const tier of tiers) {
+		totals.exp[tier] += levelMaterials.exp[tier]
+	}
 
 	for (const [skill, skillLvl] of Object.entries(abilitySet)) {
 		if (skillLvl.isDisabled) continue
@@ -164,26 +166,18 @@ export function calculateCharacterCosts({
 				break
 		}
 
-		skillMaterials.push(
-			calculateSkillCosts(type, skillLvl.currentLvl, skillLvl.targetLvl)
-		)
-	}
-
-	skillMaterials.forEach((materials) => {
+		const materials = calculateSkillCosts(type, skillLvl.currentLvl, skillLvl.targetLvl)
 		totals.fons += materials.fons
 		totals.dreamlessSeed += materials.dreamlessSeed
 
 		totals.beetleCoin += materials.beetleCoin
 		totals.bossMaterial += materials.bossMaterial
 
-		totals.ascMaterial.common += materials.ascMaterial.common
-		totals.ascMaterial.uncommon += materials.ascMaterial.uncommon
-		totals.ascMaterial.rare += materials.ascMaterial.rare
-
-		totals.talentMaterial.common += materials.talentMaterial.common
-		totals.talentMaterial.uncommon += materials.talentMaterial.uncommon
-		totals.talentMaterial.rare += materials.talentMaterial.rare
-	})
+		for (const tier of tiers) {
+			totals.ascMaterial[tier] += materials.ascMaterial[tier]
+			totals.talentMaterial[tier] += materials.talentMaterial[tier]
+		}
+	}
 
 	return totals
 }

@@ -14,19 +14,17 @@ import type { CharacterRecord } from "@/types/planner"
 import { usePlannerStore } from "@/hooks"
 import { getAggregatedMaterials } from "@/hooks/usePlannerStore"
 
+import { PlannerInventoryProvider, generateNewCharacter } from "@/helpers"
+
 import { AddNewCharContext } from "@/contexts"
 
 import { InfoBox, ModalContainer, PullOutToolbar } from "@/components/layout"
 import { MaterialGroup } from "@/components/inventory/"
-import { PlannerMaterialsList } from "@/components/planner"
-
-import { PlannerInventoryProvider } from "@/helpers"
+import { PlannerAddCharacterBox, PlannerMaterialsList } from "@/components/planner"
 
 import styles from "./page.module.css"
 import { styles as toolbarStyles } from "@/components/layout/PullOutToolbar"
 import plannerBoxStyles from "@/components/planner/plannerBox.module.css"
-import { generateNewCharacter } from "@/helpers"
-import { PlannerAddCharacterBox } from "@/components/planner/AddCharacterBox/AddCharacterBox"
 
 const PlannerCharacterBox = dynamic(
 	() => import("@/components/planner").then((mod) => mod.PlannerCharacterBox),

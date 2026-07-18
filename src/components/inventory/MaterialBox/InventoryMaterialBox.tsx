@@ -11,8 +11,11 @@ import {
 } from "react"
 
 import type { Material } from "@/types/item"
+import { Character } from "@/types/character"
+import { Arc } from "@/types/weapon"
 
 import { getItemRarityStyle } from "@/data/items"
+import { findCharacter } from "@/data/characters/characterList"
 import { findArc } from "@/data/arcs"
 
 import {
@@ -185,30 +188,31 @@ export function MaterialItemBox({
 						</div>
 						<div className={styles.tooltipSourceList}>
 							Needed For:
-							{requiredSources.map((source) => (
-								<div
-									className={styles.tooltipSource}
-									key={source}>
-									<Image
-										src={
-											findArc(
-												source
-													.toLowerCase()
-													.split("x")[0]
-													.trimEnd()
-													.replaceAll(" ", "_")
-													.replace("'", "")
-											)
-												? "/icons/arc.png"
-												: "/icons/character.png"
-										}
-										width={16}
-										height={16}
-										alt={`${material.name} Source: Arc ${source}`}
-									/>
-									{source}
-								</div>
-							))}
+							{Object.entries(requiredSources).map(
+								([id, amount]) => {
+									const item: Arc | Character | undefined =
+										findArc(id) ??
+										findCharacter(id) ??
+										undefined
+									return (
+										<div
+											className={styles.tooltipSource}
+											key={id}>
+											<Image
+												src={
+													"effect" in item
+														? "/icons/arc.png"
+														: "/icons/character.png"
+												}
+												width={16}
+												height={16}
+												alt={`${material.name} Source`}
+											/>
+											{`${item.name} ${amount > 1 ? `×${amount}` : ""}`}
+										</div>
+									)
+								}
+							)}
 						</div>
 					</>
 				)}

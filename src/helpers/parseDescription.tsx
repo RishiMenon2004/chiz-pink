@@ -1,7 +1,9 @@
-import { DescriptionValueType } from "@/types"
-import { DescriptionNumber, DescriptionSmallHeading } from "@/components/layout/Description"
 import { ReactNode } from "react"
+
+import { DescriptionValueType } from "@/types"
 import { DescriptionValuesRecord } from "@/types/item"
+
+import { DescriptionNumber, DescriptionSmallHeading } from "@/components/layout/Description"
 
 export function parseDescription(
 	description: string,

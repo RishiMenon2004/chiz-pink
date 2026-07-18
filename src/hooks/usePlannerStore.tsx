@@ -17,11 +17,10 @@ import {
 	expHunterGuideSet,
 	fons,
 } from "@/data/items/materials"
+import { findCharacter } from "@/data/characters"
 import { findArc } from "@/data/arcs"
 
-import { calcuateWeaponCosts } from "@/helpers"
-import { calculateCharacterCosts } from "@/helpers"
-import { findCharacter } from "@/data/characters/characterList"
+import { calcuateWeaponCosts, calculateCharacterCosts } from "@/helpers"
 
 let cachedPlanner: PlannerRecord = { arcs: {}, characters: {} }
 
@@ -35,46 +34,30 @@ function getWeaponRequiredMaterials(
 		| Omit<WeaponRecord, "uid" | "requiredMaterials" | "isDisabled">
 ) {
 	const arc = findArc(weapon.id)
-	const materialValues = calcuateWeaponCosts(
-		arc.rarity,
-		weapon.currentLvl,
-		weapon.targetLvl
-	)
+	const materialValues = calcuateWeaponCosts(weapon)
+
+	const tiers = ["common", "uncommon", "rare"] as const
 
 	return [
 		{ id: beetleCoin.id, amount: materialValues.beetleCoin },
 
-		{ id: expDyeSet[0].id, amount: materialValues.exp.lightDye },
-		{ id: expDyeSet[1].id, amount: materialValues.exp.colorlessDye },
-		{ id: expDyeSet[2].id, amount: materialValues.exp.chaoticDye },
+		...tiers.map((tier, index) => ({
+			id: expDyeSet[index].id,
+			amount: materialValues.exp[tier],
+		})),
 
-		{
-			id: arc.ascensionMaterial1[0].id,
-			amount: materialValues.ascMaterial1.common,
-		},
-		{
-			id: arc.ascensionMaterial1[1].id,
-			amount: materialValues.ascMaterial1.uncommon,
-		},
-		{
-			id: arc.ascensionMaterial1[2].id,
-			amount: materialValues.ascMaterial1.rare,
-		},
+		...tiers.map((tier, index) => ({
+			id: arc.ascensionMaterialSet1[index].id,
+			amount: materialValues.ascMaterial1[tier],
+		})),
 
-		{
-			id: arc.ascensionMaterial2[0].id,
-			amount: materialValues.ascMaterial2.common,
-		},
-		{
-			id: arc.ascensionMaterial2[1].id,
-			amount: materialValues.ascMaterial2.uncommon,
-		},
-		{
-			id: arc.ascensionMaterial2[2].id,
-			amount: materialValues.ascMaterial2.rare,
-		},
+		...tiers.map((tier, index) => ({
+			id: arc.ascensionMaterialSet2[index].id,
+			amount: materialValues.ascMaterial2[tier],
+		})),
 	]
 }
+
 function getCharRequiredMaterials(
 	character:
 		| CharacterRecord
@@ -82,6 +65,7 @@ function getCharRequiredMaterials(
 ) {
 	const char = findCharacter(character.id)
 	const materialValues = calculateCharacterCosts(character)
+	const tiers = ["common", "uncommon", "rare"] as const
 
 	return [
 		{ id: beetleCoin.id, amount: materialValues.beetleCoin },
@@ -91,46 +75,41 @@ function getCharRequiredMaterials(
 
 		{ id: char.talentBossMaterial.id, amount: materialValues.bossMaterial },
 
-		{ id: expHunterGuideSet[0].id, amount: materialValues.exp.common },
-		{ id: expHunterGuideSet[1].id, amount: materialValues.exp.uncommon },
-		{ id: expHunterGuideSet[2].id, amount: materialValues.exp.rare },
+		...tiers.map((tier, index) => ({
+			id: expHunterGuideSet[index].id,
+			amount: materialValues.exp[tier],
+		})),
 
-		{
-			id: char.ascensionMaterialSet[0].id,
-			amount: materialValues.ascMaterial.common,
-		},
-		{
-			id: char.ascensionMaterialSet[1].id,
-			amount: materialValues.ascMaterial.uncommon,
-		},
-		{
-			id: char.ascensionMaterialSet[2].id,
-			amount: materialValues.ascMaterial.rare,
-		},
+		...tiers.map((tier, index) => ({
+			id: char.ascensionMaterialSet[index].id,
+			amount: materialValues.ascMaterial[tier],
+		})),
 
-		{
-			id: char.talentMaterialSet[0].id,
-			amount: materialValues.talentMaterial.common,
-		},
-		{
-			id: char.talentMaterialSet[1].id,
-			amount: materialValues.talentMaterial.uncommon,
-		},
-		{
-			id: char.talentMaterialSet[2].id,
-			amount: materialValues.talentMaterial.rare,
-		},
+		...tiers.map((tier, index) => ({
+			id: char.talentMaterialSet[index].id,
+			amount: materialValues.talentMaterial[tier],
+		})),
 	]
 }
 
+function readPlanner(): PlannerRecord {
+	if (typeof window === "undefined") return SERVER_FALLBACK
+
+	const value = localStorage.getItem("planner")
+	return JSON.parse(value || JSON.stringify(SERVER_FALLBACK)) as PlannerRecord
+}
+
 export const plannerActions = {
-	updatePlanner(data: Partial<PlannerRecord>) {
+	updatePlanner(
+		updater:
+			| Partial<PlannerRecord>
+			| ((current: PlannerRecord) => Partial<PlannerRecord>)
+	) {
 		if (typeof window === "undefined") return
 
-		const value = localStorage.getItem("planner")
-		const plannerData = JSON.parse(
-			value || JSON.stringify(SERVER_FALLBACK)
-		) as PlannerRecord
+		const plannerData = readPlanner()
+		const data =
+			typeof updater === "function" ? updater(plannerData) : updater
 		const updatedPlanner: PlannerRecord = { ...plannerData, ...data }
 
 		try {
@@ -143,45 +122,46 @@ export const plannerActions = {
 	},
 
 	addCharacter(
-		plannerData: PlannerRecord,
 		char: Omit<CharacterRecord, "requiredMaterials" | "isDisabled">
 	) {
-		this.updatePlanner({
+		this.updatePlanner((current) => ({
 			characters: {
-				...plannerData.characters,
+				...current.characters,
 				[char.id]: {
 					...char,
 					requiredMaterials: getCharRequiredMaterials(char),
 					isDisabled: false,
 				},
 			},
-		})
+		}))
 	},
 
-	updateCharacter(plannerData: PlannerRecord, char: CharacterRecord) {
-		this.updatePlanner({
+	updateCharacter(char: CharacterRecord) {
+		this.updatePlanner((current) => ({
 			characters: {
-				...plannerData.characters,
+				...current.characters,
 				[char.id]: {
 					...char,
 					requiredMaterials: getCharRequiredMaterials(char),
 				},
 			},
+		}))
+	},
+
+	deleteCharacter(char: CharacterRecord) {
+		this.updatePlanner((current) => {
+			const characters = { ...current.characters }
+			delete characters[char.id]
+			return { characters }
 		})
 	},
 
-	deleteCharacter(plannerData: PlannerRecord, char: CharacterRecord) {
-		delete plannerData.characters[char.id]
-		this.updatePlanner({ ...plannerData })
-	},
-
 	addWeapon(
-		plannerData: PlannerRecord,
 		weapon: Omit<WeaponRecord, "uid" | "requiredMaterials" | "isDisabled">
 	) {
 		const newUID = uuidv4()
 
-		this.updatePlanner({
+		this.updatePlanner((current) => ({
 			arcs: {
 				[newUID]: {
 					...weapon,
@@ -189,27 +169,29 @@ export const plannerActions = {
 					requiredMaterials: getWeaponRequiredMaterials(weapon),
 					isDisabled: false,
 				},
-				...plannerData.arcs,
+				...current.arcs,
 			},
-		})
+		}))
 	},
 
-	updateWeapon(plannerData: PlannerRecord, weapon: WeaponRecord) {
-		this.updatePlanner({
+	updateWeapon(weapon: WeaponRecord) {
+		this.updatePlanner((current) => ({
 			arcs: {
-				...plannerData.arcs,
+				...current.arcs,
 				[weapon.uid]: {
 					...weapon,
 					requiredMaterials: getWeaponRequiredMaterials(weapon),
 				},
 			},
-		})
+		}))
 	},
 
-	deleteWeapon(plannerData: PlannerRecord, weapon: WeaponRecord) {
-		delete plannerData.arcs[weapon.uid]
-
-		this.updatePlanner({ ...plannerData })
+	deleteWeapon(weapon: WeaponRecord) {
+		this.updatePlanner((current) => {
+			const arcs = { ...current.arcs }
+			delete arcs[weapon.uid]
+			return { arcs }
+		})
 	},
 }
 
@@ -225,29 +207,17 @@ export function getAggregatedMaterials(
 
 	function addToAggregate(itemRecord: CharacterRecord | WeaponRecord) {
 		itemRecord.requiredMaterials.forEach((material) => {
-			const currentAgrMaterial = agregatedMaterials[material.id] || {}
-			const sources = currentAgrMaterial.sources || []
-			const amount = currentAgrMaterial.amount || 0
+			const currentAgrMaterial = agregatedMaterials[material.id] || {
+				sources: {},
+				amount: 0,
+			}
+			const sources = currentAgrMaterial.sources
+			const amount = currentAgrMaterial.amount
 
-			const itemName =
-				"uid" in itemRecord
-					? findArc(itemRecord.id).name
-					: findCharacter(itemRecord.id).name
-			const sourceName = sources.find((name) => name.includes(itemName))
-
-			if (typeof sourceName === "undefined") {
-				sources.push(itemName)
-			} else if (sourceName === itemName) {
-				const sourceIndex = sources.indexOf(itemName)
-				sources[sourceIndex] = `${itemName} ×2`
+			if (sources[itemRecord.id]) {
+				sources[itemRecord.id] += 1
 			} else {
-				const sourceIndex = sources.indexOf(sourceName)
-				if (sourceIndex !== -1) {
-					const sourceName = sources[sourceIndex]
-					const [name, number] = sourceName.split("×")
-					const count = Number(number) + 1
-					sources[sourceIndex] = [name, count].join("×")
-				}
+				sources[itemRecord.id] = 1
 			}
 
 			const agregateAmount = amount + material.amount
@@ -255,7 +225,7 @@ export function getAggregatedMaterials(
 			if (agregateAmount > 0) {
 				agregatedMaterials[material.id] = {
 					amount: agregateAmount,
-					sources: [...sources],
+					sources: { ...sources },
 				}
 			}
 		})
@@ -324,23 +294,12 @@ export function usePlannerStore() {
 		plannerData,
 		actions: {
 			updatePlanner: plannerActions.updatePlanner,
-			addWeapon: (
-				weapon: Omit<
-					WeaponRecord,
-					"uid" | "requiredMaterials" | "isDisabled"
-				>
-			) => plannerActions.addWeapon(plannerData, weapon),
-			updateWeapon: (weapon: WeaponRecord) =>
-				plannerActions.updateWeapon(plannerData, weapon),
-			deleteWeapon: (weapon: WeaponRecord) =>
-				plannerActions.deleteWeapon(plannerData, weapon),
-			addCharacter: (
-				char: Omit<CharacterRecord, "requiredMaterials" | "isDisabled">
-			) => plannerActions.addCharacter(plannerData, char),
-			updateCharacter: (char: CharacterRecord) =>
-				plannerActions.updateCharacter(plannerData, char),
-			deleteCharacter: (char: CharacterRecord) =>
-				plannerActions.deleteCharacter(plannerData, char),
+			addWeapon: plannerActions.addWeapon,
+			updateWeapon: plannerActions.updateWeapon,
+			deleteWeapon: plannerActions.deleteWeapon,
+			addCharacter: plannerActions.addCharacter,
+			updateCharacter: plannerActions.updateCharacter,
+			deleteCharacter: plannerActions.deleteCharacter,
 		},
 	}
 }
