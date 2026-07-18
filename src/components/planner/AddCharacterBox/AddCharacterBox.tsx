@@ -118,7 +118,7 @@ export function PlannerAddCharacterBox({
 							<span
 								key={element}
 								tabIndex={0}
-								className={`${styles.charFilter} ${isActive ? styles.active : ""}`}
+								className={`${styles.charFilter} ${styles.filterElement} ${isActive ? styles.active : ""}`}
 								onClick={toggleElement}
 								onKeyDown={(e) => {
 									e.stopPropagation()
