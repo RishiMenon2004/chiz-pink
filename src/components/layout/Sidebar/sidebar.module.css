@@ -19,7 +19,7 @@
 	--warmer-pink-strips: hsl(350, 70%, 60%);
 
 	background-image:
-		url("/sidebar.png"),
+		url("/layout/sidebar.png"),
 		linear-gradient(
 			to bottom,
 			transparent 0 30%,
@@ -108,7 +108,7 @@
 		padding-inline: 5%;
 
 		background-image:
-			url("/sidebar_hr.png"),
+			url("/layout/sidebar_hr.png"),
 			linear-gradient(
 				to right,
 				transparent 0 30%,

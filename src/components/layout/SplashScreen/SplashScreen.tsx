@@ -20,6 +20,8 @@ export function SplashScreen() {
 
 	const resizeObserverRef = useRef<ResizeObserver>(null!)
 
+	const chizScale = 1.5
+
 	const chizContainerRefCallback = (node: HTMLDivElement) => {
 		if (resizeObserverRef.current) {
 			resizeObserverRef.current.disconnect()
@@ -30,11 +32,15 @@ export function SplashScreen() {
 			const observer = new ResizeObserver((entries) => {
 				for (const entry of entries) {
 					const chizContainerWidth = entry.contentRect.width
-					const chizImageHeight = chizContainerWidth * 1.165
-					const leftOffset = chizContainerWidth * 0.165
+
+					const chizImageHeight =
+						(chizContainerWidth * (2 * chizScale - 1)) / chizScale
+
+					const inlineOffset =
+						(chizContainerWidth * (chizScale - 1)) / chizScale / 2
 
 					setImageClipPath(
-						`M ${chizContainerWidth} 0 L ${leftOffset} 0 L ${leftOffset} ${chizImageHeight / 2} A ${(chizContainerWidth - leftOffset) / 2} ${(chizContainerWidth - leftOffset) / 2} 0 0 0 ${chizContainerWidth} ${chizImageHeight / 2} Z`
+						`M ${chizContainerWidth} 0 L 0 0 L ${inlineOffset} ${chizImageHeight / 2} A ${(chizContainerWidth - 2 * inlineOffset) / 2} ${(chizContainerWidth - 2 * inlineOffset) / 2} 0 0 0 ${chizContainerWidth / 2} ${chizImageHeight / 2 + (chizContainerWidth - 2 * inlineOffset) / 2} Q ${chizContainerWidth * 1.3} ${chizImageHeight / 2 + (chizContainerWidth - 2 * inlineOffset) / 2} ${chizContainerWidth} 0 Z`
 					)
 				}
 			})
@@ -139,7 +145,7 @@ export function SplashScreen() {
 								ref={chizContainerRefCallback}>
 								<Image
 									className={styles.chiz}
-									src="/characters/full/chiz.png"
+									src="/layout/chiz_splash.png"
 									alt="Chiz Art - Full"
 									width={512}
 									height={512}
@@ -148,6 +154,7 @@ export function SplashScreen() {
 									loading="eager"
 									style={{
 										clipPath: `path("${imageClipPath}")`,
+										scale: chizScale,
 									}}
 								/>
 							</div>
