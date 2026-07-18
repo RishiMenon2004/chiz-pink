@@ -1,8 +1,6 @@
 export type Inventory = Record<string, number>
 
-export type CumulativeInventory = {
-	[x: string]: { amount: number; craftedAmount?: number }
-}
+export type CumulativeInventory = Record<string, { amount: number; craftedAmount?: number }>
 
 import { EnumRarity } from "@/data/items/item"
 import { EnumMaterialType } from "@/data/items/materials"

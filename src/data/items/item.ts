@@ -48,7 +48,7 @@ export enum EnumItemLvls {
 
 export function getItemRarityStyle(
 	item: Item,
-	styleSheet?: { readonly [key: string]: string }
+	styleSheet?: Readonly<Record<string, string>>
 ) {
 	if (styleSheet) {
 		switch (item.rarity) {
