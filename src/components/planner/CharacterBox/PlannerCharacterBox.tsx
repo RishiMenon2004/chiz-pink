@@ -1,6 +1,5 @@
 "use client"
 
-import Image from "next/image"
 import { ChangeEvent, MouseEvent, useEffect, useState } from "react"
 import { createPortal } from "react-dom"
 
@@ -16,7 +15,11 @@ import { useInventoryStore, usePlannerStore } from "@/hooks"
 
 import { PlannerBoxContext, usePlannerMaterialsContext } from "@/contexts"
 
-import { AlertContainer, ModalContainer } from "@/components/layout"
+import {
+	AlertContainer,
+	CharacterAvatar,
+	ModalContainer,
+} from "@/components/layout"
 import {
 	CharacterSkillGroup,
 	ItemPhases,
@@ -332,11 +335,10 @@ export function PlannerCharacterBox({
 						<div className={styles.charInfoTop}>
 							<div className={styles.charAvatarContainer}>
 								<div className={styles.charImageContainer}>
-									<Image
-										src={`/characters/avatar/${char.imageSrc}`}
+									<CharacterAvatar
+										character={char}
 										width={256}
 										height={256}
-										alt={`Character "${char.name}" Icon`}
 										loading="eager"
 									/>
 								</div>

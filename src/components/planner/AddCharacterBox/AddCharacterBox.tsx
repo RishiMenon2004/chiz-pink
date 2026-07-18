@@ -16,6 +16,8 @@ import { createSearchString } from "@/helpers"
 
 import { useAddCharContext } from "@/contexts"
 
+import { CharacterAvatar } from "@/components/layout"
+
 import styles from "./addCharacterBox.module.css"
 
 function CharacterListItem({
@@ -36,12 +38,11 @@ function CharacterListItem({
 				</div>
 			)}
 			<div className={styles.charSelectOptionAvatarContainer}>
-				<Image
+				<CharacterAvatar
+					character={char}
 					className={styles.charSelectOptionAvatar}
-					src={`/characters/avatar/${char.imageSrc}`}
 					height={256}
 					width={256}
-					alt={`${char.name} avatar`}
 				/>
 				<Image
 					className={styles.charSelectElement}

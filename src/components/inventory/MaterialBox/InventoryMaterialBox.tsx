@@ -28,6 +28,8 @@ import { getAggregatedMaterials } from "@/hooks/usePlannerStore"
 
 import { getLinkedMaterials } from "@/helpers"
 
+import { MaterialIcon } from "@/components/layout"
+
 import styles from "./inventoryMaterial.module.css"
 import pageStyles from "@/app/inventory/page.module.css"
 
@@ -134,11 +136,10 @@ export function MaterialItemBox({
 							: requiredQuantity - itemQuantity}
 					</div>
 				)}
-				<Image
-					src={`/materials${material.imageSrc}.png`}
+				<MaterialIcon
+					material={material}
 					width={128}
 					height={128}
-					alt={`${material.name} icon`}
 					loading="eager"
 				/>
 			</div>

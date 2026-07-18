@@ -1,4 +1,4 @@
-const CACHE_VERSION = "v2"
+const CACHE_VERSION = "v5"
 const SHELL_CACHE = `chiz-pink-shell-${CACHE_VERSION}`
 const RUNTIME_CACHE = `chiz-pink-runtime-${CACHE_VERSION}`
 const CURRENT_CACHES = [SHELL_CACHE, RUNTIME_CACHE]
@@ -17,6 +17,9 @@ const APP_SHELL_URLS = [
 	OFFLINE_URL,
 	"/app_icon.png",
 	"/favicon.png",
+	"/materials/placeholder.png",
+	"/arcs/placeholder.png",
+	"/characters/avatar/placeholder.png",
 ]
 
 self.addEventListener("install", (event) => {

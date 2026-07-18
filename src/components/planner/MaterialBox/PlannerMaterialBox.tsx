@@ -1,6 +1,5 @@
 "use client"
 
-import Image from "next/image"
 import { MouseEvent, useMemo } from "react"
 
 import type { Material } from "@/types/item"
@@ -12,6 +11,8 @@ import { useTooltip, useMaterialEditorModal, useInventoryStore } from "@/hooks"
 import { getLinkedMaterials } from "@/helpers"
 
 import { usePlannerMaterialsContext } from "@/contexts"
+
+import { MaterialIcon } from "@/components/layout"
 
 import styles from "./plannerMaterial.module.css"
 
@@ -49,7 +50,7 @@ export function PlannerMaterialBox({
 		cumulativeInventory[isAggregateMaterial ? 0 : entryIndex] ?? {}
 
 	const availableAmount = usableInventory[material.id]?.amount ?? 0
-	const ownedAmount = inventory[material.id] || 0 
+	const ownedAmount = inventory[material.id] || 0
 	let craftedAmount = usableInventory[material.id]?.craftedAmount ?? 0
 
 	let usingCrafted = craftedAmount > 0
@@ -85,12 +86,11 @@ export function PlannerMaterialBox({
 				{usingCrafted && (
 					<div className={styles.craftedTag}>{craftedAmount}</div>
 				)}
-				<Image
-					src={`/materials${material.imageSrc}.png`}
+				<MaterialIcon
+					material={material}
 					width={64}
 					height={64}
 					quality={100}
-					alt={`Material ${material.name} Icon`}
 				/>
 			</div>
 			<span className={styles.amount}>
@@ -118,7 +118,7 @@ export function PlannerMaterialBox({
 								}}>
 								{displayAmount.toLocaleString("en-us")}
 							</span>
-							<br/>
+							<br />
 						</>
 					)}
 					{"Owned: "}
@@ -127,7 +127,9 @@ export function PlannerMaterialBox({
 					</span>
 					{" | Available: "}
 					<span style={{ fontFamily: "var(--font-barlow-condensed)" }}>
-						{(availableAmount + craftedAmount).toLocaleString("en-us")}
+						{(availableAmount + craftedAmount).toLocaleString(
+							"en-us"
+						)}
 					</span>
 					{usingCrafted && (
 						<span style={{ fontStyle: "italic" }}>

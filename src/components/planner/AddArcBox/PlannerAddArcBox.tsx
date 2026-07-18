@@ -1,6 +1,5 @@
 "use client"
 
-import Image from "next/image"
 import { ChangeEvent, CSSProperties, MouseEvent, useState } from "react"
 
 import type { ModalEventType } from "@/types"
@@ -12,6 +11,8 @@ import { findArc, EnumArcType, getAllArcsList } from "@/data/arcs"
 import { getRarityName, createSearchString } from "@/helpers"
 
 import { useAddArcContext } from "@/contexts"
+
+import { ArcIcon } from "@/components/layout"
 
 import styles from "./plannerAddArcBox.module.css"
 
@@ -115,12 +116,7 @@ const PlannerArcsSelect = () => {
 					setDropdown(true)
 				}}>
 				<div className={styles.arcSelectSelectedImageContainer}>
-					<Image
-						src={`/arcs/${selected.imageSrc}`}
-						width={512}
-						height={512}
-						alt={`Arc ${selected.name} icon`}
-					/>
+					<ArcIcon arc={selected} width={512} height={512} />
 				</div>
 				<p>{selected.name}</p>
 				<p>{`${getRarityName(selected.rarity)} ${selected.type} Arc`}</p>
@@ -195,11 +191,10 @@ const PlannerArcsSelect = () => {
 								className={styles.arcSelectOption}
 								key={arc.id}
 								onClick={addArc}>
-								<Image
-									src={`/arcs/${arc.imageSrc}`}
+								<ArcIcon
+									arc={arc}
 									width={128}
 									height={128}
-									alt={`Arc ${arc.name} icon`}
 									className={getItemRarityStyle(arc)}
 								/>
 								<p>{arc.name}</p>

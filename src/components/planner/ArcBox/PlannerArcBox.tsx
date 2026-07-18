@@ -1,6 +1,5 @@
 "use client"
 
-import Image from "next/image"
 import { ChangeEvent, MouseEvent, useEffect, useState } from "react"
 import { createPortal } from "react-dom"
 
@@ -18,7 +17,7 @@ import { getRarityName } from "@/helpers"
 
 import { PlannerBoxContext, usePlannerMaterialsContext } from "@/contexts"
 
-import { AlertContainer, ModalContainer } from "@/components/layout"
+import { AlertContainer, ArcIcon, ModalContainer } from "@/components/layout"
 import { ItemPhases, PlannerMaterialsList } from "@/components/planner"
 import { PlannerBoxButtonsContainer } from "@/components/planner/PlannerBoxButtonsContainer"
 
@@ -197,11 +196,10 @@ export function PlannerArcBox({
 						className={`${plannerBoxStyles.infoContainer} ${styles.infoContainer}`}>
 						<div className={styles.arcInfoTop}>
 							<div className={styles.arcImageContainer}>
-								<Image
-									src={`/arcs/${arc.imageSrc}`}
+								<ArcIcon
+									arc={arc}
 									width={128}
 									height={128}
-									alt={`Arc "${arc.name}" Icon`}
 									loading="eager"
 								/>
 								<div className={styles.arcLabelContainer}>
