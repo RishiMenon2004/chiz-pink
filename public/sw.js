@@ -1,4 +1,4 @@
-const CACHE_VERSION = "v1"
+const CACHE_VERSION = "v2"
 const SHELL_CACHE = `chiz-pink-shell-${CACHE_VERSION}`
 const RUNTIME_CACHE = `chiz-pink-runtime-${CACHE_VERSION}`
 const CURRENT_CACHES = [SHELL_CACHE, RUNTIME_CACHE]
@@ -21,10 +21,31 @@ const APP_SHELL_URLS = [
 
 self.addEventListener("install", (event) => {
 	event.waitUntil(
-		caches
-			.open(SHELL_CACHE)
-			.then((cache) => cache.addAll(APP_SHELL_URLS))
-			.then(() => self.skipWaiting())
+		(async () => {
+			const cache = await caches.open(SHELL_CACHE)
+
+			// Cache the offline fallback first, on its own -- this is the last
+			// resort every failed navigation falls back to, so it has to exist.
+			try {
+				await cache.add(OFFLINE_URL)
+			} catch (err) {
+				console.error("Failed to precache offline fallback:", err)
+			}
+
+			// Best-effort for the rest of the shell: cache.addAll() is
+			// all-or-nothing, so one flaky/failing URL would otherwise wipe
+			// out the entire precache, silently including the offline page
+			// above. Cache each independently instead.
+			await Promise.allSettled(
+				APP_SHELL_URLS.filter((url) => url !== OFFLINE_URL).map((url) =>
+					cache.add(url).catch((err) => {
+						console.error(`Failed to precache ${url}:`, err)
+					})
+				)
+			)
+
+			await self.skipWaiting()
+		})()
 	)
 })
 
@@ -114,7 +135,17 @@ async function networkFirstNavigation(request) {
 		const offlineFallback = await caches.match(OFFLINE_URL)
 		if (offlineFallback) return offlineFallback
 
-		return Response.error()
+		// Last resort: never hand the browser Response.error() here, since
+		// browsers render a network-error Response as their own native
+		// "this page couldn't load" screen instead of anything we control.
+		// A real (if minimal) Response always renders our own content.
+		return new Response(
+			"<!DOCTYPE html><html><head><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"></head><body style=\"background:#1d1d1d;color:#fff;font-family:sans-serif;display:grid;place-items:center;height:100vh;margin:0;text-align:center;padding:2rem;box-sizing:border-box;\"><p>You're offline, and this page hasn't been saved for offline use yet.</p></body></html>",
+			{
+				status: 200,
+				headers: { "Content-Type": "text/html" },
+			}
+		)
 	}
 }
 
