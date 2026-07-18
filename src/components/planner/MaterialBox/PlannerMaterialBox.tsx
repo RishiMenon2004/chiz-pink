@@ -109,18 +109,14 @@ export function PlannerMaterialBox({
 						marginBlock: "0.25rem",
 						marginLeft: "0.5rem",
 					}}>
-					{displayAmount > 1000000 && (
-						<>
-							{"Need: "}
-							<span
-								style={{
-									fontFamily: "var(--font-barlow-condensed)",
-								}}>
-								{displayAmount.toLocaleString("en-us")}
-							</span>
-							<br />
-						</>
-					)}
+					{"Total Needed: "}
+					<span
+						style={{
+							fontFamily: "var(--font-barlow-condensed)",
+						}}>
+						{requiredAmount.toLocaleString("en-us")}
+					</span>
+					<br />
 					{"Owned: "}
 					<span style={{ fontFamily: "var(--font-barlow-condensed)" }}>
 						{ownedAmount.toLocaleString("en-us")}
