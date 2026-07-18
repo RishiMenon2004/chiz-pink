@@ -4,6 +4,7 @@ import { Barlow_Condensed, Syne } from "next/font/google"
 import { RoutesData } from "@/data/routes"
 
 import { CurrencyBar, Footer, Sidebar, SplashScreen } from "@/components/layout"
+import { ServiceWorkerRegister } from "@/helpers"
 
 import "./globals.css"
 
@@ -27,6 +28,12 @@ export const metadata: Metadata = {
 	description: "Your favourite daily planner and inventory tracker :3",
 	icons: {
 		icon: "/favicon.png",
+		apple: "/app_icon.png",
+	},
+	appleWebApp: {
+		capable: true,
+		title: "Chiz.Pink",
+		statusBarStyle: "black-translucent",
 	},
 }
 
@@ -48,6 +55,7 @@ export default function RootLayout({
 			lang="en"
 			className={`${barlowCondensed.variable} ${syne.variable}`}>
 			<body>
+				<ServiceWorkerRegister />
 				<SplashScreen />
 				<Sidebar />
 				<CurrencyBar />

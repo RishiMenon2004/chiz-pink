@@ -9,6 +9,7 @@ export { getCostAmount } from "./getCostAmountWithRarity"
 export { parseDescription } from "./parseDescription"
 
 export { PlannerInventoryProvider } from "./PlannerInventoryProvider"
+export { ServiceWorkerRegister } from "./ServiceWorkerRegister"
 
 export { generateNewCharacter } from "./generateNewCharacter"
 export { createSearchString } from "./createSearchString"
