@@ -54,7 +54,14 @@ body {
 
 	overflow: hidden auto;
 	padding-left: var(--sidebar-width);
-	padding-top: var(--titlebar-height);
+
+	padding-top: calc(var(--titlebar-height));
+
+	@supports (padding-top: env(safe-area-inset-top)) {
+		& {
+			padding-top: calc(var(--titlebar-height) + env(safe-area-inset-top));
+		}
+	}
 
 	background-color: var(--background);
 	background-image: repeating-linear-gradient(

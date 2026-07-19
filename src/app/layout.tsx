@@ -33,7 +33,7 @@ export const metadata: Metadata = {
 	appleWebApp: {
 		capable: true,
 		title: "Chiz.Pink",
-		statusBarStyle: "black-translucent",
+		statusBarStyle: "default",
 	},
 }
 
@@ -43,6 +43,7 @@ export const viewport: Viewport = {
 	initialScale: 1,
 	maximumScale: 1,
 	userScalable: false,
+	viewportFit: "cover",
 }
 
 export default function RootLayout({
