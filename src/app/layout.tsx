@@ -7,6 +7,7 @@ import { CurrencyBar, Footer, Sidebar, SplashScreen } from "@/components/layout"
 import { ServiceWorkerRegister } from "@/helpers"
 
 import "./globals.css"
+import { Analytics } from "@vercel/analytics/next"
 
 const barlowCondensed = Barlow_Condensed({
 	variable: "--font-barlow-condensed",
@@ -62,6 +63,7 @@ export default function RootLayout({
 				<CurrencyBar />
 				{children}
 				<Footer />
+				<Analytics />
 			</body>
 		</html>
 	)
