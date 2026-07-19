@@ -1,6 +1,6 @@
 "use client"
 
-import { ReactNode, useEffect, useRef } from "react"
+import { ReactNode, useCallback, useEffect, useRef, useState } from "react"
 
 export function TooltipContainer({
 	subtext,
@@ -14,59 +14,51 @@ export function TooltipContainer({
 	children: ReactNode
 }) {
 	const tooltipRef = useRef<HTMLDivElement>(null!)
+	const [isVisible, setVisible] = useState<boolean>(false)
+
+	const calculateMousePos = useCallback(
+		({ x, y }: { x: number; y: number }) => {
+			const mousePos = {
+				x: x + (offset.x || 0),
+				y: y + (offset.y || 0) - tooltipRef.current.clientHeight / 2,
+			}
+
+			if (
+				mousePos.x + tooltipRef.current.clientWidth >
+				document.body.clientWidth
+			) {
+				mousePos.x =
+					x - (offset.x || 0) / 2 - tooltipRef.current.clientWidth
+			}
+
+			return mousePos
+		},
+		[offset]
+	)
 
 	useEffect(() => {
 		const handleMouseMove = (e: globalThis.MouseEvent) => {
 			if (tooltipRef.current) {
-				const mousePos = {
-					x: e.clientX + (offset.x || 0),
-					y:
-						e.clientY +
-						(offset.y || 0) -
-						tooltipRef.current.clientHeight / 2,
-				}
-
-				if (
-					mousePos.x + tooltipRef.current.clientWidth >
-					document.body.clientWidth
-				) {
-					mousePos.x =
-						e.clientX -
-						(offset.x || 0) / 2 -
-						tooltipRef.current.clientWidth
-				}
-
+				const mousePos = calculateMousePos({ x: e.clientX, y: e.clientY })
 				tooltipRef.current.style.transform = `translate(${mousePos.x}px, ${mousePos.y}px)`
 			}
 		}
 
 		window.addEventListener("mousemove", handleMouseMove)
 		return () => window.removeEventListener("mousemove", handleMouseMove)
-	}, [tooltipRef, offset])
+	}, [tooltipRef, calculateMousePos])
 
 	useEffect(() => {
-		const mousePos = {
-			x: startingPos.x + (offset.x || 0),
-			y:
-				startingPos.y +
-				(offset.y || 0) -
-				tooltipRef.current.clientHeight / 2,
-		}
-
-		if (
-			mousePos.x + tooltipRef.current.clientWidth >
-			document.body.clientWidth
-		) {
-			mousePos.x =
-				startingPos.x -
-				(offset.x || 0) / 2 -
-				tooltipRef.current.clientWidth
-		}
+		const mousePos = calculateMousePos(startingPos)
 		tooltipRef.current.style.transform = `translate(${mousePos.x}px, ${mousePos.y}px)`
-	}, [startingPos, offset])
+	}, [startingPos, calculateMousePos])
+
+	useEffect(() => {
+		setTimeout(() => setVisible(true), 50)
+	}, [])
 
 	return (
-		<div className="tooltip" ref={tooltipRef}>
+		<div className={`tooltip ${isVisible ? "visible" : ""}`} ref={tooltipRef}>
 			{children}
 			{subtext && <div className="subtext">{subtext}</div>}
 		</div>
