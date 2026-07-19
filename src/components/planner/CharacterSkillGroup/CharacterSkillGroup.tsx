@@ -31,7 +31,7 @@ export function CharacterSkillGroup({
 	if (ability) {
 		return (
 			<div
-				className={`${styles.charStatInputGroup} ${ability.isDisabled && styles.disabled}`}>
+				className={`${styles.charStatInputGroup} ${ability.isDisabled && styles.disabled} ${charRecord.isDisabled && styles.noInteract}`}>
 				<input
 					type="checkbox"
 					checked={!ability.isDisabled}

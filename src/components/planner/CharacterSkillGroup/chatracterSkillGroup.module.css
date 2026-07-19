@@ -216,3 +216,11 @@
 		height: 0;
 	}
 }
+
+.noInteract {
+	cursor: not-allowed;
+
+	& * {
+		pointer-events: none;
+	}
+}

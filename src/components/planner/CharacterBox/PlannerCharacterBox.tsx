@@ -330,7 +330,7 @@ export function PlannerCharacterBox({
 					dragRef: handleRef,
 				}}>
 				<div
-					className={`${plannerBoxStyles.plannerBox} ${getItemRarityStyle(char)} ${CharacterState.isDisabled ? plannerBoxStyles.plannerBoxDisabled : ""} ${dropPreviewOrDragOverlay().join(" ")}`}>
+					className={`${plannerBoxStyles.plannerBox} ${getItemRarityStyle(char)} ${CharacterState.isDisabled ? `${plannerBoxStyles.plannerBoxDisabled} ${styles.noInteract}` : ""} ${dropPreviewOrDragOverlay().join(" ")}`}>
 					<div className={plannerBoxStyles.infoContainer}>
 						<div className={styles.charInfoTop}>
 							<div className={styles.charAvatarContainer}>

@@ -191,7 +191,7 @@ export function PlannerArcBox({
 					dragRef: handleRef,
 				}}>
 				<div
-					className={`${plannerBoxStyles.plannerBox} ${getItemRarityStyle(arc)} ${isDisabled ? plannerBoxStyles.plannerBoxDisabled : ""} ${dropPreviewOrDragOverlay().join(" ")}`}>
+					className={`${plannerBoxStyles.plannerBox} ${getItemRarityStyle(arc)} ${isDisabled ? `${plannerBoxStyles.plannerBoxDisabled} ${styles.noInteract}` : ""} ${dropPreviewOrDragOverlay().join(" ")}`}>
 					<div
 						className={`${plannerBoxStyles.infoContainer} ${styles.infoContainer}`}>
 						<div className={styles.arcInfoTop}>

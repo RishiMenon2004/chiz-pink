@@ -234,6 +234,16 @@
 	}
 }
 
+.noInteract {
+	.charLevels {
+		cursor: not-allowed;
+
+		& * {
+			pointer-events: none;
+		}
+	}
+}
+
 .charStatsSection {
 	display: flex;
 	flex-direction: column;
@@ -241,6 +251,10 @@
 	.charStatsSubSection {
 		display: flex;
 		flex-direction: column;
+
+		summary {
+			cursor: var(--pull-cursor), pointer;
+		}
 
 		.charStatsGrid {
 			margin-inline: var(--padding-left) var(--padding-right);

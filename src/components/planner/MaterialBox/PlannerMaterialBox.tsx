@@ -10,7 +10,7 @@ import { useTooltip, useMaterialEditorModal, useInventoryStore } from "@/hooks"
 
 import { getLinkedMaterials } from "@/helpers"
 
-import { usePlannerMaterialsContext } from "@/contexts"
+import { usePlannerBoxContext, usePlannerMaterialsContext } from "@/contexts"
 
 import { MaterialIcon } from "@/components/layout"
 
@@ -19,11 +19,9 @@ import styles from "./plannerMaterial.module.css"
 export function PlannerMaterialBox({
 	material,
 	requiredAmount,
-	entryIndex,
 }: {
 	material: Material
 	requiredAmount: number
-	entryIndex: number
 }) {
 	const { Tooltip, showTooltip, hideTooltip } = useTooltip()
 
@@ -40,6 +38,11 @@ export function PlannerMaterialBox({
 		e.stopPropagation()
 		hideTooltip()
 		showModal()
+	}
+
+	const { itemRecord, entryIndex } = usePlannerBoxContext() || {
+		itemRecord: {},
+		entryIndex: -1,
 	}
 
 	const isAggregateMaterial = entryIndex === -1
@@ -76,12 +79,14 @@ export function PlannerMaterialBox({
 		return displayAmount.toLocaleString("en-us")
 	}
 
+	const disabled = () => {}
+
 	return (
 		<div
-			className={`${styles.materialBox} ${getItemRarityStyle(material)} ${remainingAmount === 0 && styles.acquired} ${usingCrafted && styles.crafted}`}
-			onPointerEnter={showTooltip}
-			onPointerLeave={hideTooltip}
-			onClick={handleClick}>
+			className={`${styles.materialBox} ${getItemRarityStyle(material)} ${remainingAmount === 0 && styles.acquired} ${usingCrafted && styles.crafted} ${itemRecord.isDisabled && styles.noInteract}`}
+			onPointerEnter={itemRecord.isDisabled ? disabled : showTooltip}
+			onPointerLeave={itemRecord.isDisabled ? disabled : hideTooltip}
+			onClick={itemRecord.isDisabled ? disabled : handleClick}>
 			<div className={styles.iconContainer}>
 				{usingCrafted && (
 					<div className={styles.craftedTag}>{craftedAmount}</div>

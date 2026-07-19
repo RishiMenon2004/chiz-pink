@@ -13,9 +13,8 @@ export function PlannerMaterialsList({
 		amount: number
 	}[]
 }) {
-	const { itemRecord, entryIndex } = usePlannerBoxContext() ?? {
+	const { itemRecord } = usePlannerBoxContext() ?? {
 		itemRecord: {},
-		entryIndex: -1,
 	}
 
 	const materialsList = materials ? materials : itemRecord.requiredMaterials
@@ -29,7 +28,6 @@ export function PlannerMaterialsList({
 							key={material.id}
 							material={findMaterial(material.id)}
 							requiredAmount={material.amount}
-							entryIndex={entryIndex}
 						/>
 					)
 				}

@@ -91,6 +91,16 @@
 		font-size: 1rem;
 		font-weight: 500;
 		text-align: center;
+
+		user-select: none;
+	}
+}
+
+.noInteract {
+	cursor: var(--default-cursor);
+
+	& * {
+		pointer-events: none;
 	}
 }
 

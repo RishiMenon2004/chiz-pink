@@ -228,6 +228,19 @@
 	}
 }
 
+.noInteract {
+	.arcInfoTop {
+		.arcStatsSection {
+			.arcStatsLvlContainer {
+				cursor: not-allowed;
+				& * {
+					pointer-events: none;
+				}
+			}
+		}
+	}
+}
+
 @container (width < 450px) {
 	.arcInfoTop {
 		flex-direction: column;
