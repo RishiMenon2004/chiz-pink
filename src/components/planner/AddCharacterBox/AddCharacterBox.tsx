@@ -16,7 +16,7 @@ import { createSearchString } from "@/helpers"
 
 import { useAddCharContext } from "@/contexts"
 
-import { CharacterAvatar } from "@/components/layout"
+import { CharacterAvatar, CharacterElement } from "@/components/layout"
 
 import styles from "./addCharacterBox.module.css"
 
@@ -44,12 +44,11 @@ function CharacterListItem({
 					height={256}
 					width={256}
 				/>
-				<Image
+				<CharacterElement
+					element={char.element}
 					className={styles.charSelectElement}
-					src={`/icons/elements/${char.element}.png`}
 					height={64}
 					width={64}
-					alt={`${char.name} element`}
 				/>
 			</div>
 			<div className={styles.charSelectName}>{char.name}</div>
@@ -126,21 +125,12 @@ export function PlannerAddCharacterBox({
 										toggleElement(e)
 									}
 								}}>
-								{isActive ? (
-									<Image
-										src={`/icons/elements/${element}_white.png`}
-										width={64}
-										height={64}
-										alt={`${element} icon`}
-									/>
-								) : (
-									<Image
-										src={`/icons/elements/${element}.png`}
-										width={64}
-										height={64}
-										alt={`${element} icon`}
-									/>
-								)}
+								<CharacterElement
+									element={element}
+									active={isActive}
+									height={64}
+									width={64}
+								/>
 							</span>
 						)
 					})}

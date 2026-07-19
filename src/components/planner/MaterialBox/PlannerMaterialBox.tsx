@@ -88,8 +88,8 @@ export function PlannerMaterialBox({
 				)}
 				<MaterialIcon
 					material={material}
-					width={64}
-					height={64}
+					width={128}
+					height={128}
 					quality={100}
 				/>
 			</div>

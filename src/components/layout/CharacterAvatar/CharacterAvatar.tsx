@@ -3,8 +3,9 @@
 import Image, { type ImageProps } from "next/image"
 
 import type { Character } from "@/types/character"
+import { EnumCharacterElement } from "@/data/characters"
 
-const PLACEHOLDER_SRC = "/characters/avatar/placeholder.png"
+const CHAR_PLACEHOLDER_SRC = "/characters/avatar/placeholder.png"
 
 type CharacterAvatarProps = Omit<ImageProps, "src" | "alt"> & {
 	alt?: string
@@ -25,9 +26,35 @@ export function CharacterAvatar({
 			alt={alt ?? `${character.id} avatar`}
 			onError={(e) => {
 				const target = e.currentTarget
-				if (target.src.endsWith(PLACEHOLDER_SRC)) return
-				target.src = PLACEHOLDER_SRC
+				if (target.src.endsWith(CHAR_PLACEHOLDER_SRC)) return
+				target.src = CHAR_PLACEHOLDER_SRC
 			}}
+			{...imageProps}
+		/>
+	)
+}
+
+type CharacterElementProps = Omit<ImageProps, "src" | "alt"> & {
+	alt?: string
+	active?: boolean
+	element: EnumCharacterElement
+}
+
+export function CharacterElement({
+	element,
+	active,
+	...imageProps
+}: CharacterElementProps) {
+	return active ? (
+		<Image
+			src={`/icons/elements/${element}_white.png`}
+			alt={`${element} icon`}
+			{...imageProps}
+		/>
+	) : (
+		<Image
+			src={`/icons/elements/${element}.png`}
+			alt={`${element} icon`}
 			{...imageProps}
 		/>
 	)

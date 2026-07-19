@@ -193,8 +193,8 @@ const PlannerArcsSelect = () => {
 								onClick={addArc}>
 								<ArcIcon
 									arc={arc}
-									width={128}
-									height={128}
+									width={512}
+									height={512}
 									className={getItemRarityStyle(arc)}
 								/>
 								<p>{arc.name}</p>

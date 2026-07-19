@@ -93,7 +93,7 @@
 	}
 
 	&.multi {
-		--multi: url("/materials/borders/multi-mat.png");
+		--multi: url("/icons/multi-mat.png");
 	}
 
 	&.multi .iconContainer {

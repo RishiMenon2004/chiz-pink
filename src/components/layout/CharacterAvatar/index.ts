@@ -1,1 +1,1 @@
-export { CharacterAvatar } from "./CharacterAvatar"
+export { CharacterAvatar, CharacterElement } from "./CharacterAvatar"

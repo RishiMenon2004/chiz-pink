@@ -140,6 +140,7 @@ export function MaterialItemBox({
 					material={material}
 					width={128}
 					height={128}
+					quality={100}
 					loading="eager"
 				/>
 			</div>
