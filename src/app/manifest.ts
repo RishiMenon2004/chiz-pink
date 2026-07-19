@@ -6,7 +6,7 @@ export default function manifest(): MetadataRoute.Manifest {
 		short_name: "Chiz.Pink",
 		description: "Your favourite daily planner and inventory tracker :3",
 		start_url: "/",
-		display: "fullscreen",
+		display: "standalone",
 		orientation: "portrait-primary",
 		background_color: "#1d1d1d",
 		theme_color: "#ff569f",
