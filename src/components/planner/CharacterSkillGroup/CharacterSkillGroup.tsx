@@ -24,6 +24,10 @@ export function CharacterSkillGroup({
 
 	const maxLvl = char.abilities[skill]?.maxLvl || 1
 
+	const isPassive = ["passive1", "passive2", "passive3"].includes(skill)
+	const isLifeSkill = ["lifeSkill1", "lifeSkill2"].includes(skill)
+	const LS2SkipLvl1 = skill === "lifeSkill2" && maxLvl === 1
+
 	if (ability) {
 		return (
 			<div
@@ -41,19 +45,17 @@ export function CharacterSkillGroup({
 						{char.abilities[skill]?.name}
 					</span>
 				</div>
-				{!["passive1", "passive2", "passive3"].includes(skill) && (
+				{!isPassive && (
 					<div className={styles.charStatInputSelects}>
 						<select
 							value={ability.currentLvl}
 							onChange={(e) => handleCurrentLvlChange(e, skill)}
 							tabIndex={1}>
-							{["lifeSkill1", "lifeSkill2"].includes(skill) && (
-								<option value={0}>{0}</option>
-							)}
-							{Array.from({
-								length: maxLvl,
-							}).map((_, opt) => (
-								<option key={opt} value={opt + 1}>
+							{isLifeSkill && <option value={0}>{0}</option>}
+							{Array.from({ length: maxLvl }).map((_, opt) => (
+								<option
+									key={opt}
+									value={opt + 1 + (LS2SkipLvl1 ? 1 : 0)}>
 									{opt + 1}
 								</option>
 							))}
@@ -63,10 +65,11 @@ export function CharacterSkillGroup({
 							value={ability.targetLvl}
 							onChange={(e) => handleTargetLvlChange(e, skill)}
 							tabIndex={1}>
-							{Array.from({
-								length: maxLvl,
-							}).map((_, opt) => (
-								<option key={opt} value={opt + 1}>
+							{isLifeSkill && <option value={0}>{0}</option>}
+							{Array.from({ length: maxLvl }).map((_, opt) => (
+								<option
+									key={opt}
+									value={opt + 1 + (LS2SkipLvl1 ? 1 : 0)}>
 									{opt + 1}
 								</option>
 							))}

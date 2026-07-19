@@ -66,10 +66,11 @@ export function generateNewCharacter(charID?: string) {
 	}
 
 	if (featuredChar.abilities.lifeSkill2) {
+		const isMax1 = featuredChar.abilities.lifeSkill2.maxLvl === 1
 		newChar.abilitySet.lifeSkill2 = {
 			isDisabled: false,
-			currentLvl: 0,
-			targetLvl: featuredChar.abilities.lifeSkill2.maxLvl,
+			currentLvl: isMax1 ? 1 : 0,
+			targetLvl: featuredChar.abilities.lifeSkill2.maxLvl + (isMax1 ? 1 : 0),
 		}
 	}
 
