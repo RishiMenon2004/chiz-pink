@@ -12,11 +12,7 @@ export enum EnumCharacterElement {
 type CharLevelMaterialsType = {
 	beetleCoin: number
 	bossMaterial: number
-	exp: {
-		common: number
-		uncommon: number
-		rare: number
-	}
+	exp: number
 	ascMaterial: {
 		common: number
 		uncommon: number
@@ -31,11 +27,7 @@ export const characterLevelMaterials: Record<
 	1: {
 		beetleCoin: 0,
 		bossMaterial: 0,
-		exp: {
-			common: 0,
-			uncommon: 0,
-			rare: 0,
-		},
+		exp: 0,
 		ascMaterial: {
 			common: 0,
 			uncommon: 0,
@@ -43,13 +35,9 @@ export const characterLevelMaterials: Record<
 		},
 	},
 	20: {
-		beetleCoin: 22250,
+		beetleCoin: 0,
 		bossMaterial: 0,
-		exp: {
-			common: 4,
-			uncommon: 1,
-			rare: 4,
-		},
+		exp: 100790,
 		ascMaterial: {
 			common: 0,
 			uncommon: 0,
@@ -59,11 +47,7 @@ export const characterLevelMaterials: Record<
 	21: {
 		beetleCoin: 25000,
 		bossMaterial: 0,
-		exp: {
-			common: 0,
-			uncommon: 0,
-			rare: 0,
-		},
+		exp: 0,
 		ascMaterial: {
 			common: 5,
 			uncommon: 0,
@@ -71,13 +55,9 @@ export const characterLevelMaterials: Record<
 		},
 	},
 	30: {
-		beetleCoin: 49500,
+		beetleCoin: 0,
 		bossMaterial: 0,
-		exp: {
-			common: 4,
-			uncommon: 3,
-			rare: 9,
-		},
+		exp: 212450,
 		ascMaterial: {
 			common: 0,
 			uncommon: 0,
@@ -87,11 +67,7 @@ export const characterLevelMaterials: Record<
 	31: {
 		beetleCoin: 50000,
 		bossMaterial: 2,
-		exp: {
-			common: 0,
-			uncommon: 0,
-			rare: 0,
-		},
+		exp: 0,
 		ascMaterial: {
 			common: 12,
 			uncommon: 0,
@@ -99,13 +75,9 @@ export const characterLevelMaterials: Record<
 		},
 	},
 	40: {
-		beetleCoin: 88250,
+		beetleCoin: 0,
 		bossMaterial: 0,
-		exp: {
-			common: 4,
-			uncommon: 2,
-			rare: 17,
-		},
+		exp: 371340,
 		ascMaterial: {
 			common: 0,
 			uncommon: 0,
@@ -115,11 +87,7 @@ export const characterLevelMaterials: Record<
 	41: {
 		beetleCoin: 75000,
 		bossMaterial: 8,
-		exp: {
-			common: 0,
-			uncommon: 0,
-			rare: 0,
-		},
+		exp: 0,
 		ascMaterial: {
 			common: 0,
 			uncommon: 6,
@@ -127,13 +95,9 @@ export const characterLevelMaterials: Record<
 		},
 	},
 	50: {
-		beetleCoin: 144000,
+		beetleCoin: 0,
 		bossMaterial: 0,
-		exp: {
-			common: 1,
-			uncommon: 2,
-			rare: 28,
-		},
+		exp: 604740,
 		ascMaterial: {
 			common: 0,
 			uncommon: 0,
@@ -143,11 +107,7 @@ export const characterLevelMaterials: Record<
 	51: {
 		beetleCoin: 100000,
 		bossMaterial: 16,
-		exp: {
-			common: 0,
-			uncommon: 0,
-			rare: 0,
-		},
+		exp: 0,
 		ascMaterial: {
 			common: 0,
 			uncommon: 12,
@@ -155,13 +115,9 @@ export const characterLevelMaterials: Record<
 		},
 	},
 	60: {
-		beetleCoin: 234000,
+		beetleCoin: 0,
 		bossMaterial: 0,
-		exp: {
-			common: 4,
-			uncommon: 3,
-			rare: 46,
-		},
+		exp: 985040,
 		ascMaterial: {
 			common: 0,
 			uncommon: 0,
@@ -171,11 +127,7 @@ export const characterLevelMaterials: Record<
 	61: {
 		beetleCoin: 125000,
 		bossMaterial: 24,
-		exp: {
-			common: 0,
-			uncommon: 0,
-			rare: 0,
-		},
+		exp: 0,
 		ascMaterial: {
 			common: 0,
 			uncommon: 0,
@@ -183,13 +135,9 @@ export const characterLevelMaterials: Record<
 		},
 	},
 	70: {
-		beetleCoin: 382250,
+		beetleCoin: 0,
 		bossMaterial: 0,
-		exp: {
-			common: 4,
-			uncommon: 1,
-			rare: 76,
-		},
+		exp: 1604650,
 		ascMaterial: {
 			common: 0,
 			uncommon: 0,
@@ -199,11 +147,7 @@ export const characterLevelMaterials: Record<
 	71: {
 		beetleCoin: 150000,
 		bossMaterial: 35,
-		exp: {
-			common: 0,
-			uncommon: 0,
-			rare: 0,
-		},
+		exp: 0,
 		ascMaterial: {
 			common: 0,
 			uncommon: 0,
@@ -211,13 +155,9 @@ export const characterLevelMaterials: Record<
 		},
 	},
 	80: {
-		beetleCoin: 622250,
+		beetleCoin: 0,
 		bossMaterial: 0,
-		exp: {
-			common: 5,
-			uncommon: 1,
-			rare: 124,
-		},
+		exp: 2613830,
 		ascMaterial: {
 			common: 0,
 			uncommon: 0,
@@ -308,7 +248,7 @@ export const characterSkillLevelMaterials: Record<
 		4: {
 			fons: 0,
 			dreamlessSeed: 0,
-			beetleCoin: 25000,
+			beetleCoin: 10000,
 			bossMaterial: 0,
 			ascMaterial: {
 				common: 5,
@@ -324,7 +264,7 @@ export const characterSkillLevelMaterials: Record<
 		5: {
 			fons: 0,
 			dreamlessSeed: 0,
-			beetleCoin: 30000,
+			beetleCoin: 20000,
 			bossMaterial: 0,
 			ascMaterial: {
 				common: 0,
@@ -340,7 +280,7 @@ export const characterSkillLevelMaterials: Record<
 		6: {
 			fons: 0,
 			dreamlessSeed: 0,
-			beetleCoin: 37500,
+			beetleCoin: 40000,
 			bossMaterial: 0,
 			ascMaterial: {
 				common: 0,
@@ -356,7 +296,7 @@ export const characterSkillLevelMaterials: Record<
 		7: {
 			fons: 0,
 			dreamlessSeed: 0,
-			beetleCoin: 120000,
+			beetleCoin: 60000,
 			bossMaterial: 1,
 			ascMaterial: {
 				common: 0,
@@ -372,7 +312,7 @@ export const characterSkillLevelMaterials: Record<
 		8: {
 			fons: 0,
 			dreamlessSeed: 0,
-			beetleCoin: 250000,
+			beetleCoin: 80000,
 			bossMaterial: 1,
 			ascMaterial: {
 				common: 0,
@@ -388,7 +328,7 @@ export const characterSkillLevelMaterials: Record<
 		9: {
 			fons: 0,
 			dreamlessSeed: 0,
-			beetleCoin: 450000,
+			beetleCoin: 100000,
 			bossMaterial: 2,
 			ascMaterial: {
 				common: 0,
@@ -404,7 +344,7 @@ export const characterSkillLevelMaterials: Record<
 		10: {
 			fons: 0,
 			dreamlessSeed: 0,
-			beetleCoin: 700000,
+			beetleCoin: 120000,
 			bossMaterial: 4,
 			ascMaterial: {
 				common: 0,
@@ -426,7 +366,7 @@ export const characterSkillLevelMaterials: Record<
 			bossMaterial: 1,
 			ascMaterial: {
 				common: 0,
-				uncommon: 3,
+				uncommon: 2,
 				rare: 0,
 			},
 			talentMaterial: {

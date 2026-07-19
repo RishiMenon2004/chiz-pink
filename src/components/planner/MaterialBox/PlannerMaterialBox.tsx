@@ -4,7 +4,7 @@ import { MouseEvent, useMemo } from "react"
 
 import type { Material } from "@/types/item"
 
-import { getItemRarityStyle } from "@/data/items"
+import { EnumMaterialType, findMaterial, getItemRarityStyle } from "@/data/items"
 
 import { useTooltip, useMaterialEditorModal, useInventoryStore } from "@/hooks"
 
@@ -55,6 +55,7 @@ export function PlannerMaterialBox({
 	const availableAmount = usableInventory[material.id]?.amount ?? 0
 	const ownedAmount = inventory[material.id] || 0
 	let craftedAmount = usableInventory[material.id]?.craftedAmount ?? 0
+	let craftedFrom = usableInventory[material.id]?.craftedFrom ?? []
 
 	let usingCrafted = craftedAmount > 0
 
@@ -66,6 +67,7 @@ export function PlannerMaterialBox({
 	if (isAggregateMaterial) {
 		usingCrafted = false
 		craftedAmount = 0
+		craftedFrom = []
 		remainingAmount = Math.max(0, requiredAmount - availableAmount)
 	}
 
@@ -141,8 +143,36 @@ export function PlannerMaterialBox({
 								}}>
 								+{craftedAmount}
 							</span>
-							{" from crafting)"}
+							{material.materialType ===
+								EnumMaterialType.WeaponExp ||
+							material.materialType ===
+								EnumMaterialType.CharacterExp
+								? " from lower EXP substitutes)"
+								: " from crafting)"}
 						</span>
+					)}
+					{craftedFrom.length > 0 && (
+						<div style={{ marginTop: "0.25rem" }}>
+							<div>{"Using:"}</div>
+							<div
+								style={{
+									fontStyle: "italic",
+									paddingLeft: "2ch",
+								}}>
+								{craftedFrom.map(({ id, amount }) => (
+									<div key={id}>
+										{`${findMaterial(id).name}: `}
+										<span
+											style={{
+												fontFamily:
+													"var(--font-barlow-condensed)",
+											}}>
+											{amount.toLocaleString("en-us")}
+										</span>
+									</div>
+								))}
+							</div>
+						</div>
 					)}
 				</div>
 				<hr style={{ marginBlock: "0.5rem" }} />

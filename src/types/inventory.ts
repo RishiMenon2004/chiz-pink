@@ -2,7 +2,14 @@ import { EnumMaterialType, EnumRarity } from "@/data/items"
 
 export type Inventory = Record<string, number>
 
-export type CumulativeInventory = Record<string, { amount: number; craftedAmount?: number }>
+export type CumulativeInventory = Record<
+	string,
+	{
+		amount: number
+		craftedAmount?: number
+		craftedFrom?: { id: string; amount: number }[]
+	}
+>
 
 export type FilterByType =
 	| "default"

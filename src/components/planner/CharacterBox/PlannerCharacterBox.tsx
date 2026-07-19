@@ -8,7 +8,7 @@ import { useSortable } from "@dnd-kit/react/sortable"
 import { ModalEventType } from "@/types"
 import { CharacterRecord, SkillLvlRecord } from "@/types/planner"
 
-import { EnumItemLvls, findMaterial, getItemRarityStyle } from "@/data/items"
+import { EnumItemLvls, getItemRarityStyle } from "@/data/items"
 import { findCharacter } from "@/data/characters"
 
 import { useInventoryStore, usePlannerStore } from "@/hooks"
@@ -183,26 +183,14 @@ export function PlannerCharacterBox({
 
 				const currentCumulativeMaterial =
 					currentCumulativeInventory[material.id]
-				const craftedAmount = currentCumulativeMaterial?.craftedAmount
+				const craftedFrom = currentCumulativeMaterial?.craftedFrom ?? []
 
-				if (craftedAmount && craftedAmount > 0) {
-					const materialData = findMaterial(material.id)
-					const linkedMaterials =
-						materialData?.linkedMaterials?.map((linkedMaterialId) =>
-							findMaterial(linkedMaterialId)
-						) || []
-					const lowerMaterial = linkedMaterials.find(
-						(linkedMaterial) =>
-							linkedMaterial.rarity === materialData.rarity - 1
-					)?.id
-
-					if (lowerMaterial) {
-						localInventory[lowerMaterial] = Math.max(
-							0,
-							localInventory[lowerMaterial] - craftedAmount * 3
-						)
-					}
-				}
+				craftedFrom.forEach(({ id, amount }) => {
+					localInventory[id] = Math.max(
+						0,
+						(localInventory[id] || 0) - amount
+					)
+				})
 
 				localInventory[material.id] = Math.max(
 					0,

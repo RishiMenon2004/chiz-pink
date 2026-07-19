@@ -7,6 +7,12 @@ import {
 	SkillTypes,
 } from "@/data/characters/character"
 
+export const characterExpAmount = {
+	common: 1000,
+	uncommon: 5000,
+	rare: 10000,
+}
+
 export function calculateSkillCosts(
 	type: keyof typeof characterSkillLevelMaterials,
 	currentLvl: number,
@@ -76,6 +82,10 @@ export function calculateLevelCosts(
 		},
 	}
 
+	let totalExp = 0
+
+	const tiers = ["common", "uncommon", "rare"] as const
+
 	if (currentLvl < targetLvl) {
 		for (const [key, phase] of Object.entries(characterLevelMaterials)) {
 			const lvl = Number(key)
@@ -83,13 +93,38 @@ export function calculateLevelCosts(
 
 			totals.beetleCoin += phase.beetleCoin
 			totals.bossMaterial += phase.bossMaterial
+			totalExp += phase.exp
 
-			const tiers = ["common", "uncommon", "rare"] as const
 			for (const tier of tiers) {
-				totals.exp[tier] += phase.exp[tier]
 				totals.ascMaterial[tier] += phase.ascMaterial[tier]
 			}
 		}
+
+		const expAmount = characterExpAmount
+
+		const beetleCoinForExp = {
+			common: 250, 
+			uncommon: 1250,
+			rare: 5000 
+		}
+
+		const expCost = {
+			common: 0,
+			uncommon: 0,
+			rare: 0,
+		}
+
+		for (const tier of [...tiers].reverse()) {
+			expCost[tier] = Math.floor(totalExp / expAmount[tier])
+			totals.beetleCoin += expCost[tier] * beetleCoinForExp[tier]
+			totalExp %= expAmount[tier]
+		}
+
+		if (totalExp > 0) {
+			expCost.common += 1
+		}
+
+		totals.exp = expCost
 	}
 
 	return totals
@@ -166,7 +201,11 @@ export function calculateCharacterCosts({
 				break
 		}
 
-		const materials = calculateSkillCosts(type, skillLvl.currentLvl, skillLvl.targetLvl)
+		const materials = calculateSkillCosts(
+			type,
+			skillLvl.currentLvl,
+			skillLvl.targetLvl
+		)
 		totals.fons += materials.fons
 		totals.dreamlessSeed += materials.dreamlessSeed
 

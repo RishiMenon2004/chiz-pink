@@ -1,5 +1,8 @@
-export { calcuateWeaponCosts } from "./calcuateWeaponCosts"
-export { calculateCharacterCosts } from "./calculateCharacterCosts"
+export { calcuateWeaponCosts, weaponExpAmount } from "./calcuateWeaponCosts"
+export {
+	calculateCharacterCosts,
+	characterExpAmount,
+} from "./calculateCharacterCosts"
 
 export { getLinkedMaterials } from "./getLinkedMaterials"
 export { getPhases } from "./getPhases"
