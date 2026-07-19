@@ -162,13 +162,17 @@ export function getAllMaterials() {
 	return allMaterials
 }
 
+const allMaterialsList: Material[] = Object.values(allMaterials)
+
+export function getAllMaterialsList() {
+	return allMaterialsList
+}
+
 export function getInventoryMaterials() {
 	return allInventoryMaterials
 }
 
-const allInventoryMaterialsList: Material[] = Object.values(
-	allInventoryMaterials
-)
+const allInventoryMaterialsList: Material[] = Object.values(allInventoryMaterials)
 
 export function getInventoryMaterialsList() {
 	return allInventoryMaterialsList

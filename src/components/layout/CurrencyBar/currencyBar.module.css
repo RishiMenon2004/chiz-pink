@@ -50,6 +50,13 @@
 	font-size: 1.25rem;
 	font-style: italic;
 
+	background-color: var(--interactive-bg);
+
+	box-shadow:
+		hsla(0, 0%, 0%, 0.6) 0px -1px 2px,
+		white 0px 1px 1px,
+		rgba(0, 0, 0, 0.7) 0px 1px inset;
+
 	cursor: var(--edit-cursor);
 
 	.icon {
@@ -143,14 +150,89 @@
 		background-image: url("/button_icons/edit.png");
 		background-size: cover;
 	}
+
+	&.needed {
+		position: relative;
+
+		.amountDisplay,
+		input {
+			color: var(--danger-color);
+
+			paint-order: stroke fill;
+			-webkit-text-stroke: 2px black;
+		}
+	}
 }
 
-.currencyBox {
-	background-color: var(--interactive-bg);
-	box-shadow:
-		hsla(0, 0%, 0%, 0.6) 0px -1px 2px,
-		white 0px 1px 1px,
-		rgba(0, 0, 0, 0.7) 0px 1px inset;
+.requirementIndicator {
+	position: absolute;
+	left: 50%;
+	transform: translateX(-50%);
+	top: calc(100%);
+
+	padding-inline: 1rem 0.5rem;
+	padding-block: 0.125rem;
+	border-radius: 0 0 0.5rem 0.5rem;
+
+	font-family: var(--font-barlow-condensed);
+	font-size: 0.8rem;
+	font-weight: 500;
+	font-style: italic;
+
+	paint-order: stroke fill;
+	-webkit-text-stroke: 1px black;
+
+	background-color: color-mix(
+		in srgb,
+		var(--danger-color),
+		var(--interactive-bg)
+	);
+
+	background-image: url("/icons/less.png");
+	background-size: 1.125rem;
+	background-position: left center;
+	background-repeat: no-repeat;
+
+	border: 0.25rem var(--white) solid;
+	border-top-width: 0;
+
+	z-index: -1;
+}
+
+.tooltipSourceList {
+	display: flex;
+	flex-direction: column;
+	gap: 0.25rem;
+
+	font-size: 1em;
+
+	opacity: 0.75;
+}
+
+.tooltipSource {
+	margin-inline-start: 0.5rem;
+
+	font-family: var(--font-barlow-condensed);
+	font-weight: 100;
+	font-style: italic;
+	font-size: 1rem;
+
+	background-color: var(--pink);
+	border-radius: 100vh;
+	padding-inline: 1rem;
+	padding-block: 0.25rem;
+
+	display: flex;
+	align-items: center;
+	gap: 0.25rem;
+
+	paint-order: stroke fill;
+	-webkit-text-stroke: 2px black;
+
+	@supports (text-box-trim: trim-both) {
+		text-box-edge: cap alphabetic;
+		text-box-trim: trim-both;
+	}
 }
 
 @media (max-width: 1135px) {

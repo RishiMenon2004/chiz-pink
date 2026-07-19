@@ -13,6 +13,11 @@
 	padding-inline: 1rem;
 	border-radius: 0 0 1rem 1rem;
 
+	&.inventory {
+		height: 5rem;
+		padding-top: 1rem;
+	}
+
 	&::before {
 		content: "";
 		position: absolute;
@@ -101,6 +106,11 @@
 
 		height: fit-content;
 		padding-block: 1rem;
+		
+		&.inventory {
+			height: fit-content;
+			padding-top: 2rem;
+		}
 
 		.toolbarButton:only-of-type {
 			grid-column: 1 / -1;
@@ -116,12 +126,20 @@
 
 		height: 3rem;
 
+		&.inventory {
+			height: 4rem;
+		}
+
 		.toolbarButton {
 			display: none;
 
 			&:only-of-type {
 				grid-column: 1 / -1;
 			}
+		}
+
+		& > *:not(.pullOutTab) {
+			visibility: hidden;
 		}
 
 		.pullOutTab {
@@ -144,6 +162,10 @@
 
 		&.toolbarOpen {
 			height: fit-content;
+
+			& > * {
+				visibility: visible;
+			}
 
 			.toolbarButton {
 				display: grid;

@@ -20,7 +20,10 @@ export function TooltipContainer({
 		({ x, y }: { x: number; y: number }) => {
 			const mousePos = {
 				x: x + (offset.x || 0),
-				y: y + (offset.y || 0) - tooltipRef.current.clientHeight / 2,
+				y: Math.max(
+					y + (offset.y || 0) - tooltipRef.current.clientHeight / 2,
+					45
+				),
 			}
 
 			if (

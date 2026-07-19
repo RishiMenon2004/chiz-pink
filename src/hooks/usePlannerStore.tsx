@@ -3,8 +3,10 @@
 import { useSyncExternalStore } from "react"
 import { v4 as uuidv4 } from "uuid"
 
+import type { Material } from "@/types/item"
 import type {
-	AgregateMaterialsType,
+	AggregateMaterial,
+	AggregateMaterialsType,
 	CharacterRecord,
 	PlannerRecord,
 	WeaponRecord,
@@ -126,12 +128,12 @@ export const plannerActions = {
 	) {
 		this.updatePlanner((current) => ({
 			characters: {
-				...current.characters,
 				[char.id]: {
 					...char,
 					requiredMaterials: getCharRequiredMaterials(char),
 					isDisabled: false,
 				},
+				...current.characters,
 			},
 		}))
 	},
@@ -199,15 +201,15 @@ export function getAggregatedMaterials(
 	plannerData: PlannerRecord,
 	type: "arc" | "char" | "both" = "both"
 ) {
-	if (typeof window === "undefined") return {} as AgregateMaterialsType
+	if (typeof window === "undefined") return {} as AggregateMaterialsType
 
-	const agregatedMaterials: AgregateMaterialsType = {}
+	const aggregatedMaterials: AggregateMaterialsType = {}
 
 	const { arcs, characters } = plannerData
 
 	function addToAggregate(itemRecord: CharacterRecord | WeaponRecord) {
 		itemRecord.requiredMaterials.forEach((material) => {
-			const currentAgrMaterial = agregatedMaterials[material.id] || {
+			const currentAgrMaterial = aggregatedMaterials[material.id] || {
 				sources: {},
 				amount: 0,
 			}
@@ -220,11 +222,11 @@ export function getAggregatedMaterials(
 				sources[itemRecord.id] = 1
 			}
 
-			const agregateAmount = amount + material.amount
+			const aggregateAmount = amount + material.amount
 
-			if (agregateAmount > 0) {
-				agregatedMaterials[material.id] = {
-					amount: agregateAmount,
+			if (aggregateAmount > 0) {
+				aggregatedMaterials[material.id] = {
+					amount: aggregateAmount,
 					sources: { ...sources },
 				}
 			}
@@ -251,7 +253,74 @@ export function getAggregatedMaterials(
 		})
 	}
 
-	return agregatedMaterials
+	return aggregatedMaterials
+}
+
+export function getAggregatedMaterial(
+	plannerData: PlannerRecord,
+	materialRef: Material,
+	type: "arc" | "char" | "both" = "both"
+) {
+	if (typeof window === "undefined") return {} as AggregateMaterial
+
+	let aggregatedMaterial: AggregateMaterial = {
+		sources: {},
+		amount: 0,
+	}
+
+	const { arcs, characters } = plannerData
+
+	function addToAggregate(itemRecord: CharacterRecord | WeaponRecord) {
+		const material = itemRecord.requiredMaterials.find(
+			(mat) => mat.id === materialRef.id
+		) ?? {
+			id: "",
+			amount: 0,
+		}
+
+		if (!material.id) return
+
+		const currentAgrMaterial = { ...aggregatedMaterial }
+		const sources = currentAgrMaterial.sources
+		const amount = currentAgrMaterial.amount
+
+		if (sources[itemRecord.id]) {
+			sources[itemRecord.id] += 1
+		} else {
+			sources[itemRecord.id] = 1
+		}
+
+		const aggregateAmount = amount + material.amount
+
+		if (aggregateAmount > 0) {
+			aggregatedMaterial = {
+				amount: aggregateAmount,
+				sources: { ...sources },
+			}
+		}
+	}
+
+	if (characters && (type === "char" || type == "both")) {
+		Object.values(characters).forEach((char) => {
+			if (char.isDisabled) {
+				return
+			}
+
+			addToAggregate(char)
+		})
+	}
+
+	if (arcs && (type === "arc" || type == "both")) {
+		Object.values(arcs).forEach((arc) => {
+			if (arc.isDisabled) {
+				return
+			}
+
+			addToAggregate(arc)
+		})
+	}
+
+	return aggregatedMaterial
 }
 
 const subscribe = (callback: () => void) => {

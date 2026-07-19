@@ -62,10 +62,9 @@ export type PlannerRecord = {
 	characters: Record<string, CharacterRecord>
 }
 
-export type AgregateMaterialsType = Record<
-	string,
-	{
-		amount: number
-		sources: Record<string, number>
-	}
->
+export type AggregateMaterial = {
+	amount: number
+	sources: Record<string, number>
+}
+
+export type AggregateMaterialsType = Record<string, AggregateMaterial>

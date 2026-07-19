@@ -60,12 +60,12 @@
 			pointer-events: none;
 			filter: drop-shadow(0 0 0.25rem hsla(0, 0%, 0%, 0.66));
 			z-index: 0;
-			transition: height 300ms var(--ease-in-out-back);
+			transition: scale 300ms var(--ease-in-out-back);
 		}
 
 		&:hover {
 			img {
-				height: 4.5rem;
+				scale: 1.3;
 			}
 		}
 

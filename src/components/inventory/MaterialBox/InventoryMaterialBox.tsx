@@ -24,7 +24,7 @@ import {
 	useMaterialEditorModal,
 	useTooltip,
 } from "@/hooks"
-import { getAggregatedMaterials } from "@/hooks/usePlannerStore"
+import { getAggregatedMaterial } from "@/hooks/usePlannerStore"
 
 import { getLinkedMaterials } from "@/helpers"
 
@@ -57,7 +57,7 @@ export function MaterialItemBox({
 
 	const { plannerData } = usePlannerStore()
 	const { amount: requiredQuantity, sources: requiredSources } =
-		getAggregatedMaterials(plannerData)[material.id] || {
+		getAggregatedMaterial(plannerData, material) || {
 			amount: 0,
 			sources: [],
 		}
@@ -164,29 +164,34 @@ export function MaterialItemBox({
 								marginBlock: "0.25rem",
 								marginLeft: "0.5rem",
 							}}>
+							<span>
+								{"Need: "}
+								<span
+									style={{
+										fontFamily:
+											"var(--font-barlow-condensed)",
+										fontSize: "1rem",
+										letterSpacing: "7%",
+									}}>
+									{requiredQuantity}
+								</span>
+							</span>
 							{itemQuantity < requiredQuantity && (
-								<span>
-									<span
-										style={{
-											fontFamily:
-												"var(--font-barlow-condensed)",
-											fontSize: "1rem",
-											color: "#ff486d",
-										}}>
-										{"▼ "}
-										{requiredQuantity - itemQuantity}
-									</span>
-									{" | "}
+								<span
+									style={{
+										fontFamily:
+											"var(--font-barlow-condensed)",
+										fontSize: "1rem",
+										color: "#ff486d",
+										fontStyle: "italic",
+										letterSpacing: "7%",
+										paintOrder: "stroke fill",
+										WebkitTextStroke: "2px black",
+									}}>
+									{" ▼ "}
+									{requiredQuantity - itemQuantity}
 								</span>
 							)}
-							{"Need: "}
-							<span
-								style={{
-									fontFamily: "var(--font-barlow-condensed)",
-									fontSize: "1rem",
-								}}>
-								{requiredQuantity}
-							</span>
 						</div>
 						<div className={styles.tooltipSourceList}>
 							Needed For:
