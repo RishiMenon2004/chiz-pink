@@ -474,7 +474,7 @@ export function PlannerCharacterBox({
 										}}>
 										<div
 											className={styles.charStatPreviewLvl}>
-											{`${getSkillLvlPreview(abilitySet.lifeSkill1)}${abilitySet.lifeSkill2 ? ` / ${getSkillLvlPreview(abilitySet.lifeSkill2)}` : ""}`}
+											{`${getSkillLvlPreview(abilitySet.lifeSkill1)}${abilitySet.lifeSkill2 ? ` / ${Math.max(Number(getSkillLvlPreview(abilitySet.lifeSkill2)) - (char.abilities.lifeSkill2?.maxLvl === 1 ? 1 : 0), 0)}` : ""}`}
 										</div>
 										<div
 											className={
@@ -483,7 +483,7 @@ export function PlannerCharacterBox({
 										/>
 										<div
 											className={styles.charStatPreviewLvl}>
-											{`${getSkillLvlPreview(abilitySet.lifeSkill1, true)}${abilitySet.lifeSkill2 ? ` / ${getSkillLvlPreview(abilitySet.lifeSkill2, true)}` : ""}`}
+											{`${getSkillLvlPreview(abilitySet.lifeSkill1, true)}${abilitySet.lifeSkill2 ? ` / ${Math.max(Number(getSkillLvlPreview(abilitySet.lifeSkill2, true)) - (char.abilities.lifeSkill2?.maxLvl === 1 ? 1 : 0), 0)}` : ""}`}
 										</div>
 									</div>
 								</summary>
