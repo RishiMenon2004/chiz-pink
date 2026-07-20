@@ -3,7 +3,10 @@ import { ReactNode } from "react"
 import { DescriptionValueType } from "@/types"
 import { DescriptionValuesRecord } from "@/types/item"
 
-import { DescriptionNumber, DescriptionSmallHeading } from "@/components/layout/Description"
+import {
+	DescriptionNumber,
+	DescriptionSmallHeading,
+} from "@/components/layout/Description"
 
 export function parseDescription(
 	description: string,
@@ -29,8 +32,9 @@ export function parseDescription(
 								{children}
 							</DescriptionSmallHeading>
 						)
+					case "kw":
 					default:
-						;<>{children}</>
+						return <>{children}</>
 				}
 			}
 

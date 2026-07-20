@@ -19,6 +19,10 @@ export const adler: Character = {
 	rarity: EnumRarity.Rare,
 	element: EnumCharacterElement.INCANTATION,
 	arcType: EnumArcType.Condensate,
+	ascensionMaterialSet: ascNumeralSet,
+	ascensionBossMaterial: waterMoonPick,
+	talentMaterialSet: talentMagicSet,
+	talentBossMaterial: dressSleevesOfVanity,
 	abilities: {
 		basicAttack: {
 			name: "Deliverance",
@@ -86,7 +90,7 @@ export const adler: Character = {
 			description: [
 				{
 					description:
-						"<dn>Scorch Enhancement:</> Applies one of three random debuffs whenever Scorch is inflicted on a target: -20% ATK, -10% Esper Resistance, or +10% Break Efficiency, lasting for 15s. The same effect cannot stack.",
+						"<sh>Scorch Enhancement:</> Applies one of three random debuffs whenever Scorch is inflicted on a target: -20% ATK, -10% Esper Resistance, or +10% Break Efficiency, lasting for 15s. The same effect cannot stack.",
 				},
 			],
 			maxLvl: 1,
@@ -123,8 +127,4 @@ export const adler: Character = {
 			maxLvl: 5,
 		},
 	},
-	ascensionMaterialSet: ascNumeralSet,
-	ascensionBossMaterial: waterMoonPick,
-	talentMaterialSet: talentMagicSet,
-	talentBossMaterial: dressSleevesOfVanity,
 }

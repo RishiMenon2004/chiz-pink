@@ -277,7 +277,7 @@ const chargingKnightSparkPlug: Material = {
 	sources: ['Anomaly Hunt: "Headless Rider"', "Material Selection Box"],
 }
 
-const ConfessionalFLowerSeed: Material = {
+const confessionalFLowerSeed: Material = {
 	id: "confessional_flower_seed",
 	name: "Confessional Flower Seed",
 	rarity: EnumRarity.Rare,
@@ -754,7 +754,7 @@ export {
 	ascDelusionsSet,
 	waterMoonPick,
 	chargingKnightSparkPlug,
-	ConfessionalFLowerSeed,
+	confessionalFLowerSeed,
 	aPageFromDelusionsShore,
 	tearOfTheSea,
 	nestGuardFragment,

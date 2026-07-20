@@ -19,6 +19,10 @@ export const iroi: Character = {
 	rarity: EnumRarity.Epic,
 	element: EnumCharacterElement.ANIMA,
 	arcType: EnumArcType.Liquid,
+	ascensionMaterialSet: ascSilhouetteSet,
+	ascensionBossMaterial: aPageFromDelusionsShore,
+	talentMaterialSet: talentRoseSet,
+	talentBossMaterial: goodBoyStamp,
 	abilities: {
 		basicAttack: {
 			name: "Collaboration",
@@ -44,7 +48,7 @@ export const iroi: Character = {
 						"Triggers when casting Deliverance after a Critical Dodge. Dodges an attack with a quick dash, seizes the enemy's opening and swiftly swings his weapon, dealing 1 instance of Incantation DMG to an area, reducing their Break.",
 				},
 				{
-					section: "Reflexive Response",
+					section: "Critical Riposte: Reflexive Response",
 					description:
 						"Triggers when using Collaboration after performing a Critical Dodge. Swings Phantasos at the target, dealing 1 instance of Anima DMG and reducing Break. Builds up Imagination when attacks hit.",
 				},
@@ -152,8 +156,4 @@ export const iroi: Character = {
 			maxLvl: 2,
 		},
 	},
-	ascensionMaterialSet: ascSilhouetteSet,
-	ascensionBossMaterial: aPageFromDelusionsShore,
-	talentMaterialSet: talentRoseSet,
-	talentBossMaterial: goodBoyStamp,
 }

@@ -25,7 +25,7 @@ import {
 	suspendedDelusions,
 	waterMoonPick,
 	chargingKnightSparkPlug,
-	ConfessionalFLowerSeed,
+	confessionalFLowerSeed,
 	aPageFromDelusionsShore,
 	tearOfTheSea,
 	nestGuardFragment,
@@ -85,7 +85,7 @@ const allMaterials: Record<string, Material> = {
 	distorted_numeral: distortedNumeral,
 	transcendent_delusions: transcendentDelusions,
 
-	confessional_flower_seed: ConfessionalFLowerSeed,
+	confessional_flower_seed: confessionalFLowerSeed,
 	charging_knight_spark_plug: chargingKnightSparkPlug,
 	a_page_from_delusions_shore: aPageFromDelusionsShore,
 	water_moon_pick: waterMoonPick,

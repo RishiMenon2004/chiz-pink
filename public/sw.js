@@ -304,8 +304,11 @@ self.addEventListener("fetch", (event) => {
 		return
 	}
 
-	if (request.mode === "navigate") {
-		event.respondWith(networkFirstNavigation(request))
+	if (
+		url.searchParams.has("_rsc") ||
+		request.headers.get("RSC") === "1" ||
+		url.pathname.startsWith("/_next/data/")
+	) {
 		return
 	}
 
@@ -321,6 +324,11 @@ self.addEventListener("fetch", (event) => {
 
 	if (isPublicImage(url)) {
 		event.respondWith(staleWhileRevalidate(request, RUNTIME_CACHE))
+		return
+	}
+
+	if (request.mode === "navigate") {
+		event.respondWith(networkFirstNavigation(request))
 		return
 	}
 })
