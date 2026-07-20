@@ -11,9 +11,10 @@ import { parseDescription } from "@/helpers"
 function AbilitySection({ ability }: { ability: Ability }) {
 	return (
 		<>
+			<h3>{ability.name}</h3>
 			{ability.description.map((section, index) => (
 				<div key={index}>
-					<div>{section.section}</div>
+					<h4>{section.section}</h4>
 					<div>{parseDescription(section.description, 1)}</div>
 				</div>
 			))}
@@ -43,7 +44,7 @@ export default function CharacterInfoPage() {
 
 	return (
 		<div>
-			<div>{char.name}</div>
+			<h1>{char.name}</h1>
 			{parseDescription(char.description, 1)}
 			{abilities.map((ability, index) => (
 				<AbilitySection key={index} ability={ability} />
