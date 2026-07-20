@@ -21,7 +21,7 @@ export type CharacterAbilitySet = {
 	ultimate: Ability
 	support: Ability
 	passive1: Ability
-	passive2?: Ability
+	passive2: Ability
 	passive3?: Ability
 	lifeSkill1: Ability
 	lifeSkill2?: Ability

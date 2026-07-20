@@ -40,6 +40,11 @@ export function generateNewCharacter(charID?: string) {
 				currentLvl: 0,
 				targetLvl: 1,
 			},
+			passive2: {
+				isDisabled: false,
+				currentLvl: 0,
+				targetLvl: 1,
+			},
 			lifeSkill1: {
 				isDisabled: false,
 				currentLvl: 0,
@@ -47,14 +52,6 @@ export function generateNewCharacter(charID?: string) {
 			},
 		},
 		awakening: 0,
-	}
-
-	if (featuredChar.abilities.passive2) {
-		newChar.abilitySet.passive2 = {
-			isDisabled: false,
-			currentLvl: 0,
-			targetLvl: 1,
-		}
 	}
 
 	if (featuredChar.abilities.passive3) {
@@ -70,7 +67,8 @@ export function generateNewCharacter(charID?: string) {
 		newChar.abilitySet.lifeSkill2 = {
 			isDisabled: false,
 			currentLvl: isMax1 ? 1 : 0,
-			targetLvl: featuredChar.abilities.lifeSkill2.maxLvl + (isMax1 ? 1 : 0),
+			targetLvl:
+				featuredChar.abilities.lifeSkill2.maxLvl + (isMax1 ? 1 : 0),
 		}
 	}
 

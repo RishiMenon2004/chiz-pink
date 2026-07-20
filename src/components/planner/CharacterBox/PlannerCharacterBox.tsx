@@ -235,6 +235,10 @@ export function PlannerCharacterBox({
 							...abilitySet.passive1,
 							isDisabled: true,
 						},
+						passive2: {
+							...abilitySet.passive2,
+							isDisabled: true,
+						},
 					},
 				}
 
@@ -243,13 +247,6 @@ export function PlannerCharacterBox({
 						...abilitySet.lifeSkill2,
 						isDisabled: true,
 						currentLvl: abilitySet.lifeSkill2.targetLvl,
-					}
-				}
-
-				if (abilitySet.passive2) {
-					newState.abilitySet.passive2 = {
-						...abilitySet.passive2,
-						isDisabled: true,
 					}
 				}
 
@@ -412,7 +409,7 @@ export function PlannerCharacterBox({
 										}}>
 										<div
 											className={styles.charStatPreviewLvl}>
-											{`${getSkillLvlPreview(abilitySet.passive1)}${abilitySet.passive2 ? ` / ${getSkillLvlPreview(abilitySet.passive2)}` : ""}${abilitySet.passive3 ? ` / ${getSkillLvlPreview(abilitySet.passive3)}` : ""}`}
+											{`${getSkillLvlPreview(abilitySet.passive1)} / ${getSkillLvlPreview(abilitySet.passive2)}${abilitySet.passive3 ? ` / ${getSkillLvlPreview(abilitySet.passive3)}` : ""}`}
 										</div>
 										<div
 											className={
@@ -421,7 +418,7 @@ export function PlannerCharacterBox({
 										/>
 										<div
 											className={styles.charStatPreviewLvl}>
-											{`${getSkillLvlPreview(abilitySet.passive1, true)}${abilitySet.passive2 ? ` / ${getSkillLvlPreview(abilitySet.passive2, true)}` : ""}${abilitySet.passive3 ? ` / ${getSkillLvlPreview(abilitySet.passive3, true)}` : ""}`}
+											{`${getSkillLvlPreview(abilitySet.passive1, true)} / ${getSkillLvlPreview(abilitySet.passive2, true)}${abilitySet.passive3 ? ` / ${getSkillLvlPreview(abilitySet.passive3, true)}` : ""}`}
 										</div>
 									</div>
 								</summary>
@@ -446,12 +443,10 @@ export function PlannerCharacterBox({
 										skill="passive1"
 										label="Passive 1"
 									/>
-									{abilitySet.passive2 && (
-										<CharacterSkillGroup
-											skill="passive2"
-											label="Passive 2"
-										/>
-									)}
+									<CharacterSkillGroup
+										skill="passive2"
+										label="Passive 2"
+									/>
 									{abilitySet.passive3 && (
 										<CharacterSkillGroup
 											skill="passive3"
