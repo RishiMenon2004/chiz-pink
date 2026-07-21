@@ -11,7 +11,6 @@ import { signOut, useSession } from "next-auth/react"
 import { useState } from "react"
 
 import styles from "./settings.module.css"
-import { block } from "sharp"
 import Link from "next/link"
 
 const syncStatusLabel = {
