@@ -126,6 +126,10 @@ a {
 	}
 }
 
+button {
+	cursor: var(--pointer-cursor);
+}
+
 @supports (appearance: base-select) {
 	select,
 	::picker(select),
@@ -201,6 +205,12 @@ a {
 		justify-content: center;
 		overflow: hidden;
 	}
+}
+
+.page {
+	flex: 1;
+	padding-inline: 6rem;
+	padding-block: 4rem;
 }
 
 .modal-container {

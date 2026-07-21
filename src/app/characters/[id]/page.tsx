@@ -43,7 +43,7 @@ export default function CharacterInfoPage() {
 	].filter((ability): ability is Ability => Boolean(ability))
 
 	return (
-		<div>
+		<div className="page">
 			<h1>{char.name}</h1>
 			{parseDescription(char.description, 1)}
 			{abilities.map((ability, index) => (

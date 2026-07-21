@@ -20,7 +20,10 @@ import { AddNewCharContext } from "@/contexts"
 
 import { InfoBox, ModalContainer, PullOutToolbar } from "@/components/layout"
 import { MaterialGroup } from "@/components/inventory/"
-import { PlannerAddCharacterBox, PlannerMaterialsList } from "@/components/planner"
+import {
+	PlannerAddCharacterBox,
+	PlannerMaterialsList,
+} from "@/components/planner"
 
 import styles from "./page.module.css"
 import { styles as toolbarStyles } from "@/components/layout/PullOutToolbar"
@@ -108,15 +111,12 @@ export default function RenderCharacterPlanner() {
 
 				<AddNewCharContext.Provider
 					value={{
-						addCharacter
+						addCharacter,
 					}}>
 					{showAddChar &&
 						createPortal(
-							<ModalContainer
-								onClose={cancelModal}>
-								<PlannerAddCharacterBox
-									onCancel={cancelModal}
-								/>
+							<ModalContainer onClose={cancelModal}>
+								<PlannerAddCharacterBox onCancel={cancelModal} />
 							</ModalContainer>,
 							document.body
 						)}
@@ -139,7 +139,7 @@ export default function RenderCharacterPlanner() {
 			)}
 			{/* ============================================================= */}
 
-			<div className={styles.page}>
+			<div className="page">
 				{/* =========================================================== */}
 				{/*                   Total Materials Required                  */}
 				{/* =========================================================== */}

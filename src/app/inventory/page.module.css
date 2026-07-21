@@ -1,13 +1,9 @@
 .page {
-	flex: 1;
-
 	display: flex;
 	flex-direction: column;
 	justify-content: flex-start;
 
 	width: 100%;
-	padding-inline: 6rem;
-	padding-block: 4rem;
 
 	.emptyFilter {
 		width: 100%;
@@ -132,11 +128,11 @@
 @media (max-width: 1135px) {
 	.page,
 	.multiMatContainer {
-		padding-inline: 3rem;
+		padding-inline: 3rem !important;
 	}
 
 	.page {
-		padding-top: 3rem;
+		padding-top: 3rem !important;
 	}
 
 	.matGroup {
@@ -162,7 +158,7 @@
 @media (max-width: 800px) {
 	.page,
 	.multiMatContainer {
-		padding-inline: 0;
+		padding-inline: 1rem !important;
 	}
 }
 
@@ -170,7 +166,6 @@
 	.page,
 	.multiMatContainer {
 		gap: 1.5rem;
-		padding-inline: 1rem;
 	}
 
 	.matGroup {

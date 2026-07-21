@@ -14,7 +14,7 @@ export default function ArcInfoPage() {
 	}
 
 	return (
-		<div>
+		<div className="page">
 			<h1>{arc.name}</h1>
 			{arc.description && parseDescription(arc.description, 1)}
 			<h2>{arc.effect.name}</h2>

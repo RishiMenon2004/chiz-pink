@@ -411,7 +411,7 @@ export default function RenderInventory() {
 				</InfoBox>
 			)}
 
-			<div className={styles.page}>{groupInventory()}</div>
+			<div className={`page ${styles.page}`}>{groupInventory()}</div>
 		</InventoryFilterContext.Provider>
 	)
 }
