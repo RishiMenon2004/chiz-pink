@@ -340,13 +340,13 @@
 
 @media (max-width: 800px) {
 	.page {
-		padding-inline: 3rem;
+		padding-inline: 3rem !important;
 	}
 }
 
 @media (max-width: 550px) {
 	.page {
-		padding-inline: 1rem;
+		padding-inline: 1rem !important;
 
 		.settingsSectionContent {
 			font-size: 0.85rem;

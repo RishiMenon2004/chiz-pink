@@ -177,23 +177,26 @@ export function RenderSettings() {
 									color: "black",
 									fontWeight: 720,
 									marginRight: "0.5rem",
+									height: "fit-content",
 								}}>
 								BETA
 							</span>
-							{"Import compatible data from: "}
-							<Link
-								className="btn-anchor"
-								href="https://nteplanner.app/"
-								target="_blank">
-								NTE Planner
-							</Link>
-							{", "}
-							<Link
-								className="btn-anchor"
-								href="https://www.ntewiz.xyz/"
-								target="_blank">
-								NTEWiz
-							</Link>
+							<span style={{ display: "flex", flexWrap: "wrap" }}>
+								{"Import compatible data from: "}
+								<Link
+									className="btn-anchor"
+									href="https://nteplanner.app/"
+									target="_blank">
+									NTE Planner
+								</Link>
+								{", "}
+								<Link
+									className="btn-anchor"
+									href="https://www.ntewiz.xyz/"
+									target="_blank">
+									NTEWiz
+								</Link>
+							</span>
 						</p>
 					</span>
 					<span

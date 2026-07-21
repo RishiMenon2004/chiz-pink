@@ -10,7 +10,7 @@
 
 @media (max-width: 1000px) {
 	.page {
-		padding-inline: 1rem;
+		padding-inline: 1rem !important;
 	}
 
 	.plannerGrid {

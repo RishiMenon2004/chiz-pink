@@ -6,7 +6,7 @@ export const metadata: Metadata = {
 
 export default function OfflinePage() {
 	return (
-		<div style={{ flexGrow: 1, display: "grid", placeItems: "center" }}>
+		<div className="page" style={{ display: "grid", placeItems: "center" }}>
 			<span
 				style={{
 					display: "grid",
