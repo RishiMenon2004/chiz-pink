@@ -3,8 +3,8 @@ import { Barlow_Condensed, Syne } from "next/font/google"
 
 import { RoutesData } from "@/data/routes"
 
-import { CurrencyBar, Footer, Sidebar, SplashScreen } from "@/components/layout"
-import { ServiceWorkerRegister } from "@/helpers"
+import { AuthProvider, CurrencyBar, Footer, Sidebar, SplashScreen } from "@/components/layout"
+import { DriveSyncProvider, ServiceWorkerRegister } from "@/helpers"
 
 import "./globals.css"
 import { Analytics } from "@vercel/analytics/next"
@@ -57,12 +57,16 @@ export default function RootLayout({
 			lang="en"
 			className={`${barlowCondensed.variable} ${syne.variable}`}>
 			<body>
-				<ServiceWorkerRegister />
-				<SplashScreen />
-				<Sidebar />
-				<CurrencyBar />
-				{children}
-				<Footer />
+				<AuthProvider>
+					<DriveSyncProvider>
+						<ServiceWorkerRegister />
+						<SplashScreen />
+						<Sidebar />
+						<CurrencyBar />
+						{children}
+						<Footer />
+					</DriveSyncProvider>
+				</AuthProvider>
 				<Analytics />
 			</body>
 		</html>

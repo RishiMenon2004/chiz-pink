@@ -80,3 +80,12 @@ export const MatAdjustmentContext = createContext<{
 export function useMaterialAdjustmentContext() {
 	return useContext(MatAdjustmentContext)
 }
+
+export const DriveSyncContext = createContext<{
+	status: "idle" | "syncing" | "synced" | "error"
+	lastSyncedAt: number | null
+	syncNow: () => void
+}>(null!)
+export function useDriveSyncContext() {
+	return useContext(DriveSyncContext)
+}

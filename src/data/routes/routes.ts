@@ -63,4 +63,18 @@ export const RoutesData: RoutesRecord = {
 		tooltip: "Settings",
 		id: "settings",
 	},
+
+	"/privacy": {
+		title: "PRIVACY POLICY",
+		head: "Privacy Policy",
+		tooltip: "Privacy Policy",
+		id: "privacy_policy"
+	},
+
+	"/auth/popup-callback": {
+		title: "Account Linked",
+		head: "",
+		tooltip: "",
+		id: "popup-callback",
+	},
 }

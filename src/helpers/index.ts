@@ -16,3 +16,7 @@ export { ServiceWorkerRegister } from "./ServiceWorkerRegister"
 
 export { generateNewCharacter } from "./generateNewCharacter"
 export { createSearchString } from "./createSearchString"
+
+export { unlinkGoogleAccount } from "./unlinkGoogleAccount"
+export { DriveSyncProvider } from "./DriveSyncProvider"
+export { signInWithGooglePopup } from "./signInWithGooglePopup"
