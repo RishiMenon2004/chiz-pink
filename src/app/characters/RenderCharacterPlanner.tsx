@@ -139,12 +139,12 @@ export default function RenderCharacterPlanner() {
 			)}
 			{/* ============================================================= */}
 
-			<div className="page">
+			<div className={`page ${styles.page}`}>
 				{/* =========================================================== */}
 				{/*                   Total Materials Required                  */}
 				{/* =========================================================== */}
 				{Object.values(allRequiredMaterials).length > 0 && (
-					<MaterialGroup title="Total Required Materials">
+					<MaterialGroup title="Required Materials">
 						<div
 							className={`${plannerBoxStyles.plannerRequiredMaterialsBox} ${styles.plannerRequiredMaterialsBox}`}>
 							<PlannerMaterialsList

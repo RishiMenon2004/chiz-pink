@@ -47,8 +47,9 @@
 			content: "";
 			position: absolute;
 			inset: 0;
-			right: -1rem;
 			bottom: 60%;
+
+			border-top-right-radius: 1.625rem;
 
 			background-image: linear-gradient(
 				-116deg,
@@ -58,7 +59,7 @@
 			);
 			background-size: cover;
 			background-repeat: no-repeat;
-			background-position: 0 center;
+			background-position: 1rem center;
 
 			filter: drop-shadow(rgb(0, 0, 0, 0.7) 0px 0px 2px);
 
@@ -69,7 +70,7 @@
 	&:open {
 		summary {
 			&::before {
-				background-position: 6rem center;
+				background-position: 5rem center;
 			}
 		}
 	}
@@ -170,7 +171,7 @@
 
 	.matGroup {
 		summary {
-			--slice-width: 45%;
+			--slice-width: 40%;
 		}
 	}
 

@@ -144,12 +144,12 @@ export default function RenderArcsPlanner() {
 			)}
 			{/* ============================================================= */}
 
-			<div className="page">
+			<div className={`page ${styles.page}`}>
 				{/* =========================================================== */}
 				{/*                   Total Materials Required                  */}
 				{/* =========================================================== */}
 				{allRequiredMaterials.length > 0 && (
-					<MaterialGroup title="Total Required Materials">
+					<MaterialGroup title="Required Materials">
 						<div
 							className={`${plannerBoxStyles.plannerRequiredMaterialsBox} ${styles.plannerRequiredMaterialsBox}`}>
 							<PlannerMaterialsList
