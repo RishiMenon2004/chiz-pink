@@ -166,6 +166,10 @@ export function PlannerCharacterBox({
 	}
 
 	useEffect(() => {
+		if (JSON.stringify(CharacterState) === JSON.stringify(charRecord)) {
+			return
+		}
+
 		actions.updateCharacter(CharacterState)
 
 		// disable warning because other deps trigger this effect unnecessarily
@@ -516,7 +520,7 @@ export function PlannerCharacterBox({
 						onClose={onDeleteConfim}
 						onCancel={onDeleteCancel}>
 						<AlertContainer
-							type="yes-no"
+							type="confirm"
 							onConfirm={onDeleteConfim}
 							onCancel={onDeleteCancel}>
 							{"A-are you sure you want to delete this Character?"}

@@ -34,8 +34,6 @@
 
 			background-color: var(--button-background);
 
-			paint-order: stroke fill;
-
 			box-shadow:
 				var(--dark-shadow) 0px 0px 1.5px 0,
 				var(--interactive-bg) 0px 0px 0px 0.175rem,
@@ -44,15 +42,23 @@
 				hsl(0, 0%, 85%) 0.5px 0.5px 0.5px 0.5px inset,
 				hsl(0, 0%, 70%) -0.5px -0.5px 0.5px 0.5px inset;
 
+			&[data-variant="normal"] {
+				--hover-color: var(--pink);
+			}
+
+			&[data-variant="danger"] {
+				--hover-color: var(--danger-color);
+			}
+
 			&:hover,
-			&:focus-visible {
+			&:focus {
 				outline: none;
 
 				paint-order: stroke fill;
 				color: white;
 				-webkit-text-stroke: 2px black;
 
-				background-color: var(--pink);
+				background-color: var(--hover-color);
 				box-shadow:
 					var(--dark-shadow) 0px 0px 1.5px 0,
 					var(--interactive-bg) 0px 0px 0px 0.175rem,
@@ -60,10 +66,6 @@
 					white 0px 1px 1px 0.175rem,
 					hsla(0, 0%, 100%) 2px 3px 5px -2px inset,
 					hsla(0, 0%, 18%, 0.9) 0px -2px 10px -2px inset;
-
-				&:last-child {
-					background-color: var(--danger-color);
-				}
 			}
 		}
 	}

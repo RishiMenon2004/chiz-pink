@@ -99,6 +99,14 @@ export function PlannerArcBox({
 	}
 
 	useEffect(() => {
+		if (
+			currentLvl === arcRecord.currentLvl &&
+			targetLvl === arcRecord.targetLvl &&
+			isDisabled === arcRecord.isDisabled
+		) {
+			return
+		}
+
 		actions.updateWeapon({
 			...arcRecord,
 			currentLvl,
@@ -268,7 +276,7 @@ export function PlannerArcBox({
 						onClose={onDeleteConfim}
 						onCancel={onDeleteCancel}>
 						<AlertContainer
-							type="yes-no"
+							type="confirm"
 							onConfirm={onDeleteConfim}
 							onCancel={onDeleteCancel}>
 							{"A-are you sure you want to delete this Arc?"}
