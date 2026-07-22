@@ -230,8 +230,68 @@
 		.settingsSectionContentColumn {
 			display: flex;
 			flex-direction: column;
-			gap: 0.5rem;
+			gap: 1rem;
 			flex-wrap: wrap;
+		}
+
+		input[type="checkbox"] {
+			-webkit-appearance: none;
+			appearance: none;
+
+			--button-height: 1rem;
+			--button-margin: 0.25rem;
+
+			width: auto;
+			height: calc(var(--button-height) + (var(--button-margin) * 2));
+			aspect-ratio: 2 / 1;
+			border-radius: 100vh;
+
+			background-color: var(--interactive-bg);
+
+			box-shadow:
+				hsla(0, 0%, 0%, 0.6) 0px -1px 2px,
+				white 0px 1px 1px,
+				rgba(0, 0, 0, 0.5) 1px 1px 4px 1px inset;
+
+			cursor: var(--pointer-cursor);
+
+			&::after {
+				content: "";
+				position: relative;
+				display: block;
+				height: var(--button-height);
+				aspect-ratio: 1;
+				background-color: var(--button-background);
+				border-radius: 100%;
+				margin: var(--button-margin);
+				left: 0;
+
+				box-shadow:
+					var(--dark-shadow) 0px 0px 1.5px 0px,
+					var(--button-border) 0px 0px 0px 3px,
+					hsl(0, 0%, 85%) 0.5px 0.5px 0.5px 0.5px inset,
+					hsl(0, 0%, 70%) -0.5px -0.5px 0.5px 0.5px inset;
+
+				transition: left 250ms var(--ease-in-out-back);
+				transition-property: left, transform;
+			}
+
+			&:hover::after,
+			&:focus-visible::after {
+				background-color: var(--pink);
+				box-shadow:
+					var(--button-background) 0px 0px 0px 3px,
+					hsla(0, 0%, 85%, 0.6) 0.5px 0.5px 0.5px 0.5px inset,
+					hsla(0, 0%, 70%, 0.6) -0.5px -0.5px 0.5px 0.5px inset;
+			}
+
+			&:checked {
+				background-color: var(--darker-pink);
+				&::after {
+					left: calc(100% - var(--button-margin) * 2);
+					transform: translateX(-100%);
+				}
+			}
 		}
 	}
 

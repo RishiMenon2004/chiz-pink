@@ -289,20 +289,24 @@ export function RenderSettings() {
 					<div className={styles.settingsSectionTitle}>Appearance</div>
 				</div>
 				<div className={styles.settingsSectionContent}>
-					<div className={styles.settingsSectionContentRow}>
-						<input
-							type="checkbox"
-							checked={
-								settings.appearance?.["use-cursors"] || false
-							}
-							onChange={() =>
-								actions.setConfig("appearance", {
-									"use-cursors":
-										!settings.appearance?.["use-cursors"] ||
-										false,
-								})
-							}
-						/>
+					<div className={styles.settingsSectionContentColumn}>
+						<div className={styles.settingsSectionContentRow}>
+							<input
+								type="checkbox"
+								checked={
+									settings.appearance?.["use-cursors"] || false
+								}
+								onChange={() =>
+									actions.setConfig("appearance", {
+										"use-cursors":
+											!settings.appearance?.[
+												"use-cursors"
+											] || false,
+									})
+								}
+							/>
+							<b>Custom Cursors</b>
+						</div>
 					</div>
 				</div>
 			</div>
