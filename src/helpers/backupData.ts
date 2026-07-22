@@ -120,6 +120,6 @@ export function backupSetImport({
 	window.localStorage.setItem("inventory", JSON.stringify(inventory))
 	window.localStorage.setItem("planner", JSON.stringify(planner))
 	window.localStorage.setItem("lastUpdated", String(lastUpdated))
-	window.localStorage.setItem("settings", String(settings))
+	window.localStorage.setItem("settings", JSON.stringify(settings))
 	window.dispatchEvent(new Event("local-storage-update"))
 }
