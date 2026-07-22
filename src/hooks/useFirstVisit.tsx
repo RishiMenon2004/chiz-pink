@@ -45,5 +45,5 @@ export function useFirstVisit() {
 		getSnapshot,
 		getServerSnapshot
 	)
-	return { isFirstVisit, actions: { setVisited } }
+	return isFirstVisit
 }

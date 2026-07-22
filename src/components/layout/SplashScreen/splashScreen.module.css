@@ -148,7 +148,7 @@
 
 	.btnContainer {
 		display: flex;
-		justify-content: flex-end;
+		justify-content: flex-start;
 		gap: 2rem;
 
 		button {
@@ -230,14 +230,14 @@
 	}
 
 	.updateSplashContainer & {
-		padding-inline: 20% 0;
+		padding-inline: 8rem 0;
 		
 		.welcomeText {
 			font-size: 1.5rem;
 		}
 
 		.infoBox {
-			margin-right: 20vw;
+			margin-right: 8rem;
 
 			.versionSection {
 				margin-block-end: 1.5rem;
