@@ -84,6 +84,7 @@ export function useMaterialAdjustmentContext() {
 export const DriveSyncContext = createContext<{
 	status: "idle" | "syncing" | "synced" | "error"
 	lastSyncedAt: number | null
+	latestBackupUpdatedAt: number | null
 	syncNow: () => void
 }>(null!)
 export function useDriveSyncContext() {

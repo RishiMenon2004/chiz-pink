@@ -7,10 +7,11 @@ import { DriveSyncContext } from "@/contexts"
 import { AlertContainer } from "@/components/layout/Alert"
 import { ModalContainer } from "@/components/layout/Modal"
 
-import { backupImport, backupSetImport, buildBackupPayload } from "./backupData"
+import { backupImport, backupSetImport, buildBackupPayload, markSynced } from "./backupData"
 import { downloadBackupFromDrive, uploadBackupToDrive } from "./googleDrive"
 
 const AUTO_SYNC_DEBOUNCE_MS = 4000
+const REMOTE_POLL_INTERVAL_MS = 60000
 
 type SyncStatus = "idle" | "syncing" | "synced" | "error"
 type RestorePrompt = {
@@ -31,7 +32,13 @@ export function DriveSyncProvider({ children }: { children: React.ReactNode }) {
 	const accessToken = session?.accessToken
 
 	const [status, setStatus] = useState<SyncStatus>("idle")
+	// Wall-clock time we last completed a sync action (push or pull).
 	const [lastSyncedAt, setLastSyncedAt] = useState<number | null>(null)
+	// The lastUpdated field of whichever backup (pushed or pulled) we most
+	// recently confirmed matches Drive - not the wall-clock time of the sync.
+	const [latestBackupUpdatedAt, setLatestBackupUpdatedAt] = useState<
+		number | null
+	>(null)
 	// Have we checked Drive for an existing backup yet this session? Auto/manual
 	// sync must not run before this, or a fresh device would upload empty local
 	// data and clobber a real backup that's sitting on Drive.
@@ -39,65 +46,102 @@ export function DriveSyncProvider({ children }: { children: React.ReactNode }) {
 	const [restorePrompt, setRestorePrompt] = useState<RestorePrompt | null>(null)
 
 	const isSyncingRef = useRef(false)
+	const isPullingRef = useRef(false)
 	const pendingRef = useRef(false)
 	const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 	const hasStartedCheckRef = useRef(false)
+	const mountedRef = useRef(true)
 	// Holds the latest runSync so it can call itself for a queued retry
 	// without closing over its own useCallback binding (which the React
 	// Compiler can't safely auto-memoize).
 	const runSyncRef = useRef<() => void>(() => {})
 
-	// One-time, on sign-in: pull down whatever's on Drive and reconcile it
-	// against local data using the same rules as a manual file import.
+	useEffect(() => {
+		mountedRef.current = true
+		return () => {
+			mountedRef.current = false
+		}
+	}, [])
+
+	// Pulls down whatever's on Drive and reconciles it against local data
+	// using the same rules as a manual file import. Called once on sign-in,
+	// then again on a poll/focus cadence so remote changes from other
+	// devices eventually surface here too.
+	const pullFromDrive = useCallback(async () => {
+		if (!accessToken) return
+		// Don't pull mid-push, mid-pull, or while the user has an unresolved
+		// restore conflict already on screen.
+		if (isSyncingRef.current || isPullingRef.current || restorePrompt) return
+
+		isPullingRef.current = true
+		try {
+			const json = await downloadBackupFromDrive(accessToken)
+			if (!mountedRef.current || !json) return
+
+			const result = backupImport(json)
+
+			if (result.status === "synced") {
+				markSynced()
+				setStatus("synced")
+				setLastSyncedAt(Date.now())
+				setLatestBackupUpdatedAt(Number(result.data.lastUpdated) || Date.now())
+			} else if (result.status === "newer") {
+				backupSetImport(result.data)
+				markSynced()
+				setStatus("synced")
+				setLastSyncedAt(Date.now())
+				setLatestBackupUpdatedAt(Number(result.data.lastUpdated) || Date.now())
+			} else if (
+				result.status === "older" ||
+				result.status === "overwrite"
+			) {
+				const localLastUpdated =
+					Number(window.localStorage.getItem("lastUpdated")) || null
+				setRestorePrompt({
+					kind: result.status,
+					data: result.data,
+					localLastUpdated,
+				})
+			}
+		} catch (error) {
+			console.error("Failed to check Drive for remote changes", error)
+		} finally {
+			isPullingRef.current = false
+		}
+	}, [accessToken, restorePrompt])
+
+	// One-time, on sign-in.
 	useEffect(() => {
 		if (sessionStatus !== "authenticated" || !accessToken) return
 		if (hasStartedCheckRef.current) return
 		hasStartedCheckRef.current = true
 
-		let cancelled = false
+		pullFromDrive().finally(() => {
+			if (mountedRef.current) setInitialCheckComplete(true)
+		})
+	}, [sessionStatus, accessToken, pullFromDrive])
 
-		async function checkDriveBackup() {
-			try {
-				const json = await downloadBackupFromDrive(accessToken!)
-				if (cancelled || !json) return
+	// Ongoing: re-check Drive on a poll interval and whenever the tab regains
+	// focus, so changes made on another device eventually show up here too.
+	useEffect(() => {
+		if (sessionStatus !== "authenticated" || !accessToken) return
+		if (!initialCheckComplete) return
 
-				const result = backupImport(json)
+		const interval = setInterval(pullFromDrive, REMOTE_POLL_INTERVAL_MS)
 
-				if (result.status === "synced") {
-					setStatus("synced")
-					setLastSyncedAt(Number(result.data.lastUpdated) || Date.now())
-				} else if (result.status === "newer") {
-					backupSetImport(result.data)
-					setStatus("synced")
-					setLastSyncedAt(Number(result.data.lastUpdated) || Date.now())
-				} else if (
-					result.status === "older" ||
-					result.status === "overwrite"
-				) {
-					const localLastUpdated =
-						Number(window.localStorage.getItem("lastUpdated")) || null
-					setRestorePrompt({
-						kind: result.status,
-						data: result.data,
-						localLastUpdated,
-					})
-				}
-			} catch (error) {
-				console.error(
-					"Failed to check Drive for an existing backup",
-					error
-				)
-			} finally {
-				if (!cancelled) setInitialCheckComplete(true)
-			}
+		const handleFocus = () => {
+			if (document.visibilityState === "visible") pullFromDrive()
 		}
 
-		checkDriveBackup()
+		document.addEventListener("visibilitychange", handleFocus)
+		window.addEventListener("focus", handleFocus)
 
 		return () => {
-			cancelled = true
+			clearInterval(interval)
+			document.removeEventListener("visibilitychange", handleFocus)
+			window.removeEventListener("focus", handleFocus)
 		}
-	}, [sessionStatus, accessToken])
+	}, [sessionStatus, accessToken, initialCheckComplete, pullFromDrive])
 
 	// Uploads local data to Drive right now, unconditionally. Used both by the
 	// gated auto/manual sync path below and by the restore-conflict modal,
@@ -107,9 +151,12 @@ export function DriveSyncProvider({ children }: { children: React.ReactNode }) {
 
 		setStatus("syncing")
 		try {
-			await uploadBackupToDrive(accessToken, buildBackupPayload())
+			const payload = buildBackupPayload()
+			await uploadBackupToDrive(accessToken, payload)
+			markSynced()
 			setStatus("synced")
 			setLastSyncedAt(Date.now())
+			setLatestBackupUpdatedAt(Number(payload.lastUpdated) || Date.now())
 		} catch (error) {
 			console.error("Failed to sync backup to Drive", error)
 			setStatus("error")
@@ -173,6 +220,9 @@ export function DriveSyncProvider({ children }: { children: React.ReactNode }) {
 
 		if (choice === "drive") {
 			backupSetImport(restorePrompt.data)
+			markSynced()
+			setLastSyncedAt(Date.now())
+			setLatestBackupUpdatedAt(Number(restorePrompt.data.lastUpdated) || Date.now())
 		} else {
 			await pushToDrive()
 		}
@@ -191,9 +241,10 @@ export function DriveSyncProvider({ children }: { children: React.ReactNode }) {
 		: null
 
 	return (
-		<DriveSyncContext.Provider value={{ status, lastSyncedAt, syncNow }}>
+		<DriveSyncContext.Provider
+			value={{ status, lastSyncedAt, latestBackupUpdatedAt, syncNow }}>
 			{children}
-			{restorePrompt && (
+			{(restorePrompt?.kind === "older" || restorePrompt?.kind === "overwrite") && (
 				<ModalContainer onClose={() => resolveRestorePrompt("local")}>
 					<AlertContainer
 						type="choices"

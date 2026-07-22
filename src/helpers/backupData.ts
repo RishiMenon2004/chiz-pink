@@ -1,6 +1,16 @@
 import { Inventory } from "@/types/inventory"
 import { PlannerRecord } from "@/types/planner"
 
+const LAST_SYNCED_KEY = "lastSynced"
+
+// Marks that this device has completed at least one Drive sync exchange
+// (push or pull). Once set, a newer remote timestamp is trusted outright
+// instead of prompting to overwrite. Deliberately not set by manual JSON
+// file import - that's a separate, one-off action from Drive sync.
+export function markSynced() {
+	window.localStorage.setItem(LAST_SYNCED_KEY, String(Date.now()))
+}
+
 function getFormattedDate(date = new Date()) {
 	const yyyy = date.getFullYear()
 	const MM = String(date.getMonth() + 1).padStart(2, "0") // Months are 0-indexed
@@ -74,6 +84,7 @@ export function backupImport(json: string) {
 	const plannerData = window.localStorage.getItem("planner")
 	const inventoryData = window.localStorage.getItem("inventory")
 	const remoteLastUpdated = Number(data.lastUpdated)
+	const hasSyncedBefore = Boolean(window.localStorage.getItem(LAST_SYNCED_KEY))
 
 	if (lastUpdated && remoteLastUpdated === lastUpdated) {
 		return { status: "synced", data }
@@ -87,7 +98,7 @@ export function backupImport(json: string) {
 		return { status: "future", data } //WOW!
 	}
 
-	if (plannerData || inventoryData) {
+	if (!hasSyncedBefore && (plannerData || inventoryData)) {
 		return { status: "overwrite", data }
 	}
 
@@ -97,6 +108,7 @@ export function backupImport(json: string) {
 export function backupSetImport({
 	planner,
 	inventory,
+	lastUpdated,
 }: {
 	planner: PlannerRecord
 	inventory: Inventory
@@ -104,6 +116,6 @@ export function backupSetImport({
 }) {
 	window.localStorage.setItem("inventory", JSON.stringify(inventory))
 	window.localStorage.setItem("planner", JSON.stringify(planner))
-	window.localStorage.setItem("lastUpdated", JSON.stringify(Date.now()))
+	window.localStorage.setItem("lastUpdated", String(lastUpdated))
 	window.dispatchEvent(new Event("local-storage-update"))
 }

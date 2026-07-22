@@ -111,8 +111,8 @@ export function RenderSettings() {
 									fontFamily: "var(--font-barlow-condensed)",
 									letterSpacing: "5%",
 								}}>
-								{driveSync.lastSyncedAt
-									? new Date(driveSync.lastSyncedAt as number)
+								{driveSync.latestBackupUpdatedAt
+									? new Date(driveSync.latestBackupUpdatedAt as number)
 											.toLocaleString("en-GB", {
 												year: "numeric",
 												month: "short",
@@ -176,20 +176,27 @@ export function RenderSettings() {
 									fontSize: "0.7em",
 									color: "black",
 									fontWeight: 720,
-									marginRight: "0.5rem",
+									marginRight: "0.25rem",
 									height: "fit-content",
 								}}>
 								BETA
 							</span>
-							<span style={{ display: "flex", flexWrap: "wrap" }}>
+							<span
+								style={{
+									display: "flex",
+									flexWrap: "wrap",
+									gap: "0.5ch",
+								}}>
 								{"Import compatible data from: "}
-								<Link
-									className="btn-anchor"
-									href="https://nteplanner.app/"
-									target="_blank">
-									NTE Planner
-								</Link>
-								{", "}
+								<span>
+									<Link
+										className="btn-anchor"
+										href="https://nteplanner.app/"
+										target="_blank">
+										NTE Planner
+									</Link>
+									{", "}
+								</span>
 								<Link
 									className="btn-anchor"
 									href="https://www.ntewiz.xyz/"
@@ -232,11 +239,11 @@ export function RenderSettings() {
 						onCancel={() => setImportOlder(false)}>
 						{isImportOlder && (
 							<>
-								The imported data is older than the saved data.
+								The imported data is older than the current data.
 								<br />
 							</>
 						)}
-						{"Would you like to overwrite your saved data?"}
+						{"Would you like to overwrite your current data?"}
 					</AlertContainer>
 				</ModalContainer>
 			)}
