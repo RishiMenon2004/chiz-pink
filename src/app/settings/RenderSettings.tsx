@@ -6,7 +6,12 @@ import {
 	ModalContainer,
 } from "@/components/layout"
 import { useDriveSyncContext } from "@/contexts"
-import { backupExport, backupImport, backupSetImport } from "@/helpers/backupData"
+import {
+	backupExport,
+	backupImport,
+	backupSetImport,
+	eraseLocalData,
+} from "@/helpers/backupData"
 import { signInWithGooglePopup } from "@/helpers/signInWithGooglePopup"
 import { unlinkGoogleAccount } from "@/helpers/unlinkGoogleAccount"
 import { Inventory } from "@/types/inventory"
@@ -17,6 +22,7 @@ import { useState } from "react"
 import styles from "./settings.module.css"
 import Link from "next/link"
 import { usePWAInstall } from "@/hooks"
+import { parseDescription } from "@/helpers"
 
 const syncStatusLabel = {
 	idle: "Not Synced",
@@ -37,6 +43,8 @@ export function RenderSettings() {
 	const [askOverwrite, setAskOverwrite] = useState<boolean>(false)
 	const [signoutWarning, setSignoutWarning] = useState<boolean>(false)
 	const [unlinkWarning, setUnlinkWarning] = useState<boolean>(false)
+	const [eraseWarning, setEraseWarning] = useState<boolean>(false)
+	const [eraseSyncChoice, setEraseSyncChoice] = useState<boolean>(false)
 	const [importedJson, setImportedJson] = useState<{
 		planner: PlannerRecord
 		inventory: Inventory
@@ -94,7 +102,7 @@ export function RenderSettings() {
 				</div>
 				<div className={styles.settingsSectionContent}>
 					<span className={styles.settingsSectionContentColumn}>
-						Backup your data locally.
+						Manage the data stored in the Local Storage of your browser.
 						<p className={styles.settingsTextbox}>
 							<span
 								style={{
@@ -117,7 +125,7 @@ export function RenderSettings() {
 									flexWrap: "wrap",
 									gap: "0.5ch",
 								}}>
-								{"Import compatible data from: "}
+								{"Migrating from a diffent app? Import compatible data from: "}
 								<span>
 									<Link
 										className="btn-anchor"
@@ -153,6 +161,11 @@ export function RenderSettings() {
 								importData()
 							}}>
 							Import Data
+						</button>
+						<button
+							data-variant="danger"
+							onClick={() => setEraseWarning(true)}>
+							Erase Data
 						</button>
 					</span>
 				</div>
@@ -294,6 +307,55 @@ export function RenderSettings() {
 						<br />
 						<p style={{ fontSize: "0.9em", fontWeight: "500" }}>
 							You will need to sign in again to enable syncing.
+						</p>
+					</AlertContainer>
+				</ModalContainer>
+			)}
+			{eraseWarning && (
+				<ModalContainer onClose={() => setEraseWarning(false)}>
+					<AlertContainer
+						type="dangerous-confirm"
+						onConfirm={() => {
+							setEraseWarning(false)
+							if (status === "authenticated") {
+								setEraseSyncChoice(true)
+							} else {
+								eraseLocalData()
+							}
+						}}
+						onCancel={() => setEraseWarning(false)}
+						confirmLabel="Erase"
+						cancelLabel="Cancel">
+						Erase all local data?
+						<br />
+						<p style={{ fontSize: "0.9rem", fontWeight: "500" }}>
+							This action will erase all data from this device.
+						</p>
+					</AlertContainer>
+				</ModalContainer>
+			)}
+			{eraseSyncChoice && (
+				<ModalContainer onClose={() => setEraseSyncChoice(false)}>
+					<AlertContainer
+						type="dangerous-choices"
+						onConfirm={() => {
+							eraseLocalData()
+							driveSync.syncNow()
+							setEraseSyncChoice(false)
+						}}
+						onCancel={() => {
+							eraseLocalData()
+							signOut()
+							setEraseSyncChoice(false)
+						}}
+						confirmLabel="Erase Cloud Backup"
+						cancelLabel="Keep Cloud Backup">
+						Keep your Cloud Backup?
+						<br />
+						<p style={{ fontSize: "0.9rem", fontWeight: "500", textWrapStyle: "balance" }}>
+							{parseDescription(
+								'You will be able to use your backup when you sign back in.'
+							)}
 						</p>
 					</AlertContainer>
 				</ModalContainer>

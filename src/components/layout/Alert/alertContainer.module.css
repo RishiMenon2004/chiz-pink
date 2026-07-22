@@ -1,12 +1,15 @@
 .alertBox {
-	background-color: var(--white);
 	display: flex;
 	flex-direction: column;
+
+	max-width: 40vw;
 	padding: 1rem 2rem;
 	border-radius: 1rem;
+
+	background-color: var(--white);
+
 	color: black;
 	text-align: center;
-
 	font-family: var(--font-syne);
 	font-weight: 650;
 	font-size: 1.25rem;
@@ -71,7 +74,12 @@
 	}
 }
 
-@media (max-width: 500) {
+@media (max-width: 1000px) {
+	.alertBox {
+		max-width: 30rem;
+	}
+}
+@media (max-width: 500px) {
 	.alertBox {
 		text-wrap-style: balance;
 		font-size: 1rem;

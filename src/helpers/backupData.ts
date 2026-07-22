@@ -105,6 +105,15 @@ export function backupImport(json: string) {
 	return { status: "newer", data }
 }
 
+const ERASABLE_KEYS = ["inventory", "planner", "lastUpdated", "lastSeen"]
+
+export function eraseLocalData() {
+	for (const key of ERASABLE_KEYS) {
+		window.localStorage.removeItem(key)
+	}
+	window.dispatchEvent(new Event("local-storage-update"))
+}
+
 export function backupSetImport({
 	planner,
 	inventory,
