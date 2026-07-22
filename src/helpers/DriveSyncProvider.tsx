@@ -49,12 +49,15 @@ export function DriveSyncProvider({ children }: { children: React.ReactNode }) {
 	const isPullingRef = useRef(false)
 	const pendingRef = useRef(false)
 	const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+	const pollTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 	const hasStartedCheckRef = useRef(false)
 	const mountedRef = useRef(true)
 	// Holds the latest runSync so it can call itself for a queued retry
 	// without closing over its own useCallback binding (which the React
 	// Compiler can't safely auto-memoize).
 	const runSyncRef = useRef<() => void>(() => {})
+	// Same trick as runSyncRef, for the self-rescheduling poll timer below.
+	const schedulePollRef = useRef<() => void>(() => {})
 
 	useEffect(() => {
 		mountedRef.current = true
@@ -69,9 +72,17 @@ export function DriveSyncProvider({ children }: { children: React.ReactNode }) {
 	// devices eventually surface here too.
 	const pullFromDrive = useCallback(async () => {
 		if (!accessToken) return
-		// Don't pull mid-push, mid-pull, or while the user has an unresolved
-		// restore conflict already on screen.
-		if (isSyncingRef.current || isPullingRef.current || restorePrompt) return
+		// Don't pull mid-push, mid-pull, while the user has an unresolved
+		// restore conflict already on screen, or while a local edit is still
+		// waiting on its debounced auto-push - a pull here could otherwise
+		// stomp on or prompt over changes the user just made.
+		if (
+			isSyncingRef.current ||
+			isPullingRef.current ||
+			restorePrompt ||
+			debounceRef.current
+		)
+			return
 
 		isPullingRef.current = true
 		try {
@@ -121,23 +132,38 @@ export function DriveSyncProvider({ children }: { children: React.ReactNode }) {
 		})
 	}, [sessionStatus, accessToken, pullFromDrive])
 
-	// Ongoing: re-check Drive on a poll interval and whenever the tab regains
+	// Ongoing: re-check Drive on a poll timer and whenever the tab regains
 	// focus, so changes made on another device eventually show up here too.
+	// The poll timer is restartable rather than a fixed interval - a local
+	// edit pushes it back out (see the local-storage-update effect below) so
+	// it never fires in the middle of the user actively editing.
 	useEffect(() => {
 		if (sessionStatus !== "authenticated" || !accessToken) return
 		if (!initialCheckComplete) return
 
-		const interval = setInterval(pullFromDrive, REMOTE_POLL_INTERVAL_MS)
+		function schedulePoll() {
+			if (pollTimeoutRef.current) clearTimeout(pollTimeoutRef.current)
+			pollTimeoutRef.current = setTimeout(() => {
+				pullFromDrive()
+				schedulePollRef.current()
+			}, REMOTE_POLL_INTERVAL_MS)
+		}
+
+		schedulePollRef.current = schedulePoll
+		schedulePoll()
 
 		const handleFocus = () => {
-			if (document.visibilityState === "visible") pullFromDrive()
+			if (document.visibilityState !== "visible") return
+			pullFromDrive()
+			schedulePoll()
 		}
 
 		document.addEventListener("visibilitychange", handleFocus)
 		window.addEventListener("focus", handleFocus)
 
 		return () => {
-			clearInterval(interval)
+			if (pollTimeoutRef.current) clearTimeout(pollTimeoutRef.current)
+			schedulePollRef.current = () => {}
 			document.removeEventListener("visibilitychange", handleFocus)
 			window.removeEventListener("focus", handleFocus)
 		}
@@ -199,11 +225,15 @@ export function DriveSyncProvider({ children }: { children: React.ReactNode }) {
 		if (sessionStatus !== "authenticated" || !accessToken) return
 
 		const handleChange = () => {
+			// A local edit restarts both the auto-push debounce and the
+			// Drive poll timer, so neither fires mid-edit and clobbers or
+			// interrupts what the user is doing.
 			if (debounceRef.current) clearTimeout(debounceRef.current)
-			debounceRef.current = setTimeout(
-				() => runSyncRef.current(),
-				AUTO_SYNC_DEBOUNCE_MS
-			)
+			debounceRef.current = setTimeout(() => {
+				debounceRef.current = null
+				runSyncRef.current()
+			}, AUTO_SYNC_DEBOUNCE_MS)
+			schedulePollRef.current()
 		}
 
 		window.addEventListener("local-storage-update", handleChange)
