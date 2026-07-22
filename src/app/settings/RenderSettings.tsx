@@ -1,6 +1,10 @@
 "use client"
 
-import { AlertContainer, ModalContainer } from "@/components/layout"
+import {
+	AlertContainer,
+	InstallPWAButton,
+	ModalContainer,
+} from "@/components/layout"
 import { useDriveSyncContext } from "@/contexts"
 import { backupExport, backupImport, backupSetImport } from "@/helpers/backupData"
 import { signInWithGooglePopup } from "@/helpers/signInWithGooglePopup"
@@ -12,6 +16,7 @@ import { useState } from "react"
 
 import styles from "./settings.module.css"
 import Link from "next/link"
+import { usePWAInstall } from "@/hooks"
 
 const syncStatusLabel = {
 	idle: "Not Synced",
@@ -25,6 +30,9 @@ export function RenderSettings() {
 	const driveSync = useDriveSyncContext()
 	let email: string | null | undefined = "Not Linked"
 	if (status === "authenticated") email = session?.user?.email
+
+	const { isStandalone } = usePWAInstall()
+
 	const [isImportOlder, setImportOlder] = useState<boolean>(false)
 	const [askOverwrite, setAskOverwrite] = useState<boolean>(false)
 	const [signoutWarning, setSignoutWarning] = useState<boolean>(false)
@@ -81,86 +89,6 @@ export function RenderSettings() {
 			<div className={styles.settingsSection}>
 				<div className={styles.settingsSectionTitlebar}>
 					<span className={styles.settingsSectionTitle}>
-						CLOUD BACKUP
-					</span>
-					{status === "authenticated" && (
-						<span className={styles.settingsCloudStatus}>
-							<span
-								className={`${styles.settingsCloudStatusLabel} ${styles[driveSync.status]}`}>
-								{syncStatusLabel[driveSync.status].toUpperCase()}
-							</span>
-							<div
-								tabIndex={0}
-								className={styles.settingsCloudSyncBtn}
-								data-variant="normal"
-								onClick={driveSync.syncNow}
-							/>
-						</span>
-					)}
-				</div>
-				{status === "authenticated" ? (
-					<div className={styles.settingsSectionContent}>
-						<span className={styles.settingsSectionContentRow}>
-							<b>Account:</b>
-							<span className={styles.settingsSecret}>{email}</span>
-						</span>
-						<span className={styles.settingsSectionContentRow}>
-							<b>Last Backup:</b>
-							<span
-								style={{
-									fontFamily: "var(--font-barlow-condensed)",
-									letterSpacing: "5%",
-								}}>
-								{driveSync.latestBackupUpdatedAt
-									? new Date(driveSync.latestBackupUpdatedAt as number)
-											.toLocaleString("en-GB", {
-												year: "numeric",
-												month: "short",
-												day: "2-digit",
-												hour: "numeric",
-												minute: "2-digit",
-												hour12: true,
-											})
-											.toUpperCase()
-									: "NO BACKUP"}
-							</span>
-						</span>
-						<span
-							className={`${styles.settingsSectionContentRow} ${styles.buttonRow}`}>
-							<button
-								data-variant="normal"
-								onClick={() => setSignoutWarning(true)}>
-								Sign Out
-							</button>
-							<button
-								data-variant="danger"
-								onClick={() => setUnlinkWarning(true)}>
-								Unlink & Delete Cloud Data
-							</button>
-						</span>
-					</div>
-				) : (
-					<div className={styles.settingsSectionContent}>
-						<span className={styles.settingsSectionContentRow}>
-							{
-								"Sync your data across devices using Google Drive. Chiz.Pink can only ever access it's own backup files."
-							}
-						</span>
-						<span
-							className={`${styles.settingsSectionContentRow} ${styles.buttonRow}`}>
-							<button
-								data-variant="normal"
-								onClick={() => signInWithGooglePopup()}>
-								Sign In
-							</button>
-						</span>
-					</div>
-				)}
-			</div>
-
-			<div className={styles.settingsSection}>
-				<div className={styles.settingsSectionTitlebar}>
-					<span className={styles.settingsSectionTitle}>
 						LOCAL DATA
 					</span>
 				</div>
@@ -177,7 +105,9 @@ export function RenderSettings() {
 									color: "black",
 									fontWeight: 720,
 									marginRight: "0.25rem",
+									marginLeft: "-0.675rem",
 									height: "fit-content",
+									userSelect: "none",
 								}}>
 								BETA
 							</span>
@@ -227,6 +157,111 @@ export function RenderSettings() {
 					</span>
 				</div>
 			</div>
+
+			<div className={styles.settingsSection}>
+				<div className={styles.settingsSectionTitlebar}>
+					<span className={styles.settingsSectionTitle}>
+						CLOUD BACKUP
+					</span>
+					{status === "authenticated" && (
+						<span className={styles.settingsCloudStatus}>
+							<span
+								className={`${styles.settingsCloudStatusLabel} ${styles[driveSync.status]}`}>
+								{syncStatusLabel[driveSync.status].toUpperCase()}
+							</span>
+							<div
+								tabIndex={0}
+								className={styles.settingsCloudSyncBtn}
+								data-variant="normal"
+								onClick={driveSync.syncNow}
+							/>
+						</span>
+					)}
+				</div>
+				{status === "authenticated" ? (
+					<div className={styles.settingsSectionContent}>
+						<span className={styles.settingsSectionContentRow}>
+							<b>Account:</b>
+							<span className={styles.settingsSecret}>{email}</span>
+						</span>
+						<span className={styles.settingsSectionContentRow}>
+							<b>Last Backup:</b>
+							<span
+								style={{
+									fontFamily: "var(--font-barlow-condensed)",
+									letterSpacing: "5%",
+								}}>
+								{driveSync.latestBackupUpdatedAt
+									? new Date(
+											driveSync.latestBackupUpdatedAt as number
+										)
+											.toLocaleString("en-GB", {
+												year: "numeric",
+												month: "short",
+												day: "2-digit",
+												hour: "numeric",
+												minute: "2-digit",
+												hour12: true,
+											})
+											.toUpperCase()
+									: "NO BACKUP"}
+							</span>
+						</span>
+						<span
+							className={`${styles.settingsSectionContentRow} ${styles.buttonRow}`}>
+							<button
+								data-variant="normal"
+								onClick={() => setSignoutWarning(true)}>
+								Sign Out
+							</button>
+							<button
+								data-variant="danger"
+								onClick={() => setUnlinkWarning(true)}>
+								Unlink & Delete Cloud Data
+							</button>
+						</span>
+					</div>
+				) : (
+					<div className={styles.settingsSectionContent}>
+						<span className={styles.settingsSectionContentRow}>
+							{
+								"Sync your data across devices using Google Drive. Chiz.Pink can only ever access it's own backup files."
+							}
+						</span>
+						<span
+							className={`${styles.settingsSectionContentRow} ${styles.buttonRow}`}>
+							<button
+								data-variant="normal"
+								onClick={() => signInWithGooglePopup()}>
+								Sign In
+							</button>
+						</span>
+					</div>
+				)}
+			</div>
+
+			{!isStandalone && (
+				<div className={styles.settingsSection}>
+					<div className={styles.settingsSectionTitlebar}>
+						<span className={styles.settingsSectionTitle}>
+							Install as PWA
+						</span>
+					</div>
+					<div className={styles.settingsSectionContent}>
+						<span className={styles.settingsSectionContentColumn}>
+							Install Chiz.Pink as a native app on any device with a
+							supported browser.
+							<p className={styles.settingsTextbox}>
+								{"Use it on the go or when you're offline too!"}
+							</p>
+						</span>
+						<span
+							className={`${styles.settingsSectionContentRow} ${styles.buttonRow}`}>
+							<InstallPWAButton type="button" />
+						</span>
+					</div>
+				</div>
+			)}
 
 			{(isImportOlder || askOverwrite) && (
 				<ModalContainer onClose={() => setImportOlder(false)}>

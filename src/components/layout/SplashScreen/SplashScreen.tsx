@@ -4,17 +4,23 @@ import Image from "next/image"
 import Link from "next/link"
 import { useEffect, useRef, useState } from "react"
 
+import { ChangeLogs } from "@/data/changelog"
+
 import { useFirstVisit } from "@/hooks/useFirstVisit"
-// import { useLastSeen } from "@/hooks/useLastSeen"
+import { useLastSeen } from "@/hooks/useLastSeen"
 
 import styles from "./splashScreen.module.css"
+import { parseDescription } from "@/helpers"
+import { InstallPWAButton } from "../InstallPWAButton"
 
 export function SplashScreen() {
 	const { isFirstVisit } = useFirstVisit()
-	// const isLastSeenOld = useLastSeen()
 
-	const [showWelcomeSplash, setShowWelcomeSplash] = useState(false)
-	// const [showUpdateSplash, setShowUpdateSplash] = useState(false)
+	const latestChangeDate = Object.values(ChangeLogs).at(-1)?.timeStamp || 0
+	const isLastSeenOld = useLastSeen(latestChangeDate)
+
+	const [showWelcomeSplash, setShowWelcomeSplash] = useState(true)
+	const [showUpdateSplash, setShowUpdateSplash] = useState(false)
 
 	const [imageClipPath, setImageClipPath] = useState("M 0 0 Z")
 
@@ -50,17 +56,23 @@ export function SplashScreen() {
 		}
 	}
 
-	const showSplashScreen = showWelcomeSplash /* || showUpdateSplash */
+	const showSplashScreen = showWelcomeSplash || showUpdateSplash
 
 	useEffect(() => {
-		if (isFirstVisit) {
-			// eslint-disable-next-line react-hooks/set-state-in-effect
-			setShowWelcomeSplash(true)
-		}
+		// eslint-disable-next-line react-hooks/set-state-in-effect
+		setShowWelcomeSplash(isFirstVisit)
 	}, [isFirstVisit])
 
-	const closeSplashScreen = () => {
+	useEffect(() => {
+		// eslint-disable-next-line react-hooks/set-state-in-effect
+		setShowUpdateSplash(isLastSeenOld)
+	}, [isLastSeenOld])
+
+	const closeWelcomeSplashScreen = () => {
 		setShowWelcomeSplash(false)
+	}
+	const closeUpdateSplashScreen = () => {
+		setShowUpdateSplash(false)
 	}
 
 	return (
@@ -79,10 +91,10 @@ export function SplashScreen() {
 								}
 							</div>
 							<div className={styles.infoBox}>
-								<ul className="">
+								<ul>
 									<li>
 										<Link
-											onClick={closeSplashScreen}
+											onClick={closeWelcomeSplashScreen}
 											className="btn-anchor"
 											href={"/"}>
 											Dashboard
@@ -93,7 +105,7 @@ export function SplashScreen() {
 									</li>
 									<li>
 										<Link
-											onClick={closeSplashScreen}
+											onClick={closeWelcomeSplashScreen}
 											className="btn-anchor"
 											href={"/checklist"}>
 											Checklist
@@ -104,14 +116,14 @@ export function SplashScreen() {
 									</li>
 									<li>
 										<Link
-											onClick={closeSplashScreen}
+											onClick={closeWelcomeSplashScreen}
 											className="btn-anchor"
 											href={"/characters"}>
 											Esper
 										</Link>
 										{" & "}
 										<Link
-											onClick={closeSplashScreen}
+											onClick={closeWelcomeSplashScreen}
 											className="btn-anchor"
 											href={"/arcs"}>
 											Arc Planner
@@ -122,7 +134,7 @@ export function SplashScreen() {
 									</li>
 									<li>
 										<Link
-											onClick={closeSplashScreen}
+											onClick={closeWelcomeSplashScreen}
 											className="btn-anchor"
 											href={"/inventory"}>
 											Inventory
@@ -134,9 +146,10 @@ export function SplashScreen() {
 								</ul>
 							</div>
 							<div className={styles.btnContainer}>
-								<button onClick={closeSplashScreen}>
+								<button onClick={closeWelcomeSplashScreen}>
 									{"CONTINUE >>"}
 								</button>
+								<InstallPWAButton type="button" />
 							</div>
 						</div>
 						<div className={styles.chizSection}>
@@ -161,9 +174,52 @@ export function SplashScreen() {
 						</div>
 					</div>
 				)}
-				{/* {showUpdateSplash && (
-					<div className={styles.updateSplashContainer}></div>
-				)} */}
+				{showUpdateSplash && !showWelcomeSplash && (
+					<div className={styles.updateSplashContainer}>
+						<div className={styles.infoSection}>
+							<div className={styles.welcomeText}>
+								{"RECENT UPDATES"}
+							</div>
+
+							<div className={styles.welcomeSubTitle}>
+								Latest Version:{" "}
+								{Object.entries(ChangeLogs).at(-1)?.[0]}
+							</div>
+							<div className={styles.infoBox}>
+								{Object.entries(ChangeLogs)
+									.toReversed()
+									.map(([version, { logs }]) => (
+										<div
+											key={version}
+											className={styles.versionSection}>
+											<h3
+												id={`changelog-v${version}`}
+												className={styles.versionTitle}>
+												v{version}
+											</h3>
+											<hr />
+											{logs.map((log, line) => (
+												<div
+													key={line}
+													className={
+														styles.versionText
+													}>
+													{typeof log === "string"
+														? parseDescription(log)
+														: log}
+												</div>
+											))}
+										</div>
+									))}
+							</div>
+							<div className={styles.btnContainer}>
+								<button onClick={closeUpdateSplashScreen}>
+									{"CONTINUE >>"}
+								</button>
+							</div>
+						</div>
+					</div>
+				)}
 			</div>
 		)
 	)

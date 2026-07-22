@@ -4,23 +4,38 @@ import { DescriptionValueType } from "@/types"
 import { DescriptionValuesRecord } from "@/types/item"
 
 import {
+	DescriptionLink,
 	DescriptionNumber,
 	DescriptionSmallHeading,
 } from "@/components/layout/Description"
 
+const ATTRIBUTE_REGEX = /([a-z]+)=(?:"([^"]*)"|'([^']*)')/g
+const OPEN_TAG_REGEX = /^<([a-z]+)((?:\s+[a-z]+=(?:"[^"]*"|'[^']*'))*)>/
+
 export function parseDescription(
 	description: string,
-	tier: number,
+	tier: number = 1,
 	values?: DescriptionValuesRecord
 ) {
-	const regex = /(<[a-z]+>[^<]+<\/>)/g
+	const regex = /(<[a-z]+(?:\s+[a-z]+=(?:"[^"]*"|'[^']*'))*>[^<]+<\/>)/g
 
 	const parts = description.split(regex)
 
 	return parts.map((chunk, index) => {
 		if (chunk.startsWith("<") && chunk.endsWith("/>")) {
-			const tagName = chunk.match(/<([a-z]+)>/)?.[1] ?? "dn"
-			const innerContent = chunk.replace(/<[a-z]+>/, "").replace("</>", "")
+			const openTagMatch = chunk.match(OPEN_TAG_REGEX)
+			const tagName = openTagMatch?.[1] ?? "dn"
+
+			const tagAttributes: Record<string, string> = {}
+			for (const match of (openTagMatch?.[2] ?? "").matchAll(
+				ATTRIBUTE_REGEX
+			)) {
+				tagAttributes[match[1]] = match[2] ?? match[3]
+			}
+
+			const innerContent = chunk
+				.replace(OPEN_TAG_REGEX, "")
+				.replace("</>", "")
 
 			const Wrapper = ({ children }: { children: ReactNode }) => {
 				switch (tagName) {
@@ -31,6 +46,12 @@ export function parseDescription(
 							<DescriptionSmallHeading>
 								{children}
 							</DescriptionSmallHeading>
+						)
+					case "link":
+						return (
+							<DescriptionLink url={tagAttributes.url ?? "#"}>
+								{children}
+							</DescriptionLink>
 						)
 					case "kw":
 					default:
