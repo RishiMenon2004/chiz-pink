@@ -17,6 +17,7 @@ import type {
 	SortByType,
 } from "@/types/inventory"
 import type { CharacterRecord, WeaponRecord } from "@/types/planner"
+import { SettingsRecord } from "@/types/settings"
 
 export const PlannerMaterialsContext = createContext<CumulativeInventory[]>([])
 export function usePlannerMaterialsContext() {
@@ -89,4 +90,9 @@ export const DriveSyncContext = createContext<{
 }>(null!)
 export function useDriveSyncContext() {
 	return useContext(DriveSyncContext)
+}
+
+export const SettingsConfigContext = createContext<SettingsRecord>(null!)
+export function useSettingsConfigContext() {
+	return useContext(SettingsConfigContext)
 }

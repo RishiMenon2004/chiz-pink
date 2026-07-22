@@ -9,6 +9,7 @@ import { ModalContainer } from "@/components/layout/Modal"
 
 import { backupImport, backupSetImport, buildBackupPayload, markSynced } from "./backupData"
 import { downloadBackupFromDrive, uploadBackupToDrive } from "./googleDrive"
+import { setInitialSyncPending } from "./syncGate"
 
 const AUTO_SYNC_DEBOUNCE_MS = 4000
 const REMOTE_POLL_INTERVAL_MS = 60000
@@ -65,6 +66,20 @@ export function DriveSyncProvider({ children }: { children: React.ReactNode }) {
 			mountedRef.current = false
 		}
 	}, [])
+
+	// Blocks the settings/planner/inventory stores from writing to localStorage
+	// while it's still unknown whether an authenticated pull is about to land -
+	// a local write in that window could race the incoming Drive data (either
+	// getting clobbered by it, or making local look newer than a backup it
+	// hasn't seen yet). Clears as soon as there's no session to wait on, or
+	// the initial pull has resolved.
+	useEffect(() => {
+		const pending =
+			sessionStatus === "loading" ||
+			(sessionStatus === "authenticated" && !initialCheckComplete)
+
+		setInitialSyncPending(pending)
+	}, [sessionStatus, initialCheckComplete])
 
 	// Pulls down whatever's on Drive and reconciles it against local data
 	// using the same rules as a manual file import. Called once on sign-in,

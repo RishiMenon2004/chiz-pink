@@ -1,5 +1,4 @@
-import { Inventory } from "@/types/inventory"
-import { PlannerRecord } from "@/types/planner"
+import { BackupData } from "@/types/settings"
 
 const LAST_SYNCED_KEY = "lastSynced"
 
@@ -27,12 +26,15 @@ export function buildBackupPayload() {
 		window.localStorage.getItem("planner") ??
 		'{ "arcs": {}, "characters": {} }'
 	const inventoryData = window.localStorage.getItem("inventory") ?? "{}"
+	const settingsData =
+		window.localStorage.getItem("settings") ?? "{ appearance: {} }"
 	const lastUpdated = window.localStorage.getItem("lastUpdated") ?? Date.now()
 
 	return {
 		lastUpdated,
 		inventory: JSON.parse(inventoryData),
 		planner: JSON.parse(plannerData),
+		settings: JSON.parse(settingsData),
 	}
 }
 
@@ -52,18 +54,10 @@ export function backupExport() {
 }
 
 export function backupImport(json: string) {
-	let data = {} as {
-		lastUpdated: number
-		inventory: Inventory
-		planner: PlannerRecord
-	}
+	let data = {} as BackupData
 
 	try {
-		data = JSON.parse(json) as {
-			lastUpdated: number
-			inventory: Inventory
-			planner: PlannerRecord
-		}
+		data = JSON.parse(json) satisfies BackupData
 	} catch (error) {
 		data = null!
 		console.error(error)
@@ -72,17 +66,14 @@ export function backupImport(json: string) {
 	if (data === null) {
 		return {
 			status: "error",
-			data: {} as {
-				lastUpdated: number
-				inventory: Inventory
-				planner: PlannerRecord
-			},
+			data: {} as BackupData,
 		}
 	}
 
 	const lastUpdated = Number(window.localStorage.getItem("lastUpdated"))
 	const plannerData = window.localStorage.getItem("planner")
 	const inventoryData = window.localStorage.getItem("inventory")
+	const settingsData = window.localStorage.getItem("settings")
 	const remoteLastUpdated = Number(data.lastUpdated)
 	const hasSyncedBefore = Boolean(window.localStorage.getItem(LAST_SYNCED_KEY))
 
@@ -98,14 +89,20 @@ export function backupImport(json: string) {
 		return { status: "future", data } //WOW!
 	}
 
-	if (!hasSyncedBefore && (plannerData || inventoryData)) {
+	if (!hasSyncedBefore && (plannerData || inventoryData || settingsData)) {
 		return { status: "overwrite", data }
 	}
 
 	return { status: "newer", data }
 }
 
-const ERASABLE_KEYS = ["inventory", "planner", "lastUpdated", "lastSeen"]
+const ERASABLE_KEYS = [
+	"inventory",
+	"planner",
+	"settings",
+	"lastUpdated",
+	"lastSeen",
+]
 
 export function eraseLocalData() {
 	for (const key of ERASABLE_KEYS) {
@@ -115,16 +112,14 @@ export function eraseLocalData() {
 }
 
 export function backupSetImport({
+	lastUpdated,
 	planner,
 	inventory,
-	lastUpdated,
-}: {
-	planner: PlannerRecord
-	inventory: Inventory
-	lastUpdated: number
-}) {
+	settings,
+}: BackupData) {
 	window.localStorage.setItem("inventory", JSON.stringify(inventory))
 	window.localStorage.setItem("planner", JSON.stringify(planner))
 	window.localStorage.setItem("lastUpdated", String(lastUpdated))
+	window.localStorage.setItem("settings", String(settings))
 	window.dispatchEvent(new Event("local-storage-update"))
 }

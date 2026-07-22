@@ -20,3 +20,12 @@ export { createSearchString } from "./createSearchString"
 export { unlinkGoogleAccount } from "./unlinkGoogleAccount"
 export { DriveSyncProvider } from "./DriveSyncProvider"
 export { signInWithGooglePopup } from "./signInWithGooglePopup"
+
+export { isInitialSyncPending, setInitialSyncPending } from "./syncGate"
+
+export {
+	backupExport,
+	backupImport,
+	backupSetImport,
+	eraseLocalData,
+} from "@/helpers/backupData"

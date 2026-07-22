@@ -3,6 +3,8 @@
 import { useSyncExternalStore } from "react"
 import { v4 as uuidv4 } from "uuid"
 
+import { isInitialSyncPending } from "@/helpers/syncGate"
+
 import type { Material } from "@/types/item"
 import type {
 	AggregateMaterial,
@@ -108,6 +110,7 @@ export const plannerActions = {
 			| ((current: PlannerRecord) => Partial<PlannerRecord>)
 	) {
 		if (typeof window === "undefined") return
+		if (isInitialSyncPending()) return
 
 		const plannerData = readPlanner()
 		const data =

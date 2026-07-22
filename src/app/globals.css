@@ -15,21 +15,21 @@
 
 	--ease-in-out-back: cubic-bezier(0.68, -0.6, 0.32, 1.6);
 
-	--default-cursor: url("/cursors/default.png") 2 2, default;
-	--pointer-cursor: url("/cursors/pointer.png") 10 10, pointer;
-	--navigate-cursor: url("/cursors/navigate.png") 28 20, pointer;
+	--default-cursor: default;
+	--pointer-cursor: pointer;
+	--navigate-cursor: pointer;
 
-	--multi-mat-cursor: url("/cursors/multi-mat.png") 4 26, pointer;
+	--multi-mat-cursor: pointer;
 
-	--edit-cursor: url("/cursors/edit.png") 4 26, text;
-	--search-cursor: url("/cursors/search.png") 4 26, text;
+	--edit-cursor: text;
+	--search-cursor: text;
 
-	--dropdown-cursor: url("/cursors/dropdown.png"), pointer;
-	--filter-cursor: url("/cursors/filter.png"), pointer;
-	--group-cursor: url("/cursors/group.png"), pointer;
-	--sort-cursor: url("/cursors/sort.png"), pointer;
+	--dropdown-cursor: pointer;
+	--filter-cursor: pointer;
+	--group-cursor: pointer;
+	--sort-cursor: pointer;
 
-	--pull-cursor: url("/cursors/down.png") 16 16;
+	/* --pull-cursor: url("/cursors/down.png") 16 16; */
 }
 
 html {
@@ -76,6 +76,24 @@ body {
 	&:has(> .no-body-scroll) {
 		overflow: hidden;
 	}
+}
+
+.custom-cursors {
+	--default-cursor: url("/cursors/default.png") 2 2, default;
+	--pointer-cursor: url("/cursors/pointer.png") 10 10, pointer;
+	--navigate-cursor: url("/cursors/navigate.png") 28 20, pointer;
+
+	--multi-mat-cursor: url("/cursors/multi-mat.png") 4 26, pointer;
+
+	--edit-cursor: url("/cursors/edit.png") 4 26, text;
+	--search-cursor: url("/cursors/search.png") 4 26, text;
+
+	--dropdown-cursor: url("/cursors/dropdown.png"), pointer;
+	--filter-cursor: url("/cursors/filter.png"), pointer;
+	--group-cursor: url("/cursors/group.png"), pointer;
+	--sort-cursor: url("/cursors/sort.png"), pointer;
+
+	--pull-cursor: url("/cursors/down.png") 16 16;
 }
 
 * {

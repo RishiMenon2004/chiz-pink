@@ -1,28 +1,32 @@
 "use client"
 
-import {
-	AlertContainer,
-	InstallPWAButton,
-	ModalContainer,
-} from "@/components/layout"
-import { useDriveSyncContext } from "@/contexts"
+import Link from "next/link"
+import { useMemo, useState } from "react"
+import { signOut, useSession } from "next-auth/react"
+
+import { BackupData } from "@/types/settings"
+
+import { usePWAInstall, useSettingsStore } from "@/hooks"
+
 import {
 	backupExport,
 	backupImport,
 	backupSetImport,
 	eraseLocalData,
-} from "@/helpers/backupData"
-import { signInWithGooglePopup } from "@/helpers/signInWithGooglePopup"
-import { unlinkGoogleAccount } from "@/helpers/unlinkGoogleAccount"
-import { Inventory } from "@/types/inventory"
-import { PlannerRecord } from "@/types/planner"
-import { signOut, useSession } from "next-auth/react"
-import { useState } from "react"
+	parseDescription,
+	signInWithGooglePopup,
+	unlinkGoogleAccount,
+} from "@/helpers"
+
+import { useDriveSyncContext } from "@/contexts"
+
+import {
+	AlertContainer,
+	InstallPWAButton,
+	ModalContainer,
+} from "@/components/layout"
 
 import styles from "./settings.module.css"
-import Link from "next/link"
-import { usePWAInstall } from "@/hooks"
-import { parseDescription } from "@/helpers"
 
 const syncStatusLabel = {
 	idle: "Not Synced",
@@ -37,6 +41,8 @@ export function RenderSettings() {
 	let email: string | null | undefined = "Not Linked"
 	if (status === "authenticated") email = session?.user?.email
 
+	const { settings, actions } = useSettingsStore()
+
 	const { isStandalone } = usePWAInstall()
 
 	const [isImportOlder, setImportOlder] = useState<boolean>(false)
@@ -45,52 +51,51 @@ export function RenderSettings() {
 	const [unlinkWarning, setUnlinkWarning] = useState<boolean>(false)
 	const [eraseWarning, setEraseWarning] = useState<boolean>(false)
 	const [eraseSyncChoice, setEraseSyncChoice] = useState<boolean>(false)
-	const [importedJson, setImportedJson] = useState<{
-		planner: PlannerRecord
-		inventory: Inventory
-		lastUpdated: number
-	}>({
+	const [importedJson, setImportedJson] = useState<BackupData>({
 		planner: { arcs: {}, characters: {} },
 		inventory: {},
 		lastUpdated: 0,
+		settings: { appearance: {} },
 	})
 
-	const importData = () => {
-		const input = document.createElement("input")
-		input.type = "file"
-		input.accept = "application/json"
-		input.onchange = () => {
-			const file = input.files?.[0]
-			if (!file) return
+	const importData = useMemo(() => {
+		return () => {
+			const input = document.createElement("input")
+			input.type = "file"
+			input.accept = "application/json"
+			input.onchange = () => {
+				const file = input.files?.[0]
+				if (!file) return
 
-			const reader = new FileReader()
-			reader.onload = () => {
-				const result = reader.result as string
-				const importResult = backupImport(result)
-				const { status, data } = importResult
+				const reader = new FileReader()
+				reader.onload = () => {
+					const result = reader.result as string
+					const importResult = backupImport(result)
+					const { status, data } = importResult
 
-				switch (status) {
-					case "error":
-						break
-					case "newer":
-						backupSetImport(data)
-						break
-					case "older":
-						setImportOlder(true)
-						setImportedJson(data)
-						break
-					case "overwrite":
-						setAskOverwrite(true)
-						setImportedJson(data)
-						break
-					default:
-						break
+					switch (status) {
+						case "error":
+							break
+						case "newer":
+							backupSetImport(data)
+							break
+						case "older":
+							setImportOlder(true)
+							setImportedJson(data)
+							break
+						case "overwrite":
+							setAskOverwrite(true)
+							setImportedJson(data)
+							break
+						default:
+							break
+					}
 				}
+				reader.readAsText(file)
 			}
-			reader.readAsText(file)
+			input.click()
 		}
-		input.click()
-	}
+	}, [])
 
 	return (
 		<div className={`page ${styles.page}`}>
@@ -102,7 +107,8 @@ export function RenderSettings() {
 				</div>
 				<div className={styles.settingsSectionContent}>
 					<span className={styles.settingsSectionContentColumn}>
-						Manage the data stored in the Local Storage of your browser.
+						Manage the data stored in the Local Storage of your
+						browser.
 						<p className={styles.settingsTextbox}>
 							<span
 								style={{
@@ -125,7 +131,9 @@ export function RenderSettings() {
 									flexWrap: "wrap",
 									gap: "0.5ch",
 								}}>
-								{"Migrating from a diffent app? Import compatible data from: "}
+								{
+									"Migrating from another app? Import compatible data from: "
+								}
 								<span>
 									<Link
 										className="btn-anchor"
@@ -276,6 +284,30 @@ export function RenderSettings() {
 				</div>
 			)}
 
+			<div className={styles.settingsSection}>
+				<div className={styles.settingsSectionTitlebar}>
+					<div className={styles.settingsSectionTitle}>Appearance</div>
+				</div>
+				<div className={styles.settingsSectionContent}>
+					<div className={styles.settingsSectionContentRow}>
+						<input
+							type="checkbox"
+							checked={
+								settings.appearance?.["use-cursors"] || false
+							}
+							onChange={() =>
+								actions.setConfig("appearance", {
+									"use-cursors":
+										!settings.appearance?.["use-cursors"] ||
+										false,
+								})
+							}
+						/>
+					</div>
+				</div>
+			</div>
+
+			{/* alert modals */}
 			{(isImportOlder || askOverwrite) && (
 				<ModalContainer onClose={() => setImportOlder(false)}>
 					<AlertContainer
@@ -285,13 +317,17 @@ export function RenderSettings() {
 						isConfirmDanger={true}
 						cancelLabel="Cancel"
 						onCancel={() => setImportOlder(false)}>
-						{isImportOlder && (
-							<>
-								The imported data is older than the current data.
-								<br />
-							</>
-						)}
-						{"Would you like to overwrite your current data?"}
+						{isImportOlder
+							? "This file contains older information."
+							: "Existing data will be overwritten."}
+						<p
+							style={{
+								fontSize: "0.9em",
+								fontWeight: "500",
+								textWrapStyle: "balance",
+							}}>
+							Are you sure you want to replace your current data?
+						</p>
 					</AlertContainer>
 				</ModalContainer>
 			)}
@@ -352,9 +388,14 @@ export function RenderSettings() {
 						cancelLabel="Keep Cloud Backup">
 						Keep your Cloud Backup?
 						<br />
-						<p style={{ fontSize: "0.9rem", fontWeight: "500", textWrapStyle: "balance" }}>
+						<p
+							style={{
+								fontSize: "0.9rem",
+								fontWeight: "500",
+								textWrapStyle: "balance",
+							}}>
 							{parseDescription(
-								'You will be able to use your backup when you sign back in.'
+								"You will be able to use your backup when you sign back in."
 							)}
 						</p>
 					</AlertContainer>

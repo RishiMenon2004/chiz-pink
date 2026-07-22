@@ -2,6 +2,7 @@
 
 import { useSyncExternalStore } from "react"
 
+import { isInitialSyncPending } from "@/helpers/syncGate"
 import type { Inventory } from "@/types/inventory"
 
 let cachedInventory: Inventory = {}
@@ -11,6 +12,7 @@ const SERVER_FALLBACK: Inventory = {}
 
 function updateInventory(data: Inventory) {
 	if (typeof window === "undefined") return
+	if (isInitialSyncPending()) return
 
 	const value = localStorage.getItem("inventory")
 	const inventoryData = { ...JSON.parse(value || "{}") } as Inventory

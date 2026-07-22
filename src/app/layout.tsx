@@ -3,11 +3,18 @@ import { Barlow_Condensed, Syne } from "next/font/google"
 
 import { RoutesData } from "@/data/routes"
 
-import { AuthProvider, CurrencyBar, Footer, Sidebar, SplashScreen } from "@/components/layout"
+import {
+	AuthProvider,
+	CurrencyBar,
+	Footer,
+	Sidebar,
+	SplashScreen,
+} from "@/components/layout"
 import { DriveSyncProvider, ServiceWorkerRegister } from "@/helpers"
 
 import "./globals.css"
 import { Analytics } from "@vercel/analytics/next"
+import { SettingsProvider } from "@/hooks/useSettingsStore"
 
 const barlowCondensed = Barlow_Condensed({
 	variable: "--font-barlow-condensed",
@@ -56,8 +63,8 @@ export default function RootLayout({
 		<html
 			lang="en"
 			className={`${barlowCondensed.variable} ${syne.variable}`}>
-			<body>
-				<AuthProvider>
+			<AuthProvider>
+				<SettingsProvider>
 					<DriveSyncProvider>
 						<ServiceWorkerRegister />
 						<SplashScreen />
@@ -66,9 +73,9 @@ export default function RootLayout({
 						{children}
 						<Footer />
 					</DriveSyncProvider>
-				</AuthProvider>
-				<Analytics />
-			</body>
+				</SettingsProvider>
+			</AuthProvider>
+			<Analytics />
 		</html>
 	)
 }
