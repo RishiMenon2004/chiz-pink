@@ -1,12 +1,12 @@
 export default function Home() {
 
 	return (
-		<span
+		<main role="main" 
 			style={{
 				display: "grid",
 				placeItems: "center",
 				color: "white",
 			}}>
-		</span>
+		</main>
 	)
 }

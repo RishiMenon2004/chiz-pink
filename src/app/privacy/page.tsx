@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 
 export default function PrivacyPolicy() {
 	return (
-		<div className={`page ${styles.page}`}>
+		<main className={`page ${styles.page}`} role="main">
 			<div className={styles.intro}>
 				<span className={styles.lastUpdated}>
 					Last updated: 23 July 2026
@@ -25,7 +25,7 @@ export default function PrivacyPolicy() {
 				<p>
 					<b>The short version:</b>
 					{
-						" everything you do in Chiz.Pink stays on your device by default. If you choose to sign in with Google to sync across devices, your data is stored only in your own Google Drive. Chiz.Pink never sees your data."
+						" everything you do in Chiz.Pink stays on your device by default. If you choose to sign in with Google to sync across devices, your data is encrypted before it ever leaves your device, using a key that's stored only in your own Google Drive. Chiz.Pink and the database that backs it up (Convex) never see your data in a readable form - only you can decrypt it."
 					}
 				</p>
 			</div>
@@ -83,19 +83,33 @@ export default function PrivacyPolicy() {
 				<ul>
 					<li>
 						{
-							"Your local storage data is saved only inside your Google Drive's private"
-						}
-						<code> appDataFolder</code>
-						{
-							" - it is never sent to, or stored on, Chiz.Pink's own servers."
+							"Your local storage data is  encrypted on your own device (AES-256-GCM for the nerds) before anything is sent anywhere."
 						}
 					</li>
 					<li>
 						{
-							"That private folder is the only point of access that Chiz.Pink has to your drive. Chiz.Pink can never interact with or access any other part of your Google Drive or Google Account."
+							"Only that encrypted, unreadable data is stored in our database ("
+						}
+						<Link className="btn-anchor" href="https://www.convex.dev" target="_blank">
+							Convex
+						</Link>
+						{"), so it can sync live across your devices."}
+					</li>
+					<li>
+						{
+							"The key used to decrypt it is generated on your device and saved only inside your Google Drive's private"
+						}
+						<code> appDataFolder</code>
+						{
+							" - it is never sent to, or stored on, Chiz.Pink's own servers or Convex."
 						}
 					</li>
 				</ul>
+				<p>
+					{
+						"In practice, this means nobody but you - not Chiz.Pink, not Convex - can read your synced data. We can see that a backup exists and when it last changed, not what's in it."
+					}
+				</p>
 			</div>
 
 			<div className={styles.section}>
@@ -116,7 +130,7 @@ export default function PrivacyPolicy() {
 					<li>
 						<b>{"Unlink & Delete Cloud Data:"}</b>
 						{
-							" Deletes your backup from your Google Drive, removes Chiz.Pink's access to your Google account, and signs you out everywhere - including any other devices you're still signed into."
+							" Deletes your encrypted backup from Convex, deletes the encryption key from your Drive, removes Chiz.Pink's access to your Google account, and signs you out everywhere - including any other devices you're still signed into."
 						}
 					</li>
 				</ul>
@@ -126,10 +140,7 @@ export default function PrivacyPolicy() {
 				<span className={styles.sectionTitle}>{"Analytics"}</span>
 				<p>
 					Chiz.Pink uses{" "}
-					<Link
-						className="btn-anchor"
-						href="https://vercel.com/analytics"
-						target="_blank">
+					<Link className="btn-anchor" href="https://vercel.com/analytics" target="_blank">
 						Vercel Web Analytics
 					</Link>{" "}
 					to see aggregate, anonymized traffic, like which pages get
@@ -150,7 +161,11 @@ export default function PrivacyPolicy() {
 				<ul>
 					<li>
 						<b>Google</b> - sign-in, and the private Drive folder
-						holding backup for cross-device sync.
+						holding your encryption key.
+					</li>
+					<li>
+						<b>Convex</b> - stores your encrypted backup for
+						cross-device sync.
 					</li>
 					<li>
 						<b>Vercel</b> - hosts the app itself and the anonymized
@@ -158,21 +173,23 @@ export default function PrivacyPolicy() {
 					</li>
 				</ul>
 				<p>
-					{"We don't sell your data or share it with anyone for advertising."}
+					We don&apos;t sell your data or share it with anyone for
+					advertising.
 				</p>
 			</div>
 
 			<div className={styles.section}>
 				<span className={styles.sectionTitle}>{"Changes & Contact"}</span>
 				<p>
-					{"If this policy changes in a way that matters, the \"last updated\" date above will change too. Questions or requests about your data can be sent to "}
-					<Link
-						className="btn-anchor"
-						href="mailto:rishimenonx@gmail.com">
+					If this policy changes in a way that matters, the &quot;last
+					updated&quot; date above will change too. Questions or
+					requests about your data can be sent to{" "}
+					<Link className="btn-anchor" href="mailto:rishimenonx@gmail.com">
 						rishimenonx@gmail.com
 					</Link>
+					.
 				</p>
 			</div>
-		</div>
+		</main>
 	)
 }

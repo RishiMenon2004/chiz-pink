@@ -6,7 +6,7 @@ export const metadata: Metadata = {
 
 export default function OfflinePage() {
 	return (
-		<div className="page" style={{ display: "grid", placeItems: "center" }}>
+		<main className="page" style={{ display: "grid", placeItems: "center" }} role="main">
 			<span
 				style={{
 					display: "grid",
@@ -26,6 +26,6 @@ export default function OfflinePage() {
 					}
 				</p>
 			</span>
-		</div>
+		</main>
 	)
 }

@@ -139,7 +139,7 @@ export default function RenderCharacterPlanner() {
 			)}
 			{/* ============================================================= */}
 
-			<div className={`page ${styles.page}`}>
+			<main className={`page ${styles.page}`} role="main">
 				{/* =========================================================== */}
 				{/*                   Total Materials Required                  */}
 				{/* =========================================================== */}
@@ -197,7 +197,7 @@ export default function RenderCharacterPlanner() {
 					</div>
 					{/* ========================================================= */}
 				</DragDropProvider>
-			</div>
+			</main>
 		</PlannerInventoryProvider>
 	)
 }

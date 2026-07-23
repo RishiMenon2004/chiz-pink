@@ -1,14 +1,14 @@
 import { signOut } from "next-auth/react"
 
-import { deleteBackupFromDrive } from "./googleDrive"
+import { deleteBackupKeyFromDrive } from "./driveBackupKey"
 
 export async function unlinkGoogleAccount(accessToken?: string) {
 	if (accessToken) {
 		try {
-			await deleteBackupFromDrive(accessToken)
+			await deleteBackupKeyFromDrive(accessToken)
 		} catch (error) {
 			// Don't let a failed delete trap the user into staying linked.
-			console.error("Failed to delete Drive backup before unlinking", error)
+			console.error("Failed to delete Drive key file before unlinking", error)
 		}
 	}
 

@@ -26,6 +26,7 @@ export const authOptions: NextAuthOptions = {
 					...token,
 					accessToken: account.access_token,
 					refreshToken: account.refresh_token,
+					idToken: account.id_token,
 					expiresAt: account.expires_at,
 				}
 			}
@@ -40,6 +41,7 @@ export const authOptions: NextAuthOptions = {
 		},
 		async session({ session, token }) {
 			session.accessToken = token.accessToken
+			session.idToken = token.idToken
 			session.error = token.error
 			return session
 		},
@@ -69,6 +71,8 @@ async function refreshAccessToken(token: JWT): Promise<JWT> {
 			expiresAt: Math.floor(Date.now() / 1000) + refreshed.expires_in,
 			// Google only returns a new refresh token occasionally; keep the old one otherwise.
 			refreshToken: refreshed.refresh_token ?? token.refreshToken,
+			// Same deal for the id token - not always reissued on refresh.
+			idToken: refreshed.id_token ?? token.idToken,
 		}
 	} catch (error) {
 		console.error("Failed to refresh Google access token", error)

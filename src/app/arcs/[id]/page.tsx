@@ -14,13 +14,13 @@ export default function ArcInfoPage() {
 	}
 
 	return (
-		<div className="page">
+		<main className="page" role="main">
 			<h1>{arc.name}</h1>
 			{arc.description && parseDescription(arc.description, 1)}
 			<h2>{arc.effect.name}</h2>
 			<div>
 				{parseDescription(arc.effect.description, 1, arc.effect.values)}
 			</div>
-		</div>
+		</main>
 	)
 }

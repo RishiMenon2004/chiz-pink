@@ -5,7 +5,7 @@ import styles from "./sidebar.module.css"
 export function Sidebar() {
 	return (
 		<div className={styles.sidebar}>
-			<nav>
+			<nav role="navigation">
 				<NavButton href="" icon="home" />
 				<NavButton href="checklist" icon="checklist" />
 				<NavButton href="characters" icon="characters" />
