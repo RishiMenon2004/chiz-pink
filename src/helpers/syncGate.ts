@@ -3,10 +3,10 @@
 import { useSyncExternalStore } from "react"
 
 // Shared flag consulted by the localStorage-backed stores (settings, planner,
-// inventory) before they write. While the initial Drive sync check is still
+// inventory) before they write. While the initial Convex sync check is still
 // in flight, a local write could race the incoming pull - either getting
-// clobbered by it or bumping lastUpdated so local looks newer than a Drive
-// backup it hasn't actually seen yet. DriveSyncProvider is the only writer;
+// clobbered by it or bumping lastUpdated so local looks newer than a backup
+// it hasn't actually seen yet. CloudSyncProvider is the only writer;
 // everything else only reads.
 type Listener = () => void
 

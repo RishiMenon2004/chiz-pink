@@ -18,7 +18,7 @@ export { generateNewCharacter } from "./generateNewCharacter"
 export { createSearchString } from "./createSearchString"
 
 export { unlinkGoogleAccount } from "./unlinkGoogleAccount"
-export { DriveSyncProvider } from "./DriveSyncProvider"
+export { CloudSyncProvider } from "./CloudSyncProvider"
 export { signInWithGooglePopup } from "./signInWithGooglePopup"
 
 export { isInitialSyncPending, setInitialSyncPending } from "./syncGate"

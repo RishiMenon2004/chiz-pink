@@ -5,12 +5,13 @@ import { RoutesData } from "@/data/routes"
 
 import {
 	AuthProvider,
+	ConvexClientProvider,
 	CurrencyBar,
 	Footer,
 	Sidebar,
 	SplashScreen,
 } from "@/components/layout"
-import { DriveSyncProvider, ServiceWorkerRegister } from "@/helpers"
+import { CloudSyncProvider, ServiceWorkerRegister } from "@/helpers"
 
 import "./globals.css"
 import { Analytics } from "@vercel/analytics/next"
@@ -65,14 +66,16 @@ export default function RootLayout({
 			className={`${barlowCondensed.variable} ${syne.variable}`}>
 			<AuthProvider>
 				<SettingsProvider>
-					<DriveSyncProvider>
-						<ServiceWorkerRegister />
-						<SplashScreen />
-						<Sidebar />
-						<CurrencyBar />
-						{children}
-						<Footer />
-					</DriveSyncProvider>
+					<ConvexClientProvider>
+						<CloudSyncProvider>
+							<ServiceWorkerRegister />
+							<SplashScreen />
+							<Sidebar />
+							<CurrencyBar />
+							{children}
+							<Footer />
+						</CloudSyncProvider>
+					</ConvexClientProvider>
 				</SettingsProvider>
 			</AuthProvider>
 			<Analytics />

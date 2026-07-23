@@ -3,6 +3,9 @@
 import Link from "next/link"
 import { useMemo, useState } from "react"
 import { signOut, useSession } from "next-auth/react"
+import { useMutation } from "convex/react"
+
+import { api } from "@convex/_generated/api"
 
 import { BackupData } from "@/types/settings"
 
@@ -18,7 +21,7 @@ import {
 	unlinkGoogleAccount,
 } from "@/helpers"
 
-import { useDriveSyncContext } from "@/contexts"
+import { useCloudSyncContext } from "@/contexts"
 
 import {
 	AlertContainer,
@@ -37,7 +40,9 @@ const syncStatusLabel = {
 
 export function RenderSettings() {
 	const { data: session, status } = useSession()
-	const driveSync = useDriveSyncContext()
+	const cloudSync = useCloudSyncContext()
+	const deleteCloudBackup = useMutation(api.backups.deleteBackup)
+	const markUnlinked = useMutation(api.accountStatus.markUnlinked)
 	let email: string | null | undefined = "Not Linked"
 	if (status === "authenticated") email = session?.user?.email
 
@@ -187,14 +192,14 @@ export function RenderSettings() {
 					{status === "authenticated" && (
 						<span className={styles.settingsCloudStatus}>
 							<span
-								className={`${styles.settingsCloudStatusLabel} ${styles[driveSync.status]}`}>
-								{syncStatusLabel[driveSync.status].toUpperCase()}
+								className={`${styles.settingsCloudStatusLabel} ${styles[cloudSync.status]}`}>
+								{syncStatusLabel[cloudSync.status].toUpperCase()}
 							</span>
 							<div
 								tabIndex={0}
 								className={styles.settingsCloudSyncBtn}
 								data-variant="normal"
-								onClick={driveSync.syncNow}
+								onClick={cloudSync.syncNow}
 							/>
 						</span>
 					)}
@@ -212,9 +217,9 @@ export function RenderSettings() {
 									fontFamily: "var(--font-barlow-condensed)",
 									letterSpacing: "5%",
 								}}>
-								{driveSync.latestBackupUpdatedAt
+								{cloudSync.latestBackupUpdatedAt
 									? new Date(
-											driveSync.latestBackupUpdatedAt as number
+											cloudSync.latestBackupUpdatedAt as number
 										)
 											.toLocaleString("en-GB", {
 												year: "numeric",
@@ -246,7 +251,7 @@ export function RenderSettings() {
 					<div className={styles.settingsSectionContent}>
 						<span className={styles.settingsSectionContentRow}>
 							{
-								"Sync your data across devices using Google Drive. Chiz.Pink can only ever access it's own backup files."
+								"Sync your data across devices, end-to-end encrypted. Chiz.Pink never has access to your unencrypted data - only you can decrypt it."
 							}
 						</span>
 						<span
@@ -380,7 +385,7 @@ export function RenderSettings() {
 						type="dangerous-choices"
 						onConfirm={() => {
 							eraseLocalData()
-							driveSync.syncNow()
+							cloudSync.syncNow()
 							setEraseSyncChoice(false)
 						}}
 						onCancel={() => {
@@ -409,9 +414,16 @@ export function RenderSettings() {
 				<ModalContainer onClose={() => setUnlinkWarning(false)}>
 					<AlertContainer
 						type="dangerous-confirm"
-						onConfirm={() =>
-							unlinkGoogleAccount(session?.accessToken)
-						}
+						onConfirm={async () => {
+							try {
+								await markUnlinked({})
+								await deleteCloudBackup({})
+							} catch (error) {
+								// Don't let a failed delete trap the user into staying linked.
+								console.error("Failed to update Convex before unlinking", error)
+							}
+							await unlinkGoogleAccount(session?.accessToken)
+						}}
 						onCancel={() => setUnlinkWarning(false)}
 						confirmLabel="Unlink"
 						cancelLabel="Keep Linked">
