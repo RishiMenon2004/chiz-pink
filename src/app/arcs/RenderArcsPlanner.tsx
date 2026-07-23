@@ -144,7 +144,7 @@ export default function RenderArcsPlanner() {
 			)}
 			{/* ============================================================= */}
 
-			<div className={`page ${styles.page}`}>
+			<main className={`page ${styles.page}`} role="main">
 				{/* =========================================================== */}
 				{/*                   Total Materials Required                  */}
 				{/* =========================================================== */}
@@ -198,7 +198,7 @@ export default function RenderArcsPlanner() {
 					</div>
 					{/* ========================================================= */}
 				</DragDropProvider>
-			</div>
+			</main>
 		</PlannerInventoryProvider>
 	)
 }

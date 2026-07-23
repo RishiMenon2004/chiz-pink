@@ -4,7 +4,7 @@ import styles from "./footer.module.css"
 
 export function Footer() {
 	return (
-		<footer className={styles.footer}>
+		<footer className={styles.footer} role="contentinfo">
 			<span className={styles.left}>
 				<div>
 					&copy; <b className={styles.pink}>Rishi Menon</b> 2026

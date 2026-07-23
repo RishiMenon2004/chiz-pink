@@ -13,14 +13,14 @@ export default function PopupCallbackPage() {
 	}, [])
 
 	return (
-		<div
+		<main
 			className="page"
 			style={{
 				display: "flex",
 				flexDirection: "column",
 				fontSize: "1.125rem",
 				paddingInline: 0,
-			}}>
+			}} role="main">
 			<div
 				style={{
 					gap: "1rem",
@@ -36,6 +36,6 @@ export default function PopupCallbackPage() {
 				</h2>
 				<p>{"You may now close this window."}</p>
 			</div>
-		</div>
+		</main>
 	)
 }

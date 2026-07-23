@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 
 export default function PrivacyPolicy() {
 	return (
-		<div className={`page ${styles.page}`}>
+		<main className={`page ${styles.page}`} role="main">
 			<div className={styles.intro}>
 				<span className={styles.lastUpdated}>
 					Last updated: 23 July 2026
@@ -190,6 +190,6 @@ export default function PrivacyPolicy() {
 					.
 				</p>
 			</div>
-		</div>
+		</main>
 	)
 }

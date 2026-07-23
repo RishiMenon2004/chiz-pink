@@ -103,7 +103,7 @@ export function RenderSettings() {
 	}, [])
 
 	return (
-		<div className={`page ${styles.page}`}>
+		<main className={`page ${styles.page}`} role="main">
 			<div className={styles.settingsSection}>
 				<div className={styles.settingsSectionTitlebar}>
 					<span className={styles.settingsSectionTitle}>
@@ -435,6 +435,6 @@ export function RenderSettings() {
 					</AlertContainer>
 				</ModalContainer>
 			)}
-		</div>
+		</main>
 	)
 }
