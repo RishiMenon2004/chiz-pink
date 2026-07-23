@@ -84,7 +84,7 @@ GOOGLE_CLIENT_SECRET=
 Then in two separate terminals run:
 
 ```bash
-npx convex dev   # sets up your own Convex dev deployment, writes a .env.local for you
+npm run convex-dev   # sets up your own Convex dev deployment, writes a .env.local for you
 ```
 
 ```bash
@@ -103,6 +103,7 @@ npx convex env set GOOGLE_CLIENT_ID <value>
 ## Scripts
 
 - `npm run dev` - dev server
+- `npm run convex-dev` - convex dev server
 - `npm run build` - production build
 - `npm run start` - serve a production build
 - `npm run lint` - eslint, keep it clean

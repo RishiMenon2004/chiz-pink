@@ -4,6 +4,7 @@
 	"private": true,
 	"scripts": {
 		"dev": "npx cross-env NODE_OPTIONS=\"--localstorage-file=./storage.json\" next dev",
+		"convex-dev": "npx cross-env NODE_OPTIONS=\"--localstorage-file=./storage.json\" convex dev",
 		"build": "next build",
 		"start": "npx cross-env NODE_OPTIONS=\"--localstorage-file=./storage.json\" next start",
 		"lint": "eslint"
