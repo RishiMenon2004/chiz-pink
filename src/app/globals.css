@@ -146,8 +146,6 @@ body {
 	padding: 0;
 	margin: 0;
 
-	scrollbar-color: var(--darker-pink) transparent;
-
 	&::selection {
 		background-color: var(--pink);
 		color: white;
