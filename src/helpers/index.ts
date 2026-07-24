@@ -24,6 +24,16 @@ export { signInWithGooglePopup } from "./signInWithGooglePopup"
 export { isInitialSyncPending, setInitialSyncPending } from "./syncGate"
 
 export {
+	getStaminaResetBoundaries,
+	formatTimeRemaining,
+} from "./staminaReset"
+
+export {
+	getPixelsRefillTime,
+	getNextPixelRecoveryTime,
+} from "./pixelRefill"
+
+export {
 	backupExport,
 	backupImport,
 	backupSetImport,

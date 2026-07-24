@@ -3,7 +3,17 @@ import { PlannerRecord } from "./planner"
 
 export type SettingsRecord = {
 	appearance: {
-		"use-cursors"?: boolean
+		"use-cursors": boolean
+	}
+	userdata: {
+		nickname: string
+		server: "America" | "Asia" | "Europe" | "SEA"
+		"current-stamina": number
+		"max-stamina": number
+		"last-stamina-reset": number
+		"current-pixels": number
+		"max-pixels": number
+		"pixels-last-edited": number
 	}
 }
 

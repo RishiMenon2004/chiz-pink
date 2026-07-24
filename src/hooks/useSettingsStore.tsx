@@ -2,17 +2,30 @@
 
 import { SettingsConfigContext } from "@/contexts"
 import { isInitialSyncPending, useInitialSyncPending } from "@/helpers/syncGate"
+import { getStaminaResetBoundaries } from "@/helpers/staminaReset"
 import { SettingsRecord } from "@/types/settings"
 import { ReactNode, useEffect, useSyncExternalStore } from "react"
-
-let cachedSettings: SettingsRecord = {
-	appearance: {},
-}
 
 let lastRawValue: string | null = null
 
 const SERVER_FALLBACK: SettingsRecord = {
-	appearance: {},
+	appearance: {
+		"use-cursors": true,
+	},
+	userdata: {
+		nickname: "Appraiser",
+		server: "SEA",
+		"current-pixels": 240,
+		"max-pixels": 240,
+		"pixels-last-edited": Date.now(),
+		"current-stamina": 500,
+		"max-stamina": 500,
+		"last-stamina-reset": 0,
+	},
+}
+
+let cachedSettings: SettingsRecord = {
+	...SERVER_FALLBACK,
 }
 
 function readSettings() {
@@ -53,13 +66,20 @@ export const settingsActions = {
 		}
 	},
 
-	setConfig(
-		key: keyof SettingsRecord,
-		value: SettingsRecord[keyof SettingsRecord]
+	setConfig<K extends keyof SettingsRecord>(
+		key: K,
+		updater:
+			| Partial<SettingsRecord[K]>
+			| ((current: SettingsRecord[K]) => Partial<SettingsRecord[K]>)
 	) {
 		this.updateSettings((current) => ({
 			...current,
-			[key]: value,
+			[key]: {
+				...current[key],
+				...(typeof updater === "function"
+					? updater(current[key])
+					: updater),
+			},
 		}))
 	},
 }
@@ -126,18 +146,40 @@ export function SettingsProvider({ children }: { children: ReactNode }) {
 	useEffect(() => {
 		if (syncPending) return
 
-		if (settings.appearance["use-cursors"] === undefined) {
+		if (settings === undefined) {
 			actions.updateSettings(
 				{
-					appearance: {
-						"use-cursors": true,
-					},
+					...SERVER_FALLBACK,
 				},
 				{ silent: true }
 			)
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [syncPending])
+
+	const server = settings.userdata?.server
+	const maxStamina = settings.userdata?.["max-stamina"]
+	const lastStaminaReset = settings.userdata?.["last-stamina-reset"]
+
+	useEffect(() => {
+		if (syncPending || !server || maxStamina === undefined) return
+
+		const checkStaminaReset = () => {
+			const { previousReset } = getStaminaResetBoundaries(server, Date.now())
+
+			if (previousReset > (lastStaminaReset ?? 0)) {
+				actions.setConfig("userdata", {
+					"current-stamina": maxStamina,
+					"last-stamina-reset": previousReset,
+				})
+			}
+		}
+
+		checkStaminaReset()
+		const interval = setInterval(checkStaminaReset, 30_000)
+		return () => clearInterval(interval)
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [syncPending, server, maxStamina, lastStaminaReset])
 
 	return (
 		<SettingsConfigContext.Provider value={settings}>

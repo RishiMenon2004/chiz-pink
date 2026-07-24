@@ -1,13 +1,21 @@
 "use client"
 
 import Link from "next/link"
-import { useMemo, useState } from "react"
+import {
+	ChangeEventHandler,
+	DetailedHTMLProps,
+	InputHTMLAttributes,
+	ReactNode,
+	useEffect,
+	useMemo,
+	useState,
+} from "react"
 import { signOut, useSession } from "next-auth/react"
 import { useMutation } from "convex/react"
 
 import { api } from "@convex/_generated/api"
 
-import { BackupData } from "@/types/settings"
+import { BackupData, SettingsRecord } from "@/types/settings"
 
 import { usePWAInstall, useSettingsStore } from "@/hooks"
 
@@ -16,6 +24,10 @@ import {
 	backupImport,
 	backupSetImport,
 	eraseLocalData,
+	formatTimeRemaining,
+	getNextPixelRecoveryTime,
+	getPixelsRefillTime,
+	getStaminaResetBoundaries,
 	parseDescription,
 	signInWithGooglePopup,
 	unlinkGoogleAccount,
@@ -38,6 +50,325 @@ const syncStatusLabel = {
 	error: "Sync Failed",
 }
 
+function Section({ children }: { children: ReactNode }) {
+	return <div className={styles.settingsSection}>{children}</div>
+}
+function TitleBar({ children, title }: { children?: ReactNode; title: string }) {
+	return (
+		<div className={styles.settingsSectionTitlebar}>
+			<Title>{title}</Title>
+			{children}
+		</div>
+	)
+}
+function Title({ children }: { children: ReactNode }) {
+	return <div className={styles.settingsSectionTitle}>{children}</div>
+}
+function Content({ children }: { children: ReactNode }) {
+	return <div className={styles.settingsSectionContent}>{children}</div>
+}
+function ContentRow({
+	children,
+	buttonRow,
+	equalColumns,
+}: {
+	children: ReactNode
+	buttonRow?: boolean
+	equalColumns?: boolean
+}) {
+	return (
+		<div
+			className={`${styles.settingsSectionContentRow} ${buttonRow ? styles.buttonRow : ""} ${equalColumns ? styles.equalColumns : ""}`}>
+			{children}
+		</div>
+	)
+}
+function ContentColumn({ children }: { children: ReactNode }) {
+	return <span className={styles.settingsSectionContentColumn}>{children}</span>
+}
+function Blockquote({ children }: { children: ReactNode }) {
+	return <span className={styles.settingsBlockquote}>{children}</span>
+}
+
+function BETATag() {
+	return (
+		<span
+			style={{
+				borderRadius: "100vh",
+				backgroundColor: "#ffa600",
+				padding: "0.25rem 0.5rem",
+				fontSize: "0.7em",
+				color: "black",
+				fontWeight: 720,
+				marginRight: "0.25rem",
+				marginLeft: "-0.675rem",
+				height: "fit-content",
+				userSelect: "none",
+			}}>
+			BETA
+		</span>
+	)
+}
+
+function ConfigCheckbox({
+	checked,
+	onChange,
+	name,
+}: {
+	name: string
+	checked: boolean
+	onChange: ChangeEventHandler<HTMLInputElement>
+}) {
+	return (
+		<div
+			style={{
+				display: "flex",
+				gap: "0.5rem",
+				alignItems: "center",
+				flexWrap: "wrap",
+			}}>
+			<input
+				name={name}
+				type="checkbox"
+				checked={checked}
+				onChange={onChange}
+			/>
+			<b>{name}</b>
+		</div>
+	)
+}
+function ConfigInputbox(
+	props: DetailedHTMLProps<
+		InputHTMLAttributes<HTMLInputElement>,
+		HTMLInputElement
+	> & {
+		children?: ReactNode
+	}
+) {
+	const { children, ...inputProps } = props
+	return (
+		<div
+			style={{
+				display: "flex",
+				gap: "0.5rem",
+				flexDirection: "column",
+				alignItems: "flex-start",
+			}}>
+			<b>{inputProps.name}</b>
+			<input {...inputProps} />
+			{children}
+		</div>
+	)
+}
+
+function ConfigNumberBox({
+	name,
+	value,
+	onChange,
+	children,
+	min,
+	step = 1,
+}: {
+	name: string
+	value: number
+	onChange: (value: number) => void
+	children?: ReactNode
+	min?: number
+	step?: number
+}) {
+	const step_ = (delta: number) => {
+		const next = value + delta
+		onChange(min !== undefined ? Math.max(next, min) : next)
+	}
+
+	return (
+		<div
+			style={{
+				display: "flex",
+				gap: "0.5rem",
+				flexDirection: "column",
+				alignItems: "flex-start",
+				width: "100%",
+			}}>
+			<b>{name}</b>
+			<div className={styles.numberStepper}>
+				<span
+					role="button"
+					tabIndex={-1}
+					aria-label={`Decrease ${name}`}
+					className={`${styles.stepperBtn} ${styles.minus}`}
+					onClick={() => step_(-step)}
+				/>
+				<input
+					name={name}
+					type="text"
+					pattern="[0-9]*"
+					inputMode="numeric"
+					value={value || 0}
+					onChange={(e) => {
+						const digits = e.currentTarget.value.replace(/\D/g, "")
+						onChange(digits === "" ? 0 : parseInt(digits))
+					}}
+				/>
+				<span
+					role="button"
+					tabIndex={-1}
+					aria-label={`Increase ${name}`}
+					className={`${styles.stepperBtn} ${styles.plus}`}
+					onClick={() => step_(step)}
+				/>
+			</div>
+			{children}
+		</div>
+	)
+}
+
+const dateDisplayConfig: Intl.DateTimeFormatOptions = {
+	year: "numeric",
+	month: "short",
+	day: "2-digit",
+	hour: "numeric",
+	minute: "2-digit",
+	hour12: true,
+}
+
+const formatDate = (date: number): string => {
+	return new Date(date).toLocaleString("en-GB", dateDisplayConfig).toUpperCase()
+}
+
+const resetDayTimeConfig: Intl.DateTimeFormatOptions = {
+	weekday: "long",
+	hour: "numeric",
+	minute: "2-digit",
+	hour12: true,
+}
+
+const formatResetDayTime = (date: number): string => {
+	return new Date(date)
+		.toLocaleString("en-GB", resetDayTimeConfig)
+		.toUpperCase()
+}
+
+function StaminaResetCountdown({
+	server,
+}: {
+	server: SettingsRecord["userdata"]["server"]
+}) {
+	const [now, setNow] = useState(() => Date.now())
+
+	useEffect(() => {
+		const interval = setInterval(() => setNow(Date.now()), 1000)
+		return () => clearInterval(interval)
+	}, [])
+
+	const { nextReset } = getStaminaResetBoundaries(server, now)
+
+	return (
+		<div
+			style={{
+				fontFamily: "var(--font-barlow-condensed)",
+				fontStyle: "italic",
+				display: "flex",
+				flexDirection: "row",
+				flexWrap: "wrap",
+				justifyContent: "space-between",
+				width: "100%",
+				paddingInline: "0.5rem",
+				gap: "0.25rem 0.5rem",
+			}}>
+			<div>Reset: {formatResetDayTime(nextReset)}</div>
+			<div>Resets in: {formatTimeRemaining(nextReset - now)}</div>
+		</div>
+	)
+}
+
+function PixelRefillCountdown({
+	current,
+	max,
+	lastEdited,
+}: {
+	current: number
+	max: number
+	lastEdited: number
+}) {
+	const [now, setNow] = useState(() => Date.now())
+	const [mountTime] = useState(() => Date.now())
+
+	useEffect(() => {
+		const interval = setInterval(() => setNow(Date.now()), 1000)
+		return () => clearInterval(interval)
+	}, [])
+
+	const baseline = lastEdited || mountTime
+
+	const refilledAt = getPixelsRefillTime({ current, max, lastEdited: baseline })
+
+	const nextRecoveryAt = getNextPixelRecoveryTime({
+		current,
+		max,
+		lastEdited: baseline,
+		now,
+	})
+
+	return (
+		<div
+			style={{
+				fontFamily: "var(--font-barlow-condensed)",
+				fontStyle: "italic",
+				display: "flex",
+				flexDirection: "row",
+				flexWrap: "wrap",
+				justifyContent: "space-between",
+				width: "100%",
+				paddingInline: "0.5rem",
+				gap: "0.25rem 0.5rem",
+			}}>
+			<div>
+				{`Next Recovery: ${
+					nextRecoveryAt === null
+						? "-"
+						: formatTimeRemaining(nextRecoveryAt - now)
+				}`}
+			</div>
+			<div>
+				{`Full Recovery: ${
+					refilledAt === null
+						? "-"
+						: formatTimeRemaining(refilledAt - now)
+				}`}
+			</div>
+		</div>
+	)
+}
+
+function ConfigSelect({
+	name,
+	value,
+	onChange,
+	children,
+}: {
+	name: string
+	value?: string | number | readonly string[]
+	onChange: ChangeEventHandler<HTMLSelectElement>
+	children: ReactNode
+}) {
+	return (
+		<div
+			style={{
+				flexGrow: 1,
+				display: "flex",
+				gap: "0.5rem",
+				flexDirection: "column",
+				alignItems: "flex-start",
+			}}>
+			<b>{name}</b>
+			<select name={name} value={value} onChange={onChange}>
+				{children}
+			</select>
+		</div>
+	)
+}
+
 export function RenderSettings() {
 	const { data: session, status } = useSession()
 	const cloudSync = useCloudSyncContext()
@@ -56,12 +387,7 @@ export function RenderSettings() {
 	const [unlinkWarning, setUnlinkWarning] = useState<boolean>(false)
 	const [eraseWarning, setEraseWarning] = useState<boolean>(false)
 	const [eraseSyncChoice, setEraseSyncChoice] = useState<boolean>(false)
-	const [importedJson, setImportedJson] = useState<BackupData>({
-		planner: { arcs: {}, characters: {} },
-		inventory: {},
-		lastUpdated: 0,
-		settings: { appearance: {} },
-	})
+	const [importedJson, setImportedJson] = useState<BackupData | null>(null)
 
 	const importData = useMemo(() => {
 		return () => {
@@ -104,32 +430,102 @@ export function RenderSettings() {
 
 	return (
 		<main className={`page ${styles.page}`} role="main">
-			<div className={styles.settingsSection}>
-				<div className={styles.settingsSectionTitlebar}>
-					<span className={styles.settingsSectionTitle}>
-						LOCAL DATA
-					</span>
-				</div>
-				<div className={styles.settingsSectionContent}>
-					<span className={styles.settingsSectionContentColumn}>
+			<Section>
+				<TitleBar title="APPRAISER" />
+
+				<Content>
+					<ContentRow equalColumns>
+						<ConfigInputbox
+							name="Nickname"
+							value={settings.userdata.nickname}
+							placeholder="Appraiser"
+							type="text"
+							onChange={(e) => {
+								actions.setConfig("userdata", {
+									nickname: e.currentTarget.value,
+								})
+							}}></ConfigInputbox>
+						<ConfigSelect
+							name="Server"
+							value={settings.userdata.server}
+							onChange={(e) => {
+								actions.setConfig("userdata", {
+									server: e.currentTarget
+										.value as SettingsRecord["userdata"]["server"],
+								})
+							}}>
+							<option value="America">America</option>
+							<option value="Europe">Europe</option>
+							<option value="Asia">Asia</option>
+							<option value="SEA">SEA</option>
+						</ConfigSelect>
+					</ContentRow>
+
+					<div className={styles.pixelStaminaGrid}>
+						<ConfigNumberBox
+							name="Character Pixels"
+							min={0}
+							value={settings.userdata["current-pixels"]}
+							onChange={(value) => {
+								actions.setConfig("userdata", {
+									"current-pixels": value,
+									"pixels-last-edited": Date.now(),
+								})
+							}}>
+							<PixelRefillCountdown
+								current={settings.userdata["current-pixels"]}
+								max={settings.userdata["max-pixels"]}
+								lastEdited={
+									settings.userdata["pixels-last-edited"]
+								}
+							/>
+						</ConfigNumberBox>
+						<ConfigNumberBox
+							name="Max Pixels"
+							min={0}
+							value={settings.userdata["max-pixels"]}
+							onChange={(value) => {
+								actions.setConfig("userdata", {
+									"max-pixels": value,
+								})
+							}}
+						/>
+						<ConfigNumberBox
+							name="City Stamina"
+							min={0}
+							value={settings.userdata["current-stamina"]}
+							onChange={(value) => {
+								actions.setConfig("userdata", {
+									"current-stamina": value,
+								})
+							}}>
+							<StaminaResetCountdown
+								server={settings.userdata.server}
+							/>
+						</ConfigNumberBox>
+						<ConfigNumberBox
+							name="Max Stamina"
+							min={0}
+							value={settings.userdata["max-stamina"]}
+							onChange={(value) => {
+								actions.setConfig("userdata", {
+									"max-stamina": value,
+								})
+							}}
+						/>
+					</div>
+				</Content>
+			</Section>
+
+			<Section>
+				<TitleBar title="LOCAL DATA" />
+
+				<Content>
+					<ContentColumn>
 						Manage the data stored in the Local Storage of your
 						browser.
-						<p className={styles.settingsTextbox}>
-							<span
-								style={{
-									borderRadius: "100vh",
-									backgroundColor: "#ffa600",
-									padding: "0.25rem 0.5rem",
-									fontSize: "0.7em",
-									color: "black",
-									fontWeight: 720,
-									marginRight: "0.25rem",
-									marginLeft: "-0.675rem",
-									height: "fit-content",
-									userSelect: "none",
-								}}>
-								BETA
-							</span>
+						<Blockquote>
+							<BETATag />
 							<span
 								style={{
 									display: "flex",
@@ -155,10 +551,9 @@ export function RenderSettings() {
 									NTEWiz
 								</Link>
 							</span>
-						</p>
-					</span>
-					<span
-						className={`${styles.settingsSectionContentRow} ${styles.buttonRow}`}>
+						</Blockquote>
+					</ContentColumn>
+					<ContentRow buttonRow>
 						<button
 							data-variant="normal"
 							onClick={(e) => {
@@ -180,15 +575,12 @@ export function RenderSettings() {
 							onClick={() => setEraseWarning(true)}>
 							Erase Data
 						</button>
-					</span>
-				</div>
-			</div>
+					</ContentRow>
+				</Content>
+			</Section>
 
-			<div className={styles.settingsSection}>
-				<div className={styles.settingsSectionTitlebar}>
-					<span className={styles.settingsSectionTitle}>
-						CLOUD BACKUP
-					</span>
+			<Section>
+				<TitleBar title="CLOUD BACKUP">
 					{status === "authenticated" && (
 						<span className={styles.settingsCloudStatus}>
 							<span
@@ -203,14 +595,16 @@ export function RenderSettings() {
 							/>
 						</span>
 					)}
-				</div>
+				</TitleBar>
+
 				{status === "authenticated" ? (
-					<div className={styles.settingsSectionContent}>
-						<span className={styles.settingsSectionContentRow}>
+					<Content>
+						<ContentRow>
 							<b>Account:</b>
 							<span className={styles.settingsSecret}>{email}</span>
-						</span>
-						<span className={styles.settingsSectionContentRow}>
+						</ContentRow>
+
+						<ContentRow>
 							<b>Last Backup:</b>
 							<span
 								style={{
@@ -218,23 +612,12 @@ export function RenderSettings() {
 									letterSpacing: "5%",
 								}}>
 								{cloudSync.latestBackupUpdatedAt
-									? new Date(
-											cloudSync.latestBackupUpdatedAt as number
-										)
-											.toLocaleString("en-GB", {
-												year: "numeric",
-												month: "short",
-												day: "2-digit",
-												hour: "numeric",
-												minute: "2-digit",
-												hour12: true,
-											})
-											.toUpperCase()
+									? formatDate(cloudSync.latestBackupUpdatedAt)
 									: "NO BACKUP"}
 							</span>
-						</span>
-						<span
-							className={`${styles.settingsSectionContentRow} ${styles.buttonRow}`}>
+						</ContentRow>
+
+						<ContentRow buttonRow={true}>
 							<button
 								data-variant="normal"
 								onClick={() => setSignoutWarning(true)}>
@@ -245,76 +628,63 @@ export function RenderSettings() {
 								onClick={() => setUnlinkWarning(true)}>
 								Unlink & Delete Cloud Data
 							</button>
-						</span>
-					</div>
+						</ContentRow>
+					</Content>
 				) : (
-					<div className={styles.settingsSectionContent}>
-						<span className={styles.settingsSectionContentRow}>
+					<Content>
+						<ContentRow>
 							{
 								"Sync your data across devices, end-to-end encrypted. Chiz.Pink never has access to your unencrypted data - only you can decrypt it."
 							}
-						</span>
-						<span
-							className={`${styles.settingsSectionContentRow} ${styles.buttonRow}`}>
+						</ContentRow>
+
+						<ContentRow buttonRow>
 							<button
 								data-variant="normal"
 								onClick={() => signInWithGooglePopup()}>
 								Sign In
 							</button>
-						</span>
-					</div>
+						</ContentRow>
+					</Content>
 				)}
-			</div>
+			</Section>
 
 			{!isStandalone && (
-				<div className={styles.settingsSection}>
-					<div className={styles.settingsSectionTitlebar}>
-						<span className={styles.settingsSectionTitle}>
-							Install as PWA
-						</span>
-					</div>
-					<div className={styles.settingsSectionContent}>
-						<span className={styles.settingsSectionContentColumn}>
+				<Section>
+					<TitleBar title="INSTALL AS PWA" />
+
+					<Content>
+						<ContentColumn>
 							Install Chiz.Pink as a native app on any device with a
 							supported browser.
-							<p className={styles.settingsTextbox}>
+							<Blockquote>
 								{"Use it on the go or when you're offline too!"}
-							</p>
-						</span>
-						<span
-							className={`${styles.settingsSectionContentRow} ${styles.buttonRow}`}>
+							</Blockquote>
+						</ContentColumn>
+
+						<ContentRow buttonRow>
 							<InstallPWAButton type="button" />
-						</span>
-					</div>
-				</div>
+						</ContentRow>
+					</Content>
+				</Section>
 			)}
 
-			<div className={styles.settingsSection}>
-				<div className={styles.settingsSectionTitlebar}>
-					<div className={styles.settingsSectionTitle}>Appearance</div>
-				</div>
-				<div className={styles.settingsSectionContent}>
-					<div className={styles.settingsSectionContentColumn}>
-						<div className={styles.settingsSectionContentRow}>
-							<input
-								type="checkbox"
-								checked={
-									settings.appearance?.["use-cursors"] || false
-								}
-								onChange={() =>
-									actions.setConfig("appearance", {
-										"use-cursors":
-											!settings.appearance?.[
-												"use-cursors"
-											] || false,
-									})
-								}
-							/>
-							<b>Custom Cursors</b>
-						</div>
-					</div>
-				</div>
-			</div>
+			<Section>
+				<TitleBar title="APPEARANCE" />
+				<Content>
+					<ContentColumn>
+						<ConfigCheckbox
+							name="Custom Cursors"
+							checked={settings.appearance["use-cursors"]}
+							onChange={(e) =>
+								actions.setConfig("appearance", {
+									"use-cursors": e.currentTarget.checked,
+								})
+							}
+						/>
+					</ContentColumn>
+				</Content>
+			</Section>
 
 			{/* alert modals */}
 			{(isImportOlder || askOverwrite) && (
@@ -322,7 +692,9 @@ export function RenderSettings() {
 					<AlertContainer
 						type="dangerous-confirm"
 						confirmLabel="Overwrite"
-						onConfirm={() => backupSetImport(importedJson)}
+						onConfirm={() =>
+							importedJson !== null && backupSetImport(importedJson)
+						}
 						isConfirmDanger={true}
 						cancelLabel="Cancel"
 						onCancel={() => setImportOlder(false)}>
@@ -420,7 +792,10 @@ export function RenderSettings() {
 								await deleteCloudBackup({})
 							} catch (error) {
 								// Don't let a failed delete trap the user into staying linked.
-								console.error("Failed to update Convex before unlinking", error)
+								console.error(
+									"Failed to update Convex before unlinking",
+									error
+								)
 							}
 							await unlinkGoogleAccount(session?.accessToken)
 						}}
