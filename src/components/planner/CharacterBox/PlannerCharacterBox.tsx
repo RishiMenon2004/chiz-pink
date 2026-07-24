@@ -346,7 +346,7 @@ export function PlannerCharacterBox({
 									<select
 										value={CharacterState.currentLvl}
 										onChange={handleCurrentLvlChange}
-										tabIndex={1}>
+										tabIndex={0}>
 										{LvlOptions.map((opt) => (
 											<option
 												key={opt.value}
@@ -368,7 +368,7 @@ export function PlannerCharacterBox({
 									<select
 										value={CharacterState.targetLvl}
 										onChange={handleTargetLvlChange}
-										tabIndex={1}>
+										tabIndex={0}>
 										{LvlOptions.map((opt) => (
 											<option
 												key={opt.value}

@@ -28,7 +28,7 @@ import { getAggregatedMaterial } from "@/hooks/usePlannerStore"
 
 import { getLinkedMaterials } from "@/helpers"
 
-import { MaterialIcon } from "@/components/layout"
+import { MaterialIcon, QuantityInput } from "@/components/layout"
 
 import styles from "./inventoryMaterial.module.css"
 import pageStyles from "@/app/inventory/page.module.css"
@@ -235,38 +235,21 @@ export function MaterialItemBox({
 				<hr style={{ marginBlock: "0.5rem" }} />
 			</Tooltip>
 
-			<span className={`${styles.amount}`}>
-				<span
-					tabIndex={-1}
-					aria-label={`${material.name} minus one button`}
-					className={`${styles.countBtn} ${styles.minus}`}
-					onClick={(e) => handleCount(e, false)}
-				/>
-				<span className={`${styles.countContainer}`}>
-					<input
-						ref={countRef}
-						type={"text"}
-						min="0"
-						pattern="[0-9]*"
-						inputMode="numeric"
-						name={`${material.name} quantity input box`}
-						value={itemQuantity}
-						onChange={handleEdit}
-						onFocus={handleFocus}
-						onKeyDown={handleKeyDown}
-						onClick={(e) => {
-							e.stopPropagation()
-							hideTooltip()
-						}}
-					/>
-				</span>
-				<span
-					tabIndex={-1}
-					aria-label={`${material.name} plus one button`}
-					className={`${styles.countBtn} ${styles.plus}`}
-					onClick={(e) => handleCount(e, true)}
-				/>
-			</span>
+			<QuantityInput
+				name={material.name}
+				styles={styles}
+				inputRef={countRef}
+				value={itemQuantity}
+				onChange={handleEdit}
+				onFocus={handleFocus}
+				onKeyDown={handleKeyDown}
+				onInputClick={(e) => {
+					e.stopPropagation()
+					hideTooltip()
+				}}
+				onIncrement={(e) => handleCount(e, true)}
+				onDecrement={(e) => handleCount(e, false)}
+			/>
 		</div>
 	)
 }

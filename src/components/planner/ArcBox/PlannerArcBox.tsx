@@ -222,7 +222,7 @@ export function PlannerArcBox({
 										<select
 											value={currentLvl}
 											onChange={handleCurrentChange}
-											tabIndex={1}>
+											tabIndex={0}>
 											{LvlOptions.map((opt) => (
 												<option
 													key={opt.value}
@@ -243,7 +243,7 @@ export function PlannerArcBox({
 										<select
 											value={targetLvl}
 											onChange={handleTargetChange}
-											tabIndex={1}>
+											tabIndex={0}>
 											{LvlOptions.map((opt) => (
 												<option
 													key={opt.value}

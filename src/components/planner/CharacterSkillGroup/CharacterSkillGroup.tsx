@@ -34,6 +34,7 @@ export function CharacterSkillGroup({
 				className={`${styles.charStatInputGroup} ${ability.isDisabled && styles.disabled} ${charRecord.isDisabled && styles.noInteract}`}>
 				<input
 					type="checkbox"
+					tabIndex={0}
 					checked={!ability.isDisabled}
 					onChange={() => handleToggleSkill(skill)}
 				/>
@@ -50,7 +51,7 @@ export function CharacterSkillGroup({
 						<select
 							value={ability.currentLvl}
 							onChange={(e) => handleCurrentLvlChange(e, skill)}
-							tabIndex={1}>
+							tabIndex={0}>
 							{isLifeSkill && <option value={0}>{0}</option>}
 							{Array.from({ length: maxLvl }).map((_, opt) => (
 								<option
@@ -64,7 +65,7 @@ export function CharacterSkillGroup({
 						<select
 							value={ability.targetLvl}
 							onChange={(e) => handleTargetLvlChange(e, skill)}
-							tabIndex={1}>
+							tabIndex={0}>
 							{isLifeSkill && <option value={0}>{0}</option>}
 							{Array.from({ length: maxLvl }).map((_, opt) => (
 								<option

@@ -1,6 +1,6 @@
 "use client"
 
-import { useRef, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { createPortal } from "react-dom"
 
 import type { ModalEventType } from "@/types"
@@ -8,10 +8,7 @@ import type { Material } from "@/types/item"
 
 import { MatAdjustmentContext } from "@/contexts"
 
-import {
-	ModalContainer,
-	MaterialEditorBox
-} from "@/components/layout"
+import { ModalContainer, MaterialEditorBox } from "@/components/layout"
 
 export function useMaterialEditorModal(
 	materials: Material[],
@@ -39,13 +36,19 @@ export function useMaterialEditorModal(
 			modalCallbacks.current.delete(id),
 	}
 
+	const materialListRef = useRef<HTMLDivElement>(null)
+	useEffect(() => {
+		if (!showMaterialEditorModal) return
+		materialListRef.current?.querySelector("input")?.focus()
+	}, [showMaterialEditorModal])
+
 	const ModalComponent = () => {
 		return (
 			showMaterialEditorModal &&
 			createPortal(
 				<MatAdjustmentContext.Provider value={contextValue}>
 					<ModalContainer onClose={handleCloseModal}>
-						<div className={className}>
+						<div ref={materialListRef} className={className}>
 							{materials.map((material, index) => {
 								return (
 									<MaterialEditorBox

@@ -20,14 +20,14 @@ import { useInventoryStore, useTooltip } from "@/hooks"
 
 import { useMaterialAdjustmentContext } from "@/contexts"
 
+import { QuantityInput } from "@/components/layout"
+
 import { styles } from "@/components/inventory/MaterialBox"
 
 export function MaterialEditorBox({
 	material,
-	requiredQuantity,
 }: {
 	material: Material
-	requiredQuantity?: number
 }) {
 	const modalContext = useMaterialAdjustmentContext()
 
@@ -138,41 +138,22 @@ export function MaterialEditorBox({
 				{material.name}
 			</Tooltip>
 
-			<span className={`${styles.amount}`}>
-				<span
-					tabIndex={-1}
-					aria-label={`${material.name} minus one button`}
-					className={`${styles.countBtn} ${styles.minus}`}
-					onClick={(e) => handleCount(e, false)}
-				/>
-				<span className={`${styles.countContainer}`}>
-					<input
-						tabIndex={1}
-						ref={countRef}
-						type={"text"}
-						min="0"
-						pattern="[0-9]*"
-						inputMode="numeric"
-						name={`${material.name} quantity input box`}
-						value={displayQuantity}
-						onChange={handleEdit}
-						onFocus={handleFocus}
-						onBlur={() => setInputFocused(false)}
-						onKeyDown={handleKeyDown}
-						onClick={(e) => {
-							e.stopPropagation()
-							hideTooltip()
-						}}
-					/>
-					{requiredQuantity && <span>/{requiredQuantity}</span>}
-				</span>
-				<span
-					tabIndex={-1}
-					aria-label={`${material.name} plus one button`}
-					className={`${styles.countBtn} ${styles.plus}`}
-					onClick={(e) => handleCount(e, true)}
-				/>
-			</span>
+			<QuantityInput
+				name={material.name}
+				styles={styles}
+				inputRef={countRef}
+				value={displayQuantity}
+				onChange={handleEdit}
+				onFocus={handleFocus}
+				onBlur={() => setInputFocused(false)}
+				onKeyDown={handleKeyDown}
+				onInputClick={(e) => {
+					e.stopPropagation()
+					hideTooltip()
+				}}
+				onIncrement={(e) => handleCount(e, true)}
+				onDecrement={(e) => handleCount(e, false)}
+			/>
 
 			<span className={`${styles.amount}`}>
 				<span
@@ -180,7 +161,7 @@ export function MaterialEditorBox({
 					style={{ pointerEvents: "none" }}
 				/>
 				<input
-					tabIndex={2}
+					tabIndex={0}
 					type="text"
 					inputMode="numeric"
 					name={`${material.name} quantity add/subtract box`}

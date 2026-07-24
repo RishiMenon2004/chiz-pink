@@ -39,7 +39,7 @@ const PlannerBoxBtn = ({
 	const { Tooltip, showTooltip, hideTooltip } = useTooltip()
 	return (
 		<button
-			tabIndex={1}
+			tabIndex={0}
 			aria-label={ariaLabel}
 			className={styles.plannerButton}
 			style={
