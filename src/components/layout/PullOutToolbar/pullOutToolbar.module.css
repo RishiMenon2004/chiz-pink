@@ -126,8 +126,7 @@ button.toolbarButton {
 			background-repeat: no-repeat;
 			background-position: center;
 
-			cursor: s-resize; /* uset this as fallback */
-			cursor: var(--pull-cursor), s-resize; /* only use this if --pull-cursor is valid */
+			cursor: var(--pull-cursor, s-resize);
 		}
 
 		&.toolbarOpen {

@@ -75,13 +75,8 @@
 	--filter-cursor: pointer;
 	--group-cursor: pointer;
 	--sort-cursor: pointer;
-
-	/* --pull-cursor: url("/cursors/down.png") 16 16; */
 }
 
-/* Shared component looks, meant to be combined with a module class,
-   e.g. className={`pill-button ${styles.installButton}`} — the module
-   class then only needs to carry layout/size tweaks and overrides. */
 .pill-button {
 	padding: .15rem 1rem;
 	border: none;
@@ -183,7 +178,7 @@ body {
 	--group-cursor: url("/cursors/group.png"), pointer;
 	--sort-cursor: url("/cursors/sort.png"), pointer;
 
-	--pull-cursor: url("/cursors/down.png") 16 16;
+	--pull-cursor: url("/cursors/down.png") 16 16, s-resize;
 }
 
 * {

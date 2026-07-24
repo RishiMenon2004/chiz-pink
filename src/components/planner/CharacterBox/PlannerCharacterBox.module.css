@@ -246,7 +246,7 @@
 		flex-direction: column;
 
 		summary {
-			cursor: var(--pull-cursor, pointer), pointer;
+			cursor: var(--pull-cursor, pointer);
 		}
 
 		.charStatsGrid {
