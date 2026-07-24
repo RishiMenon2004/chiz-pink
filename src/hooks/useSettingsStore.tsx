@@ -146,7 +146,7 @@ export function SettingsProvider({ children }: { children: ReactNode }) {
 	useEffect(() => {
 		if (syncPending) return
 
-		if (settings === undefined) {
+		if (!settings?.appearance || !settings?.userdata) {
 			actions.updateSettings(
 				{
 					...SERVER_FALLBACK,
