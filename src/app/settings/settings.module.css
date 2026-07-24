@@ -335,6 +335,8 @@ div.settingsSection {
 		input[type="checkbox"] {
 			-webkit-appearance: none;
 			appearance: none;
+			
+			position: relative;
 
 			display: block;
 
@@ -345,6 +347,7 @@ div.settingsSection {
 			height: calc(var(--button-height) + (var(--button-margin) * 2));
 			aspect-ratio: 2 / 1;
 			padding: 0;
+
 
 			background-color: var(--interactive-bg);
 
@@ -357,7 +360,7 @@ div.settingsSection {
 
 			&::after {
 				content: "";
-				position: relative;
+				position: absolute;
 				display: block;
 				height: var(--button-height);
 				aspect-ratio: 1;
