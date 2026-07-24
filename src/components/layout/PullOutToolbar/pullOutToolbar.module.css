@@ -34,9 +34,9 @@
 		);
 		box-shadow:
 			0px -3px 2px -2px var(--interactive-bg) inset,
-			0px -10px 10px -2px rgb(174, 174, 174) inset,
-			0px -23px 15px -2px hsl(300, 0%, 50%) inset,
-			0px 2px 20px hsl(0, 0%, 4%);
+			0px -10px 10px -2px var(--shadow-underlight-1) inset,
+			0px -23px 15px -2px var(--shadow-underlight-2) inset,
+			0px 2px 20px var(--shadow-deep);
 	}
 }
 
@@ -45,51 +45,20 @@
 	user-select: none;
 }
 
-.toolbarButton {
+button.toolbarButton {
 	display: grid;
 	place-items: center;
 
 	padding: 0.25rem 1rem;
 	padding-left: 2.25rem;
-	border: none;
-	border-radius: 100vh;
 
-	color: black;
-	font-family: var(--font-barlow-condensed);
-	font-size: 1.25rem;
-	font-weight: 700;
-
-	background-color: var(--button-background);
 	background-image: url("/button_icons/plus.png");
 	background-size: auto 90%;
 	background-position: 0.25rem center;
 	background-repeat: no-repeat;
 
-	box-shadow:
-		var(--dark-shadow) 0px 0px 1.5px 0,
-		var(--interactive-bg) 0px 0px 0px 0.175rem,
-		hsla(0, 0%, 0%, 0.6) 0px -1px 2px 0.175rem,
-		white 0px 1px 1px 0.175rem,
-		hsl(0, 0%, 85%) 0.5px 0.5px 0.5px 0.5px inset,
-		hsl(0, 0%, 70%) -0.5px -0.5px 0.5px 0.5px inset;
-
-	cursor: var(--pointer-cursor);
-
 	&:hover {
-		color: white;
-
-		paint-order: stroke fill;
 		-webkit-text-stroke: 4px black;
-
-		background-color: var(--pink);
-
-		box-shadow:
-			var(--dark-shadow) 0px 0px 1.5px 0,
-			var(--interactive-bg) 0px 0px 0px 0.175rem,
-			hsla(0, 0%, 0%, 0.6) 0px -1px 2px 0.175rem,
-			white 0px 1px 1px 0.175rem,
-			hsla(0, 0%, 100%) 2px 3px 5px -2px inset,
-			hsla(0, 0%, 18%, 0.9) 0px -2px 10px -2px inset;
 	}
 }
 
@@ -112,7 +81,7 @@
 			padding-top: 2rem;
 		}
 
-		.toolbarButton:only-of-type {
+		button.toolbarButton:only-of-type {
 			grid-column: 1 / -1;
 			width: fit-content;
 		}
@@ -130,7 +99,7 @@
 			height: 4rem;
 		}
 
-		.toolbarButton {
+		button.toolbarButton {
 			display: none;
 
 			&:only-of-type {
@@ -157,7 +126,8 @@
 			background-repeat: no-repeat;
 			background-position: center;
 
-			cursor: var(--pull-cursor), s-resize;
+			cursor: s-resize; /* uset this as fallback */
+			cursor: var(--pull-cursor), s-resize; /* only use this if --pull-cursor is valid */
 		}
 
 		&.toolbarOpen {
@@ -167,7 +137,7 @@
 				visibility: visible;
 			}
 
-			.toolbarButton {
+			button.toolbarButton {
 				display: grid;
 			}
 		}

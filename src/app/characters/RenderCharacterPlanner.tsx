@@ -104,7 +104,7 @@ export default function RenderCharacterPlanner() {
 				{/*                     Adding New Entries                      */}
 				{/* =========================================================== */}
 				<button
-					className={toolbarStyles.toolbarButton}
+					className={`pill-button ${toolbarStyles.toolbarButton}`}
 					onClick={handleStartAdding}>
 					ADD CHARACTER
 				</button>

@@ -106,7 +106,7 @@ export default function RenderArcsPlanner() {
 				{/*                     Adding New Entries                      */}
 				{/* =========================================================== */}
 				<button
-					className={toolbarStyles.toolbarButton}
+					className={`pill-button ${toolbarStyles.toolbarButton}`}
 					onClick={handleStartAdding}>
 					ADD ARC
 				</button>

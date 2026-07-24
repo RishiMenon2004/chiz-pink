@@ -51,7 +51,11 @@ const syncStatusLabel = {
 }
 
 function Section({ children }: { children: ReactNode }) {
-	return <div className={styles.settingsSection}>{children}</div>
+	return (
+		<div className={`metallic-panel ${styles.settingsSection}`}>
+			{children}
+		</div>
+	)
 }
 function TitleBar({ children, title }: { children?: ReactNode; title: string }) {
 	return (
@@ -155,7 +159,7 @@ function ConfigInputbox(
 				alignItems: "flex-start",
 			}}>
 			<b>{inputProps.name}</b>
-			<input {...inputProps} />
+			<input className="raised-control" {...inputProps} />
 			{children}
 		</div>
 	)
@@ -191,7 +195,7 @@ function ConfigNumberBox({
 				width: "100%",
 			}}>
 			<b>{name}</b>
-			<div className={styles.numberStepper}>
+			<div className={`raised-control ${styles.numberStepper}`}>
 				<span
 					role="button"
 					tabIndex={-1}
@@ -362,7 +366,11 @@ function ConfigSelect({
 				alignItems: "flex-start",
 			}}>
 			<b>{name}</b>
-			<select name={name} value={value} onChange={onChange}>
+			<select
+				className="raised-control"
+				name={name}
+				value={value}
+				onChange={onChange}>
 				{children}
 			</select>
 		</div>
@@ -555,6 +563,7 @@ export function RenderSettings() {
 					</ContentColumn>
 					<ContentRow buttonRow>
 						<button
+							className="pill-button"
 							data-variant="normal"
 							onClick={(e) => {
 								e.preventDefault()
@@ -563,6 +572,7 @@ export function RenderSettings() {
 							Export Data
 						</button>
 						<button
+							className="pill-button"
 							data-variant="normal"
 							onClick={(e) => {
 								e.preventDefault()
@@ -571,6 +581,7 @@ export function RenderSettings() {
 							Import Data
 						</button>
 						<button
+							className="pill-button"
 							data-variant="danger"
 							onClick={() => setEraseWarning(true)}>
 							Erase Data
@@ -619,11 +630,13 @@ export function RenderSettings() {
 
 						<ContentRow buttonRow={true}>
 							<button
+								className="pill-button"
 								data-variant="normal"
 								onClick={() => setSignoutWarning(true)}>
 								Sign Out
 							</button>
 							<button
+								className="pill-button"
 								data-variant="danger"
 								onClick={() => setUnlinkWarning(true)}>
 								Unlink & Delete Cloud Data
@@ -640,6 +653,7 @@ export function RenderSettings() {
 
 						<ContentRow buttonRow>
 							<button
+								className="pill-button"
 								data-variant="normal"
 								onClick={() => signInWithGooglePopup()}>
 								Sign In

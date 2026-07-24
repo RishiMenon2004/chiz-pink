@@ -24,8 +24,8 @@
 
 	box-shadow:
 		0px -3px 2px -2px var(--interactive-bg) inset,
-		0px -10px 10px -2px rgb(174, 174, 174) inset,
-		0px -15px 15px -2px hsl(300, 0%, 50%) inset;
+		0px -10px 10px -2px var(--shadow-underlight-1) inset,
+		0px -15px 15px -2px var(--shadow-underlight-2) inset;
 
 	user-select: none;
 	overflow: hidden;
@@ -79,13 +79,6 @@
 	.emptyFilter {
 		margin: 0.25rem;
 		border-radius: 1.375rem;
-
-		background-color: var(--interactive-bg);
-
-		box-shadow:
-			hsla(0, 0%, 0%, 0.6) 0px -1px 2px,
-			white 0px 1px 1px,
-			rgba(0, 0, 0, 0.7) 0px 1px inset;
 	}
 
 	.materialList {

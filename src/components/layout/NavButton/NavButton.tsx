@@ -19,7 +19,7 @@ export function NavButton({ href, icon }: { href: string; icon: string }) {
 		<Link
 			tabIndex={1}
 			href={`/${href}`}
-			className={`${styles.navBtn} ${active ? styles.active : ""}`}
+			className={`raised-control ${styles.navBtn} ${active ? styles.active : ""}`}
 			style={{ backgroundImage: `url("/nav/${icon}.png")` }}
 			onPointerEnter={showTooltip}
 			onPointerLeave={hideTooltip}>

@@ -115,7 +115,9 @@ function WelcomeSplashScreen({ closeSplash }: { closeSplash: () => void }) {
 				</div>
 				<div className={styles.btnContainer}>
 					<InstallPWAButton type="button" />
-					<button onClick={closeSplash}>{"CONTINUE >>"}</button>
+					<button className="pill-button" onClick={closeSplash}>
+					{"CONTINUE >>"}
+				</button>
 				</div>
 			</div>
 			<div className={styles.chizSection}>
@@ -176,7 +178,9 @@ function UpdateSplashScreen({ closeSplash }: { closeSplash: () => void }) {
 				</div>
 				<div className={styles.btnContainer}>
 					<InstallPWAButton type="button" />
-					<button onClick={closeSplash}>{"CONTINUE >>"}</button>
+					<button className="pill-button" onClick={closeSplash}>
+					{"CONTINUE >>"}
+				</button>
 				</div>
 			</div>
 		</div>

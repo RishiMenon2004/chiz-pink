@@ -320,7 +320,8 @@ export function PlannerCharacterBox({
 				}}>
 				<div
 					className={`${plannerBoxStyles.plannerBox} ${getItemRarityStyle(char)} ${CharacterState.isDisabled ? `${plannerBoxStyles.plannerBoxDisabled} ${styles.noInteract}` : ""} ${dropPreviewOrDragOverlay().join(" ")}`}>
-					<div className={plannerBoxStyles.infoContainer}>
+					<div
+					className={`metallic-panel ${plannerBoxStyles.infoContainer}`}>
 						<div className={styles.charInfoTop}>
 							<div className={styles.charAvatarContainer}>
 								<div className={styles.charImageContainer}>
@@ -344,6 +345,7 @@ export function PlannerCharacterBox({
 										/>
 									</div>
 									<select
+										className="raised-control"
 										value={CharacterState.currentLvl}
 										onChange={handleCurrentLvlChange}
 										tabIndex={0}>
@@ -366,6 +368,7 @@ export function PlannerCharacterBox({
 										/>
 									</div>
 									<select
+										className="raised-control"
 										value={CharacterState.targetLvl}
 										onChange={handleTargetLvlChange}
 										tabIndex={0}>

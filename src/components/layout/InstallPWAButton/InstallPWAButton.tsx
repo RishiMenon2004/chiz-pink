@@ -90,7 +90,7 @@ export function InstallPWAButton({
 		<>
 			{type === "button" ? (
 				<button
-					className={styles.installButton}
+					className="pill-button"
 					data-variant="normal"
 					onClick={handleClick}>
 					INSTALL APP
@@ -104,7 +104,7 @@ export function InstallPWAButton({
 			{showInstructions && (
 				<ModalContainer onClose={() => setShowInstructions(false)}>
 					<div
-						className={styles.instructionsBox}
+						className={`metallic-panel ${styles.instructionsBox}`}
 						onClick={(e) => e.stopPropagation()}>
 						<span className={styles.instructionsTitle}>
 							{instructions.title}
@@ -115,6 +115,7 @@ export function InstallPWAButton({
 							))}
 						</ol>
 						<button
+							className="pill-button"
 							data-variant="normal"
 							onClick={() => setShowInstructions(false)}>
 							Got it

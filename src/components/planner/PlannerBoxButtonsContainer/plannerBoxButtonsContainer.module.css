@@ -13,9 +13,9 @@
 	background-color: var(--pink);
 
 	box-shadow:
-		-2.5px -3px 3px -2px hsl(334, 60%, 20%) inset,
+		-2.5px -3px 3px -2px var(--shadow-maroon) inset,
 		3px 0px 3px -2px hsl(334, 40%, 37%) inset,
-		white -1px 3px 4px -2px inset;
+		var(--foreground) -1px 3px 4px -2px inset;
 
 	.plannerButton {
 		width: 2rem;
@@ -30,10 +30,10 @@
 		background-repeat: no-repeat;
 
 		box-shadow:
-			hsla(0, 0%, 0%, 0.6) 0px -1px 2px,
-			white 0px 1px 1px,
-			hsl(0, 0%, 85%) 0.5px 0.5px 0.5px 0.5px inset,
-			hsl(0, 0%, 50%) -0.5px -0.5px 1px inset;
+			var(--shadow-dark-60) 0px -1px 2px,
+			var(--foreground) 0px 1px 1px,
+			var(--shadow-bevel-light) 0.5px 0.5px 0.5px 0.5px inset,
+			var(--shadow-underlight-2) -0.5px -0.5px 1px inset;
 
 		cursor: var(--pointer-cursor) !important;
 
@@ -53,10 +53,10 @@
 			background-color: var(--darker-pink);
 
 			box-shadow:
-				hsla(0, 0%, 0%, 0.6) 0px -1px 2px,
-				white 0px 1px 1px,
-				hsla(0, 0%, 85%, 0.6) 0.5px 0.5px 0.5px 0.5px inset,
-				hsla(0, 0%, 70%, 0.6) -0.5px -0.5px 0.5px 0.5px inset;
+				var(--shadow-dark-60) 0px -1px 2px,
+				var(--foreground) 0px 1px 1px,
+				var(--shadow-bevel-light-60) 0.5px 0.5px 0.5px 0.5px inset,
+				var(--shadow-bevel-dark-60) -0.5px -0.5px 0.5px 0.5px inset;
 
 			outline: none;
 		}
@@ -87,9 +87,9 @@
 			var(--inner-radius);
 
 		box-shadow:
-			-3px -2.5px 3px -2px hsl(334, 60%, 20%) inset,
+			-3px -2.5px 3px -2px var(--shadow-maroon) inset,
 			0px -3px 3px -2px hsl(334, 40%, 37%) inset,
-			white 1px 3px 4px -2px inset;
+			var(--foreground) 1px 3px 4px -2px inset;
 
 		.dragPoint {
 			width: 2.75rem;

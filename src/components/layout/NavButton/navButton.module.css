@@ -1,4 +1,4 @@
-.navBtn {
+a.navBtn {
 	display: grid;
 	place-items: center;
 
@@ -6,15 +6,9 @@
 	aspect-ratio: 1;
 	border-radius: 100%;
 
-	background-color: var(--interactive-bg);
 	background-size: 100%;
 	background-position: center;
 	background-repeat: no-repeat;
-
-	box-shadow:
-		hsla(0, 0%, 0%, 0.6) 0px -1px 2px,
-		white 0px 1px 1px,
-		rgba(0, 0, 0, 0.7) 0px 1px inset;
 
 	cursor: var(--navigate-cursor);
 
@@ -26,8 +20,8 @@
 		background-size: cover;
 
 		box-shadow:
-			hsl(0, 0%, 85%, 0.4) 0px 1px 0.5px 1px inset,
-			hsla(0, 0%, 0%, 0.4) -1px -1px 1px 2px inset;
+			var(--shadow-bevel-light-40) 0px 1px 0.5px 1px inset,
+			var(--shadow-dark-40) -1px -1px 1px 2px inset;
 
 		transition-property: transform, box-shadow;
 		transition-duration: 150ms;
@@ -46,8 +40,8 @@
 		.icon {
 			transform: rotate(90deg);
 			box-shadow:
-				hsl(0, 0%, 85%, 0.4) 1px 0px 0.5px 1px inset,
-				hsla(0, 0%, 0%, 0.4) -1px 1px 1px 2px inset;
+				var(--shadow-bevel-light-40) 1px 0px 0.5px 1px inset,
+				var(--shadow-dark-40) -1px 1px 1px 2px inset;
 		}
 	}
 
@@ -59,7 +53,7 @@
 }
 
 @media (max-width: 1000px) {
-	.navBtn {
+	a.navBtn {
 		width: 3rem;
 	}
 }

@@ -9,26 +9,17 @@
 	from {
 		background-position: 0rem;
 		box-shadow:
-			rgba(255, 166, 0, 0.9) 0 0 15px,
-			hsla(0, 0%, 0%, 0.6) 0px -1px 2px,
-			white 0px 1px 1px,
-			hsla(0, 0%, 0%, 0.6) -1px -1px 4px inset,
-			rgba(255, 255, 255, 0.6) 1px 1px 2px inset,
-			rgba(255, 255, 255, 0.6) 1px 1px 4px inset;
+			var(--glow-color) 0 0 15px,
+			var(--embed-shadow);
 	}
 
 	to {
 		background-position: 1.5rem;
-		box-shadow:
-			hsla(0, 0%, 0%, 0.6) 0px -1px 2px,
-			white 0px 1px 1px,
-			hsla(0, 0%, 0%, 0.6) -1px -1px 4px inset,
-			rgba(255, 255, 255, 0.6) 1px 1px 2px inset,
-			rgba(255, 255, 255, 0.6) 1px 1px 4px inset;
+		box-shadow: var(--embed-shadow);
 	}
 }
 
-.settingsSection {
+div.settingsSection {
 	display: flex;
 	flex-direction: column;
 	gap: 1rem;
@@ -39,13 +30,6 @@
 	border-radius: 1rem;
 
 	color: black;
-
-	background-color: var(--white);
-
-	box-shadow:
-		0px -3px 2px -2px var(--interactive-bg) inset,
-		0px -10px 10px -2px rgb(174, 174, 174) inset,
-		0px -23px 15px -2px hsl(300, 0%, 50%) inset;
 
 	.settingsSectionTitlebar {
 		.settingsSectionTitle {
@@ -81,11 +65,19 @@
 
 				background-color: var(--button-background);
 
-				box-shadow: rgba(0, 0, 0, 0.333) 0 0 4px inset;
+				box-shadow: var(--shadow-dark-30) 0 0 4px inset;
 
 				user-select: none;
 
-				&::before {
+				--embed-shadow:
+					var(--shadow-dark-60) 0px -1px 2px,
+					var(--foreground) 0px 1px 1px,
+					var(--shadow-dark-60) -1px -1px 4px inset,
+					var(--shadow-glow-white-60) 1px 1px 2px inset,
+					var(--shadow-glow-white-60) 1px 1px 4px inset;
+
+				&::before,
+				&.idle::before {
 					content: "";
 					position: absolute;
 					right: 0.5rem;
@@ -98,21 +90,18 @@
 
 					background-color: hsl(0, 0%, 20%);
 
+					box-shadow: var(--embed-shadow);
+				}
+
+				&.synced::before {
+					background-color: rgb(7, 255, 90);
 					box-shadow:
-						hsla(0, 0%, 0%, 0.6) 0px -1px 2px,
-						white 0px 1px 1px,
-						hsla(0, 0%, 0%, 0.6) -1px -1px 4px inset,
-						rgba(255, 255, 255, 0.6) 1px 1px 2px inset,
-						rgba(255, 255, 255, 0.6) 1px 1px 4px inset;
+						hsla(140, 100%, 51%, 0.9) 0 0 15px,
+						var(--embed-shadow);
 				}
 
-				&.idle::before {
-					background-color: hsl(0, 0%, 20%);
-				}
-
-				&.syncing::before {
-					background-color: orange;
-
+				&.syncing::before,
+				&.error::before {
 					background-image: repeating-linear-gradient(
 						to right,
 						transparent 0 50%,
@@ -120,37 +109,27 @@
 					);
 					background-size: 200%;
 					background-position: 0rem;
-					box-shadow:
-						rgba(255, 166, 0, 0.9) 0 0 15px,
-						hsla(0, 0%, 0%, 0.6) 0px -1px 2px,
-						white 0px 1px 1px,
-						hsla(0, 0%, 0%, 0.6) -1px -1px 4px inset,
-						rgba(255, 255, 255, 0.6) 1px 1px 2px inset,
-						rgba(255, 255, 255, 0.6) 1px 1px 4px inset;
 
 					animation: blinking 1s steps(2) forwards infinite;
 				}
 
-				&.synced::before {
-					background-color: rgb(7, 255, 90);
+				&.syncing::before {
+					--glow-color: hsla(39, 100%, 50%, 0.9);
+					background-color: orange;
+
 					box-shadow:
-						rgba(7, 255, 90, 0.9) 0 0 15px,
-						hsla(0, 0%, 0%, 0.6) 0px -1px 2px,
-						white 0px 1px 1px,
-						hsla(0, 0%, 0%, 0.6) -1px -1px 4px inset,
-						rgba(255, 255, 255, 0.6) 1px 1px 2px inset,
-						rgba(255, 255, 255, 0.6) 1px 1px 4px inset;
+						var(--glow-color) 0 0 15px,
+						var(--embed-shadow);
 				}
 
 				&.error::before {
+					--glow-color: hsla(0, 100%, 64%, 0.9);
+
 					background-color: var(--danger-color);
+
 					box-shadow:
-						hsla(0, 100%, 64%, 0.9) 0 0 15px,
-						hsla(0, 0%, 0%, 0.6) 0px -1px 2px,
-						white 0px 1px 1px,
-						hsla(0, 0%, 0%, 0.6) -1px -1px 4px inset,
-						rgba(255, 255, 255, 0.6) 1px 1px 2px inset,
-						rgba(255, 255, 255, 0.6) 1px 1px 4px inset;
+						var(--glow-color) 0 0 15px,
+						var(--embed-shadow);
 				}
 			}
 
@@ -167,13 +146,7 @@
 
 				cursor: var(--pointer-cursor);
 
-				box-shadow:
-					var(--dark-shadow) 0px 0px 1.5px 0,
-					var(--interactive-bg) 0px 0px 0px 0.175rem,
-					hsla(0, 0%, 0%, 0.6) 0px -1px 2px 0.175rem,
-					white 0px 1px 1px 0.175rem,
-					hsl(0, 0%, 85%) 0.5px 0.5px 0.5px 0.5px inset,
-					hsl(0, 0%, 70%) -0.5px -0.5px 0.5px 0.5px inset;
+				box-shadow: var(--shadow-button);
 
 				&::after {
 					content: "";
@@ -192,11 +165,11 @@
 					background-color: var(--pink);
 
 					box-shadow:
-						var(--dark-shadow) 0px 0px 1.5px 0,
+						var(--button-shadow) 0px 0px 1.5px 0,
 						var(--interactive-bg) 0px 0px 0px 0.175rem,
-						hsla(0, 0%, 0%, 0.6) 0px -1px 2px 0.175rem,
-						white 0px 1px 1px 0.175rem,
-						hsl(0, 0%, 85%, 0.6) 0.5px 0.5px 2px 0.5px inset,
+						var(--shadow-dark-60) 0px -1px 2px 0.175rem,
+						var(--foreground) 0px 1px 1px 0.175rem,
+						var(--shadow-bevel-light-60) 0.5px 0.5px 2px 0.5px inset,
 						hsl(0, 0%, 5%, 0.6) -0.5px -0.5px 2px 0.5px inset;
 				}
 
@@ -268,13 +241,6 @@
 			font-size: 1.125rem;
 			text-align: center;
 
-			background-color: var(--interactive-bg);
-
-			box-shadow:
-				hsla(0, 0%, 0%, 0.6) 0px -1px 2px,
-				white 0px 1px 1px,
-				rgba(0, 0, 0, 0.7) 0px 1px inset;
-
 			cursor: var(--edit-cursor);
 
 			&:focus-visible {
@@ -298,20 +264,13 @@
 			appearance: textfield;
 		}
 
-		.numberStepper {
+		div.numberStepper {
 			display: flex;
 			align-items: center;
 			justify-content: space-between;
 
 			width: 100%;
 			border-radius: 100vh;
-
-			background-color: var(--interactive-bg);
-
-			box-shadow:
-				hsla(0, 0%, 0%, 0.6) 0px -1px 2px,
-				white 0px 1px 1px,
-				rgba(0, 0, 0, 0.7) 0px 1px inset;
 
 			input {
 				flex: 1;
@@ -347,10 +306,10 @@
 				cursor: var(--pointer-cursor);
 
 				box-shadow:
-					var(--dark-shadow) 0px 0px 1px 0,
+					var(--button-shadow) 0px 0px 1px 0,
 					var(--button-border) 0px 0px 0px 0.125rem,
-					hsl(0, 0%, 85%) 0.5px 0.5px 0.5px 0.5px inset,
-					hsl(0, 0%, 70%) -0.5px -0.5px 0.5px 0.5px inset;
+					var(--shadow-bevel-light) 0.5px 0.5px 0.5px 0.5px inset,
+					var(--shadow-bevel-dark) -0.5px -0.5px 0.5px 0.5px inset;
 
 				&.plus {
 					background-image: url("/button_icons/plus.png");
@@ -366,8 +325,9 @@
 					background-color: var(--darker-pink);
 					box-shadow:
 						var(--button-background) 0px 0px 0px 0.125rem,
-						hsla(0, 0%, 85%, 0.6) 0.5px 0.5px 0.5px 0.5px inset,
-						hsla(0, 0%, 70%, 0.6) -0.5px -0.5px 0.5px 0.5px inset;
+						var(--shadow-bevel-light-60) 0.5px 0.5px 0.5px 0.5px inset,
+						var(--shadow-bevel-dark-60) -0.5px -0.5px 0.5px 0.5px
+							inset;
 				}
 			}
 		}
@@ -389,9 +349,9 @@
 			background-color: var(--interactive-bg);
 
 			box-shadow:
-				var(--dark-shadow) 0px -1px 2px,
-				white 0px 1px 1px,
-				rgba(0, 0, 0, 0.5) 1px 1px 4px 1px inset;
+				var(--button-shadow) 0px -1px 2px,
+				var(--foreground) 0px 1px 1px,
+				var(--shadow-dark-50) 1px 1px 4px 1px inset;
 
 			cursor: var(--pointer-cursor);
 
@@ -407,10 +367,10 @@
 				left: 0;
 
 				box-shadow:
-					var(--dark-shadow) 0px 0px 1.5px 0px,
+					var(--button-shadow) 0px 0px 1.5px 0px,
 					var(--button-border) 0px 0px 0px 3px,
-					hsl(0, 0%, 85%) 0.5px 0.5px 0.5px 0.5px inset,
-					hsl(0, 0%, 70%) -0.5px -0.5px 0.5px 0.5px inset;
+					var(--shadow-bevel-light) 0.5px 0.5px 0.5px 0.5px inset,
+					var(--shadow-bevel-dark) -0.5px -0.5px 0.5px 0.5px inset;
 
 				transition: left 250ms var(--ease-in-out-back);
 				transition-property: left, transform;
@@ -421,8 +381,8 @@
 				background-color: var(--pink);
 				box-shadow:
 					var(--button-background) 0px 0px 0px 3px,
-					hsla(0, 0%, 85%, 0.6) 0.5px 0.5px 0.5px 0.5px inset,
-					hsla(0, 0%, 70%, 0.6) -0.5px -0.5px 0.5px 0.5px inset;
+					var(--shadow-bevel-light-60) 0.5px 0.5px 0.5px 0.5px inset,
+					var(--shadow-bevel-dark-60) -0.5px -0.5px 0.5px 0.5px inset;
 			}
 
 			&:checked {
@@ -451,13 +411,6 @@
 		font-style: italic;
 		text-align: center;
 
-		background-color: var(--interactive-bg);
-
-		box-shadow:
-			hsla(0, 0%, 0%, 0.6) 0px -1px 2px,
-			white 0px 1px 1px,
-			rgba(0, 0, 0, 0.7) 0px 1px inset;
-
 		cursor: var(--dropdown-cursor);
 
 		@supports (appearance: base-select) {
@@ -484,29 +437,11 @@
 	}
 
 	button {
-		padding: 0.15rem 1rem;
-		border: none;
-		border-radius: 100vh;
-
-		color: black;
-		font-family: var(--font-barlow-condensed);
-		font-size: 1.25rem;
-		font-weight: 700;
-
-		background-color: var(--button-background);
 		margin: 0.35rem 0.175rem;
 
 		overflow: hidden;
 		text-wrap-mode: nowrap;
 		text-overflow: ellipsis;
-
-		box-shadow:
-			var(--dark-shadow) 0px 0px 1.5px 0,
-			var(--interactive-bg) 0px 0px 0px 0.175rem,
-			hsla(0, 0%, 0%, 0.6) 0px -1px 2px 0.175rem,
-			white 0px 1px 1px 0.175rem,
-			hsl(0, 0%, 85%) 0.5px 0.5px 0.5px 0.5px inset,
-			hsl(0, 0%, 70%) -0.5px -0.5px 0.5px 0.5px inset;
 
 		&[data-variant="normal"] {
 			--hover-color: var(--pink);
@@ -514,24 +449,6 @@
 
 		&[data-variant="danger"] {
 			--hover-color: var(--danger-color);
-		}
-
-		&:hover,
-		&:focus {
-			outline: none;
-
-			paint-order: stroke fill;
-			color: white;
-			-webkit-text-stroke: 2px black;
-
-			background-color: var(--hover-color);
-			box-shadow:
-				var(--dark-shadow) 0px 0px 1.5px 0,
-				var(--interactive-bg) 0px 0px 0px 0.175rem,
-				hsla(0, 0%, 0%, 0.6) 0px -1px 2px 0.175rem,
-				white 0px 1px 1px 0.175rem,
-				hsla(0, 0%, 100%) 2px 3px 5px -2px inset,
-				hsla(0, 0%, 18%, 0.9) 0px -2px 10px -2px inset;
 		}
 	}
 }
@@ -541,9 +458,9 @@
 	padding: 0.25rem 1rem;
 	border-radius: 100vh;
 	box-shadow:
-		hsla(0, 0%, 0%, 0.6) 0px -1px 2px,
-		white 0px 1px 1px,
-		rgba(0, 0, 0, 0.5) 0 0 4px 1px inset;
+		var(--shadow-dark-60) 0px -1px 2px,
+		var(--foreground) 0px 1px 1px,
+		var(--shadow-dark-50) 0 0 4px 1px inset;
 }
 
 .settingsSecret {
@@ -581,7 +498,7 @@
 }
 
 @media (max-width: 1135px) {
-	.settingsSection {
+	div.settingsSection {
 		max-width: 100%;
 
 		.settingsSectionContent {
@@ -602,22 +519,24 @@
 	.page {
 		padding-inline: 1rem !important;
 
-		.settingsSectionContent {
-			font-size: 0.85rem;
+		div.settingsSection {
+			.settingsSectionContent {
+				font-size: 0.85rem;
 
-			.pixelStaminaGrid {
-				grid-template-columns: 1fr;
-			}
-		}
-
-		.settingsSectionTitlebar {
-			.settingsSectionTitle {
-				font-size: 1rem;
+				.pixelStaminaGrid {
+					grid-template-columns: 1fr;
+				}
 			}
 
-			.settingsCloudStatus {
-				.settingsCloudStatusLabel {
+			.settingsSectionTitlebar {
+				.settingsSectionTitle {
 					font-size: 1rem;
+				}
+
+				.settingsCloudStatus {
+					.settingsCloudStatusLabel {
+						font-size: 1rem;
+					}
 				}
 			}
 		}

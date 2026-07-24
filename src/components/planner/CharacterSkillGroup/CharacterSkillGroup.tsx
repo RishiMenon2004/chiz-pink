@@ -49,6 +49,7 @@ export function CharacterSkillGroup({
 				{!isPassive && (
 					<div className={styles.charStatInputSelects}>
 						<select
+							className="raised-control"
 							value={ability.currentLvl}
 							onChange={(e) => handleCurrentLvlChange(e, skill)}
 							tabIndex={0}>
@@ -63,6 +64,7 @@ export function CharacterSkillGroup({
 						</select>
 						<span className={styles.charStatInputSelectArrow} />
 						<select
+							className="raised-control"
 							value={ability.targetLvl}
 							onChange={(e) => handleTargetLvlChange(e, skill)}
 							tabIndex={0}>

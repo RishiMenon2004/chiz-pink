@@ -34,7 +34,7 @@ export function QuantityInput({
 	onDecrement: (e: MouseEvent<HTMLSpanElement>) => void
 }) {
 	return (
-		<span className={`${styles.amount}`}>
+		<span className={`raised-control ${styles.amount}`}>
 			<span
 				aria-label={`${name} minus one button`}
 				className={`${styles.countBtn} ${styles.minus}`}

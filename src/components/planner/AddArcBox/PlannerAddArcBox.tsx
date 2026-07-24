@@ -220,7 +220,7 @@ export function PlannerAddArcBox({
 	const { newArcRecord, setNewArcRecord } = useAddArcContext()
 	return (
 		<div
-			className={styles.plannerAddArcBox}
+			className={`metallic-panel ${styles.plannerAddArcBox}`}
 			onClick={(e) => e.stopPropagation()}>
 			<div className={styles.addArcBoxTitle}>Add Arc</div>
 			<PlannerArcsSelect />
@@ -258,10 +258,14 @@ export function PlannerAddArcBox({
 				/>
 			</div>
 			<span className={styles.addArcButtonsSection}>
-				<div className={styles.addArcCancelButton} onClick={onCancel}>
+				<div
+					className={`pill-button ${styles.addArcCancelButton}`}
+					onClick={onCancel}>
 					CANCEL
 				</div>
-				<div className={styles.addArcConfirmButton} onClick={onConfirm}>
+				<div
+					className={`pill-button ${styles.addArcConfirmButton}`}
+					onClick={onConfirm}>
 					ADD
 				</div>
 			</span>

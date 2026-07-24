@@ -155,7 +155,7 @@ export function MaterialEditorBox({
 				onDecrement={(e) => handleCount(e, false)}
 			/>
 
-			<span className={`${styles.amount}`}>
+			<span className={`raised-control ${styles.amount}`}>
 				<span
 					className={`${styles.countBtn} ${styles.addSub}`}
 					style={{ pointerEvents: "none" }}

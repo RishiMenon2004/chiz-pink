@@ -68,7 +68,7 @@
 			to top,
 			color-mix(in srgb, var(--rarity-color) 30%, transparent)
 		);
-		box-shadow: hsla(0, 0%, 0%, 0.4) 1px 1px 2px inset;
+		box-shadow: var(--shadow-dark-40) 1px 1px 2px inset;
 		border-radius: calc(0.5rem - 0.125rem);
 		padding: 0.125rem 0.25rem;
 
@@ -85,7 +85,7 @@
 		}
 	}
 
-	.amount {
+	span.amount {
 		color: black;
 		font-family: var(--font-barlow-condensed);
 		font-size: 1rem;

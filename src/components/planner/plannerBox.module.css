@@ -16,7 +16,7 @@
 	filter: drop-shadow(black 0 0 10px);
 }
 
-.infoContainer {
+div.infoContainer {
 	display: flex;
 	flex-direction: column;
 	flex-grow: 1;
@@ -28,13 +28,6 @@
 		var(--outer-radius);
 
 	color: var(--interactive-bg);
-
-	background-color: var(--white);
-
-	box-shadow:
-		0px -3px 2px -2px var(--interactive-bg) inset,
-		0px -10px 10px -2px rgb(174, 174, 174) inset,
-		0px -23px 15px -2px hsl(300, 0%, 50%) inset;
 }
 
 .plannerSectionLabel {
@@ -55,8 +48,8 @@
 	background-color: var(--interactive-bg);
 
 	box-shadow:
-		hsla(0, 0%, 0%, 0.6) 0px 0px 2px 1px,
-		rgba(0, 0, 0, 0.7) 1px 2px 2px inset;
+		var(--shadow-dark-60) 0px 0px 2px 1px,
+		var(--shadow-dark-70) 1px 2px 2px inset;
 }
 
 .plannerBoxDisabled,
@@ -101,7 +94,7 @@
 		flex-direction: column-reverse;
 	}
 
-	.infoContainer {
+	div.infoContainer {
 		border-radius: var(--inner-radius) var(--inner-radius) var(--outer-radius)
 			var(--outer-radius);
 		--padding-left: 1rem;

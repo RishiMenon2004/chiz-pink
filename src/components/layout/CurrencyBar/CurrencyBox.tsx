@@ -119,7 +119,7 @@ export function CurrencyBox({ currency }: { currency: Material }) {
 
 	return (
 		<div
-			className={`${styles.currencyBox} ${ownedOrNeededStyle}`}
+			className={`raised-control ${styles.currencyBox} ${ownedOrNeededStyle}`}
 			id={currency.id}
 			onPointerEnter={showTooltip}
 			onPointerLeave={hideTooltip}

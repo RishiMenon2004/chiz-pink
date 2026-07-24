@@ -26,8 +26,8 @@
 		background-size: cover;
 
 		box-shadow:
-			hsla(0, 0%, 0%, 0.6) 1px -1px 4px,
-			white 2px 3px 4px 1px;
+			var(--shadow-dark-60) 1px -1px 4px,
+			var(--foreground) 2px 3px 4px 1px;
 
 		.charImageContainer {
 			position: relative;
@@ -42,8 +42,8 @@
 			background-color: var(--interactive-bg);
 
 			box-shadow:
-				hsla(0, 0%, 0%, 0.6) 0px 0px 2px 1px,
-				white 2px 3px 4px 1px;
+				var(--shadow-dark-60) 0px 0px 2px 1px,
+				var(--foreground) 2px 3px 4px 1px;
 
 			&,
 			& img {
@@ -65,7 +65,7 @@
 
 				border-radius: 100%;
 
-				box-shadow: hsla(0, 0%, 0%, 0.5) 2px 2px 10px inset;
+				box-shadow: var(--shadow-dark-50) 2px 2px 10px inset;
 			}
 
 			&:hover {
@@ -142,13 +142,6 @@
 				padding: 0.125rem 0.5rem;
 				border: none;
 				border-radius: 100vh;
-
-				background-color: var(--interactive-bg);
-
-				box-shadow:
-					hsla(0, 0%, 0%, 0.6) 0px -1px 2px,
-					white 0px 1px 1px,
-					rgba(0, 0, 0, 0.7) 0px 1px inset;
 
 				cursor: var(--dropdown-cursor);
 
@@ -253,7 +246,7 @@
 		flex-direction: column;
 
 		summary {
-			cursor: var(--pull-cursor), pointer;
+			cursor: var(--pull-cursor, pointer), pointer;
 		}
 
 		.charStatsGrid {

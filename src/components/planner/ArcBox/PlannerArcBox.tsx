@@ -189,7 +189,7 @@ export function PlannerArcBox({
 				<div
 					className={`${plannerBoxStyles.plannerBox} ${getItemRarityStyle(arc)} ${isDisabled ? `${plannerBoxStyles.plannerBoxDisabled} ${styles.noInteract}` : ""} ${dropPreviewOrDragOverlay().join(" ")}`}>
 					<div
-						className={`${plannerBoxStyles.infoContainer} ${styles.infoContainer}`}>
+						className={`metallic-panel ${plannerBoxStyles.infoContainer} ${styles.infoContainer}`}>
 						<div className={styles.arcInfoTop}>
 							<div className={styles.arcImageContainer}>
 								<ArcIcon
@@ -220,6 +220,7 @@ export function PlannerArcBox({
 									<div className={styles.arcStatsLvl}>
 										<span>Current Lvl.</span>
 										<select
+											className="raised-control"
 											value={currentLvl}
 											onChange={handleCurrentChange}
 											tabIndex={0}>
@@ -241,6 +242,7 @@ export function PlannerArcBox({
 									<div className={styles.arcStatsLvl}>
 										<span>Target Lvl.</span>
 										<select
+											className="raised-control"
 											value={targetLvl}
 											onChange={handleTargetChange}
 											tabIndex={0}>

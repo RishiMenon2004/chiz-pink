@@ -1,43 +1,4 @@
-.installButton {
-	padding: 0.15rem 1rem;
-	border: none;
-	border-radius: 100vh;
-
-	color: black;
-	font-family: var(--font-barlow-condensed);
-	font-size: 1.25rem;
-	font-weight: 700;
-
-	background-color: var(--button-background);
-
-	box-shadow:
-		var(--dark-shadow) 0px 0px 1.5px 0,
-		var(--interactive-bg) 0px 0px 0px 0.175rem,
-		hsla(0, 0%, 0%, 0.6) 0px -1px 2px 0.175rem,
-		white 0px 1px 1px 0.175rem,
-		hsl(0, 0%, 85%) 0.5px 0.5px 0.5px 0.5px inset,
-		hsl(0, 0%, 70%) -0.5px -0.5px 0.5px 0.5px inset;
-
-	&:hover,
-	&:focus {
-		outline: none;
-
-		paint-order: stroke fill;
-		color: white;
-		-webkit-text-stroke: 2px black;
-
-		background-color: var(--pink);
-		box-shadow:
-			var(--dark-shadow) 0px 0px 1.5px 0,
-			var(--interactive-bg) 0px 0px 0px 0.175rem,
-			hsla(0, 0%, 0%, 0.6) 0px -1px 2px 0.175rem,
-			white 0px 1px 1px 0.175rem,
-			hsla(0, 0%, 100%) 2px 3px 5px -2px inset,
-			hsla(0, 0%, 18%, 0.9) 0px -2px 10px -2px inset;
-	}
-}
-
-.instructionsBox {
+div.instructionsBox {
 	display: flex;
 	flex-direction: column;
 	align-items: center;
@@ -49,13 +10,6 @@
 
 	color: black;
 	text-align: center;
-
-	background-color: var(--white);
-
-	box-shadow:
-		0px -3px 2px -2px var(--interactive-bg) inset,
-		0px -10px 10px -2px rgb(174, 174, 174) inset,
-		0px -23px 15px -2px hsl(300, 0%, 50%) inset;
 
 	.instructionsTitle {
 		font-family: var(--font-syne);
@@ -82,46 +36,11 @@
 		font-size: 1rem;
 
 		box-shadow:
-			hsla(0, 0%, 0%, 0.6) 0px -2px 4px,
-			white 0px 1px 4px;
+			var(--shadow-dark-60) 0px -2px 4px,
+			var(--foreground) 0px 1px 4px;
 	}
 
 	button {
 		padding: 0.15rem 1rem;
-		border: none;
-		border-radius: 100vh;
-
-		color: black;
-		font-family: var(--font-barlow-condensed);
-		font-size: 1.25rem;
-		font-weight: 700;
-
-		background-color: var(--button-background);
-
-		box-shadow:
-			var(--dark-shadow) 0px 0px 1.5px 0,
-			var(--interactive-bg) 0px 0px 0px 0.175rem,
-			hsla(0, 0%, 0%, 0.6) 0px -1px 2px 0.175rem,
-			white 0px 1px 1px 0.175rem,
-			hsl(0, 0%, 85%) 0.5px 0.5px 0.5px 0.5px inset,
-			hsl(0, 0%, 70%) -0.5px -0.5px 0.5px 0.5px inset;
-
-		&:hover,
-		&:focus {
-			outline: none;
-
-			paint-order: stroke fill;
-			color: white;
-			-webkit-text-stroke: 2px black;
-
-			background-color: var(--pink);
-			box-shadow:
-				var(--dark-shadow) 0px 0px 1.5px 0,
-				var(--interactive-bg) 0px 0px 0px 0.175rem,
-				hsla(0, 0%, 0%, 0.6) 0px -1px 2px 0.175rem,
-				white 0px 1px 1px 0.175rem,
-				hsla(0, 0%, 100%) 2px 3px 5px -2px inset,
-				hsla(0, 0%, 18%, 0.9) 0px -2px 10px -2px inset;
-		}
 	}
 }

@@ -1,4 +1,4 @@
-.addCharBox {
+div.addCharBox {
 	position: relative;
 
 	display: flex;
@@ -13,13 +13,6 @@
 	margin-block: 3rem 10dvh;
 	width: 35vw;
 	min-width: 21rem;
-
-	background-color: var(--white);
-
-	box-shadow:
-		0px -3px 2px -2px var(--interactive-bg) inset,
-		0px -10px 10px -2px rgb(174, 174, 174) inset,
-		0px -23px 15px -2px hsl(300, 0%, 50%) inset;
 
 	.addCharBoxTitle {
 		margin-top: 0.5rem;
@@ -51,13 +44,7 @@
 		background-image: url("/button_icons/cross.png");
 		background-size: cover;
 
-		box-shadow:
-			var(--dark-shadow) 0px 0px 1.5px 0,
-			var(--interactive-bg) 0px 0px 0px 0.175rem,
-			hsla(0, 0%, 0%, 0.6) 0px -1px 2px 0.175rem,
-			white 0px 1px 1px 0.175rem,
-			hsl(0, 0%, 85%) 0.5px 0.5px 0.5px 0.5px inset,
-			hsl(0, 0%, 70%) -0.5px -0.5px 0.5px 0.5px inset;
+		box-shadow: var(--shadow-button);
 
 		cursor: var(--pointer-cursor);
 
@@ -69,13 +56,7 @@
 
 			background-image: url("/button_icons/cross_white.png");
 
-			box-shadow:
-				var(--dark-shadow) 0px 0px 1.5px 0,
-				var(--interactive-bg) 0px 0px 0px 0.175rem,
-				hsla(0, 0%, 0%, 0.6) 0px -1px 2px 0.175rem,
-				white 0px 1px 1px 0.175rem,
-				hsla(0, 0%, 100%) 2px 3px 5px -2px inset,
-				hsla(0, 0%, 18%, 0.9) 0px -2px 10px -2px inset;
+			box-shadow: var(--shadow-button-hover);
 		}
 	}
 }
@@ -94,7 +75,7 @@
 
 	background-color: var(--button-background);
 
-	box-shadow: rgba(0, 0, 0, 0.5) 0 1px 4px inset;
+	box-shadow: var(--shadow-dark-50) 0 1px 4px inset;
 
 	&:nth-child(1 of &) {
 		margin-top: 0.5rem;
@@ -171,7 +152,7 @@
 			background-color: var(--pink);
 
 			&.filterElement {
-				box-shadow: white 0 0 0 2px inset;
+				box-shadow: var(--foreground) 0 0 0 2px inset;
 			}
 		}
 
@@ -190,8 +171,8 @@
 	.charFilterSearch,
 	.charFilter {
 		box-shadow:
-			hsla(0, 0%, 0%, 0.6) 0px 0px 2px 0.5px,
-			white 1px 1px 3px 1px;
+			var(--shadow-dark-60) 0px 0px 2px 0.5px,
+			var(--foreground) 1px 1px 3px 1px;
 	}
 }
 
@@ -209,8 +190,8 @@
 	background-color: var(--interactive-bg);
 
 	box-shadow:
-		hsla(0, 0%, 0%, 0.6) 0px 0px 2px 1px,
-		rgba(0, 0, 0, 0.7) 1px 2px 2px inset;
+		var(--shadow-dark-60) 0px 0px 2px 1px,
+		var(--shadow-dark-70) 1px 2px 2px inset;
 
 	overflow-y: auto;
 	flex-grow: 1;
@@ -275,8 +256,8 @@
 
 			background-color: var(--interactive-bg);
 			box-shadow:
-				hsla(0, 0%, 0%, 0.6) 0px 0px 2px 1px,
-				white 2px 3px 4px 1px;
+				var(--shadow-dark-60) 0px 0px 2px 1px,
+				var(--foreground) 2px 3px 4px 1px;
 		}
 
 		.charSelectElement {
@@ -290,8 +271,8 @@
 			border-radius: 100%;
 
 			box-shadow:
-				hsla(0, 0%, 0%, 0.6) 0px -0.5px 2px 0.5px,
-				white 0 0.5px 2px;
+				var(--shadow-dark-60) 0px -0.5px 2px 0.5px,
+				var(--foreground) 0 0.5px 2px;
 		}
 	}
 
@@ -308,8 +289,8 @@
 		.charSelectOptionAvatarContainer {
 			.charSelectOptionAvatar {
 				box-shadow:
-					hsla(0, 0%, 0%, 0.6) 0px 0px 2px 1px,
-					white 2px 3px 4px 1px,
+					var(--shadow-dark-60) 0px 0px 2px 1px,
+					var(--foreground) 2px 3px 4px 1px,
 					var(--rarity-color) 0 0 20px 2px inset;
 			}
 		}
@@ -330,7 +311,7 @@
 }
 
 @media (max-width: 1000px) {
-	.addCharBox {
+	div.addCharBox {
 		width: 75vw;
 		.addCharBoxCancel {
 			outline: none;
@@ -339,13 +320,7 @@
 
 			background-image: url("/button_icons/cross_white.png");
 
-			box-shadow:
-				var(--dark-shadow) 0px 0px 1.5px 0,
-				var(--interactive-bg) 0px 0px 0px 0.175rem,
-				hsla(0, 0%, 0%, 0.6) 0px -1px 2px 0.175rem,
-				white 0px 1px 1px 0.175rem,
-				hsla(0, 0%, 100%) 2px 3px 5px -2px inset,
-				hsla(0, 0%, 18%, 0.9) 0px -2px 10px -2px inset;
+			box-shadow: var(--shadow-button-hover);
 		}
 	}
 }

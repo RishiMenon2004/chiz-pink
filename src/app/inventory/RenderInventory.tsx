@@ -86,7 +86,7 @@ export default function RenderInventory() {
 							<MaterialGroup
 								key={rarity[1]}
 								title={getRarityName(Number(rarity[1]))}>
-								<div className={styles.materialList}>
+								<div className={`raised-control ${styles.materialList}`}>
 									{filteredRarity.map((material) => {
 										return (
 											<InventoryMaterialBox
@@ -112,7 +112,7 @@ export default function RenderInventory() {
 					if (filteredType.length > 0) {
 						return (
 							<MaterialGroup key={type} title={type}>
-								<div className={styles.materialList}>
+								<div className={`raised-control ${styles.materialList}`}>
 									{filteredType.map((material) => {
 										return (
 											<InventoryMaterialBox
@@ -143,12 +143,12 @@ export default function RenderInventory() {
 						isEmpty={ownedMats.length <= 0}
 						isOpen={ownedMats.length > 0}
 						emptyFalback={
-							<InfoBox className={styles.emptyFilter}>
+							<InfoBox className={`raised-control ${styles.emptyFilter}`}>
 								S-sorry... You don&apos;t seem to own anything.
 							</InfoBox>
 						}
 						title="Owned">
-						<div className={styles.materialList}>
+						<div className={`raised-control ${styles.materialList}`}>
 							{ownedMats.map((material) => {
 								return (
 									<InventoryMaterialBox
@@ -164,7 +164,7 @@ export default function RenderInventory() {
 				if (unownedMats.length > 0) {
 					groups.push(
 						<MaterialGroup key="unowned" title="Not Owned">
-							<div className={styles.materialList}>
+							<div className={`raised-control ${styles.materialList}`}>
 								{unownedMats.map((material) => {
 									return (
 										<InventoryMaterialBox
@@ -213,13 +213,13 @@ export default function RenderInventory() {
 						title="Required"
 						isEmpty={requiredMaterials.length <= 0}
 						emptyFalback={
-							<InfoBox className={styles.emptyFilter}>
+							<InfoBox className={`raised-control ${styles.emptyFilter}`}>
 								{
 									"Hmm, looks like... you don't n-need anything right now."
 								}
 							</InfoBox>
 						}>
-						<div className={styles.materialList}>
+						<div className={`raised-control ${styles.materialList}`}>
 							{requiredMaterials.map((material) => {
 								return (
 									<InventoryMaterialBox
@@ -305,13 +305,13 @@ export default function RenderInventory() {
 						isEmpty={acquiredMaterials.length <= 0}
 						isOpen={acquiredMaterials.length > 0}
 						emptyFalback={
-							<InfoBox className={styles.emptyFilter}>
+							<InfoBox className={`raised-control ${styles.emptyFilter}`}>
 								{notAcquiredMaterials.length <= 0
 									? ""
 									: "Y-you haven't finished collecting... a-anything."}
 							</InfoBox>
 						}>
-						<div className={styles.materialList}>
+						<div className={`raised-control ${styles.materialList}`}>
 							{acquiredMaterials.map((material) => {
 								return (
 									<InventoryMaterialBox
@@ -329,13 +329,13 @@ export default function RenderInventory() {
 						title="Required"
 						isEmpty={notAcquiredMaterials.length <= 0}
 						emptyFalback={
-							<InfoBox className={styles.emptyFilter}>
+							<InfoBox className={`raised-control ${styles.emptyFilter}`}>
 								{acquiredMaterials.length > 0
 									? "Oh wow! You've collected e-everything you needed!"
 									: "Hmm, looks like... you don't n-need anything right now."}
 							</InfoBox>
 						}>
-						<div className={styles.materialList}>
+						<div className={`raised-control ${styles.materialList}`}>
 							{notAcquiredMaterials.map((material) => {
 								return (
 									<InventoryMaterialBox

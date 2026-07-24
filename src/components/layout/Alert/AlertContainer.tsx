@@ -50,12 +50,13 @@ export function AlertContainer({
 	return (
 		<div
 			ref={containerRef}
-			className={styles.alertBox}
+			className={`metallic-panel ${styles.alertBox}`}
 			onClick={(e) => e.stopPropagation()}>
 			<div>{children}</div>
 			<div className={styles.alertBoxButtons}>
 				{type !== "acknowledge" && (
 					<button
+						className="pill-button"
 						id="cancel"
 						onClick={onCancel}
 						data-variant={buttonTypes[0]}>
@@ -63,6 +64,7 @@ export function AlertContainer({
 					</button>
 				)}
 				<button
+					className="pill-button"
 					id="confirm"
 					onClick={onConfirm}
 					data-variant={buttonTypes[1]}>

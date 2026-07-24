@@ -99,7 +99,9 @@ export function PlannerAddCharacterBox({
 		.reverse()
 
 	return (
-		<div className={styles.addCharBox} onClick={(e) => e.stopPropagation()}>
+		<div
+			className={`metallic-panel ${styles.addCharBox}`}
+			onClick={(e) => e.stopPropagation()}>
 			<div className={styles.addCharBoxTitle}>Add Character</div>
 			<button className={styles.addCharBoxCancel} onClick={onCancel} />
 			<div className={styles.addCharFilters}>

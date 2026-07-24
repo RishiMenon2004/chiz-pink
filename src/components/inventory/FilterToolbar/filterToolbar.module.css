@@ -1,41 +1,4 @@
-.filterToolbar {
-	position: sticky;
-	top: 3rem;
-	display: flex;
-	align-items: center;
-	justify-content: space-between;
-	gap: 1rem;
-	z-index: 1;
-
-	height: 4rem;
-	width: 80%;
-	margin: auto;
-	padding-inline: 1rem;
-	border-radius: 0 0 1rem 1rem;
-
-	&::before {
-		content: "";
-		position: absolute;
-		inset: 0;
-		z-index: -1;
-
-		border-radius: 0 0 1rem 1rem;
-
-		background-color: var(--white);
-		background-image: linear-gradient(
-			to top,
-			rgb(174, 174, 174),
-			transparent
-		);
-		box-shadow:
-			0px -3px 2px -2px var(--interactive-bg) inset,
-			0px -10px 10px -2px rgb(174, 174, 174) inset,
-			0px -23px 15px -2px hsl(300, 0%, 50%) inset,
-			0px 2px 20px hsl(0, 0%, 4%);
-	}
-}
-
-.filterSelection {
+div.filterSelection {
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
@@ -45,12 +8,6 @@
 	height: 2rem;
 	padding-block: 0.25rem;
 	border-radius: 100vh;
-
-	background-color: var(--interactive-bg);
-	box-shadow:
-		hsla(0, 0%, 0%, 0.6) 0px -1px 2px,
-		white 0px 1px 1px,
-		rgba(0, 0, 0, 0.7) 0px 1px inset;
 
 	select {
 		width: 100%;
@@ -117,10 +74,10 @@
 		--border-color: var(--button-border);
 
 		box-shadow:
-			var(--dark-shadow) 0px 0px 1px 0,
+			var(--button-shadow) 0px 0px 1px 0,
 			var(--border-color) 0px 0px 0px 0.125rem,
-			hsl(0, 0%, 85%) 0.5px 0.5px 0.5px 0.5px inset,
-			hsl(0, 0%, 70%) -0.5px -0.5px 0.5px 0.5px inset;
+			var(--shadow-bevel-light) 0.5px 0.5px 0.5px 0.5px inset,
+			var(--shadow-bevel-dark) -0.5px -0.5px 0.5px 0.5px inset;
 
 		&.hasHover {
 			cursor: var(--pointer-cursor) !important;
@@ -130,8 +87,8 @@
 			&:focus-visible {
 				box-shadow:
 					var(--border-color) 0px 0px 0px 0.125rem,
-					hsla(0, 0%, 85%, 0.6) 0.5px 0.5px 0.5px 0.5px inset,
-					hsla(0, 0%, 70%, 0.6) -0.5px -0.5px 0.5px 0.5px inset;
+					var(--shadow-bevel-light-60) 0.5px 0.5px 0.5px 0.5px inset,
+					var(--shadow-bevel-dark-60) -0.5px -0.5px 0.5px 0.5px inset;
 			}
 
 			&.doHover {
@@ -149,11 +106,6 @@
 
 		background-size: cover;
 	}
-}
-
-.pullOutTab {
-	display: none;
-	user-select: none;
 }
 
 .clearAllContainer {
@@ -174,7 +126,7 @@
 	background-color: var(--white);
 	background-image: linear-gradient(to right, hsl(0, 0%, 70%), transparent);
 
-	box-shadow: hsl(0, 0%, 50%) 0 0 1.5px 1px inset;
+	box-shadow: var(--shadow-underlight-2) 0 0 1.5px 1px inset;
 	transition: left 500ms var(--ease-in-out-back);
 
 	&.show {
@@ -191,8 +143,8 @@
 		background-image: url("/button_icons/cross_white.png");
 		background-size: cover;
 		box-shadow:
-			hsla(0, 0%, 0%, 0.6) 0px -1px 2px,
-			white 0px 1px 1px,
+			var(--shadow-dark-60) 0px -1px 2px,
+			var(--foreground) 0px 1px 1px,
 			hsla(0, 0%, 91%, 0.4) 0.5px 0.5px 0.75px 0.5px inset,
 			hsla(0, 0%, 14%, 0.4) -0.5px -0.5px 0.75px 0.5px inset;
 
@@ -222,66 +174,7 @@
 	}
 }
 
-@media (max-width: 1135px) {
-	.filterToolbar {
-		position: relative;
-		top: unset;
-		left: unset;
-		right: unset;
-		bottom: unset;
-
-		display: grid;
-		grid-template-columns: repeat(2, 1fr);
-
-		height: fit-content;
-		padding-block: 1rem;
-	}
-}
-
 @media (max-width: 1000px) {
-	.filterToolbar {
-		place-items: center;
-		align-content: end;
-
-		height: 3rem;
-
-		.filterSelection {
-			display: none;
-			.filterIcon {
-				height: 1.5rem;
-				width: 1.5rem;
-			}
-		}
-
-		.pullOutTab {
-			display: block;
-			grid-column: 1 / span 2;
-			flex-shrink: 0;
-
-			width: 100%;
-			height: 1rem;
-
-			background-image: url("/icons/pulltab.png");
-			background-size: auto 100%;
-			background-repeat: no-repeat;
-			background-position: center;
-
-			text-align: center;
-
-			cursor:
-				url("/cursors/down.png") 16 16,
-				s-resize;
-		}
-
-		&.toolbarOpen {
-			height: fit-content;
-
-			.filterSelection {
-				display: flex;
-			}
-		}
-	}
-
 	.clearAllContainer {
 		left: unset;
 		right: 1rem;
@@ -306,13 +199,5 @@
 			width: 100%;
 			height: unset;
 		}
-	}
-}
-
-@media (max-width: 550px) {
-	.filterToolbar {
-		display: flex;
-		flex-direction: column;
-		justify-content: end;
 	}
 }

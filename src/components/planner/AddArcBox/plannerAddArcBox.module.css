@@ -1,4 +1,4 @@
-.plannerAddArcBox {
+div.plannerAddArcBox {
 	display: grid;
 	grid-template-columns: 1fr 1fr;
 	grid-template-rows: auto 1fr;
@@ -6,13 +6,6 @@
 
 	padding: 0.25rem;
 	border-radius: 1rem;
-
-	background-color: var(--white);
-
-	box-shadow:
-		0px -3px 2px -2px var(--interactive-bg) inset,
-		0px -10px 10px -2px rgb(174, 174, 174) inset,
-		0px -23px 15px -2px hsl(300, 0%, 50%) inset;
 
 	.addArcBoxTitle {
 		grid-column: 1 / -1;
@@ -42,8 +35,8 @@
 		background-color: var(--interactive-bg);
 
 		box-shadow:
-			hsla(0, 0%, 0%, 0.6) -1px -1px 2px,
-			white 1px 1px 1px;
+			var(--shadow-dark-60) -1px -1px 2px,
+			var(--foreground) 1px 1px 1px;
 
 		.arcSelectSelected,
 		.arcSelectOption {
@@ -56,8 +49,8 @@
 				);
 
 				box-shadow:
-					hsla(0, 0%, 0%, 0.6) -1px -1px 2px,
-					white 1px 1px 1px;
+					var(--shadow-dark-60) -1px -1px 2px,
+					var(--foreground) 1px 1px 1px;
 			}
 		}
 
@@ -83,8 +76,8 @@
 			box-shadow:
 				0px 1px 2px -2px var(--interactive-bg) inset,
 				0px -2px 2px -2px var(--interactive-bg) inset,
-				0px -3px 8px -2px rgb(174, 174, 174) inset,
-				0px -5px 5px -2px hsl(300, 0%, 50%) inset;
+				0px -3px 8px -2px var(--shadow-underlight-1) inset,
+				0px -5px 5px -2px var(--shadow-underlight-2) inset;
 
 			.arcSelectSelectedImageContainer {
 				width: 100%;
@@ -117,8 +110,8 @@
 			box-shadow:
 				0 0 4px 1px var(--pink),
 				0px -2px 2px -2px var(--interactive-bg) inset,
-				0px -3px 5px -2px rgb(174, 174, 174) inset,
-				0px -5px 5px -2px hsl(300, 0%, 50%) inset;
+				0px -3px 5px -2px var(--shadow-underlight-1) inset,
+				0px -5px 5px -2px var(--shadow-underlight-2) inset;
 		}
 
 		.arcSelectOptionDropdown {
@@ -287,8 +280,8 @@
 
 				box-shadow:
 					0px -2px 2px -2px var(--interactive-bg) inset,
-					0px -3px 8px -2px rgb(174, 174, 174) inset,
-					0px -5px 5px -2px hsl(300, 0%, 50%) inset;
+					0px -3px 8px -2px var(--shadow-underlight-1) inset,
+					0px -5px 5px -2px var(--shadow-underlight-2) inset;
 
 				cursor: var(--pointer-cursor);
 
@@ -325,9 +318,9 @@
 					background-color: var(--pink);
 
 					box-shadow:
-						0px -2px 2px -2px hsl(334, 60%, 20%) inset,
+						0px -2px 2px -2px var(--shadow-maroon) inset,
 						0px -3px 8px -2px hsl(334, 40%, 27%) inset,
-						3px 3px 5px -2px white inset;
+						3px 3px 5px -2px var(--foreground) inset;
 				}
 			}
 		}
@@ -349,8 +342,8 @@
 		background-color: var(--interactive-bg);
 
 		box-shadow:
-			hsla(0, 0%, 0%, 0.6) 0px -1px 2px,
-			white 0px 1px 1px;
+			var(--shadow-dark-60) 0px -1px 2px,
+			var(--foreground) 0px 1px 1px;
 
 		user-select: none;
 
@@ -403,8 +396,8 @@
 
 				background-color: var(--pink);
 				box-shadow:
-					hsla(0, 0%, 0%, 0.6) -1px -1px 2px inset,
-					white 1px 1px 2px inset;
+					var(--shadow-dark-60) -1px -1px 2px inset,
+					var(--foreground) 1px 1px 2px inset;
 
 				cursor: var(--default-cursor) !important;
 			}
@@ -433,8 +426,8 @@
 		width: 100%;
 	}
 
-	.addArcConfirmButton,
-	.addArcCancelButton {
+	div.addArcConfirmButton,
+	div.addArcCancelButton {
 		--hover-color: var(--white);
 
 		display: grid;
@@ -443,58 +436,24 @@
 
 		padding: 0.25rem 1rem;
 		margin-block: 0.5rem;
-		border: none;
-		border-radius: 100vh;
-
-		color: black;
-		font-family: var(--font-barlow-condensed);
-		font-size: 1.25rem;
-		font-weight: 700;
-
-		background-color: var(--button-background);
-
-		paint-order: stroke fill;
-
-		box-shadow:
-			var(--dark-shadow) 0px 0px 1.5px 0,
-			var(--interactive-bg) 0px 0px 0px 0.175rem,
-			hsla(0, 0%, 0%, 0.6) 0px -1px 2px 0.175rem,
-			white 0px 1px 1px 0.175rem,
-			hsl(0, 0%, 85%) 0.5px 0.5px 0.5px 0.5px inset,
-			hsl(0, 0%, 70%) -0.5px -0.5px 0.5px 0.5px inset;
-
-		cursor: var(--pointer-cursor);
 
 		&:hover,
 		&:focus-visible {
-			outline: none;
-
-			color: white;
 			-webkit-text-stroke: 4px black;
-
-			background-color: var(--hover-color);
-
-			box-shadow:
-				var(--dark-shadow) 0px 0px 1.5px 0,
-				var(--interactive-bg) 0px 0px 0px 0.175rem,
-				hsla(0, 0%, 0%, 0.6) 0px -1px 2px 0.175rem,
-				white 0px 1px 1px 0.175rem,
-				hsla(0, 0%, 100%) 2px 3px 5px -2px inset,
-				hsla(0, 0%, 18%, 0.9) 0px -2px 10px -2px inset;
 		}
 	}
 
-	.addArcConfirmButton {
+	div.addArcConfirmButton {
 		--hover-color: var(--pink);
 	}
 
-	.addArcCancelButton {
+	div.addArcCancelButton {
 		--hover-color: var(--danger-color);
 	}
 }
 
 @media (max-width: 1000px) {
-	.plannerAddArcBox {
+	div.plannerAddArcBox {
 		.arcSelect .arcSelectOptionDropdown {
 			padding-top: 0.5rem;
 
@@ -531,28 +490,23 @@
 			}
 		}
 
-		.addArcConfirmButton,
-		.addArcCancelButton {
+		div.addArcConfirmButton,
+		div.addArcCancelButton {
 			outline: none;
 
-			color: white;
+			color: var(--foreground);
+			paint-order: stroke fill;
 			-webkit-text-stroke: 4px black;
 
 			background-color: var(--hover-color);
 
-			box-shadow:
-				var(--dark-shadow) 0px 0px 1.5px 0,
-				var(--interactive-bg) 0px 0px 0px 0.175rem,
-				hsla(0, 0%, 0%, 0.6) 0px -1px 2px 0.175rem,
-				white 0px 1px 1px 0.175rem,
-				hsla(0, 0%, 100%) 2px 3px 5px -2px inset,
-				hsla(0, 0%, 18%, 0.9) 0px -2px 10px -2px inset;
+			box-shadow: var(--shadow-button-hover);
 		}
 	}
 }
 
 @media (max-width: 550px) {
-	.plannerAddArcBox {
+	div.plannerAddArcBox {
 		.arcLvlSelectGrid {
 			gap: 0.25rem;
 
