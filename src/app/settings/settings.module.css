@@ -223,236 +223,234 @@ div.settingsSection {
 			gap: 1rem;
 			flex-wrap: wrap;
 		}
+	}
+}
 
-		input {
-			display: grid;
-			place-items: center;
+.configInput {
+	display: grid;
+	place-items: center;
 
-			min-width: 0;
-			width: 100%;
-			height: max-content;
-			padding: 0.125rem 0.5rem;
-			border: none;
-			border-radius: 100vh;
+	min-width: 0;
+	width: 100%;
+	height: max-content;
+	padding: 0.125rem 0.5rem;
+	border: none;
+	border-radius: 100vh;
 
-			color: white;
-			font-family: var(--font-barlow-condensed);
-			font-style: italic;
-			font-size: 1.125rem;
-			text-align: center;
+	color: white;
+	font-family: var(--font-barlow-condensed);
+	font-style: italic;
+	font-size: 1.125rem;
+	text-align: center;
 
-			cursor: var(--edit-cursor);
+	cursor: var(--edit-cursor);
 
-			&:focus-visible {
-				outline: none;
-				background-color: var(--pink);
+	&:focus-visible {
+		outline: none;
+		background-color: var(--pink);
 
-				paint-order: stroke fill;
-				-webkit-text-stroke: 2px black;
+		paint-order: stroke fill;
+		-webkit-text-stroke: 2px black;
 
-				font-style: normal;
+		font-style: normal;
 
-				&::selection {
-					background-color: white;
-					color: black;
-				}
-			}
+		&::selection {
+			background-color: white;
+			color: black;
 		}
+	}
+}
 
-		input[type="number"] {
-			-webkit-appearance: textfield;
-			appearance: textfield;
-		}
+.configInput[type="number"] {
+	-webkit-appearance: textfield;
+	appearance: textfield;
+}
 
-		div.numberStepper {
-			display: flex;
-			align-items: center;
-			justify-content: space-between;
+.numberStepper {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
 
-			width: 100%;
-			border-radius: 100vh;
+	width: 100%;
+	border-radius: 100vh;
 
-			input {
-				flex: 1;
-				min-width: 0;
-				padding-inline: 0.25rem;
+	input {
+		flex: 1;
+		min-width: 0;
+		padding-inline: 0.25rem;
 
-				background-color: transparent;
-				box-shadow: none;
+		background-color: transparent;
+		box-shadow: none;
 
-				&:focus-visible {
-					background-color: transparent;
-				}
-			}
-
-			&:focus-within {
-				background-color: var(--pink);
-			}
-
-			.stepperBtn {
-				flex-shrink: 0;
-				height: 1.25rem;
-				width: 1.25rem;
-				margin: 0.25rem;
-				aspect-ratio: 1;
-				border: none;
-				border-radius: 100%;
-
-				background-color: var(--button-background);
-				background-size: cover;
-				background-position: center;
-				background-repeat: no-repeat;
-
-				cursor: var(--pointer-cursor);
-
-				box-shadow:
-					var(--button-shadow) 0px 0px 1px 0,
-					var(--button-border) 0px 0px 0px 0.125rem,
-					var(--shadow-bevel-light) 0.5px 0.5px 0.5px 0.5px inset,
-					var(--shadow-bevel-dark) -0.5px -0.5px 0.5px 0.5px inset;
-
-				&.plus {
-					background-image: url("/button_icons/plus.png");
-				}
-
-				&.minus {
-					background-image: url("/button_icons/minus.png");
-				}
-
-				&:hover,
-				&:focus-visible {
-					outline: none;
-					background-color: var(--darker-pink);
-					box-shadow:
-						var(--button-background) 0px 0px 0px 0.125rem,
-						var(--shadow-bevel-light-60) 0.5px 0.5px 0.5px 0.5px inset,
-						var(--shadow-bevel-dark-60) -0.5px -0.5px 0.5px 0.5px
-							inset;
-				}
-			}
-		}
-
-		input[type="checkbox"] {
-			-webkit-appearance: none;
-			appearance: none;
-			
-			position: relative;
-
-			display: block;
-
-			--button-height: 1rem;
-			--button-margin: 0.25rem;
-
-			width: auto;
-			height: calc(var(--button-height) + (var(--button-margin) * 2));
-			aspect-ratio: 2 / 1;
-			padding: 0;
-
-
-			background-color: var(--interactive-bg);
-
-			box-shadow:
-				var(--button-shadow) 0px -1px 2px,
-				var(--foreground) 0px 1px 1px,
-				var(--shadow-dark-50) 1px 1px 4px 1px inset;
-
-			cursor: var(--pointer-cursor);
-
-			&::after {
-				content: "";
-				position: absolute;
-				display: block;
-				height: var(--button-height);
-				aspect-ratio: 1;
-				background-color: var(--button-background);
-				border-radius: 100%;
-				margin: var(--button-margin);
-				left: 0;
-
-				box-shadow:
-					var(--button-shadow) 0px 0px 1.5px 0px,
-					var(--button-border) 0px 0px 0px 3px,
-					var(--shadow-bevel-light) 0.5px 0.5px 0.5px 0.5px inset,
-					var(--shadow-bevel-dark) -0.5px -0.5px 0.5px 0.5px inset;
-
-				transition: left 250ms var(--ease-in-out-back);
-				transition-property: left, transform;
-			}
-
-			&:hover::after,
-			&:focus-visible::after {
-				background-color: var(--pink);
-				box-shadow:
-					var(--button-background) 0px 0px 0px 3px,
-					var(--shadow-bevel-light-60) 0.5px 0.5px 0.5px 0.5px inset,
-					var(--shadow-bevel-dark-60) -0.5px -0.5px 0.5px 0.5px inset;
-			}
-
-			&:checked {
-				background-color: var(--darker-pink);
-				&::after {
-					left: calc(100% - var(--button-margin) * 2);
-					transform: translateX(-100%);
-				}
-			}
+		&:focus-visible {
+			background-color: transparent;
 		}
 	}
 
-	select {
-		display: grid;
-		place-items: center;
+	&:focus-within {
+		background-color: var(--pink);
+	}
 
-		width: 100%;
-		height: max-content;
-		padding: 0.125rem 0.5rem;
+	.stepperBtn {
+		flex-shrink: 0;
+		height: 1.25rem;
+		width: 1.25rem;
+		margin: 0.25rem;
+		aspect-ratio: 1;
 		border: none;
-		border-radius: 100vh;
+		border-radius: 100%;
 
-		color: white;
-		font-family: var(--font-barlow-condensed);
-		font-size: 1.125rem;
-		font-style: italic;
-		text-align: center;
+		background-color: var(--button-background);
+		background-size: cover;
+		background-position: center;
+		background-repeat: no-repeat;
 
-		cursor: var(--dropdown-cursor);
+		cursor: var(--pointer-cursor);
 
-		@supports (appearance: base-select) {
-			position: relative;
-			padding-inline: 2rem 2.5rem;
+		box-shadow:
+			var(--button-shadow) 0px 0px 1px 0,
+			var(--button-border) 0px 0px 0px 0.125rem,
+			var(--shadow-bevel-light) 0.5px 0.5px 0.5px 0.5px inset,
+			var(--shadow-bevel-dark) -0.5px -0.5px 0.5px 0.5px inset;
 
-			&::picker-icon {
-				content: "";
-				position: absolute;
-				right: 0.25rem;
-				width: 2.5ch;
-				aspect-ratio: 1;
-				background-image: url("/icons/less.png");
-				background-size: contain;
-				background-position: center;
-				font-size: 0.75rem;
-			}
+		&.plus {
+			background-image: url("/button_icons/plus.png");
 		}
 
+		&.minus {
+			background-image: url("/button_icons/minus.png");
+		}
+
+		&:hover,
 		&:focus-visible {
 			outline: none;
 			background-color: var(--darker-pink);
+			box-shadow:
+				var(--button-background) 0px 0px 0px 0.125rem,
+				var(--shadow-bevel-light-60) 0.5px 0.5px 0.5px 0.5px inset,
+				var(--shadow-bevel-dark-60) -0.5px -0.5px 0.5px 0.5px inset;
+		}
+	}
+}
+
+.configInput[type="checkbox"] {
+	-webkit-appearance: none;
+	appearance: none;
+
+	position: relative;
+
+	display: block;
+
+	--button-height: 1rem;
+	--button-margin: 0.25rem;
+
+	width: auto;
+	height: calc(var(--button-height) + (var(--button-margin) * 2));
+	aspect-ratio: 2 / 1;
+	padding: 0;
+
+	background-color: var(--interactive-bg);
+
+	box-shadow:
+		var(--button-shadow) 0px -1px 2px,
+		var(--foreground) 0px 1px 1px,
+		var(--shadow-dark-50) 1px 1px 4px 1px inset;
+
+	cursor: var(--pointer-cursor);
+
+	&::after {
+		content: "";
+		position: absolute;
+		display: block;
+		height: var(--button-height);
+		aspect-ratio: 1;
+		background-color: var(--button-background);
+		border-radius: 100%;
+		margin: var(--button-margin);
+		left: 0;
+
+		box-shadow:
+			var(--button-shadow) 0px 0px 1.5px 0px,
+			var(--button-border) 0px 0px 0px 3px,
+			var(--shadow-bevel-light) 0.5px 0.5px 0.5px 0.5px inset,
+			var(--shadow-bevel-dark) -0.5px -0.5px 0.5px 0.5px inset;
+
+		transition: left 250ms var(--ease-in-out-back);
+		transition-property: left, transform;
+	}
+
+	&:hover::after,
+	&:focus-visible::after {
+		background-color: var(--pink);
+		box-shadow:
+			var(--button-background) 0px 0px 0px 3px,
+			var(--shadow-bevel-light-60) 0.5px 0.5px 0.5px 0.5px inset,
+			var(--shadow-bevel-dark-60) -0.5px -0.5px 0.5px 0.5px inset;
+	}
+
+	&:checked {
+		background-color: var(--darker-pink);
+		&::after {
+			left: calc(100% - var(--button-margin) * 2);
+			transform: translateX(-100%);
+		}
+	}
+}
+
+.configSelect {
+	display: grid;
+	place-items: center;
+
+	width: 100%;
+	height: max-content;
+	padding: 0.125rem 0.5rem;
+	border: none;
+	border-radius: 100vh;
+
+	color: white;
+	font-family: var(--font-barlow-condensed);
+	font-size: 1.125rem;
+	font-style: italic;
+	text-align: center;
+
+	cursor: var(--dropdown-cursor);
+
+	@supports (appearance: base-select) {
+		position: relative;
+		padding-inline: 2rem 2.5rem;
+
+		&::picker-icon {
+			content: "";
+			position: absolute;
+			right: 0.25rem;
+			width: 2.5ch;
+			aspect-ratio: 1;
+			background-image: url("/icons/less.png");
+			background-size: contain;
+			background-position: center;
+			font-size: 0.75rem;
 		}
 	}
 
-	button {
-		margin: 0.35rem 0.175rem;
+	&:focus-visible {
+		outline: none;
+		background-color: var(--darker-pink);
+	}
+}
 
-		overflow: hidden;
-		text-wrap-mode: nowrap;
-		text-overflow: ellipsis;
+.configButton {
+	margin: 0.35rem 0.175rem;
 
-		&[data-variant="normal"] {
-			--hover-color: var(--pink);
-		}
+	overflow: hidden;
+	text-wrap-mode: nowrap;
+	text-overflow: ellipsis;
 
-		&[data-variant="danger"] {
-			--hover-color: var(--danger-color);
-		}
+	&[data-variant="normal"] {
+		--hover-color: var(--pink);
+	}
+
+	&[data-variant="danger"] {
+		--hover-color: var(--danger-color);
 	}
 }
 
@@ -534,6 +532,7 @@ div.settingsSection {
 			.settingsSectionTitlebar {
 				.settingsSectionTitle {
 					font-size: 1rem;
+					filter: none;
 				}
 
 				.settingsCloudStatus {

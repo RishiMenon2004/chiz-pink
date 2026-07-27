@@ -26,12 +26,9 @@ export { isInitialSyncPending, setInitialSyncPending } from "./syncGate"
 export {
 	getStaminaResetBoundaries,
 	formatTimeRemaining,
-} from "./staminaReset"
-
-export {
 	getPixelsRefillTime,
 	getNextPixelRecoveryTime,
-} from "./pixelRefill"
+} from "./staminaReset"
 
 export {
 	backupExport,

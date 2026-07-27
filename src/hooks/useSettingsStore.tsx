@@ -11,6 +11,7 @@ let lastRawValue: string | null = null
 const SERVER_FALLBACK: SettingsRecord = {
 	appearance: {
 		"use-cursors": true,
+		"calendar-day-boundary": "server",
 	},
 	userdata: {
 		nickname: "Appraiser",
@@ -130,13 +131,7 @@ export function useSettingsStore() {
 }
 
 export function SettingsProvider({ children }: { children: ReactNode }) {
-	const { settings, actions } = useSettingsStore() || {
-		settings: {
-			appearance: {},
-		},
-	}
-
-	const { appearance } = settings
+	const { settings, actions } = useSettingsStore()
 
 	// Depends on syncPending so this retries once the initial Drive check
 	// resolves - the backfill is a no-op while sync is pending, and without
@@ -157,6 +152,7 @@ export function SettingsProvider({ children }: { children: ReactNode }) {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [syncPending])
 
+	const useCustomCursor = settings.appearance?.["use-cursors"]
 	const server = settings.userdata?.server
 	const maxStamina = settings.userdata?.["max-stamina"]
 	const lastStaminaReset = settings.userdata?.["last-stamina-reset"]
@@ -165,7 +161,10 @@ export function SettingsProvider({ children }: { children: ReactNode }) {
 		if (syncPending || !server || maxStamina === undefined) return
 
 		const checkStaminaReset = () => {
-			const { previousReset } = getStaminaResetBoundaries(server, Date.now())
+			const { previousReset } = getStaminaResetBoundaries(
+				server,
+				Date.now()
+			)
 
 			if (previousReset > (lastStaminaReset ?? 0)) {
 				actions.setConfig("userdata", {
@@ -183,8 +182,7 @@ export function SettingsProvider({ children }: { children: ReactNode }) {
 
 	return (
 		<SettingsConfigContext.Provider value={settings}>
-			<body
-				className={`${appearance?.["use-cursors"] ? "custom-cursors" : ""}`}>
+			<body className={`${useCustomCursor ? "custom-cursors" : ""}`}>
 				{children}
 			</body>
 		</SettingsConfigContext.Provider>

@@ -4,6 +4,7 @@ import { PlannerRecord } from "./planner"
 export type SettingsRecord = {
 	appearance: {
 		"use-cursors": boolean
+		"calendar-day-boundary": "server" | "local"
 	}
 	userdata: {
 		nickname: string

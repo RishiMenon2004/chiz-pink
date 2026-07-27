@@ -1,12 +1,13 @@
-export default function Home() {
+import { Metadata } from "next"
 
-	return (
-		<main role="main" 
-			style={{
-				display: "grid",
-				placeItems: "center",
-				color: "white",
-			}}>
-		</main>
-	)
+import { RoutesData } from "@/data/routes"
+
+import { RenderHome } from "./RenderHome"
+
+export const metadata: Metadata = {
+	title: RoutesData["/"].head,
+}
+
+export default function Home() {
+	return <RenderHome/>
 }

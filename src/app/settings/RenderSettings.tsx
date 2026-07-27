@@ -16,6 +16,7 @@ import { useMutation } from "convex/react"
 import { api } from "@convex/_generated/api"
 
 import { BackupData, SettingsRecord } from "@/types/settings"
+import { getDayBoundaryLabel } from "@/helpers/serverTime"
 
 import { usePWAInstall, useSettingsStore } from "@/hooks"
 
@@ -114,7 +115,7 @@ function BETATag() {
 	)
 }
 
-function ConfigCheckbox({
+export function ConfigCheckbox({
 	checked,
 	onChange,
 	name,
@@ -132,6 +133,7 @@ function ConfigCheckbox({
 				flexWrap: "wrap",
 			}}>
 			<input
+				className={styles.configInput}
 				name={name}
 				type="checkbox"
 				checked={checked}
@@ -159,7 +161,10 @@ function ConfigInputbox(
 				alignItems: "flex-start",
 			}}>
 			<b>{inputProps.name}</b>
-			<input className="raised-control" {...inputProps} />
+			<input
+				className={`raised-control ${styles.configInput}`}
+				{...inputProps}
+			/>
 			{children}
 		</div>
 	)
@@ -205,6 +210,7 @@ function ConfigNumberBox({
 				/>
 				<input
 					name={name}
+					className={styles.configInput}
 					type="text"
 					pattern="[0-9]*"
 					inputMode="numeric"
@@ -367,7 +373,7 @@ function ConfigSelect({
 			}}>
 			<b>{name}</b>
 			<select
-				className="raised-control"
+				className={`raised-control ${styles.configSelect}`}
 				name={name}
 				value={value}
 				onChange={onChange}>
@@ -563,7 +569,7 @@ export function RenderSettings() {
 					</ContentColumn>
 					<ContentRow buttonRow>
 						<button
-							className="pill-button"
+							className={`pill-button ${styles.configButton}`}
 							data-variant="normal"
 							onClick={(e) => {
 								e.preventDefault()
@@ -572,7 +578,7 @@ export function RenderSettings() {
 							Export Data
 						</button>
 						<button
-							className="pill-button"
+							className={`pill-button ${styles.configButton}`}
 							data-variant="normal"
 							onClick={(e) => {
 								e.preventDefault()
@@ -581,7 +587,7 @@ export function RenderSettings() {
 							Import Data
 						</button>
 						<button
-							className="pill-button"
+							className={`pill-button ${styles.configButton}`}
 							data-variant="danger"
 							onClick={() => setEraseWarning(true)}>
 							Erase Data
@@ -630,13 +636,13 @@ export function RenderSettings() {
 
 						<ContentRow buttonRow={true}>
 							<button
-								className="pill-button"
+								className={`pill-button ${styles.configButton}`}
 								data-variant="normal"
 								onClick={() => setSignoutWarning(true)}>
 								Sign Out
 							</button>
 							<button
-								className="pill-button"
+								className={`pill-button ${styles.configButton}`}
 								data-variant="danger"
 								onClick={() => setUnlinkWarning(true)}>
 								Unlink & Delete Cloud Data
@@ -653,7 +659,7 @@ export function RenderSettings() {
 
 						<ContentRow buttonRow>
 							<button
-								className="pill-button"
+								className={`pill-button ${styles.configButton}`}
 								data-variant="normal"
 								onClick={() => signInWithGooglePopup()}>
 								Sign In
@@ -693,6 +699,27 @@ export function RenderSettings() {
 							onChange={(e) =>
 								actions.setConfig("appearance", {
 									"use-cursors": e.currentTarget.checked,
+								})
+							}
+						/>
+					</ContentColumn>
+					<ContentColumn>
+						<ConfigCheckbox
+							name={`Calendar: ${getDayBoundaryLabel(
+								settings.appearance["calendar-day-boundary"] ??
+									"server",
+								settings.userdata.server
+							)}`}
+							checked={
+								(settings.appearance["calendar-day-boundary"] ??
+									"server") === "local"
+							}
+							onChange={(e) =>
+								actions.setConfig("appearance", {
+									"calendar-day-boundary": e.currentTarget
+										.checked
+										? "local"
+										: "server",
 								})
 							}
 						/>

@@ -11,9 +11,19 @@ export enum EnumMaterialType {
 	WeaponAscension = "Arc Ascension",
 	WeaponExp = "Arc XP",
 	Currency = "Currency",
+	Reward = "Reward"
 }
 
 /* Currencies */
+const annulith: Material = {
+	id: "annulith",
+	name: "Annulith",
+	rarity: EnumRarity.Epic,
+	materialType: EnumMaterialType.Currency,
+	imageSrc: "/currency_annulith",
+	sources: []
+}
+
 const beetleCoin: Material = {
 	id: "beetle_coin",
 	name: "Beetle Coin",
@@ -727,6 +737,7 @@ const lightDye: Material = {
 const expDyeSet: MaterialSet = [lightDye, colorlessDye, chaoticDye]
 
 export {
+	annulith,
 	beetleCoin,
 	fons,
 	goodBoyStamp,
