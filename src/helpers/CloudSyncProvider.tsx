@@ -107,7 +107,8 @@ export function CloudSyncProvider({ children }: { children: React.ReactNode }) {
 	// remounts this provider from scratch.
 
 	useEffect(() => {
-		if (sessionStatus === "unauthenticated") hasBeenUnauthenticatedRef.current = true
+		if (sessionStatus === "unauthenticated")
+			hasBeenUnauthenticatedRef.current = true
 	}, [sessionStatus])
 
 	const clearUnlinked = useMutation(api.accountStatus.clearUnlinked)
@@ -168,7 +169,8 @@ export function CloudSyncProvider({ children }: { children: React.ReactNode }) {
 	// rules as a manual file import.
 	useEffect(() => {
 		if (!keyReady || row === undefined || row === null) return
-		if (restorePrompt || debounceRef.current || isReconcilingRef.current) return
+		if (restorePrompt || debounceRef.current || isReconcilingRef.current)
+			return
 		if (lastReconciledRef.current === row.lastUpdated) return
 
 		const key = keyRef.current
@@ -186,13 +188,17 @@ export function CloudSyncProvider({ children }: { children: React.ReactNode }) {
 					markSynced()
 					setStatus("synced")
 					setLastSyncedAt(Date.now())
-					setLatestBackupUpdatedAt(Number(result.data.lastUpdated) || Date.now())
+					setLatestBackupUpdatedAt(
+						Number(result.data.lastUpdated) || Date.now()
+					)
 				} else if (result.status === "newer") {
 					backupSetImport(result.data)
 					markSynced()
 					setStatus("synced")
 					setLastSyncedAt(Date.now())
-					setLatestBackupUpdatedAt(Number(result.data.lastUpdated) || Date.now())
+					setLatestBackupUpdatedAt(
+						Number(result.data.lastUpdated) || Date.now()
+					)
 				} else if (
 					result.status === "older" ||
 					result.status === "overwrite"
@@ -315,7 +321,9 @@ export function CloudSyncProvider({ children }: { children: React.ReactNode }) {
 			backupSetImport(restorePrompt.data)
 			markSynced()
 			setLastSyncedAt(Date.now())
-			setLatestBackupUpdatedAt(Number(restorePrompt.data.lastUpdated) || Date.now())
+			setLatestBackupUpdatedAt(
+				Number(restorePrompt.data.lastUpdated) || Date.now()
+			)
 		} else {
 			await pushToConvex()
 		}
@@ -337,8 +345,9 @@ export function CloudSyncProvider({ children }: { children: React.ReactNode }) {
 		<CloudSyncContext.Provider
 			value={{ status, lastSyncedAt, latestBackupUpdatedAt, syncNow }}>
 			{children}
-			{(restorePrompt?.kind === "older" || restorePrompt?.kind === "overwrite") && (
-				<ModalContainer onClose={() => resolveRestorePrompt("local")}>
+			{(restorePrompt?.kind === "older" ||
+				restorePrompt?.kind === "overwrite") && (
+				<ModalContainer onClose={() => null}>
 					<AlertContainer
 						type="choices"
 						onConfirm={() => resolveRestorePrompt("drive")}
