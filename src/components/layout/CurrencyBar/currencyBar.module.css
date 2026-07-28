@@ -212,12 +212,16 @@ div.currencyBox {
 
 	background-color: var(--pink);
 	border-radius: 100vh;
-	padding-inline: 1rem;
+	padding-inline: 0.5rem 1rem;
 	padding-block: 0.25rem;
 
 	display: flex;
 	align-items: center;
 	gap: 0.25rem;
+
+	.dice {
+		filter: drop-shadow(black 0 0 2px);
+	}
 
 	paint-order: stroke fill;
 	-webkit-text-stroke: 2px black;

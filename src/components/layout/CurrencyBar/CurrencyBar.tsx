@@ -2,7 +2,7 @@
 
 import dynamic from "next/dynamic"
 
-import { beetleCoin, dreamlessSeed, fons } from "@/data/items/materials"
+import { annulith, beetleCoin, fons } from "@/data/items/materials"
 
 import { PageTitle } from "./PageTitle"
 
@@ -17,9 +17,9 @@ export function CurrencyBar() {
 		<div className={styles.titleBar}>
 			<PageTitle />
 			<span className={styles.currencySection}>
-				<CurrencyBox currency={dreamlessSeed} />
 				<CurrencyBox currency={beetleCoin} />
 				<CurrencyBox currency={fons} />
+				<CurrencyBox currency={annulith} />
 			</span>
 		</div>
 	)

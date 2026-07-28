@@ -1,6 +1,6 @@
 import type { Material } from "@/types/item"
 
-import { EnumMaterialType } from "./materials"
+import { annulith, EnumMaterialType } from "./materials"
 
 import {
 	beetleCoin,
@@ -70,7 +70,7 @@ const allMaterials: Record<string, Material> = {
 	/* currency */
 	beetle_coin: beetleCoin,
 	fons: fons,
-	dreamless_seed: dreamlessSeed,
+	annulith: annulith,
 
 	/* epic */
 	good_boy_stamp: goodBoyStamp,
@@ -126,6 +126,8 @@ const allMaterials: Record<string, Material> = {
 	liquid_dream_travel_kit: liquidDreamTravelKit,
 	plain_cold_dessert: plainColdDessert,
 	master_drama_core: masterDramaCore,
+
+	dreamless_seed: dreamlessSeed,
 
 	colorless_dye: colorlessDye,
 

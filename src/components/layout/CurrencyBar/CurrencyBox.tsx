@@ -256,15 +256,36 @@ export function CurrencyBox({ currency }: { currency: Material }) {
 					</>
 				)}
 				<hr style={{ marginBlock: "0.5rem" }} />
-				<div className={styles.tooltipSourceList}>
-					Sources:
-					{currency.sources.map((source) => (
-						<div className={styles.tooltipSource} key={source}>
-							{source}
+				{currency.id === "annulith" && (
+					<div className={styles.tooltipSourceList}>
+						Annulith Processing:
+						<div className={styles.tooltipSource}>
+							<Image
+								className={styles.dice}
+								src={"/materials/rewards/dice_limited.png"}
+								width={24}
+								height={24}
+								alt={`${currency.name} Source`}
+							/>
+							{`Solid Dice ×${Math.floor(currencyValue / 160)}`}
 						</div>
-					))}
-				</div>
-				<hr style={{ marginBlock: "0.5rem" }} />
+					</div>
+				)}
+				{currency.sources.length > 0 && (
+					<>
+						<div className={styles.tooltipSourceList}>
+							Sources:
+							{currency.sources.map((source) => (
+								<div
+									className={styles.tooltipSource}
+									key={source}>
+									{source}
+								</div>
+							))}
+						</div>
+						<hr style={{ marginBlock: "0.5rem" }} />
+					</>
+				)}
 			</Tooltip>
 		</div>
 	)
