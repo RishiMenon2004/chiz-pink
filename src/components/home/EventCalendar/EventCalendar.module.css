@@ -64,7 +64,17 @@
 	);
 }
 
+.calendarEvent,
+.eventDetailsBox {
+	/* Reused Colours */
+	--fons-rush: #ed9e37;
+	--pixel-surge: #ff72f8;
+	--stamina-recharge: #2d5de1;
+	--gold-clash: #d8af47;
+}
+
 .calendarEvent {
+	position: relative;
 	padding-block: 0.5rem;
 	padding-inline: 0.75rem;
 	border-radius: calc(0.5rem + 2px);
@@ -83,11 +93,7 @@
 			var(--radius-right, 0.5rem) var(--radius-left, 0.5rem)
 	);
 
-	/* Reused Colours */
-	--fons-rush: #ed9e37;
-	--pixel-surge: #ff72f8;
-	--stamina-recharge: #2d5de1;
-	--gold-clash: #d8af47;
+	user-select: none;
 
 	--background-image-width: 100%;
 
@@ -242,11 +248,109 @@
 	border-radius: 100vh;
 }
 
+@property --gradient-opening {
+	syntax: "<percentage>";
+	inherits: true;
+	initial-value: 100%;
+}
+
+.eventDetailsBox {
+	position: absolute;
+	transform: translateX(-50%);
+	border-radius: calc(0.5rem + 2px);
+	clip-path: inset(
+		2px round var(--radius-left, 0.5rem) var(--radius-right, 0.5rem)
+			var(--radius-right, 0.5rem) var(--radius-left, 0.5rem)
+	);
+
+	transition:
+		all 500ms 100ms,
+		--gradient-opening 1000ms 300ms,
+		opacity 300ms ease-out;
+
+	overflow: hidden;
+	z-index: 2;
+
+	.eventDetailsImage {
+		display: flex;
+		width: 100%;
+		height: auto;
+		position: relative;
+		left: 0;
+
+		transition: transform 500ms 100ms;
+		border-radius: inherit;
+
+		outline: 1px solid rgba(255, 255, 255, 0.25);
+		outline-offset: -1px;
+	}
+
+	&::after {
+		content: "";
+		position: absolute;
+		inset: 0;
+		border-radius: inherit;
+		background-image: linear-gradient(
+			to right,
+			var(--theme-color, var(--pink)),
+			transparent,
+			var(--theme-color, var(--pink))
+		);
+		background-size: var(--gradient-opening);
+		background-position: center;
+		z-index: 1;
+	}
+
+	.eventDates {
+		position: absolute;
+		left: 0.75rem;
+		bottom: 0.5rem;
+
+		padding-inline: 0.75rem;
+		border-radius: 100vh;
+		font-family: var(--font-barlow-condensed);
+		font-size: 0.8em;
+		font-style: italic;
+		font-weight: 500;
+		letter-spacing: 15%;
+		text-transform: uppercase;
+
+		paint-order: stroke fill;
+		-webkit-text-stroke: 3px black;
+
+		text-wrap-mode: nowrap;
+		text-overflow: clip;
+
+		opacity: 1;
+		background-color: rgba(0, 0, 0, 0.75);
+		z-index: 10;
+	}
+}
+
+@media (max-width: 1000px) {
+	.eventDetailsBox {
+		transform: translateX(-50%);
+	}
+}
+@media (max-width: 800px) {
+	.eventDetailsBox {
+		.eventDates {
+			font-size: 0.6em;
+		}
+	}
+}
+
 @media (max-width: 550px) {
 	.section {
 		.sectionTitle {
 			font-size: 1.25rem;
 			filter: none;
+		}
+	}
+
+	.eventDetailsBox {
+		.eventDates {
+			font-size: 0.4em;
 		}
 	}
 }

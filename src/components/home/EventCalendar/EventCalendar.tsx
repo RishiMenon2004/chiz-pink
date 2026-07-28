@@ -24,19 +24,27 @@ import {
 import { ConfigCheckbox } from "@/app/settings/RenderSettings"
 
 import styles from "./EventCalendar.module.css"
+import { CalendarEventItem } from "./CalendarEventItem"
 
-type DayBoundaryMode = SettingsRecord["appearance"]["calendar-day-boundary"]
+export type DayBoundaryMode = SettingsRecord["appearance"]["calendar-day-boundary"]
 
-const CalendarContext = createContext<{
+export const CalendarContext = createContext<{
 	daySize: number
 	msPerDay: number
 	monthChunks: MonthChunk[]
 	server: SettingsRecord["userdata"]["server"]
+	dayBoundaryMode: DayBoundaryMode
 	windowStart: number
 	windowEnd: number
 	calendarOrigin: number
+	calendarEnd: number
 	now: number | null
+	scrollToPos: (el: HTMLElement, behavior?: ScrollBehavior) => Promise<void>
 }>(null!)
+
+export const useCalendarContext = () => {
+	return useContext(CalendarContext)
+}
 
 const MONTHS_BEFORE = 1
 const MONTHS_AFTER = 1
@@ -169,7 +177,7 @@ function buildMonthChunks(
 }
 
 function CalendarMonth({ chunk }: { chunk: MonthChunk }) {
-	const { daySize } = useContext(CalendarContext)
+	const { daySize } = useCalendarContext()
 	const dayCount = chunk.lastDay - chunk.firstDay + 1
 
 	return (
@@ -200,7 +208,7 @@ function CalendarMonth({ chunk }: { chunk: MonthChunk }) {
 }
 
 function CalendarBackground() {
-	const { monthChunks } = useContext(CalendarContext)
+	const { monthChunks } = useCalendarContext()
 
 	return (
 		<div className={styles.calendarBackground}>
@@ -212,7 +220,7 @@ function CalendarBackground() {
 }
 
 function CalendarNowMarker({ ref }: { ref?: Ref<HTMLDivElement> }) {
-	const { msPerDay, daySize, calendarOrigin, now } = useContext(CalendarContext)
+	const { msPerDay, daySize, calendarOrigin, now } = useCalendarContext()
 
 	const marginDays = useMemo(
 		() => (now === null ? 0 : ((now - calendarOrigin) / msPerDay) * daySize),
@@ -332,6 +340,45 @@ export function EventCalendar() {
 		container.scrollTo({ left: targetScrollLeft, behavior })
 	}
 
+	function scrollToPos(el: HTMLElement, behavior: ScrollBehavior = "smooth") {
+		const container = calendarContainerRef.current
+		const content = calendarContentRef.current
+		if (!container || !content) return Promise.resolve()
+		if (container.clientWidth === 0 || content.offsetWidth === 0)
+			return Promise.resolve()
+
+		const maxScrollLeft = Math.max(
+			0,
+			content.offsetWidth - container.clientWidth
+		)
+		const targetScrollLeft = Math.min(
+			Math.max(
+				el.offsetLeft - container.clientWidth / 2 + el.offsetWidth / 2,
+				0
+			),
+			maxScrollLeft
+		)
+
+		if (Math.round(container.scrollLeft) === Math.round(targetScrollLeft)) {
+			return Promise.resolve()
+		}
+
+		return new Promise<void>((resolve) => {
+			// If the requested scroll turns out to be a no-op (e.g. a sub-pixel
+			// delta the browser doesn't act on), "scrollend" never fires and
+			// this would hang forever without a fallback.
+			const finish = () => {
+				clearTimeout(timeoutId)
+				container.removeEventListener("scrollend", finish)
+				resolve()
+			}
+			const timeoutId = setTimeout(finish, 1000)
+
+			container.addEventListener("scrollend", finish)
+			container.scrollTo({ left: targetScrollLeft, behavior })
+		})
+	}
+
 	const msPerDay = useMemo(() => 24 * 60 * 60 * 1000, [])
 	const daySize = 2.5
 	const leftMargin = 2
@@ -436,60 +483,22 @@ export function EventCalendar() {
 	}
 
 	function renderRow(rowEvents: typeof Events, key: number, id?: string) {
-		let previousEnd = calendarOrigin
 		return (
 			<div
 				className={styles.calendarRow}
 				key={`${rowEvents[0].type}_${key}`}>
 				{rowEvents.map((eventData, index) => {
-					const start = eventData.getStartDate(server)
-					const end = eventData.getEndDate(server)
-					const marginDays =
-						((start - previousEnd) / msPerDay) * daySize
-					const widthDays = ((end - start) / msPerDay) * daySize
-					previousEnd = end
-					const overflowsLeft = start < calendarOrigin
-					const overflowsRight = end > calendarEnd
-					const eventStyles = {
-						width: `${widthDays}rem`,
-						marginLeft: `${marginDays}rem`,
-						"--event-image": eventData.eventImage
-							? `url('/events/${eventData.eventImage}')`
-							: "",
-						"--theme-color": eventData.themeColor ?? "",
-						"--y-offset": eventData.yOffset ?? "",
-						"--radius-left": overflowsLeft ? "0" : undefined,
-						"--radius-right": overflowsRight ? "0" : undefined,
-						"--fade-left": overflowsLeft ? "3rem" : undefined,
-						"--fade-right": overflowsRight ? "3rem" : undefined,
-					} as CSSProperties
-
+					const previousEnd =
+						index > 0
+							? rowEvents[Math.max(index - 1, 0)].getEndDate(server)
+							: calendarOrigin
 					return (
-						<div
-							className={`${styles.calendarEvent} ${id ? id : ""}`}
+						<CalendarEventItem
 							key={`${eventData.name}_${index}`}
-							style={eventStyles}>
-							<div className={styles.eventName}>
-								{eventData.name}
-							</div>
-							{
-								<div className={styles.eventDates}>
-									{new Date(
-										eventData.getStartDate(server)
-									).toLocaleString("en-US", {
-										month: "short",
-										day: "numeric",
-									})}
-									{" ▸ "}
-									{new Date(
-										eventData.getEndDate(server)
-									).toLocaleString("en-US", {
-										month: "short",
-										day: "numeric",
-									})}
-								</div>
-							}
-						</div>
+							eventData={eventData}
+							previousEnd={previousEnd}
+							rowId={id}
+						/>
 					)
 				})}
 			</div>
@@ -545,10 +554,13 @@ export function EventCalendar() {
 						msPerDay,
 						monthChunks,
 						server,
+						dayBoundaryMode,
 						windowStart,
 						windowEnd,
 						calendarOrigin,
+						calendarEnd,
 						now,
+						scrollToPos,
 					}}>
 					<div
 						ref={calendarContentRef}
@@ -560,14 +572,14 @@ export function EventCalendar() {
 						{rows.map((rowEvents, index) => {
 							let id: string | undefined = undefined
 							switch (index) {
-								default:
-									id = undefined
-									break
 								case 0:
 									id = styles.version
 									break
 								case 1:
 									id = styles.gacha
+									break
+								default:
+									id = undefined
 									break
 							}
 							return renderRow(rowEvents, index, id)

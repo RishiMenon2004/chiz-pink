@@ -59,3 +59,28 @@ export function getDayBoundaryLabel(
 
 	return `Server Time (${formatUtcOffset(SERVER_UTC_OFFSET_HOURS[server])})`
 }
+
+// Formats a UTC instant as a date/time string in either the server's fixed
+// UTC offset or the viewer's local time zone, matching whichever the
+// calendar's day-boundary mode is currently set to.
+export function formatEventDateTime(
+	timestamp: number,
+	mode: SettingsRecord["appearance"]["calendar-day-boundary"],
+	server: SettingsRecord["userdata"]["server"],
+	options: Intl.DateTimeFormatOptions = {
+		month: "short",
+		day: "numeric",
+		hour: "2-digit",
+		minute: "2-digit",
+	}
+): string {
+	if (mode === "local") {
+		return new Date(timestamp).toLocaleString("en-US", options)
+	}
+
+	const offsetMs = SERVER_UTC_OFFSET_HOURS[server] * 60 * 60 * 1000
+	return new Date(timestamp + offsetMs).toLocaleString("en-US", {
+		...options,
+		timeZone: "UTC",
+	})
+}

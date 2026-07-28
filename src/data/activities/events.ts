@@ -79,7 +79,7 @@ const globalPatchEnd = (day: number, month: number, year: number) =>
 		month,
 		day,
 		hour: 21,
-		minute: 59
+		minute: 59,
 	})
 
 export const Events: EventData[] = [
@@ -340,7 +340,7 @@ export const Events: EventData[] = [
 	{
 		name: "Going, Going, Gone!",
 		type: "Event",
-		getStartDate: (server) => serverSOD(server, 29, 7, 2026),
+		getStartDate: () => globalPatchPhase2Start(29, 7, 2026),
 		getEndDate: () => globalPatchEnd(18, 8, 2026),
 		eventImage: "version1.2/event_going_gone.png",
 		themeColor: "#559c68",
