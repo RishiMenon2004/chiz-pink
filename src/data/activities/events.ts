@@ -78,7 +78,8 @@ const globalPatchEnd = (day: number, month: number, year: number) =>
 		year,
 		month,
 		day,
-		hour: 22,
+		hour: 21,
+		minute: 59
 	})
 
 export const Events: EventData[] = [
@@ -167,7 +168,17 @@ export const Events: EventData[] = [
 		type: "Mystery Box",
 		getStartDate: () => globalPatchStart(3, 6, 2026),
 		getEndDate: () => globalPatchEnd(7, 7, 2026),
-		eventImage: "/version1.1/mystery_porsche.jpeg",
+		rewards: [
+			{
+				id: "porsche_918_spyder",
+				name: "Porsche 918 Spyder",
+				materialType: EnumMaterialType.Reward,
+				rarity: EnumRarity.Epic,
+				imageSrc: "/rewards/porche_918_spyder",
+				sources: ["Everdriving Mystery Box Event"],
+			},
+		],
+		eventImage: "version1.1/mystery_porsche.jpeg",
 		themeColor: "#6f3fcc",
 	},
 	{
@@ -273,6 +284,16 @@ export const Events: EventData[] = [
 		type: "Mystery Box",
 		getStartDate: () => globalPatchStart(8, 7, 2026),
 		getEndDate: () => globalPatchEnd(18, 8, 2026),
+		rewards: [
+			{
+				id: "regalia_draco",
+				name: "Regalia Draco",
+				materialType: EnumMaterialType.Reward,
+				rarity: EnumRarity.Epic,
+				imageSrc: "/rewards/regalia_draco",
+				sources: ["Everdriving Mystery Box Event"],
+			},
+		],
 		eventImage: "version1.2/mystery_draco.jpeg",
 		themeColor: "#a51244",
 	},
