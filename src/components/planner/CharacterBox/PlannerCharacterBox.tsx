@@ -297,9 +297,14 @@ export function PlannerCharacterBox({
 	const { abilitySet } = charRecord
 
 	const getSkillLvlPreview = (skill: SkillLvlRecord, target?: boolean) =>
-		skill.isDisabled
-			? "-"
-			: String(target ? skill.targetLvl : skill.currentLvl)
+		skill.isDisabled ? "-" : target ? skill.targetLvl : skill.currentLvl
+
+	const getLifeSkill2Preview = (target?: boolean) => {
+		const lvl = getSkillLvlPreview(abilitySet.lifeSkill2!, target)
+		return typeof lvl === "number"
+			? Math.min(lvl, Number(char.abilities.lifeSkill2?.maxLvl))
+			: lvl
+	}
 
 	return (
 		<div className={plannerBoxStyles.plannerBoxContainer} ref={ref}>
@@ -321,7 +326,7 @@ export function PlannerCharacterBox({
 				<div
 					className={`${plannerBoxStyles.plannerBox} ${getItemRarityStyle(char)} ${CharacterState.isDisabled ? `${plannerBoxStyles.plannerBoxDisabled} ${styles.noInteract}` : ""} ${dropPreviewOrDragOverlay().join(" ")}`}>
 					<div
-					className={`metallic-panel ${plannerBoxStyles.infoContainer}`}>
+						className={`metallic-panel ${plannerBoxStyles.infoContainer}`}>
 						<div className={styles.charInfoTop}>
 							<div className={styles.charAvatarContainer}>
 								<div className={styles.charImageContainer}>
@@ -476,7 +481,7 @@ export function PlannerCharacterBox({
 										}}>
 										<div
 											className={styles.charStatPreviewLvl}>
-											{`${getSkillLvlPreview(abilitySet.lifeSkill1)}${abilitySet.lifeSkill2 ? ` / ${Math.max(Number(getSkillLvlPreview(abilitySet.lifeSkill2)) - (char.abilities.lifeSkill2?.maxLvl === 1 ? 1 : 0), 0)}` : ""}`}
+											{`${getSkillLvlPreview(abilitySet.lifeSkill1)}${abilitySet.lifeSkill2 ? ` / ${getLifeSkill2Preview()}` : ""}`}
 										</div>
 										<div
 											className={
@@ -485,7 +490,7 @@ export function PlannerCharacterBox({
 										/>
 										<div
 											className={styles.charStatPreviewLvl}>
-											{`${getSkillLvlPreview(abilitySet.lifeSkill1, true)}${abilitySet.lifeSkill2 ? ` / ${Math.max(Number(getSkillLvlPreview(abilitySet.lifeSkill2, true)) - (char.abilities.lifeSkill2?.maxLvl === 1 ? 1 : 0), 0)}` : ""}`}
+											{`${getSkillLvlPreview(abilitySet.lifeSkill1, true)}${abilitySet.lifeSkill2 ? ` / ${getLifeSkill2Preview(true)}` : ""}`}
 										</div>
 									</div>
 								</summary>
