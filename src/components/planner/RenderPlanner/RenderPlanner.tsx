@@ -50,12 +50,15 @@ getAllMaterialsList().forEach((material, index) =>
 	materialOrder.set(material.id, index)
 )
 
-export function RenderPlanner({ plannerType }: { plannerType: keyof PlannerRecord }) {
+export function RenderPlanner({
+	plannerType,
+}: {
+	plannerType: keyof PlannerRecord
+}) {
 	const { plannerData, actions } = usePlannerStore()
-	const items = plannerData[plannerType] as Record<
-		string,
-		CharacterRecord | WeaponRecord
-	>
+	const items = plannerData[plannerType]
+	const itemsList: WeaponRecord[] | CharacterRecord[] =
+		Object.values(items) ?? []
 
 	const [activeDragId, setActiveDragId] = useState<string | null>(null)
 
@@ -176,7 +179,7 @@ export function RenderPlanner({ plannerType }: { plannerType: keyof PlannerRecor
 				)}
 
 				<button
-					disabled={Object.values(items).length <= 1}
+					disabled={itemsList.length <= 1}
 					className={`pill-button ${toolbarStyles.toolbarButton} ${styles.hideOnDesktop}`}
 					onClick={() => setShowReorder(true)}>
 					ADJUST PRIORITY
@@ -200,7 +203,7 @@ export function RenderPlanner({ plannerType }: { plannerType: keyof PlannerRecor
 				</button>
 			</PullOutToolbar>
 
-			{Object.values(items).length <= 0 && (
+			{itemsList.length <= 0 && (
 				<InfoBox>
 					{`You don't have any ${plannerType} in the planner... Maybe you'd like to `}
 					<a
@@ -242,7 +245,7 @@ export function RenderPlanner({ plannerType }: { plannerType: keyof PlannerRecor
 					onDragStart={onDragStart}
 					onDragEnd={onDragEnd}>
 					<div className={styles.plannerGrid}>
-						{Object.values(items).map((item, index) =>
+						{itemsList.map((item, index) =>
 							"uid" in item ? (
 								<PlannerArcBox
 									key={item.uid}
