@@ -94,14 +94,15 @@ export function PlannerBoxButtonsContainer() {
 		}
 	}
 
+	const itemType = "uid" in itemRecord ? "Arc" : "Character"
+
 	return (
 		<div className={styles.buttonsContainer}>
 			<PlannerBoxBtn
 				icon={itemRecord.isDisabled ? "hide" : "show"}
-				ariaLabel="Disable Arc Button"
-				toolTipSubtext={"Materials will be excluded in the total."}
+				ariaLabel={`Disable ${itemType} Button`}
 				onClick={toggleDisable}>
-				{"Disable Arc"}
+				{`Disable ${itemType}`}
 			</PlannerBoxBtn>
 			<PlannerBoxBtn
 				icon="confirm_plan"
@@ -114,10 +115,10 @@ export function PlannerBoxButtonsContainer() {
 			<DragPoint ref={dragRef} />
 			<PlannerBoxBtn
 				icon="delete"
-				ariaLabel="Delete Arc Plan Button"
+				ariaLabel={`Delete ${itemType} Plan Button`}
 				toolTipSubtext="Be careful! You can't undo this action."
 				onClick={handleDelete}>
-				Delete Arc
+				{`Delete ${itemType}`}
 			</PlannerBoxBtn>
 		</div>
 	)
