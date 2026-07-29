@@ -11,12 +11,8 @@ import {
 } from "react"
 
 import type { Material } from "@/types/item"
-import { Character } from "@/types/character"
-import { Arc } from "@/types/weapon"
 
-import { getItemRarityStyle } from "@/data/items"
-import { findCharacter } from "@/data/characters/characterList"
-import { findArc } from "@/data/arcs"
+import { findItem, getItemRarityStyle } from "@/data/items"
 
 import {
 	useInventoryStore,
@@ -197,10 +193,8 @@ export function MaterialItemBox({
 							Needed For:
 							{Object.entries(requiredSources).map(
 								([id, amount]) => {
-									const item: Arc | Character | undefined =
-										findArc(id) ??
-										findCharacter(id) ??
-										undefined
+									const item = findItem(id) ?? undefined
+									if (item === undefined) return
 									return (
 										<div className="tooltip-source" key={id}>
 											<Image

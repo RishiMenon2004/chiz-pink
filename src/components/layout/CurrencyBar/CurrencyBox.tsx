@@ -14,11 +14,8 @@ import {
 } from "react"
 
 import type { Material } from "@/types/item"
-import { Character } from "@/types/character"
-import { Arc } from "@/types/weapon"
 
-import { findArc } from "@/data/arcs"
-import { findCharacter } from "@/data/characters"
+import { findItem } from "@/data/items"
 
 import { useInventoryStore, usePlannerStore, useTooltip } from "@/hooks"
 import { getAggregatedMaterial } from "@/hooks/usePlannerStore"
@@ -229,10 +226,8 @@ export function CurrencyBox({ currency }: { currency: Material }) {
 							Needed For:
 							{Object.entries(requiredSources).map(
 								([id, amount]) => {
-									const item: Arc | Character | undefined =
-										findArc(id) ??
-										findCharacter(id) ??
-										undefined
+									const item = findItem(id) ?? undefined
+									if (item === undefined) return
 									return (
 										<div className="tooltip-source" key={id}>
 											<Image
