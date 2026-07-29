@@ -151,7 +151,7 @@ body {
 		color: white;
 	}
 
-	@supports selector(::-webkit-scrollbar) {
+	@supports not (-moz-appearance: none) {
 		&::-webkit-scrollbar {
 			background-color: transparent;
 			width: 1rem;
@@ -448,9 +448,6 @@ button {
 }
 
 @media (max-width: 1000px) {
-	html {
-		scrollbar-width: none;
-	}
 	body {
 		padding-inline: 0;
 		padding-block: 4.25rem 4rem;
