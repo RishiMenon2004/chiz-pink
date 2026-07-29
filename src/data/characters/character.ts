@@ -182,6 +182,7 @@ type SkillMaterialsType = {
 		uncommon: number
 		rare: number
 	}
+	talentBossMaterial: number,
 }
 
 export type SkillTypes =
@@ -212,6 +213,7 @@ export const characterSkillLevelMaterials: Record<
 				uncommon: 0,
 				rare: 0,
 			},
+			talentBossMaterial: 0,
 		},
 		2: {
 			fons: 0,
@@ -228,6 +230,7 @@ export const characterSkillLevelMaterials: Record<
 				uncommon: 0,
 				rare: 0,
 			},
+			talentBossMaterial: 0,
 		},
 		3: {
 			fons: 0,
@@ -244,6 +247,7 @@ export const characterSkillLevelMaterials: Record<
 				uncommon: 0,
 				rare: 0,
 			},
+			talentBossMaterial: 0,
 		},
 		4: {
 			fons: 0,
@@ -260,6 +264,7 @@ export const characterSkillLevelMaterials: Record<
 				uncommon: 0,
 				rare: 0,
 			},
+			talentBossMaterial: 0,
 		},
 		5: {
 			fons: 0,
@@ -276,6 +281,7 @@ export const characterSkillLevelMaterials: Record<
 				uncommon: 2,
 				rare: 0,
 			},
+			talentBossMaterial: 0,
 		},
 		6: {
 			fons: 0,
@@ -292,12 +298,13 @@ export const characterSkillLevelMaterials: Record<
 				uncommon: 3,
 				rare: 0,
 			},
+			talentBossMaterial: 0,
 		},
 		7: {
 			fons: 0,
 			dreamlessSeed: 0,
 			beetleCoin: 60000,
-			bossMaterial: 1,
+			bossMaterial: 0,
 			ascMaterial: {
 				common: 0,
 				uncommon: 5,
@@ -308,12 +315,13 @@ export const characterSkillLevelMaterials: Record<
 				uncommon: 5,
 				rare: 0,
 			},
+			talentBossMaterial: 1,
 		},
 		8: {
 			fons: 0,
 			dreamlessSeed: 0,
 			beetleCoin: 80000,
-			bossMaterial: 1,
+			bossMaterial: 0,
 			ascMaterial: {
 				common: 0,
 				uncommon: 0,
@@ -324,12 +332,13 @@ export const characterSkillLevelMaterials: Record<
 				uncommon: 0,
 				rare: 3,
 			},
+			talentBossMaterial: 1,
 		},
 		9: {
 			fons: 0,
 			dreamlessSeed: 0,
 			beetleCoin: 100000,
-			bossMaterial: 2,
+			bossMaterial: 0,
 			ascMaterial: {
 				common: 0,
 				uncommon: 0,
@@ -340,12 +349,13 @@ export const characterSkillLevelMaterials: Record<
 				uncommon: 0,
 				rare: 5,
 			},
+			talentBossMaterial: 2,
 		},
 		10: {
 			fons: 0,
 			dreamlessSeed: 0,
 			beetleCoin: 120000,
-			bossMaterial: 4,
+			bossMaterial: 0,
 			ascMaterial: {
 				common: 0,
 				uncommon: 0,
@@ -356,6 +366,7 @@ export const characterSkillLevelMaterials: Record<
 				uncommon: 0,
 				rare: 8,
 			},
+			talentBossMaterial: 4,
 		},
 	},
 	passive1: {
@@ -363,7 +374,7 @@ export const characterSkillLevelMaterials: Record<
 			fons: 0,
 			dreamlessSeed: 0,
 			beetleCoin: 30000,
-			bossMaterial: 1,
+			bossMaterial: 0,
 			ascMaterial: {
 				common: 0,
 				uncommon: 2,
@@ -374,6 +385,7 @@ export const characterSkillLevelMaterials: Record<
 				uncommon: 0,
 				rare: 0,
 			},
+			talentBossMaterial: 1,
 		},
 	},
 	passive2: {
@@ -381,7 +393,7 @@ export const characterSkillLevelMaterials: Record<
 			fons: 0,
 			dreamlessSeed: 0,
 			beetleCoin: 40000,
-			bossMaterial: 2,
+			bossMaterial: 0,
 			ascMaterial: {
 				common: 0,
 				uncommon: 0,
@@ -392,6 +404,7 @@ export const characterSkillLevelMaterials: Record<
 				uncommon: 0,
 				rare: 0,
 			},
+			talentBossMaterial: 2,
 		},
 	},
 	passive3: {
@@ -410,6 +423,7 @@ export const characterSkillLevelMaterials: Record<
 				uncommon: 0,
 				rare: 0,
 			},
+			talentBossMaterial: 0,
 		},
 	},
 	life1: {
@@ -428,6 +442,7 @@ export const characterSkillLevelMaterials: Record<
 				uncommon: 0,
 				rare: 0,
 			},
+			talentBossMaterial: 0,
 		},
 		2: {
 			fons: 1500,
@@ -444,6 +459,7 @@ export const characterSkillLevelMaterials: Record<
 				uncommon: 0,
 				rare: 0,
 			},
+			talentBossMaterial: 0,
 		},
 		3: {
 			fons: 3600,
@@ -460,6 +476,7 @@ export const characterSkillLevelMaterials: Record<
 				uncommon: 0,
 				rare: 0,
 			},
+			talentBossMaterial: 0,
 		},
 		4: {
 			fons: 6400,
@@ -476,6 +493,7 @@ export const characterSkillLevelMaterials: Record<
 				uncommon: 0,
 				rare: 0,
 			},
+			talentBossMaterial: 0,
 		},
 		5: {
 			fons: 10000,
@@ -492,6 +510,7 @@ export const characterSkillLevelMaterials: Record<
 				uncommon: 0,
 				rare: 0,
 			},
+			talentBossMaterial: 0,
 		},
 	},
 	life2: {
@@ -510,6 +529,7 @@ export const characterSkillLevelMaterials: Record<
 				uncommon: 0,
 				rare: 0,
 			},
+			talentBossMaterial: 0,
 		},
 		1: {
 			fons: 6400,
@@ -526,6 +546,7 @@ export const characterSkillLevelMaterials: Record<
 				uncommon: 0,
 				rare: 0,
 			},
+			talentBossMaterial: 0,
 		},
 		2: {
 			fons: 10000,
@@ -542,6 +563,7 @@ export const characterSkillLevelMaterials: Record<
 				uncommon: 0,
 				rare: 0,
 			},
+			talentBossMaterial: 0,
 		},
 	},
 }

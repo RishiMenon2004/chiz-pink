@@ -38,6 +38,7 @@ export type CharacterMaterialCosts = {
 	exp: { common: number; uncommon: number; rare: number }
 	ascMaterial: { common: number; uncommon: number; rare: number }
 	talentMaterial: { common: number; uncommon: number; rare: number }
+	talentBossMaterial: number
 }
 export interface WeaponRecord extends Pick<Item, "id"> {
 	uid: string

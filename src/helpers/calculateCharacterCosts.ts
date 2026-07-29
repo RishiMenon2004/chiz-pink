@@ -34,6 +34,7 @@ export function calculateSkillCosts(
 			uncommon: 0,
 			rare: 0,
 		},
+		talentBossMaterial: 0,
 	}
 
 	if (currentLvl < targetLvl) {
@@ -48,6 +49,7 @@ export function calculateSkillCosts(
 
 			totals.beetleCoin += required.beetleCoin
 			totals.bossMaterial += required.bossMaterial
+			totals.talentBossMaterial += required.talentBossMaterial
 
 			const tiers = ["common", "uncommon", "rare"] as const
 			for (const tier of tiers) {
@@ -103,9 +105,9 @@ export function calculateLevelCosts(
 		const expAmount = characterExpAmount
 
 		const beetleCoinForExp = {
-			common: 250, 
+			common: 250,
 			uncommon: 1250,
-			rare: 5000 
+			rare: 5000,
 		}
 
 		const expCost = {
@@ -159,6 +161,7 @@ export function calculateCharacterCosts({
 			uncommon: 0,
 			rare: 0,
 		},
+		talentBossMaterial: 0
 	}
 
 	const tiers = ["common", "uncommon", "rare"] as const
@@ -211,6 +214,7 @@ export function calculateCharacterCosts({
 
 		totals.beetleCoin += materials.beetleCoin
 		totals.bossMaterial += materials.bossMaterial
+		totals.talentBossMaterial += materials.talentBossMaterial
 
 		for (const tier of tiers) {
 			totals.ascMaterial[tier] += materials.ascMaterial[tier]

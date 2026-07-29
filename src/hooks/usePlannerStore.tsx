@@ -77,7 +77,15 @@ function getCharRequiredMaterials(
 		{ id: fons.id, amount: materialValues.fons },
 		{ id: dreamlessSeed.id, amount: materialValues.dreamlessSeed },
 
-		{ id: char.talentBossMaterial.id, amount: materialValues.bossMaterial },
+		{
+			id: char.ascensionBossMaterial.id,
+			amount: materialValues.bossMaterial,
+		},
+
+		{
+			id: char.talentBossMaterial.id,
+			amount: materialValues.talentBossMaterial,
+		},
 
 		...tiers.map((tier, index) => ({
 			id: expHunterGuideSet[index].id,
@@ -274,26 +282,28 @@ export function getAggregatedMaterial(
 	const { arcs, characters } = plannerData
 
 	function addToAggregate(itemRecord: CharacterRecord | WeaponRecord) {
-		const material = itemRecord.requiredMaterials.find(
+		const requiredMaterial = itemRecord.requiredMaterials.find(
 			(mat) => mat.id === materialRef.id
 		) ?? {
 			id: "",
 			amount: 0,
 		}
 
-		if (!material.id) return
+		if (!requiredMaterial.id) return
 
-		const currentAgrMaterial = { ...aggregatedMaterial }
-		const sources = currentAgrMaterial.sources
-		const amount = currentAgrMaterial.amount
+		const { sources, amount } = { ...aggregatedMaterial }
 
-		if (sources[itemRecord.id]) {
-			sources[itemRecord.id] += 1
-		} else {
-			sources[itemRecord.id] = 1
+		console.log(itemRecord.id, "requires", requiredMaterial.id, requiredMaterial.amount)
+
+		if (requiredMaterial.amount > 0) {
+			if (sources[itemRecord.id]) {
+				sources[itemRecord.id] += 1
+			} else {
+				sources[itemRecord.id] = 1
+			}
 		}
 
-		const aggregateAmount = amount + material.amount
+		const aggregateAmount = amount + requiredMaterial.amount
 
 		if (aggregateAmount > 0) {
 			aggregatedMaterial = {
