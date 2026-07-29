@@ -144,7 +144,7 @@ export function PlannerArcBox({
 			})
 
 			updateInventory(localInventory)
-			setTargetLvl(targetLvl)
+			setCurrentLvl(targetLvl)
 		}
 	}
 
@@ -280,6 +280,7 @@ export function PlannerArcBox({
 						<AlertContainer
 							type="confirm"
 							onConfirm={onDeleteConfim}
+							cancelLabel="CANCEL"
 							onCancel={onDeleteCancel}>
 							{"A-are you sure you want to delete this Arc?"}
 						</AlertContainer>

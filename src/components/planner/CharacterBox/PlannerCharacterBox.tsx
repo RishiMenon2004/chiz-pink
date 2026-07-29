@@ -530,6 +530,7 @@ export function PlannerCharacterBox({
 						<AlertContainer
 							type="confirm"
 							onConfirm={onDeleteConfim}
+							cancelLabel="CANCEL"
 							onCancel={onDeleteCancel}>
 							{"A-are you sure you want to delete this Character?"}
 						</AlertContainer>
