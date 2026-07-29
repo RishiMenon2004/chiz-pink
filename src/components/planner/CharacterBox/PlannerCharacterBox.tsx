@@ -27,7 +27,7 @@ import {
 	PlannerMaterialsList,
 } from "@/components/planner"
 
-import plannerBoxStyles from "@/components/planner/plannerBox.module.css"
+import plannerBoxStyles from "@/components/planner/RenderPlanner/plannerBox.module.css"
 import styles from "./PlannerCharacterBox.module.css"
 
 export function PlannerCharacterBox({

@@ -17,3 +17,23 @@
 		grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
 	}
 }
+
+@media (max-width: 800px) {
+	.plannerGrid {
+		grid-template-columns: 1fr;
+	}
+}
+
+/* hide on wide screens */
+@media (min-width: 1000) {
+	.hideOnDesktop {
+		visibility: hidden !important;
+	}
+}
+
+/* show on short screens */
+@media (max-height: 800) {
+	.hideOnDesktop {
+		visibility: visible !important;
+	}
+}

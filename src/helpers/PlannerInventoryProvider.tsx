@@ -28,7 +28,7 @@ export function PlannerInventoryProvider({
 	itemRecords,
 	children,
 }: {
-	itemRecords: WeaponRecord[] | CharacterRecord[]
+	itemRecords: (WeaponRecord | CharacterRecord)[]
 	children: React.ReactNode
 }) {
 	const { inventory: currentInventory } = useInventoryStore()

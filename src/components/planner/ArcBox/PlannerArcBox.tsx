@@ -21,7 +21,7 @@ import { AlertContainer, ArcIcon, ModalContainer } from "@/components/layout"
 import { ItemPhases, PlannerMaterialsList } from "@/components/planner"
 import { PlannerBoxButtonsContainer } from "@/components/planner/PlannerBoxButtonsContainer"
 
-import plannerBoxStyles from "@/components/planner/plannerBox.module.css"
+import plannerBoxStyles from "@/components/planner/RenderPlanner/plannerBox.module.css"
 import styles from "./plannerArcBox.module.css"
 
 export function PlannerArcBox({

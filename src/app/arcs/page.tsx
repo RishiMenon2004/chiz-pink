@@ -2,12 +2,12 @@ import { Metadata } from "next"
 
 import { RoutesData } from "@/data/routes"
 
-import RenderArcsPlanner from "./RenderArcsPlanner"
+import { RenderPlanner } from "@/components/planner"
 
 export const metadata: Metadata = {
 	title: RoutesData["/arcs"].head,
 }
 
 export default function ArcPlanner() {
-	return <RenderArcsPlanner />
+	return <RenderPlanner plannerType="arcs" />
 }
