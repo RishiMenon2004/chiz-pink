@@ -263,6 +263,8 @@
 			var(--radius-right, 0.5rem) var(--radius-left, 0.5rem)
 	);
 
+	background-color: color-mix(in srgb, var(--theme-color), black);
+
 	transition:
 		all 500ms 100ms,
 		--gradient-opening 1000ms 300ms,
@@ -280,7 +282,10 @@
 
 		transition: transform 500ms 100ms;
 		border-radius: inherit;
+	}
 
+	&,
+	.eventDetailsImage {
 		outline: 1px solid rgba(255, 255, 255, 0.25);
 		outline-offset: -1px;
 	}
