@@ -14,6 +14,34 @@ export enum EnumMaterialType {
 	Reward = "Reward",
 }
 
+/* Rewards */
+export const floeCinemeTicket: Material = {
+	id: "floe_cineme_ticket",
+	name: "Floe Cinema Ticket",
+	rarity: EnumRarity.Rare,
+	materialType: EnumMaterialType.Reward,
+	imageSrc: "/rewards/floe_cinema_ticket",
+	sources: [],
+}
+
+export const porsche918Spyder: Material = {
+	id: "porsche_918_spyder",
+	name: "Porsche 918 Spyder",
+	materialType: EnumMaterialType.Reward,
+	rarity: EnumRarity.Epic,
+	imageSrc: "/rewards/porche_918_spyder",
+	sources: ["Everdriving Mystery Box Event"],
+}
+
+export const regaliaDraco: Material = {
+	id: "regalia_draco",
+	name: "Regalia Draco",
+	materialType: EnumMaterialType.Reward,
+	rarity: EnumRarity.Epic,
+	imageSrc: "/rewards/regalia_draco",
+	sources: ["Everdriving Mystery Box Event"],
+}
+
 /* Currencies */
 export const annulith: Material = {
 	id: "annulith",
@@ -431,7 +459,11 @@ export const firstExpectations: Material = {
 	linkedMaterials: ["black_hat", "known_weariness"],
 }
 
-export const talentMagicSet: MaterialSet = [firstExpectations, knownWeariness, blackHat]
+export const talentMagicSet: MaterialSet = [
+	firstExpectations,
+	knownWeariness,
+	blackHat,
+]
 
 export const heartRacingNight: Material = {
 	id: "heart_racing_night",

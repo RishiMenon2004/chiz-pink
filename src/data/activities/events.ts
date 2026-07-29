@@ -1,10 +1,9 @@
 import { Material } from "@/types/item"
 import { SettingsRecord } from "@/types/settings"
 
-import { annulith, EnumMaterialType } from "@/data/items/materials"
+import { annulith, porsche918Spyder, regaliaDraco } from "@/data/items/materials"
 
 import { getServerTimestamp, getUtcTimestamp } from "@/helpers/serverTime"
-import { EnumRarity } from "../items"
 
 export type EventData = {
 	name: string
@@ -204,16 +203,7 @@ export const Events: EventData[] = [
 		type: "Mystery Box",
 		getStartDate: getPhase1Start("version1_1"),
 		getEndDate: getPhase2End("version1_1"),
-		rewards: [
-			{
-				id: "porsche_918_spyder",
-				name: "Porsche 918 Spyder",
-				materialType: EnumMaterialType.Reward,
-				rarity: EnumRarity.Epic,
-				imageSrc: "/rewards/porche_918_spyder",
-				sources: ["Everdriving Mystery Box Event"],
-			},
-		],
+		rewards: [porsche918Spyder, annulith],
 		eventImage: "version1.1/mystery_porsche.jpeg",
 		themeColor: "#6f3fcc",
 	},
@@ -320,16 +310,7 @@ export const Events: EventData[] = [
 		type: "Mystery Box",
 		getStartDate: getPhase1Start("version1_2"),
 		getEndDate: getPhase2End("version1_2"),
-		rewards: [
-			{
-				id: "regalia_draco",
-				name: "Regalia Draco",
-				materialType: EnumMaterialType.Reward,
-				rarity: EnumRarity.Epic,
-				imageSrc: "/rewards/regalia_draco",
-				sources: ["Everdriving Mystery Box Event"],
-			},
-		],
+		rewards: [regaliaDraco],
 		eventImage: "version1.2/mystery_draco.jpeg",
 		themeColor: "#a51244",
 	},
