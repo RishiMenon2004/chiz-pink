@@ -48,29 +48,19 @@ const serverEOD = (
 		minute: 59,
 	})
 
-const globalPatchStart = (day: number, month: number, year: number) =>
+const globalPatchStart = (
+	day: number,
+	month: number,
+	year: number,
+	hourOffset?: number,
+	minuteOffset?: number
+) =>
 	getUtcTimestamp({
 		year,
 		month,
 		day,
-		hour: 3,
-	})
-
-const globalPatchPhase1End = (day: number, month: number, year: number) =>
-	getUtcTimestamp({
-		year,
-		month,
-		day,
-		hour: 9,
-		minute: 59,
-	})
-
-const globalPatchPhase2Start = (day: number, month: number, year: number) =>
-	getUtcTimestamp({
-		year,
-		month,
-		day,
-		hour: 10,
+		hour: 3 + (hourOffset || 0),
+		minute: minuteOffset || 0,
 	})
 
 const globalPatchEnd = (day: number, month: number, year: number) =>
@@ -82,20 +72,66 @@ const globalPatchEnd = (day: number, month: number, year: number) =>
 		minute: 59,
 	})
 
+const patchTimings = {
+	version1_0: {
+		phase1Start: () => globalPatchStart(29, 4, 2026),
+		phase1End: () => globalPatchEnd(12, 5, 2026),
+		phase2Start: () => globalPatchStart(13, 5, 2026),
+		phase2End: () => globalPatchEnd(2, 6, 2026),
+	},
+	version1_1: {
+		phase1Start: () => globalPatchStart(3, 6, 2026),
+		phase1End: () => globalPatchEnd(23, 6, 2026),
+		phase2Start: () => globalPatchStart(24, 6, 2026),
+		phase2End: () => globalPatchEnd(7, 7, 2026),
+	},
+	version1_2: {
+		phase1Start: () => globalPatchStart(8, 7, 2026),
+		phase1End: () => globalPatchEnd(28, 7, 2026),
+		phase2Start: () =>
+			getUtcTimestamp({
+				year: 2026,
+				month: 7,
+				day: 29,
+				hour: 1,
+			}),
+		phase2End: () => globalPatchEnd(18, 8, 2026),
+	},
+	version1_3: {
+		phase1Start: () => globalPatchStart(19, 8, 2026),
+		phase1End: () => globalPatchEnd(8, 9, 2026),
+		phase2Start: () => globalPatchStart(9, 9, 2026),
+		phase2End: () => globalPatchEnd(29, 9, 2026),
+	},
+}
+
+function getPhase1Start(version: keyof typeof patchTimings) {
+	return patchTimings[version].phase1Start
+}
+function getPhase1End(version: keyof typeof patchTimings) {
+	return patchTimings[version].phase1End
+}
+function getPhase2Start(version: keyof typeof patchTimings) {
+	return patchTimings[version].phase2Start
+}
+function getPhase2End(version: keyof typeof patchTimings) {
+	return patchTimings[version].phase2End
+}
+
 export const Events: EventData[] = [
 	{
 		name: "Version 1.0 (Global Launch)",
 		type: "Patch",
-		getStartDate: () => globalPatchStart(29, 4, 2026),
-		getEndDate: () => globalPatchEnd(2, 6, 2026),
+		getStartDate: getPhase1Start("version1_0"),
+		getEndDate: getPhase2End("version1_0"),
 		themeColor: "#50f1ff",
 		eventImage: "version1.0/version_1.0.jpeg",
 	},
 	{
 		name: "The Ichi-daime: Nanally",
 		type: "Gacha",
-		getStartDate: () => globalPatchStart(29, 4, 2026),
-		getEndDate: () => globalPatchPhase1End(13, 5, 2026),
+		getStartDate: getPhase1Start("version1_0"),
+		getEndDate: getPhase1End("version1_0"),
 		eventImage: "version1.0/gacha_nanally.jpeg",
 		themeColor: "#fb5793",
 		yOffset: "25%",
@@ -103,8 +139,8 @@ export const Events: EventData[] = [
 	{
 		name: "Misty Tipsy Style: Hotori",
 		type: "Gacha",
-		getStartDate: () => globalPatchPhase2Start(13, 5, 2026),
-		getEndDate: () => globalPatchEnd(2, 6, 2026),
+		getStartDate: getPhase2Start("version1_0"),
+		getEndDate: getPhase2End("version1_0"),
 		eventImage: "version1.0/gacha_hotori.jpeg",
 		themeColor: "#e32d4c",
 		yOffset: "22%",
@@ -112,7 +148,7 @@ export const Events: EventData[] = [
 	{
 		name: "Zero's Companion",
 		type: "Event",
-		getStartDate: () => globalPatchPhase2Start(13, 5, 2026),
+		getStartDate: getPhase2Start("version1_0"),
 		getEndDate: (server) => serverEOD(server, 27, 5, 2026),
 		rewards: [annulith],
 		eventImage: "version1.0/event_zeros_companion.jpeg",
@@ -122,7 +158,7 @@ export const Events: EventData[] = [
 		name: "Whisker Patrol",
 		type: "Event",
 		getStartDate: (server) => serverSOD(server, 27, 5, 2026),
-		getEndDate: () => globalPatchEnd(2, 6, 2026),
+		getEndDate: getPhase2End("version1_0"),
 		rewards: [annulith],
 		themeColor: "#2d6db7",
 		eventImage: "version1.0/event_whisker_patrol.jpeg",
@@ -132,8 +168,8 @@ export const Events: EventData[] = [
 	{
 		name: 'Version 1.1 ("Dreamwalk Corridor")',
 		type: "Patch",
-		getStartDate: () => globalPatchStart(3, 6, 2026),
-		getEndDate: () => globalPatchEnd(7, 7, 2026),
+		getStartDate: getPhase1Start("version1_1"),
+		getEndDate: getPhase2End("version1_1"),
 		eventImage: "version1.1/version_1.1.jpeg",
 		themeColor: "#6d5acd",
 		yOffset: "27%",
@@ -141,8 +177,8 @@ export const Events: EventData[] = [
 	{
 		name: "Fading Reverie: Lacrimosa",
 		type: "Gacha",
-		getStartDate: () => globalPatchStart(3, 6, 2026),
-		getEndDate: () => globalPatchPhase1End(24, 6, 2026),
+		getStartDate: getPhase1Start("version1_1"),
+		getEndDate: getPhase1End("version1_1"),
 		eventImage: "version1.1/gacha_lacrimosa.jpeg",
 		themeColor: "#f35671",
 		yOffset: "35%",
@@ -150,8 +186,8 @@ export const Events: EventData[] = [
 	{
 		name: "Forsaken Path: Chaos",
 		type: "Gacha",
-		getStartDate: () => globalPatchPhase2Start(24, 6, 2026),
-		getEndDate: () => globalPatchEnd(7, 7, 2026),
+		getStartDate: getPhase2Start("version1_1"),
+		getEndDate: getPhase2End("version1_1"),
 		eventImage: "version1.1/gacha_chaos.jpeg",
 		themeColor: "#6b92e1",
 		yOffset: "8%",
@@ -159,15 +195,15 @@ export const Events: EventData[] = [
 	{
 		name: "Circle Gifts",
 		type: "Circle Gift",
-		getStartDate: () => globalPatchStart(3, 6, 2026),
-		getEndDate: () => globalPatchEnd(7, 7, 2026),
+		getStartDate: getPhase1Start("version1_1"),
+		getEndDate: getPhase2End("version1_1"),
 		themeColor: "#f35671",
 	},
 	{
 		name: "Everdriving Mystery Box: NTE × PORSCHE",
 		type: "Mystery Box",
-		getStartDate: () => globalPatchStart(3, 6, 2026),
-		getEndDate: () => globalPatchEnd(7, 7, 2026),
+		getStartDate: getPhase1Start("version1_1"),
+		getEndDate: getPhase2End("version1_1"),
 		rewards: [
 			{
 				id: "porsche_918_spyder",
@@ -184,31 +220,31 @@ export const Events: EventData[] = [
 	{
 		name: "What's Baking",
 		type: "Event",
-		getStartDate: () => globalPatchStart(3, 6, 2026),
-		getEndDate: () => globalPatchEnd(7, 7, 2026),
+		getStartDate: getPhase1Start("version1_1"),
+		getEndDate: getPhase2End("version1_1"),
 		eventImage: "version1.1/event_whats_baking.png",
 		themeColor: "#f0d2c4",
 	},
 	{
 		name: "Underground Circuit",
 		type: "Event",
-		getStartDate: () => globalPatchStart(3, 6, 2026),
-		getEndDate: () => globalPatchEnd(7, 7, 2026),
+		getStartDate: getPhase1Start("version1_1"),
+		getEndDate: getPhase2End("version1_1"),
 		eventImage: "version1.1/event_underground_circuit.png",
 		themeColor: "#3c01b4",
 	},
 	{
 		name: "The Long Dream",
 		type: "Event",
-		getStartDate: () => globalPatchStart(3, 6, 2026),
-		getEndDate: () => globalPatchEnd(7, 7, 2026),
+		getStartDate: getPhase1Start("version1_1"),
+		getEndDate: getPhase2End("version1_1"),
 		eventImage: "version1.1/event_the_long_dream.png",
 	},
 	{
 		name: "Sunward Travalogue",
 		type: "Event",
-		getStartDate: () => globalPatchStart(3, 6, 2026),
-		getEndDate: () => globalPatchEnd(7, 7, 2026),
+		getStartDate: getPhase1Start("version1_1"),
+		getEndDate: getPhase2End("version1_1"),
 		eventImage: "version1.1/event_sunward_travalogue.png",
 		themeColor: "#3e7ec6",
 	},
@@ -224,7 +260,7 @@ export const Events: EventData[] = [
 		name: "Hunter's Crucible",
 		type: "Event",
 		getStartDate: (server) => serverSOD(server, 18, 6, 2026),
-		getEndDate: () => globalPatchEnd(7, 7, 2026),
+		getEndDate: getPhase2End("version1_1"),
 		eventImage: "version1.1/event_hunters_crucible.png",
 		themeColor: "#ea285d",
 	},
@@ -232,7 +268,7 @@ export const Events: EventData[] = [
 		name: "Fight Championship",
 		type: "Event",
 		getStartDate: (server) => serverSOD(server, 24, 6, 2026),
-		getEndDate: () => globalPatchEnd(7, 7, 2026),
+		getEndDate: getPhase2End("version1_1"),
 		eventImage: "version1.1/event_fight_championship.png",
 		themeColor: "#d89b3e",
 	},
@@ -249,16 +285,16 @@ export const Events: EventData[] = [
 	{
 		name: 'Version 1.2 ("999 Nights")',
 		type: "Patch",
-		getStartDate: () => globalPatchStart(8, 7, 2026),
-		getEndDate: () => globalPatchEnd(18, 8, 2026),
+		getStartDate: getPhase1Start("version1_2"),
+		getEndDate: getPhase2End("version1_2"),
 		eventImage: "version1.2/version_1.2.jpeg",
 		themeColor: "#c8eec7",
 	},
 	{
 		name: "Before the Dawn: Shinku",
 		type: "Gacha",
-		getStartDate: () => globalPatchStart(8, 7, 2026),
-		getEndDate: () => globalPatchPhase1End(29, 7, 2026),
+		getStartDate: getPhase1Start("version1_2"),
+		getEndDate: getPhase1End("version1_2"),
 		eventImage: "version1.2/gacha_shinku.jpeg",
 		themeColor: "#8162a6",
 		yOffset: "17%",
@@ -266,8 +302,8 @@ export const Events: EventData[] = [
 	{
 		name: "The Lifeline: Iroi",
 		type: "Gacha",
-		getStartDate: () => globalPatchPhase2Start(29, 7, 2026),
-		getEndDate: () => globalPatchEnd(18, 8, 2026),
+		getStartDate: getPhase2Start("version1_2"),
+		getEndDate: getPhase2End("version1_2"),
 		eventImage: "version1.2/gacha_iroi.jpeg",
 		themeColor: "#c44a71",
 		yOffset: "20%",
@@ -275,15 +311,15 @@ export const Events: EventData[] = [
 	{
 		name: "Circle Gifts",
 		type: "Circle Gift",
-		getStartDate: () => globalPatchStart(8, 7, 2026),
-		getEndDate: () => globalPatchEnd(18, 8, 2026),
+		getStartDate: getPhase1Start("version1_2"),
+		getEndDate: getPhase2End("version1_2"),
 		themeColor: "#8162a6",
 	},
 	{
 		name: "Neon Rift Mystery Box: Regalia Draco",
 		type: "Mystery Box",
-		getStartDate: () => globalPatchStart(8, 7, 2026),
-		getEndDate: () => globalPatchEnd(18, 8, 2026),
+		getStartDate: getPhase1Start("version1_2"),
+		getEndDate: getPhase2End("version1_2"),
 		rewards: [
 			{
 				id: "regalia_draco",
@@ -333,15 +369,15 @@ export const Events: EventData[] = [
 		name: "Shadow & Seek",
 		type: "Event",
 		getStartDate: (server) => serverSOD(server, 17, 7, 2026),
-		getEndDate: () => globalPatchEnd(18, 8, 2026),
+		getEndDate: getPhase2End("version1_2"),
 		eventImage: "version1.2/event_shadow_seek.png",
 		themeColor: "#875b3e",
 	},
 	{
 		name: "Going, Going, Gone!",
 		type: "Event",
-		getStartDate: () => globalPatchPhase2Start(29, 7, 2026),
-		getEndDate: () => globalPatchEnd(18, 8, 2026),
+		getStartDate: getPhase2Start("version1_2"),
+		getEndDate: getPhase2End("version1_2"),
 		eventImage: "version1.2/event_going_gone.png",
 		themeColor: "#559c68",
 	},
@@ -349,7 +385,7 @@ export const Events: EventData[] = [
 		name: "Fishin Frenzy",
 		type: "Event",
 		getStartDate: (server) => serverSOD(server, 3, 8, 2026),
-		getEndDate: () => globalPatchEnd(18, 8, 2026),
+		getEndDate: getPhase2End("version1_2"),
 		eventImage: "version1.2/event_fishing_frenzy.png",
 		themeColor: "#309f96",
 	},
@@ -357,7 +393,7 @@ export const Events: EventData[] = [
 		name: "Warren Lucky Flip",
 		type: "Event",
 		getStartDate: (server) => serverSOD(server, 5, 8, 2026),
-		getEndDate: () => globalPatchEnd(18, 8, 2026),
+		getEndDate: getPhase2End("version1_2"),
 		eventImage: "version1.2/event_warren_flip.png",
 		themeColor: "#714065",
 	},
@@ -366,14 +402,14 @@ export const Events: EventData[] = [
 	{
 		name: 'Version 1.3 ("Fogden Game")',
 		type: "Patch",
-		getStartDate: () => globalPatchStart(19, 8, 2026),
-		getEndDate: () => globalPatchEnd(29, 9, 2026),
+		getStartDate: getPhase1Start("version1_3"),
+		getEndDate: getPhase2End("version1_3"),
 	},
 	{
 		name: "Zankou Banner",
 		type: "Gacha",
-		getStartDate: () => globalPatchStart(19, 8, 2026),
-		getEndDate: () => globalPatchPhase1End(9, 9, 2026),
+		getStartDate: getPhase1Start("version1_3"),
+		getEndDate: getPhase1End("version1_3"),
 		eventImage: "version1.3/gacha_zankou.jpeg",
 		themeColor: "#8364a8",
 		yOffset: "23%",
@@ -381,16 +417,16 @@ export const Events: EventData[] = [
 	{
 		name: "Linko Banner",
 		type: "Gacha",
-		getStartDate: () => globalPatchPhase2Start(9, 9, 2026),
-		getEndDate: () => globalPatchEnd(29, 9, 2026),
+		getStartDate: getPhase2Start("version1_3"),
+		getEndDate: getPhase2End("version1_3"),
 		eventImage: "version1.3/gacha_linko.jpeg",
 		themeColor: "#78c4c0",
 	},
 	{
 		name: "Circle Gifts",
 		type: "Circle Gift",
-		getStartDate: () => globalPatchStart(19, 8, 2026),
-		getEndDate: () => globalPatchEnd(29, 9, 2026),
+		getStartDate: getPhase1Start("version1_3"),
+		getEndDate: getPhase2End("version1_3"),
 		themeColor: "#8364a8",
 	},
 ]
