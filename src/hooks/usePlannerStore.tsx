@@ -293,8 +293,6 @@ export function getAggregatedMaterial(
 
 		const { sources, amount } = { ...aggregatedMaterial }
 
-		console.log(itemRecord.id, "requires", requiredMaterial.id, requiredMaterial.amount)
-
 		if (requiredMaterial.amount > 0) {
 			if (sources[itemRecord.id]) {
 				sources[itemRecord.id] += 1

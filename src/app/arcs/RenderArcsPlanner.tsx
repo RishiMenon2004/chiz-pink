@@ -29,6 +29,7 @@ import { PlannerMaterialsList } from "@/components/planner/"
 import styles from "./page.module.css"
 import { styles as toolbarStyles } from "@/components/layout/PullOutToolbar"
 import plannerBoxStyles from "@/components/planner/plannerBox.module.css"
+import { PlannerReorderBox } from "@/components/layout/ReorderBox/PlannerReorderBox"
 
 const PlannerArcBox = dynamic(
 	() => import("@/components/planner").then((mod) => mod.PlannerArcBox),
@@ -66,6 +67,17 @@ export default function RenderArcsPlanner() {
 	const cancelAdd = (e: KeyMouseEventType) => {
 		e.stopPropagation()
 		setNewArcRecord(null!)
+	}
+
+	const [showReorder, setShowReorder] = useState<boolean>(false)
+
+	const handleStartReorder = () => {
+		setShowReorder(true)
+	}
+
+	const closeReorder = (e: KeyMouseEventType) => {
+		e.stopPropagation()
+		setShowReorder(false)
 	}
 
 	const onDragStart = (e: DragStartEvent) =>
@@ -106,7 +118,7 @@ export default function RenderArcsPlanner() {
 				{/*                     Adding New Entries                      */}
 				{/* =========================================================== */}
 				<button
-					className={`pill-button ${toolbarStyles.toolbarButton}`}
+					className={`pill-button ${toolbarStyles.toolbarButton} ${toolbarStyles.add}`}
 					onClick={handleStartAdding}>
 					ADD ARC
 				</button>
@@ -124,6 +136,34 @@ export default function RenderArcsPlanner() {
 							document.body
 						)}
 				</AddNewArcContext.Provider>
+				{/* =========================================================== */}
+
+				{/* =========================================================== */}
+				{/*                       Adjusting Order                       */}
+				{/* =========================================================== */}
+				<button
+					disabled={Object.values(plannerData.arcs).length <= 1}
+					className={`pill-button ${toolbarStyles.toolbarButton} ${plannerBoxStyles.hideOnDesktop}`}
+					onClick={handleStartReorder}>
+					ADJUST PRIORITY
+					{showReorder &&
+						createPortal(
+							<ModalContainer onClickOut={closeReorder}>
+								<DragDropProvider
+									plugins={(defaults) => [
+										...defaults,
+										Feedback.configure({
+											dropAnimation: null,
+										}),
+									]}
+									onDragStart={onDragStart}
+									onDragEnd={onDragEnd}>
+									<PlannerReorderBox items={plannerData.arcs} />
+								</DragDropProvider>
+							</ModalContainer>,
+							document.body
+						)}
+				</button>
 				{/* =========================================================== */}
 			</PullOutToolbar>
 

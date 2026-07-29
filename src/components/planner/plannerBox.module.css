@@ -105,3 +105,17 @@ div.infoContainer {
 		padding: 1.25rem;
 	}
 }
+
+/* hide on wide screens */
+@media (min-width: 1000) {
+	.hideOnDesktop {
+		visibility: hidden !important;
+	}
+}
+
+/* show on short screens */
+@media (max-height: 800) {
+	.hideOnDesktop {
+		visibility: visible !important;
+	}
+}

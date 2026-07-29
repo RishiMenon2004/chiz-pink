@@ -24,6 +24,7 @@ import {
 	PlannerAddCharacterBox,
 	PlannerMaterialsList,
 } from "@/components/planner"
+import { PlannerReorderBox } from "@/components/layout/ReorderBox/PlannerReorderBox"
 
 import styles from "./page.module.css"
 import { styles as toolbarStyles } from "@/components/layout/PullOutToolbar"
@@ -60,6 +61,17 @@ export default function RenderCharacterPlanner() {
 	const cancelAdd = (e: KeyMouseEventType) => {
 		e.stopPropagation()
 		setShowAddChar(false)
+	}
+
+	const [showReorder, setShowReorder] = useState<boolean>(false)
+
+	const handleStartReorder = () => {
+		setShowReorder(true)
+	}
+
+	const closeReorder = (e: KeyMouseEventType) => {
+		e.stopPropagation()
+		setShowReorder(false)
 	}
 
 	const onDragStart = (e: DragStartEvent) =>
@@ -104,7 +116,7 @@ export default function RenderCharacterPlanner() {
 				{/*                     Adding New Entries                      */}
 				{/* =========================================================== */}
 				<button
-					className={`pill-button ${toolbarStyles.toolbarButton}`}
+					className={`pill-button ${toolbarStyles.toolbarButton} ${toolbarStyles.add}`}
 					onClick={handleStartAdding}>
 					ADD CHARACTER
 					<AddNewCharContext.Provider
@@ -121,6 +133,36 @@ export default function RenderCharacterPlanner() {
 								document.body
 							)}
 					</AddNewCharContext.Provider>
+				</button>
+				{/* =========================================================== */}
+
+				{/* =========================================================== */}
+				{/*                       Adjusting Order                       */}
+				{/* =========================================================== */}
+				<button
+					disabled={Object.values(plannerData.characters).length <= 1}
+					className={`pill-button ${toolbarStyles.toolbarButton} ${plannerBoxStyles.hideOnDesktop}`}
+					onClick={handleStartReorder}>
+					ADJUST PRIORITY
+					{showReorder &&
+						createPortal(
+							<ModalContainer onClickOut={closeReorder}>
+								<DragDropProvider
+									plugins={(defaults) => [
+										...defaults,
+										Feedback.configure({
+											dropAnimation: null,
+										}),
+									]}
+									onDragStart={onDragStart}
+									onDragEnd={onDragEnd}>
+									<PlannerReorderBox
+										items={plannerData.characters}
+									/>
+								</DragDropProvider>
+							</ModalContainer>,
+							document.body
+						)}
 				</button>
 				{/* =========================================================== */}
 			</PullOutToolbar>
