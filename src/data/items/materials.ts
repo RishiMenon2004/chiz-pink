@@ -11,20 +11,20 @@ export enum EnumMaterialType {
 	WeaponAscension = "Arc Ascension",
 	WeaponExp = "Arc XP",
 	Currency = "Currency",
-	Reward = "Reward"
+	Reward = "Reward",
 }
 
 /* Currencies */
-const annulith: Material = {
+export const annulith: Material = {
 	id: "annulith",
 	name: "Annulith",
 	rarity: EnumRarity.Epic,
 	materialType: EnumMaterialType.Currency,
 	imageSrc: "/currency_annulith",
-	sources: []
+	sources: [],
 }
 
-const beetleCoin: Material = {
+export const beetleCoin: Material = {
 	id: "beetle_coin",
 	name: "Beetle Coin",
 	rarity: EnumRarity.Uncommon,
@@ -37,7 +37,7 @@ const beetleCoin: Material = {
 	],
 }
 
-const fons: Material = {
+export const fons: Material = {
 	id: "fons",
 	name: "Fons",
 	rarity: EnumRarity.Rare,
@@ -47,7 +47,7 @@ const fons: Material = {
 }
 
 /* Weekly Boss Drops - Talent*/
-const goodBoyStamp: Material = {
+export const goodBoyStamp: Material = {
 	id: "good_boy_stamp",
 	name: "Good Boy Stamp",
 	rarity: EnumRarity.Epic,
@@ -56,7 +56,7 @@ const goodBoyStamp: Material = {
 	sources: ['Anomaly Pilgrimage: "Morphix"'],
 }
 
-const dressSleevesOfVanity: Material = {
+export const dressSleevesOfVanity: Material = {
 	id: "dress_sleeves_of_vanity",
 	name: "Dress Sleeves of Vanity",
 	rarity: EnumRarity.Epic,
@@ -65,7 +65,7 @@ const dressSleevesOfVanity: Material = {
 	sources: ['Anomaly Pilgrimage: "The Never-ending Arachne"'],
 }
 
-const eternalMemory: Material = {
+export const eternalMemory: Material = {
 	id: "eternal_memory",
 	name: "Eternal Memory",
 	rarity: EnumRarity.Epic,
@@ -75,7 +75,7 @@ const eternalMemory: Material = {
 }
 
 /* Character Experience */
-const eliteHunterGuide: Material = {
+export const eliteHunterGuide: Material = {
 	id: "elite_hunter_guide",
 	name: "Elite Hunter Guide",
 	rarity: EnumRarity.Rare,
@@ -89,7 +89,7 @@ const eliteHunterGuide: Material = {
 	linkedMaterials: ["senior_hunter_guide", "rising_hunter_guide"],
 }
 
-const seniorHunterGuide: Material = {
+export const seniorHunterGuide: Material = {
 	id: "senior_hunter_guide",
 	name: "Senior Hunter Guide",
 	rarity: EnumRarity.Uncommon,
@@ -103,7 +103,7 @@ const seniorHunterGuide: Material = {
 	linkedMaterials: ["elite_hunter_guide", "rising_hunter_guide"],
 }
 
-const risingHunterGuide: Material = {
+export const risingHunterGuide: Material = {
 	id: "rising_hunter_guide",
 	name: "Rising Hunter Guide",
 	rarity: EnumRarity.Common,
@@ -117,14 +117,14 @@ const risingHunterGuide: Material = {
 	linkedMaterials: ["elite_hunter_guide", "senior_hunter_guide"],
 }
 
-const expHunterGuideSet: MaterialSet = [
+export const expHunterGuideSet: MaterialSet = [
 	risingHunterGuide,
 	seniorHunterGuide,
 	eliteHunterGuide,
 ]
 
 /* Character Ascension */
-const paradoxicalWhispers: Material = {
+export const paradoxicalWhispers: Material = {
 	id: "paradoxical_whispers",
 	name: "Paradoxical Whispers",
 	rarity: EnumRarity.Rare,
@@ -134,7 +134,7 @@ const paradoxicalWhispers: Material = {
 	linkedMaterials: ["obscure_whispers", "lost_whispers"],
 }
 
-const obscureWhispers: Material = {
+export const obscureWhispers: Material = {
 	id: "obscure_whispers",
 	name: "Obscure Whispers",
 	rarity: EnumRarity.Uncommon,
@@ -144,7 +144,7 @@ const obscureWhispers: Material = {
 	linkedMaterials: ["paradoxical_whispers", "lost_whispers"],
 }
 
-const lostWhispers: Material = {
+export const lostWhispers: Material = {
 	id: "lost_whispers",
 	name: "Lost Whispers",
 	rarity: EnumRarity.Common,
@@ -154,13 +154,13 @@ const lostWhispers: Material = {
 	linkedMaterials: ["paradoxical_whispers", "obscure_whispers"],
 }
 
-const ascWhispersSet: MaterialSet = [
+export const ascWhispersSet: MaterialSet = [
 	lostWhispers,
 	obscureWhispers,
 	paradoxicalWhispers,
 ]
 
-const chaosSilhouette: Material = {
+export const chaosSilhouette: Material = {
 	id: "chaos_silhouette",
 	name: "Chaos Silhouette",
 	rarity: EnumRarity.Rare,
@@ -170,7 +170,7 @@ const chaosSilhouette: Material = {
 	linkedMaterials: ["blurred_silhouette", "fading_silhouette"],
 }
 
-const blurredSilhouette: Material = {
+export const blurredSilhouette: Material = {
 	id: "blurred_silhouette",
 	name: "Blurred Silhouette",
 	rarity: EnumRarity.Uncommon,
@@ -180,7 +180,7 @@ const blurredSilhouette: Material = {
 	linkedMaterials: ["chaos_silhouette", "fading_silhouette"],
 }
 
-const fadingSilhouette: Material = {
+export const fadingSilhouette: Material = {
 	id: "fading_silhouette",
 	name: "Fading Silhouette",
 	rarity: EnumRarity.Common,
@@ -190,13 +190,13 @@ const fadingSilhouette: Material = {
 	linkedMaterials: ["chaos_silhouette", "blurred_silhouette"],
 }
 
-const ascSilhouetteSet: MaterialSet = [
+export const ascSilhouetteSet: MaterialSet = [
 	fadingSilhouette,
 	blurredSilhouette,
 	chaosSilhouette,
 ]
 
-const distortedNumeral: Material = {
+export const distortedNumeral: Material = {
 	id: "distorted_numeral",
 	name: "Distorted Numeral",
 	rarity: EnumRarity.Rare,
@@ -206,7 +206,7 @@ const distortedNumeral: Material = {
 	linkedMaterials: ["unsolved_numeral", "blurred_numeral"],
 }
 
-const unsolvedNumeral: Material = {
+export const unsolvedNumeral: Material = {
 	id: "unsolved_numeral",
 	name: "Unsolved Numeral",
 	rarity: EnumRarity.Uncommon,
@@ -216,7 +216,7 @@ const unsolvedNumeral: Material = {
 	linkedMaterials: ["distorted_numeral", "blurred_numeral"],
 }
 
-const blurredNumeral: Material = {
+export const blurredNumeral: Material = {
 	id: "blurred_numeral",
 	name: "Blurred Numeral",
 	rarity: EnumRarity.Common,
@@ -226,13 +226,13 @@ const blurredNumeral: Material = {
 	linkedMaterials: ["distorted_numeral", "unsolved_numeral"],
 }
 
-const ascNumeralSet: MaterialSet = [
+export const ascNumeralSet: MaterialSet = [
 	blurredNumeral,
 	unsolvedNumeral,
 	distortedNumeral,
 ]
 
-const transcendentDelusions: Material = {
+export const transcendentDelusions: Material = {
 	id: "transcendent_delusions",
 	name: "Transcendent Delusions",
 	rarity: EnumRarity.Rare,
@@ -242,7 +242,7 @@ const transcendentDelusions: Material = {
 	linkedMaterials: ["yearning_delusions", "suspended_delusions"],
 }
 
-const yearningDelusions: Material = {
+export const yearningDelusions: Material = {
 	id: "yearning_delusions",
 	name: "Yearning Delusions",
 	rarity: EnumRarity.Uncommon,
@@ -252,7 +252,7 @@ const yearningDelusions: Material = {
 	linkedMaterials: ["transcendent_delusions", "suspended_delusions"],
 }
 
-const suspendedDelusions: Material = {
+export const suspendedDelusions: Material = {
 	id: "suspended_delusions",
 	name: "Suspended Delusions",
 	rarity: EnumRarity.Common,
@@ -262,14 +262,14 @@ const suspendedDelusions: Material = {
 	linkedMaterials: ["transcendent_delusions", "yearning_delusions"],
 }
 
-const ascDelusionsSet: MaterialSet = [
+export const ascDelusionsSet: MaterialSet = [
 	suspendedDelusions,
 	yearningDelusions,
 	transcendentDelusions,
 ]
 
 /* Boss Drops - Character Ascension */
-const waterMoonPick: Material = {
+export const waterMoonPick: Material = {
 	id: "water_moon_pick",
 	name: "Water Moon Pick",
 	rarity: EnumRarity.Rare,
@@ -278,7 +278,7 @@ const waterMoonPick: Material = {
 	sources: ['Anomaly Hunt: "Beat King"', "Material Selection Box"],
 }
 
-const chargingKnightSparkPlug: Material = {
+export const chargingKnightSparkPlug: Material = {
 	id: "charging_knight_spark_plug",
 	name: "Charging Knight Spark Plug",
 	rarity: EnumRarity.Rare,
@@ -287,7 +287,7 @@ const chargingKnightSparkPlug: Material = {
 	sources: ['Anomaly Hunt: "Headless Rider"', "Material Selection Box"],
 }
 
-const confessionalFLowerSeed: Material = {
+export const confessionalFLowerSeed: Material = {
 	id: "confessional_flower_seed",
 	name: "Confessional Flower Seed",
 	rarity: EnumRarity.Rare,
@@ -296,7 +296,7 @@ const confessionalFLowerSeed: Material = {
 	sources: ['Anomaly Hunt: "Serenetti"', "Material Selection Box"],
 }
 
-const aPageFromDelusionsShore: Material = {
+export const aPageFromDelusionsShore: Material = {
 	id: "a_page_from_delusions_shore",
 	name: "A Page from Delusion's Shore",
 	rarity: EnumRarity.Rare,
@@ -305,7 +305,7 @@ const aPageFromDelusionsShore: Material = {
 	sources: ['Anomaly Hunt: "Black Tome"', "Material Selection Box"],
 }
 
-const tearOfTheSea: Material = {
+export const tearOfTheSea: Material = {
 	id: "tear_of_the_sea",
 	name: "Tear of The Sea",
 	rarity: EnumRarity.Rare,
@@ -314,7 +314,7 @@ const tearOfTheSea: Material = {
 	sources: ['Anomaly Hunt: "Sea Prisoner"', "Material Selection Box"],
 }
 
-const nestGuardFragment: Material = {
+export const nestGuardFragment: Material = {
 	id: "nest_guard_fragment",
 	name: "Nest Guard Fragment",
 	rarity: EnumRarity.Rare,
@@ -323,7 +323,7 @@ const nestGuardFragment: Material = {
 	sources: ['Anomaly Hunt: "Nestbound Bird"', "Material Selection Box"],
 }
 
-const colorfulTicketStub: Material = {
+export const colorfulTicketStub: Material = {
 	id: "colorful_ticket_stub",
 	name: "Colorful Ticket Stub",
 	rarity: EnumRarity.Rare,
@@ -333,7 +333,7 @@ const colorfulTicketStub: Material = {
 }
 
 /* Talent */
-const theOliveBranch: Material = {
+export const theOliveBranch: Material = {
 	id: "the_olive_branch",
 	name: "The Olive Branch",
 	rarity: EnumRarity.Rare,
@@ -343,7 +343,7 @@ const theOliveBranch: Material = {
 	linkedMaterials: ["doves_flutter", "nestlings_longing"],
 }
 
-const dovesFlutter: Material = {
+export const dovesFlutter: Material = {
 	id: "doves_flutter",
 	name: "Dove's Flutter",
 	rarity: EnumRarity.Uncommon,
@@ -353,7 +353,7 @@ const dovesFlutter: Material = {
 	linkedMaterials: ["the_olive_branch", "nestlings_longing"],
 }
 
-const nestlingsLonging: Material = {
+export const nestlingsLonging: Material = {
 	id: "nestlings_longing",
 	name: "Nestling's Longing",
 	rarity: EnumRarity.Common,
@@ -363,13 +363,13 @@ const nestlingsLonging: Material = {
 	linkedMaterials: ["the_olive_branch", "doves_flutter"],
 }
 
-const talentBirdSet: MaterialSet = [
+export const talentBirdSet: MaterialSet = [
 	nestlingsLonging,
 	dovesFlutter,
 	theOliveBranch,
 ]
 
-const whiteRose: Material = {
+export const whiteRose: Material = {
 	id: "white_rose",
 	name: "White Rose",
 	rarity: EnumRarity.Rare,
@@ -379,7 +379,7 @@ const whiteRose: Material = {
 	linkedMaterials: ["co", "fng"],
 }
 
-const co: Material = {
+export const co: Material = {
 	id: "co",
 	name: "CO",
 	rarity: EnumRarity.Uncommon,
@@ -389,7 +389,7 @@ const co: Material = {
 	linkedMaterials: ["white_rose", "fng"],
 }
 
-const fng: Material = {
+export const fng: Material = {
 	id: "fng",
 	name: "FNG",
 	rarity: EnumRarity.Common,
@@ -399,9 +399,9 @@ const fng: Material = {
 	linkedMaterials: ["white_rose", "co"],
 }
 
-const talentRoseSet: MaterialSet = [fng, co, whiteRose]
+export const talentRoseSet: MaterialSet = [fng, co, whiteRose]
 
-const blackHat: Material = {
+export const blackHat: Material = {
 	id: "black_hat",
 	name: "Black Hat",
 	rarity: EnumRarity.Rare,
@@ -411,7 +411,7 @@ const blackHat: Material = {
 	linkedMaterials: ["known_weariness", "first_expectations"],
 }
 
-const knownWeariness: Material = {
+export const knownWeariness: Material = {
 	id: "known_weariness",
 	name: "Known Weariness",
 	rarity: EnumRarity.Uncommon,
@@ -421,7 +421,7 @@ const knownWeariness: Material = {
 	linkedMaterials: ["black_hat", "first_expectations"],
 }
 
-const firstExpectations: Material = {
+export const firstExpectations: Material = {
 	id: "first_expectations",
 	name: "First Expectations",
 	rarity: EnumRarity.Common,
@@ -431,9 +431,9 @@ const firstExpectations: Material = {
 	linkedMaterials: ["black_hat", "known_weariness"],
 }
 
-const talentMagicSet: MaterialSet = [firstExpectations, knownWeariness, blackHat]
+export const talentMagicSet: MaterialSet = [firstExpectations, knownWeariness, blackHat]
 
-const heartRacingNight: Material = {
+export const heartRacingNight: Material = {
 	id: "heart_racing_night",
 	name: "Heart-Racing Night",
 	rarity: EnumRarity.Rare,
@@ -443,7 +443,7 @@ const heartRacingNight: Material = {
 	linkedMaterials: ["resonance_of_faith", "synchronicity_of_thought"],
 }
 
-const resonanceOfFaith: Material = {
+export const resonanceOfFaith: Material = {
 	id: "resonance_of_faith",
 	name: "Resonance of Faith",
 	rarity: EnumRarity.Uncommon,
@@ -453,7 +453,7 @@ const resonanceOfFaith: Material = {
 	linkedMaterials: ["heart_racing_night", "synchronicity_of_thought"],
 }
 
-const synchronicityOfThought: Material = {
+export const synchronicityOfThought: Material = {
 	id: "synchronicity_of_thought",
 	name: "Synchronicity of Thought",
 	rarity: EnumRarity.Common,
@@ -463,13 +463,13 @@ const synchronicityOfThought: Material = {
 	linkedMaterials: ["heart_racing_night", "resonance_of_faith"],
 }
 
-const talentHeartSet: MaterialSet = [
+export const talentHeartSet: MaterialSet = [
 	synchronicityOfThought,
 	resonanceOfFaith,
 	heartRacingNight,
 ]
 
-const theSecondSelf: Material = {
+export const theSecondSelf: Material = {
 	id: "the_second_self",
 	name: "The Second Self",
 	rarity: EnumRarity.Rare,
@@ -479,7 +479,7 @@ const theSecondSelf: Material = {
 	linkedMaterials: ["suspended_whispers", "hesitation_of_the_waves"],
 }
 
-const suspendedWhispers: Material = {
+export const suspendedWhispers: Material = {
 	id: "suspended_whispers",
 	name: "Suspended Whispers",
 	rarity: EnumRarity.Uncommon,
@@ -489,7 +489,7 @@ const suspendedWhispers: Material = {
 	linkedMaterials: ["the_second_self", "hesitation_of_the_waves"],
 }
 
-const hesitationOfTheWaves: Material = {
+export const hesitationOfTheWaves: Material = {
 	id: "hesitation_of_the_waves",
 	name: "Hesitation of the Waves",
 	rarity: EnumRarity.Common,
@@ -499,13 +499,13 @@ const hesitationOfTheWaves: Material = {
 	linkedMaterials: ["the_second_self", "suspended_whispers"],
 }
 
-const talentTarotSet: MaterialSet = [
+export const talentTarotSet: MaterialSet = [
 	hesitationOfTheWaves,
 	suspendedWhispers,
 	theSecondSelf,
 ]
 
-const dreamlessSeed: Material = {
+export const dreamlessSeed: Material = {
 	id: "dreamless_seed",
 	name: "Dreamless Seed",
 	rarity: EnumRarity.Uncommon,
@@ -515,7 +515,7 @@ const dreamlessSeed: Material = {
 }
 
 /* Weapon Ascension */
-const goldenAppleSeed: Material = {
+export const goldenAppleSeed: Material = {
 	id: "golden_apple_seed",
 	name: "Golden Apple Seed",
 	rarity: EnumRarity.Rare,
@@ -525,7 +525,7 @@ const goldenAppleSeed: Material = {
 	linkedMaterials: ["silver_apple_seed", "iron_apple_seed"],
 }
 
-const silverAppleSeed: Material = {
+export const silverAppleSeed: Material = {
 	id: "silver_apple_seed",
 	name: "Silver Apple Seed",
 	rarity: EnumRarity.Uncommon,
@@ -535,7 +535,7 @@ const silverAppleSeed: Material = {
 	linkedMaterials: ["golden_apple_seed", "iron_apple_seed"],
 }
 
-const ironAppleSeed: Material = {
+export const ironAppleSeed: Material = {
 	id: "iron_apple_seed",
 	name: "Iron Apple Seed",
 	rarity: EnumRarity.Common,
@@ -545,13 +545,13 @@ const ironAppleSeed: Material = {
 	linkedMaterials: ["golden_apple_seed", "silver_apple_seed"],
 }
 
-const ascAppleSeedSet: MaterialSet = [
+export const ascAppleSeedSet: MaterialSet = [
 	ironAppleSeed,
 	silverAppleSeed,
 	goldenAppleSeed,
 ]
 
-const harmony: Material = {
+export const harmony: Material = {
 	id: "harmony",
 	name: "Harmony",
 	rarity: EnumRarity.Rare,
@@ -561,7 +561,7 @@ const harmony: Material = {
 	linkedMaterials: ["versey", "beaty"],
 }
 
-const versey: Material = {
+export const versey: Material = {
 	id: "versey",
 	name: "Versey",
 	rarity: EnumRarity.Uncommon,
@@ -571,7 +571,7 @@ const versey: Material = {
 	linkedMaterials: ["harmony", "beaty"],
 }
 
-const beaty: Material = {
+export const beaty: Material = {
 	id: "beaty",
 	name: "Beaty",
 	rarity: EnumRarity.Common,
@@ -581,9 +581,9 @@ const beaty: Material = {
 	linkedMaterials: ["harmony", "versey"],
 }
 
-const ascMuiscSet: MaterialSet = [beaty, versey, harmony]
+export const ascMuiscSet: MaterialSet = [beaty, versey, harmony]
 
-const liquidDreamCan: Material = {
+export const liquidDreamCan: Material = {
 	id: "liquid_dream_can",
 	name: "Liquid Dream Can",
 	rarity: EnumRarity.Rare,
@@ -593,7 +593,7 @@ const liquidDreamCan: Material = {
 	linkedMaterials: ["liquid_dream_travel_kit", "liquid_dream_trial_kit"],
 }
 
-const liquidDreamTravelKit: Material = {
+export const liquidDreamTravelKit: Material = {
 	id: "liquid_dream_travel_kit",
 	name: "Liquid Dream Travel Kit",
 	rarity: EnumRarity.Uncommon,
@@ -603,7 +603,7 @@ const liquidDreamTravelKit: Material = {
 	linkedMaterials: ["liquid_dream_can", "liquid_dream_trial_kit"],
 }
 
-const liquidDreamTrialKit: Material = {
+export const liquidDreamTrialKit: Material = {
 	id: "liquid_dream_trial_kit",
 	name: "Liquid Dream Trial Kit",
 	rarity: EnumRarity.Common,
@@ -613,13 +613,13 @@ const liquidDreamTrialKit: Material = {
 	linkedMaterials: ["liquid_dream_can", "liquid_dream_travel_kit"],
 }
 
-const ascLiquidDreamSet: MaterialSet = [
+export const ascLiquidDreamSet: MaterialSet = [
 	liquidDreamTrialKit,
 	liquidDreamTravelKit,
 	liquidDreamCan,
 ]
 
-const specialColdDessert: Material = {
+export const specialColdDessert: Material = {
 	id: "special_cold_dessert",
 	name: "Special Cold Dessert",
 	rarity: EnumRarity.Rare,
@@ -629,7 +629,7 @@ const specialColdDessert: Material = {
 	linkedMaterials: ["plain_cold_dessert", "flavorless_cold_dessert"],
 }
 
-const plainColdDessert: Material = {
+export const plainColdDessert: Material = {
 	id: "plain_cold_dessert",
 	name: "Plain Cold Dessert",
 	rarity: EnumRarity.Uncommon,
@@ -639,7 +639,7 @@ const plainColdDessert: Material = {
 	linkedMaterials: ["special_cold_dessert", "flavorless_cold_dessert"],
 }
 
-const flavorlessColdDessert: Material = {
+export const flavorlessColdDessert: Material = {
 	id: "flavorless_cold_dessert",
 	name: "Flavorless Cold Dessert",
 	rarity: EnumRarity.Common,
@@ -649,13 +649,13 @@ const flavorlessColdDessert: Material = {
 	linkedMaterials: ["special_cold_dessert", "plain_cold_dessert"],
 }
 
-const ascColdDessertSet: MaterialSet = [
+export const ascColdDessertSet: MaterialSet = [
 	flavorlessColdDessert,
 	plainColdDessert,
 	specialColdDessert,
 ]
 
-const collectorsDramaCore: Material = {
+export const collectorsDramaCore: Material = {
 	id: "collectors_drama_core",
 	name: "Collector's Drama Core",
 	rarity: EnumRarity.Rare,
@@ -665,7 +665,7 @@ const collectorsDramaCore: Material = {
 	linkedMaterials: ["master_drama_core", "beginner_drama_core"],
 }
 
-const masterDramaCore: Material = {
+export const masterDramaCore: Material = {
 	id: "master_drama_core",
 	name: "Master Drama Core",
 	rarity: EnumRarity.Uncommon,
@@ -675,7 +675,7 @@ const masterDramaCore: Material = {
 	linkedMaterials: ["collectors_drama_core", "beginner_drama_core"],
 }
 
-const beginnerDramaCore: Material = {
+export const beginnerDramaCore: Material = {
 	id: "beginner_drama_core",
 	name: "Beginner Drama Core",
 	rarity: EnumRarity.Common,
@@ -685,14 +685,14 @@ const beginnerDramaCore: Material = {
 	linkedMaterials: ["collectors_drama_core", "master_drama_core"],
 }
 
-const ascDramaCoreSet: MaterialSet = [
+export const ascDramaCoreSet: MaterialSet = [
 	beginnerDramaCore,
 	masterDramaCore,
 	collectorsDramaCore,
 ]
 
 /* Weapon Experience */
-const chaoticDye: Material = {
+export const chaoticDye: Material = {
 	id: "chaotic_dye",
 	name: "Chaotic Dye",
 	rarity: EnumRarity.Rare,
@@ -706,7 +706,7 @@ const chaoticDye: Material = {
 	linkedMaterials: ["colorless_dye", "light_dye"],
 }
 
-const colorlessDye: Material = {
+export const colorlessDye: Material = {
 	id: "colorless_dye",
 	name: "Colorless Dye",
 	rarity: EnumRarity.Uncommon,
@@ -720,7 +720,7 @@ const colorlessDye: Material = {
 	linkedMaterials: ["chaotic_dye", "light_dye"],
 }
 
-const lightDye: Material = {
+export const lightDye: Material = {
 	id: "light_dye",
 	name: "Light Dye",
 	rarity: EnumRarity.Common,
@@ -734,85 +734,4 @@ const lightDye: Material = {
 	linkedMaterials: ["chaotic_dye", "colorless_dye"],
 }
 
-const expDyeSet: MaterialSet = [lightDye, colorlessDye, chaoticDye]
-
-export {
-	annulith,
-	beetleCoin,
-	fons,
-	goodBoyStamp,
-	dressSleevesOfVanity,
-	eternalMemory,
-	eliteHunterGuide,
-	seniorHunterGuide,
-	risingHunterGuide,
-	expHunterGuideSet,
-	paradoxicalWhispers,
-	obscureWhispers,
-	lostWhispers,
-	ascWhispersSet,
-	chaosSilhouette,
-	blurredSilhouette,
-	fadingSilhouette,
-	ascSilhouetteSet,
-	distortedNumeral,
-	unsolvedNumeral,
-	blurredNumeral,
-	ascNumeralSet,
-	transcendentDelusions,
-	yearningDelusions,
-	suspendedDelusions,
-	ascDelusionsSet,
-	waterMoonPick,
-	chargingKnightSparkPlug,
-	confessionalFLowerSeed,
-	aPageFromDelusionsShore,
-	tearOfTheSea,
-	nestGuardFragment,
-	colorfulTicketStub,
-	theOliveBranch,
-	dovesFlutter,
-	nestlingsLonging,
-	talentBirdSet,
-	whiteRose,
-	co,
-	fng,
-	talentRoseSet,
-	blackHat,
-	knownWeariness,
-	firstExpectations,
-	talentMagicSet,
-	heartRacingNight,
-	resonanceOfFaith,
-	synchronicityOfThought,
-	talentHeartSet,
-	theSecondSelf,
-	suspendedWhispers,
-	hesitationOfTheWaves,
-	talentTarotSet,
-	dreamlessSeed,
-	goldenAppleSeed,
-	silverAppleSeed,
-	ironAppleSeed,
-	ascAppleSeedSet,
-	harmony,
-	versey,
-	beaty,
-	ascMuiscSet,
-	liquidDreamCan,
-	liquidDreamTravelKit,
-	liquidDreamTrialKit,
-	ascLiquidDreamSet,
-	specialColdDessert,
-	plainColdDessert,
-	flavorlessColdDessert,
-	ascColdDessertSet,
-	collectorsDramaCore,
-	masterDramaCore,
-	beginnerDramaCore,
-	ascDramaCoreSet,
-	chaoticDye,
-	colorlessDye,
-	lightDye,
-	expDyeSet,
-}
+export const expDyeSet: MaterialSet = [lightDye, colorlessDye, chaoticDye]

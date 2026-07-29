@@ -176,10 +176,10 @@ export function PlannerMaterialBox({
 					)}
 				</div>
 				<hr style={{ marginBlock: "0.5rem" }} />
-				<div className={styles.tooltipSourceList}>
+				<div className="tooltip-source-list">
 					Sources:
 					{material.sources.map((source) => (
-						<div className={styles.tooltipSource} key={source}>
+						<div className="tooltip-source" key={source}>
 							{source}
 						</div>
 					))}

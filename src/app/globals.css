@@ -173,6 +173,12 @@ body {
 	}
 }
 
+.page {
+	flex: 1;
+	padding-inline: 6rem;
+	padding-block: 4rem;
+}
+
 a {
 	color: inherit;
 	text-decoration: none;
@@ -306,12 +312,6 @@ button {
 	box-shadow: var(--shadow-metallic-panel);
 }
 
-.page {
-	flex: 1;
-	padding-inline: 6rem;
-	padding-block: 4rem;
-}
-
 .modal-container {
 	position: fixed;
 	inset: 0;
@@ -375,6 +375,46 @@ button {
 
 	&.visible {
 		opacity: 1;
+	}
+}
+
+.tooltip-source-list {
+	display: flex;
+	flex-direction: column;
+	gap: 0.25rem;
+
+	font-size: 1em;
+
+	opacity: 0.75;
+}
+
+.tooltip-source {
+	margin-inline-start: 0.5rem;
+
+	font-family: var(--font-barlow-condensed);
+	font-weight: 600;
+	font-style: italic;
+	font-size: 1rem;
+
+	background-color: var(--pink);
+	border-radius: 1em;
+	padding-inline: 0.75rem 1rem;
+	padding-block: 0.25rem;
+
+	display: flex;
+	align-items: center;
+	gap: 0.25rem;
+
+	paint-order: stroke fill;
+	-webkit-text-stroke: 3px black;
+
+	&:has(img) {
+		padding-inline: 0.5rem 1rem;
+	}
+
+	@supports (text-box-trim: trim-both) {
+		text-box-edge: cap alphabetic;
+		text-box-trim: trim-both;
 	}
 }
 

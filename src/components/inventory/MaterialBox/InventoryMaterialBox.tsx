@@ -193,7 +193,7 @@ export function MaterialItemBox({
 								</span>
 							)}
 						</div>
-						<div className={styles.tooltipSourceList}>
+						<div className="tooltip-source-list">
 							Needed For:
 							{Object.entries(requiredSources).map(
 								([id, amount]) => {
@@ -202,9 +202,7 @@ export function MaterialItemBox({
 										findCharacter(id) ??
 										undefined
 									return (
-										<div
-											className={styles.tooltipSource}
-											key={id}>
+										<div className="tooltip-source" key={id}>
 											<Image
 												src={
 													"effect" in item
@@ -224,10 +222,10 @@ export function MaterialItemBox({
 					</>
 				)}
 				<hr style={{ marginBlock: "0.5rem" }} />
-				<div className={styles.tooltipSourceList}>
+				<div className="tooltip-source-list">
 					Sources:
 					{material.sources.map((source) => (
-						<div className={styles.tooltipSource} key={source}>
+						<div className="tooltip-source" key={source}>
 							{source}
 						</div>
 					))}

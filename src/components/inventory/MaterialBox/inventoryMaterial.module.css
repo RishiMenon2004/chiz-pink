@@ -240,42 +240,6 @@ span.amount {
 	}
 }
 
-.tooltipSourceList {
-	display: flex;
-	flex-direction: column;
-	gap: 0.25rem;
-
-	font-size: 1em;
-
-	opacity: 0.75;
-}
-
-.tooltipSource {
-	margin-inline-start: 0.5rem;
-
-	font-family: var(--font-barlow-condensed);
-	font-weight: 100;
-	font-style: italic;
-	font-size: 1rem;
-
-	background-color: var(--pink);
-	border-radius: 100vh;
-	padding-inline: 1rem;
-	padding-block: 0.25rem;
-
-	display: flex;
-	align-items: center;
-	gap: 0.25rem;
-
-	paint-order: stroke fill;
-	-webkit-text-stroke: 2px black;
-
-	@supports (text-box-trim: trim-both) {
-		text-box-edge: cap alphabetic;
-		text-box-trim: trim-both;
-	}
-}
-
 @media (max-width: 1260px) {
 	.materialBox {
 		width: 100%;

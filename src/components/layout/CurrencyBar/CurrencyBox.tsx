@@ -225,7 +225,7 @@ export function CurrencyBox({ currency }: { currency: Material }) {
 							)}
 						</div>
 						<hr style={{ marginBlock: "0.5rem" }} />
-						<div className={styles.tooltipSourceList}>
+						<div className="tooltip-source-list">
 							Needed For:
 							{Object.entries(requiredSources).map(
 								([id, amount]) => {
@@ -234,9 +234,7 @@ export function CurrencyBox({ currency }: { currency: Material }) {
 										findCharacter(id) ??
 										undefined
 									return (
-										<div
-											className={styles.tooltipSource}
-											key={id}>
+										<div className="tooltip-source" key={id}>
 											<Image
 												src={
 													"effect" in item
@@ -257,9 +255,9 @@ export function CurrencyBox({ currency }: { currency: Material }) {
 				)}
 				<hr style={{ marginBlock: "0.5rem" }} />
 				{currency.id === "annulith" && (
-					<div className={styles.tooltipSourceList}>
+					<div className="tooltip-source-list">
 						Annulith Processing:
-						<div className={styles.tooltipSource}>
+						<div className="tooltip-source">
 							<Image
 								className={styles.dice}
 								src={"/materials/rewards/dice_limited.png"}
@@ -273,12 +271,10 @@ export function CurrencyBox({ currency }: { currency: Material }) {
 				)}
 				{currency.sources.length > 0 && (
 					<>
-						<div className={styles.tooltipSourceList}>
+						<div className="tooltip-source-list">
 							Sources:
 							{currency.sources.map((source) => (
-								<div
-									className={styles.tooltipSource}
-									key={source}>
+								<div className="tooltip-source" key={source}>
 									{source}
 								</div>
 							))}
