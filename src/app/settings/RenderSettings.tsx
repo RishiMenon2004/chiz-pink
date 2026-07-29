@@ -729,7 +729,7 @@ export function RenderSettings() {
 
 			{/* alert modals */}
 			{(isImportOlder || askOverwrite) && (
-				<ModalContainer onClose={() => setImportOlder(false)}>
+				<ModalContainer>
 					<AlertContainer
 						type="dangerous-confirm"
 						confirmLabel="Overwrite"
@@ -754,7 +754,7 @@ export function RenderSettings() {
 				</ModalContainer>
 			)}
 			{signoutWarning && (
-				<ModalContainer onClose={() => setSignoutWarning(false)}>
+				<ModalContainer>
 					<AlertContainer
 						type="dangerous-confirm"
 						onConfirm={() => signOut()}
@@ -770,7 +770,7 @@ export function RenderSettings() {
 				</ModalContainer>
 			)}
 			{eraseWarning && (
-				<ModalContainer onClose={() => setEraseWarning(false)}>
+				<ModalContainer>
 					<AlertContainer
 						type="dangerous-confirm"
 						onConfirm={() => {
@@ -793,7 +793,7 @@ export function RenderSettings() {
 				</ModalContainer>
 			)}
 			{eraseSyncChoice && (
-				<ModalContainer onClose={() => setEraseSyncChoice(false)}>
+				<ModalContainer>
 					<AlertContainer
 						type="dangerous-choices"
 						onConfirm={() => {
@@ -824,7 +824,7 @@ export function RenderSettings() {
 				</ModalContainer>
 			)}
 			{unlinkWarning && (
-				<ModalContainer onClose={() => setUnlinkWarning(false)}>
+				<ModalContainer>
 					<AlertContainer
 						type="dangerous-confirm"
 						onConfirm={async () => {

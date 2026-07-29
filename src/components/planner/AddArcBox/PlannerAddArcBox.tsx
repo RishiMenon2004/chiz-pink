@@ -2,13 +2,13 @@
 
 import { ChangeEvent, CSSProperties, MouseEvent, useState } from "react"
 
-import type { ModalEventType } from "@/types"
+import type { KeyMouseEventType } from "@/types"
 import type { Arc } from "@/types/weapon"
 
 import { EnumItemLvls, EnumRarity, getItemRarityStyle } from "@/data/items"
 import { findArc, EnumArcType, getAllArcsList } from "@/data/arcs"
 
-import { getRarityName, createSearchString } from "@/helpers"
+import { getRarityName, createSearchString, stopPropogation } from "@/helpers"
 
 import { useAddArcContext } from "@/contexts"
 
@@ -108,7 +108,7 @@ const PlannerArcsSelect = () => {
 		<div
 			className={styles.arcSelect}
 			aria-roledescription="select"
-			onClick={(e) => e.stopPropagation()}>
+			onClick={stopPropogation}>
 			<div
 				className={`${styles.arcSelectSelected} ${getItemRarityStyle(selected)}`}
 				onClick={(e) => {
@@ -214,14 +214,14 @@ export function PlannerAddArcBox({
 	onCancel,
 	onConfirm,
 }: {
-	onCancel: (e: ModalEventType) => void
-	onConfirm: (e: ModalEventType) => void
+	onCancel: (e: KeyMouseEventType) => void
+	onConfirm: (e: KeyMouseEventType) => void
 }) {
 	const { newArcRecord, setNewArcRecord } = useAddArcContext()
 	return (
 		<div
 			className={`metallic-panel ${styles.plannerAddArcBox}`}
-			onClick={(e) => e.stopPropagation()}>
+			onClick={stopPropogation}>
 			<div className={styles.addArcBoxTitle}>Add Arc</div>
 			<PlannerArcsSelect />
 			<div className={styles.addArcLvlSection}>

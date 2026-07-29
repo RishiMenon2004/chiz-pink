@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react"
 import { createPortal } from "react-dom"
 
-import type { ModalEventType } from "@/types"
+import type { KeyMouseEventType } from "@/types"
 import type { Material } from "@/types/item"
 
 import { MatAdjustmentContext } from "@/contexts"
@@ -23,7 +23,7 @@ export function useMaterialEditorModal(
 		setShowMaterialEditorModal(true)
 	}
 
-	const handleCloseModal = (e: ModalEventType) => {
+	const handleCloseModal = (e: KeyMouseEventType) => {
 		e.stopPropagation()
 		modalCallbacks.current.forEach((callback) => callback())
 		setShowMaterialEditorModal(false)
@@ -47,7 +47,7 @@ export function useMaterialEditorModal(
 			showMaterialEditorModal &&
 			createPortal(
 				<MatAdjustmentContext.Provider value={contextValue}>
-					<ModalContainer onClose={handleCloseModal}>
+					<ModalContainer onClickOut={handleCloseModal}>
 						<div ref={materialListRef} className={className}>
 							{materials.map((material, index) => {
 								return (

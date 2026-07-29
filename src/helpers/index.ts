@@ -1,3 +1,5 @@
+import { MouseEvent } from "react"
+
 export { calcuateWeaponCosts, weaponExpAmount } from "./calcuateWeaponCosts"
 export {
 	calculateCharacterCosts,
@@ -36,3 +38,7 @@ export {
 	backupSetImport,
 	eraseLocalData,
 } from "@/helpers/backupData"
+
+export function stopPropogation(event: MouseEvent) {
+	event.stopPropagation()
+}

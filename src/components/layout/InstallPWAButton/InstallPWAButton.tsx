@@ -4,6 +4,8 @@ import { ReactNode, useState } from "react"
 
 import { PWAInstallPlatform, usePWAInstall } from "@/hooks"
 
+import { stopPropogation } from "@/helpers"
+
 import { ModalContainer } from "@/components/layout/Modal"
 
 import styles from "./installPWAButton.module.css"
@@ -102,10 +104,10 @@ export function InstallPWAButton({
 			)}
 
 			{showInstructions && (
-				<ModalContainer onClose={() => setShowInstructions(false)}>
+				<ModalContainer onClickOut={() => setShowInstructions(false)}>
 					<div
 						className={`metallic-panel ${styles.instructionsBox}`}
-						onClick={(e) => e.stopPropagation()}>
+						onClick={stopPropogation}>
 						<span className={styles.instructionsTitle}>
 							{instructions.title}
 						</span>

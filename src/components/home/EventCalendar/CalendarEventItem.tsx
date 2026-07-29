@@ -1,5 +1,6 @@
 "use client"
 
+import Image from "next/image"
 import {
 	CSSProperties,
 	MouseEventHandler,
@@ -9,15 +10,15 @@ import {
 	useRef,
 	useState,
 } from "react"
+import { createPortal } from "react-dom"
 
 import { EventData } from "@/data/activities/events"
+import { stopPropogation } from "@/helpers"
 import { formatEventDateTime } from "@/helpers/serverTime"
 
 import { useCalendarContext } from "./EventCalendar"
 
 import styles from "./EventCalendar.module.css"
-import { createPortal } from "react-dom"
-import Image from "next/image"
 
 function EventDetailsModal({
 	onClickOut,
@@ -164,7 +165,7 @@ function EventDetailsBox({
 
 	return (
 		<div
-			onClick={(e) => e.stopPropagation()}
+			onClick={stopPropogation}
 			className={styles.eventDetailsBox}
 			style={
 				{

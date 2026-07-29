@@ -8,7 +8,7 @@ import { DragDropProvider, DragOverlay } from "@dnd-kit/react"
 import { isSortable } from "@dnd-kit/react/sortable"
 import { DragEndEvent, DragStartEvent, Feedback } from "@dnd-kit/dom"
 
-import type { ModalEventType } from "@/types"
+import type { KeyMouseEventType } from "@/types"
 import type { CharacterRecord } from "@/types/planner"
 
 import { usePlannerStore } from "@/hooks"
@@ -50,14 +50,14 @@ export default function RenderCharacterPlanner() {
 		setShowAddChar(true)
 	}
 
-	const addCharacter = (e: ModalEventType, charID: string) => {
+	const addCharacter = (e: KeyMouseEventType, charID: string) => {
 		e.stopPropagation()
 		const emptyChar = generateNewCharacter(charID)
 		actions.addCharacter(emptyChar)
 		setShowAddChar(false)
 	}
 
-	const cancelModal = (e: ModalEventType) => {
+	const cancelAdd = (e: KeyMouseEventType) => {
 		e.stopPropagation()
 		setShowAddChar(false)
 	}
@@ -107,20 +107,21 @@ export default function RenderCharacterPlanner() {
 					className={`pill-button ${toolbarStyles.toolbarButton}`}
 					onClick={handleStartAdding}>
 					ADD CHARACTER
+					<AddNewCharContext.Provider
+						value={{
+							addCharacter,
+						}}>
+						{showAddChar &&
+							createPortal(
+								<ModalContainer onClickOut={cancelAdd}>
+									<PlannerAddCharacterBox
+										onCancel={cancelAdd}
+									/>
+								</ModalContainer>,
+								document.body
+							)}
+					</AddNewCharContext.Provider>
 				</button>
-
-				<AddNewCharContext.Provider
-					value={{
-						addCharacter,
-					}}>
-					{showAddChar &&
-						createPortal(
-							<ModalContainer onClose={cancelModal}>
-								<PlannerAddCharacterBox onCancel={cancelModal} />
-							</ModalContainer>,
-							document.body
-						)}
-				</AddNewCharContext.Provider>
 				{/* =========================================================== */}
 			</PullOutToolbar>
 
@@ -175,7 +176,7 @@ export default function RenderCharacterPlanner() {
 					{/*                       Planner Grid                        */}
 					{/* ========================================================= */}
 					<div className={styles.plannerGrid}>
-						{Object.values(plannerData.characters || {}).map(
+						{Object.values(plannerData.characters).map(
 							(char, index) => (
 								<PlannerCharacterBox
 									key={char.id}

@@ -5,7 +5,7 @@ import { createPortal } from "react-dom"
 
 import { useSortable } from "@dnd-kit/react/sortable"
 
-import type { ModalEventType } from "@/types"
+import type { KeyMouseEventType } from "@/types"
 import type { WeaponRecord } from "@/types/planner"
 
 import { EnumItemLvls, getItemRarityStyle } from "@/data/items"
@@ -163,11 +163,11 @@ export function PlannerArcBox({
 		setShowDeleteConfirmation(true)
 	}
 
-	const onDeleteCancel = (e: ModalEventType) => {
+	const onDeleteCancel = (e: KeyMouseEventType) => {
 		e.stopPropagation()
 		setShowDeleteConfirmation(false)
 	}
-	const onDeleteConfim = (e: ModalEventType) => {
+	const onDeleteConfim = (e: KeyMouseEventType) => {
 		e.stopPropagation()
 		actions.deleteWeapon(arcRecord)
 		setShowDeleteConfirmation(false)
@@ -274,9 +274,7 @@ export function PlannerArcBox({
 			</PlannerBoxContext.Provider>
 			{showDeleteConfirmation &&
 				createPortal(
-					<ModalContainer
-						onClose={onDeleteConfim}
-						onCancel={onDeleteCancel}>
+					<ModalContainer onClickOut={onDeleteCancel}>
 						<AlertContainer
 							type="confirm"
 							onConfirm={onDeleteConfim}

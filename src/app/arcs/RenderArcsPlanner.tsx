@@ -8,7 +8,7 @@ import { DragDropProvider, DragOverlay } from "@dnd-kit/react"
 import { isSortable } from "@dnd-kit/react/sortable"
 import { DragEndEvent, DragStartEvent, Feedback } from "@dnd-kit/dom"
 
-import type { ModalEventType } from "@/types"
+import type { KeyMouseEventType } from "@/types"
 import type { WeaponRecord } from "@/types/planner"
 
 import { EnumItemLvls } from "@/data/items"
@@ -57,13 +57,13 @@ export default function RenderArcsPlanner() {
 		})
 	}
 
-	const addArc = (e: ModalEventType) => {
+	const addArc = (e: KeyMouseEventType) => {
 		e.stopPropagation()
 		actions.addWeapon(newArcRecord)
 		setNewArcRecord(null!)
 	}
 
-	const cancelModal = (e: ModalEventType) => {
+	const cancelAdd = (e: KeyMouseEventType) => {
 		e.stopPropagation()
 		setNewArcRecord(null!)
 	}
@@ -115,12 +115,10 @@ export default function RenderArcsPlanner() {
 					value={{ newArcRecord, setNewArcRecord }}>
 					{newArcRecord &&
 						createPortal(
-							<ModalContainer
-								onClose={addArc}
-								onCancel={cancelModal}>
+							<ModalContainer onClickOut={cancelAdd}>
 								<PlannerAddArcBox
 									onConfirm={addArc}
-									onCancel={cancelModal}
+									onCancel={cancelAdd}
 								/>
 							</ModalContainer>,
 							document.body

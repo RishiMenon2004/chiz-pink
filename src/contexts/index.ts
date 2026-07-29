@@ -8,7 +8,7 @@ import {
 	useContext,
 } from "react"
 
-import type { ModalEventType } from "@/types"
+import type { KeyMouseEventType } from "@/types"
 import type {
 	CumulativeInventory,
 	FilterByType,
@@ -52,7 +52,7 @@ export function useAddArcContext() {
 }
 
 export const AddNewCharContext = createContext<{
-	addCharacter: (e: ModalEventType, charId: string) => void
+	addCharacter: (e: KeyMouseEventType, charId: string) => void
 }>(null!)
 export function useAddCharContext() {
 	return useContext(AddNewCharContext)

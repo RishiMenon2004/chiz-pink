@@ -5,7 +5,7 @@ import { createPortal } from "react-dom"
 
 import { useSortable } from "@dnd-kit/react/sortable"
 
-import { ModalEventType } from "@/types"
+import { KeyMouseEventType } from "@/types"
 import { CharacterRecord, SkillLvlRecord } from "@/types/planner"
 
 import { EnumItemLvls, getItemRarityStyle } from "@/data/items"
@@ -284,11 +284,11 @@ export function PlannerCharacterBox({
 		setShowDeleteConfirmation(true)
 	}
 
-	const onDeleteCancel = (e: ModalEventType) => {
+	const cancelDelete = (e: KeyMouseEventType) => {
 		e.stopPropagation()
 		setShowDeleteConfirmation(false)
 	}
-	const onDeleteConfim = (e: ModalEventType) => {
+	const confirmDelete = (e: KeyMouseEventType) => {
 		e.stopPropagation()
 		actions.deleteCharacter(charRecord)
 		setShowDeleteConfirmation(false)
@@ -524,14 +524,12 @@ export function PlannerCharacterBox({
 			</PlannerBoxContext.Provider>
 			{showDeleteConfirmation &&
 				createPortal(
-					<ModalContainer
-						onClose={onDeleteConfim}
-						onCancel={onDeleteCancel}>
+					<ModalContainer onClickOut={cancelDelete}>
 						<AlertContainer
 							type="confirm"
-							onConfirm={onDeleteConfim}
+							onConfirm={confirmDelete}
 							cancelLabel="CANCEL"
-							onCancel={onDeleteCancel}>
+							onCancel={cancelDelete}>
 							{"A-are you sure you want to delete this Character?"}
 						</AlertContainer>
 					</ModalContainer>,

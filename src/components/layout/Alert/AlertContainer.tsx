@@ -1,8 +1,10 @@
 "use client"
 
-import { MouseEvent, ReactNode, useEffect, useRef } from "react"
+import { KeyboardEvent, ReactNode, useEffect, useRef } from "react"
 
-import { ModalEventType } from "@/types"
+import { KeyMouseEventType } from "@/types"
+
+import { stopPropogation } from "@/helpers"
 
 import styles from "./alertContainer.module.css"
 
@@ -20,8 +22,8 @@ export function AlertContainer({
 		| "dangerous-confirm"
 		| "choices"
 		| "dangerous-choices"
-	onConfirm: ((e: MouseEvent) => void) | ((e: ModalEventType) => void)
-	onCancel?: ((e: MouseEvent) => void) | ((e: ModalEventType) => void)
+	onConfirm: (e: KeyMouseEventType) => void
+	onCancel?: (e: KeyMouseEventType) => void
 	confirmLabel?: string
 	cancelLabel?: string
 	isConfirmDanger?: boolean
@@ -47,11 +49,33 @@ export function AlertContainer({
 		target?.focus()
 	}, [])
 
+	useEffect(() => {
+		const handleGlobalKeyDown = (e: globalThis.KeyboardEvent) => {
+			if (onCancel) {
+				if (e.key === "Enter") {
+					onConfirm(e as unknown as KeyboardEvent<HTMLElement>)
+				}
+
+				if (e.key === "Escape") {
+					onCancel(e as unknown as KeyboardEvent<HTMLElement>)
+				}
+				return
+			}
+
+			if (e.key === "Enter" || e.key === "Escape") {
+				onConfirm(e as unknown as KeyboardEvent<HTMLElement>)
+			}
+		}
+
+		window.addEventListener("keydown", handleGlobalKeyDown)
+		return () => window.removeEventListener("keydown", handleGlobalKeyDown)
+	}, [onConfirm, onCancel])
+
 	return (
 		<div
 			ref={containerRef}
 			className={`metallic-panel ${styles.alertBox}`}
-			onClick={(e) => e.stopPropagation()}>
+			onClick={stopPropogation}>
 			<div>{children}</div>
 			<div className={styles.alertBoxButtons}>
 				{type !== "acknowledge" && (

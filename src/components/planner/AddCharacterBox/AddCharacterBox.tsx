@@ -3,7 +3,7 @@
 import { ChangeEvent, MouseEvent, useState } from "react"
 import Image from "next/image"
 
-import { ModalEventType } from "@/types"
+import { KeyMouseEventType } from "@/types"
 import { Character } from "@/types/character"
 
 import { EnumRarity, getItemRarityStyle } from "@/data/items"
@@ -12,7 +12,7 @@ import { getAllCharactersList } from "@/data/characters/characterList"
 
 import { usePlannerStore } from "@/hooks"
 
-import { createSearchString } from "@/helpers"
+import { createSearchString, stopPropogation } from "@/helpers"
 
 import { useAddCharContext } from "@/contexts"
 
@@ -59,7 +59,7 @@ function CharacterListItem({
 export function PlannerAddCharacterBox({
 	onCancel,
 }: {
-	onCancel: (e: ModalEventType) => void
+	onCancel: (e: KeyMouseEventType) => void
 }) {
 	const { addCharacter } = useAddCharContext()
 	const { plannerData } = usePlannerStore()
@@ -101,14 +101,14 @@ export function PlannerAddCharacterBox({
 	return (
 		<div
 			className={`metallic-panel ${styles.addCharBox}`}
-			onClick={(e) => e.stopPropagation()}>
+			onClick={stopPropogation}>
 			<div className={styles.addCharBoxTitle}>Add Character</div>
 			<button className={styles.addCharBoxCancel} onClick={onCancel} />
 			<div className={styles.addCharFilters}>
 				<div className={styles.charFilterList} style={{ flexGrow: 0.25 }}>
 					{Object.values(EnumCharacterElement).map((element) => {
 						const isActive = filterQuery[0] === element
-						const toggleElement = (e: ModalEventType) => {
+						const toggleElement = (e: KeyMouseEventType) => {
 							e.stopPropagation()
 							setFilterQuery(([prevType, prevRank]) => {
 								if (prevType === element) return [null, prevRank]
@@ -142,7 +142,7 @@ export function PlannerAddCharacterBox({
 				<div className={styles.charFilterList}>
 					{rarityFilters.map((charRank) => {
 						const isActive = filterQuery[1] === charRank
-						const toggleRank = (e: ModalEventType) => {
+						const toggleRank = (e: KeyMouseEventType) => {
 							e.stopPropagation()
 							setFilterQuery(([prevType, prevRank]) => [
 								prevType,

@@ -347,7 +347,7 @@ export function CloudSyncProvider({ children }: { children: React.ReactNode }) {
 			{children}
 			{(restorePrompt?.kind === "older" ||
 				restorePrompt?.kind === "overwrite") && (
-				<ModalContainer onClose={() => null}>
+				<ModalContainer>
 					<AlertContainer
 						type="choices"
 						onConfirm={() => resolveRestorePrompt("drive")}
