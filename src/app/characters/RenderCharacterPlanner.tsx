@@ -13,6 +13,7 @@ import type { CharacterRecord } from "@/types/planner"
 
 import { usePlannerStore } from "@/hooks"
 import { getAggregatedMaterials } from "@/hooks/usePlannerStore"
+import { getAllMaterialsList } from "@/data/items"
 
 import { PlannerInventoryProvider, generateNewCharacter } from "@/helpers"
 
@@ -42,9 +43,21 @@ export default function RenderCharacterPlanner() {
 
 	const [showAddChar, setShowAddChar] = useState<boolean>(false)
 
+	const materialOrder = useMemo(() => {
+		const order = new Map<string, number>()
+		getAllMaterialsList().forEach((material, index) =>
+			order.set(material.id, index)
+		)
+		return order
+	}, [])
+
 	const allRequiredMaterials = useMemo(
-		() => Object.entries(getAggregatedMaterials(plannerData, "char")),
-		[plannerData]
+		() =>
+			Object.entries(getAggregatedMaterials(plannerData, "char")).sort(
+				([idA], [idB]) =>
+					(materialOrder.get(idA) ?? 0) - (materialOrder.get(idB) ?? 0)
+			),
+		[plannerData, materialOrder]
 	)
 
 	const handleStartAdding = () => {

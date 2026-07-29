@@ -11,7 +11,7 @@ import { DragEndEvent, DragStartEvent, Feedback } from "@dnd-kit/dom"
 import type { KeyMouseEventType } from "@/types"
 import type { WeaponRecord } from "@/types/planner"
 
-import { EnumItemLvls } from "@/data/items"
+import { EnumItemLvls, getAllMaterialsList } from "@/data/items"
 import { getAllArcsList } from "@/data/arcs"
 
 import { usePlannerStore } from "@/hooks"
@@ -45,9 +45,21 @@ export default function RenderArcsPlanner() {
 		Omit<WeaponRecord, "uid" | "requiredMaterials" | "isDisabled">
 	>(null!)
 
+	const materialOrder = useMemo(() => {
+		const order = new Map<string, number>()
+		getAllMaterialsList().forEach((material, index) =>
+			order.set(material.id, index)
+		)
+		return order
+	}, [])
+
 	const allRequiredMaterials = useMemo(
-		() => Object.entries(getAggregatedMaterials(plannerData, "arc")),
-		[plannerData]
+		() =>
+			Object.entries(getAggregatedMaterials(plannerData, "arc")).sort(
+				([idA], [idB]) =>
+					(materialOrder.get(idA) ?? 0) - (materialOrder.get(idB) ?? 0)
+			),
+		[plannerData, materialOrder]
 	)
 
 	const handleStartAdding = () => {
