@@ -15,6 +15,25 @@ export enum EnumMaterialType {
 }
 
 /* Rewards */
+
+export const diceLimited: Material = {
+	id: "dice_limited",
+	name: "Solid Dice",
+	rarity:EnumRarity.Epic,
+	materialType: EnumMaterialType.Reward,
+	imageSrc: "/rewards/dice_limited",
+	sources: ["Fair Exchange", "Circle Bounty: Elite", "Scarborough Fair: Limited Board"]
+}
+
+export const diceStandard: Material = {
+	id: "dice_standard",
+	name: "Fabricated Dice",
+	rarity:EnumRarity.Epic,
+	materialType: EnumMaterialType.Reward,
+	imageSrc: "/rewards/dice_standard",
+	sources: ["Fair Exchange", "Circle Bounty: Standard", "Scarborough Fair: Permanent Board"]
+}
+
 export const floeCinemeTicket: Material = {
 	id: "floe_cineme_ticket",
 	name: "Floe Cinema Ticket",
