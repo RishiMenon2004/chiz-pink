@@ -11,7 +11,6 @@ import { EnumArcType } from "../arcs"
 import { EnumCharacterElement } from "./character"
 
 export const shinku: Character = {
-	isFeatured: true,
 	id: "shinku",
 	imageSrc: "shinku.png",
 	name: "Shinku",
@@ -30,35 +29,43 @@ export const shinku: Character = {
 			description: [
 				{
 					section: "Basic Attack: Special Combat Arts",
-					description: "Performs up to <dn>5</> consecutive attacks, dealing Cosmos DMG. Grants Defiant Spirit on hit.",
+					description:
+						"Performs up to <dn>5</> consecutive attacks, dealing Cosmos DMG. Grants Defiant Spirit on hit.",
 				},
 				{
 					section: "Basic Attack: Arrowfall",
-					description: "Press Basic Attack while airborne to plunge, dealing <dn>1</> instance of Cosmos DMG upon impact. Increases DMG based on fall height, up to 100%.",
+					description:
+						"Press Basic Attack while airborne to plunge, dealing <dn>1</> instance of Cosmos DMG upon impact. Increases DMG based on fall height, up to 100%.",
 				},
 				{
 					section: "Basic Attack: Special Combat Arts (Altered)",
-					description: "Hold Basic Attack during the 3rd/4th/5th hit of Special Combat Arts to trigger Special Combat Arts (Altered), dealing Cosmos DMG and granting Defiant Spirit on hit.",
+					description:
+						"Hold Basic Attack during the 3rd/4th/5th hit of Special Combat Arts to trigger Special Combat Arts (Altered), dealing Cosmos DMG and granting Defiant Spirit on hit.",
 				},
 				{
 					section: "Critical Riposte: Split-Second Victory",
-					description: "Triggers when using Special Combat Arts after a Critical Dodge. Retaliates against the target with a sharp kick, dealing <dn>1</> instance of Cosmos DMG, reducing their Break, and gaining Defiant Spirit.",
+					description:
+						"Triggers when using Special Combat Arts after a Critical Dodge. Retaliates against the target with a sharp kick, dealing <dn>1</> instance of Cosmos DMG, reducing their Break, and gaining Defiant Spirit.",
 				},
 				{
 					section: "Basic Attack: Tidal Assault",
-					description: "Performs up to <dn>5</> consecutive attacks, dealing Cosmos DMG. Grants Fading Reason on hit.",
+					description:
+						"Performs up to <dn>5</> consecutive attacks, dealing Cosmos DMG. Grants Fading Reason on hit.",
 				},
 				{
 					section: "Basic Attack: Hammerfall",
-					description: "Press Basic Attack while airborne to plunge, dealing <dn>1</> instance of Cosmos DMG upon impact. Increases DMG based on fall height, up to 100%. Grants Fading Reason on hit.",
+					description:
+						"Press Basic Attack while airborne to plunge, dealing <dn>1</> instance of Cosmos DMG upon impact. Increases DMG based on fall height, up to 100%. Grants Fading Reason on hit.",
 				},
 				{
 					section: "Basic Attack: Tidal Assault (Scorn)",
-					description: "Hold Basic Attack during the 3rd/4th/5th hit of Tidal Assault to trigger Tidal Assault (Scorn), dealing <dn>1</> instance of Cosmos DMG and granting Fading Reason on hit.",
+					description:
+						"Hold Basic Attack during the 3rd/4th/5th hit of Tidal Assault to trigger Tidal Assault (Scorn), dealing <dn>1</> instance of Cosmos DMG and granting Fading Reason on hit.",
 				},
 				{
 					section: "Critical Riposte: No Respite",
-					description: "Triggers when using Tidal Assault after a Critical Dodge. Retaliates against the target with a sharp kick, dealing <dn>1</> instance of Cosmos DMG, reducing the target's Break, and gaining Fading Reason.\nInflicts Forced Knockback and briefly stuns (not effective against Bosses) the target when Parry Attack or Critical Riposte hits while in the Menacing Gaze state, then deals 1 additional instance of DMG to the target equal to <dn>20%</> of Instant Strike.",
+					description:
+						"Triggers when using Tidal Assault after a Critical Dodge. Retaliates against the target with a sharp kick, dealing <dn>1</> instance of Cosmos DMG, reducing the target's Break, and gaining Fading Reason.\nInflicts Forced Knockback and briefly stuns (not effective against Bosses) the target when Parry Attack or Critical Riposte hits while in the Menacing Gaze state, then deals 1 additional instance of DMG to the target equal to <dn>20%</> of Instant Strike.",
 				},
 			],
 			maxLvl: 10,

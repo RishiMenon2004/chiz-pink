@@ -16,63 +16,8 @@ import {
 import { EnumArcType } from "./arc"
 
 const allArcs: Record<string, Arc> = {
-	blushing_mirage: {
-		isFeatured: true,
-		id: "blushing_mirage",
-		imageSrc: "blushing_mirage.png",
-		name: "Blushing Mirage",
-		description:
-			"Moonlight whispers a promise of unfurled wings, stirring rare passion and inspiration. But not every whisper should be trusted.",
-		rarity: EnumRarity.Epic,
-		type: EnumArcType.Condensate,
-		baseAtk: 37,
-		mainAttribute: {
-			attribute: EnumStatAttribute.CritRate,
-			baseValue: 0.096,
-		},
-		ascensionMaterialSet1: ascDramaCoreSet,
-		ascensionMaterialSet2: ascWhispersSet,
-		effect: {
-			name: "Moonphase Shift",
-			description:
-				"Increases ATK by <dn>{0}</>. \nAfter casting Ultimate, increases the wearer's Cosmos DMG dealt by <dn>{1}</> and allows the wearer to ignore <dn>{2}</> of enemy DEF for <dn>{3}</>s. Resets the duration when triggered again.",
-			values: {
-				"1": [
-					{ type: "Percent", value: 0.2 },
-					{ type: "Percent", value: 0.32 },
-					{ type: "Percent", value: 0.12 },
-					{ type: "Integer", value: 20 },
-				],
-				"2": [
-					{ type: "Percent", value: 0.23 },
-					{ type: "Percent", value: 0.368 },
-					{ type: "Percent", value: 0.138 },
-					{ type: "Integer", value: 20 },
-				],
-				"3": [
-					{ type: "Percent", value: 0.26 },
-					{ type: "Percent", value: 0.416 },
-					{ type: "Percent", value: 0.156 },
-					{ type: "Integer", value: 20 },
-				],
-				"4": [
-					{ type: "Percent", value: 0.29 },
-					{ type: "Percent", value: 0.464 },
-					{ type: "Percent", value: 0.174 },
-					{ type: "Integer", value: 20 },
-				],
-				"5": [
-					{ type: "Percent", value: 0.32 },
-					{ type: "Percent", value: 0.512 },
-					{ type: "Percent", value: 0.192 },
-					{ type: "Integer", value: 20 },
-				],
-			},
-		},
-	},
-
 	the_wrong_gate: {
-		isPreview: true,
+		isFeatured: true,
 		id: "the_wrong_gate",
 		imageSrc: "the_wrong_gate.png",
 		name: "The Wrong Gate",
@@ -120,6 +65,60 @@ const allArcs: Record<string, Arc> = {
 					{ type: "Percent", value: 0.32 },
 					{ type: "Percent", value: 0.3 },
 					{ type: "Percent", value: 0.6 },
+					{ type: "Integer", value: 20 },
+				],
+			},
+		},
+	},
+
+	blushing_mirage: {
+		id: "blushing_mirage",
+		imageSrc: "blushing_mirage.png",
+		name: "Blushing Mirage",
+		description:
+			"Moonlight whispers a promise of unfurled wings, stirring rare passion and inspiration. But not every whisper should be trusted.",
+		rarity: EnumRarity.Epic,
+		type: EnumArcType.Condensate,
+		baseAtk: 37,
+		mainAttribute: {
+			attribute: EnumStatAttribute.CritRate,
+			baseValue: 0.096,
+		},
+		ascensionMaterialSet1: ascDramaCoreSet,
+		ascensionMaterialSet2: ascWhispersSet,
+		effect: {
+			name: "Moonphase Shift",
+			description:
+				"Increases ATK by <dn>{0}</>. \nAfter casting Ultimate, increases the wearer's Cosmos DMG dealt by <dn>{1}</> and allows the wearer to ignore <dn>{2}</> of enemy DEF for <dn>{3}</>s. Resets the duration when triggered again.",
+			values: {
+				"1": [
+					{ type: "Percent", value: 0.2 },
+					{ type: "Percent", value: 0.32 },
+					{ type: "Percent", value: 0.12 },
+					{ type: "Integer", value: 20 },
+				],
+				"2": [
+					{ type: "Percent", value: 0.23 },
+					{ type: "Percent", value: 0.368 },
+					{ type: "Percent", value: 0.138 },
+					{ type: "Integer", value: 20 },
+				],
+				"3": [
+					{ type: "Percent", value: 0.26 },
+					{ type: "Percent", value: 0.416 },
+					{ type: "Percent", value: 0.156 },
+					{ type: "Integer", value: 20 },
+				],
+				"4": [
+					{ type: "Percent", value: 0.29 },
+					{ type: "Percent", value: 0.464 },
+					{ type: "Percent", value: 0.174 },
+					{ type: "Integer", value: 20 },
+				],
+				"5": [
+					{ type: "Percent", value: 0.32 },
+					{ type: "Percent", value: 0.512 },
+					{ type: "Percent", value: 0.192 },
 					{ type: "Integer", value: 20 },
 				],
 			},

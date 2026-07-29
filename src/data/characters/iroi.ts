@@ -11,7 +11,7 @@ import { EnumArcType } from "@/data/arcs"
 import { EnumCharacterElement } from "@/data/characters"
 
 export const iroi: Character = {
-	isPreview: true,
+	isFeatured: true,
 	id: "iroi",
 	imageSrc: "iroi.png",
 	name: "Iroi",
