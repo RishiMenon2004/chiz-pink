@@ -1,46 +1,14 @@
-div.instructionsBox {
+.instructionsSteps {
 	display: flex;
 	flex-direction: column;
-	align-items: center;
-	gap: 1rem;
-	padding: 1.5rem 1rem;
-	max-width: 90vw;
-	width: 24rem;
-	border-radius: 1rem;
+	gap: 0.5rem;
 
-	color: black;
-	text-align: center;
+	text-align: left;
+	list-style-position: outside;
+	margin-left: 1rem;
 
-	.instructionsTitle {
-		font-family: var(--font-syne);
-		font-weight: 650;
-		font-size: 1.25rem;
-	}
-
-	.instructionsSteps {
-		display: flex;
-		flex-direction: column;
-		gap: 0.5rem;
-
-		width: 100%;
-		margin: 0;
-		padding: 1rem;
-		padding-left: 2.5rem;
-		border-radius: 1rem;
-
-		background-color: var(--interactive-bg);
-
-		color: white;
-		text-align: left;
-		list-style-position: outside;
-		font-size: 1rem;
-
-		box-shadow:
-			var(--shadow-dark-60) 0px -2px 4px,
-			var(--foreground) 0px 1px 4px;
-	}
-
-	button {
-		padding: 0.15rem 1rem;
+	::marker,
+	::-moz-list-number {
+		font-family: var(--font-barlow-condensed);
 	}
 }

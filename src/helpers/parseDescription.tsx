@@ -15,7 +15,8 @@ const OPEN_TAG_REGEX = /^<([a-z]+)((?:\s+[a-z]+=(?:"[^"]*"|'[^']*'))*)>/
 export function parseDescription(
 	description: string,
 	tier: number = 1,
-	values?: DescriptionValuesRecord
+	values?: DescriptionValuesRecord,
+	onLinkClick?: () => void
 ) {
 	const regex = /(<[a-z]+(?:\s+[a-z]+=(?:"[^"]*"|'[^']*'))*>[^<]+<\/>)/g
 
@@ -49,9 +50,35 @@ export function parseDescription(
 						)
 					case "link":
 						return (
-							<DescriptionLink url={tagAttributes.url ?? "#"}>
+							<DescriptionLink
+								url={tagAttributes.url ?? "#"}
+								onClick={onLinkClick}>
 								{children}
 							</DescriptionLink>
+						)
+					case "tag":
+						return (
+							<span
+								style={{
+									backgroundColor: "var(--pink)",
+									padding: "0.125em 0.75em",
+									borderRadius: "100vh",
+									marginInlineEnd: "0.25rem",
+								}}>
+								{children}
+							</span>
+						)
+					case "smalltag":
+						return (
+							<span
+								style={{
+									backgroundColor: "var(--pink)",
+									padding: "0 0.5em",
+									borderRadius: "100vh",
+									marginInline: "0.25rem",
+								}}>
+								{children}
+							</span>
 						)
 					case "kw":
 					default:

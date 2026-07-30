@@ -9,6 +9,8 @@
 		var(--darker-pink) 20%,
 		rgba(0, 0, 0, 0.5)
 	);
+
+	backdrop-filter: blur(4px);
 }
 
 .welcomeSplashContainer,
@@ -151,7 +153,7 @@
 		justify-content: flex-start;
 		gap: 2rem;
 
-		button {
+		& > button {
 			display: grid;
 			place-items: center;
 			width: 50%;
@@ -200,7 +202,7 @@
 
 	.updateSplashContainer & {
 		padding-inline: 8rem 0;
-		
+
 		.welcomeText {
 			font-size: 1.5rem;
 		}
@@ -209,7 +211,10 @@
 			margin-right: 8rem;
 
 			.versionSection {
-				margin-block-end: 1.5rem;
+				&:not(:only-child) {
+					margin-block-end: 1.5rem;
+				}
+
 				.versionTitle {
 					font-size: 1.5em;
 					font-style: italic;
@@ -226,6 +231,9 @@
 				.versionText {
 					font-size: 0.9em;
 					margin-block: 1ch;
+					&:last-child {
+						margin-bottom: 0;
+					}
 				}
 			}
 		}
@@ -233,7 +241,7 @@
 		.btnContainer {
 			margin-right: 20vw;
 
-			button {
+			& > button {
 				width: 25%;
 			}
 		}
@@ -312,7 +320,7 @@
 			.btnContainer {
 				margin-right: unset;
 
-				button {
+				& > button {
 					width: 50%;
 				}
 			}

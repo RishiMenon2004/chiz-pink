@@ -4,11 +4,11 @@ import { ReactNode, useState } from "react"
 
 import { PWAInstallPlatform, usePWAInstall } from "@/hooks"
 
-import { stopPropogation } from "@/helpers"
-
 import { ModalContainer } from "@/components/layout/Modal"
 
 import styles from "./installPWAButton.module.css"
+import { AlertContainer } from "../Alert"
+import { alertTextBox } from "../Alert/AlertContainer"
 
 const MANUAL_INSTRUCTIONS: Record<
 	PWAInstallPlatform,
@@ -104,25 +104,20 @@ export function InstallPWAButton({
 			)}
 
 			{showInstructions && (
-				<ModalContainer onClickOut={() => setShowInstructions(false)}>
-					<div
-						className={`metallic-panel ${styles.instructionsBox}`}
-						onClick={stopPropogation}>
-						<span className={styles.instructionsTitle}>
-							{instructions.title}
-						</span>
-						<ol className={styles.instructionsSteps}>
-							{instructions.steps.map((step, index) => (
-								<li key={index}>{step}</li>
-							))}
-						</ol>
-						<button
-							className="pill-button"
-							data-variant="normal"
-							onClick={() => setShowInstructions(false)}>
-							Got it
-						</button>
-					</div>
+				<ModalContainer>
+					<AlertContainer
+						type="acknowledge"
+						confirmLabel="Got it"
+						onConfirm={() => setShowInstructions(false)}>
+						{instructions.title}
+						<div className={`raised-control ${alertTextBox}`}>
+							<ol className={styles.instructionsSteps}>
+								{instructions.steps.map((step, index) => (
+									<li key={index}>{step}</li>
+								))}
+							</ol>
+						</div>
+					</AlertContainer>
 				</ModalContainer>
 			)}
 		</>

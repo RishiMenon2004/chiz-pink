@@ -72,7 +72,7 @@ function WelcomeSplashScreen({ closeSplash }: { closeSplash: () => void }) {
 								Dashboard
 							</Link>
 							{
-								" — Track your stamina, current events and featured boards."
+								" — Track your stamina, current events, and featured boards."
 							}
 						</li>
 						<li>
@@ -109,15 +109,38 @@ function WelcomeSplashScreen({ closeSplash }: { closeSplash: () => void }) {
 								href={"/inventory"}>
 								Inventory
 							</Link>
-							{" — Easy-to-use inventory for your in-game items."}
+							{" — Tracker for your in-game items."}
+						</li>
+						<li>
+							<Link
+								onClick={closeSplash}
+								className="btn-anchor"
+								href={"/settings"}>
+								Settings
+							</Link>
+							{" — Switching from "}
+							<Link
+								className="btn-anchor"
+								href="https://nteplanner.app/"
+								target="_blank">
+								NTE Planner
+							</Link>
+							{" or "}
+							<Link
+								className="btn-anchor"
+								href="https://www.ntewiz.xyz/"
+								target="_blank">
+								NTEWiz
+							</Link>
+							{"? Import your data with ease."}
 						</li>
 					</ul>
 				</div>
 				<div className={styles.btnContainer}>
 					<InstallPWAButton type="button" />
 					<button className="pill-button" onClick={closeSplash}>
-					{"CONTINUE >>"}
-				</button>
+						{"CONTINUE >>"}
+					</button>
 				</div>
 			</div>
 			<div className={styles.chizSection}>
@@ -169,7 +192,12 @@ function UpdateSplashScreen({ closeSplash }: { closeSplash: () => void }) {
 										key={line}
 										className={styles.versionText}>
 										{typeof log === "string"
-											? parseDescription(log)
+											? parseDescription(
+													log,
+													undefined,
+													undefined,
+													closeSplash
+												)
 											: log}
 									</div>
 								))}
@@ -179,8 +207,8 @@ function UpdateSplashScreen({ closeSplash }: { closeSplash: () => void }) {
 				<div className={styles.btnContainer}>
 					<InstallPWAButton type="button" />
 					<button className="pill-button" onClick={closeSplash}>
-					{"CONTINUE >>"}
-				</button>
+						{"CONTINUE >>"}
+					</button>
 				</div>
 			</div>
 		</div>
