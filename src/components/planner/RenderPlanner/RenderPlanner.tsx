@@ -1,8 +1,9 @@
 "use client"
 
 import dynamic from "next/dynamic"
-import { useMemo, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 import { createPortal } from "react-dom"
+import { useRouter } from "next/navigation"
 
 import { DragDropProvider, DragOverlay } from "@dnd-kit/react"
 import { isSortable } from "@dnd-kit/react/sortable"
@@ -18,7 +19,7 @@ import type {
 import { EnumItemLvls, getAllMaterialsList } from "@/data/items"
 import { getAllArcsList } from "@/data/arcs"
 
-import { usePlannerStore } from "@/hooks"
+import { useHybridPlannerStore, usePlannerStore, useSettingsStore } from "@/hooks"
 import { getAggregatedMaterials } from "@/hooks/usePlannerStore"
 
 import { PlannerInventoryProvider, generateNewCharacter } from "@/helpers"
@@ -53,12 +54,47 @@ getAllMaterialsList().forEach((material, index) =>
 export function RenderPlanner({
 	plannerType,
 }: {
-	plannerType: keyof PlannerRecord
+	plannerType: keyof PlannerRecord | "both"
 }) {
 	const { plannerData, actions } = usePlannerStore()
-	const items = plannerData[plannerType]
-	const itemsList: WeaponRecord[] | CharacterRecord[] =
-		Object.values(items) ?? []
+	const { hybridPlanner, actions: hybridActions } =
+		useHybridPlannerStore()
+	const { settings } = useSettingsStore()
+	const router = useRouter()
+
+	const combinedEnabled = settings.appearance["use-hybrid-planner"] ?? false
+
+	//reditect to /characters if accessing /planner and disabled combined planner
+	//vice versa, redirect to /planner if accessing /characters or /arcs and enabled combined planner
+	const shouldRedirect =
+		plannerType === "both" ? !combinedEnabled : combinedEnabled
+	const redirectTo = plannerType === "both" ? "/characters" : "/planner"
+
+	useEffect(() => {
+		if (shouldRedirect) router.replace(redirectTo)
+	}, [shouldRedirect, redirectTo, router])
+
+	const items: Record<string, CharacterRecord | WeaponRecord> = useMemo(() => {
+		if (plannerType !== "both") return plannerData[plannerType]
+
+		const combined: Record<string, CharacterRecord | WeaponRecord> = {
+			...plannerData.characters,
+			...plannerData.arcs,
+		}
+
+		const orderedIds = hybridPlanner.order.filter((id) => id in combined)
+		const remainingIds = Object.keys(combined).filter(
+			(id) => !orderedIds.includes(id)
+		)
+
+		const ordered: Record<string, CharacterRecord | WeaponRecord> = {}
+		;[...orderedIds, ...remainingIds].forEach((id) => {
+			ordered[id] = combined[id]
+		})
+		return ordered
+	}, [plannerType, plannerData, hybridPlanner])
+
+	const itemsList = Object.values(items)
 
 	const [activeDragId, setActiveDragId] = useState<string | null>(null)
 
@@ -67,7 +103,11 @@ export function RenderPlanner({
 			Object.entries(
 				getAggregatedMaterials(
 					plannerData,
-					plannerType === "characters" ? "char" : "arc"
+					plannerType === "characters"
+						? "char"
+						: plannerType === "arcs"
+							? "arc"
+							: "both"
 				)
 			).sort(
 				([idA], [idB]) =>
@@ -130,6 +170,13 @@ export function RenderPlanner({
 		const [removed] = list.splice(initialIndex, 1)
 		list.splice(index, 0, removed)
 
+		if (plannerType === "both") {
+			hybridActions.setOrder(
+				list.map((item) => ("uid" in item ? item.uid : item.id))
+			)
+			return
+		}
+
 		const newRecord: typeof items = {}
 		list.forEach((item) => {
 			newRecord["uid" in item ? item.uid : item.id] = item
@@ -137,10 +184,12 @@ export function RenderPlanner({
 		actions.updatePlanner({ [plannerType]: newRecord })
 	}
 
+	if (shouldRedirect) return null
+
 	return (
-		<PlannerInventoryProvider itemRecords={Object.values(items)}>
+		<PlannerInventoryProvider itemRecords={itemsList}>
 			<PullOutToolbar>
-				{plannerType === "characters" ? (
+				{(plannerType === "characters" || plannerType === "both") && (
 					<button
 						className={`pill-button ${toolbarStyles.toolbarButton} ${toolbarStyles.add}`}
 						onClick={handleStartAddingChar}>
@@ -157,7 +206,8 @@ export function RenderPlanner({
 								)}
 						</AddNewCharContext.Provider>
 					</button>
-				) : (
+				)}
+				{(plannerType === "arcs" || plannerType === "both") && (
 					<button
 						className={`pill-button ${toolbarStyles.toolbarButton} ${toolbarStyles.add}`}
 						onClick={handleStartAddingArc}>
@@ -205,13 +255,19 @@ export function RenderPlanner({
 
 			{itemsList.length <= 0 && (
 				<InfoBox>
-					{`You don't have any ${plannerType} in the planner... Maybe you'd like to `}
+					{`You don't have any ${
+						plannerType === "characters"
+							? "characters"
+							: plannerType === "arcs"
+								? "arcs"
+								: "characters or arcs"
+					} in the planner... Maybe you'd like to `}
 					<a
 						className="btn-anchor"
 						onClick={
-							plannerType === "characters"
-								? handleStartAddingChar
-								: handleStartAddingArc
+							plannerType === "arcs"
+								? handleStartAddingArc
+								: handleStartAddingChar
 						}>
 						Add Something?
 					</a>

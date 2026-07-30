@@ -116,7 +116,7 @@ const PlannerArcsSelect = () => {
 					setDropdown(true)
 				}}>
 				<div className={styles.arcSelectSelectedImageContainer}>
-					<ArcIcon arc={selected} width={512} height={512} />
+					<ArcIcon arc={selected} width={256} height={256} />
 				</div>
 				<p>{selected.name}</p>
 				<p>{`${getRarityName(selected.rarity)} ${selected.type} Arc`}</p>
@@ -193,8 +193,8 @@ const PlannerArcsSelect = () => {
 								onClick={addArc}>
 								<ArcIcon
 									arc={arc}
-									width={512}
-									height={512}
+									width={256}
+									height={256}
 									className={getItemRarityStyle(arc)}
 								/>
 								<p>{arc.name}</p>

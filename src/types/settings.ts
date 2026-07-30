@@ -1,10 +1,11 @@
 import { Inventory } from "./inventory"
-import { PlannerRecord } from "./planner"
+import { HybridPlannerRecord, PlannerRecord } from "./planner"
 
 export type SettingsRecord = {
 	appearance: {
 		"use-cursors": boolean
 		"calendar-day-boundary": "server" | "local"
+		"use-hybrid-planner": boolean
 	}
 	userdata: {
 		nickname: string
@@ -22,5 +23,6 @@ export type BackupData = {
 	lastUpdated: number
 	inventory: Inventory
 	planner: PlannerRecord
+	hybridPlanner: HybridPlannerRecord
 	settings: SettingsRecord
 }

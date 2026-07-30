@@ -50,6 +50,13 @@ export const RoutesData: RoutesRecord = {
 		id: "arc_info",
 	},
 
+	"/planner": {
+		title: "PLANNER",
+		head: "Ascension Planner",
+		tooltip: "Ascension Planner",
+		id: "planner",
+	},
+
 	"/inventory": {
 		title: "INVENTORY",
 		head: "Inventory",

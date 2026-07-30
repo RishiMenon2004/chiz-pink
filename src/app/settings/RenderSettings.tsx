@@ -458,7 +458,8 @@ export function RenderSettings() {
 								actions.setConfig("userdata", {
 									nickname: e.currentTarget.value,
 								})
-							}}></ConfigInputbox>
+							}}
+						/>
 						<ConfigSelect
 							name="Server"
 							value={settings.userdata.server}
@@ -634,7 +635,7 @@ export function RenderSettings() {
 							</span>
 						</ContentRow>
 
-						<ContentRow buttonRow={true}>
+						<ContentRow buttonRow>
 							<button
 								className={`pill-button ${styles.configButton}`}
 								data-variant="normal"
@@ -692,38 +693,56 @@ export function RenderSettings() {
 			<Section>
 				<TitleBar title="APPEARANCE" />
 				<Content>
-					<ContentColumn>
-						<ConfigCheckbox
-							name="Custom Cursors"
-							checked={settings.appearance["use-cursors"]}
-							onChange={(e) =>
-								actions.setConfig("appearance", {
-									"use-cursors": e.currentTarget.checked,
-								})
-							}
-						/>
-					</ContentColumn>
-					<ContentColumn>
-						<ConfigCheckbox
-							name={`Calendar: ${getDayBoundaryLabel(
-								settings.appearance["calendar-day-boundary"] ??
-									"server",
-								settings.userdata.server
-							)}`}
-							checked={
-								(settings.appearance["calendar-day-boundary"] ??
-									"server") === "local"
-							}
-							onChange={(e) =>
-								actions.setConfig("appearance", {
-									"calendar-day-boundary": e.currentTarget
-										.checked
-										? "local"
-										: "server",
-								})
-							}
-						/>
-					</ContentColumn>
+					<ContentRow equalColumns>
+						<ContentColumn>
+							<ConfigCheckbox
+								name="Custom Cursors"
+								checked={settings.appearance["use-cursors"]}
+								onChange={(e) =>
+									actions.setConfig("appearance", {
+										"use-cursors": e.currentTarget.checked,
+									})
+								}
+							/>
+							<ConfigCheckbox
+								name={`Calendar: ${getDayBoundaryLabel(
+									settings.appearance[
+										"calendar-day-boundary"
+									] ?? "server",
+									settings.userdata.server
+								)}`}
+								checked={
+									(settings.appearance[
+										"calendar-day-boundary"
+									] ?? "server") === "local"
+								}
+								onChange={(e) =>
+									actions.setConfig("appearance", {
+										"calendar-day-boundary": e.currentTarget
+											.checked
+											? "local"
+											: "server",
+									})
+								}
+							/>
+						</ContentColumn>
+
+						<ContentColumn>
+							<ConfigCheckbox
+								name="Hybrid Planner"
+								checked={
+									settings.appearance["use-hybrid-planner"] ??
+									false
+								}
+								onChange={(e) =>
+									actions.setConfig("appearance", {
+										"use-hybrid-planner":
+											e.currentTarget.checked,
+									})
+								}
+							/>
+						</ContentColumn>
+					</ContentRow>
 				</Content>
 			</Section>
 

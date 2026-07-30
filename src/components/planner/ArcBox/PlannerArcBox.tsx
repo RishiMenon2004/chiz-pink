@@ -194,8 +194,8 @@ export function PlannerArcBox({
 							<div className={styles.arcImageContainer}>
 								<ArcIcon
 									arc={arc}
-									width={512}
-									height={512}
+									width={256}
+									height={256}
 									loading="eager"
 								/>
 								<div className={styles.arcLabelContainer}>

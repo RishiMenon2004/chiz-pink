@@ -12,6 +12,7 @@ const SERVER_FALLBACK: SettingsRecord = {
 	appearance: {
 		"use-cursors": true,
 		"calendar-day-boundary": "server",
+		"use-hybrid-planner": false,
 	},
 	userdata: {
 		nickname: "Appraiser",

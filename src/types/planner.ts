@@ -63,6 +63,10 @@ export type PlannerRecord = {
 	characters: Record<string, CharacterRecord>
 }
 
+export type HybridPlannerRecord = {
+	order: string[]
+}
+
 export type AggregateMaterial = {
 	amount: number
 	sources: Record<string, number>

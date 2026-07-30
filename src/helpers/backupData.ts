@@ -25,6 +25,8 @@ export function buildBackupPayload() {
 	const plannerData =
 		window.localStorage.getItem("planner") ??
 		'{ "arcs": {}, "characters": {} }'
+	const hybridPlannerData =
+		window.localStorage.getItem("hybridPlanner") ?? '{ "order": [] }'
 	const inventoryData = window.localStorage.getItem("inventory") ?? "{}"
 	const settingsData =
 		window.localStorage.getItem("settings") ?? "{ appearance: {} }"
@@ -34,6 +36,7 @@ export function buildBackupPayload() {
 		lastUpdated,
 		inventory: JSON.parse(inventoryData),
 		planner: JSON.parse(plannerData),
+		hybridPlanner: JSON.parse(hybridPlannerData),
 		settings: JSON.parse(settingsData),
 	}
 }
@@ -99,6 +102,7 @@ export function backupImport(json: string) {
 const ERASABLE_KEYS = [
 	"inventory",
 	"planner",
+	"hybridPlanner",
 	"settings",
 	"lastUpdated",
 	"lastSeen",
@@ -114,11 +118,16 @@ export function eraseLocalData() {
 export function backupSetImport({
 	lastUpdated,
 	planner,
+	hybridPlanner,
 	inventory,
 	settings,
 }: BackupData) {
 	window.localStorage.setItem("inventory", JSON.stringify(inventory))
 	window.localStorage.setItem("planner", JSON.stringify(planner))
+	window.localStorage.setItem(
+		"hybridPlanner",
+		JSON.stringify(hybridPlanner ?? { order: [] })
+	)
 	window.localStorage.setItem("lastUpdated", String(lastUpdated))
 	window.localStorage.setItem("settings", JSON.stringify(settings))
 	window.dispatchEvent(new Event("local-storage-update"))

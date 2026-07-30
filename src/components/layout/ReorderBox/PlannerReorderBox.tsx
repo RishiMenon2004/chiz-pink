@@ -36,8 +36,8 @@ function ReorderItem({
 				<ArcIcon
 					className={`raised-control ${styles.itemIcon}`}
 					arc={item as Arc}
-					width={512}
-					height={512}
+					width={256}
+					height={256}
 					loading="eager"
 				/>
 			) : (

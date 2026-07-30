@@ -98,6 +98,7 @@ export function PlannerMaterialBox({
 					width={128}
 					height={128}
 					quality={100}
+					loading="eager"
 				/>
 			</div>
 			<span className={styles.amount}>
