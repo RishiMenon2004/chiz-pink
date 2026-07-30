@@ -7,7 +7,7 @@ import { getServerTimestamp, getUtcTimestamp } from "@/helpers/serverTime"
 
 export type EventData = {
 	name: string
-	type: "Patch" | "Event" | "Circle Gift" | "Gacha" | "Mystery Box"
+	type: "Patch" | "Event" | "Circle Gift" | "Gacha" | "Mystery Box" | "BTR"
 	getStartDate:
 		| ((server: SettingsRecord["userdata"]["server"]) => number)
 		| (() => number)
@@ -87,13 +87,7 @@ const patchTimings = {
 	version1_2: {
 		phase1Start: () => globalPatchStart(8, 7, 2026),
 		phase1End: () => globalPatchEnd(28, 7, 2026),
-		phase2Start: () =>
-			getUtcTimestamp({
-				year: 2026,
-				month: 7,
-				day: 29,
-				hour: 1,
-			}),
+		phase2Start: () => globalPatchStart(29, 7, 2026, -2),
 		phase2End: () => globalPatchEnd(18, 8, 2026),
 	},
 	version1_3: {
@@ -192,7 +186,7 @@ export const Events: EventData[] = [
 		yOffset: "8%",
 	},
 	{
-		name: "Circle Gifts",
+		name: "Circle Gift",
 		type: "Circle Gift",
 		getStartDate: getPhase1Start("version1_1"),
 		getEndDate: getPhase2End("version1_1"),
@@ -299,7 +293,7 @@ export const Events: EventData[] = [
 		yOffset: "20%",
 	},
 	{
-		name: "Circle Gifts",
+		name: "Circle Gift",
 		type: "Circle Gift",
 		getStartDate: getPhase1Start("version1_2"),
 		getEndDate: getPhase2End("version1_2"),
@@ -404,10 +398,61 @@ export const Events: EventData[] = [
 		themeColor: "#78c4c0",
 	},
 	{
-		name: "Circle Gifts",
+		name: "Circle Gift",
 		type: "Circle Gift",
 		getStartDate: getPhase1Start("version1_3"),
 		getEndDate: getPhase2End("version1_3"),
 		themeColor: "#8364a8",
+	},
+]
+
+export const BTRTimeline: EventData[] = [
+	{
+		name: "Prime Circle",
+		type: "BTR",
+		getStartDate: getPhase1Start("version1_0"),
+		getEndDate: (server) => serverEOD(server, 4, 6, 2026),
+	},
+	{
+		name: "Uncharted Circle",
+		type: "BTR",
+		getStartDate: (server) => serverSOD(server, 4, 6, 2026),
+		getEndDate: (server) => serverEOD(server, 18, 6, 2026),
+	},
+	{
+		name: "Howling Circle",
+		type: "BTR",
+		getStartDate: (server) => serverSOD(server, 18, 6, 2026),
+		getEndDate: (server) => serverEOD(server, 2, 7, 2026),
+	},
+	{
+		name: "Gloaming Circle",
+		type: "BTR",
+		getStartDate: (server) => serverSOD(server, 2, 7, 2026),
+		getEndDate: (server) => serverEOD(server, 16, 7, 2026),
+	},
+	{
+		name: "Blazing Circle",
+		type: "BTR",
+		getStartDate: (server) => serverSOD(server, 16, 7, 2026),
+		getEndDate: (server) => serverEOD(server, 30, 7, 2026),
+	},
+	{
+		name: "Cresting Circle",
+		type: "BTR",
+		getStartDate: (server) => serverSOD(server, 30, 7, 2026),
+		getEndDate: (server) => serverEOD(server, 13, 8, 2026),
+	},
+	{
+		name: "TBA",
+		type: "BTR",
+		getStartDate: (server) => serverSOD(server, 13, 8, 2026),
+		getEndDate: (server) => serverEOD(server, 27, 8, 2026),
+	},
+	{
+		name: "TBA",
+		type: "BTR",
+		getStartDate: (server) => serverSOD(server, 27, 8, 2026),
+		getEndDate: (server) => serverEOD(server, 10, 9, 2026),
 	},
 ]

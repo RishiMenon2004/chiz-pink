@@ -134,6 +134,13 @@
 	&.gacha {
 		background-position: bottom calc(100% - var(--y-offset, 25%)) center;
 	}
+
+	&.btr {
+		--event-image: url('/events/btr.webp');
+		--theme-color: #008cd8;
+		background-position: center;
+	}
+
 	transition: outline-offset 100ms ease-out;
 
 	&:hover {

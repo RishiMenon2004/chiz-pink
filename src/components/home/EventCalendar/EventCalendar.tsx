@@ -14,7 +14,7 @@ import {
 
 import { useSettingsStore } from "@/hooks"
 
-import { EventData, Events } from "@/data/activities/events"
+import { BTRTimeline, EventData, Events } from "@/data/activities/events"
 
 import { SettingsRecord } from "@/types/settings"
 import {
@@ -584,6 +584,7 @@ export function EventCalendar() {
 							}
 							return renderRow(rowEvents, index, id)
 						})}
+						{renderRow(BTRTimeline, 99, styles.btr)}
 						<CalendarNowMarker ref={nowMarkerRef} />
 					</div>
 				</CalendarContext.Provider>

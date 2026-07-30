@@ -240,12 +240,16 @@ export function CalendarEventItem({
 	const overflowsLeft = start < calendarOrigin
 	const overflowsRight = end > calendarEnd
 
+	const eventImage = eventData.eventImage
+		? `url('/events/${eventData.eventImage}')`
+		: ""
+
+	const isBTR = eventData.type === "BTR"
+
 	const eventStyles = {
 		width: `${widthDays}rem`,
 		marginLeft: `${marginDays}rem`,
-		"--event-image": eventData.eventImage
-			? `url('/events/${eventData.eventImage}')`
-			: "",
+		"--event-image": eventImage,
 		"--theme-color": eventData.themeColor ?? "",
 		"--y-offset": eventData.yOffset ?? "",
 		"--radius-left": overflowsLeft ? "0" : undefined,
@@ -272,12 +276,14 @@ export function CalendarEventItem({
 				e.stopPropagation()
 				await scrollToPos(eventBoxRef.current)
 				if (
-					rowId === styles.version ||
+					["Patch", "Circle Gift", "BTR"].includes(eventData.type) ||
 					!eventData.eventImage ||
 					overflowsLeft ||
 					overflowsRight
-				)
+				) {
 					return
+				}
+
 				setDetailsInitialStyle(
 					getInitialDetailsStyle(eventBoxRef.current)
 				)
@@ -285,7 +291,10 @@ export function CalendarEventItem({
 			}}
 			className={`${styles.calendarEvent} ${rowId ? rowId : ""}`}
 			style={eventStyles}>
-			<div className={styles.eventName}>{eventData.name}</div>
+			<div className={styles.eventName}>
+				{isBTR && "Beyond the Rails: "}
+				{eventData.name}
+			</div>
 			<div className={styles.eventDates}>
 				{formatEventDateTime(start, dayBoundaryMode, server, dateFormat)}
 				{" ▸ "}
