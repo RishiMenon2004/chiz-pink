@@ -57,9 +57,8 @@ export function RenderPlanner({
 	plannerType: keyof PlannerRecord | "both"
 }) {
 	const { plannerData, actions } = usePlannerStore()
-	const { hybridPlanner, actions: hybridActions } =
-		useHybridPlannerStore()
-	const { settings } = useSettingsStore()
+	const { hybridPlanner, actions: hybridActions } = useHybridPlannerStore()
+	const { settings, actions: settingsActions } = useSettingsStore()
 	const router = useRouter()
 
 	const combinedEnabled = settings.appearance["use-hybrid-planner"] ?? false
@@ -255,22 +254,38 @@ export function RenderPlanner({
 
 			{itemsList.length <= 0 && (
 				<InfoBox>
-					{`You don't have any ${
-						plannerType === "characters"
-							? "characters"
-							: plannerType === "arcs"
-								? "arcs"
-								: "characters or arcs"
-					} in the planner... Maybe you'd like to `}
-					<a
-						className="btn-anchor"
-						onClick={
-							plannerType === "arcs"
-								? handleStartAddingArc
-								: handleStartAddingChar
-						}>
-						Add Something?
-					</a>
+					<div>
+						{`You don't have any ${
+							plannerType === "characters"
+								? "characters"
+								: plannerType === "arcs"
+									? "arcs"
+									: "characters or arcs"
+						} in the planner... Maybe you'd like to `}
+						<a
+							className="btn-anchor"
+							onClick={
+								plannerType === "arcs"
+									? handleStartAddingArc
+									: handleStartAddingChar
+							}>
+							Add Something?
+						</a>
+					</div>
+					{plannerType !== "both" &&
+						<div>
+							{`A-are you looking to level Characters and Arcs all in one place? Take a look at the `}
+							<a
+								className="btn-anchor"
+								onClick={() => {
+									settingsActions.setConfig("appearance", {
+										"use-hybrid-planner": true,
+									})
+								}}>
+								Hybrid Planner
+							</a>
+						</div>
+					}
 				</InfoBox>
 			)}
 

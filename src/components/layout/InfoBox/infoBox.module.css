@@ -8,6 +8,10 @@
 	border-radius: 12px;
 	color: white;
 
+	display: flex;
+	flex-direction: column;
+	gap: 0.5rem;
+
 	outline: 2px solid color-mix(in srgb, var(--pink) 50%, transparent);
 }
 
