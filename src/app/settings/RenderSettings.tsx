@@ -16,9 +16,17 @@ import { useMutation } from "convex/react"
 import { api } from "@convex/_generated/api"
 
 import { BackupData, SettingsRecord } from "@/types/settings"
+import { ExternalImportResult } from "@/helpers/importExternal"
 import { getDayBoundaryLabel } from "@/helpers/serverTime"
 
-import { usePWAInstall, useSettingsStore } from "@/hooks"
+import {
+	plannerActions,
+	replaceInventory,
+	settingsActions,
+	updateInventory,
+	usePWAInstall,
+	useSettingsStore,
+} from "@/hooks"
 
 import {
 	backupExport,
@@ -29,7 +37,10 @@ import {
 	getNextPixelRecoveryTime,
 	getPixelsRefillTime,
 	getStaminaResetBoundaries,
-	parseDescription,
+	isNtePlannerBackup,
+	isNteWizBackup,
+	parseNtePlannerImport,
+	parseNteWizImport,
 	signInWithGooglePopup,
 	unlinkGoogleAccount,
 } from "@/helpers"
@@ -43,6 +54,7 @@ import {
 } from "@/components/layout"
 
 import styles from "./settings.module.css"
+import { alertTextBox } from "@/components/layout/Alert/AlertContainer"
 
 const syncStatusLabel = {
 	idle: "Not Synced",
@@ -169,7 +181,6 @@ function ConfigInputbox(
 		</div>
 	)
 }
-
 function ConfigNumberBox({
 	name,
 	value,
@@ -232,6 +243,37 @@ function ConfigNumberBox({
 		</div>
 	)
 }
+function ConfigSelect({
+	name,
+	value,
+	onChange,
+	children,
+}: {
+	name: string
+	value?: string | number | readonly string[]
+	onChange: ChangeEventHandler<HTMLSelectElement>
+	children: ReactNode
+}) {
+	return (
+		<div
+			style={{
+				flexGrow: 1,
+				display: "flex",
+				gap: "0.5rem",
+				flexDirection: "column",
+				alignItems: "flex-start",
+			}}>
+			<b>{name}</b>
+			<select
+				className={`raised-control ${styles.configSelect}`}
+				name={name}
+				value={value}
+				onChange={onChange}>
+				{children}
+			</select>
+		</div>
+	)
+}
 
 const dateDisplayConfig: Intl.DateTimeFormatOptions = {
 	year: "numeric",
@@ -286,8 +328,9 @@ function StaminaResetCountdown({
 				paddingInline: "0.5rem",
 				gap: "0.25rem 0.5rem",
 			}}>
-			<div>Reset: {formatResetDayTime(nextReset)}</div>
-			<div>Resets in: {formatTimeRemaining(nextReset - now)}</div>
+			<div>
+				{`Reset in: ${formatTimeRemaining(nextReset - now)} at ${formatResetDayTime(nextReset)}`}
+			</div>
 		</div>
 	)
 }
@@ -334,14 +377,14 @@ function PixelRefillCountdown({
 				gap: "0.25rem 0.5rem",
 			}}>
 			<div>
-				{`Next Recovery: ${
+				{`Next: ${
 					nextRecoveryAt === null
 						? "-"
 						: formatTimeRemaining(nextRecoveryAt - now)
 				}`}
 			</div>
 			<div>
-				{`Full Recovery: ${
+				{`Full: ${
 					refilledAt === null
 						? "-"
 						: formatTimeRemaining(refilledAt - now)
@@ -351,35 +394,14 @@ function PixelRefillCountdown({
 	)
 }
 
-function ConfigSelect({
-	name,
-	value,
-	onChange,
-	children,
-}: {
-	name: string
-	value?: string | number | readonly string[]
-	onChange: ChangeEventHandler<HTMLSelectElement>
-	children: ReactNode
-}) {
+function hasExistingPlannerData() {
+	const inventory = JSON.parse(localStorage.getItem("inventory") || "{}")
+	const planner = JSON.parse(localStorage.getItem("planner") || "{}")
+
 	return (
-		<div
-			style={{
-				flexGrow: 1,
-				display: "flex",
-				gap: "0.5rem",
-				flexDirection: "column",
-				alignItems: "flex-start",
-			}}>
-			<b>{name}</b>
-			<select
-				className={`raised-control ${styles.configSelect}`}
-				name={name}
-				value={value}
-				onChange={onChange}>
-				{children}
-			</select>
-		</div>
+		Object.keys(inventory).length > 0 ||
+		Object.keys(planner.characters ?? {}).length > 0 ||
+		Object.keys(planner.arcs ?? {}).length > 0
 	)
 }
 
@@ -402,6 +424,33 @@ export function RenderSettings() {
 	const [eraseWarning, setEraseWarning] = useState<boolean>(false)
 	const [eraseSyncChoice, setEraseSyncChoice] = useState<boolean>(false)
 	const [importedJson, setImportedJson] = useState<BackupData | null>(null)
+	const [externalImportPending, setExternalImportPending] =
+		useState<ExternalImportResult | null>(null)
+	const [externalImportSummary, setExternalImportSummary] =
+		useState<ExternalImportResult | null>(null)
+
+	const applyExternalPlannerImport = useMemo(() => {
+		return (report: ExternalImportResult, mode: "merge" | "overwrite") => {
+			if (mode === "overwrite") {
+				replaceInventory(report.inventory)
+				plannerActions.updatePlanner(() => ({ characters: {}, arcs: {} }))
+			} else if (Object.keys(report.inventory).length > 0) {
+				updateInventory(report.inventory)
+			}
+
+			report.characters.forEach(({ character }) =>
+				plannerActions.addCharacter(character)
+			)
+
+			report.arcs.forEach(({ arc }) => plannerActions.addWeapon(arc))
+
+			if (report.staminaPatch) {
+				settingsActions.setConfig("userdata", report.staminaPatch)
+			}
+
+			setExternalImportSummary(report)
+		}
+	}, [])
 
 	const importData = useMemo(() => {
 		return () => {
@@ -415,6 +464,32 @@ export function RenderSettings() {
 				const reader = new FileReader()
 				reader.onload = () => {
 					const result = reader.result as string
+
+					let parsed: unknown = null
+					try {
+						parsed = JSON.parse(result)
+					} catch (error) {
+						console.error(error)
+						return
+					}
+
+					let report: ExternalImportResult | null = null
+
+					if (isNtePlannerBackup(parsed)) {
+						report = parseNtePlannerImport(parsed)
+					} else if (isNteWizBackup(parsed)) {
+						report = parseNteWizImport(parsed)
+					}
+
+					if (report) {
+						if (hasExistingPlannerData()) {
+							setExternalImportPending(report)
+						} else {
+							applyExternalPlannerImport(report, "merge")
+						}
+						return
+					}
+
 					const importResult = backupImport(result)
 					const { status, data } = importResult
 
@@ -440,7 +515,7 @@ export function RenderSettings() {
 			}
 			input.click()
 		}
-	}, [])
+	}, [applyExternalPlannerImport])
 
 	return (
 		<main className={`page ${styles.page}`} role="main">
@@ -772,6 +847,83 @@ export function RenderSettings() {
 					</AlertContainer>
 				</ModalContainer>
 			)}
+			{externalImportPending && (
+				<ModalContainer onClickOut={() => setExternalImportPending(null)}>
+					<AlertContainer
+						type="dangerous-choices"
+						confirmLabel="Overwrite"
+						cancelLabel="Add to Existing"
+						onConfirm={() => {
+							applyExternalPlannerImport(externalImportPending, "overwrite")
+							setExternalImportPending(null)
+						}}
+						onCancel={() => {
+							applyExternalPlannerImport(externalImportPending, "merge")
+							setExternalImportPending(null)
+						}}>
+						{`Import ${externalImportPending.source} Data`}
+						<div
+							className={`raised-control ${alertTextBox}`}
+							style={{
+								display: "grid",
+								gridTemplateColumns: "1fr 1fr",
+								gap: "3rem",
+							}}>
+							<p>
+								{
+									"Add to Existing: Replaces your Inventory. Appends Characters and Arcs onto your existing planner."
+								}
+							</p>
+							<p>
+								{
+									"Overwrite. Replaces your Inventory, Characters, and Arcs entirely."
+								}
+							</p>
+						</div>
+					</AlertContainer>
+				</ModalContainer>
+			)}
+			{externalImportSummary && (
+				<ModalContainer>
+					<AlertContainer
+						type="acknowledge"
+						confirmLabel="Got it"
+						onConfirm={() => setExternalImportSummary(null)}>
+						{`${externalImportSummary.source} Data Imported`}
+						<div className={`raised-control ${alertTextBox}`}>
+							<div>
+								{`Inventory: ${Object.keys(externalImportSummary.inventory).length} items imported`}
+								{externalImportSummary.unmatchedMaterials.length > 0 &&
+									`, ${externalImportSummary.unmatchedMaterials.length} skipped (no match)`}
+							</div>
+							<div>
+								{`Characters: ${externalImportSummary.characters.length} imported`}
+								{externalImportSummary.skippedCharacterIds.length >
+									0 &&
+									`, ${externalImportSummary.skippedCharacterIds.length} skipped (unknown character)`}
+							</div>
+							<div>
+								{`Arcs: ${externalImportSummary.arcs.length} imported`}
+								{externalImportSummary.skippedArcIds.length > 0 &&
+									`, ${externalImportSummary.skippedArcIds.length} skipped (unknown arc)`}
+							</div>
+							{externalImportSummary.staminaPatch && (
+								<div>Stamina & Pixels updated</div>
+							)}
+						</div>
+						{(externalImportSummary.hasActivitiesData ||
+							externalImportSummary.hasEventsData) && (
+							<div className={`raised-control ${alertTextBox}`}>
+								<p>
+									{
+										"Importing Activity/Event completion isn't supported yet."
+									}
+								</p>
+							</div>
+						)}
+					</AlertContainer>
+				</ModalContainer>
+			)}
 			{signoutWarning && (
 				<ModalContainer>
 					<AlertContainer
@@ -835,9 +987,7 @@ export function RenderSettings() {
 								fontWeight: "500",
 								textWrapStyle: "balance",
 							}}>
-							{parseDescription(
-								"You will be able to use your backup when you sign back in."
-							)}
+							You will be able to use your backup when you sign back in.
 						</p>
 					</AlertContainer>
 				</ModalContainer>

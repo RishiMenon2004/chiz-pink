@@ -7,6 +7,7 @@ import { KeyMouseEventType } from "@/types"
 import { stopPropogation } from "@/helpers"
 
 import styles from "./alertContainer.module.css"
+export const alertTextBox = styles.alertTextBox
 
 export function AlertContainer({
 	type,

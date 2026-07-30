@@ -10,7 +10,7 @@ let lastRawValue: string | null = null
 
 const SERVER_FALLBACK: Inventory = {}
 
-function updateInventory(data: Inventory) {
+export function updateInventory(data: Inventory) {
 	if (typeof window === "undefined") return
 	if (isInitialSyncPending()) return
 
@@ -26,6 +26,19 @@ function updateInventory(data: Inventory) {
 		console.error("Local Storage Error:", err)
 	}
 
+}
+
+export function replaceInventory(data: Inventory) {
+	if (typeof window === "undefined") return
+	if (isInitialSyncPending()) return
+
+	try {
+		localStorage.setItem("inventory", JSON.stringify(data))
+		localStorage.setItem("lastUpdated", JSON.stringify(Date.now()))
+		window.dispatchEvent(new Event("local-storage-update"))
+	} catch (err) {
+		console.error("Local Storage Error:", err)
+	}
 }
 
 const subscribe = (callback: () => void) => {
