@@ -24,7 +24,7 @@ function readChecklist(): ChecklistRecord {
 }
 
 export const checklistActions = {
-	setChecklist<K extends keyof ChecklistRecord>(
+	setChecklist<K extends keyof Omit<ChecklistRecord, "lastDailyReset">>(
 		key: K,
 		updater:
 			| Partial<ChecklistRecord[K]>
