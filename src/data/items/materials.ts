@@ -15,7 +15,6 @@ export enum EnumMaterialType {
 }
 
 /* Rewards */
-
 export const diceLimited: Material = {
 	id: "dice_limited",
 	name: "Solid Dice",
@@ -91,6 +90,24 @@ export const fons: Material = {
 	materialType: EnumMaterialType.Currency,
 	imageSrc: "/currency_fons",
 	sources: ["Hethereau Hobbies", "Fair Exchange"],
+}
+
+export const characterPixel: Material = {
+	id: "characterPixel",
+	name: "Character Pixel",
+	rarity: EnumRarity.Common,
+	materialType: EnumMaterialType.Currency,
+	imageSrc: "/stamina_pixels",
+	sources: []
+}
+
+export const cityStamina: Material = {
+	id: "cityStamina",
+	name: "City Stamina",
+	rarity: EnumRarity.Common,
+	materialType: EnumMaterialType.Currency,
+	imageSrc: "/stamina_city",
+	sources: []
 }
 
 /* Weekly Boss Drops - Talent*/

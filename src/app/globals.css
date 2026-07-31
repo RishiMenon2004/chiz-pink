@@ -146,6 +146,11 @@ body {
 	padding: 0;
 	margin: 0;
 
+	font-feature-settings:
+		"lnum" 1,
+		"tnum" 1;
+	font-variant-numeric: lining-nums tabular-nums;
+
 	&::selection {
 		background-color: var(--pink);
 		color: white;

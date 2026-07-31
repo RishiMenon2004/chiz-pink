@@ -1,0 +1,134 @@
+.gaugeRow {
+	display: grid;
+	place-items: start stretch;
+	grid-template-columns: 1fr 1fr;
+	gap: 0.5rem;
+	padding-inline: 0.5rem;
+	margin-bottom: 1rem;
+}
+
+.gaugeColumn {
+	display: flex;
+	flex-direction: column;
+	gap: 0.25rem;
+	width: 100%;
+}
+
+.countdownText {
+	color: black;
+	font-size: 0.9rem;
+	padding-inline: 0.5rem;
+
+	.staminaGauge + & {
+		padding-left: 1.5rem;
+	}
+}
+
+.gauge {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	height: 3rem;
+	flex-grow: 1;
+
+	input {
+		&:focus-visible {
+			outline: none;
+			font-style: normal;
+			letter-spacing: 2.5%;
+		}
+	}
+}
+
+.pixelsGauge {
+	border-radius: 1.5rem 2.25rem 0.5rem 1.5rem;
+	padding-right: 3rem;
+	justify-content: flex-start;
+}
+
+.staminaGauge {
+	justify-content: flex-end;
+	border-radius: 0.5rem 1.5rem 1.5rem 2.25rem;
+	padding-left: 3rem;
+}
+
+.gaugeIcon {
+	height: 2.5rem;
+	width: auto;
+	margin: 0.5rem;
+}
+
+.gaugeText {
+	font-family: var(--font-barlow-condensed);
+	font-style: italic;
+	margin-inline: auto;
+}
+
+.gaugeMax {
+	opacity: 0.75;
+	margin-left: -0.5ch;
+}
+
+.gaugeInput {
+	font-family: inherit;
+	font-style: inherit;
+	font-weight: 500;
+	font-size: 2rem;
+	background: none;
+	border: none;
+	padding: 0;
+}
+
+.footer {
+	color: black;
+	padding-inline: 1rem;
+	margin-bottom: 1rem;
+	font-weight: 550;
+}
+
+@container (width < 500px) {
+	.pixelsGauge {
+		padding-right: 2rem;
+	}
+
+	.staminaGauge {
+		padding-left: 2rem;
+	}
+}
+
+@container (width < 400px) {
+	.gaugeRow {
+		grid-template-columns: 1fr;
+	}
+
+	.gaugeColumn {
+		display: grid;
+		grid-template-columns: 1fr;
+	}
+
+	.countdownText {
+		font-size: 0.9rem;
+	}
+
+	.pixelsGauge {
+		border-radius: 1.5rem 1.5rem 0.5rem 0.5rem;
+		padding-right: 3rem;
+
+		& + .countdownText {
+			grid-row: 1;
+		}
+	}
+
+	.staminaGauge {
+		border-radius: 0.5rem 0.5rem 1.5rem 1.5rem;
+		flex-direction: row-reverse;
+		justify-content: flex-start;
+		padding-left: 0;
+		padding-right: 3rem;
+
+		& + .countdownText {
+			margin-left: auto;
+			padding-inline: 0.5rem;
+		}
+	}
+}

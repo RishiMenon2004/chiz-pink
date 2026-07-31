@@ -190,6 +190,7 @@ function ConfigNumberBox({
 	onChange,
 	children,
 	min,
+	max,
 	step = 1,
 }: {
 	name: string
@@ -197,11 +198,18 @@ function ConfigNumberBox({
 	onChange: (value: number) => void
 	children?: ReactNode
 	min?: number
+	max?: number
 	step?: number
 }) {
+	const clamp = (next: number) => {
+		let result = next
+		if (min !== undefined) result = Math.max(result, min)
+		if (max !== undefined) result = Math.min(result, max)
+		return result
+	}
+
 	const step_ = (delta: number) => {
-		const next = value + delta
-		onChange(min !== undefined ? Math.max(next, min) : next)
+		onChange(clamp(value + delta))
 	}
 
 	return (
@@ -231,7 +239,7 @@ function ConfigNumberBox({
 					value={value || 0}
 					onChange={(e) => {
 						const digits = e.currentTarget.value.replace(/\D/g, "")
-						onChange(digits === "" ? 0 : parseInt(digits))
+						onChange(digits === "" ? 0 : clamp(parseInt(digits)))
 					}}
 				/>
 				<span
@@ -304,7 +312,7 @@ const formatResetDayTime = (date: number): string => {
 		.toUpperCase()
 }
 
-function StaminaResetCountdown({
+export function StaminaResetCountdown({
 	server,
 }: {
 	server: SettingsRecord["userdata"]["server"]
@@ -338,7 +346,7 @@ function StaminaResetCountdown({
 	)
 }
 
-function PixelRefillCountdown({
+export function PixelRefillCountdown({
 	current,
 	max,
 	lastEdited,
@@ -558,6 +566,7 @@ export function RenderSettings() {
 						<ConfigNumberBox
 							name="Character Pixels"
 							min={0}
+							max={999}
 							value={settings.userdata["current-pixels"]}
 							onChange={(value) => {
 								actions.setConfig("userdata", {
@@ -586,6 +595,7 @@ export function RenderSettings() {
 						<ConfigNumberBox
 							name="City Stamina"
 							min={0}
+							max={settings.userdata["max-stamina"]}
 							value={settings.userdata["current-stamina"]}
 							onChange={(value) => {
 								actions.setConfig("userdata", {
