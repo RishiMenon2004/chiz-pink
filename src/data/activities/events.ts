@@ -455,4 +455,22 @@ export const BTRTimeline: EventData[] = [
 		getStartDate: (server) => serverSOD(server, 27, 8, 2026),
 		getEndDate: (server) => serverEOD(server, 10, 9, 2026),
 	},
+	{
+		name: "TBA",
+		type: "BTR",
+		getStartDate: (server) => serverSOD(server, 10, 9, 2026),
+		getEndDate: (server) => serverEOD(server, 24, 9, 2026),
+	},
+	{
+		name: "TBA",
+		type: "BTR",
+		getStartDate: (server) => serverSOD(server, 24, 9, 2026),
+		getEndDate: (server) => serverEOD(server, 8, 10, 2026),
+	},
+	{
+		name: "TBA",
+		type: "BTR",
+		getStartDate: (server) => serverSOD(server, 8, 10, 2026),
+		getEndDate: (server) => serverEOD(server, 22, 10, 2026),
+	},
 ]

@@ -48,7 +48,7 @@ export const useCalendarContext = () => {
 	return useContext(CalendarContext)
 }
 
-const MONTHS_BEFORE = 1
+const MONTHS_BEFORE = 2
 const MONTHS_AFTER = 1
 const BUFFER_DAYS = 3
 
