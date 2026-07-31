@@ -113,6 +113,8 @@ div.addCharBox {
 		&:focus-visible {
 			outline: none;
 		}
+
+		cursor: var(--search-cursor);
 	}
 
 	.charFilterList {
