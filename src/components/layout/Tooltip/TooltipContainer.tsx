@@ -57,7 +57,8 @@ export function TooltipContainer({
 	}, [startingPos, calculateMousePos])
 
 	useEffect(() => {
-		setTimeout(() => setVisible(true), 50)
+		const mount = setTimeout(() => setVisible(true), 50)
+		return () => clearTimeout(mount)
 	}, [])
 
 	return (

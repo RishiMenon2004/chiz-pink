@@ -1,6 +1,6 @@
 "use client"
 
-import { PointerEvent, ReactNode, useState } from "react"
+import { PointerEvent, ReactNode, useEffect, useRef, useState } from "react"
 import { createPortal } from "react-dom"
 
 import { TooltipContainer } from "@/components/layout"
@@ -17,9 +17,18 @@ export function useTooltip() {
 		}
 	}
 
+	const hideTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+
 	const hideTooltip = () => {
-		setTimeout(() => setIsTooltipShown(false))
+		if (hideTimeoutRef.current) clearTimeout(hideTimeoutRef.current)
+		hideTimeoutRef.current = setTimeout(() => setIsTooltipShown(false))
 	}
+
+	useEffect(() => {
+		return () => {
+			if (hideTimeoutRef.current) clearTimeout(hideTimeoutRef.current)
+		}
+	}, [])
 
 	const Tooltip = ({
 		offset,

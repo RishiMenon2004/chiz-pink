@@ -32,6 +32,8 @@ function EventDetailsModal({
 		opacity: 0,
 	})
 
+	const closeTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+
 	useEffect(() => {
 		const mount = setTimeout(
 			() =>
@@ -41,7 +43,10 @@ function EventDetailsModal({
 				}),
 			100
 		)
-		return () => clearTimeout(mount)
+		return () => {
+			clearTimeout(mount)
+			if (closeTimeoutRef.current) clearTimeout(closeTimeoutRef.current)
+		}
 	}, [])
 
 	return (
@@ -57,7 +62,7 @@ function EventDetailsModal({
 						opacity: 0,
 					}
 				})
-				setTimeout(() => onClickOut(e), 250)
+				closeTimeoutRef.current = setTimeout(() => onClickOut(e), 250)
 			}}>
 			{children}
 		</div>
