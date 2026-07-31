@@ -13,7 +13,7 @@ import { EnumCharacterElement } from "@/data/characters"
 export const iroi: Character = {
 	isFeatured: true,
 	id: "iroi",
-	imageSrc: "iroi.png",
+	imageSrc: "iroi.webp",
 	name: "Iroi",
 	description: "Oneiroi is a well-behaved kid who ticks all the boxes.",
 	rarity: EnumRarity.Epic,

@@ -4,7 +4,7 @@ import Image, { type ImageProps } from "next/image"
 
 import type { Arc } from "@/types/weapon"
 
-const PLACEHOLDER_SRC = "/arcs/placeholder.png"
+const PLACEHOLDER_SRC = "/arcs/placeholder.webp"
 
 type ArcIconProps = Omit<ImageProps, "src" | "alt"> & {
 	alt?: string

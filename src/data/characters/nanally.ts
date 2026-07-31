@@ -12,7 +12,7 @@ import { EnumCharacterElement } from "@/data/characters"
 
 export const nanally: Character = {
 	id: "nanally",
-	imageSrc: "nanally.png",
+	imageSrc: "nanally.webp",
 	name: "Nanally",
 	description:
 		"The Ichi-daime of the Coluccis—currently seeking new recruits!z",

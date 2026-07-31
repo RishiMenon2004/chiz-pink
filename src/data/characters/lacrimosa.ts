@@ -12,7 +12,7 @@ import { EnumCharacterElement } from "@/data/characters"
 
 export const lacrimosa: Character = {
 	id: "lacrimosa",
-	imageSrc: "lacrimosa.png",
+	imageSrc: "lacrimosa.webp",
 	name: "Lacrimosa",
 	description:
 		"Holds the record for most maintenance requests submitted by BAC staff.",

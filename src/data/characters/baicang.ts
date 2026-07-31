@@ -12,7 +12,7 @@ import { EnumCharacterElement } from "@/data/characters"
 
 export const baicang: Character = {
 	id: "baicang",
-	imageSrc: "baicang.png",
+	imageSrc: "baicang.webp",
 	name: "Baicang",
 	description: "The widely recognized \"least captain-like captain\" from ETD-4.",
 	rarity: EnumRarity.Epic,

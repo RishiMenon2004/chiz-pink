@@ -12,7 +12,7 @@ import { EnumCharacterElement } from "./character"
 
 export const shinku: Character = {
 	id: "shinku",
-	imageSrc: "shinku.png",
+	imageSrc: "shinku.webp",
 	name: "Shinku",
 	description:
 		"A cold, distant type who's used to keeping people at arm's length.",

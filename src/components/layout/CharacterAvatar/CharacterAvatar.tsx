@@ -5,7 +5,7 @@ import Image, { type ImageProps } from "next/image"
 import type { Character } from "@/types/character"
 import { EnumCharacterElement } from "@/data/characters"
 
-const CHAR_PLACEHOLDER_SRC = "/characters/avatar/placeholder.png"
+const CHAR_PLACEHOLDER_SRC = "/characters/avatar/placeholder.webp"
 
 type CharacterAvatarProps = Omit<ImageProps, "src" | "alt"> & {
 	alt?: string

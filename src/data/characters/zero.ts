@@ -12,7 +12,7 @@ import { EnumCharacterElement } from "@/data/characters"
 
 export const zero: Character = {
 	id: "zero",
-	imageSrc: "zero_f.png",
+	imageSrc: "zero_f.webp",
 	name: "Esper Zero",
 	description:
 		"The only esper in history without a detectable Wertheimer Index.",

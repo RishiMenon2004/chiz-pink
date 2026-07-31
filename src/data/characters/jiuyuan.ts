@@ -12,7 +12,7 @@ import { EnumCharacterElement } from "@/data/characters"
 
 export const jiuyuan: Character = {
 	id: "jiuyuan",
-	imageSrc: "jiuyuan.png",
+	imageSrc: "jiuyuan.webp",
 	name: "Jiuyuan",
 	description: "A smooth-talking and enigmatic Elite Courier of Sterry who also serves as Acting Manager.",
 	rarity: EnumRarity.Epic,

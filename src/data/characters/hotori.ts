@@ -12,7 +12,7 @@ import { EnumCharacterElement } from "@/data/characters"
 
 export const hotori: Character = {
 	id: "hotori",
-	imageSrc: "hotori.png",
+	imageSrc: "hotori.webp",
 	name: "Hotori",
 	description: "The Boss of Eibon, who doesn't seem to be very sober.",
 	rarity: EnumRarity.Epic,

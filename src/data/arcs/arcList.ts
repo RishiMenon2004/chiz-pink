@@ -19,7 +19,7 @@ const allArcs: Record<string, Arc> = {
 	the_wrong_gate: {
 		isFeatured: true,
 		id: "the_wrong_gate",
-		imageSrc: "the_wrong_gate.png",
+		imageSrc: "the_wrong_gate.webp",
 		name: "The Wrong Gate",
 		description:
 			"Do not open that door. Do not leave this place. Wouldn't you rather stay somewhere warm?",
@@ -73,7 +73,7 @@ const allArcs: Record<string, Arc> = {
 
 	blushing_mirage: {
 		id: "blushing_mirage",
-		imageSrc: "blushing_mirage.png",
+		imageSrc: "blushing_mirage.webp",
 		name: "Blushing Mirage",
 		description:
 			"Moonlight whispers a promise of unfurled wings, stirring rare passion and inspiration. But not every whisper should be trusted.",
@@ -127,7 +127,7 @@ const allArcs: Record<string, Arc> = {
 
 	whats_desired: {
 		id: "whats_desired",
-		imageSrc: "whats_desired.png",
+		imageSrc: "whats_desired.webp",
 		name: "What's Desired",
 		description:
 			"And so the epic begins, and everyone sets out on the journey. As for where the road ends, does it really matter?",
@@ -176,7 +176,7 @@ const allArcs: Record<string, Arc> = {
 
 	stellar_veil: {
 		id: "stellar_veil",
-		imageSrc: "stellar_veil.png",
+		imageSrc: "stellar_veil.webp",
 		name: "Stellar Veil",
 		description: "At sunrise, the lost stars are merely homeward bound.",
 		rarity: EnumRarity.Epic,
@@ -224,7 +224,7 @@ const allArcs: Record<string, Arc> = {
 
 	the_rain_that_shook_the_world: {
 		id: "the_rain_that_shook_the_world",
-		imageSrc: "the_rain_that_shook_the_world.png",
+		imageSrc: "the_rain_that_shook_the_world.webp",
 		name: "The Rain That Shook the World",
 		description:
 			"It emerged from a downpour that turned the world upside down.",
@@ -273,7 +273,7 @@ const allArcs: Record<string, Arc> = {
 
 	the_last_rose: {
 		id: "the_last_rose",
-		imageSrc: "the_last_rose.png",
+		imageSrc: "the_last_rose.webp",
 		name: "The Last Rose",
 		description:
 			"On the water's surface, the last rose blooms alone. She waits… for a dear friend, or perhaps for a boundless dream.",
@@ -327,7 +327,7 @@ const allArcs: Record<string, Arc> = {
 
 	marching_beyond_time: {
 		id: "marching_beyond_time",
-		imageSrc: "marching_beyond_time.png",
+		imageSrc: "marching_beyond_time.webp",
 		name: "Marching Beyond Time",
 		description: "We press on, lest we rust away to nothing.",
 		rarity: EnumRarity.Epic,
@@ -385,7 +385,7 @@ const allArcs: Record<string, Arc> = {
 
 	song_of_the_whale: {
 		id: "song_of_the_whale",
-		imageSrc: "song_of_the_whale.png",
+		imageSrc: "song_of_the_whale.webp",
 		name: "Song of the Whale",
 		description: "The surging tide is its final farewell.",
 		rarity: EnumRarity.Epic,
@@ -438,7 +438,7 @@ const allArcs: Record<string, Arc> = {
 
 	tears_beneath_the_mask: {
 		id: "tears_beneath_the_mask",
-		imageSrc: "tears_beneath_the_mask.png",
+		imageSrc: "tears_beneath_the_mask.webp",
 		name: "Tears Beneath the Mask",
 		description: "Who stole my child? Was it you? Was it him? Or was it…",
 		rarity: EnumRarity.Epic,
@@ -481,7 +481,7 @@ const allArcs: Record<string, Arc> = {
 
 	reality_refuge: {
 		id: "reality_refuge",
-		imageSrc: "reality_refuge.png",
+		imageSrc: "reality_refuge.webp",
 		name: "Reality Refuge",
 		description: "She told me that I was only ever a butterfly.",
 		rarity: EnumRarity.Epic,
@@ -534,7 +534,7 @@ const allArcs: Record<string, Arc> = {
 
 	fluff_of_fearlessness: {
 		id: "fluff_of_fearlessness",
-		imageSrc: "fluff_of_fearlessness.png",
+		imageSrc: "fluff_of_fearlessness.webp",
 		name: "Fluff of Fearlessness",
 		description:
 			"Hunter Guild Commemorative Arc: Cool fluffs don't look at explosions.",
@@ -578,7 +578,7 @@ const allArcs: Record<string, Arc> = {
 
 	fluff_of_fleetness: {
 		id: "fluff_of_fleetness",
-		imageSrc: "fluff_of_fleetness.png",
+		imageSrc: "fluff_of_fleetness.webp",
 		name: "Fluff of Fleetness",
 		description: "Hunter Guild Commemorative Arc: MAD FLUFF!",
 		rarity: EnumRarity.Epic,
@@ -621,7 +621,7 @@ const allArcs: Record<string, Arc> = {
 
 	fluff_of_finesse: {
 		id: "fluff_of_finesse",
-		imageSrc: "fluff_of_finesse.png",
+		imageSrc: "fluff_of_finesse.webp",
 		name: "Fluff of Finesse",
 		description:
 			"Hunter Guild Commemorative Arc: Not every encounter is a pleasant one…",
@@ -665,7 +665,7 @@ const allArcs: Record<string, Arc> = {
 
 	fluff_of_ferocity: {
 		id: "fluff_of_ferocity",
-		imageSrc: "fluff_of_ferocity.png",
+		imageSrc: "fluff_of_ferocity.webp",
 		name: "Fluff of Ferocity",
 		description:
 			"Hunter Guild Commemorative Arc: Discard all that is useless…",
@@ -709,7 +709,7 @@ const allArcs: Record<string, Arc> = {
 
 	fluff_of_fortitude: {
 		id: "fluff_of_fortitude",
-		imageSrc: "fluff_of_fortitude.png",
+		imageSrc: "fluff_of_fortitude.webp",
 		name: "Fluff of Fortitude",
 		description: "Hunter Guild Commemorative Arc: So fluffy!",
 		rarity: EnumRarity.Epic,
@@ -752,7 +752,7 @@ const allArcs: Record<string, Arc> = {
 
 	hethereaus_keeper: {
 		id: "hethereaus_keeper",
-		imageSrc: "hethereaus_keeper.png",
+		imageSrc: "hethereaus_keeper.webp",
 		name: "Hethereau's Keeper",
 		description:
 			"Once again, another day has passed peacefully. Hats off to Officer Whisker!",
@@ -806,7 +806,7 @@ const allArcs: Record<string, Arc> = {
 
 	eternal_waltz: {
 		id: "eternal_waltz",
-		imageSrc: "eternal_waltz.png",
+		imageSrc: "eternal_waltz.webp",
 		name: "Eternal Waltz",
 		description:
 			"Dance to the beat, feel the dizzying sensation as if the world is ending, until forever!",
@@ -855,7 +855,7 @@ const allArcs: Record<string, Arc> = {
 
 	raging_flames: {
 		id: "raging_flames",
-		imageSrc: "raging_flames.png",
+		imageSrc: "raging_flames.webp",
 		name: "Raging Flames",
 		description:
 			"The desire for speed flows through my veins, the roar of engines thunders in my chest! Come on, let's go! Step onto this racetrack where we pledge our souls!",
@@ -909,7 +909,7 @@ const allArcs: Record<string, Arc> = {
 
 	your_happiness_is_priceless: {
 		id: "your_happiness_is_priceless",
-		imageSrc: "your_happiness_is_priceless.png",
+		imageSrc: "your_happiness_is_priceless.webp",
 		name: "Your Happiness is Priceless",
 		description:
 			"Mm, mm-hmm, mm-hmm-hmm-hmm-hmm-hmm-hmm! (Give me Fons— You'll be happy, and I'll be happy too!)",
@@ -973,7 +973,7 @@ const allArcs: Record<string, Arc> = {
 
 	contemplative_cat: {
 		id: "contemplative_cat",
-		imageSrc: "contemplative_cat.png",
+		imageSrc: "contemplative_cat.webp",
 		name: "Contemplative Cat",
 		description:
 			"The meaning of life… the reason for existence… the answer to the universe is… 4… balls of yarn!",
@@ -1017,7 +1017,7 @@ const allArcs: Record<string, Arc> = {
 
 	youthful_fantasy: {
 		id: "youthful_fantasy",
-		imageSrc: "youthful_fantasy.png",
+		imageSrc: "youthful_fantasy.webp",
 		name: "Youthful Fantasy",
 		description:
 			'"Secret"… The moment it was recorded, it was already known by everyone.',
@@ -1076,7 +1076,7 @@ const allArcs: Record<string, Arc> = {
 
 	blow_up_the_crowd: {
 		id: "blow_up_the_crowd",
-		imageSrc: "blow_up_the_crowd.png",
+		imageSrc: "blow_up_the_crowd.webp",
 		name: "Blow up the Crowd",
 		description: "Shh… it's coming, it's coming! IT'S COMING!!!",
 		rarity: EnumRarity.Epic,
@@ -1134,7 +1134,7 @@ const allArcs: Record<string, Arc> = {
 
 	ready_ready: {
 		id: "ready_ready",
-		imageSrc: "ready_ready.png",
+		imageSrc: "ready_ready.webp",
 		name: "Ready-Ready",
 		description:
 			"Hold me close, embrace the courage and resolve that transcends the fallen—I salute you, great Tiger warriors.",
@@ -1193,7 +1193,7 @@ const allArcs: Record<string, Arc> = {
 
 	day_off: {
 		id: "day_off",
-		imageSrc: "day_off.png",
+		imageSrc: "day_off.webp",
 		name: "Day Off",
 		description:
 			'Eclipse said, "Let there be double days off."\nAnd thus, the double days off came into being (Eclipse Exclusive Edition).',
@@ -1252,7 +1252,7 @@ const allArcs: Record<string, Arc> = {
 
 	camellia_society: {
 		id: "camellia_society",
-		imageSrc: "camellia_society.png",
+		imageSrc: "camellia_society.webp",
 		name: "Camellia Society",
 		description:
 			"Though I'm not supposed to let my composure slip onto the petals… that flower really cut deep.",
@@ -1316,7 +1316,7 @@ const allArcs: Record<string, Arc> = {
 
 	good_boys_grand_adventure: {
 		id: "good_boys_grand_adventure",
-		imageSrc: "good_boys_grand_adventure.png",
+		imageSrc: "good_boys_grand_adventure.webp",
 		name: "Good Boy's Grand Adventure",
 		description:
 			"What do you see? A winged white wolf? An adorable white dog? Or perhaps…?",
@@ -1370,7 +1370,7 @@ const allArcs: Record<string, Arc> = {
 
 	call_of_the_twisted_city: {
 		id: "call_of_the_twisted_city",
-		imageSrc: "call_of_the_twisted_city.png",
+		imageSrc: "call_of_the_twisted_city.webp",
 		name: "Call of the Twisted City",
 		description:
 			"When the world begins to warp, crying out in ways no one can understand, who among us can hold on to their sanity?",
@@ -1414,7 +1414,7 @@ const allArcs: Record<string, Arc> = {
 
 	time_bandit: {
 		id: "time_bandit",
-		imageSrc: "time_bandit.png",
+		imageSrc: "time_bandit.webp",
 		name: "Time Bandit",
 		description:
 			"Time is like water next to a sponge. Look away for only a second, and it vanishes.",
@@ -1458,7 +1458,7 @@ const allArcs: Record<string, Arc> = {
 
 	the_fools_spring: {
 		id: "the_fools_spring",
-		imageSrc: "the_fools_spring.png",
+		imageSrc: "the_fools_spring.webp",
 		name: "The Fools' Spring",
 		description: "If I were a cicada, I'd still sing with my raspy voice.",
 		rarity: EnumRarity.Rare,
@@ -1486,7 +1486,7 @@ const allArcs: Record<string, Arc> = {
 
 	a_time_will_come: {
 		id: "a_time_will_come",
-		imageSrc: "a_time_will_come.png",
+		imageSrc: "a_time_will_come.webp",
 		name: "A Time Will Come",
 		description:
 			"Descending from the heavens, returning to the heavens. Believing in that destined day, we leap into this endless migration with no visible end.",
@@ -1535,7 +1535,7 @@ const allArcs: Record<string, Arc> = {
 
 	drawn_blade: {
 		id: "drawn_blade",
-		imageSrc: "drawn_blade.png",
+		imageSrc: "drawn_blade.webp",
 		name: "Drawn Blade",
 		description:
 			"Lone moon, dark clouds. Blade drawn, soul departs. Form fades, blade weeps.",
@@ -1564,7 +1564,7 @@ const allArcs: Record<string, Arc> = {
 
 	failing_you_heavy_in_my_heart: {
 		id: "failing_you_heavy_in_my_heart",
-		imageSrc: "failing_you_heavy_in_my_heart.png",
+		imageSrc: "failing_you_heavy_in_my_heart.webp",
 		name: "Failing You, Heavy in My Heart",
 		description:
 			"When you see red reflected in your teacher's eyes, that usually means you're about to fail the class.",
@@ -1613,7 +1613,7 @@ const allArcs: Record<string, Arc> = {
 
 	clear_skies: {
 		id: "clear_skies",
-		imageSrc: "clear_skies.png",
+		imageSrc: "clear_skies.webp",
 		name: "Clear Skies",
 		description: "Formation complete, securing air superiority.",
 		rarity: EnumRarity.Rare,
@@ -1641,7 +1641,7 @@ const allArcs: Record<string, Arc> = {
 
 	watch_your_heads: {
 		id: "watch_your_heads",
-		imageSrc: "watch_your_heads.png",
+		imageSrc: "watch_your_heads.webp",
 		name: "Watch Your Heads!",
 		description: "Hehehe… Don't be scared, it's just a laughing kite…",
 		rarity: EnumRarity.Rare,
@@ -1689,7 +1689,7 @@ const allArcs: Record<string, Arc> = {
 
 	the_great_thief: {
 		id: "the_great_thief",
-		imageSrc: "the_great_thief.png",
+		imageSrc: "the_great_thief.webp",
 		name: "The Great Thief",
 		description:
 			"The moment I saw you, I was captivated. Your soft fur, that mischievous look on your face—I was mesmerized for so long that it wasn't until you left that I realized… where are my grilled skewers?",
@@ -1718,7 +1718,7 @@ const allArcs: Record<string, Arc> = {
 
 	the_good_the_bad_the_bitter: {
 		id: "the_good_the_bad_the_bitter",
-		imageSrc: "the_good_the_bad_the_bitter.png",
+		imageSrc: "the_good_the_bad_the_bitter.webp",
 		name: "The Good, The Bad, The Bitter",
 		description:
 			"A touch of bitterness, but it'll still put you in a good mood, won't it?",
@@ -1767,7 +1767,7 @@ const allArcs: Record<string, Arc> = {
 
 	mind_royale: {
 		id: "mind_royale",
-		imageSrc: "mind_royale.png",
+		imageSrc: "mind_royale.webp",
 		name: "Mind Royale",
 		description:
 			"Inspiration is like potato chips—crunching and crackling, leaving scattered crumbs everywhere, without rhyme or reason.",
@@ -1811,7 +1811,7 @@ const allArcs: Record<string, Arc> = {
 
 	oraora: {
 		id: "oraora",
-		imageSrc: "oraora.png",
+		imageSrc: "oraora.webp",
 		name: "Oraora!",
 		description:
 			"It's said that in a faraway place, Ora Puncher has a cousin, Muda Puncher.",
@@ -1855,7 +1855,7 @@ const allArcs: Record<string, Arc> = {
 
 	the_forgotten: {
 		id: "the_forgotten",
-		imageSrc: "the_forgotten.png",
+		imageSrc: "the_forgotten.webp",
 		name: "The Forgotten",
 		description:
 			"Even if I'm just a complement to those masterpieces… I'm still beautiful too, right?",
@@ -1899,7 +1899,7 @@ const allArcs: Record<string, Arc> = {
 
 	shiny_days: {
 		id: "shiny_days",
-		imageSrc: "shiny_days.png",
+		imageSrc: "shiny_days.webp",
 		name: "Shiny Days",
 		description:
 			"Capturing these radiant moments, even in dreams they must go on. Regret was never beautiful, and you were never alone.",
@@ -1943,7 +1943,7 @@ const allArcs: Record<string, Arc> = {
 
 	cosmos_daze_wild_reverie: {
 		id: "cosmos_daze_wild_reverie",
-		imageSrc: "cosmos_daze_wild_reverie.png",
+		imageSrc: "cosmos_daze_wild_reverie.webp",
 		name: "Cosmos Daze, Wild Reverie",
 		description: "Masterpiece from Pop Re-Creator!",
 		rarity: EnumRarity.Rare,
@@ -1991,7 +1991,7 @@ const allArcs: Record<string, Arc> = {
 
 	umbrella: {
 		id: "umbrella",
-		imageSrc: "umbrella.png",
+		imageSrc: "umbrella.webp",
 		name: "Umbrella",
 		description:
 			"Remember to get enough sleep and check the weather forecast; remember to eat your meals and take an umbrella when going out.",
@@ -2035,7 +2035,7 @@ const allArcs: Record<string, Arc> = {
 
 	real_music: {
 		id: "real_music",
-		imageSrc: "real_music.png",
+		imageSrc: "real_music.webp",
 		name: "Real Music",
 		description:
 			'Waddaya mean ya prefer "real music"? Is this not "real" enough for yer taste?',
@@ -2064,7 +2064,7 @@ const allArcs: Record<string, Arc> = {
 
 	us: {
 		id: "us",
-		imageSrc: "us.png",
+		imageSrc: "us.webp",
 		name: "Us.",
 		description: "I am… you… are… you, are… it, is… me… no, I… am… us.",
 		rarity: EnumRarity.Uncommon,
@@ -2092,7 +2092,7 @@ const allArcs: Record<string, Arc> = {
 
 	be_happy: {
 		id: "be_happy",
-		imageSrc: "be_happy.png",
+		imageSrc: "be_happy.webp",
 		name: "Be Happy",
 		description: "Hm? Why aren't you laughing?",
 		rarity: EnumRarity.Uncommon,
@@ -2135,7 +2135,7 @@ const allArcs: Record<string, Arc> = {
 
 	first_step_to_success: {
 		id: "first_step_to_success",
-		imageSrc: "first_step_to_success.png",
+		imageSrc: "first_step_to_success.webp",
 		name: "First Step to Success",
 		description:
 			"Good self-control is the first step on the road to success.",
@@ -2184,7 +2184,7 @@ const allArcs: Record<string, Arc> = {
 
 	dangerous_game: {
 		id: "dangerous_game",
-		imageSrc: "dangerous_game.png",
+		imageSrc: "dangerous_game.webp",
 		name: "Dangerous Game",
 		description: "Let's make a bet. Loser goes broke.",
 		rarity: EnumRarity.Uncommon,

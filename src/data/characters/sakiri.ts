@@ -12,7 +12,7 @@ import { EnumCharacterElement } from "@/data/characters"
 
 export const sakiri: Character = {
 	id: "sakiri",
-	imageSrc: "sakiri.png",
+	imageSrc: "sakiri.webp",
 	name: "Sakiri",
 	description: "Unrivaled at Eibon and as scary as she looks.Basic Attack: ",
 	rarity: EnumRarity.Epic,

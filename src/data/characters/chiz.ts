@@ -12,7 +12,7 @@ import { EnumCharacterElement } from "@/data/characters"
 
 export const chiz: Character = {
 	id: "chiz",
-	imageSrc: "chiz.png",
+	imageSrc: "chiz.webp",
 	name: "Chiz",
 	description:
 		"Though she may seem a bit timid, she's the Pink Paws Bank's most dependable manager.",
