@@ -49,7 +49,7 @@ function formatUtcOffset(offsetHours: number): string {
 // Describes the current calendar day-boundary mode for display in UI labels,
 // e.g. "Server Time (UTC+8)" or "Local Time (UTC+5:30)".
 export function getDayBoundaryLabel(
-	mode: SettingsRecord["appearance"]["calendar-day-boundary"],
+	mode: SettingsRecord["behaviour"]["calendar-day-boundary"],
 	server: SettingsRecord["userdata"]["server"]
 ): string {
 	if (mode === "local") {
@@ -65,7 +65,7 @@ export function getDayBoundaryLabel(
 // calendar's day-boundary mode is currently set to.
 export function formatEventDateTime(
 	timestamp: number,
-	mode: SettingsRecord["appearance"]["calendar-day-boundary"],
+	mode: SettingsRecord["behaviour"]["calendar-day-boundary"],
 	server: SettingsRecord["userdata"]["server"],
 	options: Intl.DateTimeFormatOptions = {
 		month: "short",

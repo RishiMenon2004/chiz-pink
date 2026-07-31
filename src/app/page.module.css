@@ -1,10 +1,88 @@
 .page {
-	display: gird;
+	display: flex;
+	flex-direction: column;
+	gap: 2rem;
+	flex-grow: 1;
+}
+
+.twoColumns {
+	display: grid;
+	grid-template-columns: repeat(2, 1fr);
+	gap: 2rem;
+}
+
+.section {
+	padding: 0.25rem;
+	border-radius: 1.5rem;
+	display: flex;
+	flex-direction: column;
+	container-type: inline-size;
+
+	.sectionTitleRow {
+		display: flex;
+		align-items: center;
+		flex-wrap: wrap;
+		gap: 0.25rem 0.75rem;
+		margin: 0.5rem 1rem;
+		color: black;
+	}
+}
+
+.sectionTitle {
+	color: var(--interactive-bg);
+	font-size: 1.5rem;
+	font-weight: 725;
+	filter: drop-shadow(-0.5px -0.5px 0.5px hsla(0, 0%, 4%));
+
+	@supports not (-moz-appearance: none) {
+		filter: drop-shadow(0px -1px 0.75px hsl(0, 0%, 4%, 0.5));
+	}
+}
+
+.sectionConfig {
+	display: flex;
+	align-items: center;
+	gap: 0.4rem;
+	font-family: var(--font-barlow-condensed);
+	font-style: italic;
+	font-weight: 300;
+	cursor: pointer;
+	user-select: none;
+}
+
+.sectionButton {
+	font-size: 0.8em;
+	margin-block: 0.25em;
+	margin-inline-start: auto;
+}
+
+@container (width < 500) {
+	.section {
+		.sectionTitleRow {
+			justify-content: space-between;
+		}
+	}
+
+	.sectionButton {
+		margin-inline-start: 0;
+	}
 }
 
 @media (max-width: 1000px) {
 	.page {
 		padding-inline: 3rem !important;
+	}
+
+	.sectionTitle {
+		font-size: 1.25rem;
+	}
+}
+
+@media (max-width: 725px) {
+	.twoColumns {
+		display: grid;
+		grid-template-columns: 1fr;
+		gap: 2rem;
 	}
 }
 

@@ -27,6 +27,7 @@ export { isInitialSyncPending, setInitialSyncPending } from "./syncGate"
 
 export {
 	getStaminaResetBoundaries,
+	getDailyResetBoundaries,
 	formatTimeRemaining,
 	getPixelsRefillTime,
 	getNextPixelRecoveryTime,

@@ -4,8 +4,11 @@ import { HybridPlannerRecord, PlannerRecord } from "./planner"
 export type SettingsRecord = {
 	appearance: {
 		"use-cursors": boolean
-		"calendar-day-boundary": "server" | "local"
 		"use-hybrid-planner": boolean
+	}
+	behaviour: {
+		"auto-claim": boolean
+		"calendar-day-boundary": "server" | "local"
 	}
 	userdata: {
 		nickname: string

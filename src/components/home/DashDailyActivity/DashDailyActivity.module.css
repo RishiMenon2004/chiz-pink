@@ -1,0 +1,116 @@
+.section {
+	display: grid;
+	grid-template-rows: auto 1fr;
+	align-items: center;
+}
+
+.partsContainer {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	align-items: flex-start;
+	padding-inline: 2rem;
+	margin-block: 1rem;
+	position: relative;
+	z-index: 0;
+	filter: drop-shadow(var(--shadow-dark-60) 0px -1px 2px)
+		drop-shadow(var(--foreground) 0px 1px 1px);
+}
+
+.part {
+	display: grid;
+	place-items: center;
+}
+
+.partCheckbox {
+	height: 2rem;
+	aspect-ratio: 1;
+	border-radius: 100%;
+	background-color: var(--interactive-bg);
+
+	display: grid;
+	place-items: center;
+
+	background-size: 300%;
+	background-position: center;
+	background-repeat: no-repeat;
+
+	.partName {
+		text-wrap-mode: nowrap;
+		text-align: center;
+		font-family: var(--font-barlow-condensed);
+		font-size: 0.9em;
+		color: white;
+		user-select: none;
+	}
+
+	&.zero,
+	&.checked {
+		.partName {
+			display: none;
+		}
+	}
+
+	&.checked {
+		background-color: var(--pink);
+
+		transition-property: background-color, background-size;
+		transition-duration: 100ms, 200ms;
+		transition-delay: 100ms;
+		transition-timing-function: ease-out, ease-in-out;
+
+		--offset: 3px;
+		--black-outline-thickness: 0.75px;
+		--white-outline-thickness: 2px;
+		--anti-aliasing: 0.5px;
+
+		background-image: url("/button_icons/activity_checked.png");
+		background-size: 100%;
+	}
+
+	&.zero {
+		background-color: var(--pink);
+		background-image: url("/button_icons/activity_participation.png");
+		background-size: 100%;
+		box-shadow:
+			var(--shadow-dark-60) -1px -1px 5px -2px inset,
+			rgba(255, 255, 255, 0.645) 2px 2px 3px -2px inset;
+		scale: 1.5;
+		transform-origin: center;
+	}
+}
+
+.partConnector {
+	position: absolute;
+	top: 0.5rem;
+	left: 3rem;
+	right: 3rem;
+	height: 1rem;
+	z-index: -1;
+	background-color: var(--interactive-bg);
+	pointer-events: none;
+
+	@property --percentage {
+		syntax: "<percentage>";
+		inherits: true;
+		initial-value: 0%;
+	}
+
+	transition: --percentage 200ms ease-out;
+
+	background-image: linear-gradient(
+		to right,
+		var(--pink) var(--percentage),
+		transparent var(--percentage)
+	);
+}
+
+@container (width < 500px) {
+	.partsContainer {
+		padding-inline: 1rem 0.5rem;
+	}
+	.partConnector {
+		left: 2rem;
+		right: 1.5rem;
+	}
+}

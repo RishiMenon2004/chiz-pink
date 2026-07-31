@@ -17,7 +17,6 @@ import { api } from "@convex/_generated/api"
 
 import { BackupData, SettingsRecord } from "@/types/settings"
 import { ExternalImportResult } from "@/helpers/importExternal"
-import { getDayBoundaryLabel } from "@/helpers/serverTime"
 
 import {
 	plannerActions,
@@ -61,6 +60,10 @@ const syncStatusLabel = {
 	syncing: "Syncing...",
 	synced: "Synced",
 	error: "Sync Failed",
+}
+
+function SectionColumns({ children }: { children: ReactNode }) {
+	return <div className={styles.twoColumns}>{children}</div>
 }
 
 function Section({ children }: { children: ReactNode }) {
@@ -142,7 +145,7 @@ export function ConfigCheckbox({
 				display: "flex",
 				gap: "0.5rem",
 				alignItems: "center",
-				flexWrap: "wrap",
+				flexWrap: "nowrap",
 			}}>
 			<input
 				className={styles.configInput}
@@ -607,144 +610,152 @@ export function RenderSettings() {
 				</Content>
 			</Section>
 
-			<Section>
-				<TitleBar title="LOCAL DATA" />
+			<SectionColumns>
+				<Section>
+					<TitleBar title="LOCAL DATA" />
 
-				<Content>
-					<ContentColumn>
-						Manage the data stored in the Local Storage of your
-						browser.
-						<Blockquote>
-							<BETATag />
-							<span
-								style={{
-									display: "flex",
-									flexWrap: "wrap",
-									gap: "0.5ch",
-								}}>
-								{
-									"Migrating from another app? Import compatible data from: "
-								}
-								<span>
+					<Content>
+						<ContentColumn>
+							Manage the data stored in the Local Storage of your
+							browser.
+							<Blockquote>
+								<BETATag />
+								<span
+									style={{
+										display: "flex",
+										flexWrap: "wrap",
+										gap: "0.5ch",
+									}}>
+									{
+										"Migrating from another app? Import compatible data from: "
+									}
+									<span>
+										<Link
+											className="btn-anchor"
+											href="https://nteplanner.app/"
+											target="_blank">
+											NTE Planner
+										</Link>
+										{", "}
+									</span>
 									<Link
 										className="btn-anchor"
-										href="https://nteplanner.app/"
+										href="https://www.ntewiz.xyz/"
 										target="_blank">
-										NTE Planner
+										NTEWiz
 									</Link>
-									{", "}
 								</span>
-								<Link
-									className="btn-anchor"
-									href="https://www.ntewiz.xyz/"
-									target="_blank">
-									NTEWiz
-								</Link>
-							</span>
-						</Blockquote>
-					</ContentColumn>
-					<ContentRow buttonRow>
-						<button
-							className={`pill-button ${styles.configButton}`}
-							data-variant="normal"
-							onClick={(e) => {
-								e.preventDefault()
-								backupExport()
-							}}>
-							Export Data
-						</button>
-						<button
-							className={`pill-button ${styles.configButton}`}
-							data-variant="normal"
-							onClick={(e) => {
-								e.preventDefault()
-								importData()
-							}}>
-							Import Data
-						</button>
-						<button
-							className={`pill-button ${styles.configButton}`}
-							data-variant="danger"
-							onClick={() => setEraseWarning(true)}>
-							Erase Data
-						</button>
-					</ContentRow>
-				</Content>
-			</Section>
-
-			<Section>
-				<TitleBar title="CLOUD BACKUP">
-					{status === "authenticated" && (
-						<span className={styles.settingsCloudStatus}>
-							<span
-								className={`${styles.settingsCloudStatusLabel} ${styles[cloudSync.status]}`}>
-								{syncStatusLabel[cloudSync.status].toUpperCase()}
-							</span>
-							<div
-								tabIndex={0}
-								className={styles.settingsCloudSyncBtn}
-								data-variant="normal"
-								onClick={cloudSync.syncNow}
-							/>
-						</span>
-					)}
-				</TitleBar>
-
-				{status === "authenticated" ? (
-					<Content>
-						<ContentRow>
-							<b>Account:</b>
-							<span className={styles.settingsSecret}>{email}</span>
-						</ContentRow>
-
-						<ContentRow>
-							<b>Last Backup:</b>
-							<span
-								style={{
-									fontFamily: "var(--font-barlow-condensed)",
-									letterSpacing: "5%",
-								}}>
-								{cloudSync.latestBackupUpdatedAt
-									? formatDate(cloudSync.latestBackupUpdatedAt)
-									: "NO BACKUP"}
-							</span>
-						</ContentRow>
-
+							</Blockquote>
+						</ContentColumn>
 						<ContentRow buttonRow>
 							<button
 								className={`pill-button ${styles.configButton}`}
 								data-variant="normal"
-								onClick={() => setSignoutWarning(true)}>
-								Sign Out
+								onClick={(e) => {
+									e.preventDefault()
+									backupExport()
+								}}>
+								Export Data
+							</button>
+							<button
+								className={`pill-button ${styles.configButton}`}
+								data-variant="normal"
+								onClick={(e) => {
+									e.preventDefault()
+									importData()
+								}}>
+								Import Data
 							</button>
 							<button
 								className={`pill-button ${styles.configButton}`}
 								data-variant="danger"
-								onClick={() => setUnlinkWarning(true)}>
-								Unlink & Delete Cloud Data
+								onClick={() => setEraseWarning(true)}>
+								Erase Data
 							</button>
 						</ContentRow>
 					</Content>
-				) : (
-					<Content>
-						<ContentRow>
-							{
-								"Sync your data across devices, end-to-end encrypted. Chiz.Pink never has access to your unencrypted data - only you can decrypt it."
-							}
-						</ContentRow>
+				</Section>
 
-						<ContentRow buttonRow>
-							<button
-								className={`pill-button ${styles.configButton}`}
-								data-variant="normal"
-								onClick={() => signInWithGooglePopup()}>
-								Sign In
-							</button>
-						</ContentRow>
-					</Content>
-				)}
-			</Section>
+				<Section>
+					<TitleBar title="CLOUD BACKUP">
+						{status === "authenticated" && (
+							<span className={styles.settingsCloudStatus}>
+								<span
+									className={`${styles.settingsCloudStatusLabel} ${styles[cloudSync.status]}`}>
+									{syncStatusLabel[
+										cloudSync.status
+									].toUpperCase()}
+								</span>
+								<div
+									tabIndex={0}
+									className={styles.settingsCloudSyncBtn}
+									data-variant="normal"
+									onClick={cloudSync.syncNow}
+								/>
+							</span>
+						)}
+					</TitleBar>
 
+					{status === "authenticated" ? (
+						<Content>
+							<ContentRow>
+								<b>Account:</b>
+								<span className={styles.settingsSecret}>
+									{email}
+								</span>
+							</ContentRow>
+
+							<ContentRow>
+								<b>Last Backup:</b>
+								<span
+									style={{
+										fontFamily:
+											"var(--font-barlow-condensed)",
+										letterSpacing: "5%",
+									}}>
+									{cloudSync.latestBackupUpdatedAt
+										? formatDate(
+												cloudSync.latestBackupUpdatedAt
+											)
+										: "NO BACKUP"}
+								</span>
+							</ContentRow>
+
+							<ContentRow buttonRow>
+								<button
+									className={`pill-button ${styles.configButton}`}
+									data-variant="normal"
+									onClick={() => setSignoutWarning(true)}>
+									Sign Out
+								</button>
+								<button
+									className={`pill-button ${styles.configButton}`}
+									data-variant="danger"
+									onClick={() => setUnlinkWarning(true)}>
+									Unlink & Delete Cloud Data
+								</button>
+							</ContentRow>
+						</Content>
+					) : (
+						<Content>
+							<ContentRow>
+								{
+									"Sync your data across devices, end-to-end encrypted. Chiz.Pink never has access to your unencrypted data - only you can decrypt it."
+								}
+							</ContentRow>
+
+							<ContentRow buttonRow>
+								<button
+									className={`pill-button ${styles.configButton}`}
+									data-variant="normal"
+									onClick={() => signInWithGooglePopup()}>
+									Sign In
+								</button>
+							</ContentRow>
+						</Content>
+					)}
+				</Section>
+			</SectionColumns>
 			{!isStandalone && (
 				<Section>
 					<TitleBar title="INSTALL AS PWA" />
@@ -779,27 +790,6 @@ export function RenderSettings() {
 									})
 								}
 							/>
-							<ConfigCheckbox
-								name={`Calendar: ${getDayBoundaryLabel(
-									settings.appearance[
-										"calendar-day-boundary"
-									] ?? "server",
-									settings.userdata.server
-								)}`}
-								checked={
-									(settings.appearance[
-										"calendar-day-boundary"
-									] ?? "server") === "local"
-								}
-								onChange={(e) =>
-									actions.setConfig("appearance", {
-										"calendar-day-boundary": e.currentTarget
-											.checked
-											? "local"
-											: "server",
-									})
-								}
-							/>
 						</ContentColumn>
 
 						<ContentColumn>
@@ -813,6 +803,46 @@ export function RenderSettings() {
 									actions.setConfig("appearance", {
 										"use-hybrid-planner":
 											e.currentTarget.checked,
+									})
+								}
+							/>
+						</ContentColumn>
+					</ContentRow>
+				</Content>
+				<TitleBar title="BEHAVIOUR" />
+				<Content>
+					<ContentRow equalColumns>
+						<ContentColumn>
+							<ConfigCheckbox
+								checked={settings.behaviour["auto-claim"]}
+								onChange={(e) =>
+									actions.setConfig("behaviour", {
+										"auto-claim": e.currentTarget.checked,
+									})
+								}
+								name="Daily Tasks: Add to Inventory"
+							/>
+						</ContentColumn>
+						<ContentColumn>
+							<ConfigCheckbox
+								name={`Calendar: ${
+									settings.behaviour[
+										"calendar-day-boundary"
+									] === "server"
+										? "Server Time"
+										: "Local Time"
+								}`}
+								checked={
+									(settings.behaviour[
+										"calendar-day-boundary"
+									] ?? "server") === "local"
+								}
+								onChange={(e) =>
+									actions.setConfig("behaviour", {
+										"calendar-day-boundary": e.currentTarget
+											.checked
+											? "local"
+											: "server",
 									})
 								}
 							/>
@@ -854,11 +884,17 @@ export function RenderSettings() {
 						confirmLabel="Overwrite"
 						cancelLabel="Add to Existing"
 						onConfirm={() => {
-							applyExternalPlannerImport(externalImportPending, "overwrite")
+							applyExternalPlannerImport(
+								externalImportPending,
+								"overwrite"
+							)
 							setExternalImportPending(null)
 						}}
 						onCancel={() => {
-							applyExternalPlannerImport(externalImportPending, "merge")
+							applyExternalPlannerImport(
+								externalImportPending,
+								"merge"
+							)
 							setExternalImportPending(null)
 						}}>
 						{`Import ${externalImportPending.source} Data`}
@@ -893,13 +929,14 @@ export function RenderSettings() {
 						<div className={`raised-control ${alertTextBox}`}>
 							<div>
 								{`Inventory: ${Object.keys(externalImportSummary.inventory).length} items imported`}
-								{externalImportSummary.unmatchedMaterials.length > 0 &&
+								{externalImportSummary.unmatchedMaterials.length >
+									0 &&
 									`, ${externalImportSummary.unmatchedMaterials.length} skipped (no match)`}
 							</div>
 							<div>
 								{`Characters: ${externalImportSummary.characters.length} imported`}
-								{externalImportSummary.skippedCharacterIds.length >
-									0 &&
+								{externalImportSummary.skippedCharacterIds
+									.length > 0 &&
 									`, ${externalImportSummary.skippedCharacterIds.length} skipped (unknown character)`}
 							</div>
 							<div>
@@ -987,7 +1024,8 @@ export function RenderSettings() {
 								fontWeight: "500",
 								textWrapStyle: "balance",
 							}}>
-							You will be able to use your backup when you sign back in.
+							You will be able to use your backup when you sign back
+							in.
 						</p>
 					</AlertContainer>
 				</ModalContainer>

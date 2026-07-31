@@ -24,9 +24,11 @@ import {
 import { ConfigCheckbox } from "@/app/settings/RenderSettings"
 
 import styles from "./EventCalendar.module.css"
+import pageStyles from "@/app/page.module.css"
 import { CalendarEventItem } from "./CalendarEventItem"
 
-export type DayBoundaryMode = SettingsRecord["appearance"]["calendar-day-boundary"]
+export type DayBoundaryMode =
+	SettingsRecord["behaviour"]["calendar-day-boundary"]
 
 export const CalendarContext = createContext<{
 	daySize: number
@@ -241,7 +243,7 @@ export function EventCalendar() {
 	const { settings, actions } = useSettingsStore()
 	const { server } = settings.userdata
 	const dayBoundaryMode: DayBoundaryMode =
-		settings.appearance["calendar-day-boundary"] ?? "server"
+		settings.behaviour["calendar-day-boundary"] ?? "server"
 
 	const calendarContainerRef = useRef<HTMLDivElement>(null)
 	const calendarContentRef = useRef<HTMLDivElement>(null)
@@ -506,18 +508,14 @@ export function EventCalendar() {
 	}
 
 	return (
-		<div className={`metallic-panel ${styles.section}`}>
-			<div className={styles.sectionTitleRow}>
-				<h2 className={styles.sectionTitle}>Event Calendar</h2>
-				<label
-					className={styles.dayBoundaryToggle}
-					style={{
-						flexGrow: 1,
-					}}>
+		<div className={`metallic-panel ${pageStyles.section}`}>
+			<div className={pageStyles.sectionTitleRow}>
+				<h2 className={pageStyles.sectionTitle}>Event Calendar</h2>
+				<label className={pageStyles.sectionConfig}>
 					<ConfigCheckbox
 						checked={dayBoundaryMode === "local"}
 						onChange={(e) =>
-							actions.setConfig("appearance", {
+							actions.setConfig("behaviour", {
 								"calendar-day-boundary": e.currentTarget.checked
 									? "local"
 									: "server",
@@ -529,11 +527,7 @@ export function EventCalendar() {
 				{nowMarkerOutOfView && (
 					<button
 						type="button"
-						style={{
-							fontSize: "0.8em",
-							marginBlock: "0.25em",
-						}}
-						className="pill-button"
+						className={`pill-button ${pageStyles.sectionButton}`}
 						onClick={() => scrollToNow()}>
 						{"TODAY"}
 					</button>

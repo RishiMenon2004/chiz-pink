@@ -9,6 +9,7 @@ export {
 export { usePlannerStore, plannerActions } from "./usePlannerStore"
 export { useHybridPlannerStore } from "./useHybridPlannerStore"
 export { useSettingsStore, settingsActions } from "./useSettingsStore"
+export { useChecklistStore, checklistActions } from "./useChecklistStore"
 export { useTooltip } from "./useTooltip"
 export { useMaterialEditorModal } from "./useMaterialAdjustmentModal"
 export { useServiceWorker } from "./useServiceWorker"

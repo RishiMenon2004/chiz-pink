@@ -2,17 +2,24 @@
 
 import { SettingsConfigContext } from "@/contexts"
 import { isInitialSyncPending, useInitialSyncPending } from "@/helpers/syncGate"
-import { getStaminaResetBoundaries } from "@/helpers/staminaReset"
+import {
+	getDailyResetBoundaries,
+	getStaminaResetBoundaries,
+} from "@/helpers/staminaReset"
 import { SettingsRecord } from "@/types/settings"
 import { ReactNode, useEffect, useSyncExternalStore } from "react"
+import { checklistActions, useChecklistStore } from "./useChecklistStore"
 
 let lastRawValue: string | null = null
 
 const SERVER_FALLBACK: SettingsRecord = {
 	appearance: {
 		"use-cursors": true,
-		"calendar-day-boundary": "server",
 		"use-hybrid-planner": false,
+	},
+	behaviour: {
+		"auto-claim": true,
+		"calendar-day-boundary": "server",
 	},
 	userdata: {
 		nickname: "Appraiser",
@@ -133,6 +140,7 @@ export function useSettingsStore() {
 
 export function SettingsProvider({ children }: { children: ReactNode }) {
 	const { settings, actions } = useSettingsStore()
+	const { checklist } = useChecklistStore()
 
 	// Depends on syncPending so this retries once the initial Drive check
 	// resolves - the backfill is a no-op while sync is pending, and without
@@ -142,7 +150,7 @@ export function SettingsProvider({ children }: { children: ReactNode }) {
 	useEffect(() => {
 		if (syncPending) return
 
-		if (!settings?.appearance || !settings?.userdata) {
+		if (!settings?.appearance || !settings?.behaviour || !settings?.userdata) {
 			actions.updateSettings(
 				{
 					...SERVER_FALLBACK,
@@ -180,6 +188,24 @@ export function SettingsProvider({ children }: { children: ReactNode }) {
 		return () => clearInterval(interval)
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [syncPending, server, maxStamina, lastStaminaReset])
+
+	const lastDailyReset = checklist.lastDailyReset
+
+	useEffect(() => {
+		if (syncPending || !server) return
+
+		const checkDailyReset = () => {
+			const { previousReset } = getDailyResetBoundaries(server, Date.now())
+
+			if (previousReset > (lastDailyReset ?? 0)) {
+				checklistActions.resetDaily(previousReset)
+			}
+		}
+
+		checkDailyReset()
+		const interval = setInterval(checkDailyReset, 30_000)
+		return () => clearInterval(interval)
+	}, [syncPending, server, lastDailyReset])
 
 	return (
 		<SettingsConfigContext.Provider value={settings}>

@@ -5,6 +5,18 @@
 	gap: 2rem;
 }
 
+.twoColumns {
+	display: grid;
+	grid-template-columns: repeat(2, 1fr);
+	gap: 2rem;
+	width: 100%;
+	max-width: 80%;
+
+	& > div.settingsSection {
+		max-width: 100%;
+	}
+}
+
 @keyframes blinking {
 	from {
 		background-position: 0rem;
@@ -502,7 +514,17 @@ div.settingsSection {
 	background-color: var(--interactive-bg);
 }
 
+@media (max-width: 1415px) {
+	.twoColumns {
+		grid-template-columns: 1fr;
+	}
+}
+
 @media (max-width: 1135px) {
+	.twoColumns {
+		max-width: 100%;
+	}
+
 	div.settingsSection {
 		max-width: 100%;
 
