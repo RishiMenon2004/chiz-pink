@@ -231,8 +231,13 @@
 				.versionText {
 					font-size: 0.9em;
 					margin-block: 1ch;
+
 					&:last-child {
 						margin-bottom: 0;
+					}
+
+					& > span[data-taller-line="true"] + span {
+						line-height: 1.2rem;
 					}
 				}
 			}
@@ -368,6 +373,11 @@
 		}
 
 		.updateSplashContainer & {
+
+			.infoBox {
+				max-height: 50vh;
+			}
+
 			.welcomeText {
 				font-size: 1rem;
 			}

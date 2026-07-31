@@ -5,7 +5,6 @@ export function DescriptionNumber({ children }: { children: ReactNode }) {
 		<span
 			style={{
 				color: "var(--pink)",
-				fontSize: "1.1em",
 				fontFamily: "var(--font-barlow-condensed)",
 				fontWeight: 700,
 				letterSpacing: "5%",

@@ -23,6 +23,14 @@ export function parseDescription(
 	const parts = description.split(regex)
 
 	return parts.map((chunk, index) => {
+		if (chunk === "") {
+			return
+		}
+
+		if (chunk === " ") {
+			return " "
+		}
+
 		if (chunk.startsWith("<") && chunk.endsWith("/>")) {
 			const openTagMatch = chunk.match(OPEN_TAG_REGEX)
 			const tagName = openTagMatch?.[1] ?? "dn"
@@ -59,23 +67,33 @@ export function parseDescription(
 					case "tag":
 						return (
 							<span
+								data-taller-line={true}
 								style={{
+									fontSize: "0.75em",
+									fontWeight: 750,
 									backgroundColor: "var(--pink)",
-									padding: "0.125em 0.75em",
+									padding: "0.25em 0.75em",
 									borderRadius: "100vh",
 									marginInlineEnd: "0.25rem",
+									paintOrder: "stroke fill",
+									WebkitTextStroke: "3px black"
 								}}>
 								{children}
 							</span>
 						)
-					case "smalltag":
+					case "itag":
 						return (
 							<span
+								data-taller-line={true}
 								style={{
+									fontSize: "0.9em",
 									backgroundColor: "var(--pink)",
 									padding: "0 0.5em",
 									borderRadius: "100vh",
 									marginInline: "0.25rem",
+									whiteSpace: "nowrap",
+									paintOrder: "stroke fill",
+									WebkitTextStroke: "2px black"
 								}}>
 								{children}
 							</span>
@@ -106,15 +124,11 @@ export function parseDescription(
 			return <Wrapper key={index}>{displayValue}</Wrapper>
 		}
 
-		return (
-			<span key={index}>
-				{chunk.split("\n").map((line, lineIndex) => (
-					<span key={lineIndex}>
-						{lineIndex > 0 && <br />}
-						{line}
-					</span>
-				))}
-			</span>
-		)
+		return chunk.split("\n").map((line, lineIndex) => (
+			<>
+				{lineIndex > 0 && <br />}
+				<span key={lineIndex}>{line}</span>
+			</>
+		))
 	})
 }
