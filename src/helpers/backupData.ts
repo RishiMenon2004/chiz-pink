@@ -22,6 +22,8 @@ function getFormattedDate(date = new Date()) {
 }
 
 export function buildBackupPayload() {
+	const checklistData =
+		window.localStorage.getItem("checklist") ?? '{ "activities": {}}'
 	const plannerData =
 		window.localStorage.getItem("planner") ??
 		'{ "arcs": {}, "characters": {} }'
@@ -34,6 +36,7 @@ export function buildBackupPayload() {
 
 	return {
 		lastUpdated,
+		checklist: JSON.parse(checklistData),
 		inventory: JSON.parse(inventoryData),
 		planner: JSON.parse(plannerData),
 		hybridPlanner: JSON.parse(hybridPlannerData),
@@ -74,6 +77,7 @@ export function backupImport(json: string) {
 	}
 
 	const lastUpdated = Number(window.localStorage.getItem("lastUpdated"))
+	const checklistData = window.localStorage.getItem("checklist")
 	const plannerData = window.localStorage.getItem("planner")
 	const inventoryData = window.localStorage.getItem("inventory")
 	const settingsData = window.localStorage.getItem("settings")
@@ -92,7 +96,7 @@ export function backupImport(json: string) {
 		return { status: "future", data } //WOW!
 	}
 
-	if (!hasSyncedBefore && (plannerData || inventoryData || settingsData)) {
+	if (!hasSyncedBefore && (checklistData || plannerData || inventoryData || settingsData)) {
 		return { status: "overwrite", data }
 	}
 
@@ -100,6 +104,7 @@ export function backupImport(json: string) {
 }
 
 const ERASABLE_KEYS = [
+	"checklist",
 	"inventory",
 	"planner",
 	"hybridPlanner",
@@ -117,11 +122,13 @@ export function eraseLocalData() {
 
 export function backupSetImport({
 	lastUpdated,
+	checklist,
 	planner,
 	hybridPlanner,
 	inventory,
 	settings,
 }: BackupData) {
+	window.localStorage.setItem("checklist", JSON.stringify(checklist))
 	window.localStorage.setItem("inventory", JSON.stringify(inventory))
 	window.localStorage.setItem("planner", JSON.stringify(planner))
 	window.localStorage.setItem(

@@ -1,3 +1,4 @@
+import { ChecklistRecord } from "./checklist"
 import { Inventory } from "./inventory"
 import { HybridPlannerRecord, PlannerRecord } from "./planner"
 
@@ -23,6 +24,7 @@ export type SettingsRecord = {
 }
 
 export type BackupData = {
+	checklist: ChecklistRecord,
 	lastUpdated: number
 	inventory: Inventory
 	planner: PlannerRecord
