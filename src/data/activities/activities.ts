@@ -4,8 +4,8 @@ import {
 	beetleCoin,
 	chaoticDye,
 	dreamlessSeed,
+	eliteHunterGuide,
 	fons,
-	seniorHunterGuide,
 } from "../items/materials"
 
 type ActivityPartWithReward = {
@@ -39,7 +39,7 @@ export const allActivities = {
 				name: "20",
 				rewards: [
 					{ material: annulith, amount: 10 },
-					{ material: seniorHunterGuide, amount: 2 },
+					{ material: eliteHunterGuide, amount: 2 },
 					{ material: beetleCoin, amount: 5000 },
 				],
 			},
