@@ -23,7 +23,8 @@ function getFormattedDate(date = new Date()) {
 
 export function buildBackupPayload() {
 	const checklistData =
-		window.localStorage.getItem("checklist") ?? '{ "activities": {}}'
+		window.localStorage.getItem("checklist") ??
+		'{ "activities": {}, "events": {}, "lastDailyReset": 0 }'
 	const plannerData =
 		window.localStorage.getItem("planner") ??
 		'{ "arcs": {}, "characters": {} }'
@@ -128,7 +129,12 @@ export function backupSetImport({
 	inventory,
 	settings,
 }: BackupData) {
-	window.localStorage.setItem("checklist", JSON.stringify(checklist))
+	window.localStorage.setItem(
+		"checklist",
+		JSON.stringify(
+			checklist ?? { activities: {}, events: {}, lastDailyReset: 0 }
+		)
+	)
 	window.localStorage.setItem("inventory", JSON.stringify(inventory))
 	window.localStorage.setItem("planner", JSON.stringify(planner))
 	window.localStorage.setItem(
