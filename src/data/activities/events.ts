@@ -357,7 +357,7 @@ export const Events: EventData[] = [
 		themeColor: "#559c68",
 	},
 	{
-		name: "Fishin Frenzy",
+		name: "Fishing Frenzy",
 		type: "Event",
 		getStartDate: (server) => serverSOD(server, 3, 8, 2026),
 		getEndDate: getPhase2End("version1_2"),
@@ -375,10 +375,13 @@ export const Events: EventData[] = [
 
 	//v1.3
 	{
-		name: 'Version 1.3 ("Fogden Game")',
+		name: 'Version 1.3 ("Rising from the Moonlit Fog")',
 		type: "Patch",
 		getStartDate: getPhase1Start("version1_3"),
 		getEndDate: getPhase2End("version1_3"),
+		eventImage: "version1.3/version_1.3.webp",
+		themeColor: "#d22730",
+		yOffset: "23%",
 	},
 	{
 		name: "Zankou Banner",
