@@ -3,6 +3,7 @@
 import { useSyncExternalStore } from "react"
 
 import { isInitialSyncPending } from "@/helpers/syncGate"
+import { safeParse } from "@/helpers/dataCorruption"
 
 import type { HybridPlannerRecord } from "@/types/planner"
 
@@ -10,7 +11,7 @@ let cachedHybridPlanner: HybridPlannerRecord = { order: [] }
 
 let lastRawValue: string | null = null
 
-const SERVER_FALLBACK: HybridPlannerRecord = { order: [] }
+export const SERVER_FALLBACK: HybridPlannerRecord = { order: [] }
 
 export const hybridPlannerActions = {
 	setOrder(order: string[]) {
@@ -43,9 +44,7 @@ const getSnapshot = () => {
 	const rawValue = localStorage.getItem("hybridPlanner")
 
 	if (rawValue !== lastRawValue) {
-		cachedHybridPlanner = JSON.parse(
-			rawValue || JSON.stringify(SERVER_FALLBACK)
-		) as HybridPlannerRecord
+		cachedHybridPlanner = safeParse(rawValue, SERVER_FALLBACK, "hybridPlanner")
 		lastRawValue = rawValue
 	}
 

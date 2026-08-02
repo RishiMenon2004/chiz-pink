@@ -1,4 +1,10 @@
 import { BackupData } from "@/types/settings"
+import { safeParse } from "./dataCorruption"
+import { SERVER_FALLBACK as CHECKLIST_FALLBACK } from "@/hooks/useChecklistStore"
+import { SERVER_FALLBACK as PLANNER_FALLBACK } from "@/hooks/usePlannerStore"
+import { SERVER_FALLBACK as HYBRID_PLANNER_FALLBACK } from "@/hooks/useHybridPlannerStore"
+import { SERVER_FALLBACK as INVENTORY_FALLBACK } from "@/hooks/useInventoryStore"
+import { SERVER_FALLBACK as SETTINGS_FALLBACK } from "@/hooks/useSettingsStore"
 
 const LAST_SYNCED_KEY = "lastSynced"
 
@@ -22,26 +28,35 @@ function getFormattedDate(date = new Date()) {
 }
 
 export function buildBackupPayload() {
-	const checklistData =
-		window.localStorage.getItem("checklist") ??
-		'{ "activities": {}, "events": {}, "lastDailyReset": 0 }'
-	const plannerData =
-		window.localStorage.getItem("planner") ??
-		'{ "arcs": {}, "characters": {} }'
-	const hybridPlannerData =
-		window.localStorage.getItem("hybridPlanner") ?? '{ "order": [] }'
-	const inventoryData = window.localStorage.getItem("inventory") ?? "{}"
-	const settingsData =
-		window.localStorage.getItem("settings") ?? "{ appearance: {} }"
 	const lastUpdated = window.localStorage.getItem("lastUpdated") ?? Date.now()
 
 	return {
 		lastUpdated,
-		checklist: JSON.parse(checklistData),
-		inventory: JSON.parse(inventoryData),
-		planner: JSON.parse(plannerData),
-		hybridPlanner: JSON.parse(hybridPlannerData),
-		settings: JSON.parse(settingsData),
+		checklist: safeParse(
+			window.localStorage.getItem("checklist"),
+			CHECKLIST_FALLBACK,
+			"checklist"
+		),
+		inventory: safeParse(
+			window.localStorage.getItem("inventory"),
+			INVENTORY_FALLBACK,
+			"inventory"
+		),
+		planner: safeParse(
+			window.localStorage.getItem("planner"),
+			PLANNER_FALLBACK,
+			"planner"
+		),
+		hybridPlanner: safeParse(
+			window.localStorage.getItem("hybridPlanner"),
+			HYBRID_PLANNER_FALLBACK,
+			"hybridPlanner"
+		),
+		settings: safeParse(
+			window.localStorage.getItem("settings"),
+			SETTINGS_FALLBACK,
+			"settings"
+		),
 	}
 }
 
@@ -131,17 +146,24 @@ export function backupSetImport({
 }: BackupData) {
 	window.localStorage.setItem(
 		"checklist",
-		JSON.stringify(
-			checklist ?? { activities: {}, events: {}, lastDailyReset: 0 }
-		)
+		JSON.stringify(checklist ?? CHECKLIST_FALLBACK)
 	)
-	window.localStorage.setItem("inventory", JSON.stringify(inventory))
-	window.localStorage.setItem("planner", JSON.stringify(planner))
+	window.localStorage.setItem(
+		"inventory",
+		JSON.stringify(inventory ?? INVENTORY_FALLBACK)
+	)
+	window.localStorage.setItem(
+		"planner",
+		JSON.stringify(planner ?? PLANNER_FALLBACK)
+	)
 	window.localStorage.setItem(
 		"hybridPlanner",
-		JSON.stringify(hybridPlanner ?? { order: [] })
+		JSON.stringify(hybridPlanner ?? HYBRID_PLANNER_FALLBACK)
 	)
 	window.localStorage.setItem("lastUpdated", String(lastUpdated))
-	window.localStorage.setItem("settings", JSON.stringify(settings))
+	window.localStorage.setItem(
+		"settings",
+		JSON.stringify(settings ?? SETTINGS_FALLBACK)
+	)
 	window.dispatchEvent(new Event("local-storage-update"))
 }

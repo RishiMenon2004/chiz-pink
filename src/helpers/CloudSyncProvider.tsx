@@ -14,11 +14,13 @@ import {
 	backupImport,
 	backupSetImport,
 	buildBackupPayload,
+	eraseLocalData,
 	markSynced,
 } from "./backupData"
 import { decryptBackupPayload, encryptBackupPayload } from "./backupCrypto"
 import { getOrCreateBackupKey } from "./driveBackupKey"
 import { setInitialSyncPending } from "./syncGate"
+import { clearCorruption, useCorruptedKeys } from "./dataCorruption"
 
 const AUTO_SYNC_DEBOUNCE_MS = 4000
 
@@ -54,6 +56,18 @@ export function CloudSyncProvider({ children }: { children: React.ReactNode }) {
 	// initial-Drive-check flag played.
 	const [keyReady, setKeyReady] = useState(false)
 	const [restorePrompt, setRestorePrompt] = useState<RestorePrompt | null>(null)
+	// lastUpdated of the most recent Convex row that failed to decrypt/parse,
+	// if any - the cloud backup itself being unreadable, not just local. A
+	// row with a different lastUpdated is a fresh backup, so remoteCorrupt
+	// (derived below, once `row` exists) naturally clears without needing an
+	// explicit reset.
+	const [failedRemoteRow, setFailedRemoteRow] = useState<number | null>(null)
+	// Any localStorage-backed record that failed to parse (see
+	// dataCorruption.ts). Blocks auto-sync until the user picks a recovery
+	// path, same as restorePrompt does - we don't want to push corrupt data
+	// over a good cloud backup, or pull while the user hasn't decided.
+	const corruptedKeys = useCorruptedKeys()
+	const hasCorruption = corruptedKeys.length > 0
 
 	const keyRef = useRef<CryptoKey | null>(null)
 	const isSyncingRef = useRef(false)
@@ -151,8 +165,24 @@ export function CloudSyncProvider({ children }: { children: React.ReactNode }) {
 		convexAuth.isAuthenticated ? {} : "skip"
 	)
 
-	// row === undefined => still loading; null => resolved, no backup yet.
-	const initialCheckComplete = keyReady && row !== undefined
+	// True when this specific row (by lastUpdated) failed to decrypt or parse
+	// - the cloud backup itself is unreadable, not just local.
+	const remoteCorrupt = row != null && failedRemoteRow === row.lastUpdated
+
+	// row === undefined => still loading; null => resolved, no backup yet. A
+	// non-null row still needs the async reconcile effect below to decrypt
+	// and merge it before local data can be trusted, so we also wait on
+	// initialReconcileDone - otherwise writes unblock as soon as the row
+	// answers, racing ahead of the actual pull and making local look newer
+	// than the backup about to replace it (false conflict prompt on every
+	// load). hasCorruption bypasses this too, since a corrupted key makes the
+	// reconcile effect skip its decrypt forever - the corruption modal drives
+	// resolution from there instead.
+	const [initialReconcileDone, setInitialReconcileDone] = useState(false)
+	const initialCheckComplete =
+		keyReady &&
+		row !== undefined &&
+		(row === null || initialReconcileDone || hasCorruption)
 
 	// Blocks the settings/planner/inventory stores from writing to localStorage
 	// while it's still unknown whether an authenticated pull is about to land -
@@ -169,7 +199,13 @@ export function CloudSyncProvider({ children }: { children: React.ReactNode }) {
 	// rules as a manual file import.
 	useEffect(() => {
 		if (!keyReady || row === undefined || row === null) return
-		if (restorePrompt || debounceRef.current || isReconcilingRef.current)
+		if (
+			restorePrompt ||
+			hasCorruption ||
+			remoteCorrupt ||
+			debounceRef.current ||
+			isReconcilingRef.current
+		)
 			return
 		if (lastReconciledRef.current === row.lastUpdated) return
 
@@ -214,11 +250,13 @@ export function CloudSyncProvider({ children }: { children: React.ReactNode }) {
 			})
 			.catch((error) => {
 				console.error("Failed to decrypt Convex backup", error)
+				setFailedRemoteRow(row.lastUpdated)
 			})
 			.finally(() => {
 				isReconcilingRef.current = false
+				setInitialReconcileDone(true)
 			})
-	}, [row, keyReady, restorePrompt])
+	}, [row, keyReady, restorePrompt, hasCorruption, remoteCorrupt])
 
 	const upsertBackup = useMutation(api.backups.upsertBackup)
 
@@ -254,17 +292,22 @@ export function CloudSyncProvider({ children }: { children: React.ReactNode }) {
 	// the next local edit's debounce or a manual sync click.
 	useEffect(() => {
 		if (!keyReady || row !== null) return
-		if (restorePrompt || hasPushedInitialBackupRef.current) return
+		if (restorePrompt || hasCorruption || hasPushedInitialBackupRef.current)
+			return
 
 		hasPushedInitialBackupRef.current = true
 		pushToConvex()
-	}, [keyReady, row, restorePrompt, pushToConvex])
+	}, [keyReady, row, restorePrompt, hasCorruption, pushToConvex])
 
 	useEffect(() => {
 		async function runSync() {
 			// Never sync before the key + initial pull have resolved, and never
-			// sync while the user hasn't decided on a pending restore conflict.
-			if (!initialCheckComplete || restorePrompt) return
+			// sync while the user hasn't decided on a pending restore conflict
+			// or a data corruption prompt - pushing now could overwrite a good
+			// cloud backup with corrupt/partial local data, or silently paper
+			// over an unreadable cloud backup before the user even sees it.
+			if (!initialCheckComplete || restorePrompt || hasCorruption || remoteCorrupt)
+				return
 
 			if (isSyncingRef.current) {
 				pendingRef.current = true
@@ -282,7 +325,13 @@ export function CloudSyncProvider({ children }: { children: React.ReactNode }) {
 		}
 
 		runSyncRef.current = runSync
-	}, [initialCheckComplete, restorePrompt, pushToConvex])
+	}, [
+		initialCheckComplete,
+		restorePrompt,
+		hasCorruption,
+		remoteCorrupt,
+		pushToConvex,
+	])
 
 	const syncNow = useCallback(() => {
 		if (debounceRef.current) {
@@ -331,6 +380,58 @@ export function CloudSyncProvider({ children }: { children: React.ReactNode }) {
 		setRestorePrompt(null)
 	}
 
+	// Force-pulls whatever's in Convex right now and overwrites local with it,
+	// bypassing backupImport's older/newer comparison - local is known-bad
+	// here, so there's nothing worth comparing timestamps against.
+	const resyncFromCloud = useCallback(async () => {
+		const key = keyRef.current
+		if (!key || !row) return
+
+		setStatus("syncing")
+		try {
+			const data = await decryptBackupPayload(key, row.ciphertext, row.iv)
+			backupSetImport(data)
+			lastReconciledRef.current = row.lastUpdated
+
+			markSynced()
+			clearCorruption()
+			setStatus("synced")
+			setLastSyncedAt(Date.now())
+			setLatestBackupUpdatedAt(Number(data.lastUpdated) || Date.now())
+		} catch (error) {
+			console.error("Failed to resync from cloud", error)
+			setFailedRemoteRow(row.lastUpdated)
+			setStatus("error")
+		}
+	}, [row])
+
+	// Overwrites a corrupt/unreadable cloud backup with this device's local
+	// data. Only meaningful when local itself isn't also flagged corrupted -
+	// the modal below never offers this otherwise.
+	const overwriteCloudWithLocal = useCallback(async () => {
+		await pushToConvex()
+	}, [pushToConvex])
+
+	// Wipes this device's corrupted data. "Erase" here means starting this
+	// device over, not nuking the account - if a cloud backup exists and is
+	// itself readable we pull it straight back down rather than leaving local
+	// empty, so the next auto-push debounce doesn't overwrite a good cloud
+	// backup with nothing. If the cloud backup is unreadable too, there's
+	// nothing good to pull, so push the freshly-erased (empty) local state
+	// instead - that's the only way to get both sides back to a known state.
+	const eraseAndResync = useCallback(async () => {
+		eraseLocalData()
+
+		if (row && !remoteCorrupt) {
+			await resyncFromCloud()
+		} else if (remoteCorrupt) {
+			await pushToConvex()
+			clearCorruption()
+		} else {
+			clearCorruption()
+		}
+	}, [row, remoteCorrupt, resyncFromCloud, pushToConvex])
+
 	const remoteLastUpdated = restorePrompt
 		? Number(restorePrompt.data.lastUpdated) || null
 		: null
@@ -340,6 +441,38 @@ export function CloudSyncProvider({ children }: { children: React.ReactNode }) {
 	const remoteAge = restorePrompt
 		? describeAge(remoteLastUpdated, restorePrompt.localLastUpdated)
 		: null
+
+	// Neither side is trustworthy - the only way forward is a clean slate.
+	const bothCorrupt = hasCorruption && remoteCorrupt
+	const corruptionModalOpen = (hasCorruption || remoteCorrupt) && !restorePrompt
+
+	let corruptionMessage: string
+	let corruptionConfirmLabel: string
+	let corruptionConfirmAction: () => void
+	let corruptionCancelAction: (() => void) | undefined
+
+	if (bothCorrupt) {
+		corruptionMessage =
+			"Local data and your last cloud backup both failed to load. The only way forward is to erase this device and start fresh."
+		corruptionConfirmLabel = "Erase & Start Fresh"
+		corruptionConfirmAction = () => eraseAndResync()
+		corruptionCancelAction = undefined
+	} else if (remoteCorrupt) {
+		corruptionMessage =
+			"Your last cloud backup couldn't be read. You can overwrite it with this device's local data, or erase everything and start fresh."
+		corruptionConfirmLabel = "Push Local Data to Cloud"
+		corruptionConfirmAction = () => overwriteCloudWithLocal()
+		corruptionCancelAction = () => eraseAndResync()
+	} else {
+		corruptionMessage = row
+			? "Some of your local data couldn't be read and may be corrupted. Restore your last cloud backup, or erase this device's copy and pull it fresh."
+			: "Some of your local data couldn't be read and may be corrupted. No cloud backup is available yet, so erase this device's data to start fresh."
+		corruptionConfirmLabel = row ? "Resync from Cloud" : "Erase Local Data"
+		corruptionConfirmAction = row
+			? () => resyncFromCloud()
+			: () => eraseAndResync()
+		corruptionCancelAction = row ? () => eraseAndResync() : undefined
+	}
 
 	return (
 		<CloudSyncContext.Provider
@@ -359,6 +492,18 @@ export function CloudSyncProvider({ children }: { children: React.ReactNode }) {
 							: "Your BACKUP may conflict with your current data."}
 						<br />
 						What would you like to do?
+					</AlertContainer>
+				</ModalContainer>
+			)}
+			{corruptionModalOpen && (
+				<ModalContainer>
+					<AlertContainer
+						type={bothCorrupt ? "acknowledge" : "choices"}
+						onConfirm={corruptionConfirmAction}
+						confirmLabel={corruptionConfirmLabel}
+						onCancel={corruptionCancelAction}
+						cancelLabel="Erase & Start Fresh">
+						{corruptionMessage}
 					</AlertContainer>
 				</ModalContainer>
 			)}

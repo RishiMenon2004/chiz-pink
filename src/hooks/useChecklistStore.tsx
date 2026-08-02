@@ -3,12 +3,13 @@
 import { useSyncExternalStore } from "react"
 
 import { isInitialSyncPending } from "@/helpers/syncGate"
+import { safeParse } from "@/helpers/dataCorruption"
 
 import type { ChecklistRecord } from "@/types/checklist"
 
 let lastRawValue: string | null = null
 
-const SERVER_FALLBACK: ChecklistRecord = {
+export const SERVER_FALLBACK: ChecklistRecord = {
 	activities: {},
 	events: {},
 	lastDailyReset: 0,
@@ -20,7 +21,7 @@ function readChecklist(): ChecklistRecord {
 	if (typeof window === "undefined") return SERVER_FALLBACK
 
 	const value = localStorage.getItem("checklist")
-	return JSON.parse(value || JSON.stringify(SERVER_FALLBACK))
+	return safeParse(value, SERVER_FALLBACK, "checklist")
 }
 
 export const checklistActions = {
@@ -93,9 +94,7 @@ const getSnapshot = () => {
 	const rawValue = localStorage.getItem("checklist")
 
 	if (rawValue !== lastRawValue) {
-		cachedChecklist = JSON.parse(
-			rawValue || JSON.stringify(SERVER_FALLBACK)
-		) as ChecklistRecord
+		cachedChecklist = safeParse(rawValue, SERVER_FALLBACK, "checklist")
 		lastRawValue = rawValue
 	}
 

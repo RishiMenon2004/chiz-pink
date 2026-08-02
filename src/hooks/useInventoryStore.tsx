@@ -3,19 +3,20 @@
 import { useSyncExternalStore } from "react"
 
 import { isInitialSyncPending } from "@/helpers/syncGate"
+import { safeParse } from "@/helpers/dataCorruption"
 import type { Inventory } from "@/types/inventory"
 
 let cachedInventory: Inventory = {}
 let lastRawValue: string | null = null
 
-const SERVER_FALLBACK: Inventory = {}
+export const SERVER_FALLBACK: Inventory = {}
 
 export function updateInventory(data: Inventory) {
 	if (typeof window === "undefined") return
 	if (isInitialSyncPending()) return
 
 	const value = localStorage.getItem("inventory")
-	const inventoryData = { ...JSON.parse(value || "{}") } as Inventory
+	const inventoryData = { ...safeParse(value, SERVER_FALLBACK, "inventory") }
 	const newInventory: Inventory = {...inventoryData, ...data}
 
 	try {
@@ -57,7 +58,7 @@ const getSnapshot = () => {
 	const rawValue = localStorage.getItem("inventory")
 
 	if (rawValue !== lastRawValue) {
-		cachedInventory = JSON.parse(rawValue || "{}")
+		cachedInventory = safeParse(rawValue, SERVER_FALLBACK, "inventory")
 		lastRawValue = rawValue
 	}
 

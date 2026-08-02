@@ -2,6 +2,7 @@
 
 import { SettingsConfigContext } from "@/contexts"
 import { isInitialSyncPending, useInitialSyncPending } from "@/helpers/syncGate"
+import { safeParse } from "@/helpers/dataCorruption"
 import {
 	getDailyResetBoundaries,
 	getStaminaResetBoundaries,
@@ -12,7 +13,7 @@ import { checklistActions, useChecklistStore } from "./useChecklistStore"
 
 let lastRawValue: string | null = null
 
-const SERVER_FALLBACK: SettingsRecord = {
+export const SERVER_FALLBACK: SettingsRecord = {
 	appearance: {
 		"use-cursors": true,
 		"use-hybrid-planner": false,
@@ -41,7 +42,7 @@ function readSettings() {
 	if (typeof window === "undefined") return SERVER_FALLBACK
 
 	const value = localStorage.getItem("settings")
-	return JSON.parse(value || JSON.stringify(SERVER_FALLBACK))
+	return safeParse(value, SERVER_FALLBACK, "settings")
 }
 
 export const settingsActions = {
@@ -109,9 +110,7 @@ const getSnapshot = () => {
 	const rawValue = localStorage.getItem("settings")
 
 	if (rawValue !== lastRawValue) {
-		cachedSettings = JSON.parse(
-			rawValue || JSON.stringify(SERVER_FALLBACK)
-		) satisfies SettingsRecord
+		cachedSettings = safeParse(rawValue, SERVER_FALLBACK, "settings")
 		lastRawValue = rawValue
 	}
 

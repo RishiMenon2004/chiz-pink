@@ -4,6 +4,7 @@ import { useSyncExternalStore } from "react"
 import { v4 as uuidv4 } from "uuid"
 
 import { isInitialSyncPending } from "@/helpers/syncGate"
+import { safeParse } from "@/helpers/dataCorruption"
 
 import type { Material } from "@/types/item"
 import type {
@@ -30,7 +31,7 @@ let cachedPlanner: PlannerRecord = { arcs: {}, characters: {} }
 
 let lastRawValue: string | null = null
 
-const SERVER_FALLBACK: PlannerRecord = { arcs: {}, characters: {} }
+export const SERVER_FALLBACK: PlannerRecord = { arcs: {}, characters: {} }
 
 function getWeaponRequiredMaterials(
 	weapon:
@@ -108,7 +109,7 @@ function readPlanner(): PlannerRecord {
 	if (typeof window === "undefined") return SERVER_FALLBACK
 
 	const value = localStorage.getItem("planner")
-	return JSON.parse(value || JSON.stringify(SERVER_FALLBACK)) as PlannerRecord
+	return safeParse(value, SERVER_FALLBACK, "planner")
 }
 
 export const plannerActions = {
@@ -350,9 +351,7 @@ const getSnapshot = () => {
 	const rawValue = localStorage.getItem("planner")
 
 	if (rawValue !== lastRawValue) {
-		cachedPlanner = JSON.parse(
-			rawValue || JSON.stringify(SERVER_FALLBACK)
-		) as PlannerRecord
+		cachedPlanner = safeParse(rawValue, SERVER_FALLBACK, "planner")
 		lastRawValue = rawValue
 	}
 
