@@ -2,13 +2,16 @@
 
 import Link from "next/link"
 
-import { MaterialIcon } from "@/components/layout"
 import { characterPixel, cityStamina } from "@/data/items/materials"
+
 import { useSettingsStore } from "@/hooks"
+
 import {
 	PixelRefillCountdown,
 	StaminaResetCountdown,
 } from "@/app/settings/RenderSettings"
+
+import { MaterialIcon } from "@/components/layout"
 
 import pageStyles from "@/app/page.module.css"
 import styles from "./DashStaminaGauge.module.css"

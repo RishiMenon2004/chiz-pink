@@ -1,13 +1,17 @@
 "use client"
 
-import { getAllActivities } from "@/data/activities/activities"
-import { useChecklistStore, useInventoryStore, useSettingsStore } from "@/hooks"
+import { CSSProperties } from "react"
+
 import { ChecklistEntry } from "@/types/checklist"
 
-import styles from "./DashDailyActivity.module.css"
-import pageStyles from "@/app/page.module.css"
-import { CSSProperties } from "react"
+import { getAllActivities } from "@/data/activities/activities"
+
+import { useChecklistStore, useInventoryStore, useSettingsStore } from "@/hooks"
+
 import { ConfigCheckbox } from "@/app/settings/RenderSettings"
+
+import pageStyles from "@/app/page.module.css"
+import styles from "./DashDailyActivity.module.css"
 
 const EMPTY_ENTRY: ChecklistEntry = { checked: 0, claimed: 0, claimedAt: null }
 
