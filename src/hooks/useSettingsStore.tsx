@@ -5,6 +5,7 @@ import { isInitialSyncPending, useInitialSyncPending } from "@/helpers/syncGate"
 import { safeParse } from "@/helpers/dataCorruption"
 import {
 	getDailyResetBoundaries,
+	getRefilledPixelsState,
 	getStaminaResetBoundaries,
 } from "@/helpers/staminaReset"
 import { SettingsRecord } from "@/types/settings"
@@ -205,6 +206,41 @@ export function SettingsProvider({ children }: { children: ReactNode }) {
 		const interval = setInterval(checkDailyReset, 30_000)
 		return () => clearInterval(interval)
 	}, [syncPending, server, lastDailyReset])
+
+	const currentPixels = settings.userdata?.["current-pixels"]
+	const maxPixels = settings.userdata?.["max-pixels"]
+	const pixelsLastEdited = settings.userdata?.["pixels-last-edited"]
+
+	useEffect(() => {
+		if (
+			syncPending ||
+			currentPixels === undefined ||
+			maxPixels === undefined ||
+			pixelsLastEdited === undefined
+		)
+			return
+
+		const checkPixelRefill = () => {
+			const refilled = getRefilledPixelsState({
+				current: currentPixels,
+				max: maxPixels,
+				lastEdited: pixelsLastEdited,
+				now: Date.now(),
+			})
+
+			if (!refilled) return
+
+			actions.setConfig("userdata", {
+				"current-pixels": refilled.current,
+				"pixels-last-edited": refilled.lastEdited,
+			})
+		}
+
+		checkPixelRefill()
+		const interval = setInterval(checkPixelRefill, 30_000)
+		return () => clearInterval(interval)
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [syncPending, currentPixels, maxPixels, pixelsLastEdited])
 
 	return (
 		<SettingsConfigContext.Provider value={settings}>

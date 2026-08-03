@@ -61,7 +61,7 @@ export function formatTimeRemaining(ms: number): string {
 	return `${days}d ${hours}h ${minutes}m ${seconds}s`
 }
 
-const PIXEL_REFILL_INTERVAL_MS = 6 * 60 * 1000
+export const PIXEL_REFILL_INTERVAL_MS = 6 * 60 * 1000
 
 // Returns the epoch ms at which `current` reaches `max`, given the fixed
 // refill rate and a baseline timestamp for when `current` was last accurate.
@@ -103,4 +103,34 @@ export function getNextPixelRecoveryTime({
 	if (intervalsElapsed >= pixelsNeeded) return null
 
 	return lastEdited + (intervalsElapsed + 1) * PIXEL_REFILL_INTERVAL_MS
+}
+
+// Catches `current` up by whole elapsed intervals, capped at `max`.
+// `lastEdited` advances by only the intervals consumed, so a partial
+// interval keeps counting. Returns null if there's nothing to apply.
+export function getRefilledPixelsState({
+	current,
+	max,
+	lastEdited,
+	now,
+}: {
+	current: number
+	max: number
+	lastEdited: number
+	now: number
+}): { current: number; lastEdited: number } | null {
+	const pixelsNeeded = max - current
+	if (pixelsNeeded <= 0) return null
+
+	const intervalsElapsed = Math.floor(
+		Math.max(now - lastEdited, 0) / PIXEL_REFILL_INTERVAL_MS
+	)
+	if (intervalsElapsed <= 0) return null
+
+	const gained = Math.min(intervalsElapsed, pixelsNeeded)
+
+	return {
+		current: current + gained,
+		lastEdited: lastEdited + gained * PIXEL_REFILL_INTERVAL_MS,
+	}
 }
