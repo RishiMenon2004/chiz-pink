@@ -1,5 +1,6 @@
 export { useFirstVisit } from "./useFirstVisit"
 export { useLastSeen } from "./useLastSeen"
+export { useNow } from "./useNow"
 export { useInventoryFilters } from "./useInventoryFilters"
 export {
 	useInventoryStore,

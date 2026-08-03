@@ -6,7 +6,6 @@ import {
 	DetailedHTMLProps,
 	InputHTMLAttributes,
 	ReactNode,
-	useEffect,
 	useMemo,
 	useState,
 } from "react"
@@ -23,6 +22,7 @@ import {
 	replaceInventory,
 	settingsActions,
 	updateInventory,
+	useNow,
 	usePWAInstall,
 	useSettingsStore,
 } from "@/hooks"
@@ -317,14 +317,15 @@ export function StaminaResetCountdown({
 }: {
 	server: SettingsRecord["userdata"]["server"]
 }) {
-	const [now, setNow] = useState(() => Date.now())
+	const now = useNow()
 
-	useEffect(() => {
-		const interval = setInterval(() => setNow(Date.now()), 1000)
-		return () => clearInterval(interval)
-	}, [])
-
-	const { nextReset } = getStaminaResetBoundaries(server, now)
+	const content =
+		now === null
+			? "Reset in: -"
+			: (() => {
+					const { nextReset } = getStaminaResetBoundaries(server, now)
+					return `Reset in: ${formatTimeRemaining(nextReset - now)} at ${formatResetDayTime(nextReset)}`
+				})()
 
 	return (
 		<div
@@ -339,9 +340,7 @@ export function StaminaResetCountdown({
 				paddingInline: "0.5rem",
 				gap: "0.25rem 0.5rem",
 			}}>
-			<div>
-				{`Reset in: ${formatTimeRemaining(nextReset - now)} at ${formatResetDayTime(nextReset)}`}
-			</div>
+			<div>{content}</div>
 		</div>
 	)
 }
@@ -355,24 +354,30 @@ export function PixelRefillCountdown({
 	max: number
 	lastEdited: number
 }) {
-	const [now, setNow] = useState(() => Date.now())
+	const now = useNow()
+	// Lazy initializer (not an effect) so this is captured once on mount,
+	// same value on the server and the first client render.
 	const [mountTime] = useState(() => Date.now())
 
-	useEffect(() => {
-		const interval = setInterval(() => setNow(Date.now()), 1000)
-		return () => clearInterval(interval)
-	}, [])
+	let nextText = "-"
+	let fullText = "-"
 
-	const baseline = lastEdited || mountTime
+	if (now !== null) {
+		const baseline = lastEdited || mountTime
 
-	const refilledAt = getPixelsRefillTime({ current, max, lastEdited: baseline })
+		const refilledAt = getPixelsRefillTime({ current, max, lastEdited: baseline })
 
-	const nextRecoveryAt = getNextPixelRecoveryTime({
-		current,
-		max,
-		lastEdited: baseline,
-		now,
-	})
+		const nextRecoveryAt = getNextPixelRecoveryTime({
+			current,
+			max,
+			lastEdited: baseline,
+			now,
+		})
+
+		nextText =
+			nextRecoveryAt === null ? "-" : formatTimeRemaining(nextRecoveryAt - now)
+		fullText = refilledAt === null ? "-" : formatTimeRemaining(refilledAt - now)
+	}
 
 	return (
 		<div
@@ -387,20 +392,8 @@ export function PixelRefillCountdown({
 				paddingInline: "0.5rem",
 				gap: "0.25rem 0.5rem",
 			}}>
-			<div>
-				{`Next: ${
-					nextRecoveryAt === null
-						? "-"
-						: formatTimeRemaining(nextRecoveryAt - now)
-				}`}
-			</div>
-			<div>
-				{`Full: ${
-					refilledAt === null
-						? "-"
-						: formatTimeRemaining(refilledAt - now)
-				}`}
-			</div>
+			<div>{`Next: ${nextText}`}</div>
+			<div>{`Full: ${fullText}`}</div>
 		</div>
 	)
 }

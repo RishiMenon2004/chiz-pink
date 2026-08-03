@@ -38,8 +38,10 @@ function getSnapshot() {
 	return corruptedKeys
 }
 
+const EMPTY_CORRUPTED_KEYS: string[] = []
+
 function getServerSnapshot(): string[] {
-	return []
+	return EMPTY_CORRUPTED_KEYS
 }
 
 export function useCorruptedKeys() {

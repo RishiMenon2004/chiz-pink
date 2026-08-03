@@ -6,13 +6,12 @@ import {
 	Ref,
 	useContext,
 	useEffect,
-	useLayoutEffect,
 	useMemo,
 	useRef,
 	useState,
 } from "react"
 
-import { useSettingsStore } from "@/hooks"
+import { useNow, useSettingsStore } from "@/hooks"
 
 import { BTRTimeline, EventData, Events } from "@/data/activities/events"
 
@@ -106,10 +105,6 @@ function fromWallDate(
 	const offsetMs = SERVER_UTC_OFFSET_HOURS[server] * 60 * 60 * 1000
 	return Date.UTC(year, month, day) - offsetMs
 }
-
-// useLayoutEffect can't run on SSR. Swap useEffect for useLayoutEffect after first load.
-const useIsomorphicLayoutEffect =
-	typeof window === "undefined" ? useEffect : useLayoutEffect
 
 const weekdayNames = ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"]
 
@@ -287,13 +282,7 @@ export function EventCalendar() {
 		"left" | "right" | false
 	>(false)
 
-	const [now, setNow] = useState<number | null>(null)
-
-	useIsomorphicLayoutEffect(() => {
-		setNow(Date.now())
-		const interval = setInterval(() => setNow(Date.now()), 1000)
-		return () => clearInterval(interval)
-	}, [])
+	const now = useNow()
 
 	useEffect(() => {
 		const container = calendarContainerRef.current
