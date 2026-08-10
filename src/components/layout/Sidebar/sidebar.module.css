@@ -43,12 +43,12 @@
 		);
 
 	background-size:
-		45vh,
+		35vh,
 		100% 10%,
 		100%;
 	background-position:
-		center calc(100% - 11rem),
-		center calc(100% - 5rem),
+		center bottom calc(5rem + 12%),
+		center bottom 5rem,
 		center;
 	background-repeat: no-repeat;
 	filter: drop-shadow(2px 1px 4px hsla(0, 0%, 0%, 0.6));
@@ -97,6 +97,19 @@
 	}
 }
 
+@media (max-height: 800px) {
+	.sidebar {
+		background-size:
+			20vh,
+			100% 10%,
+			100%;
+		background-position:
+			center bottom 8rem,
+			center bottom 5rem,
+			center;
+	}
+}
+
 @media (max-width: 1000px) {
 	.sidebar {
 		top: unset;
@@ -107,34 +120,33 @@
 		padding-block: 0;
 		padding-inline: 5%;
 
+		--pink-strips: #cf3276;
+
 		background-image:
-			url("/layout/sidebar_hr.png"),
 			linear-gradient(
 				to right,
 				transparent 0 30%,
-				color-mix(in oklab, var(--warmer-pink-strips) 100%, #dfdffe 22%)
-					30% calc(30% + 1px),
-				var(--warmer-pink-strips) calc(30% + 0.5px) 43%,
-				color-mix(in oklab, var(--warmer-pink-strips) 100%, black 20%) 45%
+				color-mix(in oklab, var(--pink-strips) 100%, #dfdffe 22%) 30%
+					calc(30% + 1px),
+				var(--pink-strips) calc(30% + 0.5px) 43%,
+				color-mix(in oklab, var(--pink-strips) 100%, black 20%) 45%
 					calc(45% + 0.5px),
 				transparent calc(45% + 0.5px) 55%,
-				color-mix(in oklab, var(--warmer-pink-strips) 100%, #dfdffe 22%)
-					30% calc(55% + 1px),
-				var(--warmer-pink-strips) calc(55% + 0.5px) 63%,
-				color-mix(in oklab, var(--warmer-pink-strips) 100%, black 20%) 65%
+				color-mix(in oklab, var(--pink-strips) 100%, #dfdffe 22%) 30%
+					calc(55% + 1px),
+				var(--pink-strips) calc(55% + 0.5px) 63%,
+				color-mix(in oklab, var(--pink-strips) 100%, black 20%) 65%
 					calc(65% + 0.5px),
 				transparent calc(65% + 0.5px) 100%
 			),
-			linear-gradient(to left, var(--warmer-pink), transparent);
+			linear-gradient(transparent);
 
 		background-size:
-			75%,
 			10% 100%,
 			100%;
 
 		background-position:
-			25% center,
-			calc(97.5% - 3rem) center,
+			right 16% center,
 			right center;
 
 		& a:last-child {
