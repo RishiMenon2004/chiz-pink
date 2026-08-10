@@ -87,7 +87,7 @@ export function RenderPlanner({
 		)
 
 		const ordered: Record<string, CharacterRecord | WeaponRecord> = {}
-		;[...orderedIds, ...remainingIds].forEach((id) => {
+		;[...remainingIds, ...orderedIds].forEach((id) => {
 			ordered[id] = combined[id]
 		})
 		return ordered
