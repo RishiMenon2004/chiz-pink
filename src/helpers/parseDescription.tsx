@@ -59,7 +59,7 @@ export function parseDescription(
 					case "link":
 						return (
 							<DescriptionLink
-								url={tagAttributes.url ?? "#"}
+								url={tagAttributes.href ?? "#"}
 								onClick={onLinkClick}>
 								{children}
 							</DescriptionLink>
@@ -71,12 +71,29 @@ export function parseDescription(
 								style={{
 									fontSize: "0.75em",
 									fontWeight: 750,
-									backgroundColor: "var(--pink)",
+									backgroundColor: `${tagAttributes.color ?? "var(--pink)"}`,
 									padding: "0.25em 0.75em",
 									borderRadius: "100vh",
 									marginInlineEnd: "0.25rem",
 									paintOrder: "stroke fill",
-									WebkitTextStroke: "3px black"
+									WebkitTextStroke: "3px black",
+								}}>
+								{children}
+							</span>
+						)
+					case "ntetag":
+						return (
+							<span
+								data-taller-line={true}
+								style={{
+									fontSize: "0.75em",
+									fontWeight: 750,
+									backgroundColor: "#50f1ff",
+									padding: "0.25em 0.75em",
+									borderRadius: "100vh",
+									marginInlineEnd: "0.25rem",
+									paintOrder: "stroke fill",
+									WebkitTextStroke: "3px black",
 								}}>
 								{children}
 							</span>
@@ -87,13 +104,13 @@ export function parseDescription(
 								data-taller-line={true}
 								style={{
 									fontSize: "0.9em",
-									backgroundColor: "var(--pink)",
+									backgroundColor: `${tagAttributes.color ?? "var(--pink)"}`,
 									padding: "0 0.5em",
 									borderRadius: "100vh",
 									marginInline: "0.25rem",
 									whiteSpace: "nowrap",
 									paintOrder: "stroke fill",
-									WebkitTextStroke: "2px black"
+									WebkitTextStroke: "2px black",
 								}}>
 								{children}
 							</span>

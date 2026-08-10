@@ -13,12 +13,12 @@ export const ChangeLogs = {
 				</InstallPWAButton>
 				{"."}
 			</>,
-			"<tag>NTE</> Up to date with <itag>Patch 1.2</>",
-			"<tag>NTE</> 1.2 Characters: <link href='/characters/shinku'>Shinku</> & <link href='/characters/iroi'>Iroi</>",
-			"<tag>NTE</> 1.2 Arcs: <link href='/arcs/blushing_mirage'>Blushing Mirage</> & <link href='/arcs/the_wrong_gate'>The Wrong Gate</>",
-			"<tag>NTE</> Added <itag>Patch 1.3</> Preview",
-			"<tag>NTE</> 1.3 Characters: <link href='/characters/zankou'>Zankou</> & <link href='/characters/linko'>Linko</>",
-			"<tag>NTE</> 1.3 Arcs: <link href='/arcs/ravenous_blade'>Ravenous Blade</> & <link href='/arcs/voice_of_the_voyager'>Voice of The Voyager</>",
+			"<ntetag>NTE</> Up to date with <itag color='#c8eec7'>Patch 1.2</>",
+			"<ntetag>NTE</> 1.2 Characters: <link href='/characters/shinku'>Shinku</> & <link href='/characters/iroi'>Iroi</>",
+			"<ntetag>NTE</> 1.2 Arcs: <link href='/arcs/blushing_mirage'>Blushing Mirage</> & <link href='/arcs/the_wrong_gate'>The Wrong Gate</>",
+			"<ntetag>NTE</> Added <itag color='#d22730'>Patch 1.3</> Preview",
+			"<ntetag>NTE</> 1.3 Characters: <link href='/characters/zankou'>Zankou</> & <link href='/characters/linko'>Linko</>",
+			"<ntetag>NTE</> 1.3 Arcs: <link href='/arcs/ravenous_blade'>Ravenous Blade</> & <link href='/arcs/voice_of_the_voyager'>Voice of The Voyager</>",
 			"<tag>NEW</> Inventory & Currencies Tracker",
 			"<tag>NEW</> Characters/Arcs/Hybrid Ascension Planners",
 			"<tag>NEW</> Dashboard for Quick Access",
