@@ -12,7 +12,7 @@
 	width: 100%;
 	max-width: 80%;
 
-	& > div.settingsSection {
+	& > .settingsSection {
 		max-width: 100%;
 	}
 }
@@ -31,7 +31,7 @@
 	}
 }
 
-div.settingsSection {
+.settingsSection {
 	display: flex;
 	flex-direction: column;
 	gap: 1rem;
@@ -39,7 +39,7 @@ div.settingsSection {
 	width: 100%;
 	max-width: 80%;
 	padding: 1rem;
-	border-radius: 1rem;
+	border-radius: 1.5rem;
 
 	color: black;
 
@@ -48,11 +48,8 @@ div.settingsSection {
 			color: var(--interactive-bg);
 			font-size: 1.5rem;
 			font-weight: 725;
-			filter: drop-shadow(-0.5px -0.5px 0.5px hsla(0, 0%, 4%));
 
-			@supports not (-moz-appearance: none) {
-				filter: drop-shadow(0px -1px 0.75px hsl(0, 0%, 4%, 0.5));
-			}
+			user-select: none;
 		}
 
 		display: flex;
@@ -525,7 +522,7 @@ div.settingsSection {
 		max-width: 100%;
 	}
 
-	div.settingsSection {
+	.settingsSection {
 		max-width: 100%;
 
 		.settingsSectionContent {
@@ -546,7 +543,7 @@ div.settingsSection {
 	.page {
 		padding-inline: 1rem !important;
 
-		div.settingsSection {
+		.settingsSection {
 			.settingsSectionContent {
 				font-size: 0.85rem;
 
@@ -558,7 +555,6 @@ div.settingsSection {
 			.settingsSectionTitlebar {
 				.settingsSectionTitle {
 					font-size: 1rem;
-					filter: none;
 				}
 
 				.settingsCloudStatus {

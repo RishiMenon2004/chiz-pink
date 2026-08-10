@@ -365,7 +365,11 @@ export function PixelRefillCountdown({
 	if (now !== null) {
 		const baseline = lastEdited || mountTime
 
-		const refilledAt = getPixelsRefillTime({ current, max, lastEdited: baseline })
+		const refilledAt = getPixelsRefillTime({
+			current,
+			max,
+			lastEdited: baseline,
+		})
 
 		const nextRecoveryAt = getNextPixelRecoveryTime({
 			current,
@@ -375,8 +379,11 @@ export function PixelRefillCountdown({
 		})
 
 		nextText =
-			nextRecoveryAt === null ? "-" : formatTimeRemaining(nextRecoveryAt - now)
-		fullText = refilledAt === null ? "-" : formatTimeRemaining(refilledAt - now)
+			nextRecoveryAt === null
+				? "-"
+				: formatTimeRemaining(nextRecoveryAt - now)
+		fullText =
+			refilledAt === null ? "-" : formatTimeRemaining(refilledAt - now)
 	}
 
 	return (
@@ -860,9 +867,12 @@ export function RenderSettings() {
 					<AlertContainer
 						type="dangerous-confirm"
 						confirmLabel="Overwrite"
-						onConfirm={() =>
-							importedJson !== null && backupSetImport(importedJson)
-						}
+						onConfirm={() => {
+							if (importedJson !== null) {
+								backupSetImport(importedJson)
+							}
+							setAskOverwrite(false)
+						}}
 						isConfirmDanger={true}
 						cancelLabel="Cancel"
 						onCancel={() => setImportOlder(false)}>
