@@ -59,18 +59,21 @@ div.currencyBox {
 	.icon {
 		z-index: 1;
 		position: relative;
-		height: 40px;
+		height: 2.25rem;
 		width: auto;
-		background-color: var(--interactive-bg);
 		border-radius: 100%;
-		padding: 5%;
+		padding: 1%;
 		box-shadow:
 			var(--shadow-dark-50) 0px 0px 0.5px 1px,
-			hsl(0, 0%, 44%) 0px 0.5px 0.5px 2px,
+			hsl(0, 0%, 44%) 0px 0.5px 2px 1px,
 			var(--shadow-bevel-light-40) 0px 1px 0.5px 0.5px inset,
-			var(--shadow-dark-40) -0.5px -0.5px 1px 0.5px inset;
+			var(--shadow-dark-40) 0px 0px 0.5px 0.5px inset;
 
-		background-image: var(--bg-image);
+		background-color: var(--interactive-bg);
+		background-image: linear-gradient(
+			color-mix(in srgb, #ffbd47 50%, transparent)
+		);
+
 		background-size: 100%;
 		user-select: none;
 		pointer-events: none;
@@ -258,7 +261,11 @@ div.currencyBox {
 
 			.icon {
 				height: 1.5rem;
-				padding: 0.375rem;
+				padding: 0.125rem;
+				background-image: none;
+				border-radius: 100vh;
+
+				background-color: color-mix(in srgb, #ffbd47 50%, transparent);
 			}
 
 			input {

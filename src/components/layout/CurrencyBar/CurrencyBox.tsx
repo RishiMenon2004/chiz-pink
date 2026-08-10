@@ -128,6 +128,7 @@ export function CurrencyBox({ currency }: { currency: Material }) {
 			}>
 			<Image
 				className={styles.icon}
+				data-currency-id={currency.id}
 				src={`/materials${currency.imageSrc}.png`}
 				width={64}
 				height={64}
