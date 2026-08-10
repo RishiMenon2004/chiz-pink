@@ -305,6 +305,10 @@ button {
 		background-color: var(--hover-color, var(--pink));
 		box-shadow: var(--shadow-button-hover);
 	}
+
+	@media (max-width: 550px) {
+		font-size: 1rem;
+	}
 }
 
 .inset-control {
