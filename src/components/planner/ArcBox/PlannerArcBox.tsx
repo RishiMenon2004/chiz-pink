@@ -183,7 +183,7 @@ export function PlannerArcBox({
 					toggleDisable: handleDisable,
 					handleEnhancement,
 					handleDelete,
-					changeHandlers: [],
+					changeHandlers: null!,
 					dragRef: handleRef,
 				}}>
 				<div
@@ -199,62 +199,58 @@ export function PlannerArcBox({
 									loading="eager"
 								/>
 								<div className={styles.arcLabelContainer}>
-									{arc.isFeatured
-										? "FEATURED"
-										: arc.isPreview
-											? "PREVIEW"
-											: getRarityName(
-													arc.rarity
-												).toLocaleUpperCase()}
+									{getRarityName(
+										arc.rarity
+									).toLocaleUpperCase()}
 								</div>
 							</div>
 							<div className={styles.arcStatsSection}>
 								<div className={styles.arcStatsName}>
 									{arc.name}
 								</div>
-
-								<span className={styles.arcStatsLvlContainer}>
+								<span
+									className={`${styles.arcStatsLvlContainer} ${styles.currentLvl}`}>
 									<div className={styles.arcPhases}>
 										<ItemPhases lvl={currentLvl} />
 									</div>
-									<div className={styles.arcStatsLvl}>
-										<span>Current Lvl.</span>
-										<select
-											className="inset-control"
-											value={currentLvl}
-											onChange={handleCurrentChange}
-											tabIndex={0}>
-											{LvlOptions.map((opt) => (
-												<option
-													key={opt.value}
-													value={opt.value}>
-													{opt.label}
-												</option>
-											))}
-										</select>
-									</div>
+									<span className={styles.arcLevelSectionLabel}>
+										Current Level
+									</span>
+									<select
+										className="inset-control"
+										value={currentLvl}
+										onChange={handleCurrentChange}
+										tabIndex={0}>
+										{LvlOptions.map((opt) => (
+											<option
+												key={opt.value}
+												value={opt.value}>
+												{opt.label}
+											</option>
+										))}
+									</select>
 								</span>
 
 								<span className={styles.arcStatsLvlContainer}>
 									<div className={styles.arcPhases}>
 										<ItemPhases lvl={targetLvl} />
 									</div>
-									<div className={styles.arcStatsLvl}>
-										<span>Target Lvl.</span>
-										<select
-											className="inset-control"
-											value={targetLvl}
-											onChange={handleTargetChange}
-											tabIndex={0}>
-											{LvlOptions.map((opt) => (
-												<option
-													key={opt.value}
-													value={opt.value}>
-													{opt.label}
-												</option>
-											))}
-										</select>
-									</div>
+									<span className={styles.arcLevelSectionLabel}>
+										Target Level
+									</span>
+									<select
+										className="inset-control"
+										value={targetLvl}
+										onChange={handleTargetChange}
+										tabIndex={0}>
+										{LvlOptions.map((opt) => (
+											<option
+												key={opt.value}
+												value={opt.value}>
+												{opt.label}
+											</option>
+										))}
+									</select>
 								</span>
 							</div>
 						</div>

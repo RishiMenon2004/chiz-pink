@@ -8,16 +8,19 @@ div.infoContainer {
 
 	.arcImageContainer {
 		position: relative;
-
 		flex-shrink: 0;
+
+		display: grid;
+		place-items: center;
+
 		overflow: hidden;
 
 		user-select: none;
 
 		padding-inline: 1rem;
-		padding-block: 0.5rem 1.5rem;
 		margin: 0.5rem;
 		margin-bottom: 0;
+		padding-block: 0.25rem 1.5rem;
 		border-radius: calc(var(--outer-radius) - 0.5rem);
 
 		background-color: var(--interactive-bg);
@@ -34,7 +37,7 @@ div.infoContainer {
 
 		img {
 			width: auto;
-			height: calc(128px - 1.5rem);
+			height: 6.5rem;
 			aspect-ratio: 1;
 			filter: drop-shadow(black 0 0 6px);
 			transition: scale 300ms ease-out;
@@ -65,19 +68,21 @@ div.infoContainer {
 	}
 
 	.arcStatsSection {
-		display: flex;
-		flex-direction: column;
 		flex-grow: 1;
-		justify-content: space-between;
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		grid-template-rows: auto 1fr 1fr;
 
 		min-width: 0;
 
 		font-size: 1em;
 
 		.arcStatsName {
+			grid-column: 1 / -1;
 			padding-block: 0.5rem;
 			padding-inline: 1rem;
 			margin-left: 0.5rem;
+			margin-bottom: 0.5rem;
 			border-bottom-left-radius: 0.5rem;
 
 			color: black;
@@ -94,128 +99,133 @@ div.infoContainer {
 		}
 
 		.arcStatsLvlContainer {
-			display: flex;
-			flex-direction: column;
-			gap: 0.25rem;
+			grid-column: 1 / -1;
+			display: grid;
+			grid-template-columns: subgrid;
+			grid-template-rows: 1fr 1fr;
+			gap: 0.25rem 0.75rem;
 
-			.arcStatsLvl {
-				display: flex;
-				align-items: center;
-				justify-content: space-between;
+			font-family: var(--font-barlow-condensed);
+			font-size: 1.25rem;
+			font-weight: 600;
+			font-style: italic;
 
-				padding-inline: 0.5rem var(--padding-right);
+			padding-inline: 0.5rem var(--padding-right);
 
-				font-family: var(--font-barlow-condensed);
-				font-size: 1.25rem;
-				font-weight: 600;
-				font-style: italic;
-
-				select {
-					display: grid;
-					place-items: center;
-
-					color: white;
-					font-family: inherit;
-					font-size: 1rem;
-					font-style: inherit;
-					text-align: center;
-
-					width: 50%;
-					min-width: fit-content;
-					height: max-content;
-					padding: 0.125rem 0.5rem;
-					border: none;
-					border-radius: 100vh;
-
-					cursor: var(--dropdown-cursor);
-
-					@supports (appearance: base-select) {
-						position: relative;
-
-						&::picker-icon {
-							position: absolute;
-							right: 0.25rem;
-							content: "";
-							width: 2.5ch;
-							aspect-ratio: 1;
-							background-image: url("/icons/less.png");
-							background-size: contain;
-							background-position: center;
-							font-size: 0.75rem;
-						}
-
-						&:open {
-							background-color: var(--darker-pink);
-							&::picker-icon {
-								rotate: 180deg;
-							}
-							&::picker(select) {
-								display: grid;
-								grid-template-columns: 1fr 1fr;
-								gap: 0.25rem;
-							}
-						}
-
-						option {
-							justify-content: center;
-
-							font-style: normal;
-
-							background-color: color-mix(
-								in srgb,
-								var(--pink) 30%,
-								transparent
-							);
-
-							outline-offset: -2px;
-
-							&:checked {
-								background-color: color-mix(
-									in srgb,
-									var(--pink) 75%,
-									transparent
-								);
-
-								outline: var(--pink) 2px solid;
-							}
-
-							&:hover,
-							&:focus {
-								background: var(--pink);
-							}
-
-							&:focus-visible {
-								outline: white 2px solid;
-							}
-
-							&:nth-child(odd):not(:first-child) {
-								border-radius: 1rem 100vh 100vh 1rem;
-							}
-							&:nth-child(even):not(:last-child) {
-								border-radius: 100vh 1rem 1rem 100vh;
-							}
-
-							&:first-child,
-							&:last-child {
-								grid-column: 1 / -1;
-							}
-						}
-					}
-
-					&:focus-visible {
-						outline: none;
-						background-color: var(--darker-pink);
-					}
-				}
+			&.currentLvl {
+				margin-bottom: 0.25rem;
 			}
 
 			.arcPhases {
 				display: flex;
 				flex-direction: row;
-				justify-content: flex-end;
+				justify-content: space-between;
 				gap: 0.5rem;
 
-				margin-inline: 0.5rem var(--padding-right);
+				padding-inline: 0.5rem;
+			}
+
+			.arcLevelSectionLabel {
+				grid-row: 1 / -1;
+				align-self: end;
+			}
+
+			select {
+				display: grid;
+				place-items: center;
+
+				color: white;
+				font-family: inherit;
+				font-size: 1.125rem;
+				font-style: inherit;
+				text-align: center;
+
+				width: 100%;
+				min-width: fit-content;
+				height: max-content;
+				padding: 0.125rem 0.5rem;
+				border: none;
+				border-radius: 100vh;
+
+				cursor: var(--dropdown-cursor);
+
+				@supports (appearance: base-select) {
+					position: relative;
+
+					&::picker-icon {
+						position: absolute;
+						right: 0.25rem;
+						content: "";
+						width: 2.5ch;
+						aspect-ratio: 1;
+						background-image: url("/icons/less.png");
+						background-size: contain;
+						background-position: center;
+						font-size: 0.75rem;
+					}
+
+					&:open {
+						background-color: var(--darker-pink);
+						&::picker-icon {
+							rotate: 180deg;
+						}
+						&::picker(select) {
+							display: grid;
+							grid-template-columns: 1fr 1fr;
+							gap: 0.25rem;
+						}
+					}
+
+					option {
+						justify-content: center;
+
+						font-style: normal;
+
+						background-color: color-mix(
+							in srgb,
+							var(--pink) 30%,
+							transparent
+						);
+
+						outline-offset: -2px;
+
+						&:checked {
+							background-color: color-mix(
+								in srgb,
+								var(--pink) 75%,
+								transparent
+							);
+
+							outline: var(--pink) 2px solid;
+						}
+
+						&:hover,
+						&:focus {
+							background: var(--pink);
+						}
+
+						&:focus-visible {
+							outline: white 2px solid;
+						}
+
+						&:nth-child(odd):not(:first-child) {
+							border-radius: 1rem 100vh 100vh 1rem;
+						}
+						&:nth-child(even):not(:last-child) {
+							border-radius: 100vh 1rem 1rem 100vh;
+						}
+
+						&:first-child,
+						&:last-child {
+							grid-column: 1 / -1;
+						}
+					}
+				}
+
+				&:focus-visible {
+					outline: none;
+					background-color: var(--darker-pink);
+				}
 			}
 		}
 	}
@@ -234,92 +244,76 @@ div.infoContainer {
 	}
 }
 
-@container (width < 450px) {
+@container (width > 700px) {
 	.arcInfoTop {
-		flex-direction: column;
-
-		.arcImageContainer {
-			display: grid;
-			place-items: center;
-
-			margin: 1rem;
-			margin-bottom: 0;
-			border-radius: calc(var(--outer-radius) - 1rem)
-				calc(var(--outer-radius) - 1rem) 0 0;
-
-			text-align: center;
-
-			background-color: var(--interactive-bg);
-			padding-bottom: 0;
-			padding-top: 1.5rem;
-
-			box-shadow:
-				var(--shadow-dark-60) -3px 2px 2px -2px,
-				var(--shadow-dark-60) 3px 2px 2px -2px,
-				var(--shadow-dark-60) 0px -2px 2px,
-				var(--shadow-dark-70) 1px 2px 2px inset,
-				var(--rarity-color) 0 11.5rem 0 -10rem inset;
-		}
-
-		.arcLabelContainer {
-			top: 0;
-			bottom: unset;
-
-			font-size: 0.9rem;
-		}
-
 		.arcStatsSection {
-			gap: 1rem;
-
-			& > :first-child {
-				margin-bottom: 0.5rem;
-			}
-
-			.arcStatsName {
-				padding-inline: 1rem;
-				margin-inline: 1rem;
-				border-bottom-right-radius: 0.5rem;
-
-				box-shadow:
-					var(--shadow-dark-70) 5px -3px 2px -4px inset,
-					var(--shadow-dark-60) -1px 0px 2px,
-					var(--shadow-dark-60) 1px 0px 2px;
-			}
+			display: flex;
+			flex-direction: column;
+			justify-content: space-between;
 
 			.arcStatsLvlContainer {
-				.arcStatsLvl {
-					font-size: 1.25rem;
-
-					select {
-						font-size: inherit;
-					}
-				}
+				grid-template-columns: 1fr 1fr;
 
 				.arcPhases {
-					margin-inline: 1rem;
-				}
-
-				.arcStatsLvl {
-					padding-inline: 1rem;
+					margin-inline: 0.75rem;
 				}
 			}
 		}
 	}
 }
 
-@media (max-width: 1000) {
-	.arcDeleteConfirmationBox {
-		.arcDeleteBoxButtons {
-			button {
-				color: white;
-				-webkit-text-stroke: 4px black;
+@container (width < 490px) {
+	.arcInfoTop {
+		.arcStatsSection {
+			gap: 0.25rem;
 
-				background-color: var(--pink);
+			.arcStatsName {
+				margin-bottom: 0;
+			}
 
-				box-shadow: var(--shadow-button-hover);
+			.arcStatsLvlContainer {
+				grid-template-columns: 1fr 1fr;
 
-				&:last-child {
-					background-color: var(--danger-color);
+				.arcPhases {
+					grid-column: 2 / 2;
+					padding-inline: 0.5rem;
+					gap: 0;
+				}
+			}
+		}
+	}
+}
+
+@container (width < 400px) {
+	.arcInfoTop {
+		.arcStatsSection {
+			& > :first-child {
+				margin-bottom: 0.5rem;
+			}
+
+			.arcStatsName {
+				padding-inline: 1rem;
+				margin-bottom: 0;
+			}
+
+			.arcStatsLvlContainer {
+				display: flex;
+
+				flex-direction: column;
+				align-items: flex-start;
+
+				.arcLevelSectionLabel {
+					align-self: start;
+					margin-bottom: 0.25rem;
+				}
+
+				select {
+					font-size: inherit;
+					width: 100%;
+				}
+
+				.arcPhases {
+					display: none;
 				}
 			}
 		}
