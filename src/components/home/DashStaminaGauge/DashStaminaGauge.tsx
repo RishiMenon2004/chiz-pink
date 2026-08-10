@@ -1,6 +1,7 @@
 "use client"
 
 import Link from "next/link"
+import { Ref, useRef } from "react"
 
 import { characterPixel, cityStamina } from "@/data/items/materials"
 
@@ -20,17 +21,20 @@ function GaugeValueInput({
 	name,
 	value,
 	max,
+	ref,
 	onChange,
 }: {
 	name: string
 	value: number
 	max?: number
+	ref: Ref<HTMLInputElement>
 	onChange: (value: number) => void
 }) {
 	const width = `${Math.max(String(value).length + 0.375, 1)}ch`
 
 	return (
 		<input
+			ref={ref}
 			name={name}
 			aria-label={name}
 			type="text"
@@ -55,14 +59,20 @@ export function DashStaminaGauge() {
 	const { "current-stamina": currentStamina, "max-stamina": maxStamina } =
 		settings.userdata
 
+	const pixelRef = useRef<HTMLInputElement>(null!)
+	const staminaRef = useRef<HTMLInputElement>(null!)
+
 	return (
-		<div className={`metallic-panel ${pageStyles.section}`}>
+		<div className={`metallic-panel ${pageStyles.section} ${styles.section}`}>
 			<div className={pageStyles.sectionTitleRow}>
 				<div className={pageStyles.sectionTitle}>Stamina</div>
 			</div>
 			<div className={styles.gaugeRow}>
 				<div className={styles.gaugeColumn}>
 					<div
+						onClick={() => {
+							if (pixelRef) pixelRef.current.focus()
+						}}
 						className={`raised-control ${styles.gauge} ${styles.pixelsGauge}`}>
 						<MaterialIcon
 							className={styles.gaugeIcon}
@@ -77,6 +87,7 @@ export function DashStaminaGauge() {
 								name="Current Pixels"
 								value={currentPixels}
 								max={999}
+								ref={pixelRef}
 								onChange={(value) => {
 									actions.setConfig("userdata", {
 										"current-pixels": value,
@@ -84,7 +95,10 @@ export function DashStaminaGauge() {
 									})
 								}}
 							/>
-							<span className={styles.gaugeMax}>{` / ${maxPixels}`}</span>
+							<span
+								className={
+									styles.gaugeMax
+								}>{` / ${maxPixels}`}</span>
 						</p>
 					</div>
 					<div className={styles.countdownText}>
@@ -97,19 +111,26 @@ export function DashStaminaGauge() {
 				</div>
 				<div className={styles.gaugeColumn}>
 					<div
+						onClick={() => {
+							if (staminaRef) staminaRef.current.focus()
+						}}
 						className={`raised-control ${styles.gauge} ${styles.staminaGauge}`}>
 						<p className={styles.gaugeText}>
 							<GaugeValueInput
 								name="Current City Stamina"
 								value={currentStamina}
 								max={maxStamina}
+								ref={staminaRef}
 								onChange={(value) => {
 									actions.setConfig("userdata", {
 										"current-stamina": value,
 									})
 								}}
 							/>
-							<span className={styles.gaugeMax}>{` / ${maxStamina}`}</span>
+							<span
+								className={
+									styles.gaugeMax
+								}>{` / ${maxStamina}`}</span>
 						</p>
 						<MaterialIcon
 							className={styles.gaugeIcon}
@@ -121,7 +142,9 @@ export function DashStaminaGauge() {
 						/>
 					</div>
 					<div className={styles.countdownText}>
-						<StaminaResetCountdown server={settings.userdata.server} />
+						<StaminaResetCountdown
+							server={settings.userdata.server}
+						/>
 					</div>
 				</div>
 			</div>
