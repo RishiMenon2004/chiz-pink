@@ -26,8 +26,7 @@ import styles from "./EventCalendar.module.css"
 import pageStyles from "@/app/page.module.css"
 import { CalendarEventItem } from "./CalendarEventItem"
 
-export type DayBoundaryMode =
-	SettingsRecord["behaviour"]["calendar-day-boundary"]
+export type DayBoundaryMode = SettingsRecord["behaviour"]["calendar-day-boundary"]
 
 export const CalendarContext = createContext<{
 	daySize: number
@@ -473,7 +472,7 @@ export function EventCalendar() {
 		rowEnds[rowIndex] = eventData.getEndDate(server)
 	}
 
-	function renderRow(rowEvents: typeof Events, key: number, id?: string) {
+	function renderRow(rowEvents: typeof Events, key: number) {
 		return (
 			<div
 				className={styles.calendarRow}
@@ -488,7 +487,6 @@ export function EventCalendar() {
 							key={`${eventData.name}_${index}`}
 							eventData={eventData}
 							previousEnd={previousEnd}
-							rowId={id}
 						/>
 					)
 				})}
@@ -513,14 +511,15 @@ export function EventCalendar() {
 						name={getDayBoundaryLabel(dayBoundaryMode, server)}
 					/>
 				</label>
-				{nowMarkerOutOfView && (
-					<button
-						type="button"
-						className={`pill-button ${pageStyles.sectionButton}`}
-						onClick={() => scrollToNow()}>
-						{"TODAY"}
-					</button>
-				)}
+				<button
+					type="button"
+					style={{
+						visibility: nowMarkerOutOfView ? "visible" : "hidden",
+					}}
+					className={`pill-button ${pageStyles.sectionButton}`}
+					onClick={() => scrollToNow()}>
+					{"TODAY"}
+				</button>
 			</div>
 			<div
 				className={`raised-control ${styles.calendarContainer}`}
@@ -553,21 +552,9 @@ export function EventCalendar() {
 						}}>
 						<CalendarBackground />
 						{rows.map((rowEvents, index) => {
-							let id: string | undefined = undefined
-							switch (index) {
-								case 0:
-									id = styles.version
-									break
-								case 1:
-									id = styles.gacha
-									break
-								default:
-									id = undefined
-									break
-							}
-							return renderRow(rowEvents, index, id)
+							return renderRow(rowEvents, index)
 						})}
-						{renderRow(BTRTimeline, 99, styles.btr)}
+						{renderRow(BTRTimeline, 99)}
 						<CalendarNowMarker ref={nowMarkerRef} />
 					</div>
 				</CalendarContext.Provider>

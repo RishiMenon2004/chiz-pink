@@ -215,11 +215,9 @@ function EventDetailsBox({
 
 export function CalendarEventItem({
 	eventData,
-	rowId,
 	previousEnd,
 }: {
 	eventData: EventData
-	rowId?: string
 	previousEnd: number
 }) {
 	const {
@@ -249,8 +247,6 @@ export function CalendarEventItem({
 		? `url('/events/${eventData.eventImage}')`
 		: ""
 
-	const isBTR = eventData.type === "BTR"
-
 	const eventStyles = {
 		width: `${widthDays}rem`,
 		marginLeft: `${marginDays}rem`,
@@ -274,6 +270,28 @@ export function CalendarEventItem({
 
 	const eventBoxRef = useRef<HTMLDivElement>(null!)
 
+	let eventType = undefined
+	switch (eventData.type) {
+		case "Patch":
+			eventType = styles.version
+			break
+
+		case "Gacha":
+			eventType = styles.gacha
+			break
+
+		case "BTR":
+			eventType = styles.btr
+			break
+
+		default:
+		case "Event":
+		case "Circle Gift":
+		case "Mystery Box":
+			eventType = undefined
+			break
+	}
+
 	return (
 		<div
 			ref={eventBoxRef}
@@ -294,10 +312,10 @@ export function CalendarEventItem({
 				)
 				setShowDetails(true)
 			}}
-			className={`${styles.calendarEvent} ${rowId ? rowId : ""}`}
+			className={`${styles.calendarEvent} ${eventType ? eventType : ""}`}
 			style={eventStyles}>
 			<div className={styles.eventName}>
-				{isBTR && "Beyond the Rails: "}
+				{eventData.type === "BTR" && "Beyond the Rails: "}
 				{eventData.name}
 			</div>
 			<div className={styles.eventDates}>
