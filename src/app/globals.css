@@ -307,7 +307,7 @@ button {
 	}
 }
 
-.raised-control {
+.inset-control {
 	background-color: var(--interactive-bg);
 	box-shadow: var(--shadow-control);
 }

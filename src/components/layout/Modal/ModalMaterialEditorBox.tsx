@@ -24,11 +24,7 @@ import { QuantityInput } from "@/components/layout"
 
 import { styles } from "@/components/inventory/MaterialBox"
 
-export function MaterialEditorBox({
-	material,
-}: {
-	material: Material
-}) {
+export function MaterialEditorBox({ material }: { material: Material }) {
 	const modalContext = useMaterialAdjustmentContext()
 
 	const countRef = useRef<HTMLInputElement>(null)
@@ -155,7 +151,7 @@ export function MaterialEditorBox({
 				onDecrement={(e) => handleCount(e, false)}
 			/>
 
-			<span className={`raised-control ${styles.amount}`}>
+			<span className={`inset-control ${styles.amount}`}>
 				<span
 					className={`${styles.countBtn} ${styles.addSub}`}
 					style={{ pointerEvents: "none" }}

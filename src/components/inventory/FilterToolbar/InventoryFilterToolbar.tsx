@@ -58,7 +58,7 @@ export function InventoryFilterToolbar() {
 	return (
 		<PullOutToolbar>
 			{/* Regular Filter */}
-			<div className={`raised-control ${styles.filterSelection}`}>
+			<div className={`inset-control ${styles.filterSelection}`}>
 				<span
 					className={styles.filterIcon}
 					style={
@@ -105,7 +105,7 @@ export function InventoryFilterToolbar() {
 			</div>
 
 			{/* Rank Filter */}
-			<div className={`raised-control ${styles.filterSelection}`}>
+			<div className={`inset-control ${styles.filterSelection}`}>
 				<span
 					className={styles.filterIcon}
 					style={
@@ -150,7 +150,7 @@ export function InventoryFilterToolbar() {
 			</div>
 
 			{/* Grouping */}
-			<div className={`raised-control ${styles.filterSelection}`}>
+			<div className={`inset-control ${styles.filterSelection}`}>
 				<span
 					className={styles.filterIcon}
 					style={
@@ -191,7 +191,7 @@ export function InventoryFilterToolbar() {
 			</div>
 
 			{/* Sorting */}
-			<div className={`raised-control ${styles.filterSelection}`}>
+			<div className={`inset-control ${styles.filterSelection}`}>
 				<span
 					className={styles.filterIcon}
 					style={

@@ -1,6 +1,13 @@
 "use client"
 
-import { Dispatch, SetStateAction, useEffect, useMemo, useRef, useState } from "react"
+import {
+	Dispatch,
+	SetStateAction,
+	useEffect,
+	useMemo,
+	useRef,
+	useState,
+} from "react"
 
 import { CharacterRecord, WeaponRecord } from "@/types/planner"
 
@@ -86,11 +93,11 @@ export function DashFarmingList() {
 					className={`pill-button ${pageStyles.sectionButton}`}
 					onClick={() => setShowAll(false)}>
 					{"COLLAPSE"}
-				</button>	
+				</button>
 			</div>
 			<div
 				ref={listRef}
-				className={`raised-control ${styles.materialsList}`}>
+				className={`inset-control ${styles.materialsList}`}>
 				<PlannerInventoryProvider itemRecords={itemsList}>
 					<FarmingMaterialsList
 						materials={materials}

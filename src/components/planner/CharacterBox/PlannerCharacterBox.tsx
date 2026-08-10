@@ -350,7 +350,7 @@ export function PlannerCharacterBox({
 										/>
 									</div>
 									<select
-										className="raised-control"
+										className="inset-control"
 										value={CharacterState.currentLvl}
 										onChange={handleCurrentLvlChange}
 										tabIndex={0}>
@@ -373,7 +373,7 @@ export function PlannerCharacterBox({
 										/>
 									</div>
 									<select
-										className="raised-control"
+										className="inset-control"
 										value={CharacterState.targetLvl}
 										onChange={handleTargetLvlChange}
 										tabIndex={0}>

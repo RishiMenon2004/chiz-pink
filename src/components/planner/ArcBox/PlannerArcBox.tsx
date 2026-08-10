@@ -220,7 +220,7 @@ export function PlannerArcBox({
 									<div className={styles.arcStatsLvl}>
 										<span>Current Lvl.</span>
 										<select
-											className="raised-control"
+											className="inset-control"
 											value={currentLvl}
 											onChange={handleCurrentChange}
 											tabIndex={0}>
@@ -242,7 +242,7 @@ export function PlannerArcBox({
 									<div className={styles.arcStatsLvl}>
 										<span>Target Lvl.</span>
 										<select
-											className="raised-control"
+											className="inset-control"
 											value={targetLvl}
 											onChange={handleTargetChange}
 											tabIndex={0}>

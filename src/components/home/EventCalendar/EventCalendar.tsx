@@ -522,7 +522,7 @@ export function EventCalendar() {
 				</button>
 			</div>
 			<div
-				className={`raised-control ${styles.calendarContainer}`}
+				className={`inset-control ${styles.calendarContainer}`}
 				style={
 					{
 						"--day-size": `${daySize}rem`,

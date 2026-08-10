@@ -34,7 +34,7 @@ function ReorderItem({
 		<div ref={ref} className={`${styles.item} ${getItemRarityStyle(item)}`}>
 			{isArc ? (
 				<ArcIcon
-					className={`raised-control ${styles.itemIcon}`}
+					className={`inset-control ${styles.itemIcon}`}
 					arc={item as Arc}
 					width={256}
 					height={256}
@@ -42,7 +42,7 @@ function ReorderItem({
 				/>
 			) : (
 				<CharacterAvatar
-					className={`raised-control ${styles.itemIcon}`}
+					className={`inset-control ${styles.itemIcon}`}
 					character={item as Character}
 					width={256}
 					height={256}
@@ -65,7 +65,7 @@ export function PlannerReorderBox({
 			onClick={stopPropogation}>
 			Adjust Priority
 			<div
-				className={`raised-control ${styles.itemList}`}
+				className={`inset-control ${styles.itemList}`}
 				style={{
 					display: "flex",
 					flexDirection: "column",

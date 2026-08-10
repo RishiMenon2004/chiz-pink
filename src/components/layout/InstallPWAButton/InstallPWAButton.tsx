@@ -110,7 +110,7 @@ export function InstallPWAButton({
 						confirmLabel="Got it"
 						onConfirm={() => setShowInstructions(false)}>
 						{instructions.title}
-						<div className={`raised-control ${alertTextBox}`}>
+						<div className={`inset-control ${alertTextBox}`}>
 							<ol className={styles.instructionsSteps}>
 								{instructions.steps.map((step, index) => (
 									<li key={index}>{step}</li>

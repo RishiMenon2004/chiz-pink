@@ -73,7 +73,7 @@ export function DashStaminaGauge() {
 						onClick={() => {
 							if (pixelRef) pixelRef.current.focus()
 						}}
-						className={`raised-control ${styles.gauge} ${styles.pixelsGauge}`}>
+						className={`inset-control ${styles.gauge} ${styles.pixelsGauge}`}>
 						<MaterialIcon
 							className={styles.gaugeIcon}
 							material={characterPixel}
@@ -114,7 +114,7 @@ export function DashStaminaGauge() {
 						onClick={() => {
 							if (staminaRef) staminaRef.current.focus()
 						}}
-						className={`raised-control ${styles.gauge} ${styles.staminaGauge}`}>
+						className={`inset-control ${styles.gauge} ${styles.staminaGauge}`}>
 						<p className={styles.gaugeText}>
 							<GaugeValueInput
 								name="Current City Stamina"

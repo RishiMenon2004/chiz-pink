@@ -177,7 +177,7 @@ function ConfigInputbox(
 			}}>
 			<b>{inputProps.name}</b>
 			<input
-				className={`raised-control ${styles.configInput}`}
+				className={`inset-control ${styles.configInput}`}
 				{...inputProps}
 			/>
 			{children}
@@ -222,7 +222,7 @@ function ConfigNumberBox({
 				width: "100%",
 			}}>
 			<b>{name}</b>
-			<div className={`raised-control ${styles.numberStepper}`}>
+			<div className={`inset-control ${styles.numberStepper}`}>
 				<span
 					role="button"
 					tabIndex={-1}
@@ -276,7 +276,7 @@ function ConfigSelect({
 			}}>
 			<b>{name}</b>
 			<select
-				className={`raised-control ${styles.configSelect}`}
+				className={`inset-control ${styles.configSelect}`}
 				name={name}
 				value={value}
 				onChange={onChange}>
@@ -912,7 +912,7 @@ export function RenderSettings() {
 						}}>
 						{`Import ${externalImportPending.source} Data`}
 						<div
-							className={`raised-control ${alertTextBox}`}
+							className={`inset-control ${alertTextBox}`}
 							style={{
 								display: "grid",
 								gridTemplateColumns: "1fr 1fr",
@@ -939,7 +939,7 @@ export function RenderSettings() {
 						confirmLabel="Got it"
 						onConfirm={() => setExternalImportSummary(null)}>
 						{`${externalImportSummary.source} Data Imported`}
-						<div className={`raised-control ${alertTextBox}`}>
+						<div className={`inset-control ${alertTextBox}`}>
 							<div>
 								{`Inventory: ${Object.keys(externalImportSummary.inventory).length} items imported`}
 								{externalImportSummary.unmatchedMaterials.length >
@@ -963,7 +963,7 @@ export function RenderSettings() {
 						</div>
 						{(externalImportSummary.hasActivitiesData ||
 							externalImportSummary.hasEventsData) && (
-							<div className={`raised-control ${alertTextBox}`}>
+							<div className={`inset-control ${alertTextBox}`}>
 								<p>
 									{
 										"Importing Activity/Event completion isn't supported yet."
