@@ -16,6 +16,51 @@ import {
 import { EnumArcType } from "./arc"
 
 const allArcs: Record<string, Arc> = {
+	voice_of_the_voyager: {
+		isPreview: true,
+		id: "voice_of_the_voyager",
+		imageSrc: "voice_of_the_voyager.webp",
+		name: "Voice of The Voyager",
+		description: "",
+		rarity: EnumRarity.Epic,
+		type: EnumArcType.Plasma,
+		baseAtk: 0,
+		mainAttribute: {
+			attribute: EnumStatAttribute.CritRate,
+			baseValue: 0.0,
+		},
+		ascensionMaterialSet1: ascColdDessertSet,
+		ascensionMaterialSet2: ascDelusionsSet,
+		effect: {
+			name: "TBD",
+			description:
+				"W-we're waiting on more official information. We're sorry for the inconvenience",
+			values: {},
+		},
+	},
+	ravenous_blade: {
+		isPreview: true,
+		id: "ravenous_blade",
+		imageSrc: "ravenous_blade.webp",
+		name: "Ravenous Blade",
+		description: "",
+		rarity: EnumRarity.Epic,
+		type: EnumArcType.Gas,
+		baseAtk: 0,
+		mainAttribute: {
+			attribute: EnumStatAttribute.CritRate,
+			baseValue: 0.0,
+		},
+		ascensionMaterialSet1: ascColdDessertSet,
+		ascensionMaterialSet2: ascDelusionsSet,
+		effect: {
+			name: "TBD",
+			description:
+				"W-we're waiting on more official information. We're sorry for the inconvenience",
+			values: {},
+		},
+	},
+
 	the_wrong_gate: {
 		isFeatured: true,
 		id: "the_wrong_gate",

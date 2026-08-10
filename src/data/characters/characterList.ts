@@ -15,15 +15,19 @@ import {
 	iroi,
 	jiuyuan,
 	lacrimosa,
+	linko,
 	mint,
 	nanally,
 	sakiri,
 	shinku,
 	skia,
+	zankou,
 	zero,
 } from "@/data/characters"
 
 const allCharacters: Record<string, Character> = {
+	linko,
+	zankou,
 	iroi,
 	shinku,
 	chaos,

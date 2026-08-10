@@ -1,4 +1,4 @@
-import { ReactNode } from "react"
+import { Fragment, ReactNode } from "react"
 
 import { DescriptionValueType } from "@/types"
 import { DescriptionValuesRecord } from "@/types/item"
@@ -125,10 +125,10 @@ export function parseDescription(
 		}
 
 		return chunk.split("\n").map((line, lineIndex) => (
-			<>
+			<Fragment key={lineIndex}>
 				{lineIndex > 0 && <br />}
-				<span key={lineIndex}>{line}</span>
-			</>
+				<span>{line}</span>
+			</Fragment>
 		))
 	})
 }

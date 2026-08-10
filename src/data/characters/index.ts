@@ -5,6 +5,8 @@ export {
 	findCharacter,
 } from "./characterList"
 
+export { linko } from "./linko"
+export { zankou } from "./zankou"
 export { iroi } from "./iroi"
 export { shinku } from "./shinku"
 export { chaos } from "./chaos"
