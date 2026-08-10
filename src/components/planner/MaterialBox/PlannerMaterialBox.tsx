@@ -50,7 +50,7 @@ export function PlannerMaterialBox({
 
 	const cumulativeInventory = usePlannerMaterialsContext()
 	const usableInventory = cumulativeInventory[Math.max(entryIndex, 0)] ?? {}
-	const usableMaterial = usableInventory[material.id]
+	const usableMaterial = usableInventory[material.id] ?? {}
 
 	const availableAmount = usableMaterial.amount ?? 0
 	const craftedAmount = usableMaterial.craftedAmount ?? 0
