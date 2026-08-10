@@ -55,5 +55,17 @@ a.navBtn {
 @media (max-width: 1000px) {
 	a.navBtn {
 		width: 3rem;
+
+		.icon {
+			box-shadow: var(--shadow-bevel-light-40) 0px 1px 0.5px 1px inset;
+		}
+
+		&.active,
+		&:hover,
+		&:focus {
+			.icon {
+				box-shadow: var(--shadow-bevel-light-40) 1px 0px 0.5px 1px inset;
+			}
+		}
 	}
 }
