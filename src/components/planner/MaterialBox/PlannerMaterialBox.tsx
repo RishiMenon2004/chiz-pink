@@ -45,31 +45,21 @@ export function PlannerMaterialBox({
 		entryIndex: -1,
 	}
 
-	const isAggregateMaterial = entryIndex === -1
+	const { inventory } = useInventoryStore()
+	const ownedAmount = inventory[material.id] || 0
 
 	const cumulativeInventory = usePlannerMaterialsContext()
-	const { inventory } = useInventoryStore()
-	const usableInventory =
-		cumulativeInventory[isAggregateMaterial ? 0 : entryIndex] ?? {}
+	const usableInventory = cumulativeInventory[Math.max(entryIndex, 0)] ?? {}
+	const usableMaterial = usableInventory[material.id]
 
-	const availableAmount = usableInventory[material.id]?.amount ?? 0
-	const ownedAmount = inventory[material.id] || 0
-	let craftedAmount = usableInventory[material.id]?.craftedAmount ?? 0
-	let craftedFrom = usableInventory[material.id]?.craftedFrom ?? []
+	const availableAmount = usableMaterial.amount ?? 0
+	const craftedAmount = usableMaterial.craftedAmount ?? 0
+	const craftedFrom = usableMaterial.craftedFrom ?? []
 
-	let usingCrafted = craftedAmount > 0
+	const usingCrafted = craftedAmount! > 0
+	const usableAmount = availableAmount + craftedAmount!
 
-	let remainingAmount = Math.max(
-		0,
-		requiredAmount - (availableAmount + craftedAmount)
-	)
-
-	if (isAggregateMaterial) {
-		usingCrafted = false
-		craftedAmount = 0
-		craftedFrom = []
-		remainingAmount = Math.max(0, requiredAmount - availableAmount)
-	}
+	const remainingAmount = Math.max(requiredAmount - usableAmount, 0)
 
 	const displayAmount = remainingAmount > 0 ? remainingAmount : requiredAmount
 

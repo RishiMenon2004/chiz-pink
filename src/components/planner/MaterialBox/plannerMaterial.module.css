@@ -20,6 +20,7 @@
 			height: 1rem;
 			z-index: 1;
 
+			background-color: var(--pink);
 			background-image: url("/icons/craft.png");
 			background-size: 1rem;
 			padding-inline: 1rem 0.5rem;
@@ -27,12 +28,15 @@
 			background-repeat: no-repeat;
 			border-radius: inherit;
 
+			color: white;
 			font-family: var(--font-barlow-condensed);
 			font-size: 0.825rem;
 			font-weight: 600;
 			font-style: italic;
 
-			color: transparent;
+			paint-order: stroke fill;
+			-webkit-text-stroke: 2px black;
+			line-height: 1rem;
 
 			display: flex;
 			align-items: center;
@@ -40,15 +44,6 @@
 	}
 
 	&.acquired {
-		.craftedTag {
-			background-color: var(--pink);
-			color: white;
-
-			paint-order: stroke fill;
-			-webkit-text-stroke: 2px black;
-			line-height: 1rem;
-		}
-
 		&::after {
 			content: "";
 			position: absolute;
