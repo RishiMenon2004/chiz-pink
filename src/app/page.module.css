@@ -11,6 +11,12 @@
 	gap: 2rem;
 }
 
+.homeGrid {
+	grid-template-areas:
+		"stamina tasks"
+		"farming checklist";
+}
+
 .section {
 	padding: 0.25rem;
 	border-radius: 1.5rem;
@@ -32,11 +38,9 @@
 	color: var(--interactive-bg);
 	font-size: 1.5rem;
 	font-weight: 725;
-	filter: drop-shadow(-0.5px -0.5px 0.5px hsla(0, 0%, 4%));
+	text-transform: uppercase;
 
-	@supports not (-moz-appearance: none) {
-		filter: drop-shadow(0px -1px 0.75px hsl(0, 0%, 4%, 0.5));
-	}
+	user-select: none;
 }
 
 .sectionConfig {
@@ -69,25 +73,41 @@
 }
 
 @media (max-width: 1000px) {
+	.sectionTitle {
+		font-size: 1.25rem;
+	}
+
+	.sectionButton {
+		font-size: 0.9em;
+	}
+}
+
+@media (max-width: 800px) {
 	.page {
 		padding-inline: 3rem !important;
 	}
 
-	.sectionTitle {
-		font-size: 1.25rem;
+	.homeGrid {
+		grid-template-areas: none;
 	}
-}
 
-@media (max-width: 725px) {
 	.twoColumns {
 		display: grid;
 		grid-template-columns: 1fr;
 		gap: 2rem;
+	}
+
+	.section {
+		grid-area: unset !important;
 	}
 }
 
 @media (max-width: 550px) {
 	.page {
 		padding-inline: 1rem !important;
+	}
+
+	.sectionTitle {
+		font-size: 1rem;
 	}
 }

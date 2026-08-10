@@ -1,4 +1,5 @@
 .section {
+	grid-area: tasks;
 	display: grid;
 	grid-template-rows: auto 1fr;
 	align-items: center;

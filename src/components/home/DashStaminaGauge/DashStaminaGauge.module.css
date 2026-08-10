@@ -1,3 +1,8 @@
+.section {
+	grid-area: stamina;
+}
+
+
 .gaugeRow {
 	display: grid;
 	place-items: start stretch;
