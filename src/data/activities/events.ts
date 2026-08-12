@@ -279,6 +279,7 @@ export const Events: EventData[] = [
 		getEndDate: getPhase2End("version1_2"),
 		eventImage: "version1.2/version_1.2.webp",
 		themeColor: "#c8eec7",
+		yOffset: "50%"
 	},
 	{
 		name: "Before the Dawn: Shinku",
