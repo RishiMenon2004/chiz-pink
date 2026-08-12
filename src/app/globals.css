@@ -75,6 +75,9 @@
 	--filter-cursor: pointer;
 	--group-cursor: pointer;
 	--sort-cursor: pointer;
+
+	--resize-nw-cursor: nw-resize;
+	--resize-ne-cursor: ne-resize;
 }
 
 html {
@@ -139,6 +142,9 @@ body {
 	--sort-cursor: url("/cursors/sort.png"), pointer;
 
 	--pull-cursor: url("/cursors/down.png") 16 16, s-resize;
+
+	--resize-nw-cursor: url("/cursors/resize-nw.png") 16 16, nw-resize;
+	--resize-ne-cursor: url("/cursors/resize-ne.png") 16 16, ne-resize;
 }
 
 * {

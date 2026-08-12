@@ -247,6 +247,35 @@ export function CalendarEventItem({
 		? `url('/events/${eventData.eventImage}')`
 		: ""
 
+	let eventType = undefined
+	let cursor = "var(--pointer-cursor)"
+	switch (eventData.type) {
+		case "Patch":
+			eventType = styles.version
+			break
+
+		case "BTR":
+			eventType = styles.btr
+			break
+
+		case "Gacha":
+			eventType = styles.gacha
+			cursor = "var(--resize-ne-cursor)"
+			break
+
+		case "Event":
+			cursor = "var(--resize-ne-cursor)"
+			break
+
+		case "Mystery Box":
+			cursor = "var(--resize-ne-cursor)"
+			break
+
+		default:
+		case "Circle Gift":
+			break
+	}
+
 	const eventStyles = {
 		width: `${widthDays}rem`,
 		marginLeft: `${marginDays}rem`,
@@ -257,6 +286,7 @@ export function CalendarEventItem({
 		"--radius-right": overflowsRight ? "0" : undefined,
 		"--fade-left": overflowsLeft ? "3rem" : undefined,
 		"--fade-right": overflowsRight ? "3rem" : undefined,
+		cursor,
 	} as CSSProperties
 
 	const dateFormat: Intl.DateTimeFormatOptions = {
@@ -269,28 +299,6 @@ export function CalendarEventItem({
 	}
 
 	const eventBoxRef = useRef<HTMLDivElement>(null!)
-
-	let eventType = undefined
-	switch (eventData.type) {
-		case "Patch":
-			eventType = styles.version
-			break
-
-		case "Gacha":
-			eventType = styles.gacha
-			break
-
-		case "BTR":
-			eventType = styles.btr
-			break
-
-		default:
-		case "Event":
-		case "Circle Gift":
-		case "Mystery Box":
-			eventType = undefined
-			break
-	}
 
 	return (
 		<div

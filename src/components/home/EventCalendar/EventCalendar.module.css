@@ -98,7 +98,7 @@
 	}
 
 	&.btr {
-		--event-image: url('/events/btr.webp');
+		--event-image: url("/events/btr.webp");
 		--theme-color: #008cd8;
 		background-position: center;
 	}
@@ -155,6 +155,8 @@
 		display: flex;
 		flex-direction: column;
 		gap: 0.25rem;
+
+		user-select: none;
 
 		.monthName {
 			position: sticky;
