@@ -75,9 +75,6 @@
 	--filter-cursor: pointer;
 	--group-cursor: pointer;
 	--sort-cursor: pointer;
-
-	--resize-nw-cursor: nw-resize;
-	--resize-ne-cursor: ne-resize;
 }
 
 html {
@@ -144,7 +141,11 @@ body {
 	--pull-cursor: url("/cursors/down.png") 16 16, s-resize;
 
 	--resize-nw-cursor: url("/cursors/resize-nw.png") 16 16, nw-resize;
+	--collapse-nw-cursor: url("/cursors/collapse-nw.png") 16 16, n-resize;
 	--resize-ne-cursor: url("/cursors/resize-ne.png") 16 16, ne-resize;
+	--collapse-ne-cursor: url("/cursors/collapse-ne.png") 16 16, n-resize;
+	--resize-ns-cursor: url("/cursors/resize-ns.png") 16 16, n-resize;
+	--collapse-ns-cursor: url("/cursors/collapse-ns.png") 16 16, n-resize;
 }
 
 * {

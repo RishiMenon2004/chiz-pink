@@ -246,7 +246,7 @@
 		flex-direction: column;
 
 		summary {
-			cursor: var(--pull-cursor, pointer);
+			cursor: var(--resize-ns-cursor, pointer);
 		}
 
 		.charStatsGrid {
@@ -257,6 +257,10 @@
 		}
 
 		&:open {
+			summary {
+				cursor: var(--collapse-ns-cursor, pointer);
+			}
+
 			.charStatPreview {
 				display: none;
 			}

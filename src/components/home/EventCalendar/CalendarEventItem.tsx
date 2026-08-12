@@ -260,15 +260,15 @@ export function CalendarEventItem({
 
 		case "Gacha":
 			eventType = styles.gacha
-			cursor = "var(--resize-ne-cursor)"
+			cursor = "var(--resize-ne-cursor, pointer)"
 			break
 
 		case "Event":
-			cursor = "var(--resize-ne-cursor)"
+			cursor = "var(--resize-ne-cursor, pointer)"
 			break
 
 		case "Mystery Box":
-			cursor = "var(--resize-ne-cursor)"
+			cursor = "var(--resize-ne-cursor, pointer)"
 			break
 
 		default:
