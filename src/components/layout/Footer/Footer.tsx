@@ -10,12 +10,13 @@ export function Footer() {
 					&copy; <b className={styles.pink}>Rishi Menon</b> 2026
 				</div>
 				<div className={styles.small}>
+					{"Made with "}
 					<Link
 						target="_blank"
 						rel="noopener noreferrer"
-						href="https://github.com/RishiMenon2004/chiz-pink/"
+						href="https://nextjs.org/"
 						className="btn-anchor">
-						<b>GITHUB</b>
+						<b>NextJS</b>
 					</Link>
 					{" | Found a "}
 					<Link
@@ -25,13 +26,9 @@ export function Footer() {
 						className="btn-anchor">
 						<b>BUG?</b>
 					</Link>
-					{" | Made with "}
-					<Link
-						target="_blank"
-						rel="noopener noreferrer"
-						href="https://nextjs.org/"
-						className="btn-anchor">
-						<b>NextJS</b>
+					{" | "}
+					<Link href="/privacy" className="btn-anchor">
+						<b>PRIVACY POLICY</b>
 					</Link>
 				</div>
 			</span>
