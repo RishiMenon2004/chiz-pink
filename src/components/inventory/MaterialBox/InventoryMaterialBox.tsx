@@ -58,6 +58,8 @@ export function MaterialItemBox({
 			sources: [],
 		}
 
+	const requiredSorcesList = Object.entries(requiredSources)
+
 	const hasRequired = requiredQuantity > 0
 	const hasAcquired = itemQuantity >= requiredQuantity
 
@@ -191,8 +193,9 @@ export function MaterialItemBox({
 						</div>
 						<div className="tooltip-source-list">
 							Needed For:
-							{Object.entries(requiredSources).map(
-								([id, amount]) => {
+							{requiredSorcesList
+								.slice(0, 3)
+								.map(([id, amount]) => {
 									const item = findItem(id) ?? undefined
 									if (item === undefined) return
 									return (
@@ -210,7 +213,11 @@ export function MaterialItemBox({
 											{`${item.name} ${amount > 1 ? `×${amount}` : ""}`}
 										</div>
 									)
-								}
+								})}
+							{requiredSorcesList.length > 3 && (
+								<div className="tooltip-source">
+									{`+${requiredSorcesList.length - 3} More`}
+								</div>
 							)}
 						</div>
 					</>

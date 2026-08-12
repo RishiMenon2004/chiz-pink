@@ -48,8 +48,7 @@
 		box-shadow:
 			var(--shadow-dark-60) 0px -1px 2px,
 			var(--foreground) 0px 1px 1px,
-			hsla(0, 0%, 100%, 0.4) 1.5px 1.5px 1px 0px inset,
-			var(--shadow-dark-40) -1px -1px 3px 2px inset;
+			var(--shadow-dark-40) 1px 1px 3px 1px inset;
 
 		z-index: 0;
 
