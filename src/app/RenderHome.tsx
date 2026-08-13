@@ -2,6 +2,7 @@
 
 import {
 	DashDailyActivity,
+	DashDailyChecklist,
 	DashFarmingList,
 	DashStaminaGauge,
 	EventCalendar,
@@ -15,6 +16,7 @@ export function RenderHome() {
 			<div className={`${styles.twoColumns} ${styles.homeGrid}`}>
 				<DashStaminaGauge />
 				<DashDailyActivity />
+				<DashDailyChecklist />
 				<DashFarmingList />
 			</div>
 			<EventCalendar />

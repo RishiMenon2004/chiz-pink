@@ -1,7 +1,7 @@
 export type ChecklistEntry = {
 	checked: number
-	claimed: number
-	claimedAt: number | null
+	claimed?: number
+	claimedAt?: number | null
 }
 
 export type ChecklistRecord = {

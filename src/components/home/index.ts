@@ -1,4 +1,5 @@
 export { DashDailyActivity } from "./DashDailyActivity"
+export { DashDailyChecklist } from "./DashDailyChecklist"
 export { DashFarmingList } from "./DashFarmingList"
 export { DashStaminaGauge } from "./DashStaminaGauge"
 export { EventCalendar } from "./EventCalendar"

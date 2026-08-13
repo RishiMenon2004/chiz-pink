@@ -104,7 +104,7 @@ export const allActivities = {
 	witchHouse: {
 		id: "witch_house",
 		name: "The Witch's House",
-		description: "",
+		description: "Get Divinations",
 		type: "Daily",
 		parts: ["Lost Tales", "Blessing", "Treasure Hunt"],
 		linear: false,

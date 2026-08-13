@@ -58,8 +58,8 @@ export function DashDailyActivity() {
 
 	function claimUpTo(target: number) {
 		const clamped = Math.max(0, Math.min(target, parts.length))
-		if (clamped > claimed) applyRewards(claimed, clamped, 1)
-		else if (clamped < claimed) applyRewards(clamped, claimed, -1)
+		if (clamped > claimed!) applyRewards(claimed!, clamped, 1)
+		else if (clamped < claimed!) applyRewards(clamped, claimed!, -1)
 		updateEntry({
 			claimed: clamped,
 			claimedAt: clamped > 0 ? Date.now() : null,
@@ -72,7 +72,7 @@ export function DashDailyActivity() {
 		// progress was last touched.
 		updateEntry({ checked: next, claimedAt: next > 0 ? Date.now() : null })
 
-		if (settings.behaviour["auto-claim"] || next < claimed) {
+		if (settings.behaviour["auto-claim"] || next < claimed!) {
 			claimUpTo(next)
 		}
 	}
