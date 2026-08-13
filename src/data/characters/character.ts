@@ -146,7 +146,7 @@ export const characterLevelMaterials: Record<
 	},
 	71: {
 		beetleCoin: 150000,
-		bossMaterial: 35,
+		bossMaterial: 36,
 		exp: 0,
 		ascMaterial: {
 			common: 0,
@@ -161,7 +161,7 @@ export const characterLevelMaterials: Record<
 		ascMaterial: {
 			common: 0,
 			uncommon: 0,
-			rare: 9,
+			rare: 0,
 		},
 	},
 }
@@ -377,7 +377,7 @@ export const characterSkillLevelMaterials: Record<
 			bossMaterial: 0,
 			ascMaterial: {
 				common: 0,
-				uncommon: 2,
+				uncommon: 3,
 				rare: 0,
 			},
 			talentMaterial: {

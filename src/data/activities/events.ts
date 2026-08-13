@@ -397,7 +397,7 @@ export const Events: EventData[] = [
 		getEndDate: getPhase1End("version1_3"),
 		eventImage: "version1.3/gacha_zankou.webp",
 		themeColor: "#d94159",
-		yOffset: "11%",
+		yOffset: "22%",
 	},
 	{
 		name: "Surfing All Channels: Linko",

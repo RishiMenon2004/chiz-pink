@@ -10,7 +10,7 @@ import {
 export const characterExpAmount = {
 	common: 1000,
 	uncommon: 5000,
-	rare: 10000,
+	rare: 20000,
 }
 
 export function calculateSkillCosts(
@@ -62,6 +62,43 @@ export function calculateSkillCosts(
 	return totals
 }
 
+const tiers = ["common", "uncommon", "rare"] as const
+
+function calculateExpItemCost(exp: number): {
+	beetleCoin: number
+	expCost: Record<(typeof tiers)[number], number>
+} {
+	const expAmount = characterExpAmount
+
+	const beetleCoinForExp = {
+		common: 250,
+		uncommon: 1250,
+		rare: 5000,
+	}
+
+	const expCost = {
+		common: 0,
+		uncommon: 0,
+		rare: 0,
+	}
+
+	let beetleCoin = 0
+	let remainingExp = exp
+
+	for (const tier of [...tiers].reverse()) {
+		expCost[tier] = Math.floor(remainingExp / expAmount[tier])
+		beetleCoin += expCost[tier] * beetleCoinForExp[tier]
+		remainingExp %= expAmount[tier]
+	}
+
+	if (remainingExp > 0) {
+		expCost.common += 1
+		beetleCoin += beetleCoinForExp.common
+	}
+
+	return { beetleCoin, expCost }
+}
+
 export function calculateLevelCosts(
 	currentLvl: EnumItemLvls,
 	targetLvl: EnumItemLvls
@@ -84,10 +121,6 @@ export function calculateLevelCosts(
 		},
 	}
 
-	let totalExp = 0
-
-	const tiers = ["common", "uncommon", "rare"] as const
-
 	if (currentLvl < targetLvl) {
 		for (const [key, phase] of Object.entries(characterLevelMaterials)) {
 			const lvl = Number(key)
@@ -95,38 +128,18 @@ export function calculateLevelCosts(
 
 			totals.beetleCoin += phase.beetleCoin
 			totals.bossMaterial += phase.bossMaterial
-			totalExp += phase.exp
 
 			for (const tier of tiers) {
 				totals.ascMaterial[tier] += phase.ascMaterial[tier]
 			}
+
+			const { beetleCoin, expCost } = calculateExpItemCost(phase.exp)
+			totals.beetleCoin += beetleCoin
+
+			for (const tier of tiers) {
+				totals.exp[tier] += expCost[tier]
+			}
 		}
-
-		const expAmount = characterExpAmount
-
-		const beetleCoinForExp = {
-			common: 250,
-			uncommon: 1250,
-			rare: 5000,
-		}
-
-		const expCost = {
-			common: 0,
-			uncommon: 0,
-			rare: 0,
-		}
-
-		for (const tier of [...tiers].reverse()) {
-			expCost[tier] = Math.floor(totalExp / expAmount[tier])
-			totals.beetleCoin += expCost[tier] * beetleCoinForExp[tier]
-			totalExp %= expAmount[tier]
-		}
-
-		if (totalExp > 0) {
-			expCost.common += 1
-		}
-
-		totals.exp = expCost
 	}
 
 	return totals
@@ -172,6 +185,7 @@ export function calculateCharacterCosts({
 
 	for (const tier of tiers) {
 		totals.exp[tier] += levelMaterials.exp[tier]
+		totals.ascMaterial[tier] += levelMaterials.ascMaterial[tier]
 	}
 
 	for (const [skill, skillLvl] of Object.entries(abilitySet)) {

@@ -113,10 +113,40 @@ export const zankou: Character = {
 			description: [
 				{
 					description:
-						"W-we're waiting on more official information. We're sorry for the inconvenience",
+						"<sh>Level 1:</> Increases the Server attribute of all characters by <dn>10</>.",
+				},
+				{
+					description:
+						"<sh>Level 2:</> Gains an additional <dn>10%</> from Volleyball towards Tycoon Incentive Fund.",
+				},
+				{
+					description:
+						"<sh>Level 3:</> Increases the Spiking attribute of all characters by <dn>10</>.",
+				},
+				{
+					description:
+						"<sh>Level 4:</> Gains an additional <dn>10%</> from Volleyball towards Tycoon Incentive Fund.",
+				},
+				{
+					description:
+						"<sh>Level 5:</> Increases the Recieving attribute of all characters by <dn>10</>.",
 				},
 			],
 			maxLvl: 5,
+		},
+		lifeSkill2: {
+			name: "TBD",
+			description: [
+				{
+					description:
+						"<sh>Level 1:</> In Fight Club, consumes an additional <dn>1</> City Stamina and grants corresponding rewards.",
+				},
+				{
+					description:
+						"<sh>Level 2:</> In Fight Club, consumes an additional <dn>1</> City Stamina and grants corresponding rewards.",
+				},
+			],
+			maxLvl: 2,
 		},
 	},
 }
