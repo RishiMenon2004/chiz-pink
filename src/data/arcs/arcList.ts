@@ -24,18 +24,44 @@ const allArcs: Record<string, Arc> = {
 		description: "",
 		rarity: EnumRarity.Epic,
 		type: EnumArcType.Plasma,
-		baseAtk: 0,
+		baseAtk: 37,
 		mainAttribute: {
 			attribute: EnumStatAttribute.CritRate,
-			baseValue: 0.0,
+			baseValue: 0.096,
 		},
 		ascensionMaterialSet1: ascColdDessertSet,
 		ascensionMaterialSet2: ascDelusionsSet,
 		effect: {
-			name: "TBD",
+			name: "Golden Record",
 			description:
-				"W-we're waiting on more official information. We're sorry for the inconvenience",
-			values: {},
+				"Increases ATK by <dn>{0}</>.\nWhen the wearer casts a Support Skill, increases the wearer's Support Skill Crit DMG by <dn>{1}</>. Every time the Support Skill deals damage, increases the wearer's Ultimate Crit DMG by <dn>{2}</> for <dn>3</>s, up to <dn>3</> stacks. Resets the duration when triggered again.",
+			values: {
+				"1": [
+					{type: "Percent", value: 0.24},
+					{type: "Percent", value: 0.66},
+					{type: "Percent", value: 0.22},
+				],
+				"2": [
+					{type: "Percent", value: 0.3},
+					{type: "Percent", value: 0.825},
+					{type: "Percent", value: 0.275},
+				],
+				"3": [
+					{type: "Percent", value: 0.36},
+					{type: "Percent", value: 0.99},
+					{type: "Percent", value: 0.33},
+				],
+				"4": [
+					{type: "Percent", value: 0.42},
+					{type: "Percent", value: 1.155},
+					{type: "Percent", value: 0.385},
+				],
+				"5": [
+					{type: "Percent", value: 0.48},
+					{type: "Percent", value: 1.32},
+					{type: "Percent", value: 0.44},
+				]
+			},
 		},
 	},
 	ravenous_blade: {
@@ -46,18 +72,39 @@ const allArcs: Record<string, Arc> = {
 		description: "",
 		rarity: EnumRarity.Epic,
 		type: EnumArcType.Gas,
-		baseAtk: 0,
+		baseAtk: 37,
 		mainAttribute: {
 			attribute: EnumStatAttribute.CritRate,
-			baseValue: 0.0,
+			baseValue: 0.096,
 		},
-		ascensionMaterialSet1: ascColdDessertSet,
-		ascensionMaterialSet2: ascDelusionsSet,
+		ascensionMaterialSet1: ascMuiscSet,
+		ascensionMaterialSet2: ascNumeralSet,
 		effect: {
 			name: "TBD",
 			description:
-				"W-we're waiting on more official information. We're sorry for the inconvenience",
-			values: {},
+				"Increases Crit Rate by <dn>{0}</>.\nIncreases Crit DMG by <dn>{1}</> for <dn>15</>s when the wearer deals Incantation DMG, up to <dn>7</> stacks. Triggers at most <dn>once</> every <dn>0.3</>s. Resets the duration when triggered again.",
+			values: {
+				"1": [
+					{ type: "Percent", value: 0.16 },
+					{ type: "Percent", value: 0.9 },
+				],
+				"2": [
+					{ type: "Percent", value: 0.2 },
+					{ type: "Percent", value: 0.1125 },
+				],
+				"3": [
+					{ type: "Percent", value: 0.24 },
+					{ type: "Percent", value: 0.135 },
+				],
+				"4": [
+					{ type: "Percent", value: 0.28 },
+					{ type: "Percent", value: 0.1575 },
+				],
+				"5": [
+					{ type: "Percent", value: 0.32 },
+					{ type: "Percent", value: 0.18 },
+				],
+			},
 		},
 	},
 
@@ -80,37 +127,32 @@ const allArcs: Record<string, Arc> = {
 		effect: {
 			name: "Reverie Gate",
 			description:
-				"Increases ATK by <dn>{0}</>.\nIncreases the allies' DMG dealt by <dn>{1}</> when the wearer heals, and increases the wearer's Anima DMG dealt by <dn>{2}</> for <dn>{3}</>s. Resets the duration when triggered again. This effect is unique within the team.",
+				"Increases ATK by <dn>{0}</>.\nWhen the wearer performs healing, increases the wearer's Anima DMG dealt by <dn>{2}</> and all  allies' DMG dealt by <dn>{1}</> for <dn>20</>s. Resets the duration when triggered again. Effects with the same name do not stack.",
 			values: {
 				"1": [
 					{ type: "Percent", value: 0.16 },
 					{ type: "Percent", value: 0.15 },
 					{ type: "Percent", value: 0.3 },
-					{ type: "Integer", value: 20 },
 				],
 				"2": [
 					{ type: "Percent", value: 0.2 },
 					{ type: "Percent", value: 0.1875 },
 					{ type: "Percent", value: 0.375 },
-					{ type: "Integer", value: 20 },
 				],
 				"3": [
 					{ type: "Percent", value: 0.24 },
 					{ type: "Percent", value: 0.225 },
 					{ type: "Percent", value: 0.45 },
-					{ type: "Integer", value: 20 },
 				],
 				"4": [
 					{ type: "Percent", value: 0.28 },
 					{ type: "Percent", value: 0.2625 },
 					{ type: "Percent", value: 0.525 },
-					{ type: "Integer", value: 20 },
 				],
 				"5": [
 					{ type: "Percent", value: 0.32 },
 					{ type: "Percent", value: 0.3 },
 					{ type: "Percent", value: 0.6 },
-					{ type: "Integer", value: 20 },
 				],
 			},
 		},
@@ -134,37 +176,32 @@ const allArcs: Record<string, Arc> = {
 		effect: {
 			name: "Moonphase Shift",
 			description:
-				"Increases ATK by <dn>{0}</>. \nAfter casting Ultimate, increases the wearer's Cosmos DMG dealt by <dn>{1}</> and allows the wearer to ignore <dn>{2}</> of enemy DEF for <dn>{3}</>s. Resets the duration when triggered again.",
+				"Increases ATK by <dn>{0}</>. \nAfter casting Ultimate, increases the wearer's Cosmos DMG dealt by <dn>{1}</> and allows the wearer to ignore <dn>{2}</> of enemy DEF for <dn>20</>s. Resets the duration when triggered again.",
 			values: {
 				"1": [
 					{ type: "Percent", value: 0.2 },
 					{ type: "Percent", value: 0.32 },
 					{ type: "Percent", value: 0.12 },
-					{ type: "Integer", value: 20 },
 				],
 				"2": [
 					{ type: "Percent", value: 0.23 },
 					{ type: "Percent", value: 0.368 },
 					{ type: "Percent", value: 0.138 },
-					{ type: "Integer", value: 20 },
 				],
 				"3": [
 					{ type: "Percent", value: 0.26 },
 					{ type: "Percent", value: 0.416 },
 					{ type: "Percent", value: 0.156 },
-					{ type: "Integer", value: 20 },
 				],
 				"4": [
 					{ type: "Percent", value: 0.29 },
 					{ type: "Percent", value: 0.464 },
 					{ type: "Percent", value: 0.174 },
-					{ type: "Integer", value: 20 },
 				],
 				"5": [
 					{ type: "Percent", value: 0.32 },
 					{ type: "Percent", value: 0.512 },
 					{ type: "Percent", value: 0.192 },
-					{ type: "Integer", value: 20 },
 				],
 			},
 		},
