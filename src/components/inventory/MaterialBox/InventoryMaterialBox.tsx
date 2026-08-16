@@ -36,7 +36,8 @@ export function MaterialItemBox({
 	material: Material
 	canHaveMultiMat?: boolean
 }) {
-	const { Tooltip, showTooltip, hideTooltip } = useTooltip()
+	const { Tooltip, showTooltip, hideTooltip, longPressHandlers, consumeLongPress } =
+		useTooltip()
 
 	const linkedMaterials = useMemo(
 		() => getLinkedMaterials(material),
@@ -105,6 +106,7 @@ export function MaterialItemBox({
 
 	const handleBoxClick = (e: MouseEvent<HTMLDivElement>) => {
 		e.stopPropagation()
+		if (consumeLongPress()) return
 		if (isMultiMat) {
 			showModal()
 			hideTooltip()
@@ -126,7 +128,10 @@ export function MaterialItemBox({
 			}}
 			onPointerEnter={showTooltip}
 			onPointerLeave={hideTooltip}>
-			<div className={`${styles.iconContainer}`} onClick={handleBoxClick}>
+			<div
+				className={`${styles.iconContainer}`}
+				onClick={handleBoxClick}
+				{...longPressHandlers}>
 				{hasRequired && (
 					<div className={styles.requirementIndicator}>
 						{hasAcquired

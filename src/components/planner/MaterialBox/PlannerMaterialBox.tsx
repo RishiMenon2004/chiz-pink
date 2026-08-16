@@ -23,7 +23,8 @@ export function PlannerMaterialBox({
 	material: Material
 	requiredAmount: number
 }) {
-	const { Tooltip, showTooltip, hideTooltip } = useTooltip()
+	const { Tooltip, showTooltip, hideTooltip, longPressHandlers, consumeLongPress } =
+		useTooltip()
 
 	const linkedMaterials = useMemo(
 		() => getLinkedMaterials(material),
@@ -36,6 +37,7 @@ export function PlannerMaterialBox({
 
 	const handleClick = (e: MouseEvent<HTMLDivElement>) => {
 		e.stopPropagation()
+		if (consumeLongPress()) return
 		hideTooltip()
 		showModal()
 	}
@@ -78,7 +80,8 @@ export function PlannerMaterialBox({
 			className={`${styles.materialBox} ${getItemRarityStyle(material)} ${remainingAmount === 0 && styles.acquired} ${usingCrafted && styles.crafted} ${itemRecord.isDisabled && styles.noInteract}`}
 			onPointerEnter={itemRecord.isDisabled ? disabled : showTooltip}
 			onPointerLeave={itemRecord.isDisabled ? disabled : hideTooltip}
-			onClick={itemRecord.isDisabled ? disabled : handleClick}>
+			onClick={itemRecord.isDisabled ? disabled : handleClick}
+			{...(itemRecord.isDisabled ? {} : longPressHandlers)}>
 			<div className={styles.iconContainer}>
 				{usingCrafted && (
 					<div className={styles.craftedTag}>{craftedAmount}</div>

@@ -12,6 +12,10 @@
 
 	cursor: var(--multi-mat-cursor);
 
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	user-select: none;
+
 	&.crafted {
 		.craftedTag {
 			position: absolute;

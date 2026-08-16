@@ -30,6 +30,10 @@
 		border-radius: 12px;
 		padding-bottom: 15px;
 		padding-top: 4px;
+
+		-webkit-touch-callout: none;
+		-webkit-user-select: none;
+		user-select: none;
 		background-image:
 			var(--multi), var(--border),
 			linear-gradient(

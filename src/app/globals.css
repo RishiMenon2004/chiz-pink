@@ -394,6 +394,71 @@ button {
 	}
 }
 
+.tooltip-drawer-backdrop {
+	position: fixed;
+	inset: 0;
+	z-index: 1000;
+
+	display: flex;
+	align-items: flex-end;
+	justify-content: center;
+
+	background-color: hsla(340, 100%, 2%, 0.75);
+	backdrop-filter: blur(4px);
+
+	opacity: 0;
+	transition: opacity 200ms ease-out;
+
+	&.visible {
+		opacity: 1;
+
+		.tooltip-drawer {
+			transform: translateY(0);
+		}
+	}
+}
+
+.tooltip-drawer {
+	width: calc(100% - 4px);
+	max-width: 500px;
+	max-height: 75vh;
+	overflow-y: auto;
+
+	padding: 0.75rem 1.25rem 1.5rem;
+	padding-bottom: calc(1.5rem + env(safe-area-inset-bottom, 0px));
+
+	border-radius: 1rem 1rem 0 0;
+
+	background-color: var(--interactive-bg);
+	box-shadow:
+		var(--shadow-dark-60) 0px -1px 2px,
+		var(--foreground) 0px 0px 1px 1px,
+		var(--shadow-dark-70) 0px 1px inset;
+
+	font-weight: 700;
+
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	user-select: none;
+
+	transform: translateY(100%);
+	transition: transform 250ms ease-out;
+
+	.subtext {
+		font-size: 0.75rem;
+		font-weight: 100;
+		margin-top: 0.25rem;
+	}
+}
+
+.tooltip-drawer-handle {
+	width: 3rem;
+	height: 0.3rem;
+	margin: 0 auto 0.75rem;
+	border-radius: 999px;
+	background-color: var(--shadow-dark-30);
+}
+
 .tooltip-source-list {
 	display: flex;
 	flex-direction: column;
