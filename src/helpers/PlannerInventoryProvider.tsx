@@ -46,7 +46,12 @@ export function PlannerInventoryProvider({
 	const cumulativeInventory = useMemo(() => {
 		const localInventory = { ...convertedInventory }
 
-		const deductedInventories = [convertedInventory] as CumulativeInventory[]
+		const deductedInventories = [
+			{ ...convertedInventory },
+		] as CumulativeInventory[]
+
+		const craftedTotals: Record<string, number> = {}
+		const craftedFromTotals: Record<string, Record<string, number>> = {}
 
 		itemRecords.forEach((itemRecord, index) => {
 			if (itemRecord.isDisabled) {
@@ -121,10 +126,11 @@ export function PlannerInventoryProvider({
 					remainingDeficiency -= usableCraftedAmount
 					totalCraftedAmount += usableCraftedAmount
 
-					const consumedAmount =
-						remainingDeficiency > 0
-							? lowerMaterialRemaining
-							: usableCraftedAmount * craftRatio
+					// Only consume what was actually crafted — even when this
+					// lower material couldn't fully cover the deficit, any
+					// genuine leftover must stay available for other
+					// materials/items later in the sequence to use.
+					const consumedAmount = usableCraftedAmount * craftRatio
 
 					if (consumedAmount > 0) {
 						craftedFrom.push({
@@ -149,13 +155,35 @@ export function PlannerInventoryProvider({
 						craftedAmount: totalCraftedAmount,
 						craftedFrom,
 					}
+
+					craftedTotals[material.id] =
+						(craftedTotals[material.id] ?? 0) + totalCraftedAmount
+
+					const fromTotals =
+						craftedFromTotals[material.id] ??
+						(craftedFromTotals[material.id] = {})
+					craftedFrom.forEach(({ id, amount }) => {
+						fromTotals[id] = (fromTotals[id] ?? 0) + amount
+					})
 				}
 			})
 
 			deductedInventories.push({ ...localInventory })
 		})
 
-		return [...deductedInventories]
+		const totalsSnapshot: CumulativeInventory = { ...convertedInventory }
+		Object.entries(craftedTotals).forEach(([materialId, amount]) => {
+			totalsSnapshot[materialId] = {
+				...totalsSnapshot[materialId],
+				amount: totalsSnapshot[materialId]?.amount ?? 0,
+				craftedAmount: amount,
+				craftedFrom: Object.entries(
+					craftedFromTotals[materialId] ?? {}
+				).map(([id, amt]) => ({ id, amount: amt })),
+			}
+		})
+
+		return [...deductedInventories, totalsSnapshot]
 	}, [convertedInventory, itemRecords])
 
 	return (

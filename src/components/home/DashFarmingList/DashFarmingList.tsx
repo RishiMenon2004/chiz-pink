@@ -121,7 +121,7 @@ function FarmingMaterialsList({
 }) {
 	const cumulativeInventory = usePlannerMaterialsContext()
 	const usableInventory = useMemo(
-		() => cumulativeInventory[0] ?? {},
+		() => cumulativeInventory[cumulativeInventory.length - 1] ?? {},
 		[cumulativeInventory]
 	)
 

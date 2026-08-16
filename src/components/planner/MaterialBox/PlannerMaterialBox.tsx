@@ -51,7 +51,11 @@ export function PlannerMaterialBox({
 	const ownedAmount = inventory[material.id] || 0
 
 	const cumulativeInventory = usePlannerMaterialsContext()
-	const usableInventory = cumulativeInventory[Math.max(entryIndex, 0)] ?? {}
+	const lookupIndex =
+		entryIndex === -1
+			? cumulativeInventory.length - 1
+			: entryIndex
+	const usableInventory = cumulativeInventory[lookupIndex] ?? {}
 	const usableMaterial = usableInventory[material.id] ?? {}
 
 	const availableAmount = usableMaterial.amount ?? 0
