@@ -396,7 +396,7 @@ export const Events: EventData[] = [
 		getStartDate: getPhase1Start("version1_3"),
 		getEndDate: getPhase1End("version1_3"),
 		eventImage: "version1.3/gacha_zankou.webp",
-		themeColor: "#d94159",
+		themeColor: "#f25b5e",
 		yOffset: "22%",
 	},
 	{
