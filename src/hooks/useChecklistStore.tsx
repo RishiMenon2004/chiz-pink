@@ -10,7 +10,13 @@ import type { ChecklistRecord } from "@/types/checklist"
 let lastRawValue: string | null = null
 
 export const SERVER_FALLBACK: ChecklistRecord = {
-	activities: {},
+	activities: {
+		daily: {},
+		weekly: {},
+		biWeekly: {},
+		monthly: {},
+		seasonal: {},
+	},
 	events: {},
 	lastDailyReset: 0,
 }
