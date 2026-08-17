@@ -13,19 +13,13 @@ type ActivityPartWithReward = {
 	rewards: { material: Material; amount: number }[]
 }
 
-type ActivityParts =
-	| { parts?: undefined; linear?: never }
-	| {
-			parts: string[] | ActivityPartWithReward[]
-			linear: boolean
-	  }
-
-type ActivityData = {
+export type ActivityData = {
 	id: string
 	name: string
 	description: string
 	type: "Daily" | "Weekly" | "Bi-Weekly" | "Monthly" | "Seasonal"
-} & ActivityParts
+	parts?: string[] | ActivityPartWithReward[]
+}
 
 export const allActivities = {
 	/* Daily Tasks */
@@ -74,20 +68,12 @@ export const allActivities = {
 				],
 			},
 		],
-		linear: true,
 	},
 	circleBountyDaily: {
 		id: "circle_bounty_daily",
 		name: "Circle Bounty: Daily Quest",
 		description: "Battlepass Daily Quests",
 		type: "Daily",
-		parts: [
-			"Consume Character Pixels",
-			"Get 100 Daily Activity Points",
-			"Earn 10,000 Fons today",
-			"Daily Login",
-		],
-		linear: false,
 	},
 	manageCafe: {
 		id: "manage_cafe",
@@ -106,8 +92,6 @@ export const allActivities = {
 		name: "The Witch's House",
 		description: "Get Divinations",
 		type: "Daily",
-		parts: ["Lost Tales", "Blessing", "Treasure Hunt"],
-		linear: false,
 	},
 	nacupeda: {
 		id: "nacupeda",
@@ -136,7 +120,7 @@ export const allActivities = {
 	hobbyFishing: {
 		id: "hobby_fishing",
 		name: "Sea Angler",
-		description: "Claim 3× Universal Bait & Sell recommended fishes",
+		description: "Claim 3× Universal Bait & Recommneded fishing spot",
 		type: "Daily",
 	},
 	anomalyCloud: {
@@ -161,7 +145,7 @@ export const allActivities = {
 	/* Weekly Tasks */
 	circleBountyWeekly: {
 		id: "circle_bounty_weekly",
-		name: "Circle Bounty: Weekly Quests",
+		name: "Circle Bounty: Weekly Quest",
 		description: "Battlepass Weekly Quests",
 		type: "Weekly",
 	},
@@ -186,7 +170,7 @@ export const allActivities = {
 	anomalyMammon: {
 		id: "anomaly_mammon",
 		name: "Mammon: Realm of Greed",
-		description: "Defeat Mammon to earn Fons.",
+		description: "Defeat Mammon to earn Fons",
 		type: "Weekly",
 	},
 	anomalyMailbox: {
@@ -200,6 +184,37 @@ export const allActivities = {
 		name: "Personal Butler",
 		description: "Quick explore Anomaly Zones",
 		type: "Weekly",
+	},
+
+	/* Bi Weekly */
+	btr: {
+		id: "btr",
+		name: "Beyond the Rails",
+		description: "Clear 12 Stations in the Special Route",
+		type: "Bi-Weekly",
+	},
+
+	pinkPawsHeist: {
+		id: "pink_paws_heist",
+		name: "Pink Paws Heist",
+		description: "Collect 1 Million Fons",
+		type: "Bi-Weekly",
+	},
+
+	/* Monthly */
+	fairExchange: {
+		id: "fair_exchange",
+		name: "Fair Exchange",
+		description: "Warp/Lost Exchange Shop Reset",
+		type: "Monthly",
+	},
+
+	/* Seasonal */
+	circleBountySeasonal: {
+		id: "circle_bounty_seasonal",
+		name: "Circle Bounty: Seasonal Quest",
+		description: "Battlepass Daily Quests",
+		type: "Seasonal",
 	},
 } satisfies Record<string, ActivityData>
 
@@ -219,12 +234,12 @@ export function getDailyActivities() {
 export function getWeeklyActivities() {
 	return allActivitiesArray.filter((activity) => activity.type === "Weekly")
 }
-// export function getBiWeeklyActivities() {
-// 	return allActivitiesArray.filter((activity) => activity.type === "Bi-Weekly")
-// }
+export function getBiWeeklyActivities() {
+	return allActivitiesArray.filter((activity) => activity.type === "Bi-Weekly")
+}
 // export function getMonthlyActivities() {
 // 	return allActivitiesArray.filter((activity) => activity.type === "Monthly")
 // }
-// export function getSeasonalActivities() {
-// 	return allActivitiesArray.filter((activity) => activity.type === "Seasonal")
-// }
+export function getSeasonalActivities() {
+	return allActivitiesArray.filter((activity) => activity.type === "Seasonal")
+}

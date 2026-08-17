@@ -13,7 +13,7 @@ import { ConfigCheckbox } from "@/app/settings/RenderSettings"
 import pageStyles from "@/app/page.module.css"
 import styles from "./DashDailyActivity.module.css"
 
-const EMPTY_ENTRY: ChecklistEntry = { checked: 0, claimed: 0, claimedAt: null }
+const EMPTY_ENTRY: ChecklistEntry = { checked: 0, claimed: 0, claimedAt: null, disabled: false }
 
 export function DashDailyActivity() {
 	const dailyTasksId = getAllActivities().dailyTasks.id
