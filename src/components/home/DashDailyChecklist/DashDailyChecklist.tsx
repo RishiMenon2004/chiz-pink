@@ -1,17 +1,18 @@
 "use client"
 
 import { useState } from "react"
+import { createPortal } from "react-dom"
 
 import { ActivityData, allActivities } from "@/data/activities/activities"
 
-import { useChecklistStore, useSettingsStore } from "@/hooks"
+import { useChecklistStore } from "@/hooks"
+
+import { stopPropogation } from "@/helpers"
 
 import { ModalContainer } from "@/components/layout"
 
 import pageStyles from "@/app/page.module.css"
 import styles from "./DashDailyChecklist.module.css"
-import { createPortal } from "react-dom"
-import { stopPropogation } from "@/helpers"
 
 function ChecklistItem({
 	item,
@@ -52,7 +53,9 @@ function ChecklistItem({
 			<input type="checkbox" name={item.name} checked={checked} readOnly />
 			<span className={styles.checklistItemLabel}>
 				<div className={styles.checklistItemName}>{item.name}</div>
-				<div className={styles.checklistItemDesc}>{toggle ? (checked ? "Visible" : "Hidden"): item.description}</div>
+				<div className={styles.checklistItemDesc}>
+					{toggle ? (checked ? "Visible" : "Hidden") : item.description}
+				</div>
 			</span>
 		</label>
 	)
@@ -60,7 +63,9 @@ function ChecklistItem({
 
 function EditTasksBox() {
 	return (
-		<div className={`metallic-panel ${styles.editTasksBox}`}>
+		<div
+			className={`metallic-panel ${styles.editTasksBox}`}
+			onClick={stopPropogation}>
 			<div className={styles.editTasksTitle}>Edit Daily Tasks</div>
 			<div
 				className={`inset-control ${styles.checklistGrid} ${styles.editTasksList}`}>
