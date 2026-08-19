@@ -191,13 +191,6 @@ export const Events: EventData[] = [
 		themeColor: "#6b92e1",
 		yOffset: "8%",
 	},
-	/* {
-		name: "Circle Gift",
-		type: "Circle Gift",
-		getStartDate: getPhase1Start("version1_1"),
-		getEndDate: getPhase2End("version1_1"),
-		themeColor: "#f35671",
-	}, */
 	{
 		name: "Everdriving Mystery Box: NTE × PORSCHE",
 		type: "Mystery Box",
@@ -279,7 +272,7 @@ export const Events: EventData[] = [
 		getEndDate: getPhase2End("version1_2"),
 		eventImage: "version1.2/version_1.2.webp",
 		themeColor: "#c8eec7",
-		yOffset: "50%"
+		yOffset: "50%",
 	},
 	{
 		name: "Before the Dawn: Shinku",
@@ -299,13 +292,6 @@ export const Events: EventData[] = [
 		themeColor: "#c44a71",
 		yOffset: "20%",
 	},
-	/* {
-		name: "Circle Gift",
-		type: "Circle Gift",
-		getStartDate: getPhase1Start("version1_2"),
-		getEndDate: getPhase2End("version1_2"),
-		themeColor: "#8162a6",
-	}, */
 	{
 		name: "Neon Rift Mystery Box: Regalia Draco",
 		type: "Mystery Box",
@@ -426,17 +412,15 @@ export const Events: EventData[] = [
 		themeColor: "#e32d4c",
 		yOffset: "20%",
 	},
-	/* {
-		name: "Circle Gift",
-		type: "Circle Gift",
-		getStartDate: getPhase1Start("version1_3"),
-		getEndDate: getPhase2End("version1_3"),
-		themeColor: "#c94f5d",
-	}, */
 	{
-		name: "Mystery Box: Tide",
+		name: "Lucent Tides Mystery Box: Tide",
 		type: "Mystery Box",
-		getStartDate: getPhase1Start("version1_3"),
+		getStartDate: () => getUtcTimestamp({
+			year: 2026,
+			month: 8,
+			day: 19,
+			hour: 9,
+		}),
 		getEndDate: getPhase2End("version1_3"),
 		// rewards: [regaliaDraco],
 		eventImage: "version1.3/mystery_tide.webp",
