@@ -35,7 +35,7 @@ import {
 	formatTimeRemaining,
 	getNextPixelRecoveryTime,
 	getPixelsRefillTime,
-	getStaminaResetBoundaries,
+	getWeeklyResetBoundaries,
 	isNtePlannerBackup,
 	isNteWizBackup,
 	parseNtePlannerImport,
@@ -323,7 +323,7 @@ export function StaminaResetCountdown({
 		now === null
 			? "Reset in: -"
 			: (() => {
-					const { nextReset } = getStaminaResetBoundaries(server, now)
+					const { nextReset } = getWeeklyResetBoundaries(server, now)
 					return `Reset in: ${formatTimeRemaining(nextReset - now)} at ${formatResetDayTime(nextReset)}`
 				})()
 

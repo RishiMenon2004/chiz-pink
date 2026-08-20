@@ -14,5 +14,12 @@ export type ChecklistRecord = {
 		seasonal: Record<string, ChecklistEntry>
 	}
 	events: Record<string, number>
-	lastDailyReset: number
+	resetTimestamps: {
+		lastDailyReset: number
+		lastWeeklyReset: number
+		lastBiWeeklyMondayReset: number
+		lastBiWeeklyWednesdayReset: number
+		lastMonthlyReset: number
+		lastSeasonalReset: number
+	}
 }

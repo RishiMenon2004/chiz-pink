@@ -71,7 +71,7 @@ const globalPatchEnd = (day: number, month: number, year: number) =>
 		minute: 59,
 	})
 
-const patchTimings = {
+export const patchTimings = {
 	version1_0: {
 		phase1Start: () => globalPatchStart(29, 4, 2026),
 		phase1End: () => globalPatchEnd(12, 5, 2026),

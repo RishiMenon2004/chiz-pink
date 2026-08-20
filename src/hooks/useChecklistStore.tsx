@@ -2,10 +2,10 @@
 
 import { useSyncExternalStore } from "react"
 
+import type { ChecklistRecord } from "@/types/checklist"
+
 import { isInitialSyncPending } from "@/helpers/syncGate"
 import { safeParse } from "@/helpers/dataCorruption"
-
-import type { ChecklistRecord } from "@/types/checklist"
 
 let lastRawValue: string | null = null
 
@@ -18,7 +18,14 @@ export const SERVER_FALLBACK: ChecklistRecord = {
 		seasonal: {},
 	},
 	events: {},
-	lastDailyReset: 0,
+	resetTimestamps: {
+		lastDailyReset: 0,
+		lastWeeklyReset: 0,
+		lastBiWeeklyMondayReset: 0,
+		lastBiWeeklyWednesdayReset: 0,
+		lastMonthlyReset: 0,
+		lastSeasonalReset: 0,
+	},
 }
 
 let cachedChecklist: ChecklistRecord = { ...SERVER_FALLBACK }
@@ -31,7 +38,7 @@ function readChecklist(): ChecklistRecord {
 }
 
 export const checklistActions = {
-	setChecklist<K extends keyof Omit<ChecklistRecord, "lastDailyReset">>(
+	setChecklist<K extends keyof Omit<ChecklistRecord, "resetTimestamps">>(
 		key: K,
 		updater:
 			| Partial<ChecklistRecord[K]>
@@ -60,19 +67,32 @@ export const checklistActions = {
 		}
 	},
 
-	// Clears every activity entry tracked under activities.daily and records
-	// the reset boundary that triggered it, so the periodic check (see
-	// SettingsProvider) doesn't fire again until the next one.
-	resetDaily(resetAt: number) {
+	// Clears activities when their reset boundaries triggers it, keeping their
+	// their disabled states and records the reset boundary that triggered it,
+	// so the periodic check (see SettingsProvider) doesn't fire again until the next one.
+	resetChecklist(type: keyof ChecklistRecord["activities"], resetAt: number) {
 		if (typeof window === "undefined") return
 		if (isInitialSyncPending()) return
 
 		const current = readChecklist()
 		const updated: ChecklistRecord = {
 			...current,
-			activities: { ...current.activities, daily: {} },
-			lastDailyReset: resetAt,
+			activities: { ...current.activities },
+			resetTimestamps: {
+				...current.resetTimestamps,
+				["last" + type.charAt(0).toUpperCase() + type.slice(1) + "Reset"]:
+					resetAt,
+			},
 		}
+
+		updated.activities[type] ??= {}
+		
+		Object.entries(current.activities[type] ?? {}).forEach(([id, task]) => {
+			updated.activities[type][id] = {
+				checked: 0,
+				disabled: task.disabled ?? false,
+			}
+		})
 
 		try {
 			localStorage.setItem("checklist", JSON.stringify(updated))
@@ -101,6 +121,25 @@ const getSnapshot = () => {
 
 	if (rawValue !== lastRawValue) {
 		cachedChecklist = safeParse(rawValue, SERVER_FALLBACK, "checklist")
+
+		const hadOldKey = "lastDailyReset" in cachedChecklist
+		if (hadOldKey) {
+			cachedChecklist.resetTimestamps.lastDailyReset =
+				(cachedChecklist as Record<string, unknown>).lastDailyReset as number
+			delete (cachedChecklist as Record<string, unknown>).lastDailyReset
+		}
+
+		cachedChecklist.resetTimestamps = {
+			...SERVER_FALLBACK.resetTimestamps,
+			...cachedChecklist.resetTimestamps,
+		}
+
+		if (hadOldKey) {
+			try {
+				localStorage.setItem("checklist", JSON.stringify(cachedChecklist))
+			} catch {}
+		}
+
 		lastRawValue = rawValue
 	}
 
@@ -122,7 +161,7 @@ export function useChecklistStore() {
 		checklist,
 		actions: {
 			setChecklist: checklistActions.setChecklist,
-			resetDaily: checklistActions.resetDaily,
+			resetChecklist: checklistActions.resetChecklist,
 		},
 	}
 }

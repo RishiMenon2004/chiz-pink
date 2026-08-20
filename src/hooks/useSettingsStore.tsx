@@ -4,10 +4,14 @@ import { SettingsConfigContext } from "@/contexts"
 import { isInitialSyncPending, useInitialSyncPending } from "@/helpers/syncGate"
 import { safeParse } from "@/helpers/dataCorruption"
 import {
+	getBiWeeklyMondayResetBoundaries,
+	getBiWeeklyWednesdayResetBoundaries,
 	getDailyResetBoundaries,
-	getRefilledPixelsState,
-	getStaminaResetBoundaries,
-} from "@/helpers/staminaReset"
+	getMonthlyResetBoundaries,
+	getSeasonalResetBoundaries,
+	getWeeklyResetBoundaries,
+} from "@/helpers"
+import { getRefilledPixelsState } from "@/helpers/staminaReset"
 import { SettingsRecord } from "@/types/settings"
 import { ReactNode, useEffect, useSyncExternalStore } from "react"
 import { checklistActions, useChecklistStore } from "./useChecklistStore"
@@ -150,7 +154,11 @@ export function SettingsProvider({ children }: { children: ReactNode }) {
 	useEffect(() => {
 		if (syncPending) return
 
-		if (!settings?.appearance || !settings?.behaviour || !settings?.userdata) {
+		if (
+			!settings?.appearance ||
+			!settings?.behaviour ||
+			!settings?.userdata
+		) {
 			actions.updateSettings(
 				{
 					...SERVER_FALLBACK,
@@ -170,10 +178,7 @@ export function SettingsProvider({ children }: { children: ReactNode }) {
 		if (syncPending || !server || maxStamina === undefined) return
 
 		const checkStaminaReset = () => {
-			const { previousReset } = getStaminaResetBoundaries(
-				server,
-				Date.now()
-			)
+			const { previousReset } = getWeeklyResetBoundaries(server, Date.now())
 
 			if (previousReset > (lastStaminaReset ?? 0)) {
 				actions.setConfig("userdata", {
@@ -189,23 +194,44 @@ export function SettingsProvider({ children }: { children: ReactNode }) {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [syncPending, server, maxStamina, lastStaminaReset])
 
-	const lastDailyReset = checklist.lastDailyReset
-
 	useEffect(() => {
 		if (syncPending || !server) return
 
-		const checkDailyReset = () => {
-			const { previousReset } = getDailyResetBoundaries(server, Date.now())
+		const checkResets = () => {
+			const { previousReset: previousDailyReset } =
+				getDailyResetBoundaries(server, Date.now())
+			const { previousReset: previousWeeklyReset } =
+				getWeeklyResetBoundaries(server, Date.now())
+			const { previousReset: previousBiWeeklyMonReset } =
+				getBiWeeklyMondayResetBoundaries(server, Date.now())
+			const { previousReset: previousBiWeeklyWedReset } =
+				getBiWeeklyWednesdayResetBoundaries(server, Date.now())
+			const { previousReset: previousMonthlyReset } =
+				getMonthlyResetBoundaries(server, Date.now())
+			const { previousReset: previousSeasonalReset } =
+				getSeasonalResetBoundaries(Date.now())
 
-			if (previousReset > (lastDailyReset ?? 0)) {
-				checklistActions.resetDaily(previousReset)
+			const resets = checklist.resetTimestamps ?? {}
+
+			const resetChecks = [
+				["lastDailyReset", "daily", previousDailyReset],
+				["lastWeeklyReset", "weekly", previousWeeklyReset],
+				["lastBiWeeklyMondayReset", "biWeekly", previousBiWeeklyMonReset],
+				["lastBiWeeklyWednesdayReset", "biWeekly", previousBiWeeklyWedReset],
+				["lastMonthlyReset", "monthly", previousMonthlyReset],
+				["lastSeasonalReset", "seasonal", previousSeasonalReset],
+			] as const
+
+			for (const [key, type, timestamp] of resetChecks) {
+				if (timestamp > (resets[key] ?? 0)) {
+					checklistActions.resetChecklist(type, timestamp)
+				}
 			}
 		}
-
-		checkDailyReset()
-		const interval = setInterval(checkDailyReset, 30_000)
+		checkResets()
+		const interval = setInterval(checkResets, 30_000)
 		return () => clearInterval(interval)
-	}, [syncPending, server, lastDailyReset])
+	}, [syncPending, server, checklist.resetTimestamps])
 
 	const currentPixels = settings.userdata?.["current-pixels"]
 	const maxPixels = settings.userdata?.["max-pixels"]
