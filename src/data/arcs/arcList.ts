@@ -29,43 +29,44 @@ const allArcs: Record<string, Arc> = {
 			attribute: EnumStatAttribute.CritRate,
 			baseValue: 0.096,
 		},
-		ascensionMaterialSet1: ascColdDessertSet,
+		ascensionMaterialSet1: ascLiquidDreamSet,
 		ascensionMaterialSet2: ascDelusionsSet,
 		effect: {
 			name: "Golden Record",
 			description:
-				"Increases ATK by <dn>{0}</>.\nWhen the wearer casts a Support Skill, increases the wearer's Support Skill Crit DMG by <dn>{1}</>. Every time the Support Skill deals damage, increases the wearer's Ultimate Crit DMG by <dn>{2}</> for <dn>3</>s, up to <dn>3</> stacks. Resets the duration when triggered again.",
+				"Increases ATK by <dn>{0}</>.\nIncreases the wearer's Support Skill Crit DMG by <dn>{1}</>. Dealing DMG with a Support Skill increases their Ultimate Crit DMG by <dn>{2}</> for <dn>3</>s, up to <dn>3</> stacks. Resets the duration when triggered again.",
 			values: {
 				"1": [
-					{type: "Percent", value: 0.24},
-					{type: "Percent", value: 0.66},
-					{type: "Percent", value: 0.22},
+					{ type: "Percent", value: 0.24 },
+					{ type: "Percent", value: 0.66 },
+					{ type: "Percent", value: 0.22 },
 				],
 				"2": [
-					{type: "Percent", value: 0.3},
-					{type: "Percent", value: 0.825},
-					{type: "Percent", value: 0.275},
+					{ type: "Percent", value: 0.3 },
+					{ type: "Percent", value: 0.825 },
+					{ type: "Percent", value: 0.275 },
 				],
 				"3": [
-					{type: "Percent", value: 0.36},
-					{type: "Percent", value: 0.99},
-					{type: "Percent", value: 0.33},
+					{ type: "Percent", value: 0.36 },
+					{ type: "Percent", value: 0.99 },
+					{ type: "Percent", value: 0.33 },
 				],
 				"4": [
-					{type: "Percent", value: 0.42},
-					{type: "Percent", value: 1.155},
-					{type: "Percent", value: 0.385},
+					{ type: "Percent", value: 0.42 },
+					{ type: "Percent", value: 1.155 },
+					{ type: "Percent", value: 0.385 },
 				],
 				"5": [
-					{type: "Percent", value: 0.48},
-					{type: "Percent", value: 1.32},
-					{type: "Percent", value: 0.44},
-				]
+					{ type: "Percent", value: 0.48 },
+					{ type: "Percent", value: 1.32 },
+					{ type: "Percent", value: 0.44 },
+				],
 			},
 		},
 	},
+
 	ravenous_blade: {
-		isPreview: true,
+		isFeatured: true,
 		id: "ravenous_blade",
 		imageSrc: "ravenous_blade.webp",
 		name: "Ravenous Blade",
@@ -80,9 +81,9 @@ const allArcs: Record<string, Arc> = {
 		ascensionMaterialSet1: ascMuiscSet,
 		ascensionMaterialSet2: ascNumeralSet,
 		effect: {
-			name: "TBD",
+			name: "Cursed Blade - Soulbound",
 			description:
-				"Increases Crit Rate by <dn>{0}</>.\nIncreases Crit DMG by <dn>{1}</> for <dn>15</>s when the wearer deals Incantation DMG, up to <dn>7</> stacks. Triggers at most <dn>once</> every <dn>0.3</>s. Resets the duration when triggered again.",
+				"Increases Crit Rate by <dn>{0}</>.\nGrants the wearer a <dn>{1}</> Crit DMG bonus for <dn>15</>s when they deal Incantation DMG. Stacks up to <dn>7</> times, with no more than 1 stack gained every <dn>0.3</>s. Resets the duration when triggered again.",
 			values: {
 				"1": [
 					{ type: "Percent", value: 0.16 },
@@ -109,7 +110,6 @@ const allArcs: Record<string, Arc> = {
 	},
 
 	the_wrong_gate: {
-		isFeatured: true,
 		id: "the_wrong_gate",
 		imageSrc: "the_wrong_gate.webp",
 		name: "The Wrong Gate",
@@ -225,32 +225,27 @@ const allArcs: Record<string, Arc> = {
 		effect: {
 			name: "Golden Fleece",
 			description:
-				"Increases the wearer's Lakshana DMG by <dn>{0}</>. Increases the wearer's CRIT DMG by <dn>{1}</> for <dn>{2}</>s when they cast a Redirect Skill or Ultimate. Resets the duration when triggered again.",
+				"Increases the wearer's Lakshana DMG by <dn>{0}</>. Increases the wearer's CRIT DMG by <dn>{1}</> for <dn>20</>s when they cast a Redirect Skill or Ultimate. Resets the duration when triggered again.",
 			values: {
 				"1": [
 					{ type: "Percent", value: 0.2 },
 					{ type: "Percent", value: 0.4 },
-					{ type: "Integer", value: 20 },
 				],
 				"2": [
 					{ type: "Percent", value: 0.25 },
 					{ type: "Percent", value: 0.5 },
-					{ type: "Integer", value: 20 },
 				],
 				"3": [
 					{ type: "Percent", value: 0.3 },
 					{ type: "Percent", value: 0.6 },
-					{ type: "Integer", value: 20 },
 				],
 				"4": [
 					{ type: "Percent", value: 0.35 },
 					{ type: "Percent", value: 0.7 },
-					{ type: "Integer", value: 20 },
 				],
 				"5": [
 					{ type: "Percent", value: 0.4 },
 					{ type: "Percent", value: 0.8 },
-					{ type: "Integer", value: 20 },
 				],
 			},
 		},
@@ -273,32 +268,27 @@ const allArcs: Record<string, Arc> = {
 		effect: {
 			name: "Aqua Astra",
 			description:
-				"Increases the wearer's Psyche DMG by <dn>{0}</>. Increases Crit DMG dealt by <dn>{1}</> for <dn>{2}</>s when dealing Psyche DMG, up to <dn>10</> stacks. Triggers at most once every <dn>0.1</>s.",
+				"Increases the wearer's Psyche DMG by <dn>{0}</>. Increases Crit DMG dealt by <dn>{1}</> for <dn>5</>s when dealing Psyche DMG, up to <dn>10</> stacks. Triggers at most once every <dn>0.1</>s.",
 			values: {
 				"1": [
 					{ type: "Percent", value: 0.12 },
 					{ type: "Percent", value: 0.02 },
-					{ type: "Integer", value: 5 },
 				],
 				"2": [
 					{ type: "Percent", value: 0.145 },
 					{ type: "Percent", value: 0.024 },
-					{ type: "Integer", value: 5 },
 				],
 				"3": [
 					{ type: "Percent", value: 0.17 },
 					{ type: "Percent", value: 0.028 },
-					{ type: "Integer", value: 5 },
 				],
 				"4": [
 					{ type: "Percent", value: 0.195 },
 					{ type: "Percent", value: 0.032 },
-					{ type: "Integer", value: 5 },
 				],
 				"5": [
 					{ type: "Percent", value: 0.21 },
 					{ type: "Percent", value: 0.036 },
-					{ type: "Integer", value: 5 },
 				],
 			},
 		},
@@ -322,32 +312,27 @@ const allArcs: Record<string, Arc> = {
 		effect: {
 			name: "Hypervortex",
 			description:
-				"Deals <dn>{0}</> increased Cosmos DMG with the wearer's Redirect Skill and Ultimate.\nIncreases the wearer's Cycle Intensity by <dn>{1}</> for <dn>{2}</>s after casting a Redirect Skill. Resets the duration when triggered again.",
+				"Deals <dn>{0}</> increased Cosmos DMG with the wearer's Redirect Skill and Ultimate.\nIncreases the wearer's Cycle Intensity by <dn>{1}</> for <dn>15</>s after casting a Redirect Skill. Resets the duration when triggered again.",
 			values: {
 				"1": [
 					{ type: "Percent", value: 0.3 },
 					{ type: "Percent", value: 36 },
-					{ type: "Integer", value: 15 },
 				],
 				"2": [
 					{ type: "Percent", value: 0.33 },
 					{ type: "Percent", value: 45 },
-					{ type: "Integer", value: 15 },
 				],
 				"3": [
 					{ type: "Percent", value: 0.36 },
 					{ type: "Percent", value: 54 },
-					{ type: "Integer", value: 15 },
 				],
 				"4": [
 					{ type: "Percent", value: 0.39 },
 					{ type: "Percent", value: 63 },
-					{ type: "Integer", value: 15 },
 				],
 				"5": [
 					{ type: "Percent", value: 0.42 },
 					{ type: "Percent", value: 72 },
-					{ type: "Integer", value: 15 },
 				],
 			},
 		},
@@ -371,37 +356,27 @@ const allArcs: Record<string, Arc> = {
 		effect: {
 			name: "Bohemian Rose",
 			description:
-				"Increases ATK by <dn>{0}</>.\nGrants 1 stack of Chaos Thorn each time the wearer deals DoT. Increases CRIT DMG by <dn>{1}</> per stack for <dn>{2}</>s. Triggers at most <dn>once</> every <dn>0.3</>s, up to <dn>10</> stacks, and refreshes the duration when retriggered. Grants <dn>10</> stacks of Chaos Thorn immediately when the wearer casts a Redirect Skill.\nExtends the Broken state of a Broken enemy by <dn>{3}</>s when the wearer deals damage to them (triggers at most once per Break Effect).",
+				"Increases ATK by <dn>{0}</>.\nGrants 1 stack of Chaos Thorn each time the wearer deals DoT. Increases CRIT DMG by <dn>{1}</> per stack for <dn>3</>s. Triggers at most <dn>once</> every <dn>0.3</>s, up to <dn>10</> stacks, and refreshes the duration when retriggered. Grants <dn>10</> stacks of Chaos Thorn immediately when the wearer casts a Redirect Skill.\nExtends the Broken state of a Broken enemy by <dn>3</>s when the wearer deals damage to them (triggers at most once per Break Effect).",
 			values: {
 				"1": [
 					{ type: "Percent", value: 0.14 },
 					{ type: "Percent", value: 0.06 },
-					{ type: "Integer", value: 3 },
-					{ type: "Integer", value: 3 },
 				],
 				"2": [
 					{ type: "Percent", value: 0.175 },
 					{ type: "Percent", value: 0.075 },
-					{ type: "Integer", value: 3 },
-					{ type: "Integer", value: 3 },
 				],
 				"3": [
 					{ type: "Percent", value: 0.21 },
 					{ type: "Percent", value: 0.09 },
-					{ type: "Integer", value: 3 },
-					{ type: "Integer", value: 3 },
 				],
 				"4": [
 					{ type: "Percent", value: 0.245 },
 					{ type: "Percent", value: 0.105 },
-					{ type: "Integer", value: 3 },
-					{ type: "Integer", value: 3 },
 				],
 				"5": [
 					{ type: "Percent", value: 0.28 },
 					{ type: "Percent", value: 0.12 },
-					{ type: "Integer", value: 3 },
-					{ type: "Integer", value: 3 },
 				],
 			},
 		},
@@ -424,42 +399,37 @@ const allArcs: Record<string, Arc> = {
 		effect: {
 			name: "Time Beyond Time",
 			description:
-				"Increases ATK by <dn>{0}</>.\nEnters Wastelab and clears current Wastetime when the wearer casts a Redirect Skill. While in Wastelab, allies gain <dn>1</> stack of Wastetime each time they use a Redirect or Support Skill, up to <dn>3</> stacks. When the wearer uses their Ultimate in Wastelab, they exit Wastelab and consume all Wastetime, increasing Ultimate Crit DMG by <dn>{1}</>, plus an additional <dn>{2}</> per Wastetime consumed. Consuming <dn>3</> Wastetime stacks at once grants an extra <dn>{3}</> DEF Ignore for <dn>{4}</>s.",
+				"Increases ATK by <dn>{0}</>.\nEnters Wastelab and clears current Wastetime when the wearer casts a Redirect Skill. While in Wastelab, allies gain <dn>1</> stack of Wastetime each time they use a Redirect or Support Skill, up to <dn>3</> stacks. When the wearer uses their Ultimate in Wastelab, they exit Wastelab and consume all Wastetime, increasing Ultimate Crit DMG by <dn>{1}</>, plus an additional <dn>{2}</> per Wastetime consumed. Consuming <dn>3</> Wastetime stacks at once grants an extra <dn>{3}</> DEF Ignore for <dn>70</>s.",
 			values: {
 				"1": [
 					{ type: "Percent", value: 0.16 },
 					{ type: "Percent", value: 0.24 },
 					{ type: "Percent", value: 0.08 },
 					{ type: "Percent", value: 0.12 },
-					{ type: "Integer", value: 70 },
 				],
 				"2": [
 					{ type: "Percent", value: 0.2 },
 					{ type: "Percent", value: 0.3 },
 					{ type: "Percent", value: 0.1 },
 					{ type: "Percent", value: 0.15 },
-					{ type: "Integer", value: 70 },
 				],
 				"3": [
 					{ type: "Percent", value: 0.24 },
 					{ type: "Percent", value: 0.36 },
 					{ type: "Percent", value: 0.12 },
 					{ type: "Percent", value: 0.18 },
-					{ type: "Integer", value: 70 },
 				],
 				"4": [
 					{ type: "Percent", value: 0.28 },
 					{ type: "Percent", value: 0.42 },
 					{ type: "Percent", value: 0.14 },
 					{ type: "Percent", value: 0.21 },
-					{ type: "Integer", value: 70 },
 				],
 				"5": [
 					{ type: "Percent", value: 0.32 },
 					{ type: "Percent", value: 0.48 },
 					{ type: "Percent", value: 0.16 },
 					{ type: "Percent", value: 0.24 },
-					{ type: "Integer", value: 70 },
 				],
 			},
 		},
@@ -482,38 +452,13 @@ const allArcs: Record<string, Arc> = {
 		effect: {
 			name: "Deep Blue Sorrow",
 			description:
-				"Increases ATK by <dn>{0}</>.\nIncreases the wearer's damage to Broken enemies by <dn>{1}</>. Restores <dn>{2}</> HP to the wearer if a Broken enemy is defeated. Triggers at most <dn>once</> every <dn>{3}</>s.",
+				"Increases ATK by <dn>{0}</>.\nIncreases the wearer's damage to Broken enemies by <dn>{0}</>. Restores <dn>30.00%</> HP to the wearer if a Broken enemy is defeated. Triggers at most <dn>once</> every <dn>30</>s.",
 			values: {
-				"1": [
-					{ type: "Percent", value: 0.12 },
-					{ type: "Percent", value: 0.12 },
-					{ type: "Percent", value: 0.3 },
-					{ type: "Integer", value: 30 },
-				],
-				"2": [
-					{ type: "Percent", value: 0.14 },
-					{ type: "Percent", value: 0.14 },
-					{ type: "Percent", value: 0.3 },
-					{ type: "Integer", value: 30 },
-				],
-				"3": [
-					{ type: "Percent", value: 0.16 },
-					{ type: "Percent", value: 0.16 },
-					{ type: "Percent", value: 0.3 },
-					{ type: "Integer", value: 30 },
-				],
-				"4": [
-					{ type: "Percent", value: 0.18 },
-					{ type: "Percent", value: 0.18 },
-					{ type: "Percent", value: 0.3 },
-					{ type: "Integer", value: 30 },
-				],
-				"5": [
-					{ type: "Percent", value: 0.2 },
-					{ type: "Percent", value: 0.2 },
-					{ type: "Percent", value: 0.3 },
-					{ type: "Integer", value: 30 },
-				],
+				"1": [{ type: "Percent", value: 0.12 }],
+				"2": [{ type: "Percent", value: 0.14 }],
+				"3": [{ type: "Percent", value: 0.16 }],
+				"4": [{ type: "Percent", value: 0.18 }],
+				"5": [{ type: "Percent", value: 0.2 }],
 			},
 		},
 	},
@@ -535,28 +480,13 @@ const allArcs: Record<string, Arc> = {
 		effect: {
 			name: "Nestbound Bird",
 			description:
-				"Applies Warning Gaze on enemies hit by the wearer's Ultimate. Marked enemies deal <dn>18%</> reduced damage for <dn>20</>s. Effect does not stack.",
+				"Applies Warning Gaze on enemies hit by the wearer's Ultimate. Marked enemies deal <dn>{0}</> reduced damage for <dn>20</>s. Effect does not stack.",
 			values: {
-				"1": [
-					{ type: "Percent", value: 0.18 },
-					{ type: "Integer", value: 20 },
-				],
-				"2": [
-					{ type: "Percent", value: 0.21 },
-					{ type: "Integer", value: 20 },
-				],
-				"3": [
-					{ type: "Percent", value: 0.24 },
-					{ type: "Integer", value: 20 },
-				],
-				"4": [
-					{ type: "Percent", value: 0.27 },
-					{ type: "Integer", value: 20 },
-				],
-				"5": [
-					{ type: "Percent", value: 0.3 },
-					{ type: "Integer", value: 20 },
-				],
+				"1": [{ type: "Percent", value: 0.18 }],
+				"2": [{ type: "Percent", value: 0.21 }],
+				"3": [{ type: "Percent", value: 0.24 }],
+				"4": [{ type: "Percent", value: 0.27 }],
+				"5": [{ type: "Percent", value: 0.3 }],
 			},
 		},
 	},
@@ -578,37 +508,32 @@ const allArcs: Record<string, Arc> = {
 		effect: {
 			name: "Swallowtail",
 			description:
-				"Increases Anima DMG by <dn>{0}</>.\nIncreases the wearer's Attachment DMG by <dn>{1}</>. Increases the Attachment DMG bonus to <dn>{2}</> for <dn>{3}</>s when the wearer casts an Ultimate. Effect does not stack.",
+				"Increases Anima DMG by <dn>{0}</>.\nIncreases the wearer's Attachment DMG by <dn>{1}</>. Increases the Attachment DMG bonus to <dn>{2}</> for <dn>6</>s when the wearer casts an Ultimate. Effect does not stack.",
 			values: {
 				"1": [
 					{ type: "Percent", value: 0.15 },
 					{ type: "Percent", value: 0.1 },
 					{ type: "Percent", value: 0.2 },
-					{ type: "Integer", value: 6 },
 				],
 				"2": [
 					{ type: "Percent", value: 0.175 },
 					{ type: "Percent", value: 0.1125 },
 					{ type: "Percent", value: 0.225 },
-					{ type: "Integer", value: 6 },
 				],
 				"3": [
 					{ type: "Percent", value: 0.2 },
 					{ type: "Percent", value: 0.125 },
 					{ type: "Percent", value: 0.25 },
-					{ type: "Integer", value: 6 },
 				],
 				"4": [
 					{ type: "Percent", value: 0.225 },
 					{ type: "Percent", value: 0.1375 },
 					{ type: "Percent", value: 0.275 },
-					{ type: "Integer", value: 6 },
 				],
 				"5": [
 					{ type: "Percent", value: 0.25 },
 					{ type: "Percent", value: 0.15 },
 					{ type: "Percent", value: 0.3 },
-					{ type: "Integer", value: 6 },
 				],
 			},
 		},
@@ -632,28 +557,13 @@ const allArcs: Record<string, Arc> = {
 		effect: {
 			name: "Popping Candy",
 			description:
-				"Increases ATK by <dn>{0}</> for <dn>{1}</>s after the wearer casts an Ultimate. Effect does not stack.",
+				"Increases ATK by <dn>{0}</> for <dn>10</>s after the wearer casts an Ultimate. Effect does not stack.",
 			values: {
-				"1": [
-					{ type: "Percent", value: 0.25 },
-					{ type: "Integer", value: 10 },
-				],
-				"2": [
-					{ type: "Percent", value: 0.3 },
-					{ type: "Integer", value: 10 },
-				],
-				"3": [
-					{ type: "Percent", value: 0.35 },
-					{ type: "Integer", value: 10 },
-				],
-				"4": [
-					{ type: "Percent", value: 0.4 },
-					{ type: "Integer", value: 10 },
-				],
-				"5": [
-					{ type: "Percent", value: 0.45 },
-					{ type: "Integer", value: 10 },
-				],
+				"1": [{ type: "Percent", value: 0.25 }],
+				"2": [{ type: "Percent", value: 0.3 }],
+				"3": [{ type: "Percent", value: 0.35 }],
+				"4": [{ type: "Percent", value: 0.4 }],
+				"5": [{ type: "Percent", value: 0.45 }],
 			},
 		},
 	},
@@ -675,28 +585,13 @@ const allArcs: Record<string, Arc> = {
 		effect: {
 			name: "Motor Candy",
 			description:
-				"Increases <dn>{1}</> ATK every <dn>{0}</>s while the wearer is the active character, up to <dn>5</> stacks. Resets when the wearer leaves the field.",
+				"Increases <dn>{0}</> ATK every <dn>1</>s while the wearer is the active character, up to <dn>5</> stacks. Resets when the wearer leaves the field.",
 			values: {
-				"1": [
-					{ type: "Percent", value: 0.05 },
-					{ type: "Integer", value: 1 },
-				],
-				"2": [
-					{ type: "Percent", value: 0.06 },
-					{ type: "Integer", value: 1 },
-				],
-				"3": [
-					{ type: "Percent", value: 0.07 },
-					{ type: "Integer", value: 1 },
-				],
-				"4": [
-					{ type: "Percent", value: 0.08 },
-					{ type: "Integer", value: 1 },
-				],
-				"5": [
-					{ type: "Percent", value: 0.09 },
-					{ type: "Integer", value: 1 },
-				],
+				"1": [{ type: "Percent", value: 0.05 }],
+				"2": [{ type: "Percent", value: 0.06 }],
+				"3": [{ type: "Percent", value: 0.07 }],
+				"4": [{ type: "Percent", value: 0.08 }],
+				"5": [{ type: "Percent", value: 0.09 }],
 			},
 		},
 	},
@@ -719,28 +614,13 @@ const allArcs: Record<string, Arc> = {
 		effect: {
 			name: "Thief's Candy",
 			description:
-				"Increases wearer's damage by <dn>{0}</> for <dn>{1}</>s after performing a Critical Dodge, up to <dn>3</> stacks. Resets the duration when triggered again.",
+				"Increases wearer's damage by <dn>{0}</> for <dn>10</>s after performing a Critical Dodge, up to <dn>3</> stacks. Resets the duration when triggered again.",
 			values: {
-				"1": [
-					{ type: "Percent", value: 0.08 },
-					{ type: "Integer", value: 10 },
-				],
-				"2": [
-					{ type: "Percent", value: 0.096 },
-					{ type: "Integer", value: 10 },
-				],
-				"3": [
-					{ type: "Percent", value: 0.112 },
-					{ type: "Integer", value: 10 },
-				],
-				"4": [
-					{ type: "Percent", value: 0.128 },
-					{ type: "Integer", value: 10 },
-				],
-				"5": [
-					{ type: "Percent", value: 0.144 },
-					{ type: "Integer", value: 10 },
-				],
+				"1": [{ type: "Percent", value: 0.08 }],
+				"2": [{ type: "Percent", value: 0.096 }],
+				"3": [{ type: "Percent", value: 0.112 }],
+				"4": [{ type: "Percent", value: 0.128 }],
+				"5": [{ type: "Percent", value: 0.144 }],
 			},
 		},
 	},
@@ -763,28 +643,13 @@ const allArcs: Record<string, Arc> = {
 		effect: {
 			name: "Knight's Candy",
 			description:
-				"Increases wearer's CRIT DMG by <dn>{0}</> for <dn>{1}</>s after landing a critical hit, up to <dn>10</> stacks. Resets the duration when triggered again.",
+				"Increases wearer's CRIT DMG by <dn>{0}</> for <dn>10</>s after landing a critical hit, up to <dn>10</> stacks. Resets the duration when triggered again.",
 			values: {
-				"1": [
-					{ type: "Percent", value: 0.04 },
-					{ type: "Integer", value: 10 },
-				],
-				"2": [
-					{ type: "Percent", value: 0.048 },
-					{ type: "Integer", value: 10 },
-				],
-				"3": [
-					{ type: "Percent", value: 0.056 },
-					{ type: "Integer", value: 10 },
-				],
-				"4": [
-					{ type: "Percent", value: 0.064 },
-					{ type: "Integer", value: 10 },
-				],
-				"5": [
-					{ type: "Percent", value: 0.072 },
-					{ type: "Integer", value: 10 },
-				],
+				"1": [{ type: "Percent", value: 0.04 }],
+				"2": [{ type: "Percent", value: 0.048 }],
+				"3": [{ type: "Percent", value: 0.056 }],
+				"4": [{ type: "Percent", value: 0.064 }],
+				"5": [{ type: "Percent", value: 0.072 }],
 			},
 		},
 	},
@@ -850,37 +715,27 @@ const allArcs: Record<string, Arc> = {
 		effect: {
 			name: "Justice Executioner",
 			description:
-				"Increases ATK by <dn>{0}</>.\nIncreases damage dealt to Bosses by <dn>{1}</>.\nUnlocks Arc: Officer Whisker.\nArc: Officer Whisker — Summons Officer Whisker to assist in combat. Officer Whisker continuously attacks enemies, dealing <dn>{2}</> of the wearer's ATK as damage per hit. Lasts <dn>30</>s. Cooldown: <dn>{3}</>s.",
+				"Increases ATK by <dn>{0}</>.\nIncreases damage dealt to Bosses by <dn>{0}</>.\nUnlocks Arc: Officer Whisker.\nArc: Officer Whisker — Summons Officer Whisker to assist in combat. Officer Whisker continuously attacks enemies, dealing <dn>{1}</> of the wearer's ATK as damage per hit. Lasts <dn>30</>s. Cooldown: <dn>60</>s.",
 			values: {
 				"1": [
 					{ type: "Percent", value: 0.15 },
-					{ type: "Percent", value: 0.15 },
 					{ type: "Percent", value: 1 },
-					{ type: "Integer", value: 60 },
 				],
 				"2": [
 					{ type: "Percent", value: 0.175 },
-					{ type: "Percent", value: 0.175 },
 					{ type: "Percent", value: 1.25 },
-					{ type: "Integer", value: 60 },
 				],
 				"3": [
 					{ type: "Percent", value: 0.2 },
-					{ type: "Percent", value: 0.2 },
 					{ type: "Percent", value: 1.5 },
-					{ type: "Integer", value: 60 },
 				],
 				"4": [
 					{ type: "Percent", value: 0.225 },
-					{ type: "Percent", value: 0.225 },
 					{ type: "Percent", value: 1.75 },
-					{ type: "Integer", value: 60 },
 				],
 				"5": [
 					{ type: "Percent", value: 0.25 },
-					{ type: "Percent", value: 0.25 },
 					{ type: "Percent", value: 2 },
-					{ type: "Integer", value: 60 },
 				],
 			},
 		},
@@ -904,32 +759,27 @@ const allArcs: Record<string, Arc> = {
 		effect: {
 			name: "Arachne",
 			description:
-				"Increases Max HP by <dn>{0}</>.\nIncreases Mental DMG dealt by <dn>{1}</> for <dn>{2}</>s after the wearer casts an Ultimate.",
+				"Increases Max HP by <dn>{0}</>.\nIncreases Mental DMG dealt by <dn>{1}</> for <dn>10</>s after the wearer casts an Ultimate.",
 			values: {
 				"1": [
 					{ type: "Percent", value: 0.2 },
 					{ type: "Percent", value: 0.1 },
-					{ type: "Integer", value: 10 },
 				],
 				"2": [
 					{ type: "Percent", value: 0.23 },
 					{ type: "Percent", value: 0.12 },
-					{ type: "Integer", value: 10 },
 				],
 				"3": [
 					{ type: "Percent", value: 0.26 },
 					{ type: "Percent", value: 0.14 },
-					{ type: "Integer", value: 10 },
 				],
 				"4": [
 					{ type: "Percent", value: 0.29 },
 					{ type: "Percent", value: 0.16 },
-					{ type: "Integer", value: 10 },
 				],
 				"5": [
 					{ type: "Percent", value: 0.32 },
 					{ type: "Percent", value: 0.18 },
-					{ type: "Integer", value: 10 },
 				],
 			},
 		},
@@ -951,39 +801,34 @@ const allArcs: Record<string, Arc> = {
 		ascensionMaterialSet1: ascLiquidDreamSet,
 		ascensionMaterialSet2: ascDelusionsSet,
 		effect: {
-			name: "Themed Flames",
+			name: "Headless Rider",
 			description:
-				"Increases the wearer's Resonance DMG by <dn>{0}</>.\nAfter the wearer casts an Ultimate, increases the wearer's DMG by <dn>{1}</> for <dn>{2}</>s. Effect does not stack.",
+				"Increases the wearer's Lakshana DMG by <dn>{0}</>. Increases the wearer's Redirect Skill and Ultimate DMG by <dn>{1}</> for <dn>10</>s after casting Ultimate. Increases the wearer's Redirect Skill DMG by <dn>{2}</> per cast while still active, up to 2 stacks.",
 			values: {
 				"1": [
-					{ type: "Percent", value: 0.1 },
-					{ type: "Integer", value: 10 },
-					{ type: "Percent", value: 0.05 },
 					{ type: "Percent", value: 0.15 },
+					{ type: "Percent", value: 0.1 },
+					{ type: "Percent", value: 0.05 },
 				],
 				"2": [
-					{ type: "Percent", value: 0.125 },
-					{ type: "Integer", value: 10 },
-					{ type: "Percent", value: 0.06 },
 					{ type: "Percent", value: 0.175 },
+					{ type: "Percent", value: 0.125 },
+					{ type: "Percent", value: 0.06 },
 				],
 				"3": [
-					{ type: "Percent", value: 0.15 },
-					{ type: "Integer", value: 10 },
-					{ type: "Percent", value: 0.07 },
 					{ type: "Percent", value: 0.2 },
+					{ type: "Percent", value: 0.15 },
+					{ type: "Percent", value: 0.07 },
 				],
 				"4": [
-					{ type: "Percent", value: 0.175 },
-					{ type: "Integer", value: 10 },
-					{ type: "Percent", value: 0.08 },
 					{ type: "Percent", value: 0.225 },
+					{ type: "Percent", value: 0.175 },
+					{ type: "Percent", value: 0.08 },
 				],
 				"5": [
-					{ type: "Percent", value: 0.2 },
-					{ type: "Integer", value: 10 },
-					{ type: "Percent", value: 0.09 },
 					{ type: "Percent", value: 0.25 },
+					{ type: "Percent", value: 0.2 },
+					{ type: "Percent", value: 0.09 },
 				],
 			},
 		},
@@ -1005,49 +850,34 @@ const allArcs: Record<string, Arc> = {
 		ascensionMaterialSet1: ascAppleSeedSet,
 		ascensionMaterialSet2: ascWhispersSet,
 		effect: {
-			name: "Prized Joy",
+			name: "Nacupeda",
 			description:
-				"Increases the wearer's damage by <dn>{0}</> after they are hit. Grants <dn>{1}</> DEF Ignore for <dn>{2}</>s after the wearer is hit. Triggers at most once every <dn>{3}</>s.",
+				"Increases HP by <dn>{0}</>.\nGrants one of the following random effects when the wearer casts an Ultimate:\n1. Recovers <dn>{1}</> of Max HP for the team member with the lowest HP percentage.\n2. Grants a Shield equal to <dn>{1}</> of the wearer's Max HP for <dn>15</>s\n3. Recovers <dn>{2}</> for all team members.\nTriggers once every <dn>30</>s.",
 			values: {
 				"1": [
 					{ type: "Percent", value: 0.24 },
 					{ type: "Percent", value: 0.2 },
-					{ type: "Percent", value: 0.2 },
-					{ type: "Integer", value: 15 },
 					{ type: "Percent", value: 0.1 },
-					{ type: "Integer", value: 30 },
 				],
 				"2": [
 					{ type: "Percent", value: 0.28 },
 					{ type: "Percent", value: 0.25 },
-					{ type: "Percent", value: 0.25 },
-					{ type: "Integer", value: 15 },
 					{ type: "Percent", value: 0.125 },
-					{ type: "Integer", value: 30 },
 				],
 				"3": [
 					{ type: "Percent", value: 0.32 },
 					{ type: "Percent", value: 0.3 },
-					{ type: "Percent", value: 0.3 },
-					{ type: "Integer", value: 15 },
 					{ type: "Percent", value: 0.15 },
-					{ type: "Integer", value: 30 },
 				],
 				"4": [
 					{ type: "Percent", value: 0.36 },
 					{ type: "Percent", value: 0.35 },
-					{ type: "Percent", value: 0.35 },
-					{ type: "Integer", value: 15 },
 					{ type: "Percent", value: 0.175 },
-					{ type: "Integer", value: 30 },
 				],
 				"5": [
 					{ type: "Percent", value: 0.4 },
 					{ type: "Percent", value: 0.4 },
-					{ type: "Percent", value: 0.4 },
-					{ type: "Integer", value: 15 },
 					{ type: "Percent", value: 0.2 },
-					{ type: "Integer", value: 30 },
 				],
 			},
 		},
@@ -1069,30 +899,15 @@ const allArcs: Record<string, Arc> = {
 		ascensionMaterialSet1: ascLiquidDreamSet,
 		ascensionMaterialSet2: ascWhispersSet,
 		effect: {
-			name: "The Cat's Wish",
+			name: "Mammon",
 			description:
-				"Increases ATK by <dn>{0}</>.\nAfter the wearer casts an Ultimate, increases the wearer's Ice DMG by <dn>{1}</> for <dn>{2}</>s. Effect does not stack.",
+				"Increases Cosmos DMG by <dn>{1}</> for every <dn>100000</> Fons the wearer holds, up to <dn>10</> stacks.",
 			values: {
-				"1": [
-					{ type: "Percent", value: 100000 },
-					{ type: "Percent", value: 0.025 },
-				],
-				"2": [
-					{ type: "Percent", value: 100000 },
-					{ type: "Percent", value: 0.03 },
-				],
-				"3": [
-					{ type: "Percent", value: 100000 },
-					{ type: "Percent", value: 0.035 },
-				],
-				"4": [
-					{ type: "Percent", value: 100000 },
-					{ type: "Percent", value: 0.04 },
-				],
-				"5": [
-					{ type: "Percent", value: 100000 },
-					{ type: "Percent", value: 0.045 },
-				],
+				"1": [{ type: "Percent", value: 0.025 }],
+				"2": [{ type: "Percent", value: 0.03 }],
+				"3": [{ type: "Percent", value: 0.035 }],
+				"4": [{ type: "Percent", value: 0.04 }],
+				"5": [{ type: "Percent", value: 0.045 }],
 			},
 		},
 	},
@@ -1113,42 +928,32 @@ const allArcs: Record<string, Arc> = {
 		ascensionMaterialSet1: ascLiquidDreamSet,
 		ascensionMaterialSet2: ascDelusionsSet,
 		effect: {
-			name: "Youthful Sigh",
+			name: '"Black Tome"',
 			description:
-				"Increases ATK by <dn>{0}</>.\nAfter the wearer uses a Support Skill, increases the wearer's damage by <dn>{1}</> for <dn>{2}</>s. Effect does not stack.",
+				"Increases Break Intensity by <dn>{0}</>.\nSeals Arc: Black Tome with two chains by default. Unleashes 1 chain each time any character on the team casts a Support Skill. Makes Arc: Black Tome available when all two chains are unleashed.\nArc: Black Tome — Summons the Black Tome for <dn>20</>s. Designates an enemy every <dn>5</>s. Increases the wearer's Chaos DMG dealt to designated enemies enemies by <dn>{1}</>. Deals Chaos DMG equal to <dn>{2}</> of the wearer's ATK to designated enemies when they take Break Damage.",
 			values: {
 				"1": [
 					{ type: "Integer", value: 60 },
-					{ type: "Integer", value: 20 },
-					{ type: "Integer", value: 5 },
 					{ type: "Percent", value: 0.2 },
 					{ type: "Percent", value: 2 },
 				],
 				"2": [
 					{ type: "Integer", value: 67 },
-					{ type: "Integer", value: 20 },
-					{ type: "Integer", value: 5 },
 					{ type: "Percent", value: 0.24 },
 					{ type: "Percent", value: 2.3 },
 				],
 				"3": [
 					{ type: "Integer", value: 74 },
-					{ type: "Integer", value: 20 },
-					{ type: "Integer", value: 5 },
 					{ type: "Percent", value: 0.28 },
 					{ type: "Percent", value: 2.6 },
 				],
 				"4": [
 					{ type: "Integer", value: 81 },
-					{ type: "Integer", value: 20 },
-					{ type: "Integer", value: 5 },
 					{ type: "Percent", value: 0.32 },
 					{ type: "Percent", value: 2.9 },
 				],
 				"5": [
 					{ type: "Integer", value: 88 },
-					{ type: "Integer", value: 20 },
-					{ type: "Integer", value: 5 },
 					{ type: "Percent", value: 0.36 },
 					{ type: "Percent", value: 3.2 },
 				],
@@ -1171,42 +976,37 @@ const allArcs: Record<string, Arc> = {
 		ascensionMaterialSet1: ascMuiscSet,
 		ascensionMaterialSet2: ascNumeralSet,
 		effect: {
-			name: "Screaming Rave",
+			name: "Beat King",
 			description:
-				"Increases the wearer's damage by <dn>{0}</>.\nIncreases the wearer's DMG dealt to enemies with <dn>50%</> or less HP by <dn>{1}</> for <dn>{2}</>s after the wearer casts an Ultimate. Effect does not stack.",
+				"Increases the active character's ATK by <dn>{0}</> while the wearer is off-field, and increases the active character's ATK by <dn>{1}</> when the wearer deals damage, up to <dn>4</> stacks and triggering at most <dn>once</> every <dn>2</>s. Resets the effect when the wearer becomes the active character.\nIncreases Psyche DMG by <dn>{2}</> while the wearer is the active character, and increases Psyche DMG by <dn>{3}</> when dealing Psyche DMG with a Basic Attack, up to <dn>10</> stacks. Triggers at most once every <dn>0.3</>s. Resets the effect when switching characters.",
 			values: {
 				"1": [
 					{ type: "Percent", value: 0.1 },
 					{ type: "Percent", value: 0.02 },
-					{ type: "Integer", value: 2 },
 					{ type: "Percent", value: 0.12 },
 					{ type: "Percent", value: 0.02 },
 				],
 				"2": [
 					{ type: "Percent", value: 0.11 },
 					{ type: "Percent", value: 0.023 },
-					{ type: "Integer", value: 2 },
 					{ type: "Percent", value: 0.14 },
 					{ type: "Percent", value: 0.023 },
 				],
 				"3": [
 					{ type: "Percent", value: 0.12 },
 					{ type: "Percent", value: 0.026 },
-					{ type: "Integer", value: 2 },
 					{ type: "Percent", value: 0.16 },
 					{ type: "Percent", value: 0.026 },
 				],
 				"4": [
 					{ type: "Percent", value: 0.13 },
 					{ type: "Percent", value: 0.029 },
-					{ type: "Integer", value: 2 },
 					{ type: "Percent", value: 0.18 },
 					{ type: "Percent", value: 0.029 },
 				],
 				"5": [
 					{ type: "Percent", value: 0.14 },
 					{ type: "Percent", value: 0.032 },
-					{ type: "Integer", value: 2 },
 					{ type: "Percent", value: 0.2 },
 					{ type: "Percent", value: 0.032 },
 				],
@@ -1232,42 +1032,27 @@ const allArcs: Record<string, Arc> = {
 		effect: {
 			name: "Ready-Ready",
 			description:
-				"Increases ATK by <dn>{0}</>.\nIncreases allies' DMG by <dn>{1}</> for <dn>{2}</>s after the wearer casts a Redirect Skill. Effect does not stack.",
+				"Increases ATK by <dn>{0}</>.\nIncreases Basic Atack and Critical Riposte damage by <dn>{0}</> for <dn>15</>s when casting a Redirect Skill or Ultimate, up to <dn>2</> stacks.\nGrants a Left Tiger Talisman when casting Redirect Skill and a Right Tiger Talisman when casting Ultimate.\nUnlocks Commander Tiger Talisman if the wearer obtains the other type of talisman within <dn>15</> of gaining one.\nArc Commander Tiger Talisman — Increases the wearer's damage to Bosses by <dn>{1}</> for <dn>10</>s.",
 			values: {
 				"1": [
 					{ type: "Percent", value: 0.15 },
-					{ type: "Percent", value: 0.15 },
-					{ type: "Integer", value: 15 },
 					{ type: "Percent", value: 0.1 },
-					{ type: "Integer", value: 10 },
 				],
 				"2": [
 					{ type: "Percent", value: 0.1875 },
-					{ type: "Percent", value: 0.1875 },
-					{ type: "Integer", value: 15 },
 					{ type: "Percent", value: 0.125 },
-					{ type: "Integer", value: 10 },
 				],
 				"3": [
 					{ type: "Percent", value: 0.225 },
-					{ type: "Percent", value: 0.225 },
-					{ type: "Integer", value: 15 },
 					{ type: "Percent", value: 0.15 },
-					{ type: "Integer", value: 10 },
 				],
 				"4": [
 					{ type: "Percent", value: 0.2625 },
-					{ type: "Percent", value: 0.2625 },
-					{ type: "Integer", value: 15 },
 					{ type: "Percent", value: 0.175 },
-					{ type: "Integer", value: 10 },
 				],
 				"5": [
 					{ type: "Percent", value: 0.3 },
-					{ type: "Percent", value: 0.3 },
-					{ type: "Integer", value: 15 },
 					{ type: "Percent", value: 0.2 },
-					{ type: "Integer", value: 10 },
 				],
 			},
 		},
@@ -1289,44 +1074,29 @@ const allArcs: Record<string, Arc> = {
 		ascensionMaterialSet1: ascMuiscSet,
 		ascensionMaterialSet2: ascWhispersSet,
 		effect: {
-			name: "Wasted Time",
+			name: "Eclipse",
 			description:
-				"Increases the wearer's Charge Efficiency by <dn>{0}</>.\nIncreases the wearer's DMG by <dn>{1}</> for <dn>{2}</>s after dodging. Effect does not stack.",
+				"Increases the wearer's ATK by <dn>{0}</>.\nUnlocks Arc: Eclipse.\nArc: Eclipse — The wearer creates a <dn>40</>s Eclipse. During the Eclipse, each enemy defeated restores <dn>{1}</> Ultimate Energy, up to <dn>5</> times. (cooldown: <dn>300</>s).",
 			values: {
 				"1": [
 					{ type: "Percent", value: 0.3 },
-					{ type: "Integer", value: 40 },
 					{ type: "Percent", value: 6 },
-					{ type: "Integer", value: 5 },
-					{ type: "Integer", value: 300 },
 				],
 				"2": [
 					{ type: "Percent", value: 0.35 },
-					{ type: "Integer", value: 40 },
 					{ type: "Percent", value: 7 },
-					{ type: "Integer", value: 5 },
-					{ type: "Integer", value: 300 },
 				],
 				"3": [
 					{ type: "Percent", value: 0.4 },
-					{ type: "Integer", value: 40 },
 					{ type: "Percent", value: 8 },
-					{ type: "Integer", value: 5 },
-					{ type: "Integer", value: 300 },
 				],
 				"4": [
 					{ type: "Percent", value: 0.45 },
-					{ type: "Integer", value: 40 },
 					{ type: "Percent", value: 9 },
-					{ type: "Integer", value: 5 },
-					{ type: "Integer", value: 300 },
 				],
 				"5": [
 					{ type: "Percent", value: 0.5 },
-					{ type: "Integer", value: 40 },
 					{ type: "Percent", value: 10 },
-					{ type: "Integer", value: 5 },
-					{ type: "Integer", value: 300 },
 				],
 			},
 		},
@@ -1348,47 +1118,32 @@ const allArcs: Record<string, Arc> = {
 		ascensionMaterialSet1: ascDramaCoreSet,
 		ascensionMaterialSet2: ascNumeralSet,
 		effect: {
-			name: "Camellia Society",
+			name: "Silent Garden",
 			description:
-				"Increases the wearer's CRIT Rate by <dn>{0}</>.\nIncreases the wearer's ATK by <dn>{1}</> for <dn>{2}</>s after dealing DoT. Effect does not stack.",
+				"Increases the wearer's CRIT DMG by <dn>{0}</> for <dn>5</>s when the wearer's HP is reduced without taking damage, up to <dn>4</> stacks.\nUnlocks Arc: Silent Garden.\nConsumes <dn>5.00%</> of current HP and randomly performs one of the following attakcs (CD <dn>25</>s) in Arc: Silent Garden:\nHarsh Rebuke: Rains merciless rebukes like leaves in a storm, dealing <dn>5</> instances of Incantation DMG of <dn>{1}</> ATK.\nIncessant Nagging: Pierces targets with sharp, cutting words like thorns, dealing <dn>6</> instances of Incantation DMG of <dn>{3}</> ATK; the final instance deals double damage.",
 			values: {
 				"1": [
 					{ type: "Percent", value: 0.12 },
-					{ type: "Integer", value: 5 },
-					{ type: "Percent", value: 0.05 },
-					{ type: "Integer", value: 25 },
 					{ type: "Percent", value: 0.24 },
 					{ type: "Percent", value: 0.18 },
 				],
 				"2": [
 					{ type: "Percent", value: 0.14 },
-					{ type: "Integer", value: 5 },
-					{ type: "Percent", value: 0.05 },
-					{ type: "Integer", value: 25 },
 					{ type: "Percent", value: 0.28 },
 					{ type: "Percent", value: 0.21 },
 				],
 				"3": [
 					{ type: "Percent", value: 0.16 },
-					{ type: "Integer", value: 5 },
-					{ type: "Percent", value: 0.05 },
-					{ type: "Integer", value: 25 },
 					{ type: "Percent", value: 0.32 },
 					{ type: "Percent", value: 0.24 },
 				],
 				"4": [
 					{ type: "Percent", value: 0.18 },
-					{ type: "Integer", value: 5 },
-					{ type: "Percent", value: 0.05 },
-					{ type: "Integer", value: 25 },
 					{ type: "Percent", value: 0.36 },
 					{ type: "Percent", value: 0.27 },
 				],
 				"5": [
 					{ type: "Percent", value: 0.2 },
-					{ type: "Integer", value: 5 },
-					{ type: "Percent", value: 0.05 },
-					{ type: "Integer", value: 25 },
 					{ type: "Percent", value: 0.4 },
 					{ type: "Percent", value: 0.3 },
 				],
@@ -1412,38 +1167,33 @@ const allArcs: Record<string, Arc> = {
 		ascensionMaterialSet1: ascColdDessertSet,
 		ascensionMaterialSet2: ascNumeralSet,
 		effect: {
-			name: "Good Boy's Adventure",
+			name: "Morphix",
 			description:
-				"Increases ATK by <dn>{0}</>.\nIncreases the wearer's DMG by <dn>{1}</> for <dn>{2}</>s after casting an Ultimate. Effect does not stack.",
+				"Increases Charge Efficiency by <dn>{0}</>. Increases Team ATK by <dn>{1}</> for <dn>20</>s after the wearer casts an Ultimate. Increases Team ATK by an additional <dn>{2}</> if enemies are controlled by the Ultimate. Effects with the same name do not stack.",
 			values: {
 				"1": [
 					{ type: "Percent", value: 0.18 },
 					{ type: "Percent", value: 0.1 },
-					{ type: "Integer", value: 20 },
 					{ type: "Percent", value: 0.06 },
 				],
 				"2": [
 					{ type: "Percent", value: 0.21 },
 					{ type: "Percent", value: 0.115 },
-					{ type: "Integer", value: 20 },
 					{ type: "Percent", value: 0.07 },
 				],
 				"3": [
 					{ type: "Percent", value: 0.24 },
 					{ type: "Percent", value: 0.13 },
-					{ type: "Integer", value: 20 },
 					{ type: "Percent", value: 0.08 },
 				],
 				"4": [
 					{ type: "Percent", value: 0.27 },
 					{ type: "Percent", value: 0.145 },
-					{ type: "Integer", value: 20 },
 					{ type: "Percent", value: 0.09 },
 				],
 				"5": [
 					{ type: "Percent", value: 0.3 },
 					{ type: "Percent", value: 0.16 },
-					{ type: "Integer", value: 20 },
 					{ type: "Percent", value: 0.1 },
 				],
 			},
@@ -1466,30 +1216,15 @@ const allArcs: Record<string, Arc> = {
 		ascensionMaterialSet1: ascDramaCoreSet,
 		ascensionMaterialSet2: ascNumeralSet,
 		effect: {
-			name: "The Twisted City",
+			name: "Cardboard Castle",
 			description:
-				"Increases HP by <dn>{0}</>.\nIncreases the wearer's DMG by <dn>{1}</> for <dn>{2}</>s after a Redirect Skill. Effect does not stack.",
+				"Increases Healing Bonus by <dn>{0}</> for <dn>10</>s after the wearer casts a Redirect Skill. Effect does not stack.",
 			values: {
-				"1": [
-					{ type: "Percent", value: 0.12 },
-					{ type: "Integer", value: 10 },
-				],
-				"2": [
-					{ type: "Percent", value: 0.14 },
-					{ type: "Integer", value: 10 },
-				],
-				"3": [
-					{ type: "Percent", value: 0.16 },
-					{ type: "Integer", value: 10 },
-				],
-				"4": [
-					{ type: "Percent", value: 0.18 },
-					{ type: "Integer", value: 10 },
-				],
-				"5": [
-					{ type: "Percent", value: 0.2 },
-					{ type: "Integer", value: 10 },
-				],
+				"1": [{ type: "Percent", value: 0.12 }],
+				"2": [{ type: "Percent", value: 0.14 }],
+				"3": [{ type: "Percent", value: 0.16 }],
+				"4": [{ type: "Percent", value: 0.18 }],
+				"5": [{ type: "Percent", value: 0.2 }],
 			},
 		},
 	},
@@ -1510,30 +1245,15 @@ const allArcs: Record<string, Arc> = {
 		ascensionMaterialSet1: ascAppleSeedSet,
 		ascensionMaterialSet2: ascDelusionsSet,
 		effect: {
-			name: "Time Bandit",
+			name: "Picky",
 			description:
-				"Increases HP by <dn>{0}</>.\nIncreases the wearer's damage by <dn>{1}</> for <dn>{2}</>s after using an Ultimate. Effect does not stack.",
+				"Increases Break Intensity by <dn>{0}</> for <dn>50</>s after the wearer uses a Redirect Skill. Effect does not stack\nAllows use of Arc — Picky. (Cooldown: <dn>50</>s).\nArc — Picky: Summons Picky to pry open all nearby lockable objects.",
 			values: {
-				"1": [
-					{ type: "Integer", value: 90 },
-					{ type: "Integer", value: 50 },
-				],
-				"2": [
-					{ type: "Integer", value: 108 },
-					{ type: "Integer", value: 50 },
-				],
-				"3": [
-					{ type: "Integer", value: 126 },
-					{ type: "Integer", value: 50 },
-				],
-				"4": [
-					{ type: "Integer", value: 144 },
-					{ type: "Integer", value: 50 },
-				],
-				"5": [
-					{ type: "Integer", value: 162 },
-					{ type: "Integer", value: 50 },
-				],
+				"1": [{ type: "Integer", value: 90 }],
+				"2": [{ type: "Integer", value: 108 }],
+				"3": [{ type: "Integer", value: 126 }],
+				"4": [{ type: "Integer", value: 144 }],
+				"5": [{ type: "Integer", value: 162 }],
 			},
 		},
 	},
@@ -1553,9 +1273,9 @@ const allArcs: Record<string, Arc> = {
 		ascensionMaterialSet1: ascDramaCoreSet,
 		ascensionMaterialSet2: ascSilhouetteSet,
 		effect: {
-			name: "Fool's Spring",
+			name: "Solifugae Vita",
 			description:
-				"Increases the wearer's DEF by <dn>{0}</>.\nIncreases the wearer's damage by <dn>{1}</> for <dn>{2}</>s after taking damage. Effect does not stack.",
+				"Increases ATK by <dn>{0}</> while the wearer has a Shield",
 			values: {
 				"1": [{ type: "Percent", value: 0.18 }],
 				"2": [{ type: "Percent", value: 0.21 }],
@@ -1582,35 +1302,15 @@ const allArcs: Record<string, Arc> = {
 		ascensionMaterialSet1: ascLiquidDreamSet,
 		ascensionMaterialSet2: ascWhispersSet,
 		effect: {
-			name: "A Time Will Come",
+			name: "Tidal Ascension",
 			description:
-				"Increases the wearer's CRIT Rate by <dn>{0}</>.\nIncreases the wearer's damage by <dn>{1}</> for <dn>{2}</>s after dealing damage. Effect does not stack.",
+				"Grants the wearer <dn>{0}</> ATK, <dn>{0}</> DEF, and <dn>{0}</> HP when the team has at least <dn>3</> different Esper Types.",
 			values: {
-				"1": [
-					{ type: "Percent", value: 0.1 },
-					{ type: "Percent", value: 0.1 },
-					{ type: "Percent", value: 0.1 },
-				],
-				"2": [
-					{ type: "Percent", value: 0.12 },
-					{ type: "Percent", value: 0.12 },
-					{ type: "Percent", value: 0.12 },
-				],
-				"3": [
-					{ type: "Percent", value: 0.14 },
-					{ type: "Percent", value: 0.14 },
-					{ type: "Percent", value: 0.14 },
-				],
-				"4": [
-					{ type: "Percent", value: 0.16 },
-					{ type: "Percent", value: 0.16 },
-					{ type: "Percent", value: 0.16 },
-				],
-				"5": [
-					{ type: "Percent", value: 0.18 },
-					{ type: "Percent", value: 0.18 },
-					{ type: "Percent", value: 0.18 },
-				],
+				"1": [{ type: "Percent", value: 0.1 }],
+				"2": [{ type: "Percent", value: 0.12 }],
+				"3": [{ type: "Percent", value: 0.14 }],
+				"4": [{ type: "Percent", value: 0.16 }],
+				"5": [{ type: "Percent", value: 0.18 }],
 			},
 		},
 	},
@@ -1631,9 +1331,9 @@ const allArcs: Record<string, Arc> = {
 		ascensionMaterialSet1: ascLiquidDreamSet,
 		ascensionMaterialSet2: ascDelusionsSet,
 		effect: {
-			name: "Drawn Blade",
+			name: "Crimson Hexblade",
 			description:
-				"Increases ATK by <dn>{0}</>.\nIncreases the wearer's damage by <dn>{1}</> for <dn>{2}</>s after using a Support Skill. Effect does not stack.",
+				"Deals additional Incantation DMG equal to <dn>{0}</> of ATK when the wearer triggers a Parry Attack.",
 			values: {
 				"1": [{ type: "Percent", value: 2 }],
 				"2": [{ type: "Percent", value: 2.3 }],
@@ -1660,34 +1360,29 @@ const allArcs: Record<string, Arc> = {
 		ascensionMaterialSet1: ascAppleSeedSet,
 		ascensionMaterialSet2: ascDelusionsSet,
 		effect: {
-			name: "Heavy Heart",
+			name: "Spider Knowledge Collector",
 			description:
-				"Increases the wearer's Break Effect by <dn>{0}</>.\nIncreases the wearer's damage by <dn>{1}</> for <dn>{2}</>s after breaking an enemy. Effect does not stack.",
+				"Grants the wearer <dn>1</> stack of Spider Knowledge when dealing damage with Basic Attacks, up to <dn>8</> stacks (up to 1 stack every <dn>0.5</>s). All stakcks are consumed when casting Ultimate. Increases the entire teams's ATK by <dn>{0}</> for <dn>10</>s <dn>per</> stack consumed. Increases ATK by an additional <dn>{1}</> when <dn>8</> stacks are consumed.",
 			values: {
 				"1": [
 					{ type: "Percent", value: 0.01 },
 					{ type: "Percent", value: 0.02 },
-					{ type: "Integer", value: 10 },
 				],
 				"2": [
 					{ type: "Percent", value: 0.0115 },
 					{ type: "Percent", value: 0.023 },
-					{ type: "Integer", value: 10 },
 				],
 				"3": [
 					{ type: "Percent", value: 0.013 },
 					{ type: "Percent", value: 0.026 },
-					{ type: "Integer", value: 10 },
 				],
 				"4": [
 					{ type: "Percent", value: 0.0145 },
 					{ type: "Percent", value: 0.029 },
-					{ type: "Integer", value: 10 },
 				],
 				"5": [
 					{ type: "Percent", value: 0.016 },
 					{ type: "Percent", value: 0.032 },
-					{ type: "Integer", value: 10 },
 				],
 			},
 		},
@@ -1708,9 +1403,9 @@ const allArcs: Record<string, Arc> = {
 		ascensionMaterialSet1: ascColdDessertSet,
 		ascensionMaterialSet2: ascSilhouetteSet,
 		effect: {
-			name: "Clear Skies",
+			name: "Paper Squadron",
 			description:
-				"Increases ATK by <dn>{0}</>.\nIncreases the wearer's damage by <dn>{1}</> for <dn>{2}</>s after using an Ultimate. Effect does not stack.",
+				"Increases Anima DMG dealt by the wearer's Redirect Skill and Ultimate by <dn>{1}</>.",
 			values: {
 				"1": [{ type: "Percent", value: 0.2 }],
 				"2": [{ type: "Percent", value: 0.2375 }],
@@ -1736,35 +1431,15 @@ const allArcs: Record<string, Arc> = {
 		ascensionMaterialSet1: ascColdDessertSet,
 		ascensionMaterialSet2: ascDelusionsSet,
 		effect: {
-			name: "Watch Your Heads",
+			name: "Ghostly Kite",
 			description:
-				"Increases the wearer's CRIT DMG by <dn>{0}</>.\nIncreases the wearer's damage by <dn>{1}</> for <dn>{2}</>s after taking damage. Effect does not stack.",
+				"Increases ATK by <dn>{0}</> and Lakshana DMG to targets affected by Remora and Stain <dn>{0}</> for <dn>15</>s after the wearer casts a Redirect Skill. Effect does not stack.",
 			values: {
-				"1": [
-					{ type: "Percent", value: 0.1 },
-					{ type: "Percent", value: 0.1 },
-					{ type: "Integer", value: 15 },
-				],
-				"2": [
-					{ type: "Percent", value: 0.12 },
-					{ type: "Percent", value: 0.12 },
-					{ type: "Integer", value: 15 },
-				],
-				"3": [
-					{ type: "Percent", value: 0.14 },
-					{ type: "Percent", value: 0.14 },
-					{ type: "Integer", value: 15 },
-				],
-				"4": [
-					{ type: "Percent", value: 0.16 },
-					{ type: "Percent", value: 0.16 },
-					{ type: "Integer", value: 15 },
-				],
-				"5": [
-					{ type: "Percent", value: 0.18 },
-					{ type: "Percent", value: 0.18 },
-					{ type: "Integer", value: 15 },
-				],
+				"1": [{ type: "Percent", value: 0.1 }],
+				"2": [{ type: "Percent", value: 0.12 }],
+				"3": [{ type: "Percent", value: 0.14 }],
+				"4": [{ type: "Percent", value: 0.16 }],
+				"5": [{ type: "Percent", value: 0.18 }],
 			},
 		},
 	},
@@ -1785,9 +1460,9 @@ const allArcs: Record<string, Arc> = {
 		ascensionMaterialSet1: ascColdDessertSet,
 		ascensionMaterialSet2: ascNumeralSet,
 		effect: {
-			name: "Great Thief",
+			name: "Danzaburou",
 			description:
-				"Increases the wearer's Break Effect by <dn>{0}</>.\nIncreases the wearer's damage by <dn>{1}</> for <dn>{2}</>s after using a Redirect Skill. Effect does not stack.",
+				"Increases Break Intensity by <dn>{0}</> for all characters of the same Esper Type as the wearer (including the wearer) when the team has <dn>3</> or more such characters. This effect does not stack.",
 			values: {
 				"1": [{ type: "Integer", value: 70 }],
 				"2": [{ type: "Integer", value: 84 }],
@@ -1814,35 +1489,15 @@ const allArcs: Record<string, Arc> = {
 		ascensionMaterialSet1: ascMuiscSet,
 		ascensionMaterialSet2: ascNumeralSet,
 		effect: {
-			name: "The Good, The Bad, The Bitter",
+			name: '"Bittercake"',
 			description:
-				"Increases HP by <dn>{0}</>.\nIncreases the wearer's damage by <dn>{1}</> for <dn>{2}</>s after using a Support Skill. Effect does not stack.",
+				"Increases wearer's DEF by <dn>{0}</> for <dn>10</>s when taking damage. Triggers at most once every <dn>20</>s.",
 			values: {
-				"1": [
-					{ type: "Percent", value: 0.26 },
-					{ type: "Integer", value: 10 },
-					{ type: "Integer", value: 20 },
-				],
-				"2": [
-					{ type: "Percent", value: 0.31 },
-					{ type: "Integer", value: 10 },
-					{ type: "Integer", value: 20 },
-				],
-				"3": [
-					{ type: "Percent", value: 0.36 },
-					{ type: "Integer", value: 10 },
-					{ type: "Integer", value: 20 },
-				],
-				"4": [
-					{ type: "Percent", value: 0.41 },
-					{ type: "Integer", value: 10 },
-					{ type: "Integer", value: 20 },
-				],
-				"5": [
-					{ type: "Percent", value: 0.46 },
-					{ type: "Integer", value: 10 },
-					{ type: "Integer", value: 20 },
-				],
+				"1": [{ type: "Percent", value: 0.26 }],
+				"2": [{ type: "Percent", value: 0.31 }],
+				"3": [{ type: "Percent", value: 0.36 }],
+				"4": [{ type: "Percent", value: 0.41 }],
+				"5": [{ type: "Percent", value: 0.46 }],
 			},
 		},
 	},
@@ -1863,30 +1518,15 @@ const allArcs: Record<string, Arc> = {
 		ascensionMaterialSet1: ascMuiscSet,
 		ascensionMaterialSet2: ascSilhouetteSet,
 		effect: {
-			name: "Mind Royale",
+			name: "Inspiration Terminator",
 			description:
-				"Increases the wearer's Break Effect by <dn>{0}</>.\nIncreases the wearer's damage by <dn>{1}</> for <dn>{2}</>s after using a Redirect Skill. Effect does not stack.",
+				"Increases the wearer <dn>10</> Ultimate Energy when casting a Redirect Skill. Triggers up to once every <dn>20s</>",
 			values: {
-				"1": [
-					{ type: "Percent", value: 0.1 },
-					{ type: "Integer", value: 20 },
-				],
-				"2": [
-					{ type: "Percent", value: 0.12 },
-					{ type: "Integer", value: 20 },
-				],
-				"3": [
-					{ type: "Percent", value: 0.14 },
-					{ type: "Integer", value: 20 },
-				],
-				"4": [
-					{ type: "Percent", value: 0.16 },
-					{ type: "Integer", value: 20 },
-				],
-				"5": [
-					{ type: "Percent", value: 0.18 },
-					{ type: "Integer", value: 20 },
-				],
+				"1": [{ type: "Percent", value: 0.1 }],
+				"2": [{ type: "Percent", value: 0.12 }],
+				"3": [{ type: "Percent", value: 0.14 }],
+				"4": [{ type: "Percent", value: 0.16 }],
+				"5": [{ type: "Percent", value: 0.18 }],
 			},
 		},
 	},
@@ -1909,28 +1549,13 @@ const allArcs: Record<string, Arc> = {
 		effect: {
 			name: "Oraora!",
 			description:
-				"Increases ATK by <dn>{0}</>.\nIncreases the wearer's damage by <dn>{1}</> for <dn>{2}</>s after using a Redirect Skill. Effect does not stack.",
+				"Increases the wearer's Basic Attack DMG by <dn>{0}</> for <dn>10</>s after each Basic Attack, upt to <dn>10</> stacks. Each stack's duration is calculated independently, and is not reset when new stacks are gained.",
 			values: {
-				"1": [
-					{ type: "Percent", value: 0.02 },
-					{ type: "Integer", value: 10 },
-				],
-				"2": [
-					{ type: "Percent", value: 0.024 },
-					{ type: "Integer", value: 10 },
-				],
-				"3": [
-					{ type: "Percent", value: 0.028 },
-					{ type: "Integer", value: 10 },
-				],
-				"4": [
-					{ type: "Percent", value: 0.032 },
-					{ type: "Integer", value: 10 },
-				],
-				"5": [
-					{ type: "Percent", value: 0.036 },
-					{ type: "Integer", value: 10 },
-				],
+				"1": [{ type: "Percent", value: 0.02 }],
+				"2": [{ type: "Percent", value: 0.024 }],
+				"3": [{ type: "Percent", value: 0.028 }],
+				"4": [{ type: "Percent", value: 0.032 }],
+				"5": [{ type: "Percent", value: 0.036 }],
 			},
 		},
 	},
@@ -1951,30 +1576,15 @@ const allArcs: Record<string, Arc> = {
 		ascensionMaterialSet1: ascAppleSeedSet,
 		ascensionMaterialSet2: ascWhispersSet,
 		effect: {
-			name: "The Forgotten",
+			name: "Picture Frame",
 			description:
-				"Increases HP by <dn>{0}</>.\nIncreases the wearer's damage by <dn>{1}</> for <dn>{2}</>s after taking damage. Effect does not stack.",
+				"Increases ATK by <dn>{0}</> when the wearer's HP is above 50%; increases DEF by <dn>{0}</> when HP is below 50%.",
 			values: {
-				"1": [
-					{ type: "Percent", value: 0.2 },
-					{ type: "Percent", value: 0.2 },
-				],
-				"2": [
-					{ type: "Percent", value: 0.24 },
-					{ type: "Percent", value: 0.24 },
-				],
-				"3": [
-					{ type: "Percent", value: 0.28 },
-					{ type: "Percent", value: 0.28 },
-				],
-				"4": [
-					{ type: "Percent", value: 0.32 },
-					{ type: "Percent", value: 0.32 },
-				],
-				"5": [
-					{ type: "Percent", value: 0.36 },
-					{ type: "Percent", value: 0.36 },
-				],
+				"1": [{ type: "Percent", value: 0.2 }],
+				"2": [{ type: "Percent", value: 0.24 }],
+				"3": [{ type: "Percent", value: 0.28 }],
+				"4": [{ type: "Percent", value: 0.32 }],
+				"5": [{ type: "Percent", value: 0.36 }],
 			},
 		},
 	},
@@ -1995,9 +1605,9 @@ const allArcs: Record<string, Arc> = {
 		ascensionMaterialSet1: ascLiquidDreamSet,
 		ascensionMaterialSet2: ascWhispersSet,
 		effect: {
-			name: "Shiny Days",
+			name: "Film - MANISH",
 			description:
-				"Increases ATK by <dn>{0}</>.\nIncreases the wearer's damage by <dn>{1}</> for <dn>{2}</>s after using a Support Skill. Effect does not stack.",
+				"Increases Break Intensity by <dn>{0}</>. Increases DMG by <dn>{1}</> against Broken units.",
 			values: {
 				"1": [
 					{ type: "Integer", value: 48 },
@@ -2038,35 +1648,15 @@ const allArcs: Record<string, Arc> = {
 		ascensionMaterialSet1: ascDramaCoreSet,
 		ascensionMaterialSet2: ascWhispersSet,
 		effect: {
-			name: "Cosmos Daze",
+			name: '"Bopp"',
 			description:
-				"Increases ATK by <dn>{0}</>.\nIncreases the wearer's damage by <dn>{1}</> for <dn>{2}</>s after using an Ultimate. Effect does not stack.",
+				"Increases wearer's damage dealt by <dn>{0}</> for <dn>10</>s after casting Support Skill. Triggers at most once every <dn>20</>s.",
 			values: {
-				"1": [
-					{ type: "Percent", value: 0.18 },
-					{ type: "Integer", value: 10 },
-					{ type: "Integer", value: 20 },
-				],
-				"2": [
-					{ type: "Percent", value: 0.21 },
-					{ type: "Integer", value: 10 },
-					{ type: "Integer", value: 20 },
-				],
-				"3": [
-					{ type: "Percent", value: 0.24 },
-					{ type: "Integer", value: 10 },
-					{ type: "Integer", value: 20 },
-				],
-				"4": [
-					{ type: "Percent", value: 0.27 },
-					{ type: "Integer", value: 10 },
-					{ type: "Integer", value: 20 },
-				],
-				"5": [
-					{ type: "Percent", value: 0.3 },
-					{ type: "Integer", value: 10 },
-					{ type: "Integer", value: 20 },
-				],
+				"1": [{ type: "Percent", value: 0.18 }],
+				"2": [{ type: "Percent", value: 0.21 }],
+				"3": [{ type: "Percent", value: 0.24 }],
+				"4": [{ type: "Percent", value: 0.27 }],
+				"5": [{ type: "Percent", value: 0.3 }],
 			},
 		},
 	},
@@ -2087,30 +1677,15 @@ const allArcs: Record<string, Arc> = {
 		ascensionMaterialSet1: ascAppleSeedSet,
 		ascensionMaterialSet2: ascNumeralSet,
 		effect: {
-			name: "Umbrella",
+			name: '"Rainman"',
 			description:
-				"Increases the wearer's DEF by <dn>{0}</>.\nIncreases the wearer's damage by <dn>{1}</> for <dn>{2}</>s after using a Redirect Skill. Effect does not stack.",
+				"Increases HP by <dn>{0}</>.\nStrengthens shields by <dn>{0}</> while the wearer's HP is above 50%.",
 			values: {
-				"1": [
-					{ type: "Percent", value: 0.1 },
-					{ type: "Percent", value: 0.1 },
-				],
-				"2": [
-					{ type: "Percent", value: 0.12 },
-					{ type: "Percent", value: 0.12 },
-				],
-				"3": [
-					{ type: "Percent", value: 0.14 },
-					{ type: "Percent", value: 0.14 },
-				],
-				"4": [
-					{ type: "Percent", value: 0.16 },
-					{ type: "Percent", value: 0.16 },
-				],
-				"5": [
-					{ type: "Percent", value: 0.18 },
-					{ type: "Percent", value: 0.18 },
-				],
+				"1": [{ type: "Percent", value: 0.1 }],
+				"2": [{ type: "Percent", value: 0.12 }],
+				"3": [{ type: "Percent", value: 0.14 }],
+				"4": [{ type: "Percent", value: 0.16 }],
+				"5": [{ type: "Percent", value: 0.18 }],
 			},
 		},
 	},
@@ -2131,9 +1706,9 @@ const allArcs: Record<string, Arc> = {
 		ascensionMaterialSet1: ascDramaCoreSet,
 		ascensionMaterialSet2: ascDelusionsSet,
 		effect: {
-			name: "Real Music",
+			name: "Haunted Record",
 			description:
-				"Increases ATK by <dn>{0}</>.\nIncreases the wearer's damage by <dn>{1}</> for <dn>{2}</>s after using a Support Skill. Effect does not stack.",
+				"Grants the wearer a <dn>{0}</> Redirect Skill DMG bonus.",
 			values: {
 				"1": [{ type: "Percent", value: 0.12 }],
 				"2": [{ type: "Percent", value: 0.13 }],
@@ -2159,9 +1734,9 @@ const allArcs: Record<string, Arc> = {
 		ascensionMaterialSet1: ascColdDessertSet,
 		ascensionMaterialSet2: ascDelusionsSet,
 		effect: {
-			name: "Us",
+			name: "Protocore",
 			description:
-				"Increases ATK by <dn>{0}</>.\nIncreases the wearer's damage by <dn>{1}</> for <dn>{2}</>s after using a Redirect Skill. Effect does not stack.",
+				"Increases the wearer's Basic Attack damage by <dn>{0}</>.",
 			values: {
 				"1": [{ type: "Percent", value: 0.12 }],
 				"2": [{ type: "Percent", value: 0.13 }],
@@ -2187,30 +1762,15 @@ const allArcs: Record<string, Arc> = {
 		ascensionMaterialSet1: ascLiquidDreamSet,
 		ascensionMaterialSet2: ascNumeralSet,
 		effect: {
-			name: "Be Happy",
+			name: "Huggy Vines",
 			description:
-				"Increases HP by <dn>{0}</>.\nIncreases the wearer's damage by <dn>{1}</> for <dn>{2}</>s after taking damage. Effect does not stack.",
+				"Restores wearer's HP by <dn>{0}</> upon defeating an enemy. Triggers at most once every <dn>20</>s.",
 			values: {
-				"1": [
-					{ type: "Percent", value: 0.12 },
-					{ type: "Integer", value: 20 },
-				],
-				"2": [
-					{ type: "Percent", value: 0.14 },
-					{ type: "Integer", value: 20 },
-				],
-				"3": [
-					{ type: "Percent", value: 0.16 },
-					{ type: "Integer", value: 20 },
-				],
-				"4": [
-					{ type: "Percent", value: 0.18 },
-					{ type: "Integer", value: 20 },
-				],
-				"5": [
-					{ type: "Percent", value: 0.2 },
-					{ type: "Integer", value: 20 },
-				],
+				"1": [{ type: "Percent", value: 0.12 }],
+				"2": [{ type: "Percent", value: 0.14 }],
+				"3": [{ type: "Percent", value: 0.16 }],
+				"4": [{ type: "Percent", value: 0.18 }],
+				"5": [{ type: "Percent", value: 0.2 }],
 			},
 		},
 	},
@@ -2231,35 +1791,15 @@ const allArcs: Record<string, Arc> = {
 		ascensionMaterialSet1: ascMuiscSet,
 		ascensionMaterialSet2: ascSilhouetteSet,
 		effect: {
-			name: "First Step to Success",
+			name: "Noros",
 			description:
-				"Increases ATK by <dn>{0}</>.\nIncreases the wearer's damage by <dn>{1}</> for <dn>{2}</>s after using a Support Skill. Effect does not stack.",
+				"Increases wearer's ATK by <dn>{0}</> for <dn>10</>s when casting a Redirect Skill. Triggers up to once every <dn>20</>s.",
 			values: {
-				"1": [
-					{ type: "Percent", value: 0.12 },
-					{ type: "Integer", value: 10 },
-					{ type: "Integer", value: 20 },
-				],
-				"2": [
-					{ type: "Percent", value: 0.13 },
-					{ type: "Integer", value: 10 },
-					{ type: "Integer", value: 20 },
-				],
-				"3": [
-					{ type: "Percent", value: 0.14 },
-					{ type: "Integer", value: 10 },
-					{ type: "Integer", value: 20 },
-				],
-				"4": [
-					{ type: "Percent", value: 0.15 },
-					{ type: "Integer", value: 10 },
-					{ type: "Integer", value: 20 },
-				],
-				"5": [
-					{ type: "Percent", value: 0.16 },
-					{ type: "Integer", value: 10 },
-					{ type: "Integer", value: 20 },
-				],
+				"1": [{ type: "Percent", value: 0.12 }],
+				"2": [{ type: "Percent", value: 0.13 }],
+				"3": [{ type: "Percent", value: 0.14 }],
+				"4": [{ type: "Percent", value: 0.15 }],
+				"5": [{ type: "Percent", value: 0.16 }],
 			},
 		},
 	},
@@ -2279,35 +1819,15 @@ const allArcs: Record<string, Arc> = {
 		ascensionMaterialSet1: ascAppleSeedSet,
 		ascensionMaterialSet2: ascWhispersSet,
 		effect: {
-			name: "Dangerous Game",
+			name: '"Decomposer"',
 			description:
-				"Increases the wearer's Break Effect by <dn>{0}</>.\nIncreases the wearer's damage by <dn>{1}</> for <dn>{2}</>s after using a Redirect Skill. Effect does not stack.",
+				"Increases the wearer's Break Intesity by <dn>{0}</> for <dn>10</>s when reducing Break. Triggers at most every <dn>20</>s.",
 			values: {
-				"1": [
-					{ type: "Integer", value: 60 },
-					{ type: "Integer", value: 10 },
-					{ type: "Integer", value: 20 },
-				],
-				"2": [
-					{ type: "Integer", value: 66 },
-					{ type: "Integer", value: 10 },
-					{ type: "Integer", value: 20 },
-				],
-				"3": [
-					{ type: "Integer", value: 72 },
-					{ type: "Integer", value: 10 },
-					{ type: "Integer", value: 20 },
-				],
-				"4": [
-					{ type: "Integer", value: 78 },
-					{ type: "Integer", value: 10 },
-					{ type: "Integer", value: 20 },
-				],
-				"5": [
-					{ type: "Integer", value: 84 },
-					{ type: "Integer", value: 10 },
-					{ type: "Integer", value: 20 },
-				],
+				"1": [{ type: "Integer", value: 60 }],
+				"2": [{ type: "Integer", value: 66 }],
+				"3": [{ type: "Integer", value: 72 }],
+				"4": [{ type: "Integer", value: 78 }],
+				"5": [{ type: "Integer", value: 84 }],
 			},
 		},
 	},

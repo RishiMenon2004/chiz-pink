@@ -10,7 +10,7 @@ import {
 } from "../items/materials"
 
 export const zankou: Character = {
-	isPreview: true,
+	isFeatured: true,
 	id: "zankou",
 	imageSrc: "zankou.webp",
 	name: "Zankou",
@@ -28,26 +28,29 @@ export const zankou: Character = {
 			description: [
 				{
 					section: "Basic Attack: Wildfire",
-					description:
-						"While in Reality state, Zankou swings her Cursed Blade for up to five consecutive attacks, dealing incantation DMG.",
-				},
-				{
-					section: "Basic Attack: Flickering Shadow",
-					description: "While in Reality state, Deals Incantation DMG.",
+					description: "Wields her blade and performs up to 5 consecutive attacks while in Reality Form, dealing Incantation DMG. Pulls in targets within range on the 5th instance of Basic Attack. Gains the Hunt buff for the attack's duration."
 				},
 				{
 					section: "Basic Attack: Nightmare Waltz",
 					description:
-						"While in Illusion state, performs up to four consecutive attacks, applying 1 stack of Heartwrench to the target on hit. Every hit of Nightmare Waltz spreads the DoT effect on the target to other targets withing range.",
+						"Wields her blade to pull the silk and perfroms up to 4 consecutive attacks while in Illusion form, dealing Incantation DMG and inflicting 1 stack of Heartwrench on hit. Pulls in targets within range on the 3rd instance of Basic Attack. Each Nightmare Waltz attack spreads up to 4 DoT effects from the target to all enemies in the area, including the original target. Gains the Delusion buff for the attack's duration. The DMG dealt by Nightmare Waltz counts as Follow-up Attack DMG.",
+				},
+				{
+					section: "Basic Attack: Flickering Shadow",
+					description: "Hold Basic Attack during the 1st or 2nd stage of Wildfire while in Reality Form to trigger Flickering Shadow, dealing Incantation DMG.",
 				},
 				{
 					section: "Basic Attack: Moonfall",
 					description:
-						"While in Illusion state, deals Incantation DMG. Applies 1 stack of Heartwrench to the target on hit. DMG dealt by Basic Attack: Moonfall counts as follow-up attack DMG.",
+						"Hold Basic Attack during the 1st or 2nd stage of Nightmare Waltz while in Illusion Form to trigger Moonfall, dealing Incantation DMG. Inflicts 1 stack of Heartwrench on hit. The DMG dealt by Moonfall counts as Follow-up Attack DMG.",
+				},
+				{
+					section: "Basic Attack: Broken Twigs",
+					description: "Press Basic Attack while airborne to plunge, dealing 1 instance of Incantation DMG in an area upon impact. Increases DMG based on fall height by up to 100%."
 				},
 				{
 					section: "Critical Riposte: Voidstep",
-					description: "Deals Incantation DMG.",
+					description: "Press Basic Attack after a Critical Dodge to deal Incantation DMG and reduce Break.",
 				},
 			],
 			maxLvl: 10,
@@ -58,12 +61,12 @@ export const zankou: Character = {
 				{
 					section: "Sanguine Dash",
 					description:
-						"Deals Incantation DMG, and switches into <kw>Illusion</>. If cast while the skill icon is lit up, applies a Heartwrench DoT effect to the target on hit, and deals heavy Break DMG to targets over a wide area.",
+						"Switches to Illusion Form after successfully castinh Sanguine Dash while in Reality Form. Enables an enhanced Sanguine Dash for a set time after the 4th or 5th stage of Wildfire, Flickering Shadow or Voidstep. Inflicts Heartwrench on targets hit and triggers Disarray, reducing massive Break of enemies in a large area. Delays removal of the Reality Form Hunt effect when switching to Illusion Form with Sanguine Dash. Prevents the form switch if the skill is interrupted before it is complete.",
 				},
 				{
 					section: "Soulcross",
 					description:
-						"Deals Incantation DMG, and switches into <kw>Reality</>. If cast while the skill icon is lit up, deals massive DMG to targets across a wide area, plus activates Zankou's Ultimate: Bloodfeast Reverie",
+						"Switches to Reality Form after successfully casting Soulcross while in Illusion Form. Enables an enhanced Soulcross shortly before Illusion Form ends. Deals massive DMG to enemies in a large area, inflicts Heartwrench on targets hit, and triggers Oblivion, activating Bloodfeast Reverie.\nGrants Illusion Form and returns Zankou to Reality Form when Soulcross or Bloodfeast Reverie is successfully cast, when its duration expires, or when Zankou leaves the field. Delays the removal of the Illusion Form Delusion effect when switching to Reality Form with Soulcross. Counts all DMG dealt by Soulcross and it's enhanced version as Follow-up Attack DMG. Prevents Form switch if the skill is interrupted before it is complete.",
 				},
 			],
 			maxLvl: 10,
@@ -73,77 +76,77 @@ export const zankou: Character = {
 			description: [
 				{
 					description:
-						"Press to unleash Ultimate: Inferno Flamenco.\nIf Bloodfeast Reverie is active, Zankou leads with Bloodfeast Reverie instead, applying multiple stacks of Vile Ash. After successfully casting Ultimate: Bloodfeast Reverie, press again within a set window to unlead an empowered Ultimate: Inferno Flamenco at no Ultimate Energy Cost.",
+						"Press to cast the Ultimate when Ultimate Energy is full. Has 2 Ultimates: Inferno Flamenco and Bloodfeast Reverie.\nCasts Inferno Flamenco if Bloodfeast Reverie is inactive\nPrioritizes Bloodfeast Reverie if it is active. Counts DMG dealt by Bloodfeast Reverie as Follow-up Attack DMG and inflicts Vile Ash on enemies in a large area. Enables one enhanced Inferno Flamenco to be cast without consuming Ultimate Energy within a limited time after successfully casting Bloodfeast Reverie. Removes this cast opportunity when the time limit expires.",
 				},
 			],
 			maxLvl: 10,
 		},
 		support: {
-			name: "TBD",
+			name: "Stoked Flame",
 			description: [
 				{
 					description:
-						"W-we're waiting on more official information. We're sorry for the inconvenience",
+						"Wields her blode to attack, dealing 1 instance of Incantaion DMG.",
 				},
 			],
 			maxLvl: 10,
 		},
 		passive1: {
-			name: "TBD",
+			name: "Silent Sunset",
 			description: [
 				{
 					description:
-						"W-we're waiting on more official information. We're sorry for the inconvenience",
+						"<sh>Scorch Enhancement:</> Scorch can be stacked up to 3 times. For each DoT effect allies inflict on target afflicted with Scorch, Zankou inflicts 1 stack of Scorch on them, replacing the DMG, type, and duration of Existing Scorch on the target with those of the newly inflcited effect. Scorch inflicted by this effect cannot trigger it again.",
 				},
 			],
 			maxLvl: 1,
 		},
 		passive2: {
-			name: "TBD",
+			name: "Crimson Reverie",
 			description: [
 				{
 					description:
-						"W-we're waiting on more official information. We're sorry for the inconvenience",
+						"Sets Sankou's Cycle Energy to 100 upon entering battle. Cooldown: 30s. Triggers only once per battle. Increases Zankou's Cycle Intensity by 100 while she is on the team.",
 				},
 			],
 			maxLvl: 1,
 		},
 		lifeSkill1: {
-			name: "TBD",
+			name: "Competitive Edge",
 			description: [
 				{
 					description:
-						"<sh>Level 1:</> Increases the Server attribute of all characters by <dn>10</>.",
+						"<sh>Level 1:</> Increases all Volley Star Characters' Serve by <dn>10</>.",
 				},
 				{
 					description:
-						"<sh>Level 2:</> Gains an additional <dn>10%</> from Volleyball towards Tycoon Incentive Fund.",
+						"<sh>Level 2:</> Increases Tycoon Incentive Fund earnings from Volley Star Weekly Matches by <dn>10%</>. (Up to the Tycoon Incentive Fund limit.)",
 				},
 				{
 					description:
-						"<sh>Level 3:</> Increases the Spiking attribute of all characters by <dn>10</>.",
+						"<sh>Level 3:</> Increases all Volley Star Characters' Spike by <dn>10</>.",
 				},
 				{
 					description:
-						"<sh>Level 4:</> Gains an additional <dn>10%</> from Volleyball towards Tycoon Incentive Fund.",
+						"<sh>Level 4:</> Increases Tycoon Incentive Fund earnings from Volley Star Weekly Matches by <dn>10%</>. (Up to the Tycoon Incentive Fund limit.)",
 				},
 				{
 					description:
-						"<sh>Level 5:</> Increases the Recieving attribute of all characters by <dn>10</>.",
+						"<sh>Level 5:</> Increases all Volley Star Characters' Recieve by <dn>10</>.",
 				},
 			],
 			maxLvl: 5,
 		},
 		lifeSkill2: {
-			name: "TBD",
+			name: "All In",
 			description: [
 				{
 					description:
-						"<sh>Level 1:</> In Fight Club, consumes an additional <dn>1</> City Stamina and grants corresponding rewards.",
+						"<sh>Level 1:</> Costs <dn>1</> additional City Stamina per Fight Club match to claim the corresponding rewards.",
 				},
 				{
 					description:
-						"<sh>Level 2:</> In Fight Club, consumes an additional <dn>1</> City Stamina and grants corresponding rewards.",
+						"<sh>Level 2:</> Costs <dn>1</> additional City Stamina per Fight Club match to claim the corresponding rewards.",
 				},
 			],
 			maxLvl: 2,
