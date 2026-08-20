@@ -113,6 +113,7 @@ export function CurrencyBox({ currency }: { currency: Material }) {
 	const pathname = usePathname()
 
 	const isInventory = pathname === "/inventory"
+	const showRequirementIndicator = isInventory && hasRequired && !hasAcquired
 
 	return (
 		<div
@@ -136,11 +137,11 @@ export function CurrencyBox({ currency }: { currency: Material }) {
 				loading="eager"
 			/>
 
-			{isInventory && hasRequired && !hasAcquired && (
+			{showRequirementIndicator && (
 				<div className={styles.requirementIndicator}>
-					{hasAcquired
+					{(hasAcquired
 						? requiredQuantity
-						: requiredQuantity - currencyValue}
+						: requiredQuantity - currencyValue).toLocaleString("en-US")}
 				</div>
 			)}
 
