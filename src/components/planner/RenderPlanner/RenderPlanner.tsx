@@ -61,7 +61,7 @@ export function RenderPlanner({
 	const { settings, actions: settingsActions } = useSettingsStore()
 	const router = useRouter()
 
-	const combinedEnabled = settings.appearance["use-hybrid-planner"] ?? false
+	const combinedEnabled = settings.appearance?.["use-hybrid-planner"] ?? false
 
 	//reditect to /characters if accessing /planner and disabled combined planner
 	//vice versa, redirect to /planner if accessing /characters or /arcs and enabled combined planner

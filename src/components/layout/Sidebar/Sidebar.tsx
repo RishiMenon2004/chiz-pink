@@ -7,7 +7,7 @@ import styles from "./sidebar.module.css"
 
 export function Sidebar() {
 	const { settings } = useSettingsStore()
-	const combinedEnabled = settings.appearance["use-hybrid-planner"] ?? false
+	const combinedEnabled = settings.appearance?.["use-hybrid-planner"] ?? false
 
 	return (
 		<div className={styles.sidebar}>
