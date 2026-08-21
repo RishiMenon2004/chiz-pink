@@ -26,7 +26,6 @@
 	overflow: hidden;
 
 	summary {
-		--slice-width: 75%;
 
 		position: relative;
 
@@ -46,12 +45,6 @@
 
 			border-top-right-radius: 1.625rem;
 
-			background-image: linear-gradient(
-				-116deg,
-				color-mix(in srgb, var(--warmer-pink) 90%, transparent),
-				var(--pink) var(--slice-width),
-				transparent calc(var(--slice-width) + 1px)
-			);
 			background-size: cover;
 			background-repeat: no-repeat;
 			background-position: 1rem center;
@@ -125,10 +118,6 @@
 	}
 
 	.matGroup {
-		summary {
-			--slice-width: 60%;
-		}
-
 		&:open {
 			summary {
 				&::before {
@@ -155,12 +144,6 @@
 	.page,
 	.multiMatContainer {
 		gap: 1.5rem;
-	}
-
-	.matGroup {
-		summary {
-			--slice-width: 40%;
-		}
 	}
 
 	.materialList,
