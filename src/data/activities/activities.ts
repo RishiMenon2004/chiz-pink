@@ -90,7 +90,7 @@ export const allActivities = {
 	displayCase: {
 		id: "display_case",
 		name: "Display Case Earnings",
-		description: 'Collect "Going! Going! Gone" earnings',
+		description: 'Collect "Going! Going! Gone!" earnings',
 		type: "Daily",
 	},
 	witchHouse: {
