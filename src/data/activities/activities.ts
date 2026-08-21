@@ -87,6 +87,12 @@ export const allActivities = {
 		description: "Send 10x Gifts",
 		type: "Daily",
 	},
+	displayCase: {
+		id: "display_case",
+		name: "Display Case Earnings",
+		description: 'Collect "Going! Going! Gone" earnings',
+		type: "Daily",
+	},
 	witchHouse: {
 		id: "witch_house",
 		name: "The Witch's House",
