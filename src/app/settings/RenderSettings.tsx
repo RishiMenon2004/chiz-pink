@@ -107,7 +107,11 @@ function ContentColumn({ children }: { children: ReactNode }) {
 	return <span className={styles.settingsSectionContentColumn}>{children}</span>
 }
 function Blockquote({ children }: { children: ReactNode }) {
-	return <span className={styles.settingsBlockquote}>{children}</span>
+	return (
+		<span className={`inset-control ${styles.settingsBlockquote}`}>
+			{children}
+		</span>
+	)
 }
 
 function BETATag() {
@@ -117,9 +121,11 @@ function BETATag() {
 				borderRadius: "100vh",
 				backgroundColor: "#ffa600",
 				padding: "0.25rem 0.5rem",
-				fontSize: "0.7em",
 				color: "black",
+				fontFamily: "var(--font-syne)",
+				fontSize: "0.7em",
 				fontWeight: 720,
+				fontStyle: "normal",
 				marginRight: "0.25rem",
 				marginLeft: "-0.675rem",
 				height: "fit-content",
@@ -710,7 +716,8 @@ export function RenderSettings() {
 						<Content>
 							<ContentRow>
 								<b>Account:</b>
-								<span className={styles.settingsSecret}>
+								<span
+									className={`inset-control ${styles.settingsSecret}`}>
 									{email}
 								</span>
 							</ContentRow>

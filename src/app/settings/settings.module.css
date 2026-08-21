@@ -466,10 +466,6 @@
 .settingsSecret {
 	padding: 0.25rem 1rem;
 	border-radius: 100vh;
-	box-shadow:
-		var(--shadow-dark-60) 0px -1px 2px,
-		var(--foreground) 0px 1px 1px,
-		var(--shadow-dark-50) 0 0 4px 1px inset;
 }
 
 .settingsSecret {
@@ -482,7 +478,7 @@
 	user-select: none;
 	color: transparent;
 
-	background-color: var(--pink);
+	background-color: var(--pink) !important;
 
 	transition: opacity 250ms var(--ease-in-out-back);
 	transition-property: background-color, color;
@@ -490,7 +486,7 @@
 	&:hover,
 	&:focus {
 		color: white;
-		background-color: var(--interactive-bg);
+		background-color: var(--interactive-bg) !important;
 	}
 }
 
@@ -502,7 +498,9 @@
 	border-radius: calc(1rem);
 
 	color: white;
-
+	font-family: var(--font-barlow-condensed);
+	font-style: italic;
+	
 	background-color: var(--interactive-bg);
 }
 
