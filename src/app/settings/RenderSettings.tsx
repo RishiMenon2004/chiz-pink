@@ -148,7 +148,7 @@ export function ConfigCheckbox({
 				flexWrap: "nowrap",
 			}}>
 			<input
-				className={styles.configInput}
+				className={`inset-control ${styles.configInput}`}
 				name={name}
 				type="checkbox"
 				checked={checked}
@@ -232,7 +232,7 @@ function ConfigNumberBox({
 				/>
 				<input
 					name={name}
-					className={styles.configInput}
+					className={`inset-control ${styles.configInput}`}
 					type="text"
 					pattern="[0-9]*"
 					inputMode="numeric"

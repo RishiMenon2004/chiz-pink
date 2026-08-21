@@ -40,25 +40,25 @@
 	--shadow-control:
 		var(--shadow-dark-60) 0px -1px 2px /* Embed Shadow */,
 		var(--shadow-glow-white-80) 0px 1px 1px /* Embed Highlight */,
-		var(--shadow-dark-70) 0px 1px inset; /* Inner Shadow */
+		var(--shadow-dark-30) 0px 1px 3px -1px inset; /* Inner Shadow */
+
 	--shadow-button:
-		var(--button-shadow) 0px 0px 1.5px 0 /* Button Shadow */,
 		var(--interactive-bg) 0px 0px 0px 0.175rem /* Button Slot Gap */,
 		var(--shadow-dark-60) 0px -1px 2px 0.175rem /* Button Slot Shadow */,
-		var(--foreground) 0px 1px 1px 0.175rem /* Button Slot Highlight */,
-		var(--shadow-bevel-light) 0.5px 0.5px 0.5px 0.5px inset /* Button Bevel Highlight */,
-		var(--shadow-bevel-dark) -0.5px -0.5px 0.5px 0.5px inset; /* Button Bevel Shadow */
+		var(--shadow-glow-white-80) 0px 1px 1px 0.175rem /* Button Slot Highlight */,
+		var(--shadow-bevel-dark) -0.5px -0.5px 0.5px 0.5px inset /* Button Bevel Shadow */,
+		var(--shadow-bevel-light) 0.5px 0.5px 0.5px 0.5px inset; /* Button Bevel Highlight */
+
 	--shadow-button-hover:
-		var(--button-shadow) 0px 0px 1.5px 0 /* Button Shadow */,
 		var(--interactive-bg) 0px 0px 0px 0.175rem /* Button Slot Gap */,
 		var(--shadow-dark-60) 0px -1px 2px 0.175rem /* Button Slot Shadow */,
-		var(--foreground) 0px 1px 1px 0.175rem /* Button Slot Highlight */,
-		var(--foreground) 2px 3px 5px -2px inset /* Button Bevel Highlight */,
-		var(--shadow-hover-glow) 0px -2px 10px -2px inset; /* Button Bevel Shadow */
+		var(--shadow-glow-white-80) 0px 1px 1px 0.175rem /* Button Slot Highlight */,
+		var(--shadow-hover-glow) 0px -2px 5px -2px inset /* Button Bevel Shadow */,
+		var(--shadow-glow-white-80) 2px 3px 5px -2px inset; /* Button Bevel Highlight */
+
 	--shadow-metallic-panel:
-		0px -2px 4px -2px var(--interactive-bg) inset /* Contact Shadow */,
 		0px -8px 15px -2px var(--shadow-underlight-1) inset /* Bounce light */,
-		0px -7px 20px -8px var(--interactive-bg) inset; /* Shadow */
+		0px -7px 20px -10px var(--interactive-bg) inset; /* Shadow */
 
 	--ease-in-out-back: cubic-bezier(0.68, -0.6, 0.32, 1.6);
 

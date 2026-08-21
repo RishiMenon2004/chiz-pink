@@ -16,7 +16,7 @@ export function MaterialGroup({
 	children: ReactNode
 }) {
 	return (
-		<details className={`${styles.matGroup} ${isEmpty && styles.emptyGroup}`} open={isOpen}>
+		<details className={`metallic-panel ${styles.matGroup} ${isEmpty && styles.emptyGroup}`} open={isOpen}>
 			<summary>{title}</summary>
 			{isEmpty ? emptyFalback : children}
 		</details>

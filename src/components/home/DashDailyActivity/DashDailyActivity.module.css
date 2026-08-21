@@ -14,8 +14,8 @@
 	margin-block: 1rem;
 	position: relative;
 	z-index: 0;
-	filter: drop-shadow(var(--shadow-dark-60) 0px -1px 2px)
-		drop-shadow(var(--foreground) 0px 1px 1px);
+	filter: drop-shadow(var(--shadow-dark-40) 0px -1px 1px)
+		drop-shadow(var(--shadow-glow-white-80) 0px 1px 1px);
 }
 
 .part {
