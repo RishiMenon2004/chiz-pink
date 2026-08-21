@@ -13,9 +13,18 @@ import { ConfigCheckbox } from "@/app/settings/RenderSettings"
 import pageStyles from "@/app/page.module.css"
 import styles from "./DashDailyActivity.module.css"
 
-const EMPTY_ENTRY: ChecklistEntry = { checked: 0, claimed: 0, claimedAt: null, disabled: false }
+const EMPTY_ENTRY: ChecklistEntry = {
+	checked: 0,
+	claimed: 0,
+	claimedAt: null,
+	disabled: false,
+}
 
-export function DashDailyActivity() {
+export function DashDailyActivity({
+	checklistClassname,
+}: {
+	checklistClassname?: string
+}) {
 	const dailyTasksId = getAllActivities().dailyTasks.id
 	const { checklist, actions: checklistActions } = useChecklistStore()
 	const entry = checklist.activities.daily?.[dailyTasksId] ?? EMPTY_ENTRY
@@ -78,7 +87,8 @@ export function DashDailyActivity() {
 	}
 
 	return (
-		<div className={`metallic-panel ${pageStyles.section} ${styles.section}`}>
+		<div
+			className={`metallic-panel ${pageStyles.section} ${styles.section} ${checklistClassname ?? ""}`}>
 			<div className={pageStyles.sectionTitleRow}>
 				<h2 className={pageStyles.sectionTitle}>Daily Tasks</h2>
 				<label className={pageStyles.sectionConfig}>

@@ -196,7 +196,7 @@ export const allActivities = {
 
 	pinkPawsHeist: {
 		id: "pink_paws_heist",
-		name: "Pink Paws Heist",
+		name: "Tycoon Incentive Fund",
 		description: "Collect 1 Million Fons",
 		type: "Bi-Weekly",
 	},
@@ -205,7 +205,7 @@ export const allActivities = {
 	fairExchange: {
 		id: "fair_exchange",
 		name: "Fair Exchange",
-		description: "Warp/Lost Exchange Shop Reset",
+		description: "Warp/Lost Exchange Shop",
 		type: "Monthly",
 	},
 
@@ -213,7 +213,7 @@ export const allActivities = {
 	circleBountySeasonal: {
 		id: "circle_bounty_seasonal",
 		name: "Circle Bounty: Seasonal Quest",
-		description: "Battlepass Daily Quests",
+		description: "Battlepass Version Quests",
 		type: "Seasonal",
 	},
 } satisfies Record<string, ActivityData>

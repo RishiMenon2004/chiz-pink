@@ -1,9 +1,9 @@
 "use client"
 
-import { useState } from "react"
+import { ReactNode, useState } from "react"
 import { createPortal } from "react-dom"
 
-import { ActivityData, allActivities } from "@/data/activities/activities"
+import { ActivityData, getAllActivitiesList } from "@/data/activities/activities"
 
 import { useChecklistStore } from "@/hooks"
 
@@ -61,7 +61,7 @@ function ChecklistItem({
 	)
 }
 
-function EditTasksBox() {
+export function EditTasksBox({ children }: { children: ReactNode }) {
 	return (
 		<div
 			className={`metallic-panel ${styles.editTasksBox}`}
@@ -69,16 +69,7 @@ function EditTasksBox() {
 			<div className={styles.editTasksTitle}>Edit Daily Tasks</div>
 			<div
 				className={`inset-control ${styles.checklistGrid} ${styles.editTasksList}`}>
-				<div className={styles.checklistScroll}>
-					{Object.values(allActivities)
-						.filter((activity) => activity.type === "Daily")
-						.slice(1)
-						.map((item) => {
-							return (
-								<ChecklistItem item={item} toggle key={item.id} />
-							)
-						})}
-				</div>
+				<div className={styles.checklistScroll}>{children}</div>
 			</div>
 		</div>
 	)
@@ -104,14 +95,29 @@ export function DashDailyChecklist() {
 					createPortal(
 						<ModalContainer
 							onClickOut={() => setShowEditTasksModal(false)}>
-							<EditTasksBox />
+							<EditTasksBox>
+								{getAllActivitiesList()
+									.filter(
+										(activity) => activity.type === "Daily"
+									)
+									.slice(1)
+									.map((item) => {
+										return (
+											<ChecklistItem
+												item={item}
+												toggle
+												key={item.id}
+											/>
+										)
+									})}
+							</EditTasksBox>
 						</ModalContainer>,
 						document.body
 					)}
 			</div>
 			<div className={`inset-control ${styles.checklistGrid}`}>
 				<div className={styles.checklistScroll}>
-					{Object.values(allActivities)
+					{getAllActivitiesList()
 						.filter((activity) => activity.type === "Daily")
 						.filter(
 							(activity) => !(tasks[activity.id]?.disabled ?? false)

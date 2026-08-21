@@ -1,0 +1,208 @@
+.page {
+	display: flex;
+	flex-direction: column;
+	gap: 1.5rem;
+}
+
+.activitySection {
+	display: flex;
+	flex-direction: column;
+	gap: 0.5rem;
+
+	.activityTitleRow {
+		display: flex;
+		flex-direction: row;
+		align-items: baseline;
+		margin-inline-start: 1.5rem;
+
+		gap: 0.5rem;
+	}
+
+	.activityTimer {
+		font-family: var(--font-barlow-condensed);
+		font-style: italic;
+	}
+}
+
+.checklistGrid {
+	width: 100%;
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+	gap: 1rem;
+	margin-bottom: 1rem;
+}
+
+.checklistItem {
+	background-color: var(--white);
+	border-radius: 1.5rem;
+	padding: 0.75rem 1rem 1.5rem 0.75rem;
+
+	min-height: 75px;
+
+	display: flex;
+	flex-direction: column;
+
+	user-select: none;
+	cursor: var(--pointer-cursor);
+
+	.itemTitleRow {
+		display: flex;
+		flex-direction: row;
+		gap: 0.5rem;
+	}
+
+	.itemCheckbox {
+		appearance: none;
+		width: 1.75rem;
+		height: 1.75rem;
+		aspect-ratio: 1;
+		background-color: var(--interactive-bg);
+		border-radius: 100%;
+
+		background-size: 300%;
+		background-position: center;
+		background-repeat: no-repeat;
+
+		&.checked {
+			background-color: var(--pink) !important;
+
+			transition-property: background-color, background-size;
+			transition-duration: 100ms, 200ms;
+			transition-delay: 100ms;
+			transition-timing-function: ease-out, ease-in-out;
+
+			--offset: 3px;
+			--black-outline-thickness: 0.75px;
+			--white-outline-thickness: 2px;
+			--anti-aliasing: 0.5px;
+
+			background-image: url("/button_icons/activity_checked.png");
+			background-size: 100%;
+		}
+	}
+
+	&:hover .itemCheckbox {
+		background-color: color-mix(in srgb, var(--pink), var(--interactive-bg));
+	}
+
+	.itemTitle {
+		display: inline;
+
+		color: var(--interactive-bg);
+		font-weight: 725;
+
+		text-wrap-mode: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+
+		align-self: center;
+	}
+
+	.itemDescription,
+	.itemTime {
+		color: black;
+		font-family: var(--font-barlow-condensed);
+		font-size: 1.1rem;
+		font-style: italic;
+		font-weight: 500;
+		margin-left: 2.25rem;
+	}
+
+	.itemTime {
+		opacity: 0.65;
+		margin-top: 0.25rem;
+	}
+
+	&:has(.itemTime) {
+		padding-bottom: 1rem;
+	}
+}
+
+.checklistScroll {
+	grid-template-columns: 1fr !important;
+}
+
+.checklistItems {
+	display: grid;
+	grid-template-columns: repeat(3, 1fr) !important;
+	gap: 0.5rem;
+
+	@media (max-width: 1000px) {
+		grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)) !important;
+	}
+}
+
+.listTitle {
+	grid-column: 1 / -1;
+	place-self: end start;
+
+	margin-top: 0.5rem;
+	margin-inline: 0.5rem;
+
+	font-weight: 700;
+
+	&:not(:first-child) {
+		margin-top: 1rem;
+	}
+}
+
+div.dailyActivity {
+	grid-area: unset !important;
+	grid-column: span 2 !important;
+}
+
+@media (max-width: 810px) {
+	.page {
+		padding-inline: 3rem !important;
+	}
+
+	.activitySection {
+		.activityTitleRow {
+			margin-inline-start: 0.5rem;
+		}
+	}
+
+	.checklistGrid {
+		grid-template-columns: repeat(2, 1fr);
+		gap: 0.5rem;
+	}
+
+	.checklistItem {
+		padding-right: 0.75rem;
+		padding-bottom: 1rem;
+		border-radius: 1rem;
+		gap: 0.25rem;
+		overflow: hidden;
+
+		.itemTitle {
+			font-size: 0.9rem;
+			text-wrap-mode: wrap;
+		}
+
+		.itemDescription {
+			margin-top: 0.25rem;
+		}
+
+		.itemDescription,
+		.itemTime {
+			font-size: 0.9rem;
+			margin-left: 0rem;
+		}
+	}
+
+	div.dailyActivity {
+		grid-column: 1 / -1 !important;
+	}
+}
+
+@media (max-width: 550px) {
+	.page {
+		padding-inline: 1rem !important;
+	}
+
+	.checklistItem {
+		.itemTitle {
+			font-size: 0.8rem;
+		}
+	}
+}
