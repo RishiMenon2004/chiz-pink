@@ -70,7 +70,14 @@ export const checklistActions = {
 	// Clears activities when their reset boundaries triggers it, keeping their
 	// their disabled states and records the reset boundary that triggered it,
 	// so the periodic check (see SettingsProvider) doesn't fire again until the next one.
-	resetChecklist(type: keyof ChecklistRecord["activities"], resetAt: number) {
+	resetChecklist(
+		type: keyof ChecklistRecord["activities"],
+		resetAt: number,
+		timestampKey = ("last" +
+			type.charAt(0).toUpperCase() +
+			type.slice(1) +
+			"Reset") as keyof ChecklistRecord["resetTimestamps"]
+	) {
 		if (typeof window === "undefined") return
 		if (isInitialSyncPending()) return
 
@@ -80,13 +87,12 @@ export const checklistActions = {
 			activities: { ...current.activities },
 			resetTimestamps: {
 				...current.resetTimestamps,
-				["last" + type.charAt(0).toUpperCase() + type.slice(1) + "Reset"]:
-					resetAt,
+				[timestampKey]: resetAt,
 			},
 		}
 
 		updated.activities[type] ??= {}
-		
+
 		Object.entries(current.activities[type] ?? {}).forEach(([id, task]) => {
 			updated.activities[type][id] = {
 				checked: 0,
@@ -120,13 +126,24 @@ const getSnapshot = () => {
 	const rawValue = localStorage.getItem("checklist")
 
 	if (rawValue !== lastRawValue) {
-		cachedChecklist = safeParse(rawValue, SERVER_FALLBACK, "checklist")
+		const parsed = safeParse(rawValue, SERVER_FALLBACK, "checklist")
+		cachedChecklist =
+			parsed && typeof parsed === "object"
+				? (parsed as ChecklistRecord)
+				: SERVER_FALLBACK
 
-		const hadOldKey = "lastDailyReset" in cachedChecklist
+		// Pre-resetTimestamps records kept lastDailyReset at the top level -
+		// fold it into resetTimestamps (creating it first, since old data
+		// won't have one) before the missing-key backfill below.
+		const legacy = cachedChecklist as Record<string, unknown>
+		const hadOldKey = "lastDailyReset" in legacy
 		if (hadOldKey) {
+			cachedChecklist.resetTimestamps ??= {
+				...SERVER_FALLBACK.resetTimestamps,
+			}
 			cachedChecklist.resetTimestamps.lastDailyReset =
-				(cachedChecklist as Record<string, unknown>).lastDailyReset as number
-			delete (cachedChecklist as Record<string, unknown>).lastDailyReset
+				legacy.lastDailyReset as number
+			delete legacy.lastDailyReset
 		}
 
 		cachedChecklist.resetTimestamps = {

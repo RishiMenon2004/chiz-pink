@@ -1,8 +1,5 @@
 import { SettingsRecord } from "@/types/settings"
-import {
-	SERVER_UTC_OFFSET_HOURS,
-	getServerTimestamp,
-} from "@/helpers/serverTime"
+import { SERVER_UTC_OFFSET_HOURS, getServerTimestamp } from "@/helpers/serverTime"
 import { BTRTimeline, patchTimings } from "@/data/activities/events"
 
 // Daily activities (e.g. Daily Tasks) reset every day at 5:00 AM in the
@@ -106,36 +103,26 @@ export function getBiWeeklyMondayResetBoundaries(
 }
 
 // Bi-weekly reset #2: shares the exact boundary dates used by the BTR
-// (Beyond the Rails) timeline in events.ts, rather than a computed period -
-// those dates are the source of truth and aren't guaranteed to be an exact
-// 14-day cadence relative to each other across patches.
+// (Beyond the Rails) timeline in events.ts. Resets fire when an
+// entry starts, so both boundaries come from start times: the current
+// entry's start as previousReset and the upcoming entry's start as nextReset.
 export function getBiWeeklyWednesdayResetBoundaries(
 	server: SettingsRecord["userdata"]["server"],
 	now: number
 ) {
-	for (const entry of BTRTimeline) {
-		const start = entry.getStartDate(server)
-		// getEndDate lands at 4:59 AM (one minute before the real boundary,
-		// see serverEOD in events.ts) - shift it to the 5:00 AM instant that
-		// the next entry's getStartDate resolves to.
-		const end = entry.getEndDate(server) + 60 * 1000
+	let previousReset = 0
+	let nextReset = BTRTimeline[0].getStartDate(server)
 
-		if (now >= start && now < end) {
-			return { previousReset: start, nextReset: end }
-		}
+	for (let i = 0; i < BTRTimeline.length; i++) {
+		const start = BTRTimeline[i].getStartDate(server)
+
+		if (start > now) break
+
+		previousReset = start
+		nextReset = BTRTimeline[i + 1]?.getStartDate(server) ?? start
 	}
 
-	const first = BTRTimeline[0]
-	const last = BTRTimeline[BTRTimeline.length - 1]
-
-	if (now < first.getStartDate(server)) {
-		return { previousReset: 0, nextReset: first.getStartDate(server) }
-	}
-
-	// Past the last known timeline entry - hold at the last confirmed
-	// boundary until events.ts is updated with the next one.
-	const lastBoundary = last.getEndDate(server) + 60 * 1000
-	return { previousReset: lastBoundary, nextReset: lastBoundary }
+	return { previousReset, nextReset }
 }
 
 // Seasonal activities reset when the next game version goes live, i.e. the

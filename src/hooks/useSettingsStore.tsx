@@ -224,7 +224,7 @@ export function SettingsProvider({ children }: { children: ReactNode }) {
 
 			for (const [key, type, timestamp] of resetChecks) {
 				if (timestamp > (resets[key] ?? 0)) {
-					checklistActions.resetChecklist(type, timestamp)
+					checklistActions.resetChecklist(type, timestamp, key)
 				}
 			}
 		}
