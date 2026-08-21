@@ -7,7 +7,6 @@ const nextConfig: NextConfig = {
     qualities: [50, 75, 100]
   },
   devIndicators: false,
-  allowedDevOrigins: [process.env.DEV_ORIGIN as string],
   async headers() {
     return [
       {
