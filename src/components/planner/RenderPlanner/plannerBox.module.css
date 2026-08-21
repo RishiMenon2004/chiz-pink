@@ -73,13 +73,6 @@ div.infoContainer {
 	opacity: 0.5;
 }
 
-.plannerBoxDragging {
-	&::after {
-		outline: 4px var(--darker-pink) dashed;
-		outline-offset: 4px;
-	}
-}
-
 .plannerBoxDropPreview {
 	box-shadow: color-mix(in srgb, var(--pink) 50%, transparent) 0 0 200px inset;
 	border: 2px solid var(--darker-pink);

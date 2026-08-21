@@ -14,8 +14,7 @@
 
 	box-shadow:
 		-2.5px -3px 3px -2px var(--shadow-maroon) inset,
-		3px 0px 3px -2px hsl(334, 40%, 37%) inset,
-		var(--foreground) -1px 3px 4px -2px inset;
+		3px 0px 3px -2px hsl(334, 40%, 37%) inset;
 
 	.plannerButton {
 		width: 2rem;
@@ -88,8 +87,7 @@
 
 		box-shadow:
 			-3px -2.5px 3px -2px var(--shadow-maroon) inset,
-			0px -3px 3px -2px hsl(334, 40%, 37%) inset,
-			var(--foreground) 1px 3px 4px -2px inset;
+			0px -3px 3px -2px hsl(334, 40%, 37%) inset;
 
 		.dragPoint {
 			width: 2.75rem;
