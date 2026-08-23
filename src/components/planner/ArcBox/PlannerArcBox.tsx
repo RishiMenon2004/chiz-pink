@@ -11,7 +11,11 @@ import type { WeaponRecord } from "@/types/planner"
 import { EnumItemLvls, getItemRarityStyle } from "@/data/items"
 import { findArc } from "@/data/arcs"
 
-import { useInventoryStore, usePlannerStore } from "@/hooks"
+import {
+	useInventoryStore,
+	useMaterialEditorModal,
+	usePlannerStore,
+} from "@/hooks"
 
 import { getRarityName } from "@/helpers"
 
@@ -23,6 +27,12 @@ import { PlannerBoxButtonsContainer } from "@/components/planner/PlannerBoxButto
 
 import plannerBoxStyles from "@/components/planner/RenderPlanner/plannerBox.module.css"
 import styles from "./plannerArcBox.module.css"
+import {
+	beetleCoin,
+	chaoticDye,
+	colorlessDye,
+	lightDye,
+} from "@/data/items/materials"
 
 export function PlannerArcBox({
 	arcRecord,
@@ -40,6 +50,14 @@ export function PlannerArcBox({
 	const cumulativeInventory = usePlannerMaterialsContext()
 
 	const { actions } = usePlannerStore()
+
+	const {
+		ModalComponent: FinalAdjustmentModal,
+		showModal: showFinalAdjustmenModal,
+	} = useMaterialEditorModal(
+		[beetleCoin, lightDye, colorlessDye, chaoticDye],
+		plannerBoxStyles.modalMaterialBoxContainer
+	)
 
 	const [currentLvl, setCurrentLvl] = useState<EnumItemLvls>(
 		arcRecord.currentLvl
@@ -145,6 +163,8 @@ export function PlannerArcBox({
 
 			updateInventory(localInventory)
 			setCurrentLvl(targetLvl)
+
+			showFinalAdjustmenModal()
 		}
 	}
 
@@ -281,6 +301,7 @@ export function PlannerArcBox({
 					</ModalContainer>,
 					document.body
 				)}
+			<FinalAdjustmentModal />
 		</div>
 	)
 }

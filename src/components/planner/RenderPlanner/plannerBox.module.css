@@ -82,6 +82,40 @@ div.infoContainer {
 	}
 }
 
+.modalMaterialBoxContainer {
+	width: fit-content;
+	display: grid;
+	place-items: center;
+	grid-template-columns: repeat(auto-fit, minmax(12.25rem, 1fr));
+	gap: 2rem;
+
+	&:not(:has(> *:only-child)) {
+		grid-template-columns: repeat(4, 1fr);
+	}
+
+	@media (max-width: 1135px) {
+		& {
+			padding-inline: 3rem;
+			width: 100%;
+
+			&:not(:has(> *:only-child)) {
+				grid-template-columns: repeat(auto-fit, minmax(12.25rem, 1fr));
+			}
+		}
+	}
+
+	@media (max-width: 550px) {
+		& {
+			gap: 1rem;
+			padding-inline: 0;
+
+			&:not(:has(> *:only-child)) {
+				grid-template-columns: repeat(2, 1fr);
+			}
+		}
+	}
+}
+
 @container (width < 450px) {
 	.plannerBox {
 		flex-direction: column-reverse;

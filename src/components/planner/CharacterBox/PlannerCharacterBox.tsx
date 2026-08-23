@@ -11,7 +11,11 @@ import { CharacterRecord, SkillLvlRecord } from "@/types/planner"
 import { EnumItemLvls, getItemRarityStyle } from "@/data/items"
 import { findCharacter } from "@/data/characters"
 
-import { useInventoryStore, usePlannerStore } from "@/hooks"
+import {
+	useInventoryStore,
+	useMaterialEditorModal,
+	usePlannerStore,
+} from "@/hooks"
 
 import { PlannerBoxContext, usePlannerMaterialsContext } from "@/contexts"
 
@@ -29,6 +33,12 @@ import {
 
 import plannerBoxStyles from "@/components/planner/RenderPlanner/plannerBox.module.css"
 import styles from "./PlannerCharacterBox.module.css"
+import {
+	beetleCoin,
+	eliteHunterGuide,
+	risingHunterGuide,
+	seniorHunterGuide,
+} from "@/data/items/materials"
 
 export function PlannerCharacterBox({
 	charRecord,
@@ -50,6 +60,14 @@ export function PlannerCharacterBox({
 	const [CharacterState, setCharacterState] = useState<CharacterRecord>({
 		...charRecord,
 	})
+
+	const {
+		ModalComponent: FinalAdjustmentModal,
+		showModal: showFinalAdjustmenModal,
+	} = useMaterialEditorModal(
+		[beetleCoin, risingHunterGuide, seniorHunterGuide, eliteHunterGuide],
+		plannerBoxStyles.modalMaterialBoxContainer
+	)
 
 	const LvlOptions = Object.keys(EnumItemLvls)
 		.filter((key) => isNaN(Number(key)))
@@ -263,6 +281,8 @@ export function PlannerCharacterBox({
 
 				return newState
 			})
+
+			showFinalAdjustmenModal()
 		}
 	}
 
@@ -535,6 +555,7 @@ export function PlannerCharacterBox({
 					</ModalContainer>,
 					document.body
 				)}
+			<FinalAdjustmentModal />
 		</div>
 	)
 }
