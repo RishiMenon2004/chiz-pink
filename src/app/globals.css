@@ -158,6 +158,8 @@ body {
 		"tnum" 1;
 	font-variant-numeric: lining-nums tabular-nums;
 
+	-webkit-tap-highlight-color: transparent;
+
 	&::selection {
 		background-color: var(--pink);
 		color: white;

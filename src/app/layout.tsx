@@ -3,6 +3,8 @@ import { Barlow_Condensed, Syne } from "next/font/google"
 
 import { RoutesData } from "@/data/routes"
 
+import "./globals.css"
+
 import {
 	AuthProvider,
 	ConvexClientProvider,
@@ -11,9 +13,9 @@ import {
 	Sidebar,
 	SplashScreen,
 } from "@/components/layout"
+
 import { CloudSyncProvider, ServiceWorkerRegister } from "@/helpers"
 
-import "./globals.css"
 import { Analytics } from "@vercel/analytics/next"
 import { SettingsProvider } from "@/hooks/useSettingsStore"
 
