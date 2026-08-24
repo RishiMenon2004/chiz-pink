@@ -93,8 +93,6 @@ export function PlannerCharacterBox({
 	}
 
 	const allMaterialsAcquired = () => {
-		if (charRecord.targetLvl === charRecord.currentLvl) return false
-
 		return charRecord.requiredMaterials.every((material) => {
 			const inventoryAmount = inventory[material.id] || 0
 			const currentCumulativeInventory = cumulativeInventory.at(index) || {}
