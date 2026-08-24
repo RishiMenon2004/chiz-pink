@@ -89,7 +89,6 @@
 		background-position: bottom calc(100% - var(--y-offset, 50%)) center;
 		padding-block: 0.75rem;
 		font-style: italic;
-		-webkit-text-stroke: 4px black;
 
 		.eventDates {
 			display: none;
@@ -328,6 +327,18 @@
 		.sectionTitle {
 			font-size: 1.25rem;
 			filter: none;
+		}
+	}
+
+	.calendarEvent {
+		-webkit-text-stroke: 2.5px black;
+
+		.eventName {
+			font-size: 0.8em;
+		}
+
+		.eventDates {
+			font-size: 0.64em;
 		}
 	}
 
