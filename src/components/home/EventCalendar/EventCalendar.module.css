@@ -13,7 +13,10 @@
 	display: flex;
 	flex-direction: column;
 	gap: 0.5rem;
+	
 	padding-inline: var(--left-margin) 1rem;
+	
+	overflow: hidden;
 }
 
 .calendarRow {
