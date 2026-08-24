@@ -16,40 +16,38 @@
 	left: 0;
 	top: 0;
 
-	--warmer-pink-strips: hsl(350, 70%, 60%);
+	--pink-strip-color: #cf3276;
+	--pink-strip-highlight: color-mix(
+		in oklab,
+		var(--pink-strip-color) 100%,
+		#dfdffe 22%
+	);
+	--pink-strip-shadow: color-mix(
+		in oklab,
+		var(--pink-strip-color) 100%,
+		black 1%
+	);
+
+	--pink-strips:
+		transparent 0 30%, var(--pink-strip-highlight) 30% calc(30% + 1px),
+		var(--pink-strip-color) calc(30% + 0.5px) 43%,
+		var(--pink-strip-shadow) 45% calc(45% + 0.5px),
+		transparent calc(45% + 0.5px) 55%,
+		var(--pink-strip-highlight) 30% calc(55% + 1px),
+		var(--pink-strip-color) calc(55% + 0.5px) 63%,
+		var(--pink-strip-shadow) 65% calc(65% + 0.5px),
+		transparent calc(65% + 0.5px) 100%;
 
 	background-image:
-		url("/layout/sidebar.png"),
-		linear-gradient(
-			to bottom,
-			transparent 0 30%,
-			color-mix(in oklab, var(--warmer-pink-strips) 100%, #dfdffe 22%) 30%
-				calc(30% + 1px),
-			var(--warmer-pink-strips) calc(30% + 0.5px) 43%,
-			color-mix(in oklab, var(--warmer-pink-strips) 100%, black 20%) 45%
-				calc(45% + 0.5px),
-			transparent calc(45% + 0.5px) 55%,
-			color-mix(in oklab, var(--warmer-pink-strips) 100%, #dfdffe 22%) 30%
-				calc(55% + 1px),
-			var(--warmer-pink-strips) calc(55% + 0.5px) 63%,
-			color-mix(in oklab, var(--warmer-pink-strips) 100%, black 20%) 65%
-				calc(65% + 0.5px),
-			transparent calc(65% + 0.5px) 100%
-		),
-		linear-gradient(
-			to top,
-			color-mix(in srgb, var(--warmer-pink) 90%, transparent),
-			transparent
-		);
+		url("/layout/sidebar.png"), linear-gradient(to bottom, var(--pink-strips));
 
 	background-size:
 		35vh,
-		100% 10%,
-		100%;
+		100% 10%;
 	background-position:
 		center bottom calc(5rem + 12%),
-		center bottom 5rem,
-		center;
+		center bottom 4.75rem;
+
 	background-repeat: no-repeat;
 	filter: drop-shadow(2px 1px 4px hsla(0, 0%, 0%, 0.6));
 
@@ -120,34 +118,11 @@
 		padding-block: 0;
 		padding-inline: 5%;
 
-		--pink-strips: #cf3276;
+		background-image: linear-gradient(to right, var(--pink-strips));
 
-		background-image:
-			linear-gradient(
-				to right,
-				transparent 0 30%,
-				color-mix(in oklab, var(--pink-strips) 100%, #dfdffe 22%) 30%
-					calc(30% + 1px),
-				var(--pink-strips) calc(30% + 0.5px) 43%,
-				color-mix(in oklab, var(--pink-strips) 100%, black 20%) 45%
-					calc(45% + 0.5px),
-				transparent calc(45% + 0.5px) 55%,
-				color-mix(in oklab, var(--pink-strips) 100%, #dfdffe 22%) 30%
-					calc(55% + 1px),
-				var(--pink-strips) calc(55% + 0.5px) 63%,
-				color-mix(in oklab, var(--pink-strips) 100%, black 20%) 65%
-					calc(65% + 0.5px),
-				transparent calc(65% + 0.5px) 100%
-			),
-			linear-gradient(transparent);
+		background-size: 10% 100%;
 
-		background-size:
-			10% 100%,
-			100%;
-
-		background-position:
-			right 16% center,
-			right center;
+		background-position: right 16% center;
 
 		& a:last-child {
 			display: none;
