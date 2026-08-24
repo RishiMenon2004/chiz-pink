@@ -54,7 +54,7 @@ function ChecklistItem({
 			<span className={styles.checklistItemLabel}>
 				<div className={styles.checklistItemName}>{item.name}</div>
 				<div className={styles.checklistItemDesc}>
-					{toggle ? (checked ? "Visible" : "Hidden") : item.description}
+					{toggle ? (checked ? "Visible" : "Hidden") : (checked ? "Completed" : item.description)}
 				</div>
 			</span>
 		</label>

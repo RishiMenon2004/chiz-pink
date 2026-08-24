@@ -87,7 +87,7 @@ function RenderActivityList({
 					}}>
 					<div className={styles.itemTitleRow}>
 						<input
-							className={`inset-control ${styles.itemCheckbox} ${checked ? styles.checked : ""}`}
+							className={`inset-control ${styles.itemCheckbox}`}
 							type="checkbox"
 							checked={checked}
 							readOnly

@@ -41,6 +41,7 @@
 
 	display: flex;
 	flex-direction: column;
+	justify-content: space-between;
 
 	user-select: none;
 	cursor: var(--pointer-cursor);
@@ -63,8 +64,12 @@
 		background-position: center;
 		background-repeat: no-repeat;
 
-		&.checked {
-			background-color: var(--pink) !important;
+		&:checked {
+			background-color: color-mix(
+				in srgb,
+				var(--pink) 75%,
+				var(--interactive-bg)
+			) !important;
 
 			transition-property: background-color, background-size;
 			transition-duration: 100ms, 200ms;
@@ -86,8 +91,6 @@
 	}
 
 	.itemTitle {
-		display: inline;
-
 		color: var(--interactive-bg);
 		font-weight: 725;
 
@@ -115,6 +118,24 @@
 
 	&:has(.itemTime) {
 		padding-bottom: 1rem;
+	}
+
+	&:has(.itemCheckbox:checked) {
+		box-shadow: none;
+		background-color: var(--pink);
+
+		.itemTitle,
+		.itemDescription {
+			color: white;
+			
+			paint-order: stroke fill;
+			-webkit-text-stroke: 2px black;
+		}
+		
+		.itemDescription {
+			font-style: italic;
+			opacity: 0.75;
+		}
 	}
 }
 
@@ -192,6 +213,7 @@ div.dailyActivity {
 
 	div.dailyActivity {
 		grid-column: 1 / -1 !important;
+		border-radius: 1rem;
 	}
 }
 
