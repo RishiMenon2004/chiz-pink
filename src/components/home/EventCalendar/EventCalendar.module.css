@@ -13,9 +13,9 @@
 	display: flex;
 	flex-direction: column;
 	gap: 0.5rem;
-	
+
 	padding-inline: var(--left-margin) 1rem;
-	
+
 	overflow: hidden;
 }
 
@@ -64,29 +64,15 @@
 
 	user-select: none;
 
-	--background-image-width: 100%;
-
-	background-image:
-		linear-gradient(
-			to right,
-			var(--theme-color, var(--pink)),
-			transparent,
-			var(--theme-color, var(--pink))
-		),
-		var(--event-image, linear-gradient(0deg, transparent));
-	background-size: 100%;
-	background-position: center, center;
-	background-repeat: no-repeat;
+	/* vertical crop of the event image; equivalent to the old
+	   background-position-y percentage */
+	--y-offset: 50%;
 
 	color: white;
 	paint-order: stroke fill;
 	-webkit-text-stroke: 3px black;
 
-	outline: 3px solid rgba(255, 255, 255, 0.25);
-	outline-offset: -3px;
-
 	&.version {
-		background-position: bottom calc(100% - var(--y-offset, 50%)) center;
 		padding-block: 0.75rem;
 		font-style: italic;
 
@@ -96,13 +82,56 @@
 	}
 
 	&.gacha {
-		background-position: bottom calc(100% - var(--y-offset, 25%)) center;
+		--y-offset: 25%;
 	}
 
 	&.btr {
-		--event-image: url("/events/btr.webp");
 		--theme-color: #008cd8;
-		background-position: center;
+	}
+
+	@property --overlay-gap {
+		syntax: "<percentage>";
+		inherits: true;
+		initial-value: 0%;
+	}
+
+	/* theme-coloured fade over the image edges */
+	&::before {
+		content: "";
+		position: absolute;
+		inset: 0;
+		z-index: 2;
+		pointer-events: none;
+
+		--overlay-gap: 0%;
+		background-image: linear-gradient(
+			to right,
+			var(--theme-color, var(--pink)),
+			transparent calc(50% - var(--overlay-gap))
+				calc(50% + var(--overlay-gap)),
+			var(--theme-color, var(--pink))
+		);
+
+		transition: --overlay-gap 250ms ease-in-out;
+
+		outline: 3px solid rgba(255, 255, 255, 0.25);
+		outline-offset: -3px;
+		border-radius: inherit;
+	}
+
+	&:hover::before {
+		--overlay-gap: 15%;
+	}
+
+	.eventImage {
+		position: absolute;
+		left: 0;
+		top: var(--y-offset);
+		width: 100%;
+		height: auto;
+		transform: translateY(calc(-1 * var(--y-offset)));
+		z-index: 1;
+		pointer-events: none;
 	}
 
 	transition: outline-offset 100ms ease-out;
@@ -123,6 +152,7 @@
 		align-self: flex-start;
 		width: fit-content;
 		padding-inline-end: 0.75rem;
+		z-index: 3;
 	}
 
 	.eventName {
@@ -166,6 +196,7 @@
 			align-self: flex-start;
 			font-family: var(--font-syne);
 			font-weight: 750;
+			margin-right: var(--day-size);
 		}
 
 		.datesContainer {

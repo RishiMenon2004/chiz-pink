@@ -71,12 +71,16 @@ function EventDetailsModal({
 
 const DETAILS_IMAGE_ASPECT = 1080 / 1920 // matches the <Image width={1920} height={1080}> below
 
+// measures how far the event item's own <Image> is shifted inside the box,
+// as a percentage of the image height, so the details box can start with
+// the exact same crop (equivalent to the old background-position-y)
 function getMatchingImageOffsetPercent(eventBox: HTMLDivElement) {
-	const yPercent = parseFloat(getComputedStyle(eventBox).backgroundPositionY)
-	const containerHeight = eventBox.clientHeight
-	const imageHeight = eventBox.clientWidth * DETAILS_IMAGE_ASPECT
-	if (!yPercent || !imageHeight) return 0
-	return yPercent * (containerHeight / imageHeight - 1)
+	const eventImage = eventBox.querySelector("img")
+	if (!eventImage) return 0
+	const boxRect = eventBox.getBoundingClientRect()
+	const imageRect = eventImage.getBoundingClientRect()
+	if (!imageRect.height) return 0
+	return ((imageRect.top - boxRect.top) / imageRect.height) * 100
 }
 
 // initial styles are set up on click to avoid snappy or jittery movement
@@ -186,6 +190,7 @@ function EventDetailsBox({
 				src={`/events/${eventData.eventImage!}`}
 				width={1920}
 				height={1080}
+				loading="eager"
 				alt={eventData.name}
 			/>
 			<div className={styles.eventDates}>
@@ -243,9 +248,13 @@ export function CalendarEventItem({
 	const overflowsLeft = start < calendarOrigin
 	const overflowsRight = end > calendarEnd
 
-	const eventImage = eventData.eventImage
-		? `url('/events/${eventData.eventImage}')`
-		: ""
+	// BTR items have no eventImage in data; their artwork is hardcoded in CSS
+	const eventImageSrc =
+		eventData.type === "BTR"
+			? "/events/btr.webp"
+			: eventData.eventImage
+				? `/events/${eventData.eventImage}`
+				: null
 
 	let eventType = undefined
 	let cursor = "var(--pointer-cursor)"
@@ -279,9 +288,13 @@ export function CalendarEventItem({
 	const eventStyles = {
 		width: `${widthDays}rem`,
 		marginLeft: `${marginDays}rem`,
-		"--event-image": eventImage,
 		"--theme-color": eventData.themeColor ?? "",
-		"--y-offset": eventData.yOffset ?? "",
+		// only Patch/Gacha crops honour the custom offset, matching the
+		// previous per-type background-position rules
+		"--y-offset":
+			eventData.type === "Patch" || eventData.type === "Gacha"
+				? eventData.yOffset
+				: undefined,
 		"--radius-left": overflowsLeft ? "0" : undefined,
 		"--radius-right": overflowsRight ? "0" : undefined,
 		"--fade-left": overflowsLeft ? "3rem" : undefined,
@@ -322,6 +335,15 @@ export function CalendarEventItem({
 			}}
 			className={`${styles.calendarEvent} ${eventType ? eventType : ""}`}
 			style={eventStyles}>
+			{eventImageSrc && (
+				<Image
+					className={styles.eventImage}
+					src={eventImageSrc}
+					alt=""
+					width={1920}
+					height={1080}
+				/>
+			)}
 			<div className={styles.eventName}>
 				{eventData.type === "BTR" && "Beyond the Rails: "}
 				{eventData.name}
