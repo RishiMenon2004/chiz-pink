@@ -415,12 +415,13 @@ export const Events: EventData[] = [
 	{
 		name: "Lucent Tides Mystery Box: Tide",
 		type: "Mystery Box",
-		getStartDate: () => getUtcTimestamp({
-			year: 2026,
-			month: 8,
-			day: 19,
-			hour: 9,
-		}),
+		getStartDate: () =>
+			getUtcTimestamp({
+				year: 2026,
+				month: 8,
+				day: 19,
+				hour: 9,
+			}),
 		getEndDate: getPhase2End("version1_3"),
 		// rewards: [regaliaDraco],
 		eventImage: "version1.3/mystery_tide.webp",
@@ -516,6 +517,42 @@ export const Events: EventData[] = [
 		// eventImage: "version1.3/version_1.3.webp",
 		// themeColor: "#d22730",
 		yOffset: "15%",
+	},
+	{
+		name: "Phase 1: Blackbird",
+		type: "Gacha",
+		getStartDate: getPhase1Start("version1_4"),
+		getEndDate: getPhase1End("version1_4"),
+		eventImage: "version1.4/gacha_blackbird.webp",
+		themeColor: "#5f7283",
+		yOffset: "32%",
+	},
+	{
+		name: "Phase 2: Akane Rin",
+		type: "Gacha",
+		getStartDate: getPhase2Start("version1_4"),
+		getEndDate: getPhase2End("version1_4"),
+		eventImage: "version1.4/gacha_akane.webp",
+		themeColor: "#677bcb",
+		yOffset: "21%",
+	},
+	{
+		name: "Fading Reverie: Lacrimosa",
+		type: "Gacha",
+		getStartDate: getPhase1Start("version1_4"),
+		getEndDate: getPhase1End("version1_4"),
+		eventImage: "version1.1/gacha_lacrimosa.webp",
+		themeColor: "#f35671",
+		yOffset: "35%",
+	},
+	{
+		name: "Forsaken Path: Chaos",
+		type: "Gacha",
+		getStartDate: getPhase2Start("version1_4"),
+		getEndDate: getPhase2End("version1_4"),
+		eventImage: "version1.1/gacha_chaos.webp",
+		themeColor: "#6b92e1",
+		yOffset: "8%",
 	},
 ]
 
