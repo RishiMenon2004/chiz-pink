@@ -52,9 +52,7 @@ export function PlannerMaterialBox({
 
 	const cumulativeInventory = usePlannerMaterialsContext()
 	const lookupIndex =
-		entryIndex === -1
-			? cumulativeInventory.length - 1
-			: entryIndex
+		entryIndex === -1 ? cumulativeInventory.length - 1 : entryIndex
 	const usableInventory = cumulativeInventory[lookupIndex] ?? {}
 	const usableMaterial = usableInventory[material.id] ?? {}
 
@@ -69,12 +67,16 @@ export function PlannerMaterialBox({
 
 	const displayAmount = remainingAmount > 0 ? remainingAmount : requiredAmount
 
+	const isExpMaterial =
+		material.materialType === EnumMaterialType.CharacterExp ||
+		material.materialType === EnumMaterialType.WeaponExp
+
 	const formatDisplayAmount = (displayAmount: number) => {
 		if (displayAmount >= 1000000) {
 			return `~${(displayAmount / 1000000).toFixed(2)}m`
 		}
 
-		return displayAmount.toLocaleString("en-us")
+		return `${isExpMaterial ? "~" : ""}${displayAmount.toLocaleString("en-us")}`
 	}
 
 	const disabled = () => {}
@@ -119,7 +121,7 @@ export function PlannerMaterialBox({
 						style={{
 							fontFamily: "var(--font-barlow-condensed)",
 						}}>
-						{requiredAmount.toLocaleString("en-us")}
+						{`${isExpMaterial ? "~" : ""}${requiredAmount.toLocaleString("en-us")}`}
 					</span>
 					<br />
 					{"Owned: "}
@@ -157,18 +159,22 @@ export function PlannerMaterialBox({
 									fontStyle: "italic",
 									paddingLeft: "2ch",
 								}}>
-								{craftedFrom.map(({ id, amount }) => (
-									<div key={id}>
-										{`${findMaterial(id).name}: `}
-										<span
-											style={{
-												fontFamily:
-													"var(--font-barlow-condensed)",
-											}}>
-											{amount.toLocaleString("en-us")}
-										</span>
-									</div>
-								))}
+								{craftedFrom.map(({ id, amount }) => {
+									const craftingMaterial = findMaterial(id)
+									const divisor = isExpMaterial ? (15 * material.rarity - 16 * craftingMaterial.rarity - 8) : 3 ** (material.rarity - craftingMaterial.rarity)
+									return (
+										<div key={id}>
+											{`${craftingMaterial.name}: `}
+											<span
+												style={{
+													fontFamily:
+														"var(--font-barlow-condensed)",
+												}}>
+												{`${amount.toLocaleString("en-us")} → + ${amount / divisor}`}
+											</span>
+										</div>
+									)
+								})}
 							</div>
 						</div>
 					)}
