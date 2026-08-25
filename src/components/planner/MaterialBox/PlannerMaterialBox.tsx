@@ -31,7 +31,6 @@ export function PlannerMaterialBox({
 		[material]
 	)
 	const { ModalComponent: MaterialEditor, showModal } = useMaterialEditorModal(
-		linkedMaterials,
 		styles.modalMaterialBoxContainer
 	)
 
@@ -104,7 +103,7 @@ export function PlannerMaterialBox({
 				{formatDisplayAmount(displayAmount)}
 			</span>
 
-			<MaterialEditor />
+			<MaterialEditor materials={linkedMaterials} />
 
 			<Tooltip offset={{ x: 36, y: 0 }} subText="Click to Edit">
 				<div>{material.name}</div>

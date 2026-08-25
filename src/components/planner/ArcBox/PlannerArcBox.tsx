@@ -8,7 +8,7 @@ import { useSortable } from "@dnd-kit/react/sortable"
 import type { KeyMouseEventType } from "@/types"
 import type { WeaponRecord } from "@/types/planner"
 
-import { EnumItemLvls, getItemRarityStyle } from "@/data/items"
+import { EnumItemLvls, findMaterial, getItemRarityStyle } from "@/data/items"
 import { findArc } from "@/data/arcs"
 
 import {
@@ -29,10 +29,9 @@ import plannerBoxStyles from "@/components/planner/RenderPlanner/plannerBox.modu
 import styles from "./plannerArcBox.module.css"
 import {
 	beetleCoin,
-	chaoticDye,
-	colorlessDye,
-	lightDye,
+	expDyeSet,
 } from "@/data/items/materials"
+import { Material } from "@/types/item"
 
 export function PlannerArcBox({
 	arcRecord,
@@ -51,13 +50,28 @@ export function PlannerArcBox({
 
 	const { actions } = usePlannerStore()
 
+	const buildAdjustmentMaterials = (): Material[] => {
+		const matList: Material[] = [beetleCoin, ...expDyeSet]
+
+		arcRecord.requiredMaterials.forEach((material) => {
+			const { craftedAmount } =
+				cumulativeInventory[index]?.[material.id] ?? {}
+			if ((craftedAmount ?? 0) > 0) {
+				matList.push(findMaterial(material.id))
+			}
+		})
+
+		return matList
+	}
+
+	const [adjustmentMaterials, setAdjustmentMaterials] = useState<Material[]>(
+		buildAdjustmentMaterials
+	)
+
 	const {
 		ModalComponent: FinalAdjustmentModal,
 		showModal: showFinalAdjustmenModal,
-	} = useMaterialEditorModal(
-		[beetleCoin, lightDye, colorlessDye, chaoticDye],
-		plannerBoxStyles.modalMaterialBoxContainer
-	)
+	} = useMaterialEditorModal(plannerBoxStyles.modalMaterialBoxContainer)
 
 	const [currentLvl, setCurrentLvl] = useState<EnumItemLvls>(
 		arcRecord.currentLvl
@@ -89,15 +103,14 @@ export function PlannerArcBox({
 	}
 
 	const allMaterialsAcquired = () => {
+		const currentCmltInv = cumulativeInventory[index] || {}
+
 		if (targetLvl === currentLvl) return false
 
-		return arcRecord.requiredMaterials.every((material) => {
-			const inventoryAmount = inventory[material.id] || 0
-			const currentCumulativeInventor = cumulativeInventory.at(index) || {}
-			const { craftedAmount } = currentCumulativeInventor[material.id] || {
-				craftedAmount: 0,
-			}
-			return inventoryAmount + (craftedAmount || 0) >= material.amount
+		return arcRecord.requiredMaterials.every((mat) => {
+			const owned = inventory[mat.id] || 0
+			const crafted = currentCmltInv[mat.id]?.craftedAmount || 0
+			return owned + (crafted || 0) >= mat.amount
 		})
 	}
 
@@ -141,6 +154,8 @@ export function PlannerArcBox({
 		const currentCumulativeInventory = cumulativeInventory[index]
 
 		if (allMaterialsAcquired()) {
+			setAdjustmentMaterials(buildAdjustmentMaterials())
+
 			arcRecord.requiredMaterials.forEach((material) => {
 				const inventoryAmount = localInventory[material.id] || 0
 
@@ -301,7 +316,7 @@ export function PlannerArcBox({
 					</ModalContainer>,
 					document.body
 				)}
-			<FinalAdjustmentModal />
+			<FinalAdjustmentModal materials={adjustmentMaterials} />
 		</div>
 	)
 }

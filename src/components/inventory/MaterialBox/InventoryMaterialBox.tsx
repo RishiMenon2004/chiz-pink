@@ -44,7 +44,6 @@ export function MaterialItemBox({
 		[material]
 	)
 	const { ModalComponent: MaterialEditor, showModal } = useMaterialEditorModal(
-		linkedMaterials,
 		pageStyles.multiMatContainer
 	)
 
@@ -150,7 +149,7 @@ export function MaterialItemBox({
 
 			<span className={styles.label}>{material.name}</span>
 
-			<MaterialEditor />
+			<MaterialEditor materials={linkedMaterials} />
 
 			<Tooltip
 				subText={material.materialType}

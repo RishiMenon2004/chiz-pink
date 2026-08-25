@@ -8,7 +8,7 @@ import { useSortable } from "@dnd-kit/react/sortable"
 import { KeyMouseEventType } from "@/types"
 import { CharacterRecord, SkillLvlRecord } from "@/types/planner"
 
-import { EnumItemLvls, getItemRarityStyle } from "@/data/items"
+import { EnumItemLvls, findMaterial, getItemRarityStyle } from "@/data/items"
 import { findCharacter } from "@/data/characters"
 
 import {
@@ -33,12 +33,8 @@ import {
 
 import plannerBoxStyles from "@/components/planner/RenderPlanner/plannerBox.module.css"
 import styles from "./PlannerCharacterBox.module.css"
-import {
-	beetleCoin,
-	eliteHunterGuide,
-	risingHunterGuide,
-	seniorHunterGuide,
-} from "@/data/items/materials"
+import { beetleCoin, expHunterGuideSet } from "@/data/items/materials"
+import { Material } from "@/types/item"
 
 export function PlannerCharacterBox({
 	charRecord,
@@ -61,13 +57,36 @@ export function PlannerCharacterBox({
 		...charRecord,
 	})
 
+	const buildAdjustmentMaterials = (): Material[] => {
+		const matList: Material[] = [beetleCoin]
+
+		if (charRecord.targetLvl > charRecord.currentLvl) {
+			matList.push(...expHunterGuideSet)
+		}
+
+		charRecord.requiredMaterials.forEach((material) => {
+			const { craftedAmount } =
+				cumulativeInventory[index]?.[material.id] ?? {}
+			if ((craftedAmount ?? 0) > 0) {
+				const craftingMaterial = findMaterial(material.id)
+				craftingMaterial.linkedMaterials?.forEach((mat) => {
+					matList.push(findMaterial(mat))
+				})
+				matList.push(craftingMaterial)
+			}
+		})
+
+		return matList
+	}
+
+	const [adjustmentMaterials, setAdjustmentMaterials] = useState<Material[]>(
+		buildAdjustmentMaterials
+	)
+
 	const {
 		ModalComponent: FinalAdjustmentModal,
 		showModal: showFinalAdjustmenModal,
-	} = useMaterialEditorModal(
-		[beetleCoin, risingHunterGuide, seniorHunterGuide, eliteHunterGuide],
-		plannerBoxStyles.modalMaterialBoxContainer
-	)
+	} = useMaterialEditorModal(plannerBoxStyles.modalMaterialBoxContainer)
 
 	const LvlOptions = Object.keys(EnumItemLvls)
 		.filter((key) => isNaN(Number(key)))
@@ -93,14 +112,20 @@ export function PlannerCharacterBox({
 	}
 
 	const allMaterialsAcquired = () => {
-		return charRecord.requiredMaterials.every((material) => {
-			const inventoryAmount = inventory[material.id] || 0
-			const currentCumulativeInventory = cumulativeInventory.at(index) || {}
-			const { craftedAmount } = currentCumulativeInventory[material.id] || {
-				craftedAmount: 0,
-			}
-			return inventoryAmount + (craftedAmount || 0) >= material.amount
+		const currentCmltInv = cumulativeInventory[index] || {}
+		const materials = charRecord.requiredMaterials
+
+		let needsMats = false
+
+		const hasAvailableMats = materials.every((mat) => {
+			if (mat.amount > 0) needsMats = true
+			const owned = inventory[mat.id] || 0
+			const crafted = currentCmltInv[mat.id]?.craftedAmount || 0
+
+			return owned + crafted >= mat.amount
 		})
+
+		return needsMats && hasAvailableMats
 	}
 
 	const handleCurrentLvlChange = (
@@ -195,9 +220,11 @@ export function PlannerCharacterBox({
 	const handleEnhancement = (e: MouseEvent) => {
 		e.stopPropagation()
 		const localInventory = { ...inventory }
-		const currentCumulativeInventory = cumulativeInventory[index]
+		const currentCumulativeInventory = cumulativeInventory[index] || {}
 
 		if (allMaterialsAcquired()) {
+			setAdjustmentMaterials(buildAdjustmentMaterials())
+
 			charRecord.requiredMaterials.forEach((material) => {
 				const inventoryAmount = localInventory[material.id] || 0
 
@@ -553,7 +580,7 @@ export function PlannerCharacterBox({
 					</ModalContainer>,
 					document.body
 				)}
-			<FinalAdjustmentModal />
+			<FinalAdjustmentModal materials={adjustmentMaterials} />
 		</div>
 	)
 }

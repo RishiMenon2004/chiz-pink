@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useRef, useState } from "react"
+import { useEffect, useRef, useState, useMemo, useCallback } from "react"
 import { createPortal } from "react-dom"
 
 import type { KeyMouseEventType } from "@/types"
@@ -10,10 +10,7 @@ import { MatAdjustmentContext } from "@/contexts"
 
 import { ModalContainer, MaterialEditorBox } from "@/components/layout"
 
-export function useMaterialEditorModal(
-	materials: Material[],
-	className: string | undefined
-) {
+export function useMaterialEditorModal(className: string | undefined) {
 	const [showMaterialEditorModal, setShowMaterialEditorModal] =
 		useState<boolean>(false)
 
@@ -23,18 +20,21 @@ export function useMaterialEditorModal(
 		setShowMaterialEditorModal(true)
 	}
 
-	const handleCloseModal = (e: KeyMouseEventType) => {
+	const handleCloseModal = useCallback((e: KeyMouseEventType) => {
 		e.stopPropagation()
-		modalCallbacks.current.forEach((callback) => callback())
+		modalCallbacks.current.forEach((cb) => cb())
 		setShowMaterialEditorModal(false)
-	}
+	}, [])
 
-	const contextValue = {
-		registerAdjustmentAmount: (id: string, callback: () => void) =>
-			modalCallbacks.current.set(id, callback),
-		unregisterAdjustmentAmount: (id: string) =>
-			modalCallbacks.current.delete(id),
-	}
+	const contextValue = useMemo(
+		() => ({
+			registerAdjustmentAmount: (id: string, callback: () => void) =>
+				modalCallbacks.current.set(id, callback),
+			unregisterAdjustmentAmount: (id: string) =>
+				modalCallbacks.current.delete(id),
+		}),
+		[]
+	)
 
 	const materialListRef = useRef<HTMLDivElement>(null)
 	useEffect(() => {
@@ -42,17 +42,17 @@ export function useMaterialEditorModal(
 		materialListRef.current?.querySelector("input")?.focus()
 	}, [showMaterialEditorModal])
 
-	const ModalComponent = () => {
-		return (
+	const ModalComponent = useCallback(
+		({ materials }: { materials: Material[] }) =>
 			showMaterialEditorModal &&
 			createPortal(
 				<MatAdjustmentContext.Provider value={contextValue}>
 					<ModalContainer onClickOut={handleCloseModal}>
 						<div ref={materialListRef} className={className}>
-							{materials.map((material, index) => {
+							{materials.map((material) => {
 								return (
 									<MaterialEditorBox
-										key={index}
+										key={material.id}
 										material={material}
 									/>
 								)
@@ -61,9 +61,9 @@ export function useMaterialEditorModal(
 					</ModalContainer>
 				</MatAdjustmentContext.Provider>,
 				document.body
-			)
-		)
-	}
+			),
+		[showMaterialEditorModal, className, handleCloseModal, contextValue]
+	)
 
 	return { ModalComponent, showModal }
 }
