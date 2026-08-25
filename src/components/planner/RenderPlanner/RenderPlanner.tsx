@@ -1,9 +1,9 @@
 "use client"
 
 import dynamic from "next/dynamic"
-import { useEffect, useMemo, useState } from "react"
+import { /* useEffect, */ useMemo, useState } from "react"
 import { createPortal } from "react-dom"
-import { useRouter } from "next/navigation"
+// import { useRouter } from "next/navigation"
 
 import { DragDropProvider, DragOverlay } from "@dnd-kit/react"
 import { isSortable } from "@dnd-kit/react/sortable"
@@ -19,7 +19,10 @@ import type {
 import { EnumItemLvls, getAllMaterialsList } from "@/data/items"
 import { getAllArcsList } from "@/data/arcs"
 
-import { useHybridPlannerStore, usePlannerStore, useSettingsStore } from "@/hooks"
+import {
+	useHybridPlannerStore,
+	usePlannerStore /* useSettingsStore */,
+} from "@/hooks"
 import { getAggregatedMaterials } from "@/hooks/usePlannerStore"
 
 import { PlannerInventoryProvider, generateNewCharacter } from "@/helpers"
@@ -58,20 +61,23 @@ export function RenderPlanner({
 }) {
 	const { plannerData, actions } = usePlannerStore()
 	const { hybridPlanner, actions: hybridActions } = useHybridPlannerStore()
-	const { settings, actions: settingsActions } = useSettingsStore()
-	const router = useRouter()
 
-	const combinedEnabled = settings.appearance?.["use-hybrid-planner"] ?? false
+	//TODO Disabling separate planners for now. Will add them in the future when I figure out mobile navbar having too many icons
+
+	// const { settings, actions: settingsActions } = useSettingsStore()
+	// const router = useRouter()
+
+	// const combinedEnabled = true //settings.appearance?.["use-hybrid-planner"] ?? false
 
 	//reditect to /characters if accessing /planner and disabled combined planner
 	//vice versa, redirect to /planner if accessing /characters or /arcs and enabled combined planner
-	const shouldRedirect =
-		plannerType === "both" ? !combinedEnabled : combinedEnabled
-	const redirectTo = plannerType === "both" ? "/characters" : "/planner"
+	// const shouldRedirect =
+	// 	plannerType === "both" ? !combinedEnabled : combinedEnabled
+	// const redirectTo = plannerType === "both" ? "/characters" : "/planner"
 
-	useEffect(() => {
-		if (shouldRedirect) router.replace(redirectTo)
-	}, [shouldRedirect, redirectTo, router])
+	// useEffect(() => {
+	// 	if (shouldRedirect) router.replace(redirectTo)
+	// }, [shouldRedirect, redirectTo, router])
 
 	const items: Record<string, CharacterRecord | WeaponRecord> = useMemo(() => {
 		if (plannerType !== "both") return plannerData[plannerType]
@@ -183,7 +189,7 @@ export function RenderPlanner({
 		actions.updatePlanner({ [plannerType]: newRecord })
 	}
 
-	if (shouldRedirect) return null
+	// if (shouldRedirect) return null
 
 	return (
 		<PlannerInventoryProvider itemRecords={itemsList}>
@@ -272,7 +278,7 @@ export function RenderPlanner({
 							Add Something?
 						</a>
 					</div>
-					{plannerType !== "both" &&
+					{/* plannerType !== "both" && (
 						<div>
 							{`A-are you looking to level Characters and Arcs all in one place? Take a look at the `}
 							<a
@@ -285,7 +291,7 @@ export function RenderPlanner({
 								Hybrid Planner
 							</a>
 						</div>
-					}
+					) */}
 				</InfoBox>
 			)}
 

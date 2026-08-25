@@ -33,7 +33,7 @@
 		var(--pink-strip-color) calc(30% + 0.5px) 43%,
 		var(--pink-strip-shadow) 45% calc(45% + 0.5px),
 		transparent calc(45% + 0.5px) 55%,
-		var(--pink-strip-highlight) 30% calc(55% + 1px),
+		var(--pink-strip-highlight) 55% calc(55% + 1px),
 		var(--pink-strip-color) calc(55% + 0.5px) 63%,
 		var(--pink-strip-shadow) 65% calc(65% + 0.5px),
 		transparent calc(65% + 0.5px) 100%;
@@ -116,13 +116,8 @@
 		height: 4em;
 		flex-direction: row;
 		padding-block: 0;
-		padding-inline: 5%;
 
-		background-image: linear-gradient(to right, var(--pink-strips));
-
-		background-size: 10% 100%;
-
-		background-position: right 16% center;
+		background-image: unset;
 
 		& a:last-child {
 			display: none;
@@ -139,11 +134,17 @@
 		nav {
 			gap: unset;
 			display: flex;
-			justify-content: space-between;
+			justify-content: space-evenly;
 
 			& a:last-child {
 				display: grid;
 			}
 		}
+	}
+}
+
+@media (max-width: 550px) {
+	.sidebar {
+		padding-inline: 0.5rem;
 	}
 }

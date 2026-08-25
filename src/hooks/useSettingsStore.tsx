@@ -21,7 +21,7 @@ let lastRawValue: string | null = null
 export const SERVER_FALLBACK: SettingsRecord = {
 	appearance: {
 		"use-cursors": true,
-		"use-hybrid-planner": false,
+		"use-hybrid-planner": true, //TODO Disabling separate planners for now. Will add them in the future when I figure out mobile navbar having too many icons
 	},
 	behaviour: {
 		"auto-claim": true,

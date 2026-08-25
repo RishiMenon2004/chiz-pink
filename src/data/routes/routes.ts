@@ -57,6 +57,13 @@ export const RoutesData: RoutesRecord = {
 		id: "planner",
 	},
 
+	"/pulls": {
+		title: "PULL TRACKER",
+		head: "Pull Tracker",
+		tooltip: "Pull Tracker",
+		id: "pulls",
+	},
+
 	"/inventory": {
 		title: "INVENTORY",
 		head: "Inventory",
@@ -75,7 +82,7 @@ export const RoutesData: RoutesRecord = {
 		title: "PRIVACY POLICY",
 		head: "Privacy Policy",
 		tooltip: "Privacy Policy",
-		id: "privacy_policy"
+		id: "privacy_policy",
 	},
 
 	"/auth/popup-callback": {

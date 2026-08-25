@@ -809,7 +809,8 @@ export function RenderSettings() {
 							/>
 						</ContentColumn>
 
-						<ContentColumn>
+						{/* //TODO Disabling separate planners for now. Will add them in the future when I figure out mobile navbar having too many icons */}
+						{/* <ContentColumn>
 							<ConfigCheckbox
 								name="Hybrid Planner"
 								checked={
@@ -823,7 +824,7 @@ export function RenderSettings() {
 									})
 								}
 							/>
-						</ContentColumn>
+						</ContentColumn> */}
 					</ContentRow>
 				</Content>
 				<TitleBar title="BEHAVIOUR" />
