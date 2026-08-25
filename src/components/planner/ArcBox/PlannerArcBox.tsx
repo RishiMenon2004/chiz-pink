@@ -27,10 +27,7 @@ import { PlannerBoxButtonsContainer } from "@/components/planner/PlannerBoxButto
 
 import plannerBoxStyles from "@/components/planner/RenderPlanner/plannerBox.module.css"
 import styles from "./plannerArcBox.module.css"
-import {
-	beetleCoin,
-	expDyeSet,
-} from "@/data/items/materials"
+import { beetleCoin, expDyeSet } from "@/data/items/materials"
 import { Material } from "@/types/item"
 
 export function PlannerArcBox({
@@ -57,7 +54,11 @@ export function PlannerArcBox({
 			const { craftedAmount } =
 				cumulativeInventory[index]?.[material.id] ?? {}
 			if ((craftedAmount ?? 0) > 0) {
-				matList.push(findMaterial(material.id))
+				const craftingMaterial = findMaterial(material.id)
+				craftingMaterial.linkedMaterials?.forEach((mat) => {
+					matList.push(findMaterial(mat))
+				})
+				matList.push(craftingMaterial)
 			}
 		})
 
