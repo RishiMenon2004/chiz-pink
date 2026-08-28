@@ -92,13 +92,28 @@ export const checklistActions = {
 		}
 
 		updated.activities[type] ??= {}
+		const biWeeklies = current.activities["biWeekly"]
 
-		Object.entries(current.activities[type] ?? {}).forEach(([id, task]) => {
-			updated.activities[type][id] = {
+		if (timestampKey === "lastBiWeeklyWednesdayReset") {
+			biWeeklies["btr"] = {
 				checked: 0,
-				disabled: task.disabled ?? false,
+				disabled: biWeeklies["btr"].disabled ?? false,
 			}
-		})
+		} else if (timestampKey === "lastBiWeeklyMondayReset") {
+			biWeeklies["pink_paws_heist"] = {
+				checked: 0,
+				disabled: biWeeklies["pink_paws_heist"].disabled ?? false,
+			}
+		} else {
+			Object.entries(current.activities[type] ?? {}).forEach(
+				([id, task]) => {
+					updated.activities[type][id] = {
+						checked: 0,
+						disabled: task.disabled ?? false,
+					}
+				}
+			)
+		}
 
 		try {
 			localStorage.setItem("checklist", JSON.stringify(updated))
