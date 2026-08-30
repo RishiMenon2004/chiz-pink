@@ -14,7 +14,7 @@ is what made **Chiz.Pink**.
 
 > I'm not affiliated with or endorsed by the Hotta Studio, it's just a fan project.
 
-# WARNING @
+# WARNING!!
 As of now, I'm still working out the kinks, and [chiz-pink.vercel.app](http://chiz-pink.vercel.app) should not be used as a working release!
 
 Changes that I make might break existing data. This section will be removed once it is stable and released.
