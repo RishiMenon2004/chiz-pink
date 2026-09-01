@@ -64,6 +64,31 @@ import {
 	chaoticDye,
 	colorlessDye,
 	lightDye,
+	//rewards
+	diceLimited,
+	diceStandard,
+	lostPiece,
+	warpPiece,
+	floeCinemeTicket,
+	porsche918Spyder,
+	regaliaDraco,
+	hikariTide,
+	phoenixKick,
+	pricelessOrchid,
+	newMoonLullaby,
+	clearSkies,
+	studentOfTerrasea,
+	archmage,
+	autumnVignette,
+	surfingAmongStars,
+	underboss,
+	orchidBreeze,
+	tomatoDuo,
+	skyrider,
+	overcastCanopy,
+	sheepcopter,
+	scarletSash,
+	xiaozhen,
 } from "./materials"
 
 const allMaterials: Record<string, Material> = {
@@ -188,4 +213,56 @@ export function findMaterialByName(materialName: string) {
 	return allInventoryMaterialsList.find(
 		(material) => material.name === materialName
 	)
+}
+
+const allRewards: Record<string, Material> = {
+	dice_limited: diceLimited,
+	dice_standard: diceStandard,
+
+	lost_piece: lostPiece,
+	warp_piece: warpPiece,
+
+	floe_cineme_ticket: floeCinemeTicket,
+
+	porsche_918_spyder: porsche918Spyder,
+	regalia_draco: regaliaDraco,
+	hikari_tide: hikariTide,
+
+	//cosmetics - outfits
+	phoenix_kick: phoenixKick,
+	priceless_orchid: pricelessOrchid,
+	new_moon_lullaby: newMoonLullaby,
+	clear_skies: clearSkies,
+	student_of_terrasea: studentOfTerrasea,
+	archmage: archmage,
+	autumn_vignette: autumnVignette,
+	surfing_among_stars: surfingAmongStars,
+
+	//cosmetics - gliders
+	underboss: underboss,
+	orchid_breeze: orchidBreeze,
+	tomato_duo: tomatoDuo,
+	skyrider: skyrider,
+	overcast_canopy: overcastCanopy,
+	sheepcopter: sheepcopter,
+	scarlet_sash: scarletSash,
+	xiaozhen: xiaozhen,
+}
+
+export function getAllRewards() {
+	return allRewards
+}
+
+const allRewardsList: Material[] = Object.values(allRewards)
+
+export function getAllRewardsList() {
+	return allRewardsList
+}
+
+export function findReward(materialId: string) {
+	return allRewards[materialId]
+}
+
+export function findRewardByName(rewardName: string) {
+	return allRewardsList.find((reward) => reward.name === rewardName)
 }
