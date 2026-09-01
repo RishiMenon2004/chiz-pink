@@ -501,18 +501,30 @@ button {
 
 .common {
 	--rarity-color: #76bfaa;
+	--rarity-color-highlight: color-mix(
+		in srgb,
+		var(--rarity-color),
+		rgb(255, 249, 69)
+	);
 }
 
 .uncommon {
 	--rarity-color: #465bd8;
+	--rarity-color-highlight: color-mix(
+		in srgb,
+		var(--rarity-color),
+		rgb(69, 255, 215)
+	);
 }
 
 .rare {
 	--rarity-color: #c54fc1;
+	--rarity-color-highlight: #ff9ca6;
 }
 
 .epic {
 	--rarity-color: #dea745;
+	--rarity-color-highlight: #ffef78;
 }
 
 @media (max-width: 1135px) {

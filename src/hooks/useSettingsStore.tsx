@@ -43,7 +43,7 @@ let cachedSettings: SettingsRecord = {
 	...SERVER_FALLBACK,
 }
 
-function readSettings() {
+export function readSettings() {
 	if (typeof window === "undefined") return SERVER_FALLBACK
 
 	const value = localStorage.getItem("settings")

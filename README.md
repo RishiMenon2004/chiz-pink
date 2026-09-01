@@ -19,6 +19,7 @@ is what made **Chiz.Pink**.
 - :calendar: **Character & Arc Planners** - Plan and track levelling and ascension progress.
 - :school_satchel: **Inventory Tracker** - Keep account of every usable item - owned/required/acquired.
   Comes with a variety of ways to Filter, Group and Sort items just the way you need it.
+- :game_die: **Pull Tracker** - Keep a record of all your pulls across both the limited banners and the permanent banner, with a handy pity counter and stats for those nerds.
 - :bookmark_tabs: **Daily/Weekly/Bi-Weekly Checklist** - You will never miss earning even a single fon.
   Ever. Trust. :heart:
 - :computer: **Local Storage** - Works fully offline out of the box, no account needed. Everything

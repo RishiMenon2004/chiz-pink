@@ -1,8 +1,8 @@
 import type { Material } from "@/types/item"
 
-import { annulith, EnumMaterialType } from "./materials"
-
+import { EnumMaterialType } from "./materials"
 import {
+	annulith,
 	beetleCoin,
 	fons,
 	goodBoyStamp,
@@ -182,4 +182,10 @@ export function getInventoryMaterialsList() {
 
 export function findMaterial(materialId: string) {
 	return allMaterials[materialId]
+}
+
+export function findMaterialByName(materialName: string) {
+	return allInventoryMaterialsList.find(
+		(material) => material.name === materialName
+	)
 }

@@ -15,4 +15,7 @@ export {
 	getInventoryMaterials,
 	getInventoryMaterialsList,
 	findMaterial,
+	findMaterialByName,
+	findReward,
+	findRewardByName,
 } from "./materialLists"

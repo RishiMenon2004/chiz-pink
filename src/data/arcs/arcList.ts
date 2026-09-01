@@ -435,6 +435,51 @@ const allArcs: Record<string, Arc> = {
 		},
 	},
 
+	ready_ready: {
+		isFeatured: true,
+		id: "ready_ready",
+		imageSrc: "ready_ready.webp",
+		name: "Ready-Ready",
+		description:
+			"Hold me close, embrace the courage and resolve that transcends the fallen—I salute you, great Tiger warriors.",
+		rarity: EnumRarity.Epic,
+		type: EnumArcType.Plasma,
+		baseAtk: 37,
+		mainAttribute: {
+			attribute: EnumStatAttribute.CritRate,
+			baseValue: 0.096,
+		},
+		ascensionMaterialSet1: ascMuiscSet,
+		ascensionMaterialSet2: ascWhispersSet,
+		effect: {
+			name: "Ready-Ready",
+			description:
+				"Increases ATK by <dn>{0}</>.\nIncreases Basic Atack and Critical Riposte damage by <dn>{0}</> for <dn>15</>s when casting a Redirect Skill or Ultimate, up to <dn>2</> stacks.\nGrants a Left Tiger Talisman when casting Redirect Skill and a Right Tiger Talisman when casting Ultimate.\nUnlocks Commander Tiger Talisman if the wearer obtains the other type of talisman within <dn>15</> of gaining one.\nArc Commander Tiger Talisman — Increases the wearer's damage to Bosses by <dn>{1}</> for <dn>10</>s.",
+			values: {
+				"1": [
+					{ type: "Percent", value: 0.15 },
+					{ type: "Percent", value: 0.1 },
+				],
+				"2": [
+					{ type: "Percent", value: 0.1875 },
+					{ type: "Percent", value: 0.125 },
+				],
+				"3": [
+					{ type: "Percent", value: 0.225 },
+					{ type: "Percent", value: 0.15 },
+				],
+				"4": [
+					{ type: "Percent", value: 0.2625 },
+					{ type: "Percent", value: 0.175 },
+				],
+				"5": [
+					{ type: "Percent", value: 0.3 },
+					{ type: "Percent", value: 0.2 },
+				],
+			},
+		},
+	},
+
 	song_of_the_whale: {
 		id: "song_of_the_whale",
 		imageSrc: "song_of_the_whale.webp",
@@ -1009,50 +1054,6 @@ const allArcs: Record<string, Arc> = {
 					{ type: "Percent", value: 0.032 },
 					{ type: "Percent", value: 0.2 },
 					{ type: "Percent", value: 0.032 },
-				],
-			},
-		},
-	},
-
-	ready_ready: {
-		id: "ready_ready",
-		imageSrc: "ready_ready.webp",
-		name: "Ready-Ready",
-		description:
-			"Hold me close, embrace the courage and resolve that transcends the fallen—I salute you, great Tiger warriors.",
-		rarity: EnumRarity.Epic,
-		type: EnumArcType.Plasma,
-		baseAtk: 37,
-		mainAttribute: {
-			attribute: EnumStatAttribute.CritRate,
-			baseValue: 0.096,
-		},
-		ascensionMaterialSet1: ascMuiscSet,
-		ascensionMaterialSet2: ascWhispersSet,
-		effect: {
-			name: "Ready-Ready",
-			description:
-				"Increases ATK by <dn>{0}</>.\nIncreases Basic Atack and Critical Riposte damage by <dn>{0}</> for <dn>15</>s when casting a Redirect Skill or Ultimate, up to <dn>2</> stacks.\nGrants a Left Tiger Talisman when casting Redirect Skill and a Right Tiger Talisman when casting Ultimate.\nUnlocks Commander Tiger Talisman if the wearer obtains the other type of talisman within <dn>15</> of gaining one.\nArc Commander Tiger Talisman — Increases the wearer's damage to Bosses by <dn>{1}</> for <dn>10</>s.",
-			values: {
-				"1": [
-					{ type: "Percent", value: 0.15 },
-					{ type: "Percent", value: 0.1 },
-				],
-				"2": [
-					{ type: "Percent", value: 0.1875 },
-					{ type: "Percent", value: 0.125 },
-				],
-				"3": [
-					{ type: "Percent", value: 0.225 },
-					{ type: "Percent", value: 0.15 },
-				],
-				"4": [
-					{ type: "Percent", value: 0.2625 },
-					{ type: "Percent", value: 0.175 },
-				],
-				"5": [
-					{ type: "Percent", value: 0.3 },
-					{ type: "Percent", value: 0.2 },
 				],
 			},
 		},
@@ -1693,7 +1694,7 @@ const allArcs: Record<string, Arc> = {
 	real_music: {
 		id: "real_music",
 		imageSrc: "real_music.webp",
-		name: "Real Music",
+		name: '"Real Music"',
 		description:
 			'Waddaya mean ya prefer "real music"? Is this not "real" enough for yer taste?',
 		rarity: EnumRarity.Uncommon,
@@ -1837,12 +1838,16 @@ export function getAllArcs() {
 	return allArcs
 }
 
-const allArcsArray = Object.values(allArcs)
+const allArcsList = Object.values(allArcs)
 
 export function getAllArcsList() {
-	return allArcsArray
+	return allArcsList
 }
 
 export function findArc(arcId: string) {
 	return allArcs[arcId]
+}
+
+export function findArcByName(arcName: string) {
+	return allArcsList.find((arc) => arc.name === arcName)
 }

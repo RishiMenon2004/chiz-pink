@@ -18,6 +18,8 @@ import type {
 } from "@/types/inventory"
 import type { CharacterRecord, WeaponRecord } from "@/types/planner"
 import { SettingsRecord } from "@/types/settings"
+import { PullsRecord } from "@/types/pulls"
+import { EventData } from "@/data/activities/events"
 
 export const PlannerMaterialsContext = createContext<CumulativeInventory[]>([])
 export function usePlannerMaterialsContext() {
@@ -95,4 +97,13 @@ export function useCloudSyncContext() {
 export const SettingsConfigContext = createContext<SettingsRecord>(null!)
 export function useSettingsConfigContext() {
 	return useContext(SettingsConfigContext)
+}
+
+export const PullTrackerContext = createContext<{
+	selectedBanner: keyof PullsRecord
+	setSelectedBanner: Dispatch<SetStateAction<keyof PullsRecord>>
+	gachaBanners: EventData[]
+}>(null!)
+export function usePullTrackerContext() {
+	return useContext(PullTrackerContext)
 }

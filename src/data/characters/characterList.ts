@@ -54,12 +54,16 @@ export function getAllCharacters() {
 	return allCharacters
 }
 
-const allCharactersArray = Object.values(allCharacters)
+const allCharactersList = Object.values(allCharacters)
 
 export function getAllCharactersList() {
-	return allCharactersArray
+	return allCharactersList
 }
 
 export function findCharacter(charId: string) {
 	return allCharacters[charId]
+}
+
+export function findCharacterByName(characterName: string) {
+	return allCharactersList.find((character) => character.name === characterName)
 }

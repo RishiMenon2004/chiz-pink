@@ -20,6 +20,7 @@ export function getServerTimestamp(
 		day: number
 		hour?: number
 		minute?: number
+		second?: number
 	}
 ): number {
 	const offsetMs = SERVER_UTC_OFFSET_HOURS[server] * 60 * 60 * 1000
@@ -33,9 +34,10 @@ export function getUtcTimestamp(wallClock: {
 	day: number
 	hour?: number
 	minute?: number
+	second?: number
 }): number {
-	const { year, month, day, hour = 0, minute = 0 } = wallClock
-	return Date.UTC(year, month - 1, day, hour, minute)
+	const { year, month, day, hour = 0, minute = 0, second = 0 } = wallClock
+	return Date.UTC(year, month - 1, day, hour, minute, second)
 }
 
 function formatUtcOffset(offsetHours: number): string {
