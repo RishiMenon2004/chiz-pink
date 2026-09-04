@@ -1,0 +1,69 @@
+.section {
+	padding: 0.25rem;
+	border-radius: 1.5rem;
+	display: flex;
+	flex-direction: column;
+	container-type: inline-size;
+
+	.sectionTitleRow {
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		flex-wrap: wrap;
+		gap: 0.25rem 0.75rem;
+		margin: 0.5rem 1rem;
+		color: black;
+	}
+}
+
+.sectionTitle {
+	color: var(--interactive-bg);
+	font-size: 1.5rem;
+	font-weight: 725;
+	text-transform: uppercase;
+
+	user-select: none;
+}
+
+.importSection {
+	grid-row: 2;
+
+	.importFileDrop {
+		aspect-ratio: 4 / 1;
+		border-radius: 1.25rem;
+	}
+
+	.importButton {
+		margin: 0.5rem;
+	}
+
+	.importMessageBox {
+		border-radius: 1.25rem;
+		padding: 0.5rem;
+		display: flex;
+		flex-direction: column;
+		gap: 0.5rem;
+		& > p {
+			padding: 0.25em 0.75em;
+			background-color: var(--pink);
+			border-radius: 0.75em;
+
+			font-size: 1.1rem;
+			font-family: var(--font-barlow-condensed);
+			paint-order: stroke fill;
+			-webkit-text-stroke: 2px black;
+		}
+	}
+}
+
+@media (max-width: 1220px) {
+	.importSection {
+		grid-row: unset;
+	}
+}
+
+@media (max-width: 550px) {
+	.sectionTitle {
+		font-size: 1rem;
+	}
+}

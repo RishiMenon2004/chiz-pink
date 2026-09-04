@@ -7,6 +7,6 @@ export const metadata: Metadata = {
 	title: RoutesData["/pulls"].head,
 }
 
-export default function Planner() {
+export default function Pulls() {
 	return <RenderPulls />
 }

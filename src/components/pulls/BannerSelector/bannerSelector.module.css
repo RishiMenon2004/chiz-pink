@@ -1,0 +1,139 @@
+.bannerSelection {
+	grid-column: 1 / -1;
+	display: flex;
+	/* max-width: fit-content; */
+	flex-direction: row;
+	gap: 1rem;
+
+	overflow-x: auto;
+	scrollbar-width: none;
+	border-radius: 0.5rem;
+
+	padding-inline: 0.75rem;
+
+	mask-image: linear-gradient(
+		to right,
+		transparent,
+		white 1rem calc(100% - 1rem),
+		transparent
+	);
+
+	width: 100%;
+
+	.bannerSelect {
+		border-radius: calc(0.5rem + 2px);
+		--start-color: oklch(
+			from var(--theme-color) calc(l + 0.4) c calc(h + 30)
+		);
+		background-image:
+			linear-gradient(
+				to right,
+				var(--start-color) -30%,
+				var(--theme-color) 10%,
+				transparent 75%
+			),
+			var(--bg-image);
+		background-size: cover;
+		background-position: center top var(--offset);
+		background-repeat: no-repeat;
+		padding: 0.5rem 0.5rem;
+		aspect-ratio: 4 / 1;
+
+		height: 4rem;
+		text-wrap-mode: nowrap;
+
+		display: flex;
+		flex-direction: column;
+		justify-content: space-between;
+		gap: 0.25rem;
+
+		outline: 1px solid var(--outline-color);
+		outline-offset: -1px;
+
+		cursor: var(--pointer-cursor);
+
+		flex-grow: 0.5;
+
+		transition-property: background-position-y, flex-grow, border-radius;
+		transition-duration: 150ms;
+		transition-timing-function: ease-out, ease-out, var(--ease-in-out-back);
+
+		&[data-type="arc"] {
+			background-position: center right;
+			background-size: 100%, 50%;
+			background-color: color-mix(
+				in srgb,
+				var(--theme-color),
+				var(--interactive-bg) 75%
+			);
+		}
+
+		&[data-type="limited"] {
+			--theme-color: #006fe2;
+			--bg-image: url("/events/gacha_permanent.webp");
+			justify-content: end;
+		}
+
+		&[data-type="arc"] {
+			background-position-y: top 30%;
+		}
+
+		&:hover:not(.selected) {
+			flex-grow: 0.75;
+		}
+
+		&.selected {
+			flex-grow: 1;
+			border-radius: 1rem;
+		}
+
+		@media (max-width: 1110px) {
+			flex-grow: unset;
+			aspect-ratio: 4 / 1;
+			transition-property:
+				background-position-y, aspect-ratio, border-radius;
+
+			&:hover:not(.selected) {
+				aspect-ratio: 5 / 1;
+			}
+
+			&.selected {
+				aspect-ratio: 6 / 1;
+			}
+		}
+
+		paint-order: stroke fill;
+		-webkit-text-stroke: 3px black;
+	}
+}
+
+.bannerName {
+	font-weight: 700;
+}
+
+.timeRemaining {
+	font-family: var(--font-barlow-condensed);
+	font-style: italic;
+	font-size: 0.8em;
+
+	background-color: rgba(0, 0, 0, 0.375);
+	width: fit-content;
+	border-radius: 100vh;
+	padding: 0.125rem;
+	padding-inline: 0.75rem;
+}
+
+@media (max-width: 800px) {
+	.bannerSelection {
+		.bannerSelect {
+			height: 3rem;
+			font-size: 0.8rem;
+			border-radius: 0.5rem;
+
+			&.selected {
+				border-radius: 0.7rem;
+				aspect-ratio: 5 / 1;
+			}
+		}
+	}
+}
