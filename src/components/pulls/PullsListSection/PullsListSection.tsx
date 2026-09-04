@@ -1,6 +1,6 @@
 "use client"
 
-import { CSSProperties, useEffect, useMemo, useState } from "react"
+import { CSSProperties, useEffect, useMemo, useRef, useState } from "react"
 import Image from "next/image"
 
 import { Item } from "@/types/item"
@@ -10,17 +10,12 @@ import { SettingsRecord } from "@/types/settings"
 import { EnumRarity, findReward, getItemRarityStyle } from "@/data/items"
 import { findArc } from "@/data/arcs"
 import { findCharacter } from "@/data/characters"
-import {
-	EventData,
-} from "@/data/activities/events"
+import { EventData } from "@/data/activities/events"
 import { arcBanners, permanentBanner } from "@/data/activities/banners"
 
 import { useGachaStore } from "@/hooks"
 
-import {
-	usePullTrackerContext,
-	useSettingsConfigContext,
-} from "@/contexts"
+import { usePullTrackerContext, useSettingsConfigContext } from "@/contexts"
 
 import styles from "./pullsListSection.module.css"
 
@@ -186,6 +181,9 @@ export function PullsListSection() {
 	} = useSettingsConfigContext()
 
 	const [page, setPage] = useState<number>(0)
+	const [pageInput, setPageInput] = useState<string>("")
+	const [inputWidth, setInputWidth] = useState<number>(0)
+	const measureRef = useRef<HTMLSpanElement>(null)
 	const [mounted, setMounted] = useState(false)
 
 	useEffect(() => {
@@ -197,7 +195,6 @@ export function PullsListSection() {
 		// eslint-disable-next-line react-hooks/set-state-in-effect
 		setPage(0)
 	}, [selectedBanner])
-
 	const pullsPerPage = 10
 
 	const pulls: MiracleBoxPull[] | ScarboroughFairPull[] = useMemo(
@@ -335,6 +332,17 @@ export function PullsListSection() {
 	const pageEnd = pageStart + pullsPerPage
 	const pageRows = rows.slice(pageStart, pageEnd)
 
+	useEffect(() => {
+		// eslint-disable-next-line react-hooks/set-state-in-effect
+		setPageInput(String(clampedPage + 1))
+	}, [clampedPage])
+
+	useEffect(() => {
+		if (measureRef.current) {
+			setInputWidth(measureRef.current.offsetWidth)
+		}
+	}, [pageInput])
+
 	return (
 		<div
 			className={`metallic-panel ${styles.section} ${styles.pullsSection}`}>
@@ -383,8 +391,9 @@ export function PullsListSection() {
 				})}
 			</div>
 			{mounted && (
-				<>
+				<div className={styles.pageChangeRow}>
 					<button
+						className={`pill-button ${styles.pageChangeBtn}`}
 						data-type="prev"
 						disabled={clampedPage === 0}
 						onClick={(e) => {
@@ -393,10 +402,46 @@ export function PullsListSection() {
 								return Math.max(current - 1, 0)
 							})
 						}}>
-						Prev
+						PREV
 					</button>
-					<span>{clampedPage + 1}</span>
+					<div className={`inset-control ${styles.pageChangeCounter}`}>
+						<span
+							ref={measureRef}
+							className={styles.pageChangeMeasure}>
+							{pageInput || "0"}
+						</span>
+						<input
+							className={styles.pageChangeInput}
+							type="text"
+							inputMode="numeric"
+							value={pageInput}
+							style={{ width: inputWidth + 4 || "1ch" }}
+							onChange={(e) => {
+								setPageInput(e.target.value)
+							}}
+							onBlur={() => {
+								const parsed = parseInt(pageInput, 10)
+								if (!isNaN(parsed)) {
+									setPage(
+										Math.min(
+											Math.max(parsed - 1, 0),
+											maxPages
+										)
+									)
+								} else {
+									setPageInput(String(clampedPage + 1))
+								}
+							}}
+							onKeyDown={(e) => {
+								if (e.key === "Enter") {
+									;(e.target as HTMLInputElement).blur()
+								}
+							}}
+						/>
+						<span> / {maxPages + 1}</span>
+					</div>
 					<button
+						className={`pill-button ${styles.pageChangeBtn}`}
 						data-type="next"
 						disabled={clampedPage === maxPages}
 						onClick={(e) => {
@@ -405,9 +450,9 @@ export function PullsListSection() {
 								return Math.min(current + 1, maxPages)
 							})
 						}}>
-						Next
+						NEXT
 					</button>
-				</>
+				</div>
 			)}
 		</div>
 	)
