@@ -37,6 +37,8 @@
 	padding-top: 0;
 	border-radius: 1.25rem;
 	overflow: hidden;
+
+	flex-grow: 1;
 }
 
 .listHeader {

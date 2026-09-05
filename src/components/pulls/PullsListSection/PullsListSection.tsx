@@ -389,6 +389,9 @@ export function PullsListSection() {
 						/>
 					)
 				})}
+				{pageRows.length <= 0 && (
+					<div className={styles.bannerDivider}>No Pull History</div>
+				)}
 			</div>
 			{mounted && (
 				<div className={styles.pageChangeRow}>
