@@ -66,12 +66,17 @@ export type ImportedPull = {
 	quantity?: number
 }
 
+export type ImportMessage = {
+	message: string
+	status: "warn" | "info" | "error"
+}
+
 export type ImportedPullsResult = {
 	bannerType: "permanent" | "limited" | "arc" | "unknown"
 	bannerName: string
 	server: SettingsRecord["userdata"]["server"] | "unknown"
 	pulls: ImportedPull[]
-	messages: string[]
+	messages: ImportMessage[]
 }
 
 export type MiracleBoxPull = {

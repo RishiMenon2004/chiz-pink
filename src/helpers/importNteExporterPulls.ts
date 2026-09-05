@@ -10,6 +10,7 @@ import {
 	NteExporterData,
 	NteExporterRecord,
 	PullsRecord,
+	ImportMessage,
 } from "@/types/pulls"
 import { getServerTimestamp } from "./serverTime"
 import { readSettings } from "@/hooks/useSettingsStore"
@@ -41,22 +42,35 @@ export function parseNteExporterImport(
 	data: NteExporterData
 ): ImportedPullsResult {
 	let bannerType: ImportedPullsResult["bannerType"]
-	const messages: string[] = []
+	const messages: ImportMessage[] = []
 	switch (data.banner.id) {
 		case "Arc_MiracleBox":
 			bannerType = "arc"
-			messages.push("Arc Miracle Box Detected")
+			messages.push({
+				message: "Parsed Arc Miracle Box History",
+				status: "info",
+			})
 			break
 		case "Lottery_LimitedCharacter":
 			bannerType = "limited"
-			messages.push("Limited Character Banner Detected")
+			messages.push({
+				message: "Parsed Limited Character Banner History",
+				status: "info",
+			})
 			break
 		case "Lottery_Permanent":
 			bannerType = "permanent"
-			messages.push("Permanent Banner Detected")
+			messages.push({
+				message: "Parsed Permanent Banner History",
+				status: "info",
+			})
 			break
 		default:
 			bannerType = "unknown"
+			messages.push({
+				message: "Can't read banner type",
+				status: "error"
+			})
 			break
 	}
 
@@ -76,91 +90,106 @@ export function parseNteExporterImport(
 			break
 		default:
 			server = "unknown"
-			messages.push(
-				"Unrecognised server detected in file. Using configured server instead."
-			)
+			messages.push({
+				message:
+					"Unrecognised server detected in file. Using configured server instead.",
+				status: "warn",
+			})
 			break
 	}
 
 	let pullCounter = 0
-	const pulls: ImportedPull[] = data.records.map((record, _, array) => {
-		const [datePart, timePart] = record.timestamp.split(" ")
-		const [year, month, day] = datePart.split("-").map(Number)
-		const [hour, minute, second] = timePart.split(":").map(Number)
-
-		const timestamp = getServerTimestamp(
-			server === "unknown" ? readSettings().userdata.server : server,
-			{
-				year,
-				month,
-				day,
-				hour,
-				minute,
-				second,
+	const pulls: ImportedPull[] = data.records
+		.toSorted((recordA, recordB) => {
+			if (recordA.timestamp !== recordB.timestamp) {
+				return recordA.timestamp < recordB.timestamp ? 1 : -1
 			}
-		)
+			return (
+				recordA.timestamp_group_ordinal - recordB.timestamp_group_ordinal
+			)
+		})
+		.map((record, _, array) => {
+			const [datePart, timePart] = record.timestamp.split(" ")
+			const [year, month, day] = datePart.split("-").map(Number)
+			const [hour, minute, second] = timePart.split(":").map(Number)
 
-		let rank: EnumRarity
+			const timestamp = getServerTimestamp(
+				server === "unknown" ? readSettings().userdata.server : server,
+				{
+					year,
+					month,
+					day,
+					hour,
+					minute,
+					second,
+				}
+			)
 
-		switch (record.reward_rank) {
-			case "B":
-				rank = EnumRarity.Uncommon
-				break
-			case "A":
-				rank = EnumRarity.Rare
-				break
-			case "S":
-				rank = EnumRarity.Epic
-				break
-		}
+			let rank: EnumRarity
 
-		let rewardId: string = record.reward_name
+			switch (record.reward_rank) {
+				case "B":
+					rank = EnumRarity.Uncommon
+					break
+				case "A":
+					rank = EnumRarity.Rare
+					break
+				case "S":
+					rank = EnumRarity.Epic
+					break
+			}
 
-		switch (record.reward_type) {
-			case "arc":
-				rewardId =
-					findArcByName(record.reward_name)?.id ?? record.reward_name
-				break
-			case "character":
-				rewardId =
-					findCharacterByName(record.reward_name)?.id ??
-					record.reward_name
-				break
-			case "item":
-			case "cosmetic":
-				rewardId =
-					findRewardByName(record.reward_name)?.id ?? record.reward_name
-				break
-		}
+			let rewardId: string = record.reward_name
 
-		const resultType: ImportedPull["resultType"] =
-			RESULT_TYPE_MAP[record.result_type ?? "dice"]
+			switch (record.reward_type) {
+				case "arc":
+					rewardId =
+						findArcByName(record.reward_name)?.id ??
+						record.reward_name
+					break
+				case "character":
+					rewardId =
+						findCharacterByName(record.reward_name)?.id ??
+						record.reward_name
+					break
+				case "item":
+				case "cosmetic":
+					rewardId =
+						findRewardByName(record.reward_name)?.id ??
+						record.reward_name
+					break
+			}
 
-		// Arc pulls come in groups of 10, so pullIndex is the position within
-		// the group (timestamp_group_ordinal). Scarborough Fair pulls use the
-		// dice roll count instead.
-		let pullIndex: number
-		if (bannerType === "arc") {
-			pullIndex = array.length - pullCounter
-		} else {
-			const diceRolls = array.filter((roll) => roll.result_type === "dice")
-			pullIndex =
-				resultType === "dice" ? diceRolls.length - pullCounter : -1
-		}
-		pullCounter += resultType === "dice" ? 1 : 0
+			const resultType: ImportedPull["resultType"] =
+				RESULT_TYPE_MAP[record.result_type ?? "dice"]
 
-		return {
-			uid: record.uid,
-			pullIndex,
-			timestamp,
-			rank,
-			rewardId,
-			rewardType: record.reward_type,
-			resultType,
-			diceRoll: record.roll_result,
-			quantity: record.quantity,
-		} satisfies ImportedPull
-	})
+			// Arc pulls come in groups of 10, so pullIndex is the position within
+			// the group (timestamp_group_ordinal). Scarborough Fair pulls use the
+			// dice roll count instead.
+			let pullIndex: number
+			if (bannerType === "arc") {
+				pullIndex = array.length - pullCounter
+			} else {
+				const diceRolls = array.filter(
+					(roll) => roll.result_type === "dice"
+				)
+				pullIndex =
+					resultType === "dice" ? diceRolls.length - pullCounter : -1
+			}
+			pullCounter += resultType === "dice" ? 1 : 0
+
+			return {
+				uid: record.uid,
+				pullIndex,
+				timestamp,
+				rank,
+				rewardId,
+				rewardType: record.reward_type,
+				resultType,
+				diceRoll: record.roll_result,
+				quantity: record.quantity,
+			} satisfies ImportedPull
+		})
 
 	return {
 		server,
@@ -177,9 +206,7 @@ export function isScarboroughPull(
 	return "diceRoll" in pull
 }
 
-export function importParsedPulls(
-	result: ImportedPullsResult
-): ReturnType<typeof gachaPullsActions.addPulls> {
+export function importParsedPulls(result: ImportedPullsResult): ImportMessage[] {
 	let bannerType: keyof PullsRecord
 	switch (result.bannerType) {
 		case "permanent":
@@ -192,10 +219,7 @@ export function importParsedPulls(
 			bannerType = "arcsBanner"
 			break
 		case "unknown":
-			return {
-				status: "error",
-				messages: ["Unrecognised Banner Type"],
-			}
+			return [{ message: "Unrecognised Banner Type", status: "error" }]
 	}
 
 	const pulls: MiracleBoxPull[] | ScarboroughFairPull[] = result.pulls.map(
@@ -222,5 +246,5 @@ export function importParsedPulls(
 		}
 	)
 
-	return gachaPullsActions.addPulls(pulls, bannerType)
+	return gachaPullsActions.addPulls(pulls, bannerType).messages
 }

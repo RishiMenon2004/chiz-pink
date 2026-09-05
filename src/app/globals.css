@@ -31,7 +31,7 @@
 	--shadow-bevel-dark-60: hsla(0, 0%, 70%, 0.6);
 	--shadow-bevel-light-40: hsla(0, 0%, 85%, 0.4);
 
-	--shadow-hover-glow: hsla(0, 0%, 18%, 0.9);
+	--shadow-hover: hsla(0, 0%, 18%, 0.9);
 	--shadow-glow-white-80: hsla(0, 0%, 100%, 0.8);
 	--shadow-glow-white-60: hsla(0, 0%, 100%, 0.6);
 	--shadow-glow-white-40: hsla(0, 0%, 100%, 0.4);
@@ -43,18 +43,27 @@
 		var(--shadow-dark-30) 0px 1px 3px -1px inset; /* Inner Shadow */
 
 	--shadow-button:
-		var(--interactive-bg) 0px 0px 0px 0.175rem /* Button Slot Gap */,
-		var(--shadow-dark-60) 0px -1px 2px 0.175rem /* Button Slot Shadow */,
-		var(--shadow-glow-white-80) 0px 1px 1px 0.175rem /* Button Slot Highlight */,
-		var(--shadow-bevel-dark) -0.5px -0.5px 0.5px 0.5px inset /* Button Bevel Shadow */,
+		var(--shadow-bevel-dark) -0.5px -0.5px 0.5px 0.5px inset
+			/* Button Bevel Shadow */,
 		var(--shadow-bevel-light) 0.5px 0.5px 0.5px 0.5px inset; /* Button Bevel Highlight */
 
 	--shadow-button-hover:
+		var(--shadow-hover) 0px -2px 2px -2px inset /* Button Bevel Shadow */,
+		var(--shadow-glow-white-40) 2px 3px 3px -2px inset; /* Button Bevel Highlight */
+
+	--shadow-button-inset:
 		var(--interactive-bg) 0px 0px 0px 0.175rem /* Button Slot Gap */,
 		var(--shadow-dark-60) 0px -1px 2px 0.175rem /* Button Slot Shadow */,
-		var(--shadow-glow-white-80) 0px 1px 1px 0.175rem /* Button Slot Highlight */,
-		var(--shadow-hover-glow) 0px -2px 5px -2px inset /* Button Bevel Shadow */,
-		var(--shadow-glow-white-80) 2px 3px 5px -2px inset; /* Button Bevel Highlight */
+		var(--shadow-glow-white-80) 0px 1px 1px 0.175rem
+			/* Button Slot Highlight */,
+		var(--shadow-button);
+
+	--shadow-button-inset-hover:
+		var(--interactive-bg) 0px 0px 0px 0.175rem /* Button Slot Gap */,
+		var(--shadow-dark-60) 0px -1px 2px 0.175rem /* Button Slot Shadow */,
+		var(--shadow-glow-white-80) 0px 1px 1px 0.175rem
+			/* Button Slot Highlight */,
+		var(--shadow-button-hover);
 
 	--shadow-metallic-panel:
 		0px -8px 15px -2px var(--shadow-underlight-1) inset /* Bounce light */,
@@ -298,21 +307,39 @@ button {
 
 	background-color: var(--button-background);
 
-	box-shadow: var(--shadow-button);
+	box-shadow: var(--shadow-button-inset);
 
 	cursor: var(--pointer-cursor);
 
-	&:hover,
-	&:focus,
-	&:focus-visible {
-		outline: none;
+	position: relative;
 
-		paint-order: stroke fill;
-		color: var(--foreground);
-		-webkit-text-stroke: 2px black;
+	&:not(:disabled) {
+		&:hover,
+		&:focus,
+		&:focus-visible {
+			outline: none;
 
-		background-color: var(--hover-color, var(--pink));
-		box-shadow: var(--shadow-button-hover);
+			paint-order: stroke fill;
+			color: var(--foreground);
+			-webkit-text-stroke: 2px black;
+
+			background-color: var(--hover-color, var(--pink));
+			box-shadow: var(--shadow-button-inset-hover);
+		}
+	}
+
+	&:disabled {
+		cursor: not-allowed;
+
+		&::after {
+			content: "";
+			position: absolute;
+			inset: 0;
+			border-radius: inherit;
+			z-index: 1;
+			background-color: var(--white);
+			opacity: 0.5;
+		}
 	}
 
 	@media (max-width: 550px) {

@@ -4,7 +4,12 @@ import { useSyncExternalStore } from "react"
 import { isInitialSyncPending } from "@/helpers/syncGate"
 
 import { safeParse } from "@/helpers/dataCorruption"
-import { MiracleBoxPull, ScarboroughFairPull, PullsRecord } from "@/types/pulls"
+import {
+	MiracleBoxPull,
+	ScarboroughFairPull,
+	PullsRecord,
+	ImportMessage,
+} from "@/types/pulls"
 
 let cachedPulls: PullsRecord = {
 	arcsBanner: {},
@@ -27,7 +32,7 @@ export const gachaPullsActions = {
 	) {
 		const response: {
 			status: "pending" | "error" | "success"
-			messages: string[]
+			messages: ImportMessage[]
 		} = {
 			status: "pending",
 			messages: [],
@@ -64,13 +69,17 @@ export const gachaPullsActions = {
 			window.dispatchEvent(new Event("local-storage-update"))
 			response.status = "success"
 			const skippedLength = pulls.length - filtedtedPulls.length
-			response.messages.push(
-				`Imported ${filtedtedPulls.length} pulls.${(skippedLength > 0 && ` (Skipped ${skippedLength} existing pulls.)`) || ""}`
-			)
+			response.messages.push({
+				message: `Imported ${filtedtedPulls.length} pulls.${(skippedLength > 0 && ` (Skipped ${skippedLength} existing pulls.)`) || ""}`,
+				status: "info",
+			})
 		} catch (err) {
 			console.error("Local Storage Error:", err)
 			response.status = "error"
-			response.messages.push(`Local Storage Error: ${err}`)
+			response.messages.push({
+				message: `Local Storage Error: ${err}`,
+				status: "error",
+			})
 		}
 
 		return response
