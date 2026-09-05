@@ -9,7 +9,7 @@
 		border: none;
 		border-radius: 100vh;
 		background-color: var(--interactive-bg);
-		margin-inline: 0.5rem;
+		margin: 0.5rem;
 		height: 3px;
 
 		opacity: 0.5;

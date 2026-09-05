@@ -108,12 +108,12 @@ export function ImportSection() {
 				<div className={styles.sectionTitle}>Import</div>
 				<div>
 					{"Export your pull history using: "}
-					<a href="https://github.com/RishiMenon2004/nte-exporter/releases/latest" target="_blank">
+					<a
+						href="https://github.com/RishiMenon2004/nte-exporter/releases/latest"
+						target="_blank">
 						NTE History Exporter
 					</a>
-					{
-						". Then import them here to see your pull history and pity."
-					}
+					{". Then import them here to see your pull history and pity."}
 				</div>
 			</div>
 			<div
@@ -178,6 +178,11 @@ export function ImportSection() {
 				}}>
 				Import {parsedData?.pulls.length ?? 0} Pulls
 			</button>
+			<hr/>
+			<div className={styles.sectionTitleRow}>
+				<div className={styles.sectionTitle}>Manual</div>
+				Coming soon!
+			</div>
 		</div>
 	)
 }
