@@ -4,56 +4,21 @@ import { CSSProperties, useEffect, useMemo, useRef, useState } from "react"
 import Image from "next/image"
 
 import { Item } from "@/types/item"
-import { ScarboroughFairPull, MiracleBoxPull, PullsRecord } from "@/types/pulls"
-import { SettingsRecord } from "@/types/settings"
+import { ScarboroughFairPull, MiracleBoxPull } from "@/types/pulls"
 
 import { EnumRarity, findReward, getItemRarityStyle } from "@/data/items"
 import { findArc } from "@/data/arcs"
 import { findCharacter } from "@/data/characters"
-import { EventData } from "@/data/activities/events"
 import { arcBanners, permanentBanner } from "@/data/activities/banners"
 
-import { useGachaStore } from "@/hooks"
+import {
+	isScarboroughPull,
+	isRateUp,
+} from "@/helpers"
 
 import { usePullTrackerContext, useSettingsConfigContext } from "@/contexts"
 
 import styles from "./pullsListSection.module.css"
-
-function isScarboroughPull(
-	pull: MiracleBoxPull | ScarboroughFairPull
-): pull is ScarboroughFairPull {
-	return pull && "diceRoll" in pull && typeof pull.diceRoll === "number"
-}
-
-const isRateUp = (
-	selectedBanner: keyof PullsRecord,
-	gachaBanners: EventData[],
-	pull: MiracleBoxPull | ScarboroughFairPull,
-	server: SettingsRecord["userdata"]["server"]
-) => {
-	switch (selectedBanner) {
-		case "arcsBanner": {
-			const banner = arcBanners.find((b) => {
-				return (
-					b.getStartDate() < pull.timestamp &&
-					b.getEndDate() > pull.timestamp
-				)
-			})
-			return banner?.rateupItem === pull.rewardId
-		}
-		case "limitedBanner": {
-			const banner = gachaBanners.find((b) => {
-				return (
-					b.getStartDate(server) < pull.timestamp &&
-					b.getEndDate(server) > pull.timestamp
-				)
-			})
-			return banner?.rateupItem === pull.rewardId
-		}
-		case "permanentBanner":
-			return permanentBanner.rateupItems.includes(pull.rewardId)
-	}
-}
 
 function DiceRoll({ pull }: { pull: MiracleBoxPull | ScarboroughFairPull }) {
 	const { selectedBanner } = usePullTrackerContext()
@@ -174,8 +139,8 @@ function PullEntry({
 }
 
 export function PullsListSection() {
-	const { gachaPulls } = useGachaStore()
-	const { selectedBanner, gachaBanners } = usePullTrackerContext()
+	const { selectedBanner, gachaBanners, pulls, pityMap } =
+		usePullTrackerContext()
 	const {
 		userdata: { server },
 	} = useSettingsConfigContext()
@@ -196,80 +161,6 @@ export function PullsListSection() {
 		setPage(0)
 	}, [selectedBanner])
 	const pullsPerPage = 10
-
-	const pulls: MiracleBoxPull[] | ScarboroughFairPull[] = useMemo(
-		() => Object.values(gachaPulls[selectedBanner]) ?? [],
-		[gachaPulls, selectedBanner]
-	)
-
-	const pityMap = useMemo(() => {
-		const pityMap = new Map<string, number>()
-
-		// Arc Banner: count pity in groups of 10
-		if (selectedBanner === "arcsBanner") {
-			let lastRateUpGroupIndex = 0
-			let groupIndex = 0
-			let lastRateUpGroupPity = 0
-
-			for (let i = pulls.length - 1; i >= 0; i--) {
-				const pull = pulls[i]
-				// start group index from 0
-				const pullGroupIndex = Math.ceil(
-					(pulls.length - i) / pullsPerPage
-				)
-
-				// When entering a new group
-				if (pullGroupIndex !== groupIndex) {
-					groupIndex = pullGroupIndex
-				}
-
-				if (isRateUp(selectedBanner, gachaBanners, pull, server)) {
-					// Rate-up shows the group pity it was pulled at
-					const groupPity = (groupIndex - lastRateUpGroupIndex) * 10
-					pityMap.set(pull.uid, groupPity)
-					lastRateUpGroupPity = groupPity
-					lastRateUpGroupIndex = groupIndex
-					continue
-				}
-
-				let groupPity: number
-				if (groupIndex === lastRateUpGroupIndex) {
-					// keep same pity as rate-up for pulls after the rate-up pull
-					groupPity = lastRateUpGroupPity
-				} else if (groupIndex === lastRateUpGroupIndex + 1) {
-					// reset pity after rate-up pull
-					groupPity = 10
-				} else {
-					// count up normally from 0 from the last rate-up pull
-					groupPity = (groupIndex - lastRateUpGroupIndex) * 10
-				}
-				pityMap.set(pull.uid, groupPity)
-			}
-		} else {
-			// Limited/Permanent Banner: count pity normally
-			let pityCounter = 1
-
-			for (let i = pulls.length - 1; i >= 0; i--) {
-				const pull = pulls[i]
-				const isScarborough = isScarboroughPull(pull)
-
-				if (isRateUp(selectedBanner, gachaBanners, pull, server)) {
-					pityMap.set(pull.uid, pityCounter)
-					pityCounter = 1
-					continue
-				}
-
-				pityMap.set(pull.uid, pityCounter)
-
-				const shouldSkip = isScarborough && pull.resultType !== "dice"
-				if (!shouldSkip) {
-					pityCounter++
-				}
-			}
-		}
-
-		return pityMap
-	}, [pulls, gachaBanners, server, selectedBanner])
 
 	const pullBannerMap = useMemo(() => {
 		const map = new Map<string, string>()

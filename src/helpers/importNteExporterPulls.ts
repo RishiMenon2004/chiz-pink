@@ -200,7 +200,7 @@ export function parseNteExporterImport(
 	}
 }
 
-export function isScarboroughPull(
+function isScarboroughPull(
 	pull: ImportedPull
 ): pull is ImportedPull & { diceRoll: number } {
 	return "diceRoll" in pull
