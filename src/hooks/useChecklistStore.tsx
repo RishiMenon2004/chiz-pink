@@ -172,17 +172,17 @@ export const checklistActions = {
 		}
 
 		updated.activities[type] ??= {}
-		const biWeeklies = current.activities["biWeekly"]
+		const biWeeklies = updated.activities["biWeekly"] ?? {}
 
 		if (timestampKey === "lastBiWeeklyWednesdayReset") {
 			biWeeklies["btr"] = {
 				checked: 0,
-				disabled: biWeeklies["btr"].disabled ?? false,
+				disabled: biWeeklies["btr"]?.disabled ?? false,
 			}
 		} else if (timestampKey === "lastBiWeeklyMondayReset") {
 			biWeeklies["pink_paws_heist"] = {
 				checked: 0,
-				disabled: biWeeklies["pink_paws_heist"].disabled ?? false,
+				disabled: biWeeklies["pink_paws_heist"]?.disabled ?? false,
 			}
 		} else {
 			Object.entries(current.activities[type] ?? {}).forEach(
