@@ -400,8 +400,8 @@ export const Events: EventData[] = [
 		getStartDate: getPhase2Start("version1_3"),
 		getEndDate: getPhase2End("version1_3"),
 		eventImage: "version1.3/gacha_linko.webp",
-		themeColor: "#5ef3da",
-		yOffset: "40%",
+		themeColor: "#7ad1c8",
+		yOffset: "54%",
 	},
 	{
 		name: "The Ichi-daime: Nanally (Rerun)",
@@ -421,7 +421,7 @@ export const Events: EventData[] = [
 		getEndDate: getPhase2End("version1_3"),
 		eventImage: "version1.3/gacha_hotori.webp",
 		themeColor: "#e32d4c",
-		yOffset: "20%",
+		yOffset: "22%",
 	},
 	{
 		name: "Lucent Tides Mystery Box: Tide",
