@@ -5,9 +5,9 @@ import { useSyncExternalStore } from "react"
 // Tracks which localStorage-backed keys have failed to parse as JSON, so a
 // corrupt value degrades to its fallback instead of throwing during render
 // (all the *Store hooks read via useSyncExternalStore, and a throw there
-// takes down the whole tree - SettingsProvider wraps <body> itself). Recovery
-// UI (CloudSyncProvider's corruption prompt) subscribes to this to offer the
-// user a resync-from-cloud or erase-and-start-fresh choice.
+// takes down the whole tree. Recovery UI (CloudSyncProvider's corruption
+// prompt) subscribes to this to offer the user a resync-from-cloud or
+// erase-and-start-fresh choice.
 type Listener = () => void
 
 let corruptedKeys: string[] = []

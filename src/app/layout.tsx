@@ -66,21 +66,23 @@ export default function RootLayout({
 		<html
 			lang="en"
 			className={`${barlowCondensed.variable} ${syne.variable}`}>
-			<AuthProvider>
-				<SettingsProvider>
-					<ConvexClientProvider>
-						<CloudSyncProvider>
-							<ServiceWorkerRegister />
-							<SplashScreen />
-							<Sidebar />
-							<CurrencyBar />
-							{children}
-							<Footer />
-						</CloudSyncProvider>
-					</ConvexClientProvider>
-				</SettingsProvider>
-			</AuthProvider>
-			<Analytics />
+			<body>
+				<AuthProvider>
+					<SettingsProvider>
+						<ConvexClientProvider>
+							<CloudSyncProvider>
+								<ServiceWorkerRegister />
+								<SplashScreen />
+								<Sidebar />
+								<CurrencyBar />
+								{children}
+								<Footer />
+							</CloudSyncProvider>
+						</ConvexClientProvider>
+					</SettingsProvider>
+				</AuthProvider>
+				<Analytics />
+			</body>
 		</html>
 	)
 }

@@ -170,6 +170,11 @@ export function SettingsProvider({ children }: { children: ReactNode }) {
 	}, [syncPending])
 
 	const useCustomCursor = settings.appearance?.["use-cursors"]
+
+	useEffect(() => {
+		document.body.classList.toggle("custom-cursors", Boolean(useCustomCursor))
+	}, [useCustomCursor])
+
 	const server = settings.userdata?.server
 	const maxStamina = settings.userdata?.["max-stamina"]
 	const lastStaminaReset = settings.userdata?.["last-stamina-reset"]
@@ -270,9 +275,7 @@ export function SettingsProvider({ children }: { children: ReactNode }) {
 
 	return (
 		<SettingsConfigContext.Provider value={settings}>
-			<body className={`${useCustomCursor ? "custom-cursors" : ""}`}>
-				{children}
-			</body>
+			{children}
 		</SettingsConfigContext.Provider>
 	)
 }
