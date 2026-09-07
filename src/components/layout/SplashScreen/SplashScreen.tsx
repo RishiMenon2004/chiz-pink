@@ -52,7 +52,7 @@ function WelcomeSplashScreen({ closeSplash }: { closeSplash: () => void }) {
 		<div className={styles.welcomeSplashContainer}>
 			<div className={styles.infoSection}>
 				<div className={styles.welcomeText}>
-					{"W-WELCOME TO "}
+					{"WELCOME TO "}
 					<span className={styles.title}>CHIZ.PINK!</span>
 				</div>
 
@@ -62,7 +62,7 @@ function WelcomeSplashScreen({ closeSplash }: { closeSplash: () => void }) {
 					}
 				</div>
 
-				<div className={styles.infoBox}>
+				<div className={`inset-control ${styles.infoBox}`}>
 					<ul>
 						<li>
 							<Link
@@ -190,7 +190,7 @@ function UpdateSplashScreen({ closeSplash }: { closeSplash: () => void }) {
 				<div className={styles.welcomeSubTitle}>
 					Latest Version: {Object.entries(ChangeLogs).at(-1)?.[0]}
 				</div>
-				<div className={styles.infoBox}>
+				<div className={`inset-control ${styles.infoBox}`}>
 					{Object.entries(ChangeLogs)
 						.toReversed()
 						.map(([version, { logs }]) => (
