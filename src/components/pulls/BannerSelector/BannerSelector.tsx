@@ -76,6 +76,7 @@ export function BannerSelector() {
 						"--bg-image": `url("/events/${currentLimitedBanner.eventImage}")`,
 					} as CSSProperties
 				}
+				data-type="limited"
 				className={`${styles.bannerSelect} ${selectedBanner === "limitedBanner" ? styles.selected : ""}`}
 				onClick={(e) => {
 					e.stopPropagation()
@@ -118,7 +119,7 @@ export function BannerSelector() {
 						"--offset": "50%",
 					} as CSSProperties
 				}
-				data-type="limited"
+				data-type="permanent"
 				className={`${styles.bannerSelect} ${selectedBanner === "permanentBanner" ? styles.selected : ""}`}
 				onClick={(e) => {
 					e.stopPropagation()

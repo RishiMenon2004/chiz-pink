@@ -56,7 +56,9 @@
 
 		transition-property: background-position-y, flex-grow, border-radius;
 		transition-duration: 150ms;
-		transition-timing-function: ease-out, ease-out, var(--ease-in-out-back);
+		transition-timing-function: ease-out;
+
+		user-select: none;
 
 		&[data-type="arc"] {
 			background-position: center right;
@@ -68,7 +70,7 @@
 			);
 		}
 
-		&[data-type="limited"] {
+		&[data-type="permanent"] {
 			--theme-color: #006fe2;
 			--bg-image: url("/events/gacha_permanent.webp");
 			justify-content: end;
