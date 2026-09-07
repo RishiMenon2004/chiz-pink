@@ -58,10 +58,16 @@ export {
 	isScarboroughPull,
 	isArcRateUp,
 	isRateUp,
+	staticArcBanners,
+	getResolvedGachaBanners,
+	permanentRateupSet,
 	calculateArcBannerPity,
 	calculateCharacterBannerPity,
 	calculatePityMap,
 } from "./calculatePity"
+
+export { getBannerThemeColor } from "./getBannerThemeColor"
+export { findPullItem } from "./findPullItem"
 
 export function stopPropogation(event: MouseEvent) {
 	event.stopPropagation()

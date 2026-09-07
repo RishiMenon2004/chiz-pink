@@ -3,17 +3,17 @@
 import { CSSProperties, useEffect, useMemo, useRef, useState } from "react"
 import Image from "next/image"
 
-import { Item } from "@/types/item"
 import { ScarboroughFairPull, MiracleBoxPull } from "@/types/pulls"
 
-import { EnumRarity, findReward, getItemRarityStyle } from "@/data/items"
-import { findArc } from "@/data/arcs"
-import { findCharacter } from "@/data/characters"
-import { arcBanners, permanentBanner } from "@/data/activities/banners"
+import { getItemRarityStyle } from "@/data/items"
+import { permanentBanner } from "@/data/activities/banners"
 
 import {
 	isScarboroughPull,
 	isRateUp,
+	findPullItem,
+	staticArcBanners,
+	getResolvedGachaBanners,
 } from "@/helpers"
 
 import { usePullTrackerContext, useSettingsConfigContext } from "@/contexts"
@@ -62,27 +62,6 @@ function PullEntry({
 	} = useSettingsConfigContext()
 
 	const isScarborough = isScarboroughPull(pull)
-
-	function findPullItem(
-		itemId: string,
-		type?: ScarboroughFairPull["rewardType"]
-	) {
-		const fallback = { name: itemId, rarity: EnumRarity.Epic } as Item
-
-		if (type === undefined) {
-			return findArc(itemId) ?? fallback
-		}
-
-		switch (type) {
-			case "arc":
-				return findArc(itemId) ?? fallback
-			case "item":
-			case "cosmetic":
-				return findReward(itemId) ?? fallback
-			case "character":
-				return findCharacter(itemId) ?? fallback
-		}
-	}
 
 	const item = findPullItem(
 		pull.rewardId,
@@ -165,24 +144,24 @@ export function PullsListSection() {
 
 	const pullBannerMap = useMemo(() => {
 		const map = new Map<string, string>()
+		const limitedBanners =
+			selectedBanner === "limitedBanner"
+				? getResolvedGachaBanners(gachaBanners, server)
+				: []
 
 		pulls.forEach((pull) => {
 			let bannerName: string
 			if (selectedBanner === "arcsBanner") {
-				const banner = arcBanners.find((b) => {
-					return (
-						b.getStartDate() < pull.timestamp &&
-						b.getEndDate() > pull.timestamp
-					)
-				})
+				const banner = staticArcBanners.find(
+					(b) =>
+						b.startDate < pull.timestamp && b.endDate > pull.timestamp
+				)
 				bannerName = banner?.name ?? "Unknown"
 			} else if (selectedBanner === "limitedBanner") {
-				const banner = gachaBanners.find((b) => {
-					return (
-						b.getStartDate(server) < pull.timestamp &&
-						b.getEndDate(server) > pull.timestamp
-					)
-				})
+				const banner = limitedBanners.find(
+					(b) =>
+						b.startDate < pull.timestamp && b.endDate > pull.timestamp
+				)
 				bannerName = banner?.name ?? "Unknown"
 			} else {
 				bannerName = permanentBanner.name
@@ -193,7 +172,75 @@ export function PullsListSection() {
 		return map
 	}, [pulls, selectedBanner, gachaBanners, server])
 
-	const rows = useMemo(() => {
+	const arcPages = useMemo(() => {
+		if (selectedBanner !== "arcsBanner") return []
+
+		const pages: Array<
+			Array<
+				| { type: "pull"; pull: MiracleBoxPull | ScarboroughFairPull }
+				| { type: "divider"; banner: string }
+				| { type: "placeholder"; banner: string }
+			>
+		> = []
+		let currentPage: Array<
+			| { type: "pull"; pull: MiracleBoxPull | ScarboroughFairPull }
+			| { type: "divider"; banner: string }
+			| { type: "placeholder"; banner: string }
+		> = []
+		let pullCountInPage = 0
+
+		for (let i = 0; i < pulls.length; i++) {
+			const pull = pulls[i]
+
+			if (i > 0) {
+				const prevBanner = pullBannerMap.get(pulls[i - 1].uid)
+				const currentBanner = pullBannerMap.get(pull.uid)
+				if (prevBanner !== currentBanner) {
+					currentPage.push({
+						type: "divider",
+						banner: prevBanner ?? "",
+					})
+				}
+
+				if (
+					prevBanner === currentBanner &&
+					pullCountInPage === pullsPerPage
+				) {
+					currentPage.push({
+						type: "placeholder",
+						banner: currentBanner ?? "",
+					})
+				}
+			}
+
+			if (pullCountInPage === pullsPerPage) {
+				pages.push(currentPage)
+				currentPage = []
+				pullCountInPage = 0
+			}
+
+			currentPage.push({ type: "pull", pull })
+			pullCountInPage++
+		}
+
+		if (pulls.length > 0) {
+			const lastBanner = pullBannerMap.get(pulls[pulls.length - 1].uid)
+			currentPage.push({
+				type: "divider",
+				banner: lastBanner ?? "",
+			})
+		}
+
+		if (currentPage.length > 0) {
+			pages.push(currentPage)
+		}
+
+		return pages
+	}, [selectedBanner, pulls, pullBannerMap, pullsPerPage])
+
+	const regularRows = useMemo(() => {
+		if (selectedBanner === "arcsBanner") return []
+
 		const result: Array<
 			| { type: "pull"; pull: MiracleBoxPull | ScarboroughFairPull }
 			| { type: "divider"; banner: string }
@@ -216,13 +263,25 @@ export function PullsListSection() {
 		}
 
 		return result
-	}, [pulls, pullBannerMap])
+	}, [selectedBanner, pulls, pullBannerMap])
 
-	const maxPages = Math.floor(Math.max(rows.length - 1, 0) / pullsPerPage)
+	const maxPages = useMemo(() => {
+		if (selectedBanner === "arcsBanner") {
+			return Math.max(arcPages.length - 1, 0)
+		}
+		return Math.floor(Math.max(regularRows.length - 1, 0) / pullsPerPage)
+	}, [selectedBanner, arcPages.length, regularRows.length, pullsPerPage])
+
 	const clampedPage = Math.min(page, maxPages)
-	const pageStart = clampedPage * pullsPerPage
-	const pageEnd = pageStart + pullsPerPage
-	const pageRows = rows.slice(pageStart, pageEnd)
+
+	const pageRows = useMemo(() => {
+		if (selectedBanner === "arcsBanner") {
+			return arcPages[clampedPage] ?? []
+		}
+		const pageStart = clampedPage * pullsPerPage
+		const pageEnd = pageStart + pullsPerPage
+		return regularRows.slice(pageStart, pageEnd)
+	}, [selectedBanner, arcPages, regularRows, clampedPage, pullsPerPage])
 
 	useEffect(() => {
 		// eslint-disable-next-line react-hooks/set-state-in-effect
@@ -244,7 +303,7 @@ export function PullsListSection() {
 			<div
 				data-bannertype={selectedBanner}
 				style={{
-					gridTemplateRows: `auto repeat(${pullsPerPage}, 1fr)`,
+					gridTemplateRows: `auto repeat(${pullsPerPage + (selectedBanner === "arcsBanner" ? 1 : 0)}, 1fr)`,
 				}}
 				className={`inset-control ${styles.pullsList}`}>
 				<div className={styles.listHeader}>
@@ -262,12 +321,13 @@ export function PullsListSection() {
 					<div className={styles.pullPity}>Pity</div>
 				</div>
 				{pageRows.map((row) => {
-					if (row.type === "divider") {
+					if (row.type === "divider" || row.type === "placeholder") {
 						return (
 							<div
+								data-type={row.type}
 								key={`divider-${row.banner}`}
 								className={styles.bannerDivider}>
-								{`End of "${row.banner}"`}
+								{`${row.type === "divider" ? "End of " : ""}"${row.banner}"`}
 							</div>
 						)
 					}
@@ -277,7 +337,7 @@ export function PullsListSection() {
 						<PullEntry
 							key={pull.uid}
 							pull={pull}
-							pity={pityMap.get(pull.uid) ?? 0}
+							pity={pityMap[selectedBanner].get(pull.uid) ?? 0}
 						/>
 					)
 				})}

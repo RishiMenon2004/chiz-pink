@@ -2,6 +2,45 @@ import { MiracleBoxPull, ScarboroughFairPull, PullsRecord } from "@/types/pulls"
 import { SettingsRecord } from "@/types/settings"
 import { EventData } from "@/data/activities/events"
 import { arcBanners, permanentBanner } from "@/data/activities/banners"
+import { EnumRarity } from "@/data/items"
+
+export const staticArcBanners = arcBanners.map((b) => ({
+	name: b.name,
+	rateupItem: b.rateupItem,
+	themeColor: (b as typeof b & { themeColor?: string }).themeColor,
+	startDate: b.getStartDate(),
+	endDate: b.getEndDate(),
+}))
+
+export type ResolvedGachaBanner = {
+	name: string
+	rateupItem?: string
+	themeColor?: string
+	startDate: number
+	endDate: number
+}
+
+const resolvedGachaBannersCache = new Map<string, ResolvedGachaBanner[]>()
+
+export function getResolvedGachaBanners(
+	gachaBanners: EventData[],
+	server: SettingsRecord["userdata"]["server"]
+): ResolvedGachaBanner[] {
+	let list = resolvedGachaBannersCache.get(server)
+	if (!list) {
+		list = gachaBanners.map((b) => ({
+			name: b.name,
+			rateupItem: b.rateupItem,
+			themeColor: b.themeColor,
+			startDate: b.getStartDate(server),
+			endDate: b.getEndDate(server),
+		}))
+		resolvedGachaBannersCache.set(server, list)
+	}
+	return list
+}
+
+export const permanentRateupSet = new Set<string>(permanentBanner.rateupItems)
 
 export function isScarboroughPull(
 	pull: MiracleBoxPull | ScarboroughFairPull
@@ -12,12 +51,9 @@ export function isScarboroughPull(
 export function isArcRateUp(
 	pull: MiracleBoxPull | ScarboroughFairPull
 ): boolean {
-	const banner = arcBanners.find((b) => {
-		return (
-			b.getStartDate() < pull.timestamp &&
-			b.getEndDate() > pull.timestamp
-		)
-	})
+	const banner = staticArcBanners.find(
+		(b) => b.startDate < pull.timestamp && b.endDate > pull.timestamp
+	)
 	return banner?.rateupItem === pull.rewardId
 }
 
@@ -31,16 +67,14 @@ export const isRateUp = (
 		case "arcsBanner":
 			return isArcRateUp(pull)
 		case "limitedBanner": {
-			const banner = gachaBanners.find((b) => {
-				return (
-					b.getStartDate(server) < pull.timestamp &&
-					b.getEndDate(server) > pull.timestamp
-				)
-			})
+			const banners = getResolvedGachaBanners(gachaBanners, server)
+			const banner = banners.find(
+				(b) => b.startDate < pull.timestamp && b.endDate > pull.timestamp
+			)
 			return banner?.rateupItem === pull.rewardId
 		}
 		case "permanentBanner":
-			return permanentBanner.rateupItems.includes(pull.rewardId)
+			return permanentRateupSet.has(pull.rewardId)
 	}
 }
 
@@ -75,8 +109,25 @@ export function calculateArcBannerPity(
 				// Rate-up shows the group pity it was pulled at
 				const groupPity = (groupIndex - lastRateUpGroupIndex) * 10
 				pityMap.set(pull.uid, groupPity)
-				lastRateUpGroupPity = groupPity
 				lastRateUpGroupIndex = groupIndex
+
+				let hasSRankAfter = false
+				for (let j = i - 1; j >= 0; j--) {
+					const nextPull = pulls[j]
+					const nextGroupIndex = Math.ceil(
+						(pulls.length - j) / pullsPerPage
+					)
+					if (nextGroupIndex !== groupIndex) break
+					if (
+						nextPull.rank === EnumRarity.Epic ||
+						isArcRateUp(nextPull)
+					) {
+						hasSRankAfter = true
+						break
+					}
+				}
+
+				lastRateUpGroupPity = hasSRankAfter ? 0 : groupPity
 			} else {
 				// Subsequent rate-up items in the same group show 0 pity
 				pityMap.set(pull.uid, 0)

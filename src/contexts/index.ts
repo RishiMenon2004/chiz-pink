@@ -18,11 +18,7 @@ import type {
 } from "@/types/inventory"
 import type { CharacterRecord, WeaponRecord } from "@/types/planner"
 import { SettingsRecord } from "@/types/settings"
-import {
-	PullsRecord,
-	MiracleBoxPull,
-	ScarboroughFairPull,
-} from "@/types/pulls"
+import { PullsRecord, MiracleBoxPull, ScarboroughFairPull } from "@/types/pulls"
 import { EventData } from "@/data/activities/events"
 
 export const PlannerMaterialsContext = createContext<CumulativeInventory[]>([])
@@ -106,6 +102,7 @@ export function useSettingsConfigContext() {
 export type RateUpPull = {
 	pull: MiracleBoxPull | ScarboroughFairPull
 	pity: number
+	themeColor?: string
 }
 
 export type PullTrackerContextType = {
@@ -113,9 +110,9 @@ export type PullTrackerContextType = {
 	setSelectedBanner: Dispatch<SetStateAction<keyof PullsRecord>>
 	gachaBanners: EventData[]
 	pulls: (MiracleBoxPull | ScarboroughFairPull)[]
-	pityMap: Map<string, number>
+	pityMap: Record<keyof PullsRecord, Map<string, number>>
 	currentPity: number
-	rateUpPulls: RateUpPull[]
+	rateUpPulls: Record<keyof PullsRecord, RateUpPull[]>
 }
 
 export const PullTrackerContext = createContext<PullTrackerContextType>(null!)
