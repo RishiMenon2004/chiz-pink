@@ -143,30 +143,34 @@ export function PullsListSection() {
 	const pullsPerPage = 10
 
 	const pullBannerMap = useMemo(() => {
-		const map = new Map<string, string>()
+		const map = new Map<string, string[]>()
 		const limitedBanners =
 			selectedBanner === "limitedBanner"
 				? getResolvedGachaBanners(gachaBanners, server)
 				: []
 
 		pulls.forEach((pull) => {
-			let bannerName: string
+			let bannerNames: string[]
 			if (selectedBanner === "arcsBanner") {
-				const banner = staticArcBanners.find(
-					(b) =>
-						b.startDate < pull.timestamp && b.endDate > pull.timestamp
-				)
-				bannerName = banner?.name ?? "Unknown"
+				bannerNames = staticArcBanners
+					.filter(
+						(b) =>
+							b.startDate < pull.timestamp &&
+							b.endDate > pull.timestamp
+					)
+					.map((b) => b.name)
 			} else if (selectedBanner === "limitedBanner") {
-				const banner = limitedBanners.find(
-					(b) =>
-						b.startDate < pull.timestamp && b.endDate > pull.timestamp
-				)
-				bannerName = banner?.name ?? "Unknown"
+				bannerNames = limitedBanners
+					.filter(
+						(b) =>
+							b.startDate < pull.timestamp &&
+							b.endDate > pull.timestamp
+					)
+					.map((b) => b.name)
 			} else {
-				bannerName = permanentBanner.name
+				bannerNames = [permanentBanner.name]
 			}
-			map.set(pull.uid, bannerName)
+			map.set(pull.uid, bannerNames.length > 0 ? bannerNames : ["Unknown"])
 		})
 
 		return map
@@ -178,14 +182,14 @@ export function PullsListSection() {
 		const pages: Array<
 			Array<
 				| { type: "pull"; pull: MiracleBoxPull | ScarboroughFairPull }
-				| { type: "divider"; banner: string }
-				| { type: "placeholder"; banner: string }
+				| { type: "divider"; banners: string[] }
+				| { type: "placeholder"; banners: string[] }
 			>
 		> = []
 		let currentPage: Array<
 			| { type: "pull"; pull: MiracleBoxPull | ScarboroughFairPull }
-			| { type: "divider"; banner: string }
-			| { type: "placeholder"; banner: string }
+			| { type: "divider"; banners: string[] }
+			| { type: "placeholder"; banners: string[] }
 		> = []
 		let pullCountInPage = 0
 
@@ -193,22 +197,22 @@ export function PullsListSection() {
 			const pull = pulls[i]
 
 			if (i > 0) {
-				const prevBanner = pullBannerMap.get(pulls[i - 1].uid)
-				const currentBanner = pullBannerMap.get(pull.uid)
-				if (prevBanner !== currentBanner) {
+				const prevBanners = pullBannerMap.get(pulls[i - 1].uid)
+				const currentBanners = pullBannerMap.get(pull.uid)
+				if (prevBanners?.[0] !== currentBanners?.[0]) {
 					currentPage.push({
 						type: "divider",
-						banner: prevBanner ?? "",
+						banners: prevBanners ?? [],
 					})
 				}
 
 				if (
-					prevBanner === currentBanner &&
+					prevBanners?.[0] === currentBanners?.[0] &&
 					pullCountInPage === pullsPerPage
 				) {
 					currentPage.push({
 						type: "placeholder",
-						banner: currentBanner ?? "",
+						banners: currentBanners ?? [],
 					})
 				}
 			}
@@ -224,10 +228,10 @@ export function PullsListSection() {
 		}
 
 		if (pulls.length > 0) {
-			const lastBanner = pullBannerMap.get(pulls[pulls.length - 1].uid)
+			const lastBanners = pullBannerMap.get(pulls[pulls.length - 1].uid)
 			currentPage.push({
 				type: "divider",
-				banner: lastBanner ?? "",
+				banners: lastBanners ?? [],
 			})
 		}
 
@@ -243,23 +247,29 @@ export function PullsListSection() {
 
 		const result: Array<
 			| { type: "pull"; pull: MiracleBoxPull | ScarboroughFairPull }
-			| { type: "divider"; banner: string }
+			| { type: "divider"; banners: string[] }
 		> = []
 
 		pulls.forEach((pull, i) => {
 			if (i > 0) {
-				const prevBanner = pullBannerMap.get(pulls[i - 1].uid)
-				const currentBanner = pullBannerMap.get(pull.uid)
-				if (prevBanner !== currentBanner) {
-					result.push({ type: "divider", banner: prevBanner ?? "" })
+				const prevBanners = pullBannerMap.get(pulls[i - 1].uid)
+				const currentBanners = pullBannerMap.get(pull.uid)
+				if (prevBanners?.[0] !== currentBanners?.[0]) {
+					result.push({
+						type: "divider",
+						banners: prevBanners ?? [],
+					})
 				}
 			}
 			result.push({ type: "pull", pull })
 		})
 
-		if (pulls.length > 0) {
-			const lastBanner = pullBannerMap.get(pulls[pulls.length - 1].uid)
-			result.push({ type: "divider", banner: lastBanner ?? "" })
+		if (pulls.length > 0 && selectedBanner !== "permanentBanner") {
+			const lastBanners = pullBannerMap.get(pulls[pulls.length - 1].uid)
+			result.push({
+				type: "divider",
+				banners: lastBanners ?? [],
+			})
 		}
 
 		return result
@@ -269,7 +279,13 @@ export function PullsListSection() {
 		if (selectedBanner === "arcsBanner") {
 			return Math.max(arcPages.length - 1, 0)
 		}
-		return Math.floor(Math.max(regularRows.length - 1, 0) / pullsPerPage)
+		return Math.floor(
+			Math.max(
+				regularRows.length -
+					(selectedBanner === "permanentBanner" ? 0 : 1),
+				0
+			) / pullsPerPage
+		)
 	}, [selectedBanner, arcPages.length, regularRows.length, pullsPerPage])
 
 	const clampedPage = Math.min(page, maxPages)
@@ -325,9 +341,9 @@ export function PullsListSection() {
 						return (
 							<div
 								data-type={row.type}
-								key={`divider-${row.banner}`}
+								key={`divider-${row.banners.join("/")}`}
 								className={styles.bannerDivider}>
-								{`${row.type === "divider" ? "End of " : ""}"${row.banner}"`}
+								{`${row.type === "divider" ? "End of " : ""}${row.banners.map((banner) => `"${banner}"`).join(" / ")}`}
 							</div>
 						)
 					}
