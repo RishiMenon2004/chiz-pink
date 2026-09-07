@@ -5,6 +5,8 @@ export async function POST(req: NextRequest) {
 	const token = await getToken({ req })
 	const revokeTarget = token?.refreshToken ?? token?.accessToken
 
+	if (!token) return NextResponse.json({ success: false }, { status: 401 })
+
 	if (revokeTarget) {
 		const response = await fetch("https://oauth2.googleapis.com/revoke", {
 			method: "POST",
