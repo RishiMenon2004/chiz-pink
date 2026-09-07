@@ -151,6 +151,7 @@ export function backupSetImport({
 	checklist,
 	planner,
 	hybridPlanner,
+	gachaPulls,
 	inventory,
 	settings,
 }: BackupData) {
@@ -169,6 +170,10 @@ export function backupSetImport({
 	window.localStorage.setItem(
 		"hybridPlanner",
 		JSON.stringify(hybridPlanner ?? HYBRID_PLANNER_FALLBACK)
+	)
+	window.localStorage.setItem(
+		"gachaPulls",
+		JSON.stringify(gachaPulls ?? GACHA_PULL_FALLBACK)
 	)
 	window.localStorage.setItem("lastUpdated", String(lastUpdated))
 	window.localStorage.setItem(
