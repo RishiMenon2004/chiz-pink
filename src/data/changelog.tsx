@@ -2,7 +2,7 @@ import { InstallPWAButton } from "@/components/layout"
 
 export const ChangeLogs = {
 	"1.0.0": {
-		timeStamp: new Date("2026-08-10").getTime(),
+		timeStamp: new Date("2026-09-05").getTime(),
 		logs: [
 			"Chiz.Pink Release - Your pinkest NTE companion!",
 			"Optimized for all screens, use Chiz.Pink right on your browser with end-to-end encrypted cloud sync. (Read <link url='/privacy'>Privacy Policy</> for more info)",
@@ -13,12 +13,9 @@ export const ChangeLogs = {
 				</InstallPWAButton>
 				{"."}
 			</>,
-			"<ntetag>NTE</> Up to date with <itag color='#c8eec7'>Patch 1.2</>",
-			"<ntetag>NTE</> 1.2 Characters: <link href='/characters/shinku'>Shinku</> & <link href='/characters/iroi'>Iroi</>",
-			"<ntetag>NTE</> 1.2 Arcs: <link href='/arcs/blushing_mirage'>Blushing Mirage</> & <link href='/arcs/the_wrong_gate'>The Wrong Gate</>",
-			"<ntetag>NTE</> Added <itag color='#d22730'>Patch 1.3</> Preview",
-			"<ntetag>NTE</> 1.3 Characters: <link href='/characters/zankou'>Zankou</> & <link href='/characters/linko'>Linko</>",
-			"<ntetag>NTE</> 1.3 Arcs: <link href='/arcs/ravenous_blade'>Ravenous Blade</> & <link href='/arcs/voice_of_the_voyager'>Voice of The Voyager</>",
+			"<ntetag>NTE</> Up to date with <itag color='#d22730'>Patch 1.3</>",
+			"<ntetag>NTE</> Characters added: Zankou & Linko",
+			"<ntetag>NTE</> Arcs added: Ravenous Blade & Voice of The Voyager",
 			"<tag>NEW</> Inventory & Currencies Tracker",
 			"<tag>NEW</> Characters/Arcs/Hybrid Ascension Planners",
 			"<tag>NEW</> Dashboard for Quick Access",
@@ -26,6 +23,7 @@ export const ChangeLogs = {
 			"<tag>NEW</> Quick claim Daily Participation Tasks rewards",
 			"<tag>NEW</> Interactive Events Calendar",
 			"<tag>NEW</> Activity & Events Checklist",
+			"<tag>NEW</> Wish & Pity Tracker w/ stats",
 			"<tag>NEW</> Cloud sync w/ Google Sign-in",
 			"<tag>NEW</> Third-party data import",
 		],

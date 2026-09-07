@@ -1,27 +1,17 @@
 "use client"
 
 import { NavButton } from "@/components/layout/NavButton"
-import { useSettingsStore } from "@/hooks"
 
 import styles from "./sidebar.module.css"
 
 export function Sidebar() {
-	const { settings } = useSettingsStore()
-	const combinedEnabled = settings.appearance?.["use-hybrid-planner"] ?? false
-
 	return (
 		<div className={styles.sidebar}>
 			<nav role="navigation">
 				<NavButton href="" icon="home" />
 				<NavButton href="checklist" icon="checklist" />
-				{combinedEnabled ? (
-					<NavButton href="planner" icon="planner" />
-				) : (
-					<>
-						<NavButton href="characters" icon="characters" />
-						<NavButton href="arcs" icon="arcs" />
-					</>
-				)}
+				<NavButton href="planner" icon="planner" />
+				<NavButton href="pulls" icon="pulls" />
 				<NavButton href="inventory" icon="inventory" />
 				<NavButton href="settings" icon="settings" />
 			</nav>

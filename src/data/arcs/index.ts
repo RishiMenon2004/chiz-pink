@@ -3,4 +3,5 @@ export {
 	getAllArcs,
 	getAllArcsList,
 	findArc,
+	findArcByName
 } from "./arcList"

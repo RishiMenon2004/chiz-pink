@@ -3,6 +3,7 @@ export {
 	getAllCharacters,
 	getAllCharactersList,
 	findCharacter,
+	findCharacterByName,
 } from "./characterList"
 
 export { linko } from "./linko"

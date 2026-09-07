@@ -1,7 +1,7 @@
 import { Material } from "@/types/item"
 import { SettingsRecord } from "@/types/settings"
 
-import { annulith, porsche918Spyder, regaliaDraco } from "@/data/items/materials"
+import { annulith, hikariTide, porsche918Spyder, regaliaDraco } from "@/data/items/materials"
 
 import { getServerTimestamp, getUtcTimestamp } from "@/helpers/serverTime"
 
@@ -18,6 +18,7 @@ export type EventData = {
 	eventImage?: string
 	themeColor?: string
 	yOffset?: string
+	rateupItem?: string
 }
 
 const serverSOD = (
@@ -104,16 +105,16 @@ export const patchTimings = {
 	},
 }
 
-function getPhase1Start(version: keyof typeof patchTimings) {
+export function getPhase1Start(version: keyof typeof patchTimings) {
 	return patchTimings[version].phase1Start
 }
-function getPhase1End(version: keyof typeof patchTimings) {
+export function getPhase1End(version: keyof typeof patchTimings) {
 	return patchTimings[version].phase1End
 }
-function getPhase2Start(version: keyof typeof patchTimings) {
+export function getPhase2Start(version: keyof typeof patchTimings) {
 	return patchTimings[version].phase2Start
 }
-function getPhase2End(version: keyof typeof patchTimings) {
+export function getPhase2End(version: keyof typeof patchTimings) {
 	return patchTimings[version].phase2End
 }
 
@@ -129,6 +130,7 @@ export const Events: EventData[] = [
 	{
 		name: "The Ichi-daime: Nanally",
 		type: "Gacha",
+		rateupItem: "nanally",
 		getStartDate: getPhase1Start("version1_0"),
 		getEndDate: getPhase1End("version1_0"),
 		eventImage: "version1.0/gacha_nanally.webp",
@@ -138,6 +140,7 @@ export const Events: EventData[] = [
 	{
 		name: "Misty Tipsy Style: Hotori",
 		type: "Gacha",
+		rateupItem: "hotori",
 		getStartDate: getPhase2Start("version1_0"),
 		getEndDate: getPhase2End("version1_0"),
 		eventImage: "version1.0/gacha_hotori.webp",
@@ -176,6 +179,7 @@ export const Events: EventData[] = [
 	{
 		name: "Fading Reverie: Lacrimosa",
 		type: "Gacha",
+		rateupItem: "lacrimosa",
 		getStartDate: getPhase1Start("version1_1"),
 		getEndDate: getPhase1End("version1_1"),
 		eventImage: "version1.1/gacha_lacrimosa.webp",
@@ -185,6 +189,7 @@ export const Events: EventData[] = [
 	{
 		name: "Forsaken Path: Chaos",
 		type: "Gacha",
+		rateupItem: "chaos",
 		getStartDate: getPhase2Start("version1_1"),
 		getEndDate: getPhase2End("version1_1"),
 		eventImage: "version1.1/gacha_chaos.webp",
@@ -277,6 +282,7 @@ export const Events: EventData[] = [
 	{
 		name: "Before the Dawn: Shinku",
 		type: "Gacha",
+		rateupItem: "shinku",
 		getStartDate: getPhase1Start("version1_2"),
 		getEndDate: getPhase1End("version1_2"),
 		eventImage: "version1.2/gacha_shinku.webp",
@@ -286,6 +292,7 @@ export const Events: EventData[] = [
 	{
 		name: "The Lifeline: Iroi",
 		type: "Gacha",
+		rateupItem: "iroi",
 		getStartDate: getPhase2Start("version1_2"),
 		getEndDate: getPhase2End("version1_2"),
 		eventImage: "version1.2/gacha_iroi.webp",
@@ -379,6 +386,7 @@ export const Events: EventData[] = [
 	{
 		name: "Alluring Shadows: Zankou",
 		type: "Gacha",
+		rateupItem: "zankou",
 		getStartDate: getPhase1Start("version1_3"),
 		getEndDate: getPhase1End("version1_3"),
 		eventImage: "version1.3/gacha_zankou.webp",
@@ -388,6 +396,7 @@ export const Events: EventData[] = [
 	{
 		name: "Surfing All Channels: Linko",
 		type: "Gacha",
+		rateupItem: "linko",
 		getStartDate: getPhase2Start("version1_3"),
 		getEndDate: getPhase2End("version1_3"),
 		eventImage: "version1.3/gacha_linko.webp",
@@ -395,8 +404,9 @@ export const Events: EventData[] = [
 		yOffset: "40%",
 	},
 	{
-		name: "The Ichi-daime: Nanally",
+		name: "The Ichi-daime: Nanally (Rerun)",
 		type: "Gacha",
+		rateupItem: "nanally",
 		getStartDate: getPhase1Start("version1_3"),
 		getEndDate: getPhase1End("version1_3"),
 		eventImage: "version1.3/gacha_nanally.webp",
@@ -404,8 +414,9 @@ export const Events: EventData[] = [
 		yOffset: "30%",
 	},
 	{
-		name: "Misty Tipsy Style: Hotori",
+		name: "Misty Tipsy Style: Hotori (Rerun)",
 		type: "Gacha",
+		rateupItem: "hotori",
 		getStartDate: getPhase2Start("version1_3"),
 		getEndDate: getPhase2End("version1_3"),
 		eventImage: "version1.3/gacha_hotori.webp",
@@ -423,7 +434,7 @@ export const Events: EventData[] = [
 				hour: 9,
 			}),
 		getEndDate: getPhase2End("version1_3"),
-		// rewards: [regaliaDraco],
+		rewards: [hikariTide],
 		eventImage: "version1.3/mystery_tide.webp",
 		themeColor: "#db061e",
 	},

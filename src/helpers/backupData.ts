@@ -5,6 +5,7 @@ import { SERVER_FALLBACK as PLANNER_FALLBACK } from "@/hooks/usePlannerStore"
 import { SERVER_FALLBACK as HYBRID_PLANNER_FALLBACK } from "@/hooks/useHybridPlannerStore"
 import { SERVER_FALLBACK as INVENTORY_FALLBACK } from "@/hooks/useInventoryStore"
 import { SERVER_FALLBACK as SETTINGS_FALLBACK } from "@/hooks/useSettingsStore"
+import { SERVER_FALLBACK as GACHA_PULL_FALLBACK } from "@/hooks/useGachaStore"
 
 const LAST_SYNCED_KEY = "lastSynced"
 
@@ -51,6 +52,11 @@ export function buildBackupPayload() {
 			window.localStorage.getItem("hybridPlanner"),
 			HYBRID_PLANNER_FALLBACK,
 			"hybridPlanner"
+		),
+		gachaPulls: safeParse(
+			window.localStorage.getItem("gachaPulls"),
+			GACHA_PULL_FALLBACK,
+			"gachaPulls"
 		),
 		settings: safeParse(
 			window.localStorage.getItem("settings"),
@@ -112,7 +118,10 @@ export function backupImport(json: string) {
 		return { status: "future", data } //WOW!
 	}
 
-	if (!hasSyncedBefore && (checklistData || plannerData || inventoryData || settingsData)) {
+	if (
+		!hasSyncedBefore &&
+		(checklistData || plannerData || inventoryData || settingsData)
+	) {
 		return { status: "overwrite", data }
 	}
 
@@ -124,6 +133,7 @@ const ERASABLE_KEYS = [
 	"inventory",
 	"planner",
 	"hybridPlanner",
+	"gachaPulls",
 	"settings",
 	"lastUpdated",
 	"lastSeen",

@@ -18,19 +18,45 @@ export enum EnumMaterialType {
 export const diceLimited: Material = {
 	id: "dice_limited",
 	name: "Solid Dice",
-	rarity:EnumRarity.Epic,
+	rarity: EnumRarity.Epic,
 	materialType: EnumMaterialType.Reward,
-	imageSrc: "/rewards/dice_limited",
-	sources: ["Fair Exchange", "Circle Bounty: Elite", "Scarborough Fair: Limited Board"]
+	imageSrc: "rewards/dice_limited.png",
+	sources: [
+		"Fair Exchange",
+		"Circle Bounty: Elite",
+		"Scarborough Fair: Limited Board",
+	],
 }
 
 export const diceStandard: Material = {
 	id: "dice_standard",
 	name: "Fabricated Dice",
-	rarity:EnumRarity.Epic,
+	rarity: EnumRarity.Epic,
 	materialType: EnumMaterialType.Reward,
-	imageSrc: "/rewards/dice_standard",
-	sources: ["Fair Exchange", "Circle Bounty: Standard", "Scarborough Fair: Permanent Board"]
+	imageSrc: "rewards/dice_standard.png",
+	sources: [
+		"Fair Exchange",
+		"Circle Bounty: Standard",
+		"Scarborough Fair: Permanent Board",
+	],
+}
+
+export const lostPiece: Material = {
+	id: "lost_piece",
+	name: "Lost Piece",
+	rarity: EnumRarity.Rare,
+	materialType: EnumMaterialType.Reward,
+	imageSrc: "rewards/lost_piece.png",
+	sources: ["Scarborough Fair"],
+}
+
+export const warpPiece: Material = {
+	id: "warp_piece",
+	name: "Warp Piece",
+	rarity: EnumRarity.Epic,
+	materialType: EnumMaterialType.Reward,
+	imageSrc: "rewards/warp_piece.png",
+	sources: ["Scarborough Fair"],
 }
 
 export const floeCinemeTicket: Material = {
@@ -38,7 +64,7 @@ export const floeCinemeTicket: Material = {
 	name: "Floe Cinema Ticket",
 	rarity: EnumRarity.Rare,
 	materialType: EnumMaterialType.Reward,
-	imageSrc: "/rewards/floe_cinema_ticket",
+	imageSrc: "rewards/floe_cinema_ticket.png",
 	sources: [],
 }
 
@@ -47,7 +73,7 @@ export const porsche918Spyder: Material = {
 	name: "Porsche 918 Spyder",
 	materialType: EnumMaterialType.Reward,
 	rarity: EnumRarity.Epic,
-	imageSrc: "/rewards/porche_918_spyder",
+	imageSrc: "rewards/mystery_box/porche_918_spyder.png",
 	sources: ["Everdriving Mystery Box Event"],
 }
 
@@ -56,8 +82,163 @@ export const regaliaDraco: Material = {
 	name: "Regalia Draco",
 	materialType: EnumMaterialType.Reward,
 	rarity: EnumRarity.Epic,
-	imageSrc: "/rewards/regalia_draco",
+	imageSrc: "rewards/mystery_box/regalia_draco.png",
 	sources: ["Everdriving Mystery Box Event"],
+}
+
+export const hikariTide: Material = {
+	id: "hikari_tide",
+	name: "Hikari's Tide",
+	materialType: EnumMaterialType.Reward,
+	rarity: EnumRarity.Epic,
+	imageSrc: "rewards/mystery_box/hikari_tider.png",
+	sources: ["Lucent Tides Mystery Box Event"],
+}
+
+/* Cosmetics - Outfits */
+export const phoenixKick: Material = {
+	id: "phoenix_kick",
+	name: "Phoenix Kick",
+	materialType: EnumMaterialType.Reward,
+	rarity: EnumRarity.Epic,
+	imageSrc: "rewards/cosmetics/outfits/phoenix_kick.png",
+	sources: [],
+}
+
+export const pricelessOrchid: Material = {
+	id: "priceless_orchid",
+	name: "Priceless Orchid",
+	materialType: EnumMaterialType.Reward,
+	rarity: EnumRarity.Epic,
+	imageSrc: "rewards/cosmetics/outfits/priceless_orchid.png",
+	sources: [],
+}
+
+export const newMoonLullaby: Material = {
+	id: "new_moon_lullaby",
+	name: "New Moon Lullaby",
+	materialType: EnumMaterialType.Reward,
+	rarity: EnumRarity.Epic,
+	imageSrc: "rewards/cosmetics/outfits/new_moon_lullaby.png",
+	sources: [],
+}
+
+export const clearSkies: Material = {
+	id: "clear_skies",
+	name: "Clear Skies",
+	materialType: EnumMaterialType.Reward,
+	rarity: EnumRarity.Epic,
+	imageSrc: "rewards/cosmetics/outfits/clear_skies.png",
+	sources: [],
+}
+
+export const studentOfTerrasea: Material = {
+	id: "student_of_terrasea",
+	name: "Student of Terrasea",
+	materialType: EnumMaterialType.Reward,
+	rarity: EnumRarity.Epic,
+	imageSrc: "rewards/cosmetics/outfits/student_of_terrasea.png",
+	sources: [],
+}
+
+export const archmage: Material = {
+	id: "archmage",
+	name: "Archmage",
+	materialType: EnumMaterialType.Reward,
+	rarity: EnumRarity.Epic,
+	imageSrc: "rewards/cosmetics/outfits/archmage.png",
+	sources: [],
+}
+
+export const autumnVignette: Material = {
+	id: "autumn_vignette",
+	name: "Autumn Vignette",
+	materialType: EnumMaterialType.Reward,
+	rarity: EnumRarity.Epic,
+	imageSrc: "rewards/cosmetics/outfits/autumn_vignette.png",
+	sources: [],
+}
+
+export const surfingAmongStars: Material = {
+	id: "surfing_among_stars",
+	name: "Surfing Among Stars",
+	materialType: EnumMaterialType.Reward,
+	rarity: EnumRarity.Epic,
+	imageSrc: "rewards/cosmetics/outfits/surfing_among_stars.png",
+	sources: [],
+}
+
+/* Cosmetics - Gliders */
+export const underboss: Material = {
+	id: "underboss",
+	name: "Underboss-of-the-Underboss",
+	materialType: EnumMaterialType.Reward,
+	rarity: EnumRarity.Epic,
+	imageSrc: "rewards/cosmetics/gliders/underboss.png",
+	sources: [],
+}
+
+export const orchidBreeze: Material = {
+	id: "orchid_breeze",
+	name: "Orchid Breeze",
+	materialType: EnumMaterialType.Reward,
+	rarity: EnumRarity.Epic,
+	imageSrc: "rewards/cosmetics/gliders/orchid_breeze.png",
+	sources: [],
+}
+
+export const tomatoDuo: Material = {
+	id: "tomato_duo",
+	name: "Tomato Duo",
+	materialType: EnumMaterialType.Reward,
+	rarity: EnumRarity.Epic,
+	imageSrc: "rewards/cosmetics/gliders/tomato_duo.png",
+	sources: [],
+}
+
+export const skyrider: Material = {
+	id: "skyrider",
+	name: "Skyrider",
+	materialType: EnumMaterialType.Reward,
+	rarity: EnumRarity.Epic,
+	imageSrc: "rewards/cosmetics/gliders/skyrider.png",
+	sources: [],
+}
+
+export const overcastCanopy: Material = {
+	id: "overcast_canopy",
+	name: "Overcast Canopy",
+	materialType: EnumMaterialType.Reward,
+	rarity: EnumRarity.Epic,
+	imageSrc: "rewards/cosmetics/gliders/overcast_canopy.png",
+	sources: [],
+}
+
+export const sheepcopter: Material = {
+	id: "sheepcopter",
+	name: "Sheepcopter",
+	materialType: EnumMaterialType.Reward,
+	rarity: EnumRarity.Epic,
+	imageSrc: "rewards/cosmetics/gliders/sheepcopter.png",
+	sources: [],
+}
+
+export const scarletSash: Material = {
+	id: "scarlet_sash",
+	name: "Scarlet Sash",
+	materialType: EnumMaterialType.Reward,
+	rarity: EnumRarity.Epic,
+	imageSrc: "rewards/cosmetics/gliders/scarlet_sash.png",
+	sources: [],
+}
+
+export const xiaozhen: Material = {
+	id: "xiaozhen",
+	name: "Xiaozhen",
+	materialType: EnumMaterialType.Reward,
+	rarity: EnumRarity.Epic,
+	imageSrc: "rewards/cosmetics/gliders/xiaozhen.png",
+	sources: [],
 }
 
 /* Currencies */
@@ -98,7 +279,7 @@ export const characterPixel: Material = {
 	rarity: EnumRarity.Common,
 	materialType: EnumMaterialType.Currency,
 	imageSrc: "/stamina_pixels",
-	sources: []
+	sources: [],
 }
 
 export const cityStamina: Material = {
@@ -107,7 +288,7 @@ export const cityStamina: Material = {
 	rarity: EnumRarity.Common,
 	materialType: EnumMaterialType.Currency,
 	imageSrc: "/stamina_city",
-	sources: []
+	sources: [],
 }
 
 /* Weekly Boss Drops - Talent*/

@@ -1,0 +1,109 @@
+.page {
+	display: grid;
+	grid-template-columns: 1fr 500px;
+	grid-auto-rows: max-content;
+	gap: 1rem;
+
+	--outline-color: rgba(255, 255, 255, 0.25);
+}
+
+.section {
+	padding: 0.25rem;
+	border-radius: 1.5rem;
+	display: flex;
+	flex-direction: column;
+	container-type: inline-size;
+
+	hr {
+		border: none;
+		border-radius: 100vh;
+		background-color: var(--interactive-bg);
+		margin: 0.5rem;
+		height: 3px;
+
+		opacity: 0.75;
+	}
+
+	.sectionTitleRow {
+		display: flex;
+		align-items: center;
+		flex-wrap: wrap;
+		gap: 0.25rem 0.75rem;
+
+		margin: 0.5rem 1rem;
+
+		color: black;
+
+		a {
+			color: var(--pink);
+			font-family: var(--font-barlow-condensed);
+			font-weight: 800;
+			font-style: italic;
+			text-decoration: underline;
+
+			cursor: var(--pointer-cursor);
+		}
+	}
+}
+
+.sectionTitle {
+	color: var(--interactive-bg);
+	font-size: 1.5rem;
+	font-weight: 725;
+	text-transform: uppercase;
+
+	user-select: none;
+}
+
+.sectionConfig {
+	display: flex;
+	align-items: center;
+	gap: 0.4rem;
+	font-family: var(--font-barlow-condensed);
+	font-style: italic;
+	font-weight: 300;
+	cursor: var(--pointer-cursor);
+	user-select: none;
+}
+
+@container (width < 500) {
+	.section {
+		.sectionTitleRow {
+			justify-content: space-between;
+		}
+	}
+}
+
+@media (max-width: 1350px) {
+	.page {
+		grid-template-columns: 1fr 350px;
+	}
+}
+
+@media (max-width: 1220px) {
+	.page {
+		grid-template-columns: 1fr;
+	}
+}
+
+@media (max-width: 1000px) {
+	.sectionTitle {
+		font-size: 1.25rem;
+	}
+}
+
+@media (max-width: 800px) {
+	.page {
+		padding-inline: 3rem;
+	}
+}
+
+@media (max-width: 550px) {
+	.page {
+		padding-inline: 1rem;
+	}
+
+	.sectionTitle {
+		font-size: 1rem;
+	}
+}
