@@ -10,6 +10,7 @@ import {
 	parseNteExporterImport,
 } from "@/helpers/importNteExporterPulls"
 
+import pageStyles from "@/app/pulls/page.module.css"
 import styles from "./importSection.module.css"
 
 export function ImportSection() {
@@ -103,9 +104,9 @@ export function ImportSection() {
 
 	return (
 		<div
-			className={`metallic-panel ${styles.section} ${styles.importSection}`}>
-			<div className={styles.sectionTitleRow}>
-				<div className={styles.sectionTitle}>Import</div>
+			className={`metallic-panel ${pageStyles.section} ${styles.importSection}`}>
+			<div className={pageStyles.sectionTitleRow}>
+				<div className={pageStyles.sectionTitle}>Import</div>
 				<div>
 					{"Export your pull history using: "}
 					<a
@@ -178,9 +179,9 @@ export function ImportSection() {
 				}}>
 				Import {parsedData?.pulls.length ?? 0} Pulls
 			</button>
-			<hr/>
-			<div className={styles.sectionTitleRow}>
-				<div className={styles.sectionTitle}>Manual</div>
+			<hr />
+			<div className={pageStyles.sectionTitleRow}>
+				<div className={pageStyles.sectionTitle}>Manual</div>
 				Coming soon!
 			</div>
 		</div>

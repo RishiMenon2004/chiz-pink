@@ -18,6 +18,7 @@ import {
 
 import { usePullTrackerContext, useSettingsConfigContext } from "@/contexts"
 
+import pageStyles from "@/app/pulls/page.module.css"
 import styles from "./pullsListSection.module.css"
 
 function DiceRoll({ pull }: { pull: MiracleBoxPull | ScarboroughFairPull }) {
@@ -236,9 +237,9 @@ export function PullsListSection() {
 
 	return (
 		<div
-			className={`metallic-panel ${styles.section} ${styles.pullsSection}`}>
-			<div className={styles.sectionTitleRow}>
-				<span className={styles.sectionTitle}>PULLS</span>
+			className={`metallic-panel ${pageStyles.section} ${styles.pullsSection}`}>
+			<div className={pageStyles.sectionTitleRow}>
+				<span className={pageStyles.sectionTitle}>PULLS</span>
 			</div>
 			<div
 				data-bannertype={selectedBanner}
