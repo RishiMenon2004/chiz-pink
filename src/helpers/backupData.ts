@@ -82,12 +82,11 @@ export function backupExport() {
 }
 
 export function backupImport(json: string) {
-	let data = {} as BackupData
+	let data: BackupData | null = null
 
 	try {
 		data = JSON.parse(json) satisfies BackupData
 	} catch (error) {
-		data = null!
 		console.error(error)
 	}
 

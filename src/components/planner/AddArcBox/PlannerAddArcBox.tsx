@@ -77,12 +77,16 @@ const LvlSelectGrid = ({
 
 const PlannerArcsSelect = () => {
 	const { newArcRecord, setNewArcRecord } = useAddArcContext()
-	const [selected, setSelected] = useState<Arc>(findArc(newArcRecord.id))
+	const [selected, setSelected] = useState<Arc>(() =>
+		findArc(newArcRecord?.id ?? getAllArcsList()[0].id)
+	)
 	const [dropdown, setDropdown] = useState<boolean>(false)
 	const [searchQuery, setSearchQuery] = useState<string>("")
 	const [filterQuery, setFilterQuery] = useState<
 		[EnumArcType | null, EnumRarity | null]
 	>([null, null])
+
+	if (!newArcRecord) return null
 
 	const handleSearch = (e: ChangeEvent<HTMLInputElement>) => {
 		setSearchQuery(e.currentTarget.value)
@@ -180,8 +184,8 @@ const PlannerArcsSelect = () => {
 						const addArc = (e: MouseEvent) => {
 							e.stopPropagation()
 							setSelected(arc)
-							setNewArcRecord((prevArcRecord) => {
-								return { ...prevArcRecord, id: arc.id }
+							setNewArcRecord(() => {
+								return { ...newArcRecord, id: arc.id }
 							})
 							setDropdown(false)
 						}
@@ -218,6 +222,7 @@ export function PlannerAddArcBox({
 	onConfirm: (e: KeyMouseEventType) => void
 }) {
 	const { newArcRecord, setNewArcRecord } = useAddArcContext()
+	if (!newArcRecord) return null
 	return (
 		<div
 			className={`metallic-panel ${styles.plannerAddArcBox}`}
@@ -229,10 +234,10 @@ export function PlannerAddArcBox({
 				<LvlSelectGrid
 					selectedLvl={newArcRecord.currentLvl}
 					onChange={(value: EnumItemLvls) => {
-						setNewArcRecord((prevArcRecord) => {
-							const { targetLvl } = prevArcRecord
+						setNewArcRecord(() => {
+							const { targetLvl } = newArcRecord
 							return {
-								...prevArcRecord,
+								...newArcRecord,
 								currentLvl: value,
 								targetLvl: value > targetLvl ? value : targetLvl,
 							}
@@ -245,10 +250,10 @@ export function PlannerAddArcBox({
 				<LvlSelectGrid
 					selectedLvl={newArcRecord.targetLvl}
 					onChange={(value: EnumItemLvls) => {
-						setNewArcRecord((prevArcRecord) => {
-							const { currentLvl } = prevArcRecord
+						setNewArcRecord(() => {
+							const { currentLvl } = newArcRecord
 							return {
-								...prevArcRecord,
+								...newArcRecord,
 								targetLvl: value,
 								currentLvl:
 									value < currentLvl ? value : currentLvl,

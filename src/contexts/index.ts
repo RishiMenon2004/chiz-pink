@@ -42,11 +42,15 @@ export function usePlannerBoxContext() {
 }
 
 export const AddNewArcContext = createContext<{
-	newArcRecord: Omit<WeaponRecord, "uid" | "requiredMaterials" | "isDisabled">
+	newArcRecord: Omit<
+		WeaponRecord,
+		"uid" | "requiredMaterials" | "isDisabled"
+	> | null
 	setNewArcRecord: Dispatch<
-		SetStateAction<
-			Omit<WeaponRecord, "uid" | "requiredMaterials" | "isDisabled">
-		>
+		SetStateAction<Omit<
+			WeaponRecord,
+			"uid" | "requiredMaterials" | "isDisabled"
+		> | null>
 	>
 }>(null!)
 export function useAddArcContext() {

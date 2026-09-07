@@ -133,9 +133,10 @@ export function RenderPlanner({
 		setShowAddChar(false)
 	}
 
-	const [newArcRecord, setNewArcRecord] = useState<
-		Omit<WeaponRecord, "uid" | "requiredMaterials" | "isDisabled">
-	>(null!)
+	const [newArcRecord, setNewArcRecord] = useState<Omit<
+		WeaponRecord,
+		"uid" | "requiredMaterials" | "isDisabled"
+	> | null>(null)
 	const handleStartAddingArc = () =>
 		setNewArcRecord({
 			id: getAllArcsList()[0].id,
@@ -144,12 +145,12 @@ export function RenderPlanner({
 		})
 	const addArc = (e: KeyMouseEventType) => {
 		e.stopPropagation()
-		actions.addWeapon(newArcRecord)
-		setNewArcRecord(null!)
+		if (newArcRecord) actions.addWeapon(newArcRecord)
+		setNewArcRecord(null)
 	}
 	const cancelAddArc = (e: KeyMouseEventType) => {
 		e.stopPropagation()
-		setNewArcRecord(null!)
+		setNewArcRecord(null)
 	}
 
 	const [showReorder, setShowReorder] = useState(false)
