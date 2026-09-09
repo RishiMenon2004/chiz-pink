@@ -88,7 +88,7 @@ import {
 	overcastCanopy,
 	sheepcopter,
 	scarletSash,
-	xiaozhen,
+	superSpecter,
 } from "./materials"
 
 const allMaterials: Record<string, Material> = {
@@ -246,7 +246,7 @@ const allRewards: Record<string, Material> = {
 	overcast_canopy: overcastCanopy,
 	sheepcopter: sheepcopter,
 	scarlet_sash: scarletSash,
-	xiaozhen: xiaozhen,
+	super_specter: superSpecter,
 }
 
 export function getAllRewards() {

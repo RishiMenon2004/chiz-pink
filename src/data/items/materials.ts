@@ -232,12 +232,12 @@ export const scarletSash: Material = {
 	sources: [],
 }
 
-export const xiaozhen: Material = {
-	id: "xiaozhen",
-	name: "Xiaozhen",
+export const superSpecter: Material = {
+	id: "super_Specter",
+	name: "Super Specter",
 	materialType: EnumMaterialType.Reward,
 	rarity: EnumRarity.Epic,
-	imageSrc: "rewards/cosmetics/gliders/xiaozhen.png",
+	imageSrc: "rewards/cosmetics/gliders/super_specter.png",
 	sources: [],
 }
 
