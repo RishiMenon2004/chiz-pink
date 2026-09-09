@@ -247,7 +247,7 @@ export const annulith: Material = {
 	name: "Annulith",
 	rarity: EnumRarity.Epic,
 	materialType: EnumMaterialType.Currency,
-	imageSrc: "/currency_annulith",
+	imageSrc: "currency_annulith.png",
 	sources: [],
 }
 
@@ -256,7 +256,7 @@ export const beetleCoin: Material = {
 	name: "Beetle Coin",
 	rarity: EnumRarity.Uncommon,
 	materialType: EnumMaterialType.Currency,
-	imageSrc: "/currency_beetle_coin",
+	imageSrc: "currency_beetle_coin.png",
 	sources: [
 		"Houdinii's Magic Stage",
 		"Hunter Exchange",
@@ -269,7 +269,7 @@ export const fons: Material = {
 	name: "Fons",
 	rarity: EnumRarity.Rare,
 	materialType: EnumMaterialType.Currency,
-	imageSrc: "/currency_fons",
+	imageSrc: "currency_fons.png",
 	sources: ["Hethereau Hobbies", "Fair Exchange"],
 }
 
@@ -278,7 +278,7 @@ export const characterPixel: Material = {
 	name: "Character Pixel",
 	rarity: EnumRarity.Common,
 	materialType: EnumMaterialType.Currency,
-	imageSrc: "/stamina_pixels",
+	imageSrc: "stamina_pixels.png",
 	sources: [],
 }
 
@@ -287,7 +287,7 @@ export const cityStamina: Material = {
 	name: "City Stamina",
 	rarity: EnumRarity.Common,
 	materialType: EnumMaterialType.Currency,
-	imageSrc: "/stamina_city",
+	imageSrc: "stamina_city.png",
 	sources: [],
 }
 
@@ -297,7 +297,7 @@ export const goodBoyStamp: Material = {
 	name: "Good Boy Stamp",
 	rarity: EnumRarity.Epic,
 	materialType: EnumMaterialType.WeeklyBossDrop,
-	imageSrc: "/weekly_good_boy_stamp",
+	imageSrc: "weekly_good_boy_stamp.png",
 	sources: ['Anomaly Pilgrimage: "Morphix"'],
 }
 
@@ -306,7 +306,7 @@ export const dressSleevesOfVanity: Material = {
 	name: "Dress Sleeves of Vanity",
 	rarity: EnumRarity.Epic,
 	materialType: EnumMaterialType.WeeklyBossDrop,
-	imageSrc: "/weekly_dress_sleeves_of_vanity",
+	imageSrc: "weekly_dress_sleeves_of_vanity.png",
 	sources: ['Anomaly Pilgrimage: "The Never-ending Arachne"'],
 }
 
@@ -315,7 +315,7 @@ export const eternalMemory: Material = {
 	name: "Eternal Memory",
 	rarity: EnumRarity.Epic,
 	materialType: EnumMaterialType.WeeklyBossDrop,
-	imageSrc: "/weekly_eternal_memory",
+	imageSrc: "weekly_eternal_memory.png",
 	sources: ['Anomaly Pilgrimage: "Debt Collector"'],
 }
 
@@ -325,7 +325,7 @@ export const eliteHunterGuide: Material = {
 	name: "Elite Hunter Guide",
 	rarity: EnumRarity.Rare,
 	materialType: EnumMaterialType.CharacterExp,
-	imageSrc: "/exp_elite_hunter_guide",
+	imageSrc: "exp_elite_hunter_guide.png",
 	sources: [
 		"Houdinii's Magic Stage",
 		"Hunter Exchange",
@@ -339,7 +339,7 @@ export const seniorHunterGuide: Material = {
 	name: "Senior Hunter Guide",
 	rarity: EnumRarity.Uncommon,
 	materialType: EnumMaterialType.CharacterExp,
-	imageSrc: "/exp_senior_hunter_guide",
+	imageSrc: "exp_senior_hunter_guide.png",
 	sources: [
 		"Houdinii's Magic Stage",
 		"Hunter Exchange",
@@ -353,7 +353,7 @@ export const risingHunterGuide: Material = {
 	name: "Rising Hunter Guide",
 	rarity: EnumRarity.Common,
 	materialType: EnumMaterialType.CharacterExp,
-	imageSrc: "/exp_rising_hunter_guide",
+	imageSrc: "exp_rising_hunter_guide.png",
 	sources: [
 		"Houdinii's Magic Stage",
 		"Hunter Exchange",
@@ -374,7 +374,7 @@ export const paradoxicalWhispers: Material = {
 	name: "Paradoxical Whispers",
 	rarity: EnumRarity.Rare,
 	materialType: EnumMaterialType.CharacterAscension,
-	imageSrc: "/ascension_paradoxical_whispers",
+	imageSrc: "ascension_paradoxical_whispers.png",
 	sources: ["Anomaly Drop", "Crafting", "Hunter Exchange"],
 	linkedMaterials: ["obscure_whispers", "lost_whispers"],
 }
@@ -384,7 +384,7 @@ export const obscureWhispers: Material = {
 	name: "Obscure Whispers",
 	rarity: EnumRarity.Uncommon,
 	materialType: EnumMaterialType.CharacterAscension,
-	imageSrc: "/ascension_obscure_whispers",
+	imageSrc: "ascension_obscure_whispers.png",
 	sources: ["Anomaly Drop", "Crafting", "Hunter Exchange"],
 	linkedMaterials: ["paradoxical_whispers", "lost_whispers"],
 }
@@ -394,7 +394,7 @@ export const lostWhispers: Material = {
 	name: "Lost Whispers",
 	rarity: EnumRarity.Common,
 	materialType: EnumMaterialType.CharacterAscension,
-	imageSrc: "/ascension_lost_whispers",
+	imageSrc: "ascension_lost_whispers.png",
 	sources: ["Anomaly Drop", "Crafting", "Hunter Exchange"],
 	linkedMaterials: ["paradoxical_whispers", "obscure_whispers"],
 }
@@ -410,7 +410,7 @@ export const chaosSilhouette: Material = {
 	name: "Chaos Silhouette",
 	rarity: EnumRarity.Rare,
 	materialType: EnumMaterialType.CharacterAscension,
-	imageSrc: "/ascension_chaos_silhouette",
+	imageSrc: "ascension_chaos_silhouette.png",
 	sources: ["Anomaly Drop", "Crafting", "Hunter Exchange"],
 	linkedMaterials: ["blurred_silhouette", "fading_silhouette"],
 }
@@ -420,7 +420,7 @@ export const blurredSilhouette: Material = {
 	name: "Blurred Silhouette",
 	rarity: EnumRarity.Uncommon,
 	materialType: EnumMaterialType.CharacterAscension,
-	imageSrc: "/ascension_blurred_silhouette",
+	imageSrc: "ascension_blurred_silhouette.png",
 	sources: ["Anomaly Drop", "Crafting", "Hunter Exchange"],
 	linkedMaterials: ["chaos_silhouette", "fading_silhouette"],
 }
@@ -430,7 +430,7 @@ export const fadingSilhouette: Material = {
 	name: "Fading Silhouette",
 	rarity: EnumRarity.Common,
 	materialType: EnumMaterialType.CharacterAscension,
-	imageSrc: "/ascension_fading_silhouette",
+	imageSrc: "ascension_fading_silhouette.png",
 	sources: ["Anomaly Drop", "Crafting", "Hunter Exchange"],
 	linkedMaterials: ["chaos_silhouette", "blurred_silhouette"],
 }
@@ -446,7 +446,7 @@ export const distortedNumeral: Material = {
 	name: "Distorted Numeral",
 	rarity: EnumRarity.Rare,
 	materialType: EnumMaterialType.CharacterAscension,
-	imageSrc: "/ascension_distorted_numeral",
+	imageSrc: "ascension_distorted_numeral.png",
 	sources: ["Anomaly Drop", "Crafting", "Hunter Exchange"],
 	linkedMaterials: ["unsolved_numeral", "blurred_numeral"],
 }
@@ -456,7 +456,7 @@ export const unsolvedNumeral: Material = {
 	name: "Unsolved Numeral",
 	rarity: EnumRarity.Uncommon,
 	materialType: EnumMaterialType.CharacterAscension,
-	imageSrc: "/ascension_unsolved_numeral",
+	imageSrc: "ascension_unsolved_numeral.png",
 	sources: ["Anomaly Drop", "Crafting", "Hunter Exchange"],
 	linkedMaterials: ["distorted_numeral", "blurred_numeral"],
 }
@@ -466,7 +466,7 @@ export const blurredNumeral: Material = {
 	name: "Blurred Numeral",
 	rarity: EnumRarity.Common,
 	materialType: EnumMaterialType.CharacterAscension,
-	imageSrc: "/ascension_blurred_numeral",
+	imageSrc: "ascension_blurred_numeral.png",
 	sources: ["Anomaly Drop", "Crafting", "Hunter Exchange"],
 	linkedMaterials: ["distorted_numeral", "unsolved_numeral"],
 }
@@ -482,7 +482,7 @@ export const transcendentDelusions: Material = {
 	name: "Transcendent Delusions",
 	rarity: EnumRarity.Rare,
 	materialType: EnumMaterialType.CharacterAscension,
-	imageSrc: "/ascension_transcendent_delusions",
+	imageSrc: "ascension_transcendent_delusions.png",
 	sources: ["Anomaly Drop", "Crafting", "Hunter Exchange"],
 	linkedMaterials: ["yearning_delusions", "suspended_delusions"],
 }
@@ -492,7 +492,7 @@ export const yearningDelusions: Material = {
 	name: "Yearning Delusions",
 	rarity: EnumRarity.Uncommon,
 	materialType: EnumMaterialType.CharacterAscension,
-	imageSrc: "/ascension_yearning_delusions",
+	imageSrc: "ascension_yearning_delusions.png",
 	sources: ["Anomaly Drop", "Crafting", "Hunter Exchange"],
 	linkedMaterials: ["transcendent_delusions", "suspended_delusions"],
 }
@@ -502,7 +502,7 @@ export const suspendedDelusions: Material = {
 	name: "Suspended Delusions",
 	rarity: EnumRarity.Common,
 	materialType: EnumMaterialType.CharacterAscension,
-	imageSrc: "/ascension_suspended_delusions",
+	imageSrc: "ascension_suspended_delusions.png",
 	sources: ["Anomaly Drop", "Crafting", "Hunter Exchange"],
 	linkedMaterials: ["transcendent_delusions", "yearning_delusions"],
 }
@@ -519,7 +519,7 @@ export const waterMoonPick: Material = {
 	name: "Water Moon Pick",
 	rarity: EnumRarity.Rare,
 	materialType: EnumMaterialType.BossDrop,
-	imageSrc: "/boss_water_moon_pick",
+	imageSrc: "boss_water_moon_pick.png",
 	sources: ['Anomaly Hunt: "Beat King"', "Material Selection Box"],
 }
 
@@ -528,7 +528,7 @@ export const chargingKnightSparkPlug: Material = {
 	name: "Charging Knight Spark Plug",
 	rarity: EnumRarity.Rare,
 	materialType: EnumMaterialType.BossDrop,
-	imageSrc: "/boss_charging_knight_spark_plug",
+	imageSrc: "boss_charging_knight_spark_plug.png",
 	sources: ['Anomaly Hunt: "Headless Rider"', "Material Selection Box"],
 }
 
@@ -537,7 +537,7 @@ export const confessionalFLowerSeed: Material = {
 	name: "Confessional Flower Seed",
 	rarity: EnumRarity.Rare,
 	materialType: EnumMaterialType.BossDrop,
-	imageSrc: "/boss_confessional_flower_seed",
+	imageSrc: "boss_confessional_flower_seed.png",
 	sources: ['Anomaly Hunt: "Serenetti"', "Material Selection Box"],
 }
 
@@ -546,7 +546,7 @@ export const aPageFromDelusionsShore: Material = {
 	name: "A Page from Delusion's Shore",
 	rarity: EnumRarity.Rare,
 	materialType: EnumMaterialType.BossDrop,
-	imageSrc: "/boss_a_page_from_delusions_shore",
+	imageSrc: "boss_a_page_from_delusions_shore.png",
 	sources: ['Anomaly Hunt: "Black Tome"', "Material Selection Box"],
 }
 
@@ -555,7 +555,7 @@ export const tearOfTheSea: Material = {
 	name: "Tear of The Sea",
 	rarity: EnumRarity.Rare,
 	materialType: EnumMaterialType.BossDrop,
-	imageSrc: "/boss_tear_of_the_sea",
+	imageSrc: "boss_tear_of_the_sea.png",
 	sources: ['Anomaly Hunt: "Sea Prisoner"', "Material Selection Box"],
 }
 
@@ -564,7 +564,7 @@ export const nestGuardFragment: Material = {
 	name: "Nest Guard Fragment",
 	rarity: EnumRarity.Rare,
 	materialType: EnumMaterialType.BossDrop,
-	imageSrc: "/boss_nest_guard_fragment",
+	imageSrc: "boss_nest_guard_fragment.png",
 	sources: ['Anomaly Hunt: "Nestbound Bird"', "Material Selection Box"],
 }
 
@@ -573,7 +573,7 @@ export const colorfulTicketStub: Material = {
 	name: "Colorful Ticket Stub",
 	rarity: EnumRarity.Rare,
 	materialType: EnumMaterialType.BossDrop,
-	imageSrc: "/boss_colorful_ticket_stub",
+	imageSrc: "boss_colorful_ticket_stub.png",
 	sources: ['Anomaly Hunt: "Swallowtail"', "Material Selection Box"],
 }
 
@@ -583,7 +583,7 @@ export const theOliveBranch: Material = {
 	name: "The Olive Branch",
 	rarity: EnumRarity.Rare,
 	materialType: EnumMaterialType.Talent,
-	imageSrc: "/skill_the_olive_branch",
+	imageSrc: "skill_the_olive_branch.png",
 	sources: ["Houdinii's Schemes", "Hunter Exchange", "Material Selection Box"],
 	linkedMaterials: ["doves_flutter", "nestlings_longing"],
 }
@@ -593,7 +593,7 @@ export const dovesFlutter: Material = {
 	name: "Dove's Flutter",
 	rarity: EnumRarity.Uncommon,
 	materialType: EnumMaterialType.Talent,
-	imageSrc: "/skill_doves_flutter",
+	imageSrc: "skill_doves_flutter.png",
 	sources: ["Houdinii's Schemes", "Hunter Exchange", "Material Selection Box"],
 	linkedMaterials: ["the_olive_branch", "nestlings_longing"],
 }
@@ -603,7 +603,7 @@ export const nestlingsLonging: Material = {
 	name: "Nestling's Longing",
 	rarity: EnumRarity.Common,
 	materialType: EnumMaterialType.Talent,
-	imageSrc: "/skill_nestlings_longing",
+	imageSrc: "skill_nestlings_longing.png",
 	sources: ["Houdinii's Schemes", "Hunter Exchange", "Material Selection Box"],
 	linkedMaterials: ["the_olive_branch", "doves_flutter"],
 }
@@ -619,7 +619,7 @@ export const whiteRose: Material = {
 	name: "White Rose",
 	rarity: EnumRarity.Rare,
 	materialType: EnumMaterialType.Talent,
-	imageSrc: "/skill_white_rose",
+	imageSrc: "skill_white_rose.png",
 	sources: ["Houdinii's Schemes", "Hunter Exchange", "Material Selection Box"],
 	linkedMaterials: ["co", "fng"],
 }
@@ -629,7 +629,7 @@ export const co: Material = {
 	name: "CO",
 	rarity: EnumRarity.Uncommon,
 	materialType: EnumMaterialType.Talent,
-	imageSrc: "/skill_co",
+	imageSrc: "skill_co.png",
 	sources: ["Houdinii's Schemes", "Hunter Exchange", "Material Selection Box"],
 	linkedMaterials: ["white_rose", "fng"],
 }
@@ -639,7 +639,7 @@ export const fng: Material = {
 	name: "FNG",
 	rarity: EnumRarity.Common,
 	materialType: EnumMaterialType.Talent,
-	imageSrc: "/skill_fng",
+	imageSrc: "skill_fng.png",
 	sources: ["Houdinii's Schemes", "Hunter Exchange", "Material Selection Box"],
 	linkedMaterials: ["white_rose", "co"],
 }
@@ -651,7 +651,7 @@ export const blackHat: Material = {
 	name: "Black Hat",
 	rarity: EnumRarity.Rare,
 	materialType: EnumMaterialType.Talent,
-	imageSrc: "/skill_black_hat",
+	imageSrc: "skill_black_hat.png",
 	sources: ["Houdinii's Schemes", "Hunter Exchange", "Material Selection Box"],
 	linkedMaterials: ["known_weariness", "first_expectations"],
 }
@@ -661,7 +661,7 @@ export const knownWeariness: Material = {
 	name: "Known Weariness",
 	rarity: EnumRarity.Uncommon,
 	materialType: EnumMaterialType.Talent,
-	imageSrc: "/skill_known_weariness",
+	imageSrc: "skill_known_weariness.png",
 	sources: ["Houdinii's Schemes", "Hunter Exchange", "Material Selection Box"],
 	linkedMaterials: ["black_hat", "first_expectations"],
 }
@@ -671,7 +671,7 @@ export const firstExpectations: Material = {
 	name: "First Expectations",
 	rarity: EnumRarity.Common,
 	materialType: EnumMaterialType.Talent,
-	imageSrc: "/skill_first_expectations",
+	imageSrc: "skill_first_expectations.png",
 	sources: ["Houdinii's Schemes", "Hunter Exchange", "Material Selection Box"],
 	linkedMaterials: ["black_hat", "known_weariness"],
 }
@@ -687,7 +687,7 @@ export const heartRacingNight: Material = {
 	name: "Heart-Racing Night",
 	rarity: EnumRarity.Rare,
 	materialType: EnumMaterialType.Talent,
-	imageSrc: "/skill_heart_racing_night",
+	imageSrc: "skill_heart_racing_night.png",
 	sources: ["Houdinii's Schemes", "Hunter Exchange", "Material Selection Box"],
 	linkedMaterials: ["resonance_of_faith", "synchronicity_of_thought"],
 }
@@ -697,7 +697,7 @@ export const resonanceOfFaith: Material = {
 	name: "Resonance of Faith",
 	rarity: EnumRarity.Uncommon,
 	materialType: EnumMaterialType.Talent,
-	imageSrc: "/skill_resonance_of_faith",
+	imageSrc: "skill_resonance_of_faith.png",
 	sources: ["Houdinii's Schemes", "Hunter Exchange", "Material Selection Box"],
 	linkedMaterials: ["heart_racing_night", "synchronicity_of_thought"],
 }
@@ -707,7 +707,7 @@ export const synchronicityOfThought: Material = {
 	name: "Synchronicity of Thought",
 	rarity: EnumRarity.Common,
 	materialType: EnumMaterialType.Talent,
-	imageSrc: "/skill_synchronicity_of_thought",
+	imageSrc: "skill_synchronicity_of_thought.png",
 	sources: ["Houdinii's Schemes", "Hunter Exchange", "Material Selection Box"],
 	linkedMaterials: ["heart_racing_night", "resonance_of_faith"],
 }
@@ -723,7 +723,7 @@ export const theSecondSelf: Material = {
 	name: "The Second Self",
 	rarity: EnumRarity.Rare,
 	materialType: EnumMaterialType.Talent,
-	imageSrc: "/skill_the_second_self",
+	imageSrc: "skill_the_second_self.png",
 	sources: ["Houdinii's Schemes", "Hunter Exchange", "Material Selection Box"],
 	linkedMaterials: ["suspended_whispers", "hesitation_of_the_waves"],
 }
@@ -733,7 +733,7 @@ export const suspendedWhispers: Material = {
 	name: "Suspended Whispers",
 	rarity: EnumRarity.Uncommon,
 	materialType: EnumMaterialType.Talent,
-	imageSrc: "/skill_suspended_whispers",
+	imageSrc: "skill_suspended_whispers.png",
 	sources: ["Houdinii's Schemes", "Hunter Exchange", "Material Selection Box"],
 	linkedMaterials: ["the_second_self", "hesitation_of_the_waves"],
 }
@@ -743,7 +743,7 @@ export const hesitationOfTheWaves: Material = {
 	name: "Hesitation of the Waves",
 	rarity: EnumRarity.Common,
 	materialType: EnumMaterialType.Talent,
-	imageSrc: "/skill_hesitation_of_the_waves",
+	imageSrc: "skill_hesitation_of_the_waves.png",
 	sources: ["Houdinii's Schemes", "Hunter Exchange", "Material Selection Box"],
 	linkedMaterials: ["the_second_self", "suspended_whispers"],
 }
@@ -759,7 +759,7 @@ export const dreamlessSeed: Material = {
 	name: "Dreamless Seed",
 	rarity: EnumRarity.Uncommon,
 	materialType: EnumMaterialType.Talent,
-	imageSrc: "/city_dreamless_seed",
+	imageSrc: "city_dreamless_seed.png",
 	sources: ["Daily Activity", "Fair Exchange", "Hunter Exchange"],
 }
 
@@ -769,7 +769,7 @@ export const goldenAppleSeed: Material = {
 	name: "Golden Apple Seed",
 	rarity: EnumRarity.Rare,
 	materialType: EnumMaterialType.WeaponAscension,
-	imageSrc: "/wpascension_golden_appleseed",
+	imageSrc: "wpascension_golden_appleseed.png",
 	sources: ["Bubble Can Factory", "Hunter Exchange", "Material Selection Box"],
 	linkedMaterials: ["silver_apple_seed", "iron_apple_seed"],
 }
@@ -779,7 +779,7 @@ export const silverAppleSeed: Material = {
 	name: "Silver Apple Seed",
 	rarity: EnumRarity.Uncommon,
 	materialType: EnumMaterialType.WeaponAscension,
-	imageSrc: "/wpascension_silver_appleseed",
+	imageSrc: "wpascension_silver_appleseed.png",
 	sources: ["Bubble Can Factory", "Hunter Exchange", "Material Selection Box"],
 	linkedMaterials: ["golden_apple_seed", "iron_apple_seed"],
 }
@@ -789,7 +789,7 @@ export const ironAppleSeed: Material = {
 	name: "Iron Apple Seed",
 	rarity: EnumRarity.Common,
 	materialType: EnumMaterialType.WeaponAscension,
-	imageSrc: "/wpascension_iron_appleseed",
+	imageSrc: "wpascension_iron_appleseed.png",
 	sources: ["Bubble Can Factory", "Hunter Exchange", "Material Selection Box"],
 	linkedMaterials: ["golden_apple_seed", "silver_apple_seed"],
 }
@@ -805,7 +805,7 @@ export const harmony: Material = {
 	name: "Harmony",
 	rarity: EnumRarity.Rare,
 	materialType: EnumMaterialType.WeaponAscension,
-	imageSrc: "/wpascension_harmony",
+	imageSrc: "wpascension_harmony.png",
 	sources: ["Bubble Can Factory", "Hunter Exchange", "Material Selection Box"],
 	linkedMaterials: ["versey", "beaty"],
 }
@@ -815,7 +815,7 @@ export const versey: Material = {
 	name: "Versey",
 	rarity: EnumRarity.Uncommon,
 	materialType: EnumMaterialType.WeaponAscension,
-	imageSrc: "/wpascension_versey",
+	imageSrc: "wpascension_versey.png",
 	sources: ["Bubble Can Factory", "Hunter Exchange", "Material Selection Box"],
 	linkedMaterials: ["harmony", "beaty"],
 }
@@ -825,7 +825,7 @@ export const beaty: Material = {
 	name: "Beaty",
 	rarity: EnumRarity.Common,
 	materialType: EnumMaterialType.WeaponAscension,
-	imageSrc: "/wpascension_beaty",
+	imageSrc: "wpascension_beaty.png",
 	sources: ["Bubble Can Factory", "Hunter Exchange", "Material Selection Box"],
 	linkedMaterials: ["harmony", "versey"],
 }
@@ -837,7 +837,7 @@ export const liquidDreamCan: Material = {
 	name: "Liquid Dream Can",
 	rarity: EnumRarity.Rare,
 	materialType: EnumMaterialType.WeaponAscension,
-	imageSrc: "/wpascension_liquid_dream_can",
+	imageSrc: "wpascension_liquid_dream_can.png",
 	sources: ["Bubble Can Factory", "Hunter Exchange", "Material Selection Box"],
 	linkedMaterials: ["liquid_dream_travel_kit", "liquid_dream_trial_kit"],
 }
@@ -847,7 +847,7 @@ export const liquidDreamTravelKit: Material = {
 	name: "Liquid Dream Travel Kit",
 	rarity: EnumRarity.Uncommon,
 	materialType: EnumMaterialType.WeaponAscension,
-	imageSrc: "/wpascension_liquid_dream_travel_kit",
+	imageSrc: "wpascension_liquid_dream_travel_kit.png",
 	sources: ["Bubble Can Factory", "Hunter Exchange", "Material Selection Box"],
 	linkedMaterials: ["liquid_dream_can", "liquid_dream_trial_kit"],
 }
@@ -857,7 +857,7 @@ export const liquidDreamTrialKit: Material = {
 	name: "Liquid Dream Trial Kit",
 	rarity: EnumRarity.Common,
 	materialType: EnumMaterialType.WeaponAscension,
-	imageSrc: "/wpascension_liquid_dream_trial_kit",
+	imageSrc: "wpascension_liquid_dream_trial_kit.png",
 	sources: ["Bubble Can Factory", "Hunter Exchange", "Material Selection Box"],
 	linkedMaterials: ["liquid_dream_can", "liquid_dream_travel_kit"],
 }
@@ -873,7 +873,7 @@ export const specialColdDessert: Material = {
 	name: "Special Cold Dessert",
 	rarity: EnumRarity.Rare,
 	materialType: EnumMaterialType.WeaponAscension,
-	imageSrc: "/wpascension_special_cold_dessert",
+	imageSrc: "wpascension_special_cold_dessert.png",
 	sources: ["Bubble Can Factory", "Hunter Exchange", "Material Selection Box"],
 	linkedMaterials: ["plain_cold_dessert", "flavorless_cold_dessert"],
 }
@@ -883,7 +883,7 @@ export const plainColdDessert: Material = {
 	name: "Plain Cold Dessert",
 	rarity: EnumRarity.Uncommon,
 	materialType: EnumMaterialType.WeaponAscension,
-	imageSrc: "/wpascension_plain_cold_dessert",
+	imageSrc: "wpascension_plain_cold_dessert.png",
 	sources: ["Bubble Can Factory", "Hunter Exchange", "Material Selection Box"],
 	linkedMaterials: ["special_cold_dessert", "flavorless_cold_dessert"],
 }
@@ -893,7 +893,7 @@ export const flavorlessColdDessert: Material = {
 	name: "Flavorless Cold Dessert",
 	rarity: EnumRarity.Common,
 	materialType: EnumMaterialType.WeaponAscension,
-	imageSrc: "/wpascension_flavorless_cold_dessert",
+	imageSrc: "wpascension_flavorless_cold_dessert.png",
 	sources: ["Bubble Can Factory", "Hunter Exchange", "Material Selection Box"],
 	linkedMaterials: ["special_cold_dessert", "plain_cold_dessert"],
 }
@@ -909,7 +909,7 @@ export const collectorsDramaCore: Material = {
 	name: "Collector's Drama Core",
 	rarity: EnumRarity.Rare,
 	materialType: EnumMaterialType.WeaponAscension,
-	imageSrc: "/wpascension_collectors_drama_core",
+	imageSrc: "wpascension_collectors_drama_core.png",
 	sources: ["Bubble Can Factory", "Hunter Exchange", "Material Selection Box"],
 	linkedMaterials: ["master_drama_core", "beginner_drama_core"],
 }
@@ -919,7 +919,7 @@ export const masterDramaCore: Material = {
 	name: "Master Drama Core",
 	rarity: EnumRarity.Uncommon,
 	materialType: EnumMaterialType.WeaponAscension,
-	imageSrc: "/wpascension_master_drama_core",
+	imageSrc: "wpascension_master_drama_core.png",
 	sources: ["Bubble Can Factory", "Hunter Exchange", "Material Selection Box"],
 	linkedMaterials: ["collectors_drama_core", "beginner_drama_core"],
 }
@@ -929,7 +929,7 @@ export const beginnerDramaCore: Material = {
 	name: "Beginner Drama Core",
 	rarity: EnumRarity.Common,
 	materialType: EnumMaterialType.WeaponAscension,
-	imageSrc: "/wpascension_beginner_drama_core",
+	imageSrc: "wpascension_beginner_drama_core.png",
 	sources: ["Bubble Can Factory", "Hunter Exchange", "Material Selection Box"],
 	linkedMaterials: ["collectors_drama_core", "master_drama_core"],
 }
@@ -946,7 +946,7 @@ export const chaoticDye: Material = {
 	name: "Chaotic Dye",
 	rarity: EnumRarity.Rare,
 	materialType: EnumMaterialType.WeaponExp,
-	imageSrc: "/wpexp_chaotic_dye",
+	imageSrc: "wpexp_chaotic_dye.png",
 	sources: [
 		"Houdinii's Magic Stage",
 		"Hunter Exchange",
@@ -960,7 +960,7 @@ export const colorlessDye: Material = {
 	name: "Colorless Dye",
 	rarity: EnumRarity.Uncommon,
 	materialType: EnumMaterialType.WeaponExp,
-	imageSrc: "/wpexp_colorless_dye",
+	imageSrc: "wpexp_colorless_dye.png",
 	sources: [
 		"Houdinii's Magic Stage",
 		"Hunter Exchange",
@@ -974,7 +974,7 @@ export const lightDye: Material = {
 	name: "Light Dye",
 	rarity: EnumRarity.Common,
 	materialType: EnumMaterialType.WeaponExp,
-	imageSrc: "/wpexp_light_dye",
+	imageSrc: "wpexp_light_dye.png",
 	sources: [
 		"Houdinii's Magic Stage",
 		"Hunter Exchange",

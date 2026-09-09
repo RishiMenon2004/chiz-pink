@@ -21,6 +21,7 @@ import { useInventoryStore, usePlannerStore, useTooltip } from "@/hooks"
 import { getAggregatedMaterial } from "@/hooks/usePlannerStore"
 
 import styles from "./currencyBar.module.css"
+import { MaterialIcon } from "../MaterialIcon"
 
 const localeUS = (x: number) => x.toLocaleString("en-US")
 
@@ -115,6 +116,8 @@ export function CurrencyBox({ currency }: { currency: Material }) {
 	const isInventory = pathname === "/inventory"
 	const showRequirementIndicator = isInventory && hasRequired && !hasAcquired
 
+	const requiredAmount = requiredQuantity - (hasAcquired ? 0 : currencyValue)
+
 	return (
 		<div
 			className={`inset-control ${styles.currencyBox} ${ownedOrNeededStyle}`}
@@ -127,10 +130,10 @@ export function CurrencyBox({ currency }: { currency: Material }) {
 					"--input-width": inputWidth,
 				} as CSSProperties
 			}>
-			<Image
+			<MaterialIcon
+				material={currency}
 				className={styles.icon}
 				data-currency-id={currency.id}
-				src={`/materials${currency.imageSrc}.png`}
 				width={64}
 				height={64}
 				alt={`${currency.name} icon`}
@@ -139,9 +142,7 @@ export function CurrencyBox({ currency }: { currency: Material }) {
 
 			{showRequirementIndicator && (
 				<div className={styles.requirementIndicator}>
-					{(hasAcquired
-						? requiredQuantity
-						: requiredQuantity - currencyValue).toLocaleString("en-US")}
+					{requiredAmount.toLocaleString("en-US")}
 				</div>
 			)}
 

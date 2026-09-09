@@ -21,7 +21,7 @@ export function MaterialIcon({
 }: MaterialIconProps) {
 	return (
 		<Image
-			src={`/materials${material.imageSrc}.png`}
+			src={`/materials/${material.imageSrc}`}
 			alt={alt ?? `${material.id} icon`}
 			onError={(e) => {
 				const target = e.currentTarget
