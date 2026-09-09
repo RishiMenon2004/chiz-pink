@@ -43,7 +43,7 @@ export type NteExporterData = {
 	source: string
 	capture_source: string
 	user_uid: string
-	server_id: "NA_SA" | "AS" | "EU" | "SA"
+	server_id: "NA_SA" | "AS" | "EU" | "SE"
 	account_region: string
 	exporter: {
 		name: string

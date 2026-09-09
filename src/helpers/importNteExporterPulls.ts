@@ -85,7 +85,7 @@ export function parseNteExporterImport(
 		case "EU":
 			server = "Europe"
 			break
-		case "SA":
+		case "SE":
 			server = "SEA"
 			break
 		default:
