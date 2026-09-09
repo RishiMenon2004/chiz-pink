@@ -10,7 +10,7 @@ import {
 } from "../items/materials"
 
 export const linko: Character = {
-	isPreview: true,
+	isFeatured: true,
 	id: "linko",
 	imageSrc: "linko.webp",
 	name: "Linko",

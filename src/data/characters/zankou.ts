@@ -10,7 +10,6 @@ import {
 } from "../items/materials"
 
 export const zankou: Character = {
-	isFeatured: true,
 	id: "zankou",
 	imageSrc: "zankou.webp",
 	name: "Zankou",

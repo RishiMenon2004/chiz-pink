@@ -17,7 +17,7 @@ import { EnumArcType } from "./arc"
 
 const allArcs: Record<string, Arc> = {
 	voice_of_the_voyager: {
-		isPreview: true,
+		isFeatured: true,
 		id: "voice_of_the_voyager",
 		imageSrc: "voice_of_the_voyager.webp",
 		name: "Voice of The Voyager",
@@ -66,7 +66,6 @@ const allArcs: Record<string, Arc> = {
 	},
 
 	ravenous_blade: {
-		isFeatured: true,
 		id: "ravenous_blade",
 		imageSrc: "ravenous_blade.webp",
 		name: "Ravenous Blade",
