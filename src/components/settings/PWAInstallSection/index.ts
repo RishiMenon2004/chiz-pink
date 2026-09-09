@@ -1,0 +1,1 @@
+export { PWAInstallSection } from "./PWAInstallSection"

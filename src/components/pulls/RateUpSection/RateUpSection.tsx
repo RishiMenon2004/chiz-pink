@@ -15,7 +15,7 @@ import { ArcIcon, CharacterAvatar } from "@/components/layout"
 
 import pageStyles from "@/app/pulls/page.module.css"
 import styles from "./rateUpSection.module.css"
-import { ConfigCheckbox } from "@/app/settings/RenderSettings"
+import { ConfigCheckbox } from "@/components/settings"
 
 const hardPity: Record<keyof PullsRecord, number> = {
 	arcsBanner: 80,

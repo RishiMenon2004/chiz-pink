@@ -10,7 +10,7 @@ import { useSettingsStore } from "@/hooks"
 import {
 	PixelRefillCountdown,
 	StaminaResetCountdown,
-} from "@/app/settings/RenderSettings"
+} from "@/components/settings"
 
 import { MaterialIcon } from "@/components/layout"
 

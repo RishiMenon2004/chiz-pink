@@ -20,7 +20,7 @@ import {
 	getDayBoundaryLabel,
 	SERVER_UTC_OFFSET_HOURS,
 } from "@/helpers/serverTime"
-import { ConfigCheckbox } from "@/app/settings/RenderSettings"
+import { ConfigCheckbox } from "@/components/settings"
 
 import styles from "./EventCalendar.module.css"
 import pageStyles from "@/app/page.module.css"

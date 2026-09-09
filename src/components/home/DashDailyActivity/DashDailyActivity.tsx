@@ -8,7 +8,7 @@ import { getAllActivities } from "@/data/activities/activities"
 
 import { useChecklistStore, useInventoryStore, useSettingsStore } from "@/hooks"
 
-import { ConfigCheckbox } from "@/app/settings/RenderSettings"
+import { ConfigCheckbox } from "@/components/settings"
 
 import pageStyles from "@/app/page.module.css"
 import styles from "./DashDailyActivity.module.css"
