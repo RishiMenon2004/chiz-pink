@@ -233,7 +233,7 @@ export const scarletSash: Material = {
 }
 
 export const superSpecter: Material = {
-	id: "super_Specter",
+	id: "super_specter",
 	name: "Super Specter",
 	materialType: EnumMaterialType.Reward,
 	rarity: EnumRarity.Epic,
