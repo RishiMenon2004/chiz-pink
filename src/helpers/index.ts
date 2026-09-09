@@ -10,6 +10,7 @@ export { getLinkedMaterials } from "./getLinkedMaterials"
 export { getPhases } from "./getPhases"
 export { getRarityName } from "./getRarityName"
 export { getCostAmount } from "./getCostAmountWithRarity"
+export { getOptimizedImageUrl } from "./getOptimizedImageUrl"
 
 export { parseDescription } from "./parseDescription"
 

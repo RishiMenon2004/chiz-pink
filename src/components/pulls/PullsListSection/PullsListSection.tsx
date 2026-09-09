@@ -14,6 +14,7 @@ import {
 	findPullItem,
 	staticArcBanners,
 	getResolvedGachaBanners,
+	getOptimizedImageUrl,
 } from "@/helpers"
 
 import { usePullTrackerContext, useSettingsConfigContext } from "@/contexts"
@@ -68,12 +69,14 @@ function PullEntry({
 		isScarborough ? pull.rewardType : "arc"
 	)
 
+	const rewardType = isScarborough ? pull.rewardType : "arc"
 	const sourceDir: Record<ScarboroughFairPull["rewardType"], string> = {
 		arc: "/arcs/",
 		item: "/materials/",
 		cosmetic: "/materials/",
 		character: "/characters/avatar/",
 	}
+	const imageSrc = `${sourceDir[rewardType]}${item.imageSrc}`
 
 	const isRateup = useMemo(
 		() => isRateUp(selectedBanner, gachaBanners, pull, server),
@@ -88,13 +91,11 @@ function PullEntry({
 			<div
 				key={pull.uid}
 				data-rateup={isRateup}
-				data-rewardtype={isScarborough ? pull.rewardType : "arc"}
+				data-rewardtype={rewardType}
 				style={
-					isScarborough
-						? ({
-								"--bg-image": `url("${sourceDir[pull.rewardType]}${item.imageSrc}")`,
-							} as CSSProperties)
-						: {}
+					{
+						"--bg-image": `url("${getOptimizedImageUrl(imageSrc)}")`,
+					} as CSSProperties
 				}
 				className={`${styles.pullEntry} ${getItemRarityStyle(item)}`}>
 				<DiceRoll pull={pull} />
