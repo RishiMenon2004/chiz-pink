@@ -49,7 +49,7 @@ export const arcBanners = [
 		getEndDate: getPhase1End("version1_3"),
 	},
 	{
-		name: "Surfing All Channels: Linko",
+		name: "Soundscape Special",
 		rateupItem: "voice_of_the_voyager",
 		getStartDate: getPhase2Start("version1_3"),
 		getEndDate: getPhase2End("version1_3"),
