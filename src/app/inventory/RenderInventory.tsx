@@ -146,7 +146,7 @@ export default function RenderInventory() {
 						key="owned"
 						isEmpty={ownedMats.length <= 0}
 						isOpen={ownedMats.length > 0}
-						emptyFalback={
+						emptyFallback={
 							<InfoBox
 								className={`inset-control ${styles.emptyFilter}`}>
 								<div>
@@ -221,7 +221,7 @@ export default function RenderInventory() {
 						key="required"
 						title="Required"
 						isEmpty={requiredMaterials.length <= 0}
-						emptyFalback={
+						emptyFallback={
 							<InfoBox
 								className={`inset-control ${styles.emptyFilter}`}>
 								<div>
@@ -316,7 +316,7 @@ export default function RenderInventory() {
 						title="Acquired"
 						isEmpty={acquiredMaterials.length <= 0}
 						isOpen={acquiredMaterials.length > 0}
-						emptyFalback={
+						emptyFallback={
 							<InfoBox
 								className={`inset-control ${styles.emptyFilter}`}>
 								<div>
@@ -343,7 +343,7 @@ export default function RenderInventory() {
 						key="required"
 						title="Required"
 						isEmpty={notAcquiredMaterials.length <= 0}
-						emptyFalback={
+						emptyFallback={
 							<InfoBox
 								className={`inset-control ${styles.emptyFilter}`}>
 								<div>

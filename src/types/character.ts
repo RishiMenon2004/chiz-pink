@@ -4,14 +4,14 @@ import { EnumRarity } from "@/data/items"
 import { EnumArcType } from "@/data/arcs"
 import { EnumCharacterElement } from "@/data/characters"
 
-export type AbilityDecsription = {
+export type AbilityDescription = {
 	section?: string
 	description: string
 }
 
 export type Ability = {
 	name: string
-	description: AbilityDecsription[]
+	description: AbilityDescription[]
 	maxLvl: number
 }
 

@@ -6,19 +6,21 @@ export function MaterialGroup({
 	title,
 	isEmpty,
 	isOpen = true,
-	emptyFalback,
+	emptyFallback,
 	children,
 }: {
-	title: string,
+	title: string
 	isEmpty?: boolean
 	isOpen?: boolean
-	emptyFalback?: ReactNode
+	emptyFallback?: ReactNode
 	children: ReactNode
 }) {
 	return (
-		<details className={`metallic-panel ${styles.matGroup} ${isEmpty && styles.emptyGroup}`} open={isOpen}>
+		<details
+			className={`metallic-panel ${styles.matGroup} ${isEmpty && styles.emptyGroup}`}
+			open={isOpen}>
 			<summary>{title}</summary>
-			{isEmpty ? emptyFalback : children}
+			{isEmpty ? emptyFallback : children}
 		</details>
 	)
 }

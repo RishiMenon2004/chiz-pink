@@ -48,7 +48,7 @@ function calculateExpItemCost(exp: number): {
 	return { beetleCoin, expCost }
 }
 
-export function calcuateWeaponCosts({
+export function calculateWeaponCosts({
 	id,
 	currentLvl,
 	targetLvl,

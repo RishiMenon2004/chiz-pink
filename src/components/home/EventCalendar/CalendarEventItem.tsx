@@ -13,7 +13,7 @@ import {
 import { createPortal } from "react-dom"
 
 import { EventData } from "@/data/activities/events"
-import { stopPropogation } from "@/helpers"
+import { stopPropagation } from "@/helpers"
 import { formatEventDateTime } from "@/helpers/serverTime"
 
 import { useCalendarContext } from "./EventCalendar"
@@ -174,7 +174,7 @@ function EventDetailsBox({
 
 	return (
 		<div
-			onClick={stopPropogation}
+			onClick={stopPropagation}
 			className={styles.eventDetailsBox}
 			style={
 				{

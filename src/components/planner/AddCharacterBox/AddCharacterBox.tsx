@@ -12,7 +12,7 @@ import { getAllCharactersList } from "@/data/characters/characterList"
 
 import { usePlannerStore } from "@/hooks"
 
-import { createSearchString, stopPropogation } from "@/helpers"
+import { createSearchString, stopPropagation } from "@/helpers"
 
 import { useAddCharContext } from "@/contexts"
 
@@ -101,7 +101,7 @@ export function PlannerAddCharacterBox({
 	return (
 		<div
 			className={`metallic-panel ${styles.addCharBox}`}
-			onClick={stopPropogation}>
+			onClick={stopPropagation}>
 			<div className={styles.addCharBoxTitle}>Add Character</div>
 			<button className={styles.addCharBoxCancel} onClick={onCancel} />
 			<div className={styles.addCharFilters}>

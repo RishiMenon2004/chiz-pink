@@ -126,7 +126,7 @@ export const allActivities = {
 	hobbyFishing: {
 		id: "hobby_fishing",
 		name: "Sea Angler",
-		description: "Claim 3× Universal Bait & Recommneded fishing spot",
+		description: "Claim 3× Universal Bait & Recommended fishing spot",
 		type: "Daily",
 	},
 	anomalyCloud: {

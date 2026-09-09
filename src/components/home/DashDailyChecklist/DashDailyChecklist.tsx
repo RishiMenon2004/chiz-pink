@@ -7,7 +7,7 @@ import { ActivityData, getAllActivitiesList } from "@/data/activities/activities
 
 import { useChecklistStore } from "@/hooks"
 
-import { stopPropogation } from "@/helpers"
+import { stopPropagation } from "@/helpers"
 
 import { ModalContainer } from "@/components/layout"
 
@@ -54,7 +54,13 @@ function ChecklistItem({
 			<span className={styles.checklistItemLabel}>
 				<div className={styles.checklistItemName}>{item.name}</div>
 				<div className={styles.checklistItemDesc}>
-					{toggle ? (checked ? "Visible" : "Hidden") : (checked ? "Completed" : item.description)}
+					{toggle
+						? checked
+							? "Visible"
+							: "Hidden"
+						: checked
+							? "Completed"
+							: item.description}
 				</div>
 			</span>
 		</label>
@@ -65,7 +71,7 @@ export function EditTasksBox({ children }: { children: ReactNode }) {
 	return (
 		<div
 			className={`metallic-panel ${styles.editTasksBox}`}
-			onClick={stopPropogation}>
+			onClick={stopPropagation}>
 			<div className={styles.editTasksTitle}>Edit Daily Tasks</div>
 			<div
 				className={`inset-control ${styles.checklistGrid} ${styles.editTasksList}`}>

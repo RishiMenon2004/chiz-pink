@@ -8,7 +8,7 @@ import type { Arc } from "@/types/weapon"
 import { EnumItemLvls, EnumRarity, getItemRarityStyle } from "@/data/items"
 import { findArc, EnumArcType, getAllArcsList } from "@/data/arcs"
 
-import { getRarityName, createSearchString, stopPropogation } from "@/helpers"
+import { getRarityName, createSearchString, stopPropagation } from "@/helpers"
 
 import { useAddArcContext } from "@/contexts"
 
@@ -112,7 +112,7 @@ const PlannerArcsSelect = () => {
 		<div
 			className={styles.arcSelect}
 			aria-roledescription="select"
-			onClick={stopPropogation}>
+			onClick={stopPropagation}>
 			<div
 				className={`${styles.arcSelectSelected} ${getItemRarityStyle(selected)}`}
 				onClick={(e) => {
@@ -226,7 +226,7 @@ export function PlannerAddArcBox({
 	return (
 		<div
 			className={`metallic-panel ${styles.plannerAddArcBox}`}
-			onClick={stopPropogation}>
+			onClick={stopPropagation}>
 			<div className={styles.addArcBoxTitle}>Add Arc</div>
 			<PlannerArcsSelect />
 			<div className={styles.addArcLvlSection}>

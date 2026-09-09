@@ -17,7 +17,7 @@ import {
 	getMonthlyResetBoundaries,
 	getSeasonalResetBoundaries,
 	getWeeklyResetBoundaries,
-	stopPropogation,
+	stopPropagation,
 } from "@/helpers"
 
 import { ModalContainer, PullOutToolbar } from "@/components/layout"
@@ -171,7 +171,7 @@ export function EditTasksBox() {
 	return (
 		<div
 			className={`metallic-panel ${checklistStyles.editTasksBox}`}
-			onClick={stopPropogation}>
+			onClick={stopPropagation}>
 			<div className={checklistStyles.editTasksTitle}>Edit Tasks</div>
 			<div
 				className={`inset-control ${checklistStyles.checklistGrid} ${checklistStyles.editTasksList} ${styles.editTasksList}`}>

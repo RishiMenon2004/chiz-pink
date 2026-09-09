@@ -4,7 +4,7 @@ import { findCharacter } from "@/data/characters/characterList"
 
 import { usePlannerBoxContext } from "@/contexts"
 
-import styles from "./chatracterSkillGroup.module.css"
+import styles from "./characterSkillGroup.module.css"
 
 export function CharacterSkillGroup({
 	skill,

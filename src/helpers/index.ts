@@ -1,6 +1,6 @@
 import { MouseEvent } from "react"
 
-export { calcuateWeaponCosts, weaponExpAmount } from "./calcuateWeaponCosts"
+export { calculateWeaponCosts, weaponExpAmount } from "./calculateWeaponCosts"
 export {
 	calculateCharacterCosts,
 	characterExpAmount,
@@ -70,6 +70,6 @@ export {
 export { getBannerThemeColor } from "./getBannerThemeColor"
 export { findPullItem } from "./findPullItem"
 
-export function stopPropogation(event: MouseEvent) {
+export function stopPropagation(event: MouseEvent) {
 	event.stopPropagation()
 }

@@ -8,7 +8,7 @@ import { CharacterRecord, WeaponRecord } from "@/types/planner"
 
 import { findItem, getItemRarityStyle } from "@/data/items"
 
-import { stopPropogation } from "@/helpers"
+import { stopPropagation } from "@/helpers"
 
 import { CharacterAvatar } from "../CharacterAvatar"
 import { ArcIcon } from "../ArcIcon"
@@ -62,7 +62,7 @@ export function PlannerReorderBox({
 	return (
 		<div
 			className={`metallic-panel ${styles.panel}`}
-			onClick={stopPropogation}>
+			onClick={stopPropagation}>
 			Adjust Priority
 			<div
 				className={`inset-control ${styles.itemList}`}

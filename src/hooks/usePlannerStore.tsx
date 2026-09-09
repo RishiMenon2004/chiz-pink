@@ -25,7 +25,7 @@ import {
 import { findCharacter } from "@/data/characters"
 import { findArc } from "@/data/arcs"
 
-import { calcuateWeaponCosts, calculateCharacterCosts } from "@/helpers"
+import { calculateWeaponCosts, calculateCharacterCosts } from "@/helpers"
 
 let cachedPlanner: PlannerRecord = { arcs: {}, characters: {} }
 
@@ -39,7 +39,7 @@ function getWeaponRequiredMaterials(
 		| Omit<WeaponRecord, "uid" | "requiredMaterials" | "isDisabled">
 ) {
 	const arc = findArc(weapon.id)
-	const materialValues = calcuateWeaponCosts(weapon)
+	const materialValues = calculateWeaponCosts(weapon)
 
 	const tiers = ["common", "uncommon", "rare"] as const
 

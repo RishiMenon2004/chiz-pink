@@ -46,13 +46,13 @@ export const gachaPullsActions = {
 
 		const existingUids = new Set(Object.keys(pullsData[bannerType] || {}))
 
-		const filtedtedPulls = pulls.filter((pull) => !existingUids.has(pull.uid))
+		const filteredPulls = pulls.filter((pull) => !existingUids.has(pull.uid))
 
 		const incomingPullsRecord: Record<
 			string,
 			MiracleBoxPull | ScarboroughFairPull
 		> = {}
-		for (const pull of filtedtedPulls) {
+		for (const pull of filteredPulls) {
 			incomingPullsRecord[pull.uid] = pull
 		}
 		const updatedPulls: PullsRecord = {
@@ -68,9 +68,9 @@ export const gachaPullsActions = {
 			localStorage.setItem("lastUpdated", JSON.stringify(Date.now()))
 			window.dispatchEvent(new Event("local-storage-update"))
 			response.status = "success"
-			const skippedLength = pulls.length - filtedtedPulls.length
+			const skippedLength = pulls.length - filteredPulls.length
 			response.messages.push({
-				message: `Imported ${filtedtedPulls.length} pulls.${(skippedLength > 0 && ` (Skipped ${skippedLength} existing pulls.)`) || ""}`,
+				message: `Imported ${filteredPulls.length} pulls.${(skippedLength > 0 && ` (Skipped ${skippedLength} existing pulls.)`) || ""}`,
 				status: "info",
 			})
 		} catch (err) {

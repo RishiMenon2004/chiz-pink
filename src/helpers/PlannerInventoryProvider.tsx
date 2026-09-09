@@ -9,7 +9,7 @@ import { useInventoryStore } from "@/hooks"
 
 import { PlannerMaterialsContext } from "@/contexts"
 
-import { weaponExpAmount } from "./calcuateWeaponCosts"
+import { weaponExpAmount } from "./calculateWeaponCosts"
 import { characterExpAmount } from "./calculateCharacterCosts"
 
 const weaponExpAmountByRarity: Partial<Record<EnumRarity, number>> = {

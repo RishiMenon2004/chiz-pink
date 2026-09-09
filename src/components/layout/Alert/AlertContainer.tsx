@@ -4,7 +4,7 @@ import { KeyboardEvent, ReactNode, useEffect, useRef } from "react"
 
 import { KeyMouseEventType } from "@/types"
 
-import { stopPropogation } from "@/helpers"
+import { stopPropagation } from "@/helpers"
 
 import styles from "./alertContainer.module.css"
 export const alertTextBox = styles.alertTextBox
@@ -76,7 +76,7 @@ export function AlertContainer({
 		<div
 			ref={containerRef}
 			className={`metallic-panel ${styles.alertBox}`}
-			onClick={stopPropogation}>
+			onClick={stopPropagation}>
 			<div>{children}</div>
 			<div className={styles.alertBoxButtons}>
 				{type !== "acknowledge" && (
