@@ -3,31 +3,28 @@ import path from "node:path"
 import sharp from "sharp"
 
 import { EnumRarity } from "@/data/items"
+import { initFontConfig } from "@/helpers/fontConfig"
 import type { Character } from "@/types/character"
 import type { Arc } from "@/types/weapon"
 
-// Cached in-memory font CSS to fetch only once per build process
+// Initialize fontconfig to load local TTF fonts in Linux/Vercel serverless
+initFontConfig()
+
+// Cached in-memory font CSS to inline embedded base64 fonts
 let cachedFontDefs: string | null = null
 
-async function getEmbeddedFontsDef(): Promise<string> {
+function getEmbeddedFontsDef(): string {
 	if (cachedFontDefs) return cachedFontDefs
 
 	try {
-		const [syneRes, barlowRes] = await Promise.all([
-			fetch(
-				"https://fonts.gstatic.com/s/syne/v24/8vIS7w4qzmVxsWxjBZRjr0FKM_24vj6k.ttf"
-			),
-			fetch(
-				"https://fonts.gstatic.com/s/barlowcondensed/v13/HTxyL3I-JCGChYJ8VI-L6OO_au7B6xTrY3TWvA.ttf"
-			),
-		])
+		const fontsDir = path.join(process.cwd(), "public", "fonts")
+		const synePath = path.join(fontsDir, "Syne-ExtraBold.ttf")
+		const barlowBoldPath = path.join(fontsDir, "BarlowCondensed-BoldItalic.ttf")
+		const barlowMedPath = path.join(fontsDir, "BarlowCondensed-MediumItalic.ttf")
 
-		const [syneBuf, barlowBuf] = await Promise.all([
-			syneRes.arrayBuffer().then((b) => Buffer.from(b).toString("base64")),
-			barlowRes
-				.arrayBuffer()
-				.then((b) => Buffer.from(b).toString("base64")),
-		])
+		const syneBuf = fs.readFileSync(synePath).toString("base64")
+		const barlowBoldBuf = fs.readFileSync(barlowBoldPath).toString("base64")
+		const barlowMedBuf = fs.readFileSync(barlowMedPath).toString("base64")
 
 		cachedFontDefs = `
 			<style>
@@ -41,15 +38,18 @@ async function getEmbeddedFontsDef(): Promise<string> {
 					font-family: 'Barlow Condensed';
 					font-style: italic;
 					font-weight: 700;
-					src: url('data:font/truetype;base64,${barlowBuf}') format('truetype');
+					src: url('data:font/truetype;base64,${barlowBoldBuf}') format('truetype');
+				}
+				@font-face {
+					font-family: 'Barlow Condensed';
+					font-style: italic;
+					font-weight: 500;
+					src: url('data:font/truetype;base64,${barlowMedBuf}') format('truetype');
 				}
 			</style>
 		`
 	} catch (err) {
-		console.warn(
-			"Could not fetch remote Google Fonts for OG image, using fallback",
-			err
-		)
+		console.warn("Could not load local fonts for OG image embedding:", err)
 		cachedFontDefs = ""
 	}
 
@@ -195,7 +195,10 @@ function layoutArcName(
 
 		// Precise optical vertical centering for single line in 128px banner (y=144 to y=272, center=208)
 		const baselineY = 208 + fontSize * 0.33
-		const strokeWidth = Math.max(2.5, Math.round(fontSize * 0.08 * 10) / 10)
+		const strokeWidth = Math.max(
+			2.5,
+			Math.round(fontSize * 0.08 * 10) / 10
+		)
 
 		return {
 			fontSize,
@@ -260,8 +263,8 @@ export async function generateCharacterOgImage(
 	)
 	let svg = fs.readFileSync(templatePath, "utf8")
 
-	// Inject embedded Google Fonts into <defs>
-	const fontDefs = await getEmbeddedFontsDef()
+	// Inject embedded local fonts into <defs>
+	const fontDefs = getEmbeddedFontsDef()
 	if (fontDefs) {
 		svg = svg.replace("<defs>", `<defs>${fontDefs}`)
 	}
@@ -308,9 +311,13 @@ export async function generateCharacterOgImage(
 	svg = svg.replace("{{NAME}}", escapeXml(char.name.toUpperCase()))
 	svg = svg.replace("{{URL}}", escapeXml(`chiz.pink/characters/${char.id}`))
 	svg = svg.replace("{{ELEMENT}}", escapeXml(char.element.toUpperCase()))
+	svg = svg.replace(
+		"{{ARC_TYPE}}",
+		escapeXml(`${char.arcType.toUpperCase()} ARC`)
+	)
 
 	const rank = char.rarity === EnumRarity.Epic ? "S-RANK" : "A-RANK"
-	svg = svg.replace("{{RANK}}", rank)
+	svg = svg.replace("S-RANK", rank)
 
 	// 4. Multiline Description with tspans
 	const descLines = wrapText(`${char.description}`, 42, 3)
@@ -357,8 +364,8 @@ export async function generateArcOgImage(arc: Arc): Promise<Response> {
 	)
 	let svg = fs.readFileSync(templatePath, "utf8")
 
-	// Inject embedded Google Fonts into <defs>
-	const fontDefs = await getEmbeddedFontsDef()
+	// Inject embedded local fonts into <defs>
+	const fontDefs = getEmbeddedFontsDef()
 	if (fontDefs) {
 		svg = svg.replace("<defs>", `<defs>${fontDefs}`)
 	}
@@ -378,10 +385,10 @@ export async function generateArcOgImage(arc: Arc): Promise<Response> {
 	}
 
 	// 2. Dynamic Name Scaling & Wrapping with Optical Vertical Centering
-	const nameLayout = layoutArcName(arc.name, 550, 28, 58)
+	const nameLayout = layoutArcName(arc.name, 480, 28, 58)
 	svg = svg.replace(
 		/<text [^>]*><tspan [^>]*>\{\{NAME\}\}<\/tspan><\/text>/,
-		`<text id="{{NAME}}" fill="white" stroke="black" stroke-width="0.18em" stroke-linejoin="round" stroke-linecap="round" paint-order="stroke fill" style="white-space: pre; paint-order: stroke fill; stroke-linejoin: round; stroke-linecap: round;" xml:space="preserve" font-family="Syne" font-size="${nameLayout.fontSize}" font-weight="800" letter-spacing="-0.01em">${nameLayout.tspans}</text>`
+		`<text id="{{NAME}}" fill="white" stroke="black" stroke-width="${nameLayout.strokeWidth}" stroke-linejoin="round" stroke-linecap="round" paint-order="stroke fill" style="white-space: pre; paint-order: stroke fill; stroke-linejoin: round; stroke-linecap: round;" xml:space="preserve" font-family="Syne" font-size="${nameLayout.fontSize}" font-weight="800" letter-spacing="-0.01em">${nameLayout.tspans}</text>`
 	)
 
 	// 3. URL
@@ -390,7 +397,7 @@ export async function generateArcOgImage(arc: Arc): Promise<Response> {
 	// 4. Arc Type
 	svg = svg.replace(
 		"{{ARC_TYPE}}",
-		escapeXml(`${arc.type.toUpperCase()} TYPE ARC`)
+		escapeXml(`${arc.type.toUpperCase()} ARC`)
 	)
 
 	// 5. Rarity & Stars
@@ -400,7 +407,7 @@ export async function generateArcOgImage(arc: Arc): Promise<Response> {
 	} else if (arc.rarity <= EnumRarity.Uncommon) {
 		rankLabel = "B-RANK"
 	}
-	svg = svg.replace("{{RANK}}", rankLabel)
+	svg = svg.replace("S-RANK", rankLabel)
 
 	// Dim 5th star if rarity < Epic (5)
 	if (arc.rarity < EnumRarity.Epic) {
