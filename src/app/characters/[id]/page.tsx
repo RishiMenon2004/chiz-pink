@@ -1,12 +1,50 @@
-"use client"
+import type { Metadata } from "next"
+import { notFound } from "next/navigation"
 
-import { useParams } from "next/navigation"
-
-import type { Ability } from "@/types/character"
-
-import { findCharacter } from "@/data/characters/characterList"
-
+import { findCharacter, getAllCharactersList } from "@/data/characters"
+import { Ability } from "@/types/character"
 import { parseDescription } from "@/helpers"
+
+type Props = {
+	params: Promise<{ id: string }>
+}
+
+export async function generateStaticParams() {
+	const characters = getAllCharactersList()
+	return characters.map((char) => ({
+		id: char.id,
+	}))
+}
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+	const { id } = await params
+	const char = findCharacter(id)
+
+	if (!char) {
+		return {
+			title: "Character Not Found",
+		}
+	}
+
+	const title = `${char.name} | Character Profile`
+	const description =
+		char.description ||
+		`${char.name} character profile, skills, and ascension details on Chiz.Pink`
+
+	return {
+		title,
+		description,
+		openGraph: {
+			title: `${char.name} | Chiz.Pink`,
+			description,
+		},
+		twitter: {
+			card: "summary_large_image",
+			title: `${char.name} | Chiz.Pink`,
+			description,
+		},
+	}
+}
 
 function AbilitySection({ ability }: { ability: Ability }) {
 	return (
@@ -22,33 +60,30 @@ function AbilitySection({ ability }: { ability: Ability }) {
 	)
 }
 
-export default function CharacterInfoPage() {
-	const params = useParams()
-	const char = findCharacter(params?.id as string)
+export default async function CharacterInfoPage({ params }: Props) {
+	const { id } = await params
+	const char = findCharacter(id)
 
 	if (!char) {
-		return <div>Character not found.</div>
+		notFound()
 	}
-
-	const abilities = [
-		char.abilities.basicAttack,
-		char.abilities.skill,
-		char.abilities.ultimate,
-		char.abilities.support,
-		char.abilities.passive1,
-		char.abilities.passive2,
-		char.abilities.passive3,
-		char.abilities.lifeSkill1,
-		char.abilities.lifeSkill2,
-	].filter((ability): ability is Ability => Boolean(ability))
 
 	return (
 		<main className="page" role="main">
 			<h1>{char.name}</h1>
-			{parseDescription(char.description, 1)}
-			{abilities.map((ability, index) => (
-				<AbilitySection key={index} ability={ability} />
-			))}
+			{char.description && <div>{char.description}</div>}
+			<h2>Basic Attack</h2>
+			<AbilitySection ability={char.abilities.basicAttack} />
+			<h2>Skill</h2>
+			<AbilitySection ability={char.abilities.skill} />
+			<h2>Ultimate</h2>
+			<AbilitySection ability={char.abilities.ultimate} />
+			{char.abilities.support && (
+				<>
+					<h2>Support</h2>
+					<AbilitySection ability={char.abilities.support} />
+				</>
+			)}
 		</main>
 	)
 }

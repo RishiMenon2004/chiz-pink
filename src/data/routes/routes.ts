@@ -44,9 +44,9 @@ export const RoutesData: RoutesRecord = {
 	},
 
 	"/arcs/[id]": {
-		title: "ARC INFO",
-		head: "Arc Info",
-		tooltip: "Arc Info",
+		title: "ARC INDEX",
+		head: "Arc Index",
+		tooltip: "Arc Index",
 		id: "arc_info",
 	},
 

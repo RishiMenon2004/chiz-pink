@@ -31,7 +31,10 @@ const syne = Syne({
 	subsets: ["latin"],
 })
 
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://chiz.pink"
+
 export const metadata: Metadata = {
+	metadataBase: new URL(SITE_URL),
 	title: {
 		template: "%s | Chiz.Pink",
 		default: RoutesData["/"].head,
@@ -45,6 +48,34 @@ export const metadata: Metadata = {
 		capable: true,
 		title: "Chiz.Pink",
 		statusBarStyle: "default",
+	},
+	openGraph: {
+		type: "website",
+		locale: "en_US",
+		url: SITE_URL,
+		siteName: "Chiz.Pink",
+		title: {
+			template: "%s | Chiz.Pink",
+			default: RoutesData["/"].head,
+		},
+		description: "Your favourite daily planner and inventory tracker :3",
+		images: [
+			{
+				url: "/app_icon.png",
+				width: 512,
+				height: 512,
+				alt: "Chiz.Pink Logo",
+			},
+		],
+	},
+	twitter: {
+		card: "summary",
+		title: {
+			template: "%s | Chiz.Pink",
+			default: RoutesData["/"].head,
+		},
+		description: "Your favourite daily planner and inventory tracker :3",
+		images: ["/app_icon.png"],
 	},
 }
 

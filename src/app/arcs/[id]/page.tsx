@@ -1,16 +1,56 @@
-"use client"
+import type { Metadata } from "next"
+import { notFound } from "next/navigation"
 
-import { useParams } from "next/navigation"
-
-import { findArc } from "@/data/arcs"
+import { findArc, getAllArcsList } from "@/data/arcs"
 import { parseDescription } from "@/helpers"
 
-export default function ArcInfoPage() {
-	const params = useParams()
-	const arc = findArc(params?.id as string)
+type Props = {
+	params: Promise<{ id: string }>
+}
+
+export async function generateStaticParams() {
+	const arcs = getAllArcsList()
+	return arcs.map((arc) => ({
+		id: arc.id,
+	}))
+}
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+	const { id } = await params
+	const arc = findArc(id)
 
 	if (!arc) {
-		return <div>Arc not found.</div>
+		return {
+			title: "Arc Not Found",
+		}
+	}
+
+	const title = `${arc.name} | Arc Index`
+	const description =
+		arc.description ||
+		`${arc.name} arc effects, stats, and ascension materials on Chiz.Pink`
+
+	return {
+		title,
+		description,
+		openGraph: {
+			title: `${arc.name} | Chiz.Pink`,
+			description,
+		},
+		twitter: {
+			card: "summary_large_image",
+			title: `${arc.name} | Chiz.Pink`,
+			description,
+		},
+	}
+}
+
+export default async function ArcInfoPage({ params }: Props) {
+	const { id } = await params
+	const arc = findArc(id)
+
+	if (!arc) {
+		notFound()
 	}
 
 	return (
