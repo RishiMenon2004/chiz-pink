@@ -15,7 +15,7 @@ export const nanally: Character = {
 	imageSrc: "nanally.webp",
 	name: "Nanally",
 	description:
-		"The Ichi-daime of the Coluccis—currently seeking new recruits!z",
+		"The Ichi-daime of the Coluccis—currently seeking new recruits!",
 	rarity: EnumRarity.Epic,
 	element: EnumCharacterElement.ANIMA,
 	arcType: EnumArcType.Plasma,
