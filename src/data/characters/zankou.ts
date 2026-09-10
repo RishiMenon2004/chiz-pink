@@ -13,7 +13,8 @@ export const zankou: Character = {
 	id: "zankou",
 	imageSrc: "zankou.webp",
 	name: "Zankou",
-	description: "",
+	description:
+		'A former member of the secret organization "The SCarlet Letter," code-named "Red Nightshade," now a prisoner on Ghroth Island.',
 	rarity: EnumRarity.Epic,
 	element: EnumCharacterElement.INCANTATION,
 	arcType: EnumArcType.Gas,
@@ -27,7 +28,8 @@ export const zankou: Character = {
 			description: [
 				{
 					section: "Basic Attack: Wildfire",
-					description: "Wields her blade and performs up to 5 consecutive attacks while in Reality Form, dealing Incantation DMG. Pulls in targets within range on the 5th instance of Basic Attack. Gains the Hunt buff for the attack's duration."
+					description:
+						"Wields her blade and performs up to 5 consecutive attacks while in Reality Form, dealing Incantation DMG. Pulls in targets within range on the 5th instance of Basic Attack. Gains the Hunt buff for the attack's duration.",
 				},
 				{
 					section: "Basic Attack: Nightmare Waltz",
@@ -36,7 +38,8 @@ export const zankou: Character = {
 				},
 				{
 					section: "Basic Attack: Flickering Shadow",
-					description: "Hold Basic Attack during the 1st or 2nd stage of Wildfire while in Reality Form to trigger Flickering Shadow, dealing Incantation DMG.",
+					description:
+						"Hold Basic Attack during the 1st or 2nd stage of Wildfire while in Reality Form to trigger Flickering Shadow, dealing Incantation DMG.",
 				},
 				{
 					section: "Basic Attack: Moonfall",
@@ -45,11 +48,13 @@ export const zankou: Character = {
 				},
 				{
 					section: "Basic Attack: Broken Twigs",
-					description: "Press Basic Attack while airborne to plunge, dealing 1 instance of Incantation DMG in an area upon impact. Increases DMG based on fall height by up to 100%."
+					description:
+						"Press Basic Attack while airborne to plunge, dealing 1 instance of Incantation DMG in an area upon impact. Increases DMG based on fall height by up to 100%.",
 				},
 				{
 					section: "Critical Riposte: Voidstep",
-					description: "Press Basic Attack after a Critical Dodge to deal Incantation DMG and reduce Break.",
+					description:
+						"Press Basic Attack after a Critical Dodge to deal Incantation DMG and reduce Break.",
 				},
 			],
 			maxLvl: 10,
