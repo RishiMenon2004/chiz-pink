@@ -19,8 +19,14 @@ function getEmbeddedFontsDef(): string {
 	try {
 		const fontsDir = path.join(process.cwd(), "public", "fonts")
 		const synePath = path.join(fontsDir, "Syne-ExtraBold.ttf")
-		const barlowBoldPath = path.join(fontsDir, "BarlowCondensed-BoldItalic.ttf")
-		const barlowMedPath = path.join(fontsDir, "BarlowCondensed-MediumItalic.ttf")
+		const barlowBoldPath = path.join(
+			fontsDir,
+			"BarlowCondensed-BoldItalic.ttf"
+		)
+		const barlowMedPath = path.join(
+			fontsDir,
+			"BarlowCondensed-MediumItalic.ttf"
+		)
 
 		const syneBuf = fs.readFileSync(synePath).toString("base64")
 		const barlowBoldBuf = fs.readFileSync(barlowBoldPath).toString("base64")
@@ -178,7 +184,6 @@ function layoutArcName(
 	maxFontSize = 58
 ): {
 	fontSize: number
-	strokeWidth: number
 	tspans: string
 } {
 	const upperName = name.toUpperCase()
@@ -195,14 +200,9 @@ function layoutArcName(
 
 		// Precise optical vertical centering for single line in 128px banner (y=144 to y=272, center=208)
 		const baselineY = 208 + fontSize * 0.33
-		const strokeWidth = Math.max(
-			2.5,
-			Math.round(fontSize * 0.08 * 10) / 10
-		)
 
 		return {
 			fontSize,
-			strokeWidth,
 			tspans: `<tspan x="64" y="${baselineY.toFixed(1)}">${escapeXml(upperName)}</tspan>`,
 		}
 	}
@@ -225,7 +225,6 @@ function layoutArcName(
 	if (currentLine) lines.push(currentLine)
 
 	const fontSize = minFontSize
-	const strokeWidth = 2.5
 
 	let tspans = ""
 	if (lines.length === 2) {
@@ -247,7 +246,6 @@ function layoutArcName(
 
 	return {
 		fontSize,
-		strokeWidth,
 		tspans,
 	}
 }
@@ -317,7 +315,7 @@ export async function generateCharacterOgImage(
 	)
 
 	const rank = char.rarity === EnumRarity.Epic ? "S-RANK" : "A-RANK"
-	svg = svg.replace("S-RANK", rank)
+	svg = svg.replace("{{RANK}}", rank)
 
 	// 4. Multiline Description with tspans
 	const descLines = wrapText(`${char.description}`, 42, 3)
@@ -388,7 +386,7 @@ export async function generateArcOgImage(arc: Arc): Promise<Response> {
 	const nameLayout = layoutArcName(arc.name, 480, 28, 58)
 	svg = svg.replace(
 		/<text [^>]*><tspan [^>]*>\{\{NAME\}\}<\/tspan><\/text>/,
-		`<text id="{{NAME}}" fill="white" stroke="black" stroke-width="${nameLayout.strokeWidth}" stroke-linejoin="round" stroke-linecap="round" paint-order="stroke fill" style="white-space: pre; paint-order: stroke fill; stroke-linejoin: round; stroke-linecap: round;" xml:space="preserve" font-family="Syne" font-size="${nameLayout.fontSize}" font-weight="800" letter-spacing="-0.01em">${nameLayout.tspans}</text>`
+		`<text id="{{NAME}}" fill="white" stroke="black" stroke-width="0.18em" stroke-linejoin="round" stroke-linecap="round" paint-order="stroke fill" style="white-space: pre; paint-order: stroke fill; stroke-linejoin: round; stroke-linecap: round;" xml:space="preserve" font-family="Syne" font-size="${nameLayout.fontSize}" font-weight="800" letter-spacing="-0.01em">${nameLayout.tspans}</text>`
 	)
 
 	// 3. URL
@@ -397,7 +395,7 @@ export async function generateArcOgImage(arc: Arc): Promise<Response> {
 	// 4. Arc Type
 	svg = svg.replace(
 		"{{ARC_TYPE}}",
-		escapeXml(`${arc.type.toUpperCase()} ARC`)
+		escapeXml(`${arc.type.toUpperCase()} TYPE ARC`)
 	)
 
 	// 5. Rarity & Stars
@@ -407,7 +405,7 @@ export async function generateArcOgImage(arc: Arc): Promise<Response> {
 	} else if (arc.rarity <= EnumRarity.Uncommon) {
 		rankLabel = "B-RANK"
 	}
-	svg = svg.replace("S-RANK", rankLabel)
+	svg = svg.replace("{{RANK}}", rankLabel)
 
 	// Dim 5th star if rarity < Epic (5)
 	if (arc.rarity < EnumRarity.Epic) {
