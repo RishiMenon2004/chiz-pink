@@ -1,7 +1,12 @@
 import { Material } from "@/types/item"
 import { SettingsRecord } from "@/types/settings"
 
-import { annulith, hikariTide, porsche918Spyder, regaliaDraco } from "@/data/items/materials"
+import {
+	annulith,
+	hikariTide,
+	porsche918Spyder,
+	regaliaDraco,
+} from "@/data/items/materials"
 
 import { getServerTimestamp, getUtcTimestamp } from "@/helpers/serverTime"
 
@@ -521,13 +526,13 @@ export const Events: EventData[] = [
 
 	//v1.4
 	{
-		name: 'Version 1.4 ("TBA")',
+		name: 'Version 1.4 ("For Whom the Verses Mourn")',
 		type: "Patch",
 		getStartDate: getPhase1Start("version1_4"),
 		getEndDate: getPhase2End("version1_4"),
-		// eventImage: "version1.4/version_1.4.webp",
-		// themeColor: "#d22730",
-		yOffset: "15%",
+		eventImage: "version1.4/version_1.4.webp",
+		themeColor: "#72abea",
+		yOffset: "28%",
 	},
 	{
 		name: "Phase 1: Blackbird",
