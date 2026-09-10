@@ -31,7 +31,13 @@ const syne = Syne({
 	subsets: ["latin"],
 })
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://chiz.pink"
+const SITE_URL =
+	process.env.NEXT_PUBLIC_SITE_URL ||
+	(process.env.VERCEL_PROJECT_PRODUCTION_URL
+		? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
+		: process.env.VERCEL_URL
+			? `https://${process.env.VERCEL_URL}`
+			: "https://chiz.pink")
 
 export const metadata: Metadata = {
 	metadataBase: new URL(SITE_URL),
@@ -54,35 +60,20 @@ export const metadata: Metadata = {
 		locale: "en_US",
 		url: SITE_URL,
 		siteName: "Chiz.Pink",
-		title: {
-			template: "%s | Chiz.Pink",
-			default: RoutesData["/"].head,
-		},
+		title: "Chiz.Pink",
 		description: "Your favourite daily planner and inventory tracker :3",
-		images: [
-			{
-				url: "/app_icon.png",
-				width: 512,
-				height: 512,
-				alt: "Chiz.Pink Logo",
-			},
-		],
 	},
 	twitter: {
-		card: "summary",
-		title: {
-			template: "%s | Chiz.Pink",
-			default: RoutesData["/"].head,
-		},
+		card: "summary_large_image",
+		title: "Chiz.Pink",
 		description: "Your favourite daily planner and inventory tracker :3",
-		images: ["/app_icon.png"],
 	},
 }
 
 export const viewport: Viewport = {
 	themeColor: "#ff569f",
-	width: "device-width",
 	initialScale: 1,
+	width: "device-width",
 	maximumScale: 2,
 	userScalable: true,
 	viewportFit: "cover",
@@ -96,7 +87,8 @@ export default function RootLayout({
 	return (
 		<html
 			lang="en"
-			className={`${barlowCondensed.variable} ${syne.variable}`}>
+			className={`${barlowCondensed.variable} ${syne.variable}`}
+		>
 			<body>
 				<AuthProvider>
 					<SettingsProvider>
@@ -107,11 +99,11 @@ export default function RootLayout({
 								<Sidebar />
 								<CurrencyBar />
 								{children}
-								<Footer />
 							</CloudSyncProvider>
 						</ConvexClientProvider>
 					</SettingsProvider>
 				</AuthProvider>
+				<Footer />
 				<Analytics />
 			</body>
 		</html>

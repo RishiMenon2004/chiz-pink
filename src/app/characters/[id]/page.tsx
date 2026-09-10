@@ -35,12 +35,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 		title,
 		description,
 		openGraph: {
-			title: `${char.name} | Chiz.Pink`,
+			title: `${char.name} - Character Profile`,
 			description,
 		},
 		twitter: {
 			card: "summary_large_image",
-			title: `${char.name} | Chiz.Pink`,
+			title: `${char.name} - Character Profile`,
 			description,
 		},
 	}

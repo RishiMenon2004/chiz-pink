@@ -34,12 +34,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 		title,
 		description,
 		openGraph: {
-			title: `${arc.name} | Chiz.Pink`,
+			title: `${arc.name} - Arc Index`,
 			description,
 		},
 		twitter: {
 			card: "summary_large_image",
-			title: `${arc.name} | Chiz.Pink`,
+			title: `${arc.name} - Arc Index`,
 			description,
 		},
 	}
