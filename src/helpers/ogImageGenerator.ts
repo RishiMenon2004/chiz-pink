@@ -383,7 +383,7 @@ export async function generateArcOgImage(arc: Arc): Promise<Response> {
 	}
 
 	// 2. Dynamic Name Scaling & Wrapping with Optical Vertical Centering
-	const nameLayout = layoutArcName(arc.name, 480, 28, 58)
+	const nameLayout = layoutArcName(arc.name, 550, 28, 58)
 	svg = svg.replace(
 		/<text [^>]*><tspan [^>]*>\{\{NAME\}\}<\/tspan><\/text>/,
 		`<text id="{{NAME}}" fill="white" stroke="black" stroke-width="0.18em" stroke-linejoin="round" stroke-linecap="round" paint-order="stroke fill" style="white-space: pre; paint-order: stroke fill; stroke-linejoin: round; stroke-linecap: round;" xml:space="preserve" font-family="Syne" font-size="${nameLayout.fontSize}" font-weight="800" letter-spacing="-0.01em">${nameLayout.tspans}</text>`
