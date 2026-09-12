@@ -48,10 +48,6 @@ button.toolbarButton {
 
 	padding: 0.25rem 1rem;
 
-	&:hover {
-		-webkit-text-stroke: 4px black;
-	}
-
 	&.add {
 		padding-left: 2.25rem;
 
@@ -66,6 +62,11 @@ button.toolbarButton {
 		cursor: not-allowed;
 		filter: brightness(0.75);
 	}
+}
+
+div.toolbarButton {
+	position: absolute;
+	visibility: hidden;
 }
 
 @media (max-width: 1135px) {
@@ -86,11 +87,6 @@ button.toolbarButton {
 			height: fit-content;
 			padding-top: 2rem;
 		}
-
-		button.toolbarButton:only-of-type {
-			grid-column: 1 / -1;
-			width: fit-content;
-		}
 	}
 }
 
@@ -105,12 +101,8 @@ button.toolbarButton {
 			height: 4rem;
 		}
 
-		button.toolbarButton {
+		.toolbarButton {
 			display: none;
-
-			&:only-of-type {
-				grid-column: 1 / -1;
-			}
 		}
 
 		& > *:not(.pullOutTab) {
@@ -142,7 +134,8 @@ button.toolbarButton {
 				visibility: visible;
 			}
 
-			button.toolbarButton {
+			.toolbarButton {
+				position: relative;
 				display: grid;
 				width: 100%;
 			}

@@ -123,3 +123,14 @@ export const PullTrackerContext = createContext<PullTrackerContextType>(null!)
 export function usePullTrackerContext() {
 	return useContext(PullTrackerContext)
 }
+
+export type PlannerSection = "characters" | "arcs"
+
+export const PlannerSectionContext = createContext<{
+	section: PlannerSection
+	setSection: (section: PlannerSection) => void
+}>(null!)
+
+export function usePlannerSectionContext() {
+	return useContext(PlannerSectionContext)
+}

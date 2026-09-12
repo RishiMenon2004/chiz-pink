@@ -15,7 +15,7 @@ export function AppearanceSection() {
 	const { settings, actions } = useSettingsStore()
 
 	return (
-		<Section>
+		<>
 			<TitleBar title="APPEARANCE" />
 			<Content>
 				<ContentRow equalColumns>
@@ -31,24 +31,21 @@ export function AppearanceSection() {
 						/>
 					</ContentColumn>
 
-					{/* //TODO Disabling separate planners for now. Will add them in the future when I figure out mobile navbar having too many icons */}
-					{/* <ContentColumn>
+					<ContentColumn>
 						<ConfigCheckbox
 							name="Hybrid Planner"
 							checked={
-								settings.appearance["use-hybrid-planner"] ??
-								false
+								settings.appearance["use-hybrid-planner"] ?? false
 							}
 							onChange={(e) =>
 								actions.setConfig("appearance", {
-									"use-hybrid-planner":
-										e.currentTarget.checked,
+									"use-hybrid-planner": e.currentTarget.checked,
 								})
 							}
 						/>
-					</ContentColumn> */}
+					</ContentColumn>
 				</ContentRow>
 			</Content>
-		</Section>
+		</>
 	)
 }

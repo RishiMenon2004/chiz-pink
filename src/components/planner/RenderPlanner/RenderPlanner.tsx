@@ -1,45 +1,37 @@
 "use client"
 
 import dynamic from "next/dynamic"
-import { /* useEffect, */ useMemo, useState } from "react"
-import { createPortal } from "react-dom"
-// import { useRouter } from "next/navigation"
+import { useEffect, useMemo, useState } from "react"
 
 import { DragDropProvider, DragOverlay } from "@dnd-kit/react"
 import { isSortable } from "@dnd-kit/react/sortable"
 import { DragEndEvent, DragStartEvent, Feedback } from "@dnd-kit/dom"
 
-import type { KeyMouseEventType } from "@/types"
 import type {
 	CharacterRecord,
 	PlannerRecord,
 	WeaponRecord,
 } from "@/types/planner"
 
-import { EnumItemLvls, getAllMaterialsList } from "@/data/items"
-import { getAllArcsList } from "@/data/arcs"
+import { getAllMaterialsList } from "@/data/items"
 
-import {
-	useHybridPlannerStore,
-	usePlannerStore /* useSettingsStore */,
-} from "@/hooks"
+import { useHybridPlannerStore, usePlannerStore, useSettingsStore } from "@/hooks"
 import { getAggregatedMaterials } from "@/hooks/usePlannerStore"
 
-import { PlannerInventoryProvider, generateNewCharacter } from "@/helpers"
+import { PlannerInventoryProvider } from "@/helpers"
 
-import { AddNewArcContext, AddNewCharContext } from "@/contexts"
-
-import { InfoBox, ModalContainer, PullOutToolbar } from "@/components/layout"
 import { MaterialGroup } from "@/components/inventory/"
-import { PlannerAddArcBox } from "../AddArcBox"
-import { PlannerAddCharacterBox } from "../AddCharacterBox"
 import { PlannerMaterialsList } from "../MaterialsList"
-import { PlannerReorderBox } from "@/components/layout/ReorderBox/PlannerReorderBox"
 
-import { styles as toolbarStyles } from "@/components/layout/PullOutToolbar"
 import plannerBoxStyles from "./plannerBox.module.css"
 import styles from "./renderPlanner.module.css"
+import { useRouter } from "next/navigation"
+import { createPortal } from "react-dom"
+import { PlannerReorderBox } from "@/components/layout/ReorderBox/PlannerReorderBox"
+import { ModalContainer } from "@/components/layout"
 
+import { styles as toolbarStyles } from "@/components/layout/PullOutToolbar"
+import { KeyMouseEventType } from "@/types"
 const PlannerCharacterBox = dynamic(
 	() => import("@/components/planner").then((mod) => mod.PlannerCharacterBox),
 	{ ssr: false }
@@ -59,25 +51,23 @@ export function RenderPlanner({
 }: {
 	plannerType: keyof PlannerRecord | "both"
 }) {
-	const { plannerData, actions } = usePlannerStore()
-	const { hybridPlanner, actions: hybridActions } = useHybridPlannerStore()
+	const { settings } = useSettingsStore()
+	const router = useRouter()
 
-	//TODO Disabling separate planners for now. Will add them in the future when I figure out mobile navbar having too many icons
-
-	// const { settings, actions: settingsActions } = useSettingsStore()
-	// const router = useRouter()
-
-	// const combinedEnabled = true //settings.appearance?.["use-hybrid-planner"] ?? false
+	const combinedEnabled = settings.appearance?.["use-hybrid-planner"] ?? false
 
 	//reditect to /characters if accessing /planner and disabled combined planner
 	//vice versa, redirect to /planner if accessing /characters or /arcs and enabled combined planner
-	// const shouldRedirect =
-	// 	plannerType === "both" ? !combinedEnabled : combinedEnabled
-	// const redirectTo = plannerType === "both" ? "/characters" : "/planner"
+	const shouldRedirect =
+		plannerType === "both" ? !combinedEnabled : combinedEnabled
+	const redirectTo = plannerType === "both" ? "planner/characters" : "/planner"
 
-	// useEffect(() => {
-	// 	if (shouldRedirect) router.replace(redirectTo)
-	// }, [shouldRedirect, redirectTo, router])
+	useEffect(() => {
+		if (shouldRedirect) router.replace(redirectTo)
+	}, [shouldRedirect, redirectTo, router])
+
+	const { plannerData, actions } = usePlannerStore()
+	const { hybridPlanner, actions: hybridActions } = useHybridPlannerStore()
 
 	const items: Record<string, CharacterRecord | WeaponRecord> = useMemo(() => {
 		if (plannerType !== "both") return plannerData[plannerType]
@@ -121,38 +111,6 @@ export function RenderPlanner({
 		[plannerData, plannerType]
 	)
 
-	const [showAddChar, setShowAddChar] = useState(false)
-	const handleStartAddingChar = () => setShowAddChar(true)
-	const addCharacter = (e: KeyMouseEventType, charID: string) => {
-		e.stopPropagation()
-		actions.addCharacter(generateNewCharacter(charID))
-		setShowAddChar(false)
-	}
-	const cancelAddChar = (e: KeyMouseEventType) => {
-		e.stopPropagation()
-		setShowAddChar(false)
-	}
-
-	const [newArcRecord, setNewArcRecord] = useState<Omit<
-		WeaponRecord,
-		"uid" | "requiredMaterials" | "isDisabled"
-	> | null>(null)
-	const handleStartAddingArc = () =>
-		setNewArcRecord({
-			id: getAllArcsList()[0].id,
-			currentLvl: EnumItemLvls.Lvl1,
-			targetLvl: EnumItemLvls.Lvl80,
-		})
-	const addArc = (e: KeyMouseEventType) => {
-		e.stopPropagation()
-		if (newArcRecord) actions.addWeapon(newArcRecord)
-		setNewArcRecord(null)
-	}
-	const cancelAddArc = (e: KeyMouseEventType) => {
-		e.stopPropagation()
-		setNewArcRecord(null)
-	}
-
 	const [showReorder, setShowReorder] = useState(false)
 	const closeReorder = (e: KeyMouseEventType) => {
 		e.stopPropagation()
@@ -190,112 +148,16 @@ export function RenderPlanner({
 		actions.updatePlanner({ [plannerType]: newRecord })
 	}
 
-	// if (shouldRedirect) return null
+	const [priorityPortalTarget, setPriorityPortalTarget] =
+		useState<HTMLElement | null>(null)
+
+	useEffect(() => {
+		// eslint-disable-next-line react-hooks/set-state-in-effect
+		setPriorityPortalTarget(document.getElementById("adjust-priority"))
+	}, [])
 
 	return (
 		<PlannerInventoryProvider itemRecords={itemsList}>
-			<PullOutToolbar>
-				{(plannerType === "characters" || plannerType === "both") && (
-					<button
-						className={`pill-button ${toolbarStyles.toolbarButton} ${toolbarStyles.add}`}
-						onClick={handleStartAddingChar}>
-						ADD CHARACTER
-						<AddNewCharContext.Provider value={{ addCharacter }}>
-							{showAddChar &&
-								createPortal(
-									<ModalContainer onClickOut={cancelAddChar}>
-										<PlannerAddCharacterBox
-											onCancel={cancelAddChar}
-										/>
-									</ModalContainer>,
-									document.body
-								)}
-						</AddNewCharContext.Provider>
-					</button>
-				)}
-				{(plannerType === "arcs" || plannerType === "both") && (
-					<button
-						className={`pill-button ${toolbarStyles.toolbarButton} ${toolbarStyles.add}`}
-						onClick={handleStartAddingArc}>
-						ADD ARC
-						<AddNewArcContext.Provider
-							value={{ newArcRecord, setNewArcRecord }}>
-							{newArcRecord &&
-								createPortal(
-									<ModalContainer onClickOut={cancelAddArc}>
-										<PlannerAddArcBox
-											onConfirm={addArc}
-											onCancel={cancelAddArc}
-										/>
-									</ModalContainer>,
-									document.body
-								)}
-						</AddNewArcContext.Provider>
-					</button>
-				)}
-
-				<button
-					disabled={itemsList.length <= 1}
-					className={`pill-button ${toolbarStyles.toolbarButton} ${styles.hideOnDesktop}`}
-					onClick={() => setShowReorder(true)}>
-					ADJUST PRIORITY
-					{showReorder &&
-						createPortal(
-							<ModalContainer onClickOut={closeReorder}>
-								<DragDropProvider
-									plugins={(defaults) => [
-										...defaults,
-										Feedback.configure({
-											dropAnimation: null,
-										}),
-									]}
-									onDragStart={onDragStart}
-									onDragEnd={onDragEnd}>
-									<PlannerReorderBox items={items} />
-								</DragDropProvider>
-							</ModalContainer>,
-							document.body
-						)}
-				</button>
-			</PullOutToolbar>
-
-			{itemsList.length <= 0 && (
-				<InfoBox>
-					<div>
-						{`You don't have any ${
-							plannerType === "characters"
-								? "characters"
-								: plannerType === "arcs"
-									? "arcs"
-									: "characters or arcs"
-						} in the planner... Maybe you'd like to `}
-						<a
-							className="btn-anchor"
-							onClick={
-								plannerType === "arcs"
-									? handleStartAddingArc
-									: handleStartAddingChar
-							}>
-							Add Something?
-						</a>
-					</div>
-					{/* plannerType !== "both" && (
-						<div>
-							{`A-are you looking to level Characters and Arcs all in one place? Take a look at the `}
-							<a
-								className="btn-anchor"
-								onClick={() => {
-									settingsActions.setConfig("appearance", {
-										"use-hybrid-planner": true,
-									})
-								}}>
-								Hybrid Planner
-							</a>
-						</div>
-					) */}
-				</InfoBox>
-			)}
-
 			<main className={`page ${styles.page}`} role="main">
 				{allRequiredMaterials.length > 0 && (
 					<MaterialGroup title="Required Materials">
@@ -312,6 +174,35 @@ export function RenderPlanner({
 						</div>
 					</MaterialGroup>
 				)}
+
+				{priorityPortalTarget &&
+					createPortal(
+						<button
+							disabled={itemsList.length <= 1}
+							className={`pill-button ${toolbarStyles.toolbarButton} ${styles.hideOnDesktop}`}
+							onClick={() => setShowReorder(true)}>
+							ADJUST PRIORITY
+						</button>,
+						priorityPortalTarget
+					)}
+
+				{showReorder &&
+					createPortal(
+						<ModalContainer onClickOut={closeReorder}>
+							<DragDropProvider
+								plugins={(defaults) => [
+									...defaults,
+									Feedback.configure({
+										dropAnimation: null,
+									}),
+								]}
+								onDragStart={onDragStart}
+								onDragEnd={onDragEnd}>
+								<PlannerReorderBox items={items} />
+							</DragDropProvider>
+						</ModalContainer>,
+						document.body
+					)}
 
 				<DragDropProvider
 					plugins={(defaults) => [

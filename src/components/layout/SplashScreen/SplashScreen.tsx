@@ -85,20 +85,6 @@ function WelcomeSplashScreen({ closeSplash }: { closeSplash: () => void }) {
 							{" — Your handy To-Do list for dailies and weeklies."}
 						</li>
 						<li>
-							{/* //TODO Disabling separate planners for now. Will add them in the future when I figure out mobile navbar having too many icons */}
-							{/* <Link
-								onClick={closeSplash}
-								className="btn-anchor"
-								href={"/characters"}>
-								Esper
-							</Link>
-							{" & "}
-							<Link
-								onClick={closeSplash}
-								className="btn-anchor"
-								href={"/arcs"}>
-								Arc Planner
-							</Link> */}
 							<Link
 								onClick={closeSplash}
 								className="btn-anchor"

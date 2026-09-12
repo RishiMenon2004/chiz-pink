@@ -22,25 +22,11 @@ export const RoutesData: RoutesRecord = {
 		id: "checklist",
 	},
 
-	"/characters": {
-		title: "CHARACTERS",
-		head: "Characters",
-		tooltip: "Characters Planner",
-		id: "characters",
-	},
-
 	"/characters/[id]": {
 		title: "CHARACTER PROFILE",
 		head: "Character Profile",
 		tooltip: "Character Profile",
 		id: "character_info",
-	},
-
-	"/arcs": {
-		title: "ARCS",
-		head: "Arcs",
-		tooltip: "Arcs Planner",
-		id: "arcs",
 	},
 
 	"/arcs/[id]": {
@@ -55,6 +41,20 @@ export const RoutesData: RoutesRecord = {
 		head: "Ascension Planner",
 		tooltip: "Ascension Planner",
 		id: "planner",
+	},
+
+	"/planner/arcs": {
+		title: "ARC PLANNER",
+		head: "Arc Planner",
+		tooltip: "Arc Planner",
+		id: "arcs",
+	},
+
+	"/planner/characters": {
+		title: "CHARACTER PLANNER",
+		head: "Character Planner",
+		tooltip: "Character Planner",
+		id: "characters",
 	},
 
 	"/pulls": {

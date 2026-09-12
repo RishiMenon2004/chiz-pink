@@ -1,3 +1,7 @@
+.page {
+	padding-top: 2rem;
+}
+
 .plannerRequiredMaterialsBox {
 	margin-inline: 1rem !important;
 }
@@ -8,6 +12,29 @@
 	gap: 3rem;
 }
 
+.pageConfig {
+	display: flex;
+	align-items: center;
+	gap: 0.4rem;
+	text-transform: uppercase;
+	font-family: var(--font-barlow-condensed);
+	cursor: var(--pointer-cursor);
+	user-select: none;
+	margin-left: auto;
+
+	padding-left: 0.225rem;
+
+	grid-column: span 1 / -1;
+
+	& input {
+		box-shadow: none;
+		margin-block: 0.1rem;
+		&:checked {
+			box-shadow: var(--shadow-dark-40) 0 0 2px inset;
+		}
+	}
+}
+
 @media (max-width: 1000px) {
 	.page {
 		padding-inline: 1rem !important;
@@ -15,6 +42,18 @@
 
 	.plannerGrid {
 		grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+	}
+
+	.pageConfig {
+		width: 100%;
+		align-items: center;
+		justify-content: space-between;
+		margin-left: 0 !important;
+
+		& > * {
+			flex-grow: 1;
+			justify-content: space-between;
+		}
 	}
 }
 
@@ -28,6 +67,7 @@
 @media (min-width: 1000) {
 	.hideOnDesktop {
 		visibility: hidden !important;
+		position: absolute;
 	}
 }
 
@@ -35,5 +75,6 @@
 @media (max-height: 800) {
 	.hideOnDesktop {
 		visibility: visible !important;
+		position: relative;
 	}
 }
