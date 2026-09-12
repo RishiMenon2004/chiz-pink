@@ -9,11 +9,11 @@ export function Sidebar() {
 		<div className={styles.sidebar}>
 			<nav role="navigation">
 				<NavButton href="" icon="home" />
-				<NavButton href="checklist" icon="checklist" />
-				<NavButton href="planner" icon="planner" />
-				<NavButton href="pulls" icon="pulls" />
-				<NavButton href="inventory" icon="inventory" />
-				<NavButton href="settings" icon="settings" />
+				<NavButton href="checklist" />
+				<NavButton href="planner" />
+				<NavButton href="pulls" />
+				<NavButton href="inventory" />
+				<NavButton href="settings" />
 			</nav>
 
 			<svg xmlns="http://www.w3.org/2000/svg" className={styles.fender}>

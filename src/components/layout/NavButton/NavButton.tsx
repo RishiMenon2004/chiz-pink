@@ -9,9 +9,15 @@ import { useTooltip } from "@/hooks"
 
 import styles from "./navButton.module.css"
 
-export function NavButton({ href, icon }: { href: string; icon: string }) {
+export function NavButton({
+	href,
+	icon = href,
+}: {
+	href: string
+	icon?: string
+}) {
 	const pathname = usePathname()
-	const active = pathname === `/${href}`
+	const active = pathname.split("/")[1] === href
 
 	const { Tooltip, showTooltip, hideTooltip } = useTooltip()
 
