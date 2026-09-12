@@ -15,7 +15,7 @@ import {
 
 import type { Material } from "@/types/item"
 
-import { findItem } from "@/data/items"
+import { findItem } from "@/data/items/findItem" 
 
 import { useInventoryStore, usePlannerStore, useTooltip } from "@/hooks"
 import { getAggregatedMaterial } from "@/hooks/usePlannerStore"

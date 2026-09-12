@@ -5,8 +5,6 @@ export {
 	getItemRarityStyle,
 } from "./item"
 
-export { findItem } from "./findItem"
-
 export { EnumMaterialType } from "./materials"
 
 export {

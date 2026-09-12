@@ -1,6 +1,6 @@
 import type { Material, MaterialSet } from "@/types/item"
 
-import { EnumRarity } from "@/data/items"
+import { EnumRarity } from "./item"
 
 export enum EnumMaterialType {
 	WeeklyBossDrop = "Weekly Boss Drops",

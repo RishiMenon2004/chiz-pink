@@ -12,7 +12,8 @@ import {
 
 import type { Material } from "@/types/item"
 
-import { findItem, getItemRarityStyle } from "@/data/items"
+import { getItemRarityStyle } from "@/data/items"
+import { findItem } from "@/data/items/findItem"
 
 import {
 	useInventoryStore,

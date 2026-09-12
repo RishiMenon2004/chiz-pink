@@ -6,7 +6,8 @@ import { Arc } from "@/types/weapon"
 import { Character } from "@/types/character"
 import { CharacterRecord, WeaponRecord } from "@/types/planner"
 
-import { findItem, getItemRarityStyle } from "@/data/items"
+import { getItemRarityStyle } from "@/data/items"
+import { findItem } from "@/data/items/findItem"
 
 import { stopPropagation } from "@/helpers"
 
