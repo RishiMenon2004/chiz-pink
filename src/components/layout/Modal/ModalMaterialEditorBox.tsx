@@ -20,7 +20,7 @@ import { useInventoryStore, useTooltip } from "@/hooks"
 
 import { useMaterialAdjustmentContext } from "@/contexts"
 
-import { QuantityInput } from "@/components/layout"
+import { MaterialIcon, QuantityInput } from "@/components/layout"
 
 import { styles } from "@/components/inventory/MaterialBox"
 
@@ -119,8 +119,8 @@ export function MaterialEditorBox({ material }: { material: Material }) {
 			onPointerEnter={showTooltip}
 			onPointerLeave={hideTooltip}>
 			<div className={`${styles.iconContainer}`} onClick={handleBoxClick}>
-				<Image
-					src={`/materials${material.imageSrc}.png`}
+				<MaterialIcon
+					material={material}
 					width={128}
 					height={128}
 					alt={`${material.name} icon`}
