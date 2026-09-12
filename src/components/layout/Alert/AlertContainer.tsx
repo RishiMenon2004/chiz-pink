@@ -81,7 +81,7 @@ export function AlertContainer({
 			<div className={styles.alertBoxButtons}>
 				{type !== "acknowledge" && (
 					<button
-						className="pill-button"
+						className="pill-button always-hover"
 						id="cancel"
 						onClick={onCancel}
 						data-variant={buttonTypes[0]}>
@@ -89,7 +89,7 @@ export function AlertContainer({
 					</button>
 				)}
 				<button
-					className="pill-button"
+					className="pill-button always-hover"
 					id="confirm"
 					onClick={onConfirm}
 					data-variant={buttonTypes[1]}>

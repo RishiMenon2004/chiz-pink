@@ -39,24 +39,15 @@ div.addCharBox {
 		display: grid;
 		place-items: center;
 
-		background-color: var(--button-background);
 
 		background-image: url("/button_icons/cross.png");
 		background-size: cover;
-
-		box-shadow: var(--shadow-button);
 
 		cursor: var(--pointer-cursor);
 
 		&:hover,
 		&:focus-visible {
-			outline: none;
-
-			background-color: var(--hover-color);
-
 			background-image: url("/button_icons/cross_white.png");
-
-			box-shadow: var(--shadow-button-hover);
 		}
 	}
 }
@@ -316,13 +307,7 @@ div.addCharBox {
 	div.addCharBox {
 		width: 75vw;
 		.addCharBoxCancel {
-			outline: none;
-
-			background-color: var(--hover-color);
-
 			background-image: url("/button_icons/cross_white.png");
-
-			box-shadow: var(--shadow-button-hover);
 		}
 	}
 }

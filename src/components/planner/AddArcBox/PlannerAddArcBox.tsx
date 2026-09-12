@@ -264,12 +264,12 @@ export function PlannerAddArcBox({
 			</div>
 			<span className={styles.addArcButtonsSection}>
 				<div
-					className={`pill-button ${styles.addArcCancelButton}`}
+					className={`pill-button always-hover ${styles.addArcCancelButton}`}
 					onClick={onCancel}>
 					CANCEL
 				</div>
 				<div
-					className={`pill-button ${styles.addArcConfirmButton}`}
+					className={`pill-button always-hover ${styles.addArcConfirmButton}`}
 					onClick={onConfirm}>
 					ADD
 				</div>

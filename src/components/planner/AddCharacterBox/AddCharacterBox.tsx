@@ -103,7 +103,7 @@ export function PlannerAddCharacterBox({
 			className={`metallic-panel ${styles.addCharBox}`}
 			onClick={stopPropagation}>
 			<div className={styles.addCharBoxTitle}>Add Character</div>
-			<button className={styles.addCharBoxCancel} onClick={onCancel} />
+			<button className={`pill-button always-hover ${styles.addCharBoxCancel}`} onClick={onCancel} />
 			<div className={styles.addCharFilters}>
 				<div className={styles.charFilterList} style={{ flexGrow: 0.25 }}>
 					{Object.values(EnumCharacterElement).map((element) => {
