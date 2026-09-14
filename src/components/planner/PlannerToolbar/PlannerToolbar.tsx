@@ -13,7 +13,7 @@ import styles from "@/components/planner/RenderPlanner/renderPlanner.module.css"
 import { ConfigCheckbox } from "@/components/settings"
 import { useState } from "react"
 import { createPortal } from "react-dom"
-import { usePlannerStore, useSettingsStore } from "@/hooks"
+import { usePlannerItems, usePlannerStore, useSettingsStore } from "@/hooks"
 import { KeyMouseEventType } from "@/types"
 import { generateNewCharacter } from "@/helpers"
 import { PlannerAddArcBox, PlannerAddCharacterBox } from "@/components/planner"
@@ -21,6 +21,9 @@ import { EnumItemLvls } from "@/data/items"
 import { getAllArcsList } from "@/data/arcs"
 import { WeaponRecord } from "@/types/planner"
 import { useSelectedLayoutSegment } from "next/navigation"
+import { DragDropProvider } from "@dnd-kit/react"
+import { Feedback } from "@dnd-kit/dom"
+import { PlannerReorderBox } from "@/components/layout/ReorderBox/PlannerReorderBox"
 
 export function PlannerToolbar() {
 	const { actions } = usePlannerStore()
@@ -31,6 +34,8 @@ export function PlannerToolbar() {
 	const segment = useSelectedLayoutSegment()
 	const { section } = usePlannerSectionContext()
 	const plannerType = segment ? section : "both"
+
+	const { items, itemsList, handleDragEnd } = usePlannerItems(plannerType)
 
 	const [showAddChar, setShowAddChar] = useState(false)
 	const handleStartAddingChar = () => setShowAddChar(true)
@@ -62,6 +67,12 @@ export function PlannerToolbar() {
 	const cancelAddArc = (e: KeyMouseEventType) => {
 		e.stopPropagation()
 		setNewArcRecord(null)
+	}
+
+	const [showReorder, setShowReorder] = useState(false)
+	const closeReorder = (e: KeyMouseEventType) => {
+		e.stopPropagation()
+		setShowReorder(false)
 	}
 
 	return (
@@ -103,9 +114,29 @@ export function PlannerToolbar() {
 					)}
 			</AddNewArcContext.Provider>
 
-			<div
-				id="adjust-priority"
-				className={toolbarStyles.toolbarButton}></div>
+			<button
+				disabled={itemsList.length <= 1}
+				className={`pill-button ${toolbarStyles.toolbarButton} ${styles.hideOnDesktop}`}
+				onClick={() => setShowReorder(true)}>
+				ADJUST PRIORITY
+			</button>
+			{showReorder &&
+				createPortal(
+					<ModalContainer onClickOut={closeReorder}>
+						<DragDropProvider
+							plugins={(defaults) => [
+								...defaults,
+								Feedback.configure({
+									dropAnimation: null,
+								}),
+							]}
+							onDragEnd={handleDragEnd}>
+							<PlannerReorderBox items={items} />
+						</DragDropProvider>
+					</ModalContainer>,
+					document.body
+				)}
+
 			<label className={`pill-button ${styles.pageConfig}`}>
 				<ConfigCheckbox
 					name={"Hybrid Planner"}

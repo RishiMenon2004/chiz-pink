@@ -4,18 +4,13 @@ import dynamic from "next/dynamic"
 import { useEffect, useMemo, useState } from "react"
 
 import { DragDropProvider, DragOverlay } from "@dnd-kit/react"
-import { isSortable } from "@dnd-kit/react/sortable"
 import { DragEndEvent, DragStartEvent, Feedback } from "@dnd-kit/dom"
 
-import type {
-	CharacterRecord,
-	PlannerRecord,
-	WeaponRecord,
-} from "@/types/planner"
+import type { PlannerRecord } from "@/types/planner"
 
 import { getAllMaterialsList } from "@/data/items"
 
-import { useHybridPlannerStore, usePlannerStore, useSettingsStore } from "@/hooks"
+import { usePlannerItems, usePlannerStore, useSettingsStore } from "@/hooks"
 import { getAggregatedMaterials } from "@/hooks/usePlannerStore"
 
 import { PlannerInventoryProvider } from "@/helpers"
@@ -26,12 +21,7 @@ import { PlannerMaterialsList } from "../MaterialsList"
 import plannerBoxStyles from "./plannerBox.module.css"
 import styles from "./renderPlanner.module.css"
 import { useRouter } from "next/navigation"
-import { createPortal } from "react-dom"
-import { PlannerReorderBox } from "@/components/layout/ReorderBox/PlannerReorderBox"
-import { ModalContainer } from "@/components/layout"
 
-import { styles as toolbarStyles } from "@/components/layout/PullOutToolbar"
-import { KeyMouseEventType } from "@/types"
 const PlannerCharacterBox = dynamic(
 	() => import("@/components/planner").then((mod) => mod.PlannerCharacterBox),
 	{ ssr: false }
@@ -56,40 +46,18 @@ export function RenderPlanner({
 
 	const combinedEnabled = settings.appearance?.["use-hybrid-planner"] ?? false
 
-	//reditect to /characters if accessing /planner and disabled combined planner
+	//redirect to /characters if accessing /planner and disabled combined planner
 	//vice versa, redirect to /planner if accessing /characters or /arcs and enabled combined planner
 	const shouldRedirect =
 		plannerType === "both" ? !combinedEnabled : combinedEnabled
-	const redirectTo = plannerType === "both" ? "planner/characters" : "/planner"
+	const redirectTo = plannerType === "both" ? "/planner/characters" : "/planner"
 
 	useEffect(() => {
 		if (shouldRedirect) router.replace(redirectTo)
 	}, [shouldRedirect, redirectTo, router])
 
-	const { plannerData, actions } = usePlannerStore()
-	const { hybridPlanner, actions: hybridActions } = useHybridPlannerStore()
-
-	const items: Record<string, CharacterRecord | WeaponRecord> = useMemo(() => {
-		if (plannerType !== "both") return plannerData[plannerType]
-
-		const combined: Record<string, CharacterRecord | WeaponRecord> = {
-			...plannerData.characters,
-			...plannerData.arcs,
-		}
-
-		const orderedIds = hybridPlanner.order.filter((id) => id in combined)
-		const remainingIds = Object.keys(combined).filter(
-			(id) => !orderedIds.includes(id)
-		)
-
-		const ordered: Record<string, CharacterRecord | WeaponRecord> = {}
-		;[...remainingIds, ...orderedIds].forEach((id) => {
-			ordered[id] = combined[id]
-		})
-		return ordered
-	}, [plannerType, plannerData, hybridPlanner])
-
-	const itemsList = Object.values(items)
+	const { plannerData } = usePlannerStore()
+	const { items, itemsList, handleDragEnd } = usePlannerItems(plannerType)
 
 	const [activeDragId, setActiveDragId] = useState<string | null>(null)
 
@@ -111,50 +79,13 @@ export function RenderPlanner({
 		[plannerData, plannerType]
 	)
 
-	const [showReorder, setShowReorder] = useState(false)
-	const closeReorder = (e: KeyMouseEventType) => {
-		e.stopPropagation()
-		setShowReorder(false)
-	}
-
 	const onDragStart = (e: DragStartEvent) =>
 		setActiveDragId((e.operation.source?.id as string) || null)
 
 	const onDragEnd = (e: DragEndEvent) => {
-		if (e.canceled) return
 		setActiveDragId(null)
-
-		const { source } = e.operation
-		if (!isSortable(source)) return
-
-		const { initialIndex, index } = source
-		if (initialIndex === index) return
-
-		const list = Object.values(items)
-		const [removed] = list.splice(initialIndex, 1)
-		list.splice(index, 0, removed)
-
-		if (plannerType === "both") {
-			hybridActions.setOrder(
-				list.map((item) => ("uid" in item ? item.uid : item.id))
-			)
-			return
-		}
-
-		const newRecord: typeof items = {}
-		list.forEach((item) => {
-			newRecord["uid" in item ? item.uid : item.id] = item
-		})
-		actions.updatePlanner({ [plannerType]: newRecord })
+		handleDragEnd(e)
 	}
-
-	const [priorityPortalTarget, setPriorityPortalTarget] =
-		useState<HTMLElement | null>(null)
-
-	useEffect(() => {
-		// eslint-disable-next-line react-hooks/set-state-in-effect
-		setPriorityPortalTarget(document.getElementById("adjust-priority"))
-	}, [])
 
 	return (
 		<PlannerInventoryProvider itemRecords={itemsList}>
@@ -174,35 +105,6 @@ export function RenderPlanner({
 						</div>
 					</MaterialGroup>
 				)}
-
-				{priorityPortalTarget &&
-					createPortal(
-						<button
-							disabled={itemsList.length <= 1}
-							className={`pill-button ${toolbarStyles.toolbarButton} ${styles.hideOnDesktop}`}
-							onClick={() => setShowReorder(true)}>
-							ADJUST PRIORITY
-						</button>,
-						priorityPortalTarget
-					)}
-
-				{showReorder &&
-					createPortal(
-						<ModalContainer onClickOut={closeReorder}>
-							<DragDropProvider
-								plugins={(defaults) => [
-									...defaults,
-									Feedback.configure({
-										dropAnimation: null,
-									}),
-								]}
-								onDragStart={onDragStart}
-								onDragEnd={onDragEnd}>
-								<PlannerReorderBox items={items} />
-							</DragDropProvider>
-						</ModalContainer>,
-						document.body
-					)}
 
 				<DragDropProvider
 					plugins={(defaults) => [

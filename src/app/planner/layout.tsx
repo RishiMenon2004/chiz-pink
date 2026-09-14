@@ -19,6 +19,19 @@ export default function PlannerLayout({ children }: { children: ReactNode }) {
 		}
 	}, [segment])
 
+	useEffect(() => {
+		const handlePopState = () => {
+			const path = window.location.pathname
+			if (path.endsWith("/arcs")) {
+				setSectionState("arcs")
+			} else if (path.endsWith("/characters")) {
+				setSectionState("characters")
+			}
+		}
+		window.addEventListener("popstate", handlePopState)
+		return () => window.removeEventListener("popstate", handlePopState)
+	}, [])
+
 	const setSection = (nextSection: PlannerSection) => {
 		setSectionState(nextSection)
 		window.history.replaceState(null, "", `/planner/${nextSection}`)
