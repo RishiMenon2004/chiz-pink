@@ -13,6 +13,8 @@ import {
 	getWeeklyResetBoundaries,
 } from "@/helpers"
 
+import styles from "@/app/settings/settings.module.css"
+
 const resetDayTimeConfig: Intl.DateTimeFormatOptions = {
 	weekday: "long",
 	hour: "numeric",
@@ -42,18 +44,7 @@ export function StaminaResetCountdown({
 				})()
 
 	return (
-		<div
-			style={{
-				fontFamily: "var(--font-barlow-condensed)",
-				fontStyle: "italic",
-				display: "flex",
-				flexDirection: "row",
-				flexWrap: "wrap",
-				justifyContent: "space-between",
-				width: "100%",
-				paddingInline: "0.5rem",
-				gap: "0.25rem 0.5rem",
-			}}>
+		<div className={styles.timerRow}>
 			<div>{content}</div>
 		</div>
 	)
@@ -101,18 +92,7 @@ export function PixelRefillCountdown({
 	}
 
 	return (
-		<div
-			style={{
-				fontFamily: "var(--font-barlow-condensed)",
-				fontStyle: "italic",
-				display: "flex",
-				flexDirection: "row",
-				flexWrap: "wrap",
-				justifyContent: "space-between",
-				width: "100%",
-				paddingInline: "0.5rem",
-				gap: "0.25rem 0.5rem",
-			}}>
+		<div className={styles.timerRow}>
 			<div>{`Next: ${nextText}`}</div>
 			<div>{`Full: ${fullText}`}</div>
 		</div>

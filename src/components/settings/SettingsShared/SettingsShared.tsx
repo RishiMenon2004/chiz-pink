@@ -79,21 +79,7 @@ export function Blockquote({ children }: { children: ReactNode }) {
 
 export function BETATag() {
 	return (
-		<span
-			style={{
-				borderRadius: "100vh",
-				backgroundColor: "#ffa600",
-				padding: "0.25rem 0.5rem",
-				color: "black",
-				fontFamily: "var(--font-syne)",
-				fontSize: "0.7em",
-				fontWeight: 720,
-				fontStyle: "normal",
-				marginRight: "0.25rem",
-				marginLeft: "-0.675rem",
-				height: "fit-content",
-				userSelect: "none",
-			}}>
+		<span className={styles.betaTag}>
 			BETA
 		</span>
 	)
@@ -113,13 +99,7 @@ export function ConfigCheckbox({
 	onChange: ChangeEventHandler<HTMLInputElement>
 }) {
 	return (
-		<div
-			style={{
-				display: "flex",
-				gap: "0.5rem",
-				alignItems: "center",
-				flexWrap: "nowrap",
-			}}>
+		<div className={styles.configCheckboxRow}>
 			<input
 				className={`inset-control ${styles.configInput}`}
 				name={name}
@@ -142,13 +122,7 @@ export function ConfigInputbox(
 ) {
 	const { children, ...inputProps } = props
 	return (
-		<div
-			style={{
-				display: "flex",
-				gap: "0.5rem",
-				flexDirection: "column",
-				alignItems: "flex-start",
-			}}>
+		<div className={styles.configInputColumn}>
 			<b>{inputProps.name}</b>
 			<input
 				className={`inset-control ${styles.configInput}`}
@@ -188,14 +162,7 @@ export function ConfigNumberBox({
 	}
 
 	return (
-		<div
-			style={{
-				display: "flex",
-				gap: "0.5rem",
-				flexDirection: "column",
-				alignItems: "flex-start",
-				width: "100%",
-			}}>
+		<div className={styles.configNumberBoxColumn}>
 			<b>{name}</b>
 			<div className={`inset-control ${styles.numberStepper}`}>
 				<span
@@ -242,14 +209,7 @@ export function ConfigSelect({
 	children: ReactNode
 }) {
 	return (
-		<div
-			style={{
-				flexGrow: 1,
-				display: "flex",
-				gap: "0.5rem",
-				flexDirection: "column",
-				alignItems: "flex-start",
-			}}>
+		<div className={styles.configSelectColumn}>
 			<b>{name}</b>
 			<select
 				className={`inset-control ${styles.configSelect}`}

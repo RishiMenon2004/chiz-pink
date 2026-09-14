@@ -41,10 +41,9 @@ export function CloudBackupSection({
 							className={`${styles.settingsCloudStatusLabel} ${styles[cloudSync.status]}`}>
 							{syncStatusLabel[cloudSync.status].toUpperCase()}
 						</span>
-						<div
-							tabIndex={0}
+						<button
 							className={styles.settingsCloudSyncBtn}
-							data-variant="normal"
+							disabled={cloudSync.status === "syncing"}
 							onClick={cloudSync.syncNow}
 						/>
 					</span>
@@ -63,11 +62,7 @@ export function CloudBackupSection({
 
 					<ContentRow>
 						<b>Last Backup:</b>
-						<span
-							style={{
-								fontFamily: "var(--font-barlow-condensed)",
-								letterSpacing: "5%",
-							}}>
+						<span className={styles.backupTimestamp}>
 							{cloudSync.latestBackupUpdatedAt
 								? formatDate(cloudSync.latestBackupUpdatedAt)
 								: "NO BACKUP"}

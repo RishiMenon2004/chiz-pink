@@ -14,6 +14,8 @@ import {
 	TitleBar,
 } from "../SettingsShared"
 
+import styles from "@/app/settings/settings.module.css"
+
 interface LocalDataSectionProps {
 	importData: () => void
 	setEraseWarning: (value: boolean) => void
@@ -32,12 +34,7 @@ export function LocalDataSection({
 					Manage the data stored in the Local Storage of your browser.
 					<Blockquote>
 						<BETATag />
-						<span
-							style={{
-								display: "flex",
-								flexWrap: "wrap",
-								gap: "0.5ch",
-							}}>
+						<span className={styles.migrationLinks}>
 							{
 								"Migrating from another app? Import compatible data from: "
 							}

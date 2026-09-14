@@ -504,6 +504,74 @@
 	background-color: var(--interactive-bg);
 }
 
+.betaTag {
+	border-radius: 100vh;
+	background-color: #ffa600;
+	padding: 0.25rem 0.5rem;
+	color: black;
+	font-family: var(--font-syne);
+	font-size: 0.7em;
+	font-weight: 720;
+	font-style: normal;
+	margin-right: 0.25rem;
+	margin-left: -0.675rem;
+	height: fit-content;
+	user-select: none;
+}
+
+.configCheckboxRow {
+	display: flex;
+	gap: 0.5rem;
+	align-items: center;
+	flex-wrap: nowrap;
+}
+
+.configInputColumn {
+	display: flex;
+	gap: 0.5rem;
+	flex-direction: column;
+	align-items: flex-start;
+}
+
+.configNumberBoxColumn {
+	display: flex;
+	gap: 0.5rem;
+	flex-direction: column;
+	align-items: flex-start;
+	width: 100%;
+}
+
+.configSelectColumn {
+	flex-grow: 1;
+	display: flex;
+	gap: 0.5rem;
+	flex-direction: column;
+	align-items: flex-start;
+}
+
+.backupTimestamp {
+	font-family: var(--font-barlow-condensed);
+	letter-spacing: 5%;
+}
+
+.migrationLinks {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.5ch;
+}
+
+.timerRow {
+	font-family: var(--font-barlow-condensed);
+	font-style: italic;
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	justify-content: space-between;
+	width: 100%;
+	padding-inline: 0.5rem;
+	gap: 0.25rem 0.5rem;
+}
+
 @media (max-width: 1415px) {
 	.twoColumns {
 		grid-template-columns: 1fr;

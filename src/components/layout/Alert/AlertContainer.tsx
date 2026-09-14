@@ -8,6 +8,8 @@ import { stopPropagation } from "@/helpers"
 
 import styles from "./alertContainer.module.css"
 export const alertTextBox = styles.alertTextBox
+export const alertMessage = styles.alertMessage
+export const alertTextColumns = styles.alertTextColumns
 
 export function AlertContainer({
 	type,

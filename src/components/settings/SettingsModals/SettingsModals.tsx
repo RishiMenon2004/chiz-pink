@@ -8,7 +8,11 @@ import {
 	AlertContainer,
 	ModalContainer,
 } from "@/components/layout"
-import { alertTextBox } from "@/components/layout/Alert/AlertContainer"
+import {
+	alertTextBox,
+	alertMessage,
+	alertTextColumns,
+} from "@/components/layout/Alert/AlertContainer"
 
 import { useCloudSyncContext } from "@/contexts"
 
@@ -41,12 +45,7 @@ export function ImportOverwriteModal({
 				{isImportOlder
 					? "This file contains older information."
 					: "Existing data will be overwritten."}
-				<p
-					style={{
-						fontSize: "0.9em",
-						fontWeight: "500",
-						textWrapStyle: "balance",
-					}}>
+				<p className={alertMessage}>
 					Are you sure you want to replace your current data?
 				</p>
 			</AlertContainer>
@@ -94,12 +93,7 @@ export function ExternalImportPendingModal({
 				}}>
 				{`Import ${externalImportPending.source} Data`}
 				<div
-					className={`inset-control ${alertTextBox}`}
-					style={{
-						display: "grid",
-						gridTemplateColumns: "1fr 1fr",
-						gap: "3rem",
-					}}>
+					className={`inset-control ${alertTextBox} ${alertTextColumns}`}>
 					<p>
 						{
 							"Add to Existing: Replaces your Inventory. Appends Characters and Arcs onto your existing planner."
@@ -198,7 +192,7 @@ export function SignoutWarningModal({
 				cancelLabel="Stay Signed In	">
 				Stop Cloud Syncing?
 				<br />
-				<p style={{ fontSize: "0.9em", fontWeight: "500" }}>
+				<p className={alertMessage}>
 					You will need to sign in again to enable syncing.
 				</p>
 			</AlertContainer>
@@ -231,7 +225,7 @@ export function EraseDataWarningModal({
 				cancelLabel="Cancel">
 				Erase all local data?
 				<br />
-				<p style={{ fontSize: "0.9rem", fontWeight: "500" }}>
+				<p className={alertMessage}>
 					This action will erase all data from this device.
 				</p>
 			</AlertContainer>
@@ -276,12 +270,7 @@ export function EraseSyncChoiceModal({
 				cancelLabel="Keep Cloud Backup">
 				Keep your Cloud Backup?
 				<br />
-				<p
-					style={{
-						fontSize: "0.9rem",
-						fontWeight: "500",
-						textWrapStyle: "balance",
-					}}>
+				<p className={alertMessage}>
 					You will be able to use your backup when you sign back
 					in.
 				</p>
@@ -333,7 +322,7 @@ export function UnlinkAccountModal({
 				cancelLabel="Keep Linked">
 				Unlink your Google account?
 				<br />
-				<p style={{ fontSize: "0.9rem", fontWeight: "500" }}>
+				<p className={alertMessage}>
 					This deletes your cloud backup.
 				</p>
 			</AlertContainer>
