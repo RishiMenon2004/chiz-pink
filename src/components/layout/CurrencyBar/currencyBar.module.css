@@ -114,6 +114,16 @@ div.currencyBox {
 		cursor: var(--edit-cursor);
 		padding-inline: 2rem;
 		padding-block: 0.35rem;
+
+		&.hidden {
+			display: none;
+		}
+
+		&.editing {
+			opacity: 0;
+			position: absolute;
+			pointer-events: none;
+		}
 	}
 
 	&#dreamless_seed {

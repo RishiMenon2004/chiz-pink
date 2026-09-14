@@ -15,7 +15,7 @@ import {
 
 import type { Material } from "@/types/item"
 
-import { findItem } from "@/data/items/findItem" 
+import { findItem } from "@/data/items/findItem"
 
 import { useInventoryStore, usePlannerStore, useTooltip } from "@/hooks"
 import { getAggregatedMaterial } from "@/hooks/usePlannerStore"
@@ -154,7 +154,7 @@ export function CurrencyBox({ currency }: { currency: Material }) {
 				pattern="[0-9]*"
 				inputMode="numeric"
 				value={currencyValue}
-				style={isEdit ? {} : { display: "none" }}
+				className={!isEdit ? styles.hidden : undefined}
 				onChange={handleEdit}
 				onKeyDown={handleKeyDown}
 				onBlur={handleBlur}
@@ -163,16 +163,7 @@ export function CurrencyBox({ currency }: { currency: Material }) {
 			<span
 				ref={valueDispRef}
 				onClick={handleClick}
-				className={styles.amountDisplay}
-				style={
-					isEdit
-						? {
-								opacity: "0",
-								position: "absolute",
-								pointerEvents: "none",
-							}
-						: {}
-				}>
+				className={`${styles.amountDisplay} ${isEdit ? styles.editing : ""}`}>
 				{localeUS(currencyValue)}
 			</span>
 			<button
@@ -185,46 +176,23 @@ export function CurrencyBox({ currency }: { currency: Material }) {
 				<div>{currency.name}</div>
 				{hasRequired && (
 					<>
-						<div
-							style={{
-								fontSize: "0.8rem",
-								opacity: 0.75,
-								fontWeight: 600,
-								marginBlock: "0.25rem",
-								marginLeft: "0.5rem",
-							}}>
+						<div className="tooltip-details">
 							<span>
 								{"Need: "}
-								<span
-									style={{
-										fontFamily:
-											"var(--font-barlow-condensed)",
-										fontSize: "1rem",
-										letterSpacing: "7%",
-									}}>
+								<span className="font-barlow">
 									{requiredQuantity}
 								</span>
 							</span>
 							{currencyValue < requiredQuantity && (
 								<span>
-									<span
-										style={{
-											fontFamily:
-												"var(--font-barlow-condensed)",
-											fontSize: "1rem",
-											color: "#ff486d",
-											fontStyle: "italic",
-											letterSpacing: "7%",
-											paintOrder: "stroke fill",
-											WebkitTextStroke: "2px black",
-										}}>
-										{" ▼ "}
+									<span className="font-barlow tooltip-deficit">
+										{" \u25bc "}
 										{requiredQuantity - currencyValue}
 									</span>
 								</span>
 							)}
 						</div>
-						<hr style={{ marginBlock: "0.5rem" }} />
+						<hr className="tooltip-hr" />
 						<div className="tooltip-source-list">
 							Needed For:
 							{Object.entries(requiredSources).map(
@@ -243,7 +211,7 @@ export function CurrencyBox({ currency }: { currency: Material }) {
 												height={16}
 												alt={`${currency.name} Source`}
 											/>
-											{`${item.name} ${amount > 1 ? `×${amount}` : ""}`}
+											{`${item.name} ${amount > 1 ? `\u00d7${amount}` : ""}`}
 										</div>
 									)
 								}
@@ -251,7 +219,7 @@ export function CurrencyBox({ currency }: { currency: Material }) {
 						</div>
 					</>
 				)}
-				<hr style={{ marginBlock: "0.5rem" }} />
+				<hr className="tooltip-hr" />
 				{currency.id === "annulith" && (
 					<div className="tooltip-source-list">
 						Annulith Processing:
@@ -263,7 +231,7 @@ export function CurrencyBox({ currency }: { currency: Material }) {
 								height={24}
 								alt={`${currency.name} Source`}
 							/>
-							{`Solid Dice ×${Math.floor(currencyValue / 160)}`}
+							{`Solid Dice \u00d7${Math.floor(currencyValue / 160)}`}
 						</div>
 					</div>
 				)}
@@ -277,7 +245,7 @@ export function CurrencyBox({ currency }: { currency: Material }) {
 								</div>
 							))}
 						</div>
-						<hr style={{ marginBlock: "0.5rem" }} />
+						<hr className="tooltip-hr" />
 					</>
 				)}
 			</Tooltip>
