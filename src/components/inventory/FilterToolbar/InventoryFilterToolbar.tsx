@@ -1,4 +1,4 @@
-import { ChangeEvent, CSSProperties } from "react"
+import { ChangeEvent } from "react"
 
 import type {
 	FilterByType,
@@ -60,19 +60,14 @@ export function InventoryFilterToolbar() {
 			{/* Regular Filter */}
 			<div className={`inset-control ${styles.filterSelection}`}>
 				<span
-					className={styles.filterIcon}
-					style={
-						{
-							"--icon-src": "url('/button_icons/filter.png')",
-						} as CSSProperties
-					}
+					className={`${styles.filterIcon} ${styles.iconFilter}`}
 				/>
 
 				<select
 					name="filter by type"
 					value={filter}
 					onChange={handleFilterChange}
-					style={{ cursor: "var(--filter-cursor)" }}>
+					className={styles.filterSelect}>
 					<option value={"default"} hidden>
 						Filter By
 					</option>
@@ -90,13 +85,8 @@ export function InventoryFilterToolbar() {
 				</select>
 
 				<span
-					className={`${styles.filterIcon} ${styles.hasHover}`}
+					className={`${styles.filterIcon} ${styles.hasHover} ${styles.iconCross}`}
 					tabIndex={0}
-					style={
-						{
-							"--icon-src": "url('/button_icons/cross.png')",
-						} as CSSProperties
-					}
 					onClick={() => setFilter("default")}
 					onKeyDown={(e) => {
 						if (e.key === "Enter") setFilter("default")
@@ -107,19 +97,14 @@ export function InventoryFilterToolbar() {
 			{/* Rank Filter */}
 			<div className={`inset-control ${styles.filterSelection}`}>
 				<span
-					className={styles.filterIcon}
-					style={
-						{
-							"--icon-src": "url('/button_icons/filter.png')",
-						} as CSSProperties
-					}
+					className={`${styles.filterIcon} ${styles.iconFilter}`}
 				/>
 
 				<select
 					name="filter by rarity"
 					value={rarityFilter}
 					onChange={handleRarityChange}
-					style={{ cursor: "var(--filter-cursor)" }}>
+					className={styles.filterSelect}>
 					<option value={"default"}>All Ranks</option>
 
 					{Object.entries(EnumRarity)
@@ -135,13 +120,8 @@ export function InventoryFilterToolbar() {
 				</select>
 
 				<span
-					className={`${styles.filterIcon} ${styles.hasHover}`}
+					className={`${styles.filterIcon} ${styles.hasHover} ${styles.iconCross}`}
 					tabIndex={0}
-					style={
-						{
-							"--icon-src": "url('/button_icons/cross.png')",
-						} as CSSProperties
-					}
 					onClick={() => setRarityFilter("default")}
 					onKeyDown={(e) => {
 						if (e.key === "Enter") setRarityFilter("default")
@@ -152,19 +132,14 @@ export function InventoryFilterToolbar() {
 			{/* Grouping */}
 			<div className={`inset-control ${styles.filterSelection}`}>
 				<span
-					className={styles.filterIcon}
-					style={
-						{
-							"--icon-src": "url('/button_icons/group.png')",
-						} as CSSProperties
-					}
+					className={`${styles.filterIcon} ${styles.iconGroup}`}
 				/>
 
 				<select
 					name="group by type"
 					value={group}
 					onChange={handleGroupChange}
-					style={{ cursor: "var(--group-cursor)" }}>
+					className={styles.groupSelect}>
 					<option value={"default"} hidden>
 						Group By
 					</option>
@@ -176,13 +151,8 @@ export function InventoryFilterToolbar() {
 				</select>
 
 				<span
-					className={`${styles.filterIcon} ${styles.hasHover}`}
+					className={`${styles.filterIcon} ${styles.hasHover} ${styles.iconCross}`}
 					tabIndex={0}
-					style={
-						{
-							"--icon-src": "url('/button_icons/cross.png')",
-						} as CSSProperties
-					}
 					onClick={() => setGroup("default")}
 					onKeyDown={(e) => {
 						if (e.key === "Enter") setGroup("default")
@@ -193,19 +163,14 @@ export function InventoryFilterToolbar() {
 			{/* Sorting */}
 			<div className={`inset-control ${styles.filterSelection}`}>
 				<span
-					className={styles.filterIcon}
-					style={
-						{
-							"--icon-src": "url('/button_icons/sort.png')",
-						} as CSSProperties
-					}
+					className={`${styles.filterIcon} ${styles.iconSort}`}
 				/>
 
 				<select
 					name="sorting"
 					value={sort}
 					onChange={handleSortingChange}
-					style={{ cursor: "var(--sort-cursor)" }}>
+					className={styles.sortSelect}>
 					<option value={"default"}>By Rank</option>
 					<option value={"owned"}>By Owned</option>
 					<option value={"required"}>By Required</option>
@@ -214,13 +179,8 @@ export function InventoryFilterToolbar() {
 				</select>
 
 				<span
-					className={`${styles.filterIcon} ${styles.hasHover} ${sortReverse && styles.doHover}`}
+					className={`${styles.filterIcon} ${styles.hasHover} ${sortReverse && styles.doHover} ${styles.iconReverseSort}`}
 					tabIndex={0}
-					style={
-						{
-							"--icon-src": "url('/button_icons/reverse_sort.png')",
-						} as CSSProperties
-					}
 					onClick={() => setSortReverse((prev) => !prev)}
 					onKeyDown={(e) => {
 						if (e.key === "Enter") setSortReverse((prev) => !prev)

@@ -37,8 +37,13 @@ export function MaterialItemBox({
 	material: Material
 	canHaveMultiMat?: boolean
 }) {
-	const { Tooltip, showTooltip, hideTooltip, longPressHandlers, consumeLongPress } =
-		useTooltip()
+	const {
+		Tooltip,
+		showTooltip,
+		hideTooltip,
+		longPressHandlers,
+		consumeLongPress,
+	} = useTooltip()
 
 	const linkedMaterials = useMemo(
 		() => getLinkedMaterials(material),
@@ -159,39 +164,16 @@ export function MaterialItemBox({
 
 				{hasRequired && (
 					<>
-						<div
-							style={{
-								fontSize: "0.8rem",
-								opacity: 0.75,
-								fontWeight: 600,
-								marginBlock: "0.25rem",
-								marginLeft: "0.5rem",
-							}}>
+						<div className="tooltip-details">
 							<span>
 								{"Need: "}
-								<span
-									style={{
-										fontFamily:
-											"var(--font-barlow-condensed)",
-										fontSize: "1rem",
-										letterSpacing: "7%",
-									}}>
+								<span className="font-barlow">
 									{requiredQuantity}
 								</span>
 							</span>
 							{itemQuantity < requiredQuantity && (
-								<span
-									style={{
-										fontFamily:
-											"var(--font-barlow-condensed)",
-										fontSize: "1rem",
-										color: "#ff486d",
-										fontStyle: "italic",
-										letterSpacing: "7%",
-										paintOrder: "stroke fill",
-										WebkitTextStroke: "2px black",
-									}}>
-									{" ▼ "}
+								<span className="font-barlow tooltip-deficit">
+									{" \u25bc "}
 									{requiredQuantity - itemQuantity}
 								</span>
 							)}
@@ -215,7 +197,7 @@ export function MaterialItemBox({
 												height={16}
 												alt={`${material.name} Source`}
 											/>
-											{`${item.name} ${amount > 1 ? `×${amount}` : ""}`}
+											{`${item.name} ${amount > 1 ? `\u00d7${amount}` : ""}`}
 										</div>
 									)
 								})}
@@ -227,7 +209,7 @@ export function MaterialItemBox({
 						</div>
 					</>
 				)}
-				<hr style={{ marginBlock: "0.5rem" }} />
+				<hr className="tooltip-hr" />
 				<div className="tooltip-source-list">
 					Sources:
 					{material.sources.map((source) => (
@@ -236,7 +218,7 @@ export function MaterialItemBox({
 						</div>
 					))}
 				</div>
-				<hr style={{ marginBlock: "0.5rem" }} />
+				<hr className="tooltip-hr" />
 			</Tooltip>
 
 			<QuantityInput

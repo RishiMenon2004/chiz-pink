@@ -201,6 +201,13 @@ span.amount {
 
 	&.addSub {
 		background-image: url("/button_icons/add_sub.png");
+		pointer-events: none;
+	}
+
+	&.countBtnHidden {
+		opacity: 0;
+		user-select: none;
+		pointer-events: none;
 	}
 }
 

@@ -1,6 +1,5 @@
 "use client"
 
-import Image from "next/image"
 import {
 	ChangeEvent,
 	FocusEvent,
@@ -154,7 +153,6 @@ export function MaterialEditorBox({ material }: { material: Material }) {
 			<span className={`inset-control ${styles.amount}`}>
 				<span
 					className={`${styles.countBtn} ${styles.addSub}`}
-					style={{ pointerEvents: "none" }}
 				/>
 				<input
 					tabIndex={0}
@@ -167,12 +165,7 @@ export function MaterialEditorBox({ material }: { material: Material }) {
 					onKeyDown={handleKeyDown}
 				/>
 				<span
-					className={`${styles.countBtn}`}
-					style={{
-						opacity: 0,
-						userSelect: "none",
-						pointerEvents: "none",
-					}}
+					className={`${styles.countBtn} ${styles.countBtnHidden}`}
 				/>
 			</span>
 		</div>

@@ -23,8 +23,13 @@ export function PlannerMaterialBox({
 	material: Material
 	requiredAmount: number
 }) {
-	const { Tooltip, showTooltip, hideTooltip, longPressHandlers, consumeLongPress } =
-		useTooltip()
+	const {
+		Tooltip,
+		showTooltip,
+		hideTooltip,
+		longPressHandlers,
+		consumeLongPress,
+	} = useTooltip()
 
 	const linkedMaterials = useMemo(
 		() => getLinkedMaterials(material),
@@ -107,69 +112,52 @@ export function PlannerMaterialBox({
 
 			<Tooltip offset={{ x: 36, y: 0 }} subText="Click to Edit">
 				<div>{material.name}</div>
-				<div
-					style={{
-						fontSize: "0.8rem",
-						opacity: 0.75,
-						fontWeight: 600,
-						marginBlock: "0.25rem",
-						marginLeft: "0.5rem",
-					}}>
+				<div className="tooltip-details">
 					{"Total Needed: "}
-					<span
-						style={{
-							fontFamily: "var(--font-barlow-condensed)",
-						}}>
+					<span className="font-barlow">
 						{`${isExpMaterial ? "~" : ""}${requiredAmount.toLocaleString("en-us")}`}
 					</span>
 					<br />
 					{"Owned: "}
-					<span style={{ fontFamily: "var(--font-barlow-condensed)" }}>
+					<span className="font-barlow">
 						{ownedAmount.toLocaleString("en-us")}
 					</span>
 					{" | Available: "}
-					<span style={{ fontFamily: "var(--font-barlow-condensed)" }}>
+					<span className="font-barlow">
 						{(availableAmount + craftedAmount).toLocaleString(
 							"en-us"
 						)}
 					</span>
 					{usingCrafted && (
-						<span style={{ fontStyle: "italic" }}>
+						<em>
 							{" ("}
-							<span
-								style={{
-									fontFamily: "var(--font-barlow-condensed)",
-								}}>
-								+{craftedAmount}
-							</span>
+							<span className="font-barlow">+{craftedAmount}</span>
 							{material.materialType ===
 								EnumMaterialType.WeaponExp ||
 							material.materialType ===
 								EnumMaterialType.CharacterExp
 								? " from lower EXP substitutes)"
 								: " from crafting)"}
-						</span>
+						</em>
 					)}
 					{craftedFrom.length > 0 && (
-						<div style={{ marginTop: "0.25rem" }}>
+						<div className="tooltip-using-header">
 							<div>{"Using:"}</div>
-							<div
-								style={{
-									fontStyle: "italic",
-									paddingLeft: "2ch",
-								}}>
+							<div className="tooltip-using-list">
 								{craftedFrom.map(({ id, amount }) => {
 									const craftingMaterial = findMaterial(id)
-									const divisor = isExpMaterial ? (15 * material.rarity - 16 * craftingMaterial.rarity - 8) : 3 ** (material.rarity - craftingMaterial.rarity)
+									const divisor = isExpMaterial
+										? 15 * material.rarity -
+											16 * craftingMaterial.rarity -
+											8
+										: 3 **
+											(material.rarity -
+												craftingMaterial.rarity)
 									return (
 										<div key={id}>
 											{`${craftingMaterial.name}: `}
-											<span
-												style={{
-													fontFamily:
-														"var(--font-barlow-condensed)",
-												}}>
-												{`${amount.toLocaleString("en-us")} → + ${amount / divisor}`}
+											<span className="font-barlow">
+												{`${amount.toLocaleString("en-us")} \u2192 + ${amount / divisor}`}
 											</span>
 										</div>
 									)
@@ -178,7 +166,7 @@ export function PlannerMaterialBox({
 						</div>
 					)}
 				</div>
-				<hr style={{ marginBlock: "0.5rem" }} />
+				<hr className="tooltip-hr" />
 				<div className="tooltip-source-list">
 					Sources:
 					{material.sources.map((source) => (
@@ -187,7 +175,7 @@ export function PlannerMaterialBox({
 						</div>
 					))}
 				</div>
-				<hr style={{ marginBlock: "0.5rem" }} />
+				<hr className="tooltip-hr" />
 			</Tooltip>
 		</div>
 	)
