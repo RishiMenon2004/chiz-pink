@@ -396,6 +396,14 @@ button {
 	}
 }
 
+.modal-dismiss-hint {
+	position: fixed;
+	bottom: 5%;
+	color: white;
+	opacity: 0.5;
+	font-weight: 700;
+}
+
 .tooltip {
 	position: fixed;
 	top: 0;
@@ -537,6 +545,40 @@ button {
 		text-box-edge: cap alphabetic;
 		text-box-trim: trim-both;
 	}
+}
+
+.tooltip-details {
+	font-size: 0.8rem;
+	opacity: 0.75;
+	font-weight: 600;
+	margin-block: 0.25rem;
+	margin-left: 0.5rem;
+}
+
+.font-barlow {
+	font-family: var(--font-barlow-condensed);
+}
+
+.tooltip-deficit {
+	font-size: 1rem;
+	color: #ff486d;
+	font-style: italic;
+	letter-spacing: 7%;
+	paint-order: stroke fill;
+	-webkit-text-stroke: 2px black;
+}
+
+.tooltip-hr {
+	margin-block: 0.5rem;
+}
+
+.tooltip-using-header {
+	margin-top: 0.25rem;
+}
+
+.tooltip-using-list {
+	font-style: italic;
+	padding-left: 2ch;
 }
 
 .common {

@@ -75,14 +75,7 @@ export function ModalContainer({ onClickOut, children }: ModalContainerType) {
 			{children}
 
 			{onClickOut && (
-				<p
-					style={{
-						position: "fixed",
-						bottom: "5%",
-						color: "white",
-						opacity: "0.5",
-						fontWeight: "700",
-					}}>
+				<p className="modal-dismiss-hint">
 					Click the empty space to exit
 				</p>
 			)}
