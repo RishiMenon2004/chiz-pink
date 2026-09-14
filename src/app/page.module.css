@@ -41,6 +41,19 @@
 	}
 }
 
+.errorSection {
+	gap: 1rem;
+}
+
+.errorTitle {
+	color: var(--foreground);
+}
+
+.errorButton {
+	align-self: start;
+	box-shadow: var(--shadow-button);
+}
+
 .sectionTitle {
 	color: var(--interactive-bg);
 	font-size: 1.5rem;

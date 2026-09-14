@@ -1,0 +1,23 @@
+.offlineMain {
+	display: grid;
+	place-items: center;
+}
+
+.offlineCard {
+	display: grid;
+	align-items: center;
+	justify-items: center;
+	gap: 0.5rem;
+	color: white;
+	text-align: center;
+	padding: 2rem;
+}
+
+.offlineTitle {
+	font-size: 1.5rem;
+	font-weight: 700;
+}
+
+.offlineDescription {
+	color: var(--white);
+}

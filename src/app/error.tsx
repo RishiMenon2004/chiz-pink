@@ -11,25 +11,15 @@ export default function Error({
 }) {
 	return (
 		<div className={`page ${styles.page}`}>
-			<div
-				className={styles.section}
-				style={{
-					gap: "1rem",
-				}}>
+			<div className={`${styles.section} ${styles.errorSection}`}>
 				<div className={styles.sectionTitleRow}>
-					<div
-						className={styles.sectionTitle}
-						style={{ color: "var(--foreground)" }}>
+					<div className={`${styles.sectionTitle} ${styles.errorTitle}`}>
 						Something has gone wrong!
 					</div>
 				</div>
 				<code className="inset-control">{error.message}</code>
 				<button
-					style={{
-						alignSelf: "start",
-						boxShadow: "var(--shadow-button)",
-					}}
-					className="pill-button"
+					className={`pill-button ${styles.errorButton}`}
 					onClick={() => retry()}>
 					TRY AGAIN
 				</button>

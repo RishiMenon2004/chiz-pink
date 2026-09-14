@@ -26,6 +26,10 @@
 	opacity: 0.7;
 }
 
+.lead {
+	font-size: 1.25rem;
+}
+
 .section {
 	display: flex;
 	flex-direction: column;
