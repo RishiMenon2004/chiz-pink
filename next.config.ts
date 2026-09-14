@@ -7,6 +7,10 @@ const nextConfig: NextConfig = {
     qualities: [50, 75, 100]
   },
   devIndicators: false,
+  outputFileTracingIncludes: {
+    "/arcs/[id]/opengraph-image": ["./public/fonts/**/*"],
+    "/characters/[id]/opengraph-image": ["./public/fonts/**/*"],
+  },
   async headers() {
     return [
       {
