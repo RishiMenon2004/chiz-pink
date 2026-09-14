@@ -45,3 +45,4 @@ certificates
 storage.json-shm
 storage.json-wal
 storage.json
+public/fonts/fonts.conf
