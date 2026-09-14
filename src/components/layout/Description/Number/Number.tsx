@@ -1,15 +1,10 @@
 import { ReactNode } from "react"
 
+import styles from "../description.module.css"
+
 export function DescriptionNumber({ children }: { children: ReactNode }) {
 	return (
-		<span
-			style={{
-				color: "var(--pink)",
-				fontFamily: "var(--font-barlow-condensed)",
-				fontWeight: 700,
-				letterSpacing: "5%",
-				marginLeft: "0.25ch",
-			}}>
+		<span className={styles.number}>
 			{children}
 		</span>
 	)

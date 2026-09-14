@@ -1,15 +1,10 @@
 import { ReactNode } from "react"
 
+import styles from "../description.module.css"
+
 export function DescriptionSmallHeading({ children }: { children: ReactNode }) {
 	return (
-		<span
-			style={{
-				color: "var(--darker-pink)",
-				fontFamily: "var(--font-syne)",
-				fontWeight: 650,
-				letterSpacing: "2.5%",
-				marginRight: "0.25ch",
-			}}>
+		<span className={styles.smallHeading}>
 			{children}
 		</span>
 	)

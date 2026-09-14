@@ -9,6 +9,8 @@ import {
 	DescriptionSmallHeading,
 } from "@/components/layout/Description"
 
+import styles from "@/components/layout/Description/description.module.css"
+
 const ATTRIBUTE_REGEX = /([a-z]+)=(?:"([^"]*)"|'([^']*)')/g
 const OPEN_TAG_REGEX = /^<([a-z]+)((?:\s+[a-z]+=(?:"[^"]*"|'[^']*'))*)>/
 
@@ -68,16 +70,12 @@ export function parseDescription(
 						return (
 							<span
 								data-taller-line={true}
-								style={{
-									fontSize: "0.75em",
-									fontWeight: 750,
-									backgroundColor: `${tagAttributes.color ?? "var(--pink)"}`,
-									padding: "0.25em 0.75em",
-									borderRadius: "100vh",
-									marginInlineEnd: "0.25rem",
-									paintOrder: "stroke fill",
-									WebkitTextStroke: "3px black",
-								}}>
+								className={styles.tag}
+								style={
+									tagAttributes.color
+										? { backgroundColor: tagAttributes.color }
+										: undefined
+								}>
 								{children}
 							</span>
 						)
@@ -85,16 +83,7 @@ export function parseDescription(
 						return (
 							<span
 								data-taller-line={true}
-								style={{
-									fontSize: "0.75em",
-									fontWeight: 750,
-									backgroundColor: "#50f1ff",
-									padding: "0.25em 0.75em",
-									borderRadius: "100vh",
-									marginInlineEnd: "0.25rem",
-									paintOrder: "stroke fill",
-									WebkitTextStroke: "3px black",
-								}}>
+								className={styles.nteTag}>
 								{children}
 							</span>
 						)
@@ -102,16 +91,12 @@ export function parseDescription(
 						return (
 							<span
 								data-taller-line={true}
-								style={{
-									fontSize: "0.9em",
-									backgroundColor: `${tagAttributes.color ?? "var(--pink)"}`,
-									padding: "0 0.5em",
-									borderRadius: "100vh",
-									marginInline: "0.25rem",
-									whiteSpace: "nowrap",
-									paintOrder: "stroke fill",
-									WebkitTextStroke: "2px black",
-								}}>
+								className={styles.iTag}
+								style={
+									tagAttributes.color
+										? { backgroundColor: tagAttributes.color }
+										: undefined
+								}>
 								{children}
 							</span>
 						)

@@ -1,0 +1,50 @@
+.tag {
+	font-size: 0.75em;
+	font-weight: 750;
+	background-color: var(--pink);
+	padding: 0.25em 0.75em;
+	border-radius: 100vh;
+	margin-inline-end: 0.25rem;
+	paint-order: stroke fill;
+	-webkit-text-stroke: 3px black;
+}
+
+.ntetag,
+.nteTag {
+	font-size: 0.75em;
+	font-weight: 750;
+	background-color: #50f1ff;
+	padding: 0.25em 0.75em;
+	border-radius: 100vh;
+	margin-inline-end: 0.25rem;
+	paint-order: stroke fill;
+	-webkit-text-stroke: 3px black;
+}
+
+.itag,
+.iTag {
+	font-size: 0.9em;
+	background-color: var(--pink);
+	padding: 0 0.5em;
+	border-radius: 100vh;
+	margin-inline: 0.25rem;
+	white-space: nowrap;
+	paint-order: stroke fill;
+	-webkit-text-stroke: 2px black;
+}
+
+.number {
+	color: var(--pink);
+	font-family: var(--font-barlow-condensed);
+	font-weight: 700;
+	letter-spacing: 5%;
+	margin-left: 0.25ch;
+}
+
+.smallHeading {
+	color: var(--darker-pink);
+	font-family: var(--font-syne);
+	font-weight: 650;
+	letter-spacing: 2.5%;
+	margin-right: 0.25ch;
+}
