@@ -1,4 +1,4 @@
-const CACHE_VERSION = "v6"
+const CACHE_VERSION = "v7"
 const SHELL_CACHE = `chiz-pink-shell-${CACHE_VERSION}`
 const RUNTIME_CACHE = `chiz-pink-runtime-${CACHE_VERSION}`
 const CURRENT_CACHES = [SHELL_CACHE, RUNTIME_CACHE]
@@ -10,10 +10,13 @@ const OFFLINE_URL = "/offline"
 const APP_SHELL_URLS = [
 	"/",
 	"/checklist",
-	"/characters",
-	"/arcs",
+	"/planner",
+	"/planner/characters",
+	"/planner/arcs",
+	"/pulls",
 	"/inventory",
 	"/settings",
+	"/privacy",
 	OFFLINE_URL,
 	"/app_icon.png",
 	"/favicon.png",
@@ -263,6 +266,27 @@ async function staleWhileRevalidate(request, cacheName) {
 	return cached || networkFetch
 }
 
+// Network-first with cache fallback: for React Server Component (RSC) payloads
+// and Next.js data requests, allowing offline client-side transitions between visited pages.
+async function networkFirstRSC(request) {
+	const cache = await caches.open(RUNTIME_CACHE)
+
+	try {
+		const response = await fetch(request)
+		if (response.ok) {
+			cache.put(request, response.clone())
+		}
+		return response
+	} catch {
+		const cached =
+			(await cache.match(request)) ||
+			(await cache.match(request, { ignoreSearch: true }))
+		if (cached) return cached
+
+		return new Response(null, { status: 504, statusText: "Offline" })
+	}
+}
+
 // Network-first with offline fallback: for page navigations, so users
 // always get fresh content when online, and a cached/offline page when not.
 async function networkFirstNavigation(request) {
@@ -309,6 +333,7 @@ self.addEventListener("fetch", (event) => {
 		request.headers.get("RSC") === "1" ||
 		url.pathname.startsWith("/_next/data/")
 	) {
+		event.respondWith(networkFirstRSC(request))
 		return
 	}
 
