@@ -104,3 +104,12 @@ export type PullsRecord = {
 	limitedBanner: Record<string, ScarboroughFairPull>
 	permanentBanner: Record<string, ScarboroughFairPull>
 }
+
+export type BannerType = keyof PullsRecord
+
+export type Pull = MiracleBoxPull | ScarboroughFairPull
+
+// The `pulls` IndexedDB store keeps one row per pull instead of the nested
+// per-banner blobs in PullsRecord, so each row carries its banner alongside
+// the pull for the bannerType/timestamp index.
+export type StoredPull = Pull & { bannerType: BannerType }
