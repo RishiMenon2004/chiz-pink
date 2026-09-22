@@ -188,7 +188,11 @@ export const checklistActions = {
 			)
 		}
 
-		store.write(updated)
+		// Deterministically re-derivable from the elapsed reset boundary, not a
+		// real user edit - shouldn't make local data look newer than an
+		// otherwise-identical Drive backup (see useSettingsStore.tsx's
+		// updateSettings options param doc comment).
+		store.write(updated, { silent: true })
 	},
 }
 

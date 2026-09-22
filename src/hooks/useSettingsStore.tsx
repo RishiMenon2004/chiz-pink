@@ -70,7 +70,11 @@ export const settingsActions = {
 		key: K,
 		updater:
 			| Partial<SettingsRecord[K]>
-			| ((current: SettingsRecord[K]) => Partial<SettingsRecord[K]>)
+			| ((current: SettingsRecord[K]) => Partial<SettingsRecord[K]>),
+		// See updateSettings' options param - passed through as-is so an
+		// auto-applied reset/refill (not a real user edit) can opt out of
+		// bumping lastUpdated.
+		options?: { silent?: boolean }
 	) {
 		this.updateSettings((current) => ({
 			...current,
@@ -80,7 +84,7 @@ export const settingsActions = {
 					? updater(current[key])
 					: updater),
 			},
-		}))
+		}), options)
 	},
 }
 
@@ -140,10 +144,18 @@ export function SettingsProvider({ children }: { children: ReactNode }) {
 			const { previousReset } = getWeeklyResetBoundaries(server, Date.now())
 
 			if (previousReset > (lastStaminaReset ?? 0)) {
-				actions.setConfig("userdata", {
-					"current-stamina": maxStamina,
-					"last-stamina-reset": previousReset,
-				})
+				// Deterministically re-derivable from the elapsed reset boundary,
+				// not a real user edit - shouldn't make local data look newer than
+				// an otherwise-identical Drive backup (see updateSettings' options
+				// param doc comment).
+				actions.setConfig(
+					"userdata",
+					{
+						"current-stamina": maxStamina,
+						"last-stamina-reset": previousReset,
+					},
+					{ silent: true }
+				)
 			}
 		}
 
@@ -215,10 +227,17 @@ export function SettingsProvider({ children }: { children: ReactNode }) {
 
 			if (!refilled) return
 
-			actions.setConfig("userdata", {
-				"current-pixels": refilled.current,
-				"pixels-last-edited": refilled.lastEdited,
-			})
+			// Deterministically re-derivable from elapsed time (see
+			// getRefilledPixelsState), not a real user edit - see the
+			// stamina-reset silent write above for why this matters.
+			actions.setConfig(
+				"userdata",
+				{
+					"current-pixels": refilled.current,
+					"pixels-last-edited": refilled.lastEdited,
+				},
+				{ silent: true }
+			)
 		}
 
 		checkPixelRefill()
