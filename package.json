@@ -3,10 +3,10 @@
 	"version": "0.1.0",
 	"private": true,
 	"scripts": {
-		"dev": "npx cross-env NODE_OPTIONS=\"--localstorage-file=./storage.json\" next dev",
-		"convex-dev": "npx cross-env NODE_OPTIONS=\"--localstorage-file=./storage.json\" convex dev",
+		"dev": "next dev",
+		"convex-dev": "convex dev",
 		"build": "next build",
-		"start": "npx cross-env NODE_OPTIONS=\"--localstorage-file=./storage.json\" next start",
+		"start": "next start",
 		"lint": "eslint"
 	},
 	"dependencies": {
