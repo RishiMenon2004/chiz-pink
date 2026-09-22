@@ -63,8 +63,17 @@ export type PlannerRecord = {
 	characters: Record<string, CharacterRecord>
 }
 
-export type HybridPlannerRecord = {
-	order: string[]
+// Three independent orderings, one per planner view, stored together under
+// a single `plannerOrder` keyval entry. They're independent arrays (not
+// derived from one another) because the views can diverge item-by-item -
+// hybrid interleaves both types, so filtering it down to one type after a
+// hybrid-mode reorder doesn't losslessly recover what a split-mode drag
+// would have produced, and vice versa. See usePlannerItems.tsx for how an
+// edit to one ripples into the others.
+export type PlannerOrderRecord = {
+	hybrid: string[]
+	characters: string[]
+	arcs: string[]
 }
 
 export type PlannerItemType = "character" | "weapon"

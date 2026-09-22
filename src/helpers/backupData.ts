@@ -6,7 +6,7 @@ import {
 	replacePlanner,
 	clearPlanner,
 } from "@/hooks/usePlannerStore"
-import { SERVER_FALLBACK as HYBRID_PLANNER_FALLBACK } from "@/hooks/useHybridPlannerStore"
+import { SERVER_FALLBACK as PLANNER_ORDER_FALLBACK } from "@/hooks/usePlannerOrderStore"
 import {
 	SERVER_FALLBACK as INVENTORY_FALLBACK,
 	getCachedInventory,
@@ -50,9 +50,9 @@ export function buildBackupPayload(): BackupData {
 		checklist: memoryStorage.getItem("checklist", CHECKLIST_FALLBACK),
 		inventory: getCachedInventory(),
 		planner: getCachedPlanner(),
-		hybridPlanner: memoryStorage.getItem(
-			"hybridPlanner",
-			HYBRID_PLANNER_FALLBACK
+		plannerOrder: memoryStorage.getItem(
+			"plannerOrder",
+			PLANNER_ORDER_FALLBACK
 		),
 		gachaPulls: getCachedPulls(),
 		settings: memoryStorage.getItem("settings", SETTINGS_FALLBACK),
@@ -124,7 +124,7 @@ export function backupImport(json: string) {
 
 const ERASABLE_KEYS = [
 	"checklist",
-	"hybridPlanner",
+	"plannerOrder",
 	"settings",
 	"lastUpdated",
 	"lastSeen",
@@ -143,7 +143,7 @@ export function backupSetImport({
 	lastUpdated,
 	checklist,
 	planner,
-	hybridPlanner,
+	plannerOrder,
 	gachaPulls,
 	inventory,
 	settings,
@@ -152,8 +152,8 @@ export function backupSetImport({
 	replaceInventory(inventory ?? INVENTORY_FALLBACK)
 	replacePlanner(planner ?? PLANNER_FALLBACK)
 	memoryStorage.setItem(
-		"hybridPlanner",
-		hybridPlanner ?? HYBRID_PLANNER_FALLBACK
+		"plannerOrder",
+		plannerOrder ?? PLANNER_ORDER_FALLBACK
 	)
 	replaceAllPulls(gachaPulls ?? GACHA_PULL_FALLBACK)
 	memoryStorage.setItem("lastUpdated", lastUpdated)

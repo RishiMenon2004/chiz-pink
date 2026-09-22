@@ -5,7 +5,7 @@ import { useSyncExternalStore } from "react"
 import * as memoryStorage from "./memoryStorage"
 
 // Shared read/write/subscribe plumbing for the simple keyval-backed
-// *Store hooks (inventory, planner, hybridPlanner, settings). Every one of
+// *Store hooks (inventory, planner, plannerOrder, settings). Every one of
 // them reduces to "read memoryStorage.getItem(key, fallback), write back
 // through memoryStorage.setItem, expose it via useSyncExternalStore" - that
 // only varied store-to-store back when each one hand-parsed its own

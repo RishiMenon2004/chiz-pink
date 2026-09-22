@@ -3,7 +3,7 @@
 import { useSyncExternalStore } from "react"
 
 // Shared flag consulted by the *Store hooks (settings, planner, inventory,
-// checklist, hybridPlanner, gachaPulls) before they write. Combines two
+// checklist, plannerOrder, gachaPulls) before they write. Combines two
 // independent "don't trust local state yet" windows into one gate, so every
 // store's existing `if (isInitialSyncPending()) return` check covers both
 // without each call site needing to know which one applies:

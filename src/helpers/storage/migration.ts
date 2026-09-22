@@ -1,11 +1,14 @@
 import type { BannerType, PullsRecord } from "@/types/pulls"
 import type { Inventory, StoredInventoryItem } from "@/types/inventory"
-import type { PlannerRecord, StoredPlannerItem } from "@/types/planner"
+import type {
+	PlannerOrderRecord,
+	PlannerRecord,
+	StoredPlannerItem,
+} from "@/types/planner"
 
 import { SERVER_FALLBACK as CHECKLIST_FALLBACK } from "@/hooks/useChecklistStore"
 import { SERVER_FALLBACK as INVENTORY_FALLBACK } from "@/hooks/useInventoryStore"
 import { SERVER_FALLBACK as PLANNER_FALLBACK } from "@/hooks/usePlannerStore"
-import { SERVER_FALLBACK as HYBRID_PLANNER_FALLBACK } from "@/hooks/useHybridPlannerStore"
 import { SERVER_FALLBACK as SETTINGS_FALLBACK } from "@/hooks/useSettingsStore"
 import { SERVER_FALLBACK as GACHA_PULL_FALLBACK } from "@/hooks/useGachaStore"
 
@@ -31,15 +34,16 @@ const BANNER_TYPES: BannerType[] = [
 	"permanentBanner",
 ]
 
-// gachaPulls, inventory, and planner are deliberately excluded here - each
-// is unpacked into its own normalized IndexedDB store instead of copied as
-// a single keyval blob (§4-style rationale; see migratePulls(),
-// migrateInventory(), migratePlanner() below).
-const BLOB_KEYS = ["checklist", "hybridPlanner", "settings"] as const
+// gachaPulls, inventory, planner, and hybridPlanner are deliberately
+// excluded here - each is unpacked into its own normalized IndexedDB store
+// (or, for hybridPlanner, reshaped into the combined `plannerOrder` key)
+// instead of copied as a single keyval blob (§4-style rationale; see
+// migratePulls(), migrateInventory(), migratePlanner(),
+// migrateHybridPlanner() below).
+const BLOB_KEYS = ["checklist", "settings"] as const
 
 const BLOB_FALLBACKS = {
 	checklist: CHECKLIST_FALLBACK,
-	hybridPlanner: HYBRID_PLANNER_FALLBACK,
 	settings: SETTINGS_FALLBACK,
 } satisfies Record<(typeof BLOB_KEYS)[number], unknown>
 
@@ -51,6 +55,7 @@ const ALL_LEGACY_KEYS = [
 	...BLOB_KEYS,
 	"inventory",
 	"planner",
+	"hybridPlanner",
 	"gachaPulls",
 	"hasVisited",
 	...PRIMITIVE_KEYS,
@@ -64,6 +69,7 @@ const LEGACY_BACKUP_KEYS = [
 	...BLOB_KEYS,
 	"inventory",
 	"planner",
+	"hybridPlanner",
 	"gachaPulls",
 	"lastUpdated",
 	"lastSeen",
@@ -124,6 +130,27 @@ function migratePlanner(): Promise<void> {
 	return idbStorage.writePlannerChanges(rows, [])
 }
 
+// Legacy shape was just { order: string[] } - reshaped into the combined
+// PlannerOrderRecord's `hybrid` field, with `characters`/`arcs` starting
+// empty (split-mode order didn't exist as a persisted concept pre-migration;
+// see usePlannerOrderStore.tsx).
+function migrateHybridPlanner(): Promise<void> {
+	const raw = window.localStorage.getItem("hybridPlanner")
+	if (raw === null) return Promise.resolve()
+
+	const legacy = safeParse<{ order: string[] }>(
+		raw,
+		{ order: [] },
+		"hybridPlanner"
+	)
+
+	return idbStorage.set<PlannerOrderRecord>("plannerOrder", {
+		hybrid: legacy.order,
+		characters: [],
+		arcs: [],
+	})
+}
+
 function migratePulls(): Promise<void> {
 	const raw = window.localStorage.getItem("gachaPulls")
 	if (raw === null) return Promise.resolve()
@@ -176,6 +203,7 @@ export async function migrateFromLocalStorage(): Promise<void> {
 			migrateBlobs(),
 			migrateInventory(),
 			migratePlanner(),
+			migrateHybridPlanner(),
 			migratePulls(),
 			migratePrimitives(),
 		])

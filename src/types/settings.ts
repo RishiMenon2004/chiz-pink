@@ -1,6 +1,6 @@
 import { ChecklistRecord } from "./checklist"
 import { Inventory } from "./inventory"
-import { HybridPlannerRecord, PlannerRecord } from "./planner"
+import { PlannerOrderRecord, PlannerRecord } from "./planner"
 import { PullsRecord } from "./pulls"
 
 export type SettingsRecord = {
@@ -29,7 +29,7 @@ export type BackupData = {
 	lastUpdated: number
 	inventory: Inventory
 	planner: PlannerRecord
-	hybridPlanner: HybridPlannerRecord
+	plannerOrder: PlannerOrderRecord
 	gachaPulls: PullsRecord
 	settings: SettingsRecord
 }
