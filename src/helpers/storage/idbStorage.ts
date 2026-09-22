@@ -187,12 +187,6 @@ export function getPullsByBanner(
 	)
 }
 
-export function getAllPulls(): Promise<StoredPull[]> {
-	return runRequest<StoredPull[]>(PULLS_STORE, "readonly", (store) =>
-		store.getAll()
-	)
-}
-
 // Atomically wipes the pulls store and repopulates it from a full
 // PullsRecord-shaped import (backup restore / cloud pull) - a plain put()
 // per pull would leave behind rows that no longer exist in the imported

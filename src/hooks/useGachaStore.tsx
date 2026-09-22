@@ -51,12 +51,36 @@ function cloneCache(): PullsRecord {
 	}
 }
 
+// Groups incoming pulls per banner and puts them BEFORE the existing cache
+// entries (object spread order = display order - see RenderPulls.tsx's
+// Object.values() and calculatePity.ts's newest-first iteration), not
+// after. A plain `next[bannerType][pull.uid] = pull` assignment would
+// instead append every new key to the end, since bracket-assigning a new
+// key always adds it last regardless of what it logically represents -
+// putting freshly-imported pulls at the bottom of the list instead of the
+// top. `pulls` should already be newest-first (hydratePullsCache passes
+// idbStorage.getPullsByBanner()'s output; addPulls passes a freshly
+// imported batch, itself expected newest-first) so each banner's grouped
+// object preserves that order before merging.
 function applyPulls(pulls: StoredPull[]) {
 	if (pulls.length === 0) return
 
-	const next = cloneCache()
+	const grouped: Record<BannerType, Record<string, Pull>> = {
+		arcsBanner: {},
+		limitedBanner: {},
+		permanentBanner: {},
+	}
 	for (const { bannerType, ...pull } of pulls) {
-		;(next[bannerType] as Record<string, Pull>)[pull.uid] = pull
+		grouped[bannerType][pull.uid] = pull
+	}
+
+	const next = cloneCache()
+	for (const bannerType of BANNER_TYPES) {
+		if (Object.keys(grouped[bannerType]).length === 0) continue
+		;(next[bannerType] as Record<string, Pull>) = {
+			...grouped[bannerType],
+			...next[bannerType],
+		}
 	}
 	cachedPulls = next
 }
@@ -91,8 +115,14 @@ export async function hydratePullsCache(): Promise<void> {
 	}
 
 	try {
-		const rows = await idbStorage.getAllPulls()
-		applyPulls(rows)
+		// getAllPulls() would return rows sorted by uid (the store's primary
+		// key) - an opaque id with no relation to pull order. Reading each
+		// banner through its bannerType_timestamp index instead gives rows
+		// already newest-first, matching what applyPulls() expects.
+		const rowsByBanner = await Promise.all(
+			BANNER_TYPES.map((bannerType) => idbStorage.getPullsByBanner(bannerType))
+		)
+		applyPulls(rowsByBanner.flat())
 		memoryStorage.notifyListeners()
 	} catch (error) {
 		console.error("IndexedDB pulls hydration failed", error)
