@@ -60,7 +60,7 @@ export function buildBackupPayload(): BackupData {
 }
 
 export function backupExport() {
-	const exportJson = JSON.stringify(buildBackupPayload())
+	const exportJson = JSON.stringify(buildBackupPayload(), null, 2)
 
 	const blob = new Blob([exportJson], { type: "application/json" })
 	const url = window.URL.createObjectURL(blob)
