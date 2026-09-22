@@ -42,7 +42,7 @@ export function CloudBackupSection({
 							{syncStatusLabel[cloudSync.status].toUpperCase()}
 						</span>
 						<button
-							className={styles.settingsCloudSyncBtn}
+							className={`pill-button ${styles.settingsCloudSyncBtn}`}
 							disabled={cloudSync.status === "syncing"}
 							onClick={cloudSync.syncNow}
 						/>

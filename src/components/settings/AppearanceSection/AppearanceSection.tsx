@@ -7,7 +7,6 @@ import {
 	Content,
 	ContentColumn,
 	ContentRow,
-	Section,
 	TitleBar,
 } from "../SettingsShared"
 
