@@ -4,34 +4,39 @@ import { useSyncExternalStore } from "react"
 
 import * as memoryStorage from "@/helpers/storage/memoryStorage"
 
-const timeCheckCache: Record<string, boolean> = {}
-
 const key = "lastSeen"
+
+let resolved = false
+let isLastSeenOld = false
 
 const getServerSnapshot = (): boolean => false
 
 export function useLastSeen(time?: number) {
 	const getSnapshot = (): boolean => {
 		if (typeof window === "undefined") return false
+		if (resolved) return isLastSeenOld
 
-		if (key in timeCheckCache) {
-			return timeCheckCache[key]
-		}
+		// Same pre-hydration race as useFirstVisit.tsx: memoryStorage hasn't
+		// loaded "lastSeen" from IndexedDB yet, so treating a missing cache
+		// entry as "never seen" here (and then never re-checking) meant the
+		// update splash reappeared on every reload for every visitor, not
+		// just when there was genuinely a new changelog entry.
+		if (!memoryStorage.isHydrated()) return false
+
+		resolved = true
 
 		const currentTime = time ?? Date.now()
 		const lastSeen = memoryStorage.getItem<number | null>(key, null)
-		const isNewer = !lastSeen || currentTime > lastSeen
+		isLastSeenOld = !lastSeen || currentTime > lastSeen
 
 		memoryStorage.setItem(key, currentTime)
-		timeCheckCache[key] = isNewer
-
-		return isNewer
+		return isLastSeenOld
 	}
 
-	const isLastSeenOld = useSyncExternalStore(
+	const lastSeenOld = useSyncExternalStore(
 		memoryStorage.subscribe,
 		getSnapshot,
 		getServerSnapshot
 	)
-	return isLastSeenOld
+	return lastSeenOld
 }
