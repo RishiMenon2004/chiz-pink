@@ -14,8 +14,11 @@ import {
 	settingsActions,
 	updateInventory,
 } from "@/hooks"
+import { SERVER_FALLBACK as INVENTORY_FALLBACK } from "@/hooks/useInventoryStore"
+import { SERVER_FALLBACK as PLANNER_FALLBACK } from "@/hooks/usePlannerStore"
 
 import { ExternalImportResult } from "@/helpers/importExternal"
+import * as memoryStorage from "@/helpers/storage/memoryStorage"
 
 import {
 	backupImport,
@@ -50,8 +53,8 @@ import {
 import styles from "./settings.module.css"
 
 function hasExistingPlannerData() {
-	const inventory = JSON.parse(localStorage.getItem("inventory") || "{}")
-	const planner = JSON.parse(localStorage.getItem("planner") || "{}")
+	const inventory = memoryStorage.getItem("inventory", INVENTORY_FALLBACK)
+	const planner = memoryStorage.getItem("planner", PLANNER_FALLBACK)
 
 	return (
 		Object.keys(inventory).length > 0 ||

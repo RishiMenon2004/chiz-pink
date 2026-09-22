@@ -4,7 +4,7 @@ import { useSyncExternalStore } from "react"
 import { v4 as uuidv4 } from "uuid"
 
 import { isInitialSyncPending } from "@/helpers/syncGate"
-import { safeParse } from "@/helpers/dataCorruption"
+import * as memoryStorage from "@/helpers/storage/memoryStorage"
 
 import type { Material } from "@/types/item"
 import type {
@@ -26,10 +26,6 @@ import { findCharacter } from "@/data/characters"
 import { findArc } from "@/data/arcs"
 
 import { calculateWeaponCosts, calculateCharacterCosts } from "@/helpers"
-
-let cachedPlanner: PlannerRecord = { arcs: {}, characters: {} }
-
-let lastRawValue: string | null = null
 
 export const SERVER_FALLBACK: PlannerRecord = { arcs: {}, characters: {} }
 
@@ -107,9 +103,7 @@ function getCharRequiredMaterials(
 
 function readPlanner(): PlannerRecord {
 	if (typeof window === "undefined") return SERVER_FALLBACK
-
-	const value = localStorage.getItem("planner")
-	return safeParse(value, SERVER_FALLBACK, "planner")
+	return memoryStorage.getItem("planner", SERVER_FALLBACK)
 }
 
 export const plannerActions = {
@@ -126,13 +120,8 @@ export const plannerActions = {
 			typeof updater === "function" ? updater(plannerData) : updater
 		const updatedPlanner: PlannerRecord = { ...plannerData, ...data }
 
-		try {
-			localStorage.setItem("planner", JSON.stringify(updatedPlanner))
-			localStorage.setItem("lastUpdated", JSON.stringify(Date.now()))
-			window.dispatchEvent(new Event("local-storage-update"))
-		} catch (err) {
-			console.error("Local Storage Error:", err)
-		}
+		memoryStorage.setItem("planner", updatedPlanner)
+		memoryStorage.setItem("lastUpdated", Date.now())
 	},
 
 	addCharacter(
@@ -335,27 +324,9 @@ export function getAggregatedMaterial(
 	return aggregatedMaterial
 }
 
-const subscribe = (callback: () => void) => {
-	window.addEventListener("storage", callback)
-	window.addEventListener("local-storage-update", callback)
-
-	return () => {
-		window.removeEventListener("storage", callback)
-		window.removeEventListener("local-storage-update", callback)
-	}
-}
-
 const getSnapshot = () => {
 	if (typeof window === "undefined") return SERVER_FALLBACK
-
-	const rawValue = localStorage.getItem("planner")
-
-	if (rawValue !== lastRawValue) {
-		cachedPlanner = safeParse(rawValue, SERVER_FALLBACK, "planner")
-		lastRawValue = rawValue
-	}
-
-	return cachedPlanner
+	return memoryStorage.getItem("planner", SERVER_FALLBACK)
 }
 
 const getServerSnapshot = () => {
@@ -364,7 +335,7 @@ const getServerSnapshot = () => {
 
 export function usePlannerStore() {
 	const plannerData = useSyncExternalStore<PlannerRecord>(
-		subscribe,
+		memoryStorage.subscribe,
 		getSnapshot,
 		getServerSnapshot
 	)

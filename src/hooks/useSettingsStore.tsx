@@ -2,7 +2,7 @@
 
 import { SettingsConfigContext } from "@/contexts"
 import { isInitialSyncPending, useInitialSyncPending } from "@/helpers/syncGate"
-import { safeParse } from "@/helpers/dataCorruption"
+import * as memoryStorage from "@/helpers/storage/memoryStorage"
 import {
 	getBiWeeklyMondayResetBoundaries,
 	getBiWeeklyWednesdayResetBoundaries,
@@ -15,8 +15,6 @@ import { getRefilledPixelsState } from "@/helpers/staminaReset"
 import { SettingsRecord } from "@/types/settings"
 import { ReactNode, useEffect, useSyncExternalStore } from "react"
 import { checklistActions, useChecklistStore } from "./useChecklistStore"
-
-let lastRawValue: string | null = null
 
 export const SERVER_FALLBACK: SettingsRecord = {
 	appearance: {
@@ -39,15 +37,9 @@ export const SERVER_FALLBACK: SettingsRecord = {
 	},
 }
 
-let cachedSettings: SettingsRecord = {
-	...SERVER_FALLBACK,
-}
-
 export function readSettings() {
 	if (typeof window === "undefined") return SERVER_FALLBACK
-
-	const value = localStorage.getItem("settings")
-	return safeParse(value, SERVER_FALLBACK, "settings")
+	return memoryStorage.getItem("settings", SERVER_FALLBACK)
 }
 
 export const settingsActions = {
@@ -70,14 +62,9 @@ export const settingsActions = {
 			typeof updater === "function" ? updater(settingsData) : updater
 		const updatedSettings = { ...settingsData, ...data }
 
-		try {
-			localStorage.setItem("settings", JSON.stringify(updatedSettings))
-			if (!options?.silent) {
-				localStorage.setItem("lastUpdated", JSON.stringify(Date.now()))
-			}
-			window.dispatchEvent(new Event("local-storage-update"))
-		} catch (err) {
-			console.error("Local Storage Error:", err)
+		memoryStorage.setItem("settings", updatedSettings)
+		if (!options?.silent) {
+			memoryStorage.setItem("lastUpdated", Date.now())
 		}
 	},
 
@@ -99,27 +86,9 @@ export const settingsActions = {
 	},
 }
 
-const subscribe = (callback: () => void) => {
-	window.addEventListener("storage", callback)
-	window.addEventListener("local-storage-update", callback)
-
-	return () => {
-		window.removeEventListener("storage", callback)
-		window.removeEventListener("local-storage-update", callback)
-	}
-}
-
 const getSnapshot = () => {
 	if (typeof window === "undefined") return SERVER_FALLBACK as SettingsRecord
-
-	const rawValue = localStorage.getItem("settings")
-
-	if (rawValue !== lastRawValue) {
-		cachedSettings = safeParse(rawValue, SERVER_FALLBACK, "settings")
-		lastRawValue = rawValue
-	}
-
-	return cachedSettings
+	return memoryStorage.getItem("settings", SERVER_FALLBACK)
 }
 
 const getServerSnapshot = () => {
@@ -128,7 +97,7 @@ const getServerSnapshot = () => {
 
 export function useSettingsStore() {
 	const settings = useSyncExternalStore<SettingsRecord>(
-		subscribe,
+		memoryStorage.subscribe,
 		getSnapshot,
 		getServerSnapshot
 	)

@@ -2,14 +2,11 @@
 
 import { useSyncExternalStore } from "react"
 
+import * as memoryStorage from "@/helpers/storage/memoryStorage"
+
 const visitCache: Record<string, boolean> = {}
 
 const key = "hasVisited"
-
-const subscribe = (callback: () => void) => {
-	window.addEventListener("storage", callback)
-	return () => window.removeEventListener("storage", callback)
-}
 
 const getSnapshot = (): boolean => {
 	if (typeof window === "undefined") return false
@@ -18,10 +15,10 @@ const getSnapshot = (): boolean => {
 		return visitCache[key]
 	}
 
-	const hasVisited = localStorage.getItem(key)
+	const hasVisited = memoryStorage.hasItem(key)
 
 	if (!hasVisited) {
-		localStorage.setItem(key, "true")
+		memoryStorage.setItem(key, true)
 		visitCache[key] = true
 		return true
 	}
@@ -35,13 +32,13 @@ const getServerSnapshot = (): boolean => false
 const setVisited = () => {
 	if (typeof window === "undefined") return
 
-	localStorage.setItem(key, "true")
+	memoryStorage.setItem(key, true)
 	visitCache[key] = true
 }
 
 export function useFirstVisit() {
 	const isFirstVisit = useSyncExternalStore(
-		subscribe,
+		memoryStorage.subscribe,
 		getSnapshot,
 		getServerSnapshot
 	)

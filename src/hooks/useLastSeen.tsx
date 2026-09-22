@@ -2,15 +2,11 @@
 
 import { useSyncExternalStore } from "react"
 
+import * as memoryStorage from "@/helpers/storage/memoryStorage"
+
 const timeCheckCache: Record<string, boolean> = {}
 
 const key = "lastSeen"
-
-const subscribe = (callback: () => void) => {
-	if (typeof window === "undefined") return () => {}
-	window.addEventListener("storage", callback)
-	return () => window.removeEventListener("storage", callback)
-}
 
 const getServerSnapshot = (): boolean => false
 
@@ -23,17 +19,17 @@ export function useLastSeen(time?: number) {
 		}
 
 		const currentTime = time ?? Date.now()
-		const lastSeen = localStorage.getItem(key)
-		const isNewer = !lastSeen || currentTime > Number(lastSeen)
+		const lastSeen = memoryStorage.getItem<number | null>(key, null)
+		const isNewer = !lastSeen || currentTime > lastSeen
 
-		localStorage.setItem(key, currentTime.toString())
+		memoryStorage.setItem(key, currentTime)
 		timeCheckCache[key] = isNewer
 
 		return isNewer
 	}
 
 	const isLastSeenOld = useSyncExternalStore(
-		subscribe,
+		memoryStorage.subscribe,
 		getSnapshot,
 		getServerSnapshot
 	)

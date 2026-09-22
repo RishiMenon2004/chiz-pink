@@ -7,6 +7,11 @@ import {
 	ReactNode,
 } from "react"
 
+import { SERVER_FALLBACK as INVENTORY_FALLBACK } from "@/hooks/useInventoryStore"
+import { SERVER_FALLBACK as PLANNER_FALLBACK } from "@/hooks/usePlannerStore"
+
+import * as memoryStorage from "@/helpers/storage/memoryStorage"
+
 import styles from "@/app/settings/settings.module.css"
 
 /* ------------------------------------------------------------------ */
@@ -247,8 +252,8 @@ export const formatDate = (date: number): string => {
 }
 
 export function hasExistingPlannerData() {
-	const inventory = JSON.parse(localStorage.getItem("inventory") || "{}")
-	const planner = JSON.parse(localStorage.getItem("planner") || "{}")
+	const inventory = memoryStorage.getItem("inventory", INVENTORY_FALLBACK)
+	const planner = memoryStorage.getItem("planner", PLANNER_FALLBACK)
 
 	return (
 		Object.keys(inventory).length > 0 ||

@@ -178,3 +178,36 @@ export function getAllPulls(): Promise<StoredPull[]> {
 		store.getAll()
 	)
 }
+
+// Atomically wipes the pulls store and repopulates it from a full
+// PullsRecord-shaped import (backup restore / cloud pull) - a plain put()
+// per pull would leave behind rows that no longer exist in the imported
+// set, since put() only ever upserts.
+export function replaceAllPulls(
+	pullsByBanner: { bannerType: BannerType; pulls: Pull[] }[]
+): Promise<void> {
+	return openDB().then(
+		(db) =>
+			new Promise<void>((resolve, reject) => {
+				const tx = db.transaction(PULLS_STORE, "readwrite")
+				const store = tx.objectStore(PULLS_STORE)
+
+				store.clear()
+				for (const { bannerType, pulls } of pullsByBanner) {
+					for (const pull of pulls) {
+						const record: StoredPull = { ...pull, bannerType }
+						store.put(record)
+					}
+				}
+
+				tx.oncomplete = () => resolve()
+				tx.onerror = () => reject(tx.error)
+			})
+	)
+}
+
+export function clearAllPulls(): Promise<void> {
+	return runRequest(PULLS_STORE, "readwrite", (store) =>
+		store.clear()
+	).then(() => undefined)
+}

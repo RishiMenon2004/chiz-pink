@@ -1,20 +1,24 @@
 import { BackupData } from "@/types/settings"
-import { safeParse } from "./dataCorruption"
 import { SERVER_FALLBACK as CHECKLIST_FALLBACK } from "@/hooks/useChecklistStore"
 import { SERVER_FALLBACK as PLANNER_FALLBACK } from "@/hooks/usePlannerStore"
 import { SERVER_FALLBACK as HYBRID_PLANNER_FALLBACK } from "@/hooks/useHybridPlannerStore"
 import { SERVER_FALLBACK as INVENTORY_FALLBACK } from "@/hooks/useInventoryStore"
 import { SERVER_FALLBACK as SETTINGS_FALLBACK } from "@/hooks/useSettingsStore"
-import { SERVER_FALLBACK as GACHA_PULL_FALLBACK } from "@/hooks/useGachaStore"
+import {
+	SERVER_FALLBACK as GACHA_PULL_FALLBACK,
+	getCachedPulls,
+	replaceAllPulls,
+	clearAllPulls,
+} from "@/hooks/useGachaStore"
 
-const LAST_SYNCED_KEY = "lastSynced"
+import * as memoryStorage from "./storage/memoryStorage"
 
 // Marks that this device has completed at least one Drive sync exchange
 // (push or pull). Once set, a newer remote timestamp is trusted outright
 // instead of prompting to overwrite. Deliberately not set by manual JSON
 // file import - that's a separate, one-off action from Drive sync.
 export function markSynced() {
-	window.localStorage.setItem(LAST_SYNCED_KEY, String(Date.now()))
+	memoryStorage.setItem("lastSynced", Date.now())
 }
 
 function getFormattedDate(date = new Date()) {
@@ -28,41 +32,20 @@ function getFormattedDate(date = new Date()) {
 	return `${yyyy}_${MM}_${DD}_${hh}_${mm}_${ss}`
 }
 
-export function buildBackupPayload() {
-	const lastUpdated = window.localStorage.getItem("lastUpdated") ?? Date.now()
+export function buildBackupPayload(): BackupData {
+	const lastUpdated = memoryStorage.getItem<number>("lastUpdated", Date.now())
 
 	return {
 		lastUpdated,
-		checklist: safeParse(
-			window.localStorage.getItem("checklist"),
-			CHECKLIST_FALLBACK,
-			"checklist"
+		checklist: memoryStorage.getItem("checklist", CHECKLIST_FALLBACK),
+		inventory: memoryStorage.getItem("inventory", INVENTORY_FALLBACK),
+		planner: memoryStorage.getItem("planner", PLANNER_FALLBACK),
+		hybridPlanner: memoryStorage.getItem(
+			"hybridPlanner",
+			HYBRID_PLANNER_FALLBACK
 		),
-		inventory: safeParse(
-			window.localStorage.getItem("inventory"),
-			INVENTORY_FALLBACK,
-			"inventory"
-		),
-		planner: safeParse(
-			window.localStorage.getItem("planner"),
-			PLANNER_FALLBACK,
-			"planner"
-		),
-		hybridPlanner: safeParse(
-			window.localStorage.getItem("hybridPlanner"),
-			HYBRID_PLANNER_FALLBACK,
-			"hybridPlanner"
-		),
-		gachaPulls: safeParse(
-			window.localStorage.getItem("gachaPulls"),
-			GACHA_PULL_FALLBACK,
-			"gachaPulls"
-		),
-		settings: safeParse(
-			window.localStorage.getItem("settings"),
-			SETTINGS_FALLBACK,
-			"settings"
-		),
+		gachaPulls: getCachedPulls(),
+		settings: memoryStorage.getItem("settings", SETTINGS_FALLBACK),
 	}
 }
 
@@ -97,13 +80,16 @@ export function backupImport(json: string) {
 		}
 	}
 
-	const lastUpdated = Number(window.localStorage.getItem("lastUpdated"))
-	const checklistData = window.localStorage.getItem("checklist")
-	const plannerData = window.localStorage.getItem("planner")
-	const inventoryData = window.localStorage.getItem("inventory")
-	const settingsData = window.localStorage.getItem("settings")
+	const lastUpdated = memoryStorage.getItem<number>("lastUpdated", 0)
+	const hasLocalData =
+		memoryStorage.hasItem("checklist") ||
+		memoryStorage.hasItem("planner") ||
+		memoryStorage.hasItem("inventory") ||
+		memoryStorage.hasItem("settings")
 	const remoteLastUpdated = Number(data.lastUpdated)
-	const hasSyncedBefore = Boolean(window.localStorage.getItem(LAST_SYNCED_KEY))
+	const hasSyncedBefore = Boolean(
+		memoryStorage.getItem<number | null>("lastSynced", null)
+	)
 
 	if (lastUpdated && remoteLastUpdated === lastUpdated) {
 		return { status: "synced", data }
@@ -117,10 +103,7 @@ export function backupImport(json: string) {
 		return { status: "future", data } //WOW!
 	}
 
-	if (
-		!hasSyncedBefore &&
-		(checklistData || plannerData || inventoryData || settingsData)
-	) {
+	if (!hasSyncedBefore && hasLocalData) {
 		return { status: "overwrite", data }
 	}
 
@@ -132,17 +115,16 @@ const ERASABLE_KEYS = [
 	"inventory",
 	"planner",
 	"hybridPlanner",
-	"gachaPulls",
 	"settings",
 	"lastUpdated",
 	"lastSeen",
-]
+] as const
 
 export function eraseLocalData() {
 	for (const key of ERASABLE_KEYS) {
-		window.localStorage.removeItem(key)
+		memoryStorage.removeItem(key)
 	}
-	window.dispatchEvent(new Event("local-storage-update"))
+	clearAllPulls()
 }
 
 export function backupSetImport({
@@ -154,30 +136,14 @@ export function backupSetImport({
 	inventory,
 	settings,
 }: BackupData) {
-	window.localStorage.setItem(
-		"checklist",
-		JSON.stringify(checklist ?? CHECKLIST_FALLBACK)
-	)
-	window.localStorage.setItem(
-		"inventory",
-		JSON.stringify(inventory ?? INVENTORY_FALLBACK)
-	)
-	window.localStorage.setItem(
-		"planner",
-		JSON.stringify(planner ?? PLANNER_FALLBACK)
-	)
-	window.localStorage.setItem(
+	memoryStorage.setItem("checklist", checklist ?? CHECKLIST_FALLBACK)
+	memoryStorage.setItem("inventory", inventory ?? INVENTORY_FALLBACK)
+	memoryStorage.setItem("planner", planner ?? PLANNER_FALLBACK)
+	memoryStorage.setItem(
 		"hybridPlanner",
-		JSON.stringify(hybridPlanner ?? HYBRID_PLANNER_FALLBACK)
+		hybridPlanner ?? HYBRID_PLANNER_FALLBACK
 	)
-	window.localStorage.setItem(
-		"gachaPulls",
-		JSON.stringify(gachaPulls ?? GACHA_PULL_FALLBACK)
-	)
-	window.localStorage.setItem("lastUpdated", String(lastUpdated))
-	window.localStorage.setItem(
-		"settings",
-		JSON.stringify(settings ?? SETTINGS_FALLBACK)
-	)
-	window.dispatchEvent(new Event("local-storage-update"))
+	replaceAllPulls(gachaPulls ?? GACHA_PULL_FALLBACK)
+	memoryStorage.setItem("lastUpdated", lastUpdated)
+	memoryStorage.setItem("settings", settings ?? SETTINGS_FALLBACK)
 }

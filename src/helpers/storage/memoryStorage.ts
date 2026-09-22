@@ -1,12 +1,12 @@
 "use client"
 
-import { safeParse } from "@/helpers/dataCorruption"
+import { safeParse, validateShape } from "@/helpers/dataCorruption"
 
 import * as idbStorage from "./idbStorage"
 
 // Synchronous in-memory cache backing the *Store hooks' getSnapshot(), with
 // async write-through to IndexedDB. See
-// docs/plans/localstorage-to-indexeddb-migration.md (§3, §4, Phase 1).
+// docs/plans/localstorage-to-indexeddb-migration.md (§3, §4, Phase 1 & 3).
 //
 // - getItem() is synchronous and returns the same cached reference until the
 //   key changes - required for useSyncExternalStore, whose bailout depends on
@@ -14,12 +14,20 @@ import * as idbStorage from "./idbStorage"
 // - setItem() updates the cache and notifies subscribers in the same tick
 //   (optimistic write), then queues a debounced, per-key async write to
 //   IndexedDB so rapid successive writes to one key can't land out of order.
+//   It also dispatches the same `local-storage-update` DOM event the old
+//   localStorage-backed stores used to dispatch themselves - centralized
+//   here so CloudSyncProvider's auto-sync listener (and anything else on
+//   that event) didn't need to change when the stores were ported to this
+//   module in Phase 3.
 // - hydrate() bootstraps the cache from IndexedDB on app start. If IndexedDB
 //   is unavailable (e.g. blocked in private browsing), falls back to
 //   synchronous localStorage read/write instead of losing writes.
 // - Cross-tab sync rides a BroadcastChannel: the writing tab posts the
 //   already-computed value, so other tabs update instantly without a round
-//   trip back through IndexedDB.
+//   trip back through IndexedDB. The channel carries a `kind` discriminant
+//   so the normalized `pulls` store (useGachaStore.tsx), which isn't part of
+//   this module's keyval cache, can piggyback on the same channel instead of
+//   opening a second one - see broadcastCustom()/onCustomBroadcast().
 
 type Listener = () => void
 
@@ -32,9 +40,14 @@ type WriteState = {
 	dirty: boolean
 }
 
+type BroadcastEnvelope =
+	| { kind: "keyval"; key: string; value: unknown }
+	| { kind: "custom"; channel: string; payload: unknown }
+
 const cache = new Map<string, unknown>()
 const listeners = new Set<Listener>()
 const writeState = new Map<string, WriteState>()
+const customBroadcastHandlers = new Map<string, (payload: unknown) => void>()
 
 let fallbackMode = false
 let hydrated = false
@@ -42,6 +55,17 @@ let channel: BroadcastChannel | null = null
 
 function notify() {
 	listeners.forEach((listener) => listener())
+}
+
+// Exposed for storage modules that keep their own cache outside this one
+// (currently just useGachaStore.tsx's normalized pulls cache) but still
+// need to wake the same useSyncExternalStore subscribers - every store
+// already re-runs its own getSnapshot() on any notify and bails out via
+// referential equality when its own key didn't change, so piggybacking on
+// this single global signal is consistent with how every other store
+// already behaves, not a new pattern.
+export function notifyListeners() {
+	notify()
 }
 
 export function subscribe(listener: Listener) {
@@ -64,12 +88,24 @@ function getChannel(): BroadcastChannel | null {
 
 	if (!channel) {
 		channel = new BroadcastChannel(CHANNEL_NAME)
-		channel.onmessage = (event: MessageEvent<{ key: string; value: unknown }>) => {
-			const { key, value } = event.data ?? {}
-			if (typeof key !== "string") return
+		channel.onmessage = (event: MessageEvent<BroadcastEnvelope>) => {
+			const message = event.data
+			if (!message) return
 
-			cache.set(key, value)
-			notify()
+			if (message.kind === "keyval") {
+				if (typeof message.key !== "string") return
+				if (message.value === undefined) {
+					cache.delete(message.key)
+				} else {
+					cache.set(message.key, message.value)
+				}
+				notify()
+				return
+			}
+
+			if (message.kind === "custom") {
+				customBroadcastHandlers.get(message.channel)?.(message.payload)
+			}
 		}
 	}
 
@@ -77,7 +113,27 @@ function getChannel(): BroadcastChannel | null {
 }
 
 function broadcast(key: string, value: unknown) {
-	getChannel()?.postMessage({ key, value })
+	getChannel()?.postMessage({ kind: "keyval", key, value } satisfies BroadcastEnvelope)
+}
+
+// Lets a sibling storage module (e.g. the pulls cache) ship its own
+// cross-tab messages over this same BroadcastChannel instead of opening a
+// second one. Only one handler per channel name - fine since each such
+// module is a singleton registered once at module init.
+export function broadcastCustom(channelName: string, payload: unknown) {
+	getChannel()?.postMessage({
+		kind: "custom",
+		channel: channelName,
+		payload,
+	} satisfies BroadcastEnvelope)
+}
+
+export function onCustomBroadcast(
+	channelName: string,
+	handler: (payload: unknown) => void
+) {
+	customBroadcastHandlers.set(channelName, handler)
+	return () => customBroadcastHandlers.delete(channelName)
 }
 
 // Debounces + coalesces per-key writes so an in-flight IndexedDB write is
@@ -121,6 +177,12 @@ async function flushWrite(key: string) {
 	}
 }
 
+export function hasItem(key: string): boolean {
+	if (typeof window === "undefined") return false
+	if (fallbackMode) return window.localStorage.getItem(key) !== null
+	return cache.has(key)
+}
+
 export function getItem<T>(key: string, fallback: T): T {
 	if (typeof window === "undefined") return fallback
 
@@ -132,7 +194,8 @@ export function getItem<T>(key: string, fallback: T): T {
 		return cache.get(key) as T
 	}
 
-	return cache.has(key) ? (cache.get(key) as T) : fallback
+	if (!cache.has(key)) return fallback
+	return validateShape(cache.get(key), fallback, key)
 }
 
 export function setItem<T>(key: string, value: T): void {
@@ -141,6 +204,7 @@ export function setItem<T>(key: string, value: T): void {
 	cache.set(key, value)
 	broadcast(key, value)
 	notify()
+	window.dispatchEvent(new Event("local-storage-update"))
 
 	if (fallbackMode) {
 		try {
@@ -152,6 +216,24 @@ export function setItem<T>(key: string, value: T): void {
 	}
 
 	scheduleWrite(key)
+}
+
+export function removeItem(key: string): void {
+	if (typeof window === "undefined") return
+
+	cache.delete(key)
+	broadcast(key, undefined)
+	notify()
+	window.dispatchEvent(new Event("local-storage-update"))
+
+	if (fallbackMode) {
+		window.localStorage.removeItem(key)
+		return
+	}
+
+	idbStorage.del(key).catch((error) => {
+		console.error(`IndexedDB delete failed for "${key}"`, error)
+	})
 }
 
 // Bootstraps the cache from IndexedDB. Safe to call more than once - only
