@@ -2,46 +2,44 @@
 
 import { useSyncExternalStore } from "react"
 
-const visitCache: Record<string, boolean> = {}
+import * as memoryStorage from "@/helpers/storage/memoryStorage"
 
 const key = "hasVisited"
 
-const subscribe = (callback: () => void) => {
-	window.addEventListener("storage", callback)
-	return () => window.removeEventListener("storage", callback)
-}
+let resolved = false
+let isFirstVisit = false
 
+// Locks in the answer the first time it's computed, mirroring the old
+// pre-hydration-race version's caching, but only once memoryStorage has
+// actually hydrated - see the isHydrated() guard below for why.
 const getSnapshot = (): boolean => {
 	if (typeof window === "undefined") return false
+	if (resolved) return isFirstVisit
 
-	if (key in visitCache) {
-		return visitCache[key]
+	// memoryStorage.hydrate() hasn't finished yet, so cache.has(key) can't
+	// tell a genuinely-new visitor from a returning one whose "hasVisited"
+	// flag just hasn't loaded from IndexedDB. Report "not first visit" (no
+	// splash) until hydration resolves, instead of guessing "first visit"
+	// here and then never re-checking - locking in a false positive on
+	// every single page load was the bug (the splash reappeared on every
+	// reload for every visitor, not just genuinely new ones).
+	if (!memoryStorage.isHydrated()) return false
+
+	resolved = true
+
+	if (!memoryStorage.hasItem(key)) {
+		memoryStorage.setItem(key, true)
+		isFirstVisit = true
 	}
 
-	const hasVisited = localStorage.getItem(key)
-
-	if (!hasVisited) {
-		localStorage.setItem(key, "true")
-		visitCache[key] = true
-		return true
-	}
-
-	visitCache[key] = false
-	return false
+	return isFirstVisit
 }
 
 const getServerSnapshot = (): boolean => false
 
-const setVisited = () => {
-	if (typeof window === "undefined") return
-
-	localStorage.setItem(key, "true")
-	visitCache[key] = true
-}
-
 export function useFirstVisit() {
 	const isFirstVisit = useSyncExternalStore(
-		subscribe,
+		memoryStorage.subscribe,
 		getSnapshot,
 		getServerSnapshot
 	)

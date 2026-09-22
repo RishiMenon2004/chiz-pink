@@ -31,7 +31,7 @@ export function LocalDataSection({
 
 			<Content>
 				<ContentColumn>
-					Manage the data stored in the Local Storage of your browser.
+					{"Manage the data stored in your browser's IndexedDB."}
 					<Blockquote>
 						<BETATag />
 						<span className={styles.migrationLinks}>

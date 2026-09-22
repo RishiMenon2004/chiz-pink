@@ -21,6 +21,7 @@ import { decryptBackupPayload, encryptBackupPayload } from "./backupCrypto"
 import { getOrCreateBackupKey } from "./driveBackupKey"
 import { setInitialSyncPending } from "./syncGate"
 import { clearCorruption, useCorruptedKeys } from "./dataCorruption"
+import * as memoryStorage from "./storage/memoryStorage"
 
 const AUTO_SYNC_DEBOUNCE_MS = 4000
 
@@ -240,7 +241,7 @@ export function CloudSyncProvider({ children }: { children: React.ReactNode }) {
 					result.status === "overwrite"
 				) {
 					const localLastUpdated =
-						Number(window.localStorage.getItem("lastUpdated")) || null
+						memoryStorage.getItem<number | null>("lastUpdated", null)
 					setRestorePrompt({
 						kind: result.status,
 						data: result.data,

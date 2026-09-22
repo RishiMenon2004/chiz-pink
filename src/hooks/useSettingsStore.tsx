@@ -2,7 +2,7 @@
 
 import { SettingsConfigContext } from "@/contexts"
 import { isInitialSyncPending, useInitialSyncPending } from "@/helpers/syncGate"
-import { safeParse } from "@/helpers/dataCorruption"
+import { createKeyvalStore } from "@/helpers/storage/keyvalStore"
 import {
 	getBiWeeklyMondayResetBoundaries,
 	getBiWeeklyWednesdayResetBoundaries,
@@ -10,13 +10,11 @@ import {
 	getMonthlyResetBoundaries,
 	getSeasonalResetBoundaries,
 	getWeeklyResetBoundaries,
-} from "@/helpers"
+} from "@/helpers/resetBoundaries"
 import { getRefilledPixelsState } from "@/helpers/staminaReset"
 import { SettingsRecord } from "@/types/settings"
-import { ReactNode, useEffect, useSyncExternalStore } from "react"
+import { ReactNode, useEffect } from "react"
 import { checklistActions, useChecklistStore } from "./useChecklistStore"
-
-let lastRawValue: string | null = null
 
 export const SERVER_FALLBACK: SettingsRecord = {
 	appearance: {
@@ -39,15 +37,10 @@ export const SERVER_FALLBACK: SettingsRecord = {
 	},
 }
 
-let cachedSettings: SettingsRecord = {
-	...SERVER_FALLBACK,
-}
+const store = createKeyvalStore("settings", SERVER_FALLBACK)
 
 export function readSettings() {
-	if (typeof window === "undefined") return SERVER_FALLBACK
-
-	const value = localStorage.getItem("settings")
-	return safeParse(value, SERVER_FALLBACK, "settings")
+	return store.read()
 }
 
 export const settingsActions = {
@@ -70,22 +63,18 @@ export const settingsActions = {
 			typeof updater === "function" ? updater(settingsData) : updater
 		const updatedSettings = { ...settingsData, ...data }
 
-		try {
-			localStorage.setItem("settings", JSON.stringify(updatedSettings))
-			if (!options?.silent) {
-				localStorage.setItem("lastUpdated", JSON.stringify(Date.now()))
-			}
-			window.dispatchEvent(new Event("local-storage-update"))
-		} catch (err) {
-			console.error("Local Storage Error:", err)
-		}
+		store.write(updatedSettings, options)
 	},
 
 	setConfig<K extends keyof SettingsRecord>(
 		key: K,
 		updater:
 			| Partial<SettingsRecord[K]>
-			| ((current: SettingsRecord[K]) => Partial<SettingsRecord[K]>)
+			| ((current: SettingsRecord[K]) => Partial<SettingsRecord[K]>),
+		// See updateSettings' options param - passed through as-is so an
+		// auto-applied reset/refill (not a real user edit) can opt out of
+		// bumping lastUpdated.
+		options?: { silent?: boolean }
 	) {
 		this.updateSettings((current) => ({
 			...current,
@@ -95,43 +84,12 @@ export const settingsActions = {
 					? updater(current[key])
 					: updater),
 			},
-		}))
+		}), options)
 	},
 }
 
-const subscribe = (callback: () => void) => {
-	window.addEventListener("storage", callback)
-	window.addEventListener("local-storage-update", callback)
-
-	return () => {
-		window.removeEventListener("storage", callback)
-		window.removeEventListener("local-storage-update", callback)
-	}
-}
-
-const getSnapshot = () => {
-	if (typeof window === "undefined") return SERVER_FALLBACK as SettingsRecord
-
-	const rawValue = localStorage.getItem("settings")
-
-	if (rawValue !== lastRawValue) {
-		cachedSettings = safeParse(rawValue, SERVER_FALLBACK, "settings")
-		lastRawValue = rawValue
-	}
-
-	return cachedSettings
-}
-
-const getServerSnapshot = () => {
-	return SERVER_FALLBACK
-}
-
 export function useSettingsStore() {
-	const settings = useSyncExternalStore<SettingsRecord>(
-		subscribe,
-		getSnapshot,
-		getServerSnapshot
-	)
+	const settings = store.useValue()
 
 	return {
 		settings,
@@ -186,10 +144,18 @@ export function SettingsProvider({ children }: { children: ReactNode }) {
 			const { previousReset } = getWeeklyResetBoundaries(server, Date.now())
 
 			if (previousReset > (lastStaminaReset ?? 0)) {
-				actions.setConfig("userdata", {
-					"current-stamina": maxStamina,
-					"last-stamina-reset": previousReset,
-				})
+				// Deterministically re-derivable from the elapsed reset boundary,
+				// not a real user edit - shouldn't make local data look newer than
+				// an otherwise-identical Drive backup (see updateSettings' options
+				// param doc comment).
+				actions.setConfig(
+					"userdata",
+					{
+						"current-stamina": maxStamina,
+						"last-stamina-reset": previousReset,
+					},
+					{ silent: true }
+				)
 			}
 		}
 
@@ -261,10 +227,17 @@ export function SettingsProvider({ children }: { children: ReactNode }) {
 
 			if (!refilled) return
 
-			actions.setConfig("userdata", {
-				"current-pixels": refilled.current,
-				"pixels-last-edited": refilled.lastEdited,
-			})
+			// Deterministically re-derivable from elapsed time (see
+			// getRefilledPixelsState), not a real user edit - see the
+			// stamina-reset silent write above for why this matters.
+			actions.setConfig(
+				"userdata",
+				{
+					"current-pixels": refilled.current,
+					"pixels-last-edited": refilled.lastEdited,
+				},
+				{ silent: true }
+			)
 		}
 
 		checkPixelRefill()

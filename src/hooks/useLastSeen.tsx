@@ -2,40 +2,41 @@
 
 import { useSyncExternalStore } from "react"
 
-const timeCheckCache: Record<string, boolean> = {}
+import * as memoryStorage from "@/helpers/storage/memoryStorage"
 
 const key = "lastSeen"
 
-const subscribe = (callback: () => void) => {
-	if (typeof window === "undefined") return () => {}
-	window.addEventListener("storage", callback)
-	return () => window.removeEventListener("storage", callback)
-}
+let resolved = false
+let isLastSeenOld = false
 
 const getServerSnapshot = (): boolean => false
 
 export function useLastSeen(time?: number) {
 	const getSnapshot = (): boolean => {
 		if (typeof window === "undefined") return false
+		if (resolved) return isLastSeenOld
 
-		if (key in timeCheckCache) {
-			return timeCheckCache[key]
-		}
+		// Same pre-hydration race as useFirstVisit.tsx: memoryStorage hasn't
+		// loaded "lastSeen" from IndexedDB yet, so treating a missing cache
+		// entry as "never seen" here (and then never re-checking) meant the
+		// update splash reappeared on every reload for every visitor, not
+		// just when there was genuinely a new changelog entry.
+		if (!memoryStorage.isHydrated()) return false
+
+		resolved = true
 
 		const currentTime = time ?? Date.now()
-		const lastSeen = localStorage.getItem(key)
-		const isNewer = !lastSeen || currentTime > Number(lastSeen)
+		const lastSeen = memoryStorage.getItem<number | null>(key, null)
+		isLastSeenOld = !lastSeen || currentTime > lastSeen
 
-		localStorage.setItem(key, currentTime.toString())
-		timeCheckCache[key] = isNewer
-
-		return isNewer
+		memoryStorage.setItem(key, currentTime)
+		return isLastSeenOld
 	}
 
-	const isLastSeenOld = useSyncExternalStore(
-		subscribe,
+	const lastSeenOld = useSyncExternalStore(
+		memoryStorage.subscribe,
 		getSnapshot,
 		getServerSnapshot
 	)
-	return isLastSeenOld
+	return lastSeenOld
 }

@@ -7,6 +7,9 @@ import {
 	ReactNode,
 } from "react"
 
+import { getCachedInventory } from "@/hooks/useInventoryStore"
+import { getCachedPlanner } from "@/hooks/usePlannerStore"
+
 import styles from "@/app/settings/settings.module.css"
 
 /* ------------------------------------------------------------------ */
@@ -247,8 +250,8 @@ export const formatDate = (date: number): string => {
 }
 
 export function hasExistingPlannerData() {
-	const inventory = JSON.parse(localStorage.getItem("inventory") || "{}")
-	const planner = JSON.parse(localStorage.getItem("planner") || "{}")
+	const inventory = getCachedInventory()
+	const planner = getCachedPlanner()
 
 	return (
 		Object.keys(inventory).length > 0 ||

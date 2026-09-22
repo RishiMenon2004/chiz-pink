@@ -7,7 +7,8 @@ import type { ChecklistRecord, ChecklistEntry } from "@/types/checklist"
 import { getAllActivitiesList } from "@/data/activities/activities"
 
 import { isInitialSyncPending } from "@/helpers/syncGate"
-import { safeParse } from "@/helpers/dataCorruption"
+import { createKeyvalStore } from "@/helpers/storage/keyvalStore"
+import * as memoryStorage from "@/helpers/storage/memoryStorage"
 
 /**
  * Guarantees a valid {@link ChecklistEntry} for any activity id, seeding a
@@ -35,7 +36,7 @@ function normalizeTask(
  *
  * @param record The parsed checklist record (mutated in place).
  * @returns True when any gap/orphan was repaired, signalling the caller to
- *          persist the cleaned shape back to localStorage.
+ *          persist the cleaned shape back to storage.
  */
 function reconcileMissingActivities(record: ChecklistRecord): boolean {
 	let changed = false
@@ -87,8 +88,6 @@ function reconcileMissingActivities(record: ChecklistRecord): boolean {
 	return changed
 }
 
-let lastRawValue: string | null = null
-
 export const SERVER_FALLBACK: ChecklistRecord = {
 	activities: {
 		daily: {},
@@ -108,13 +107,13 @@ export const SERVER_FALLBACK: ChecklistRecord = {
 	},
 }
 
-let cachedChecklist: ChecklistRecord = { ...SERVER_FALLBACK }
+const store = createKeyvalStore("checklist", SERVER_FALLBACK)
+
+let cachedChecklist: ChecklistRecord = SERVER_FALLBACK
+let lastProcessed: ChecklistRecord | null = null
 
 function readChecklist(): ChecklistRecord {
-	if (typeof window === "undefined") return SERVER_FALLBACK
-
-	const value = localStorage.getItem("checklist")
-	return safeParse(value, SERVER_FALLBACK, "checklist")
+	return store.read()
 }
 
 export const checklistActions = {
@@ -138,13 +137,7 @@ export const checklistActions = {
 			},
 		}
 
-		try {
-			localStorage.setItem("checklist", JSON.stringify(updated))
-			localStorage.setItem("lastUpdated", JSON.stringify(Date.now()))
-			window.dispatchEvent(new Event("local-storage-update"))
-		} catch (err) {
-			console.error("Local Storage Error:", err)
-		}
+		store.write(updated)
 	},
 
 	// Clears activities when their reset boundaries triggers it, keeping their
@@ -195,37 +188,22 @@ export const checklistActions = {
 			)
 		}
 
-		try {
-			localStorage.setItem("checklist", JSON.stringify(updated))
-			localStorage.setItem("lastUpdated", JSON.stringify(Date.now()))
-			window.dispatchEvent(new Event("local-storage-update"))
-		} catch (err) {
-			console.error("Local Storage Error:", err)
-		}
+		// Deterministically re-derivable from the elapsed reset boundary, not a
+		// real user edit - shouldn't make local data look newer than an
+		// otherwise-identical Drive backup (see useSettingsStore.tsx's
+		// updateSettings options param doc comment).
+		store.write(updated, { silent: true })
 	},
-}
-
-const subscribe = (callback: () => void) => {
-	window.addEventListener("storage", callback)
-	window.addEventListener("local-storage-update", callback)
-
-	return () => {
-		window.removeEventListener("storage", callback)
-		window.removeEventListener("local-storage-update", callback)
-	}
 }
 
 const getSnapshot = () => {
 	if (typeof window === "undefined") return SERVER_FALLBACK
 
-	const rawValue = localStorage.getItem("checklist")
+	const current = store.read()
 
-	if (rawValue !== lastRawValue) {
-		const parsed = safeParse(rawValue, SERVER_FALLBACK, "checklist")
-		cachedChecklist =
-			parsed && typeof parsed === "object"
-				? (parsed as ChecklistRecord)
-				: SERVER_FALLBACK
+	if (current !== lastProcessed) {
+		lastProcessed = current
+		cachedChecklist = current
 
 		// Pre-resetTimestamps records kept lastDailyReset at the top level -
 		// fold it into resetTimestamps (creating it first, since old data
@@ -253,12 +231,8 @@ const getSnapshot = () => {
 		const repaired = reconcileMissingActivities(cachedChecklist)
 
 		if (hadOldKey || repaired) {
-			try {
-				localStorage.setItem("checklist", JSON.stringify(cachedChecklist))
-			} catch {}
+			store.write(cachedChecklist, { silent: true })
 		}
-
-		lastRawValue = rawValue
 	}
 
 	return cachedChecklist
@@ -270,7 +244,7 @@ const getServerSnapshot = () => {
 
 export function useChecklistStore() {
 	const checklist = useSyncExternalStore<ChecklistRecord>(
-		subscribe,
+		memoryStorage.subscribe,
 		getSnapshot,
 		getServerSnapshot
 	)

@@ -63,9 +63,45 @@ export type PlannerRecord = {
 	characters: Record<string, CharacterRecord>
 }
 
-export type HybridPlannerRecord = {
-	order: string[]
+// Three independent orderings, one per planner view, stored together under
+// a single `plannerOrder` keyval entry. They're independent arrays (not
+// derived from one another) because the views can diverge item-by-item -
+// hybrid interleaves both types, so filtering it down to one type after a
+// hybrid-mode reorder doesn't losslessly recover what a split-mode drag
+// would have produced, and vice versa. See usePlannerItems.tsx for how an
+// edit to one ripples into the others.
+export type PlannerOrderRecord = {
+	hybrid: string[]
+	characters: string[]
+	arcs: string[]
 }
+
+export type PlannerItemType = "character" | "weapon"
+
+// The `planner` IndexedDB store keeps one row per character/weapon instead
+// of nesting both collections inside a single { arcs, characters } blob -
+// addCharacter/updateCharacter/deleteCharacter only ever touch `characters`
+// and addWeapon/updateWeapon/deleteWeapon only ever touch `arcs`, one item
+// at a time, so a combined blob meant every character edit also rewrote the
+// entire (unrelated) arcs collection alongside it.
+//
+// itemType + refId is a compound primary key rather than reusing the raw
+// id/uid directly - character ids (catalog slugs like "linko") and weapon
+// uids (crypto.randomUUID()) live in genuinely different namespaces that
+// shouldn't be assumed distinct just because a collision hasn't happened.
+export type StoredPlannerCharacter = {
+	itemType: "character"
+	refId: string
+	data: CharacterRecord
+}
+
+export type StoredPlannerWeapon = {
+	itemType: "weapon"
+	refId: string
+	data: WeaponRecord
+}
+
+export type StoredPlannerItem = StoredPlannerCharacter | StoredPlannerWeapon
 
 export type AggregateMaterial = {
 	amount: number

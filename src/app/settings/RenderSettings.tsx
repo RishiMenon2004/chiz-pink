@@ -14,6 +14,8 @@ import {
 	settingsActions,
 	updateInventory,
 } from "@/hooks"
+import { getCachedInventory } from "@/hooks/useInventoryStore"
+import { getCachedPlanner } from "@/hooks/usePlannerStore"
 
 import { ExternalImportResult } from "@/helpers/importExternal"
 
@@ -50,8 +52,8 @@ import {
 import styles from "./settings.module.css"
 
 function hasExistingPlannerData() {
-	const inventory = JSON.parse(localStorage.getItem("inventory") || "{}")
-	const planner = JSON.parse(localStorage.getItem("planner") || "{}")
+	const inventory = getCachedInventory()
+	const planner = getCachedPlanner()
 
 	return (
 		Object.keys(inventory).length > 0 ||

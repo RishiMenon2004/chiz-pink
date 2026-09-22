@@ -13,7 +13,7 @@ import { CharacterRecord, WeaponRecord } from "@/types/planner"
 
 import { findMaterial } from "@/data/items"
 
-import { useHybridPlannerStore } from "@/hooks"
+import { usePlannerOrderStore } from "@/hooks"
 import { getAggregatedMaterials, usePlannerStore } from "@/hooks/usePlannerStore"
 
 import { PlannerInventoryProvider } from "@/helpers"
@@ -27,7 +27,7 @@ import styles from "./DashFarmingList.module.css"
 
 export function DashFarmingList() {
 	const { plannerData } = usePlannerStore()
-	const { hybridPlanner } = useHybridPlannerStore()
+	const { plannerOrder } = usePlannerOrderStore()
 
 	const listRef = useRef<HTMLDivElement>(null)
 	const [columnCount, setColumnCount] = useState(6)
@@ -67,7 +67,7 @@ export function DashFarmingList() {
 			...plannerData.arcs,
 		}
 
-		const orderedIds = hybridPlanner.order.filter((id) => id in combined)
+		const orderedIds = plannerOrder.hybrid.filter((id) => id in combined)
 		const remainingIds = Object.keys(combined).filter(
 			(id) => !orderedIds.includes(id)
 		)
@@ -77,7 +77,7 @@ export function DashFarmingList() {
 			ordered[id] = combined[id]
 		})
 		return ordered
-	}, [plannerData, hybridPlanner])
+	}, [plannerData, plannerOrder])
 
 	const itemsList = Object.values(items)
 

@@ -63,3 +63,41 @@ export function safeParse<T>(raw: string | null, fallback: T, key: string): T {
 		return fallback
 	}
 }
+
+// Structural sanity check for a value read back from IndexedDB. Unlike
+// safeParse (which guards against malformed JSON strings), IndexedDB stores
+// structured-clone objects directly, so there's no parse step to fail -
+// what can still go wrong is the value being the wrong *shape* (a stray
+// primitive, an array where an object was expected, or vice versa), which
+// would otherwise pass straight through and crash deeper in a component
+// that assumes the real shape. Reuses the same corruption-reporting channel
+// as safeParse so CloudSyncProvider's recovery prompt covers this failure
+// mode too.
+export function validateShape<T>(value: unknown, fallback: T, key: string): T {
+	if (value === undefined) return fallback
+
+	// A null fallback (e.g. memoryStorage.getItem<number | null>(key, null))
+	// is a "don't know the real shape yet" placeholder, not a shape to check
+	// against - typeof null is "object" in JS, which would otherwise reject
+	// every legitimate non-object value (a number, a string) the placeholder
+	// stands in for.
+	if (fallback === null) return value as T
+
+	const expectedIsArray = Array.isArray(fallback)
+	const expectedType = typeof fallback
+
+	const shapeMatches =
+		expectedType === "object"
+			? typeof value === "object" &&
+				value !== null &&
+				Array.isArray(value) === expectedIsArray
+			: typeof value === expectedType
+
+	if (!shapeMatches) {
+		console.error(`Unexpected shape for "${key}" in storage`, value)
+		reportCorruption(key)
+		return fallback
+	}
+
+	return value as T
+}
