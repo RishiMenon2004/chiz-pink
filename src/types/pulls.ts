@@ -56,7 +56,6 @@ export type NteExporterData = {
 
 export type ImportedPull = {
 	uid: string
-	pullIndex: number
 	timestamp: number
 	resultType: "pointsGift" | "slumberland" | "dice"
 	rank: EnumRarity
@@ -81,7 +80,6 @@ export type ImportedPullsResult = {
 
 export type MiracleBoxPull = {
 	uid: string
-	pullIndex: number
 	timestamp: number
 	rank: EnumRarity
 	rewardId: string
@@ -89,7 +87,6 @@ export type MiracleBoxPull = {
 
 export type ScarboroughFairPull = {
 	uid: string
-	pullIndex: number
 	timestamp: number
 	rank: EnumRarity
 	rewardId: string
@@ -118,8 +115,6 @@ export type Pull = MiracleBoxPull | ScarboroughFairPull
 // or an NTE-exporter batch's own sorted order for a live import) - see
 // useGachaStore.tsx's comparePulls(). `timestamp` alone can't disambiguate
 // pulls from the same multi-pull session (they share one timestamp at
-// second granularity) and `pullIndex` collapses to -1 for every non-dice
-// Scarborough Fair pull, so neither is a safe tiebreak on its own. Optional
-// because rows written before this field existed won't have it - those
-// fall back to the pullIndex tiebreak.
+// second granularity), so it's not a safe tiebreak on its own. Optional
+// because rows written before this field existed won't have it.
 export type StoredPull = Pull & { bannerType: BannerType; seq?: number }

@@ -98,7 +98,6 @@ export function parseNteExporterImport(
 			break
 	}
 
-	let pullCounter = 0
 	const pulls: ImportedPull[] = data.records
 		.toSorted((recordA, recordB) => {
 			if (recordA.timestamp !== recordB.timestamp) {
@@ -108,7 +107,7 @@ export function parseNteExporterImport(
 				recordA.timestamp_group_ordinal - recordB.timestamp_group_ordinal
 			)
 		})
-		.map((record, _, array) => {
+		.map((record) => {
 			const [datePart, timePart] = record.timestamp.split(" ")
 			const [year, month, day] = datePart.split("-").map(Number)
 			const [hour, minute, second] = timePart.split(":").map(Number)
@@ -163,24 +162,8 @@ export function parseNteExporterImport(
 			const resultType: ImportedPull["resultType"] =
 				RESULT_TYPE_MAP[record.result_type ?? "dice"]
 
-			// Arc pulls come in groups of 10, so pullIndex is the position within
-			// the group (timestamp_group_ordinal). Scarborough Fair pulls use the
-			// dice roll count instead.
-			let pullIndex: number
-			if (bannerType === "arc") {
-				pullIndex = array.length - pullCounter
-			} else {
-				const diceRolls = array.filter(
-					(roll) => roll.result_type === "dice"
-				)
-				pullIndex =
-					resultType === "dice" ? diceRolls.length - pullCounter : -1
-			}
-			pullCounter += resultType === "dice" ? 1 : 0
-
 			return {
 				uid: record.uid,
-				pullIndex,
 				timestamp,
 				rank,
 				rewardId,

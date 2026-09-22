@@ -55,25 +55,17 @@ function cloneCache(): PullsRecord {
 // and calculatePity.ts's newest-first iteration), so cachedPulls[banner]
 // must always be built newest-first.
 //
-// `timestamp` alone can't be the sort key: a single 10-pull Miracle Box (or
-// any multi-pull session) shares one identical timestamp across all of its
-// pulls, at second granularity. IndexedDB's bannerType_timestamp index has
-// no secondary key, so rows tied on timestamp come back in primary-key
-// (uid) order - an opaque id unrelated to pull order.
-//
-// `seq` (see StoredPull) is the real tiebreak when present - it's assigned
-// from an already-correctly-ordered source (the legacy blob at migration
-// time, or an import batch's own sort), so it's exact, unlike `pullIndex`
-// which collapses to -1 for every non-dice Scarborough Fair pull and ties
-// just as badly. seq is only meaningful as a tiebreak *within* a shared
-// timestamp, never as the primary key across genuinely different import
-// times (each write assigns it fresh, so equal seq values from different
-// writes aren't comparable) - that's why timestamp is still checked first.
-// Rows written before this field existed fall back to pullIndex.
+// `timestamp` alone can't break ties: a multi-pull session shares one
+// timestamp at second granularity, and IndexedDB's bannerType_timestamp
+// index has no secondary key, so tied rows come back in uid order instead.
+// `seq` (see StoredPull) fixes that - it's assigned from an
+// already-correctly-ordered source, but only within a shared timestamp;
+// it's fresh per write, so it can't order across separate imports. Rows
+// from before `seq` existed just keep their existing relative order.
 function comparePulls(a: Pull & { seq?: number }, b: Pull & { seq?: number }): number {
 	if (a.timestamp !== b.timestamp) return b.timestamp - a.timestamp
 	if (a.seq !== undefined && b.seq !== undefined) return a.seq - b.seq
-	return b.pullIndex - a.pullIndex
+	return 0
 }
 
 function sortedBanner(
@@ -146,8 +138,8 @@ export async function hydratePullsCache(): Promise<void> {
 		// primary key), unrelated to pull order; reading per banner through
 		// bannerType_timestamp at least narrows it to one banner and gets
 		// mostly-newest-first rows. applyPulls() still does the authoritative
-		// (timestamp, pullIndex) sort below - see its comment for why the
-		// index alone isn't precise enough (same-timestamp ties).
+		// (timestamp, seq) sort below - see comparePulls()'s comment for why
+		// the index alone isn't precise enough (same-timestamp ties).
 		const rowsByBanner = await Promise.all(
 			BANNER_TYPES.map((bannerType) => idbStorage.getPullsByBanner(bannerType))
 		)
