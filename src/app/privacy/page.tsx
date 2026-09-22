@@ -37,7 +37,7 @@ export default function PrivacyPolicy() {
 				<div className={`inset-control ${styles.sectionContent}`}>
 					<p>
 						{
-							"Your planner progress, inventory counts, and settings are saved in your browser's local storage, along with a timestamp of your last change. None of this leaves your device unless you sign in with Google."
+							"Your planner progress, inventory counts, and settings are saved in an IndexedDB database in your browser, along with a timestamp of your last change. None of this leaves your device unless you sign in with Google."
 						}
 					</p>
 				</div>

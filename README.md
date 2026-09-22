@@ -27,8 +27,8 @@ Changes that I make might break existing data. This section will be removed once
 - :game_die: **Pull Tracker** - Keep a record of all your pulls across both the limited banners and the permanent banner, with a handy pity counter and stats for those nerds.
 - :bookmark_tabs: **Daily/Weekly/Bi-Weekly Checklist** - You will never miss earning even a single fon.
   Ever. Trust. :heart:
-- :computer: **Local Storage** - Works fully offline out of the box, no account needed. Everything
-  lives in your browser.
+- :computer: **Offline-First** - Works fully offline out of the box, no account needed. Everything
+  lives in your browser's IndexedDB.
 - :cloud: **Cloud Sync** (Optional) - Sign-in with Google if you want to sync across devices - your data
   gets encrypted on your own device before it ever touches the database, so
    I couldn't read it even if I wanted to. Full breakdown here: [`Privacy Policy`](https://chiz-pink.vercel.app/privacy)
