@@ -190,15 +190,24 @@ function normalizePlannerItems(
 	)
 }
 
-// plannerOrder is accepted only for the legacy-format branch above - current
-// exports don't include it (see BackupData's planner field comment).
-type ImportedBackupData = BackupData & { plannerOrder?: { hybrid?: string[] } }
+// plannerOrder/hybridPlanner are accepted only for the legacy-format branch
+// above - current exports don't include either (see BackupData's planner
+// field comment). hybridPlanner is the pre-normalization field name (from
+// before planner/arcs+characters even had a shared `plannerOrder` key - see
+// migration.ts's migrateHybridPlanner()); a file that old still has its
+// order preserved rather than silently falling back to "characters then
+// arcs" grouping.
+type ImportedBackupData = BackupData & {
+	plannerOrder?: { hybrid?: string[] }
+	hybridPlanner?: { order?: string[] }
+}
 
 export function backupSetImport({
 	lastUpdated,
 	checklist,
 	planner,
 	plannerOrder,
+	hybridPlanner,
 	gachaPulls,
 	inventory,
 	settings,
@@ -206,7 +215,10 @@ export function backupSetImport({
 	memoryStorage.setItem("checklist", checklist ?? CHECKLIST_FALLBACK)
 	replaceInventory(inventory ?? INVENTORY_FALLBACK)
 
-	const plannerItems = normalizePlannerItems(planner, plannerOrder?.hybrid)
+	const plannerItems = normalizePlannerItems(
+		planner,
+		plannerOrder?.hybrid ?? hybridPlanner?.order
+	)
 	const plannerRecord: PlannerRecord = { arcs: {}, characters: {} }
 	for (const item of plannerItems) {
 		if (item.itemType === "character") {
