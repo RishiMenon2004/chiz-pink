@@ -53,9 +53,11 @@ function DiceRoll({ pull }: { pull: MiracleBoxPull | ScarboroughFairPull }) {
 function PullEntry({
 	pull,
 	pity,
+	pullNumber,
 }: {
 	pull: MiracleBoxPull | ScarboroughFairPull
 	pity: number
+	pullNumber: number
 }) {
 	const { selectedBanner, gachaBanners } = usePullTrackerContext()
 	const {
@@ -86,7 +88,7 @@ function PullEntry({
 	return (
 		<>
 			<div className={styles.pullNumber}>
-				{pull.pullIndex > 0 ? pull.pullIndex : "-"}
+				{pullNumber > 0 ? pullNumber : "-"}
 			</div>
 			<div
 				key={pull.uid}
@@ -112,7 +114,7 @@ function PullEntry({
 						` ×${pull.quantity}`}
 				</div>
 				<div className={styles.pullPity}>
-					{pull.pullIndex > 0 ? pity : "-"}
+					{pullNumber > 0 ? pity : "-"}
 				</div>
 			</div>
 		</>
@@ -120,7 +122,7 @@ function PullEntry({
 }
 
 export function PullsListSection() {
-	const { selectedBanner, gachaBanners, pulls, pityMap } =
+	const { selectedBanner, gachaBanners, pulls, pityMap, pullNumberMap } =
 		usePullTrackerContext()
 	const {
 		userdata: { server },
@@ -355,6 +357,9 @@ export function PullsListSection() {
 							key={pull.uid}
 							pull={pull}
 							pity={pityMap[selectedBanner].get(pull.uid) ?? 0}
+							pullNumber={
+								pullNumberMap[selectedBanner].get(pull.uid) ?? -1
+							}
 						/>
 					)
 				})}

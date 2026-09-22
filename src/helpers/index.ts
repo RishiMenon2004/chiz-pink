@@ -65,6 +65,7 @@ export {
 	calculateArcBannerPity,
 	calculateCharacterBannerPity,
 	calculatePityMap,
+	calculatePullNumberMap,
 } from "./calculatePity"
 
 export { getBannerThemeColor } from "./getBannerThemeColor"

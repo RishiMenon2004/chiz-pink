@@ -115,6 +115,7 @@ export type PullTrackerContextType = {
 	gachaBanners: EventData[]
 	pulls: (MiracleBoxPull | ScarboroughFairPull)[]
 	pityMap: Record<keyof PullsRecord, Map<string, number>>
+	pullNumberMap: Record<keyof PullsRecord, Map<string, number>>
 	currentPity: number
 	rateUpPulls: Record<keyof PullsRecord, RateUpPull[]>
 }

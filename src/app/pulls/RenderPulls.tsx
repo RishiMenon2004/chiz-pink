@@ -12,6 +12,7 @@ import { useGachaStore } from "@/hooks"
 
 import {
 	calculatePityMap,
+	calculatePullNumberMap,
 	getBannerThemeColor,
 	getResolvedGachaBanners,
 	permanentRateupSet,
@@ -115,7 +116,7 @@ export function RenderPulls() {
 		[gachaPulls]
 	)
 
-	const { pityMap, rateUpPulls } = useMemo(() => {
+	const { pityMap, pullNumberMap, rateUpPulls } = useMemo(() => {
 		const bannerPityMap: Record<keyof PullsRecord, Map<string, number>> = {
 			limitedBanner: calculatePityMap(
 				pullsRecord.limitedBanner,
@@ -135,6 +136,12 @@ export function RenderPulls() {
 				staticGachaBanners,
 				server
 			),
+		}
+
+		const bannerPullNumberMap: Record<keyof PullsRecord, Map<string, number>> = {
+			limitedBanner: calculatePullNumberMap(pullsRecord.limitedBanner),
+			arcsBanner: calculatePullNumberMap(pullsRecord.arcsBanner),
+			permanentBanner: calculatePullNumberMap(pullsRecord.permanentBanner),
 		}
 
 		const bannerRateUps: Record<keyof PullsRecord, RateUpPull[]> = {
@@ -160,6 +167,7 @@ export function RenderPulls() {
 
 		return {
 			pityMap: bannerPityMap,
+			pullNumberMap: bannerPullNumberMap,
 			rateUpPulls: bannerRateUps,
 		}
 	}, [pullsRecord, server])
@@ -179,6 +187,7 @@ export function RenderPulls() {
 					gachaBanners: staticGachaBanners,
 					pulls: pullsRecord[selectedBanner],
 					pityMap,
+					pullNumberMap,
 					currentPity,
 					rateUpPulls,
 				}}>

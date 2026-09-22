@@ -187,6 +187,29 @@ export function calculateCharacterBannerPity(
 	return pityMap
 }
 
+export function calculatePullNumberMap(
+	pulls: (MiracleBoxPull | ScarboroughFairPull)[]
+): Map<string, number> {
+	const numberMap = new Map<string, number>()
+	let counter = 0
+
+	for (let i = pulls.length - 1; i >= 0; i--) {
+		const pull = pulls[i]
+		const isScarborough = isScarboroughPull(pull)
+		const shouldSkip = isScarborough && pull.resultType !== "dice"
+
+		if (shouldSkip) {
+			numberMap.set(pull.uid, -1)
+			continue
+		}
+
+		counter++
+		numberMap.set(pull.uid, counter)
+	}
+
+	return numberMap
+}
+
 /**
  * High-level pity calculation function that delegates to Arc or Character pity calculation.
  */
