@@ -1,14 +1,18 @@
 import { BannerType, Pull, StoredPull } from "@/types/pulls"
+import { StoredInventoryItem } from "@/types/inventory"
+import { PlannerItemType, StoredPlannerItem } from "@/types/planner"
 
 // Raw IndexedDB access. No React, no caching - memoryStorage.ts is the
 // synchronous layer stores actually talk to; this module only knows how to
 // read and write "chiz-pink-db" itself. See docs/plans/localstorage-to-indexeddb-migration.md.
 const DB_NAME = "chiz-pink-db"
-const DB_VERSION = 1
+const DB_VERSION = 2
 const KEYVAL_STORE = "keyval"
 const PULLS_STORE = "pulls"
 const PULLS_BANNER_INDEX = "bannerType"
 const PULLS_BANNER_TIMESTAMP_INDEX = "bannerType_timestamp"
+const INVENTORY_STORE = "inventory"
+const PLANNER_STORE = "planner"
 
 export function isIndexedDBAvailable(): boolean {
 	return typeof window !== "undefined" && "indexedDB" in window
@@ -42,6 +46,16 @@ function openDB(): Promise<IDBDatabase> {
 					"bannerType",
 					"timestamp",
 				])
+			}
+
+			if (!db.objectStoreNames.contains(INVENTORY_STORE)) {
+				db.createObjectStore(INVENTORY_STORE, { keyPath: "id" })
+			}
+
+			if (!db.objectStoreNames.contains(PLANNER_STORE)) {
+				db.createObjectStore(PLANNER_STORE, {
+					keyPath: ["itemType", "refId"],
+				})
 			}
 		}
 
@@ -208,6 +222,112 @@ export function replaceAllPulls(
 
 export function clearAllPulls(): Promise<void> {
 	return runRequest(PULLS_STORE, "readwrite", (store) =>
+		store.clear()
+	).then(() => undefined)
+}
+
+// Batched per-material writes, mirroring putPulls() - a stepper click or a
+// currency edit only touches the one row that changed.
+export function putInventoryItems(items: StoredInventoryItem[]): Promise<void> {
+	if (items.length === 0) return Promise.resolve()
+
+	return openDB().then(
+		(db) =>
+			new Promise<void>((resolve, reject) => {
+				const tx = db.transaction(INVENTORY_STORE, "readwrite")
+				const store = tx.objectStore(INVENTORY_STORE)
+
+				for (const item of items) store.put(item)
+
+				tx.oncomplete = () => resolve()
+				tx.onerror = () => reject(tx.error)
+			})
+	)
+}
+
+export function getAllInventory(): Promise<StoredInventoryItem[]> {
+	return runRequest<StoredInventoryItem[]>(INVENTORY_STORE, "readonly", (store) =>
+		store.getAll()
+	)
+}
+
+// Full overwrite (backup restore / cloud pull / bulk external import) -
+// unlike putInventoryItems(), this discards any material not present in
+// `items`, since put() alone only ever upserts.
+export function replaceAllInventory(items: StoredInventoryItem[]): Promise<void> {
+	return openDB().then(
+		(db) =>
+			new Promise<void>((resolve, reject) => {
+				const tx = db.transaction(INVENTORY_STORE, "readwrite")
+				const store = tx.objectStore(INVENTORY_STORE)
+
+				store.clear()
+				for (const item of items) store.put(item)
+
+				tx.oncomplete = () => resolve()
+				tx.onerror = () => reject(tx.error)
+			})
+	)
+}
+
+export function clearInventory(): Promise<void> {
+	return runRequest(INVENTORY_STORE, "readwrite", (store) =>
+		store.clear()
+	).then(() => undefined)
+}
+
+// Applies a diffed set of planner writes in one transaction - addCharacter/
+// updateCharacter/deleteCharacter/addWeapon/updateWeapon/deleteWeapon each
+// touch exactly one row, and updatePlanner()'s generic partial-merge path
+// (see usePlannerStore.tsx) can touch several across both collections at
+// once (e.g. clearing both on an "overwrite" import), so both puts and
+// deletes are batched into a single call rather than issuing separate
+// transactions per row.
+export function writePlannerChanges(
+	puts: StoredPlannerItem[],
+	deletes: [PlannerItemType, string][]
+): Promise<void> {
+	if (puts.length === 0 && deletes.length === 0) return Promise.resolve()
+
+	return openDB().then(
+		(db) =>
+			new Promise<void>((resolve, reject) => {
+				const tx = db.transaction(PLANNER_STORE, "readwrite")
+				const store = tx.objectStore(PLANNER_STORE)
+
+				for (const item of puts) store.put(item)
+				for (const key of deletes) store.delete(key)
+
+				tx.oncomplete = () => resolve()
+				tx.onerror = () => reject(tx.error)
+			})
+	)
+}
+
+export function getAllPlannerItems(): Promise<StoredPlannerItem[]> {
+	return runRequest<StoredPlannerItem[]>(PLANNER_STORE, "readonly", (store) =>
+		store.getAll()
+	)
+}
+
+export function replaceAllPlannerItems(items: StoredPlannerItem[]): Promise<void> {
+	return openDB().then(
+		(db) =>
+			new Promise<void>((resolve, reject) => {
+				const tx = db.transaction(PLANNER_STORE, "readwrite")
+				const store = tx.objectStore(PLANNER_STORE)
+
+				store.clear()
+				for (const item of items) store.put(item)
+
+				tx.oncomplete = () => resolve()
+				tx.onerror = () => reject(tx.error)
+			})
+	)
+}
+
+export function clearPlannerItems(): Promise<void> {
+	return runRequest(PLANNER_STORE, "readwrite", (store) =>
 		store.clear()
 	).then(() => undefined)
 }

@@ -2,6 +2,15 @@ import { EnumMaterialType, EnumRarity } from "@/data/items"
 
 export type Inventory = Record<string, number>
 
+// The `inventory` IndexedDB store keeps one row per material instead of a
+// single Record<id, amount> blob, so a single-material update (the common
+// case - a stepper click, a currency edit) only touches the row that
+// changed instead of rewriting the whole collection.
+export type StoredInventoryItem = {
+	id: string
+	amount: number
+}
+
 export type CumulativeInventory = Record<
 	string,
 	{

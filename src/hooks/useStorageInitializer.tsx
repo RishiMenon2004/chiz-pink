@@ -6,6 +6,8 @@ import { setLocalBootstrapPending } from "@/helpers/syncGate"
 import * as memoryStorage from "@/helpers/storage/memoryStorage"
 import { migrateFromLocalStorage } from "@/helpers/storage/migration"
 import { hydratePullsCache } from "./useGachaStore"
+import { hydrateInventoryCache } from "./useInventoryStore"
+import { hydratePlannerCache } from "./usePlannerStore"
 
 // Boots the IndexedDB-backed storage layer once per page load (see
 // docs/plans/localstorage-to-indexeddb-migration.md Phase 4):
@@ -15,9 +17,11 @@ import { hydratePullsCache } from "./useGachaStore"
 // 2. memoryStorage.hydrate() - loads the keyval store into the synchronous
 //    cache every *Store hook reads from (or flips into localStorage
 //    fallback mode if IndexedDB isn't available).
-// 3. hydratePullsCache() - same idea for useGachaStore's own cache, which
-//    isn't part of memoryStorage's keyval store. Runs after step 2 since it
-//    needs memoryStorage.isFallbackMode() to already be accurate.
+// 3. hydratePullsCache()/hydrateInventoryCache()/hydratePlannerCache() -
+//    same idea for the three stores' own caches (pulls, inventory, planner
+//    are normalized IndexedDB stores, not part of memoryStorage's generic
+//    keyval store). Run after step 2 since they need
+//    memoryStorage.isFallbackMode() to already be accurate.
 //
 // setLocalBootstrapPending(false) always runs, even if a step throws -
 // otherwise every *Store write would stay gated open forever (see
@@ -35,7 +39,11 @@ export function useStorageInitializer() {
 
 			try {
 				await memoryStorage.hydrate()
-				await hydratePullsCache()
+				await Promise.all([
+					hydratePullsCache(),
+					hydrateInventoryCache(),
+					hydratePlannerCache(),
+				])
 			} catch (error) {
 				console.error("Storage hydration failed", error)
 			} finally {

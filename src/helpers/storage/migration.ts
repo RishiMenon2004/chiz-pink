@@ -1,4 +1,6 @@
 import type { BannerType, PullsRecord } from "@/types/pulls"
+import type { Inventory, StoredInventoryItem } from "@/types/inventory"
+import type { PlannerRecord, StoredPlannerItem } from "@/types/planner"
 
 import { SERVER_FALLBACK as CHECKLIST_FALLBACK } from "@/hooks/useChecklistStore"
 import { SERVER_FALLBACK as INVENTORY_FALLBACK } from "@/hooks/useInventoryStore"
@@ -29,20 +31,14 @@ const BANNER_TYPES: BannerType[] = [
 	"permanentBanner",
 ]
 
-// gachaPulls is deliberately excluded here - it's unpacked into the
-// normalized `pulls` store instead of copied as a single keyval blob (§4).
-const BLOB_KEYS = [
-	"checklist",
-	"inventory",
-	"planner",
-	"hybridPlanner",
-	"settings",
-] as const
+// gachaPulls, inventory, and planner are deliberately excluded here - each
+// is unpacked into its own normalized IndexedDB store instead of copied as
+// a single keyval blob (§4-style rationale; see migratePulls(),
+// migrateInventory(), migratePlanner() below).
+const BLOB_KEYS = ["checklist", "hybridPlanner", "settings"] as const
 
 const BLOB_FALLBACKS = {
 	checklist: CHECKLIST_FALLBACK,
-	inventory: INVENTORY_FALLBACK,
-	planner: PLANNER_FALLBACK,
 	hybridPlanner: HYBRID_PLANNER_FALLBACK,
 	settings: SETTINGS_FALLBACK,
 } satisfies Record<(typeof BLOB_KEYS)[number], unknown>
@@ -53,6 +49,8 @@ const PRIMITIVE_KEYS = ["lastUpdated", "lastSynced", "lastSeen"] as const
 // anything to migrate at all (a fresh install has none of these).
 const ALL_LEGACY_KEYS = [
 	...BLOB_KEYS,
+	"inventory",
+	"planner",
 	"gachaPulls",
 	"hasVisited",
 	...PRIMITIVE_KEYS,
@@ -64,6 +62,8 @@ const ALL_LEGACY_KEYS = [
 // excluded: it's a one-time splash flag, not user data worth gating on sync.
 const LEGACY_BACKUP_KEYS = [
 	...BLOB_KEYS,
+	"inventory",
+	"planner",
 	"gachaPulls",
 	"lastUpdated",
 	"lastSeen",
@@ -85,6 +85,43 @@ function migrateBlobs(): Promise<void> {
 			return idbStorage.set(key, value)
 		})
 	).then(() => undefined)
+}
+
+function migrateInventory(): Promise<void> {
+	const raw = window.localStorage.getItem("inventory")
+	if (raw === null) return Promise.resolve()
+
+	const inventory = safeParse<Inventory>(raw, INVENTORY_FALLBACK, "inventory")
+	const rows: StoredInventoryItem[] = Object.entries(inventory).map(
+		([id, amount]) => ({ id, amount })
+	)
+
+	return idbStorage.putInventoryItems(rows)
+}
+
+function migratePlanner(): Promise<void> {
+	const raw = window.localStorage.getItem("planner")
+	if (raw === null) return Promise.resolve()
+
+	const planner = safeParse<PlannerRecord>(raw, PLANNER_FALLBACK, "planner")
+	const rows: StoredPlannerItem[] = [
+		...Object.entries(planner.characters).map(
+			([refId, data]): StoredPlannerItem => ({
+				itemType: "character",
+				refId,
+				data,
+			})
+		),
+		...Object.entries(planner.arcs).map(
+			([refId, data]): StoredPlannerItem => ({
+				itemType: "weapon",
+				refId,
+				data,
+			})
+		),
+	]
+
+	return idbStorage.writePlannerChanges(rows, [])
 }
 
 function migratePulls(): Promise<void> {
@@ -135,7 +172,13 @@ export async function migrateFromLocalStorage(): Promise<void> {
 	if (alreadyMigrated) return
 
 	if (hasAnyLegacyData()) {
-		await Promise.all([migrateBlobs(), migratePulls(), migratePrimitives()])
+		await Promise.all([
+			migrateBlobs(),
+			migrateInventory(),
+			migratePlanner(),
+			migratePulls(),
+			migratePrimitives(),
+		])
 	}
 
 	await idbStorage.set(MIGRATION_FLAG_KEY, true)

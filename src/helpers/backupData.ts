@@ -1,8 +1,18 @@
 import { BackupData } from "@/types/settings"
 import { SERVER_FALLBACK as CHECKLIST_FALLBACK } from "@/hooks/useChecklistStore"
-import { SERVER_FALLBACK as PLANNER_FALLBACK } from "@/hooks/usePlannerStore"
+import {
+	SERVER_FALLBACK as PLANNER_FALLBACK,
+	getCachedPlanner,
+	replacePlanner,
+	clearPlanner,
+} from "@/hooks/usePlannerStore"
 import { SERVER_FALLBACK as HYBRID_PLANNER_FALLBACK } from "@/hooks/useHybridPlannerStore"
-import { SERVER_FALLBACK as INVENTORY_FALLBACK } from "@/hooks/useInventoryStore"
+import {
+	SERVER_FALLBACK as INVENTORY_FALLBACK,
+	getCachedInventory,
+	replaceInventory,
+	clearInventory,
+} from "@/hooks/useInventoryStore"
 import { SERVER_FALLBACK as SETTINGS_FALLBACK } from "@/hooks/useSettingsStore"
 import {
 	SERVER_FALLBACK as GACHA_PULL_FALLBACK,
@@ -38,8 +48,8 @@ export function buildBackupPayload(): BackupData {
 	return {
 		lastUpdated,
 		checklist: memoryStorage.getItem("checklist", CHECKLIST_FALLBACK),
-		inventory: memoryStorage.getItem("inventory", INVENTORY_FALLBACK),
-		planner: memoryStorage.getItem("planner", PLANNER_FALLBACK),
+		inventory: getCachedInventory(),
+		planner: getCachedPlanner(),
 		hybridPlanner: memoryStorage.getItem(
 			"hybridPlanner",
 			HYBRID_PLANNER_FALLBACK
@@ -81,11 +91,13 @@ export function backupImport(json: string) {
 	}
 
 	const lastUpdated = memoryStorage.getItem<number>("lastUpdated", 0)
+	const cachedPlanner = getCachedPlanner()
 	const hasLocalData =
 		memoryStorage.hasItem("checklist") ||
-		memoryStorage.hasItem("planner") ||
-		memoryStorage.hasItem("inventory") ||
-		memoryStorage.hasItem("settings")
+		memoryStorage.hasItem("settings") ||
+		Object.keys(getCachedInventory()).length > 0 ||
+		Object.keys(cachedPlanner.characters).length > 0 ||
+		Object.keys(cachedPlanner.arcs).length > 0
 	const remoteLastUpdated = Number(data.lastUpdated)
 	const hasSyncedBefore = Boolean(
 		memoryStorage.getItem<number | null>("lastSynced", null)
@@ -112,8 +124,6 @@ export function backupImport(json: string) {
 
 const ERASABLE_KEYS = [
 	"checklist",
-	"inventory",
-	"planner",
 	"hybridPlanner",
 	"settings",
 	"lastUpdated",
@@ -124,6 +134,8 @@ export function eraseLocalData() {
 	for (const key of ERASABLE_KEYS) {
 		memoryStorage.removeItem(key)
 	}
+	clearInventory()
+	clearPlanner()
 	clearAllPulls()
 }
 
@@ -137,8 +149,8 @@ export function backupSetImport({
 	settings,
 }: BackupData) {
 	memoryStorage.setItem("checklist", checklist ?? CHECKLIST_FALLBACK)
-	memoryStorage.setItem("inventory", inventory ?? INVENTORY_FALLBACK)
-	memoryStorage.setItem("planner", planner ?? PLANNER_FALLBACK)
+	replaceInventory(inventory ?? INVENTORY_FALLBACK)
+	replacePlanner(planner ?? PLANNER_FALLBACK)
 	memoryStorage.setItem(
 		"hybridPlanner",
 		hybridPlanner ?? HYBRID_PLANNER_FALLBACK
