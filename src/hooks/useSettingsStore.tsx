@@ -2,7 +2,7 @@
 
 import { SettingsConfigContext } from "@/contexts"
 import { isInitialSyncPending, useInitialSyncPending } from "@/helpers/syncGate"
-import * as memoryStorage from "@/helpers/storage/memoryStorage"
+import { createKeyvalStore } from "@/helpers/storage/keyvalStore"
 import {
 	getBiWeeklyMondayResetBoundaries,
 	getBiWeeklyWednesdayResetBoundaries,
@@ -13,7 +13,7 @@ import {
 } from "@/helpers"
 import { getRefilledPixelsState } from "@/helpers/staminaReset"
 import { SettingsRecord } from "@/types/settings"
-import { ReactNode, useEffect, useSyncExternalStore } from "react"
+import { ReactNode, useEffect } from "react"
 import { checklistActions, useChecklistStore } from "./useChecklistStore"
 
 export const SERVER_FALLBACK: SettingsRecord = {
@@ -37,9 +37,10 @@ export const SERVER_FALLBACK: SettingsRecord = {
 	},
 }
 
+const store = createKeyvalStore("settings", SERVER_FALLBACK)
+
 export function readSettings() {
-	if (typeof window === "undefined") return SERVER_FALLBACK
-	return memoryStorage.getItem("settings", SERVER_FALLBACK)
+	return store.read()
 }
 
 export const settingsActions = {
@@ -62,10 +63,7 @@ export const settingsActions = {
 			typeof updater === "function" ? updater(settingsData) : updater
 		const updatedSettings = { ...settingsData, ...data }
 
-		memoryStorage.setItem("settings", updatedSettings)
-		if (!options?.silent) {
-			memoryStorage.setItem("lastUpdated", Date.now())
-		}
+		store.write(updatedSettings, options)
 	},
 
 	setConfig<K extends keyof SettingsRecord>(
@@ -86,21 +84,8 @@ export const settingsActions = {
 	},
 }
 
-const getSnapshot = () => {
-	if (typeof window === "undefined") return SERVER_FALLBACK as SettingsRecord
-	return memoryStorage.getItem("settings", SERVER_FALLBACK)
-}
-
-const getServerSnapshot = () => {
-	return SERVER_FALLBACK
-}
-
 export function useSettingsStore() {
-	const settings = useSyncExternalStore<SettingsRecord>(
-		memoryStorage.subscribe,
-		getSnapshot,
-		getServerSnapshot
-	)
+	const settings = store.useValue()
 
 	return {
 		settings,

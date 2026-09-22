@@ -1,47 +1,29 @@
 "use client"
 
-import { useSyncExternalStore } from "react"
-
 import { isInitialSyncPending } from "@/helpers/syncGate"
-import * as memoryStorage from "@/helpers/storage/memoryStorage"
+import { createKeyvalStore } from "@/helpers/storage/keyvalStore"
 import type { Inventory } from "@/types/inventory"
 
 export const SERVER_FALLBACK: Inventory = {}
+
+const store = createKeyvalStore("inventory", SERVER_FALLBACK)
 
 export function updateInventory(data: Inventory) {
 	if (typeof window === "undefined") return
 	if (isInitialSyncPending()) return
 
-	const inventoryData = memoryStorage.getItem("inventory", SERVER_FALLBACK)
-	const newInventory: Inventory = { ...inventoryData, ...data }
-
-	memoryStorage.setItem("inventory", newInventory)
-	memoryStorage.setItem("lastUpdated", Date.now())
+	const inventoryData = store.read()
+	store.write({ ...inventoryData, ...data })
 }
 
 export function replaceInventory(data: Inventory) {
 	if (typeof window === "undefined") return
 	if (isInitialSyncPending()) return
 
-	memoryStorage.setItem("inventory", data)
-	memoryStorage.setItem("lastUpdated", Date.now())
-}
-
-const getSnapshot = () => {
-	if (typeof window === "undefined") return SERVER_FALLBACK
-	return memoryStorage.getItem("inventory", SERVER_FALLBACK)
-}
-
-const getServerSnapshot = () => {
-	return SERVER_FALLBACK
+	store.write(data)
 }
 
 export function useInventoryStore() {
-	const inventory = useSyncExternalStore<Inventory>(
-		memoryStorage.subscribe,
-		getSnapshot,
-		getServerSnapshot
-	)
-
+	const inventory = store.useValue()
 	return { inventory, updateInventory }
 }

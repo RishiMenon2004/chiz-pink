@@ -7,6 +7,7 @@ import type { ChecklistRecord, ChecklistEntry } from "@/types/checklist"
 import { getAllActivitiesList } from "@/data/activities/activities"
 
 import { isInitialSyncPending } from "@/helpers/syncGate"
+import { createKeyvalStore } from "@/helpers/storage/keyvalStore"
 import * as memoryStorage from "@/helpers/storage/memoryStorage"
 
 /**
@@ -106,12 +107,13 @@ export const SERVER_FALLBACK: ChecklistRecord = {
 	},
 }
 
+const store = createKeyvalStore("checklist", SERVER_FALLBACK)
+
 let cachedChecklist: ChecklistRecord = SERVER_FALLBACK
 let lastProcessed: ChecklistRecord | null = null
 
 function readChecklist(): ChecklistRecord {
-	if (typeof window === "undefined") return SERVER_FALLBACK
-	return memoryStorage.getItem("checklist", SERVER_FALLBACK)
+	return store.read()
 }
 
 export const checklistActions = {
@@ -135,8 +137,7 @@ export const checklistActions = {
 			},
 		}
 
-		memoryStorage.setItem("checklist", updated)
-		memoryStorage.setItem("lastUpdated", Date.now())
+		store.write(updated)
 	},
 
 	// Clears activities when their reset boundaries triggers it, keeping their
@@ -187,15 +188,14 @@ export const checklistActions = {
 			)
 		}
 
-		memoryStorage.setItem("checklist", updated)
-		memoryStorage.setItem("lastUpdated", Date.now())
+		store.write(updated)
 	},
 }
 
 const getSnapshot = () => {
 	if (typeof window === "undefined") return SERVER_FALLBACK
 
-	const current = memoryStorage.getItem("checklist", SERVER_FALLBACK)
+	const current = store.read()
 
 	if (current !== lastProcessed) {
 		lastProcessed = current
@@ -227,7 +227,7 @@ const getSnapshot = () => {
 		const repaired = reconcileMissingActivities(cachedChecklist)
 
 		if (hadOldKey || repaired) {
-			memoryStorage.setItem("checklist", cachedChecklist)
+			store.write(cachedChecklist, { silent: true })
 		}
 	}
 

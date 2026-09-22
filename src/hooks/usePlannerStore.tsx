@@ -1,10 +1,9 @@
 "use client"
 
-import { useSyncExternalStore } from "react"
 import { v4 as uuidv4 } from "uuid"
 
 import { isInitialSyncPending } from "@/helpers/syncGate"
-import * as memoryStorage from "@/helpers/storage/memoryStorage"
+import { createKeyvalStore } from "@/helpers/storage/keyvalStore"
 
 import type { Material } from "@/types/item"
 import type {
@@ -28,6 +27,8 @@ import { findArc } from "@/data/arcs"
 import { calculateWeaponCosts, calculateCharacterCosts } from "@/helpers"
 
 export const SERVER_FALLBACK: PlannerRecord = { arcs: {}, characters: {} }
+
+const store = createKeyvalStore("planner", SERVER_FALLBACK)
 
 function getWeaponRequiredMaterials(
 	weapon:
@@ -102,8 +103,7 @@ function getCharRequiredMaterials(
 }
 
 function readPlanner(): PlannerRecord {
-	if (typeof window === "undefined") return SERVER_FALLBACK
-	return memoryStorage.getItem("planner", SERVER_FALLBACK)
+	return store.read()
 }
 
 export const plannerActions = {
@@ -120,8 +120,7 @@ export const plannerActions = {
 			typeof updater === "function" ? updater(plannerData) : updater
 		const updatedPlanner: PlannerRecord = { ...plannerData, ...data }
 
-		memoryStorage.setItem("planner", updatedPlanner)
-		memoryStorage.setItem("lastUpdated", Date.now())
+		store.write(updatedPlanner)
 	},
 
 	addCharacter(
@@ -324,21 +323,8 @@ export function getAggregatedMaterial(
 	return aggregatedMaterial
 }
 
-const getSnapshot = () => {
-	if (typeof window === "undefined") return SERVER_FALLBACK
-	return memoryStorage.getItem("planner", SERVER_FALLBACK)
-}
-
-const getServerSnapshot = () => {
-	return SERVER_FALLBACK
-}
-
 export function usePlannerStore() {
-	const plannerData = useSyncExternalStore<PlannerRecord>(
-		memoryStorage.subscribe,
-		getSnapshot,
-		getServerSnapshot
-	)
+	const plannerData = store.useValue()
 
 	return {
 		plannerData,
