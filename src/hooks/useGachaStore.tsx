@@ -51,37 +51,59 @@ function cloneCache(): PullsRecord {
 	}
 }
 
-// Groups incoming pulls per banner and puts them BEFORE the existing cache
-// entries (object spread order = display order - see RenderPulls.tsx's
-// Object.values() and calculatePity.ts's newest-first iteration), not
-// after. A plain `next[bannerType][pull.uid] = pull` assignment would
-// instead append every new key to the end, since bracket-assigning a new
-// key always adds it last regardless of what it logically represents -
-// putting freshly-imported pulls at the bottom of the list instead of the
-// top. `pulls` should already be newest-first (hydratePullsCache passes
-// idbStorage.getPullsByBanner()'s output; addPulls passes a freshly
-// imported batch, itself expected newest-first) so each banner's grouped
-// object preserves that order before merging.
+// Object key order = display order (see RenderPulls.tsx's Object.values()
+// and calculatePity.ts's newest-first iteration), so cachedPulls[banner]
+// must always be built newest-first.
+//
+// `timestamp` alone can't be the sort key: a single 10-pull Miracle Box (or
+// any multi-pull session) shares one identical timestamp across all of its
+// pulls, at second granularity. IndexedDB's bannerType_timestamp index has
+// no secondary key, so rows tied on timestamp come back in primary-key
+// (uid) order - an opaque id unrelated to pull order - which is what
+// scrambled the "#" column within same-timestamp groups even after sorting
+// by timestamp. `pullIndex` (see importNteExporterPulls.ts) is assigned as
+// a strictly decreasing counter while walking pulls newest-to-oldest
+// *within one import batch*, so higher pullIndex reliably means "pulled
+// more recently than" for any two pulls sharing a timestamp. It isn't
+// reliable as the PRIMARY key across separate imports done at different
+// times, though (each import recalculates it from 1 for just that batch),
+// so timestamp still has to lead.
+function comparePulls(a: Pull, b: Pull): number {
+	if (a.timestamp !== b.timestamp) return b.timestamp - a.timestamp
+	return b.pullIndex - a.pullIndex
+}
+
+function sortedBanner(pulls: Record<string, Pull>): Record<string, Pull> {
+	const sorted: Record<string, Pull> = {}
+	Object.values(pulls)
+		.sort(comparePulls)
+		.forEach((pull) => {
+			sorted[pull.uid] = pull
+		})
+	return sorted
+}
+
+// Merges incoming pulls into the cache and re-sorts every touched banner,
+// rather than assuming new pulls are always newer than everything already
+// cached - a plain prepend breaks the moment an import backfills older
+// history alongside (or instead of) new pulls.
 function applyPulls(pulls: StoredPull[]) {
 	if (pulls.length === 0) return
 
-	const grouped: Record<BannerType, Record<string, Pull>> = {
-		arcsBanner: {},
-		limitedBanner: {},
-		permanentBanner: {},
-	}
+	const next = cloneCache()
+	const touchedBanners = new Set<BannerType>()
+
 	for (const { bannerType, ...pull } of pulls) {
-		grouped[bannerType][pull.uid] = pull
+		;(next[bannerType] as Record<string, Pull>)[pull.uid] = pull
+		touchedBanners.add(bannerType)
 	}
 
-	const next = cloneCache()
-	for (const bannerType of BANNER_TYPES) {
-		if (Object.keys(grouped[bannerType]).length === 0) continue
-		;(next[bannerType] as Record<string, Pull>) = {
-			...grouped[bannerType],
-			...next[bannerType],
-		}
+	for (const bannerType of touchedBanners) {
+		;(next[bannerType] as Record<string, Pull>) = sortedBanner(
+			next[bannerType]
+		)
 	}
+
 	cachedPulls = next
 }
 
@@ -115,10 +137,12 @@ export async function hydratePullsCache(): Promise<void> {
 	}
 
 	try {
-		// getAllPulls() would return rows sorted by uid (the store's primary
-		// key) - an opaque id with no relation to pull order. Reading each
-		// banner through its bannerType_timestamp index instead gives rows
-		// already newest-first, matching what applyPulls() expects.
+		// Reading getAllPulls() would return rows sorted by uid (the store's
+		// primary key), unrelated to pull order; reading per banner through
+		// bannerType_timestamp at least narrows it to one banner and gets
+		// mostly-newest-first rows. applyPulls() still does the authoritative
+		// (timestamp, pullIndex) sort below - see its comment for why the
+		// index alone isn't precise enough (same-timestamp ties).
 		const rowsByBanner = await Promise.all(
 			BANNER_TYPES.map((bannerType) => idbStorage.getPullsByBanner(bannerType))
 		)
