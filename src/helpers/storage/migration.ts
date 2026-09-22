@@ -161,11 +161,23 @@ function migratePulls(): Promise<void> {
 		"gachaPulls"
 	)
 
-	return Promise.all(
-		BANNER_TYPES.map((bannerType) =>
-			idbStorage.putPulls(Object.values(pullsRecord[bannerType]), bannerType)
-		)
-	).then(() => undefined)
+	// Object.values(pullsRecord[bannerType]) is already newest-first - every
+	// historical addPulls() call (see useGachaStore.tsx) has always spread
+	// new pulls before existing ones when building this blob. That order is
+	// about to be discarded by writing rows into a uid-keyed store, so seq
+	// captures it explicitly: one counter shared across all three banners
+	// (arcsBanner, then limitedBanner, then permanentBanner), 0 for the
+	// very first pull walked. See StoredPull's comment for why this exists.
+	let seq = 0
+	const writes = BANNER_TYPES.map((bannerType) => {
+		const pulls = Object.values(pullsRecord[bannerType]).map((pull) => ({
+			...pull,
+			seq: seq++,
+		}))
+		return idbStorage.putPulls(pulls, bannerType)
+	})
+
+	return Promise.all(writes).then(() => undefined)
 }
 
 function migratePrimitives(): Promise<void> {

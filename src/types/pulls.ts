@@ -112,4 +112,14 @@ export type Pull = MiracleBoxPull | ScarboroughFairPull
 // The `pulls` IndexedDB store keeps one row per pull instead of the nested
 // per-banner blobs in PullsRecord, so each row carries its banner alongside
 // the pull for the bannerType/timestamp index.
-export type StoredPull = Pull & { bannerType: BannerType }
+//
+// `seq` records where this pull fell in an already-correctly-ordered write
+// (the legacy localStorage blob's Object.values() order at migration time,
+// or an NTE-exporter batch's own sorted order for a live import) - see
+// useGachaStore.tsx's comparePulls(). `timestamp` alone can't disambiguate
+// pulls from the same multi-pull session (they share one timestamp at
+// second granularity) and `pullIndex` collapses to -1 for every non-dice
+// Scarborough Fair pull, so neither is a safe tiebreak on its own. Optional
+// because rows written before this field existed won't have it - those
+// fall back to the pullIndex tiebreak.
+export type StoredPull = Pull & { bannerType: BannerType; seq?: number }

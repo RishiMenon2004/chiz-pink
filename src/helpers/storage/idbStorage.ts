@@ -135,7 +135,12 @@ export function getAll(): Promise<Record<string, unknown>> {
 
 // Batched per-pull writes so importing new pulls only touches the rows that
 // changed, instead of rewriting the whole gachaPulls history (see plan §4).
-export function putPulls(pulls: Pull[], bannerType: BannerType): Promise<void> {
+// `seq` (see StoredPull) is the caller's job to assign - migratePulls() and
+// addPulls() each know their own already-correctly-ordered input.
+export function putPulls(
+	pulls: (Pull & { seq?: number })[],
+	bannerType: BannerType
+): Promise<void> {
 	if (pulls.length === 0) return Promise.resolve()
 
 	return openDB().then(
@@ -192,7 +197,10 @@ export function getPullsByBanner(
 // per pull would leave behind rows that no longer exist in the imported
 // set, since put() only ever upserts.
 export function replaceAllPulls(
-	pullsByBanner: { bannerType: BannerType; pulls: Pull[] }[]
+	pullsByBanner: {
+		bannerType: BannerType
+		pulls: (Pull & { seq?: number })[]
+	}[]
 ): Promise<void> {
 	return openDB().then(
 		(db) =>

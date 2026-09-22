@@ -59,21 +59,26 @@ function cloneCache(): PullsRecord {
 // any multi-pull session) shares one identical timestamp across all of its
 // pulls, at second granularity. IndexedDB's bannerType_timestamp index has
 // no secondary key, so rows tied on timestamp come back in primary-key
-// (uid) order - an opaque id unrelated to pull order - which is what
-// scrambled the "#" column within same-timestamp groups even after sorting
-// by timestamp. `pullIndex` (see importNteExporterPulls.ts) is assigned as
-// a strictly decreasing counter while walking pulls newest-to-oldest
-// *within one import batch*, so higher pullIndex reliably means "pulled
-// more recently than" for any two pulls sharing a timestamp. It isn't
-// reliable as the PRIMARY key across separate imports done at different
-// times, though (each import recalculates it from 1 for just that batch),
-// so timestamp still has to lead.
-function comparePulls(a: Pull, b: Pull): number {
+// (uid) order - an opaque id unrelated to pull order.
+//
+// `seq` (see StoredPull) is the real tiebreak when present - it's assigned
+// from an already-correctly-ordered source (the legacy blob at migration
+// time, or an import batch's own sort), so it's exact, unlike `pullIndex`
+// which collapses to -1 for every non-dice Scarborough Fair pull and ties
+// just as badly. seq is only meaningful as a tiebreak *within* a shared
+// timestamp, never as the primary key across genuinely different import
+// times (each write assigns it fresh, so equal seq values from different
+// writes aren't comparable) - that's why timestamp is still checked first.
+// Rows written before this field existed fall back to pullIndex.
+function comparePulls(a: Pull & { seq?: number }, b: Pull & { seq?: number }): number {
 	if (a.timestamp !== b.timestamp) return b.timestamp - a.timestamp
+	if (a.seq !== undefined && b.seq !== undefined) return a.seq - b.seq
 	return b.pullIndex - a.pullIndex
 }
 
-function sortedBanner(pulls: Record<string, Pull>): Record<string, Pull> {
+function sortedBanner(
+	pulls: Record<string, Pull & { seq?: number }>
+): Record<string, Pull> {
 	const sorted: Record<string, Pull> = {}
 	Object.values(pulls)
 		.sort(comparePulls)
@@ -100,7 +105,7 @@ function applyPulls(pulls: StoredPull[]) {
 
 	for (const bannerType of touchedBanners) {
 		;(next[bannerType] as Record<string, Pull>) = sortedBanner(
-			next[bannerType]
+			next[bannerType] as Record<string, Pull & { seq?: number }>
 		)
 	}
 
@@ -214,9 +219,13 @@ export const gachaPullsActions = {
 		const filteredPulls = pulls.filter((pull) => !existingUids.has(pull.uid))
 
 		if (filteredPulls.length > 0) {
-			const storedPulls: StoredPull[] = filteredPulls.map((pull) => ({
+			// filteredPulls is already newest-first (parseNteExporterImport
+			// sorts it before addPulls ever sees it), so its own array index
+			// is a valid seq - see StoredPull's comment.
+			const storedPulls: StoredPull[] = filteredPulls.map((pull, seq) => ({
 				...pull,
 				bannerType,
+				seq,
 			}))
 
 			applyPulls(storedPulls)
@@ -225,7 +234,7 @@ export const gachaPullsActions = {
 				pulls: storedPulls,
 			})
 
-			idbStorage.putPulls(filteredPulls, bannerType).catch((error) => {
+			idbStorage.putPulls(storedPulls, bannerType).catch((error) => {
 				console.error(
 					`IndexedDB write-through failed for pulls (${bannerType})`,
 					error
@@ -266,7 +275,12 @@ export function replaceAllPulls(pullsRecord: PullsRecord): void {
 		.replaceAllPulls(
 			BANNER_TYPES.map((bannerType) => ({
 				bannerType,
-				pulls: Object.values(pullsRecord[bannerType]),
+				// pullsRecord came from a cache that was itself built (and kept)
+				// in the correct order by applyPulls() - Object.values() here
+				// preserves that, same as migratePulls().
+				pulls: Object.values(pullsRecord[bannerType]).map(
+					(pull, seq) => ({ ...pull, seq })
+				),
 			}))
 		)
 		.catch((error) => {
