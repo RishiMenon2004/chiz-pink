@@ -3,7 +3,7 @@ import { WeaponMaterialsCost, WeaponRecord } from "@/types/planner"
 import { findArc } from "@/data/arcs"
 import { weaponPhasesMaterials } from "@/data/arcs/arc"
 
-import { getCostAmount } from "@/helpers"
+import { getCostAmount } from "@/helpers/getCostAmountWithRarity"
 
 export const weaponExpAmount = {
 	common: 500,

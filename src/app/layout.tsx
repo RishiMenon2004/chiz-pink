@@ -15,6 +15,7 @@ import {
 } from "@/components/layout"
 
 import { CloudSyncProvider, ServiceWorkerRegister } from "@/helpers"
+import { AppStorageInitializer } from "@/helpers/AppStorageInitializer"
 
 import { Analytics } from "@vercel/analytics/next"
 import { SettingsProvider } from "@/hooks/useSettingsStore"
@@ -90,6 +91,7 @@ export default function RootLayout({
 			className={`${barlowCondensed.variable} ${syne.variable}`}
 		>
 			<body>
+				<AppStorageInitializer />
 				<AuthProvider>
 					<SettingsProvider>
 						<ConvexClientProvider>

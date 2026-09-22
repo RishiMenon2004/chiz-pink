@@ -24,7 +24,8 @@ import {
 import { findCharacter } from "@/data/characters"
 import { findArc } from "@/data/arcs"
 
-import { calculateWeaponCosts, calculateCharacterCosts } from "@/helpers"
+import { calculateWeaponCosts } from "@/helpers/calculateWeaponCosts"
+import { calculateCharacterCosts } from "@/helpers/calculateCharacterCosts"
 
 export const SERVER_FALLBACK: PlannerRecord = { arcs: {}, characters: {} }
 

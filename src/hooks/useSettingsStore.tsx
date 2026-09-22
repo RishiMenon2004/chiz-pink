@@ -10,7 +10,7 @@ import {
 	getMonthlyResetBoundaries,
 	getSeasonalResetBoundaries,
 	getWeeklyResetBoundaries,
-} from "@/helpers"
+} from "@/helpers/resetBoundaries"
 import { getRefilledPixelsState } from "@/helpers/staminaReset"
 import { SettingsRecord } from "@/types/settings"
 import { ReactNode, useEffect } from "react"

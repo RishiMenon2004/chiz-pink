@@ -76,11 +76,18 @@ export function safeParse<T>(raw: string | null, fallback: T, key: string): T {
 export function validateShape<T>(value: unknown, fallback: T, key: string): T {
 	if (value === undefined) return fallback
 
+	// A null fallback (e.g. memoryStorage.getItem<number | null>(key, null))
+	// is a "don't know the real shape yet" placeholder, not a shape to check
+	// against - typeof null is "object" in JS, which would otherwise reject
+	// every legitimate non-object value (a number, a string) the placeholder
+	// stands in for.
+	if (fallback === null) return value as T
+
 	const expectedIsArray = Array.isArray(fallback)
 	const expectedType = typeof fallback
 
 	const shapeMatches =
-		expectedType === "object" && fallback !== null
+		expectedType === "object"
 			? typeof value === "object" &&
 				value !== null &&
 				Array.isArray(value) === expectedIsArray
