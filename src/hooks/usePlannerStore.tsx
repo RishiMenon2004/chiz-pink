@@ -32,6 +32,8 @@ import { findArc } from "@/data/arcs"
 import { calculateWeaponCosts } from "@/helpers/calculateWeaponCosts"
 import { calculateCharacterCosts } from "@/helpers/calculateCharacterCosts"
 
+import { plannerOrderActions } from "./usePlannerOrderStore"
+
 // Planner lives in IndexedDB's normalized `planner` store (one row per
 // character/weapon, keyed by [itemType, refId] - see
 // src/types/planner.ts), not memoryStorage's generic keyval cache, so this
@@ -244,6 +246,7 @@ export const plannerActions = {
 				...current.characters,
 			},
 		}))
+		plannerOrderActions.prependToOrder("characters", char.id)
 	},
 
 	updateCharacter(char: CharacterRecord) {
@@ -282,6 +285,7 @@ export const plannerActions = {
 				...current.arcs,
 			},
 		}))
+		plannerOrderActions.prependToOrder("arcs", newUID)
 	},
 
 	updateWeapon(weapon: WeaponRecord) {
