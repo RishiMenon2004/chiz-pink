@@ -13,6 +13,17 @@ export const SERVER_FALLBACK: PlannerOrderRecord = {
 
 const store = createKeyvalStore("plannerOrder", SERVER_FALLBACK)
 
+// Items without an explicit position (new adds, or a fresh install with no
+// saved order yet) sort to the front, ahead of the explicitly-ordered ids -
+// matches addCharacter/addWeapon already prepending new entries to the
+// planner record itself. Shared by usePlannerItems.tsx (live render order)
+// and backupData.ts (export order), so both agree on what "the order" is.
+export function applyOrder(order: string[], availableIds: string[]): string[] {
+	const orderedIds = order.filter((id) => availableIds.includes(id))
+	const remainingIds = availableIds.filter((id) => !orderedIds.includes(id))
+	return [...remainingIds, ...orderedIds]
+}
+
 export const plannerOrderActions = {
 	setHybridOrder(order: string[]) {
 		if (typeof window === "undefined") return

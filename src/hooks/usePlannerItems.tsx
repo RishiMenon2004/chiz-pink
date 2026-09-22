@@ -2,20 +2,10 @@
 
 import { useMemo } from "react"
 import { usePlannerStore } from "./usePlannerStore"
-import { usePlannerOrderStore } from "./usePlannerOrderStore"
+import { usePlannerOrderStore, applyOrder } from "./usePlannerOrderStore"
 import { CharacterRecord, PlannerRecord, WeaponRecord } from "@/types/planner"
 import { isSortable } from "@dnd-kit/react/sortable"
 import type { DragEndEvent } from "@dnd-kit/dom"
-
-// Items without an explicit position (new adds, or a fresh install with no
-// saved order yet) sort to the front, ahead of the explicitly-ordered ids -
-// matches addCharacter/addWeapon already prepending new entries to the
-// planner record itself.
-function applyOrder(order: string[], availableIds: string[]): string[] {
-	const orderedIds = order.filter((id) => availableIds.includes(id))
-	const remainingIds = availableIds.filter((id) => !orderedIds.includes(id))
-	return [...remainingIds, ...orderedIds]
-}
 
 export function usePlannerItems(plannerType: keyof PlannerRecord | "both") {
 	const { plannerData } = usePlannerStore()
