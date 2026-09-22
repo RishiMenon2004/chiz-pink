@@ -21,18 +21,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
 			priority: 0.8,
 		},
 		{
-			url: `${baseUrl}/characters`,
-			lastModified: now,
-			changeFrequency: "weekly",
-			priority: 0.9,
-		},
-		{
-			url: `${baseUrl}/arcs`,
-			lastModified: now,
-			changeFrequency: "weekly",
-			priority: 0.9,
-		},
-		{
 			url: `${baseUrl}/planner`,
 			lastModified: now,
 			changeFrequency: "weekly",
@@ -43,6 +31,18 @@ export default function sitemap(): MetadataRoute.Sitemap {
 			lastModified: now,
 			changeFrequency: "weekly",
 			priority: 0.8,
+		},
+		{
+			url: `${baseUrl}/planner/characters`,
+			lastModified: now,
+			changeFrequency: "weekly",
+			priority: 0.9,
+		},
+		{
+			url: `${baseUrl}/planner/arcs`,
+			lastModified: now,
+			changeFrequency: "weekly",
+			priority: 0.9,
 		},
 		{
 			url: `${baseUrl}/pulls`,
