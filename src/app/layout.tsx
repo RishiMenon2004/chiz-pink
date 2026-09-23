@@ -14,7 +14,11 @@ import {
 	SplashScreen,
 } from "@/components/layout"
 
-import { CloudSyncProvider, ServiceWorkerRegister } from "@/helpers"
+import {
+	CloudSyncProvider,
+	ServiceWorkerRegister,
+	SyncErrorBoundary,
+} from "@/helpers"
 import { AppStorageInitializer } from "@/helpers/AppStorageInitializer"
 
 import { Analytics } from "@vercel/analytics/next"
@@ -95,13 +99,15 @@ export default function RootLayout({
 				<AuthProvider>
 					<SettingsProvider>
 						<ConvexClientProvider>
-							<CloudSyncProvider>
-								<ServiceWorkerRegister />
-								<SplashScreen />
-								<Sidebar />
-								<CurrencyBar />
-								{children}
-							</CloudSyncProvider>
+							<SyncErrorBoundary>
+								<CloudSyncProvider>
+									<ServiceWorkerRegister />
+									<SplashScreen />
+									<Sidebar />
+									<CurrencyBar />
+									{children}
+								</CloudSyncProvider>
+							</SyncErrorBoundary>
 						</ConvexClientProvider>
 					</SettingsProvider>
 				</AuthProvider>

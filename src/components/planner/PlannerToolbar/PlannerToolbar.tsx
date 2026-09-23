@@ -115,7 +115,7 @@ export function PlannerToolbar() {
 			</AddNewArcContext.Provider>
 
 			<button
-				disabled={itemsList.length <= 1}
+				disabled={(itemsList.length ?? 0) <= 1}
 				className={`pill-button ${toolbarStyles.toolbarButton} ${styles.hideOnDesktop}`}
 				onClick={() => setShowReorder(true)}>
 				ADJUST PRIORITY

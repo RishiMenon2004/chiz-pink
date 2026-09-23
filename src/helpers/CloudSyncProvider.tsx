@@ -9,34 +9,39 @@ import { api } from "@convex/_generated/api"
 import { CloudSyncContext } from "@/contexts"
 import { AlertContainer } from "@/components/layout/Alert"
 import { ModalContainer } from "@/components/layout/Modal"
+import { SyncConflictModal } from "@/components/layout/SyncConflictModal"
 
 import {
 	backupImport,
 	backupSetImport,
-	buildBackupPayload,
+	backupSetMainImport,
+	buildMainPayload,
+	buildGachaPayload,
 	eraseLocalData,
 	markSynced,
 } from "./backupData"
-import { decryptBackupPayload, encryptBackupPayload } from "./backupCrypto"
+import {
+	decryptBackupPayload,
+	encryptBackupPayload,
+	hashBackupPayload,
+	type MainBackupData,
+	type GachaBackupData,
+} from "./backupCrypto"
 import { getOrCreateBackupKey } from "./driveBackupKey"
 import { setInitialSyncPending } from "./syncGate"
 import { clearCorruption, useCorruptedKeys } from "./dataCorruption"
+import { mergePullsRecord } from "@/hooks/useGachaStore"
 import * as memoryStorage from "./storage/memoryStorage"
 
-const AUTO_SYNC_DEBOUNCE_MS = 4000
+const AUTO_SYNC_DEBOUNCE_MS = 30000
 
 type SyncStatus = "idle" | "syncing" | "synced" | "error"
+// The one remaining conflict prompt - first sign-in on this device with
+// pre-existing data on both sides. Every other case resolves silently via
+// true Last-Write-Wins.
 type RestorePrompt = {
-	kind: "older" | "overwrite"
 	data: ReturnType<typeof backupImport>["data"]
 	localLastUpdated: number | null
-}
-
-// Local's lastUpdated is missing entirely when there's no prior sync history
-// (the "overwrite" conflict case) - relative age can't be determined then.
-function describeAge(value: number | null, other: number | null) {
-	if (value == null || other == null || value === other) return null
-	return value > other ? "newer" : "older"
 }
 
 export function CloudSyncProvider({ children }: { children: React.ReactNode }) {
@@ -69,6 +74,9 @@ export function CloudSyncProvider({ children }: { children: React.ReactNode }) {
 	// over a good cloud backup, or pull while the user hasn't decided.
 	const corruptedKeys = useCorruptedKeys()
 	const hasCorruption = corruptedKeys.length > 0
+	// Whether the initial reconcile against the live `row` query has
+	// completed at least once since the last key epoch (sign-in/out cycle).
+	const [initialReconcileDone, setInitialReconcileDone] = useState(false)
 
 	const keyRef = useRef<CryptoKey | null>(null)
 	const isSyncingRef = useRef(false)
@@ -79,6 +87,13 @@ export function CloudSyncProvider({ children }: { children: React.ReactNode }) {
 	// The row's lastUpdated we last reconciled or pushed - skips redundant
 	// reconciliation when the live query re-fires for a write we caused.
 	const lastReconciledRef = useRef<number | null>(null)
+	const lastReconciledGachaRef = useRef<number | null>(null)
+	// Content fingerprint (SHA-256) of whichever payload we most recently
+	// confirmed matches Convex, pushed or pulled - lets pushToConvex skip the
+	// actual mutation when a slice's content hasn't changed even though its
+	// lastUpdated timestamp did.
+	const lastPushedMainHashRef = useRef<string | null>(null)
+	const lastPushedGachaHashRef = useRef<string | null>(null)
 	const mountedRef = useRef(true)
 	// Holds the latest runSync so it can call itself for a queued retry
 	// without closing over its own useCallback binding (which the React
@@ -89,7 +104,10 @@ export function CloudSyncProvider({ children }: { children: React.ReactNode }) {
 	// an existing session (see the account-status effect below).
 	const hasBeenUnauthenticatedRef = useRef(false)
 	const hasClearedUnlinkRef = useRef(false)
-	const hasPushedInitialBackupRef = useRef(false)
+	// One-shot per key epoch (sign-in/out cycle) - guards the "converge"
+	// effect below so it pushes local up to Convex at most once per epoch
+	// instead of on every render once its condition is true.
+	const hasPushedThisEpochRef = useRef(false)
 
 	useEffect(() => {
 		mountedRef.current = true
@@ -113,32 +131,62 @@ export function CloudSyncProvider({ children }: { children: React.ReactNode }) {
 				setKeyReady(true)
 			})
 			.catch((error) => {
-				console.error("Failed to get backup key from Drive", error)
+				console.error(
+					"Failed to acquire backup key from Google Drive",
+					error
+				)
+				setStatus("error")
 			})
 	}, [convexAuth.isAuthenticated, accessToken])
 
-	// No reset-on-sign-out effect needed here: next-auth's signOut() does a
-	// full page redirect (see RenderSettings.tsx), so a fresh sign-in always
-	// remounts this provider from scratch.
-
+	// Resets the keyReady gate on sign-out so a subsequent sign-in (even as
+	// the same user) is forced to go through getOrCreateBackupKey again.
+	// Also resets initialReconcileDone, since a new key epoch means the
+	// current row (if any) hasn't been reconciled against it yet - leaving
+	// this stale would let initialCheckComplete go true off last epoch's
+	// reconcile before the fresh one actually runs.
 	useEffect(() => {
-		if (sessionStatus === "unauthenticated")
+		if (convexAuth.isLoading) return
+		if (!convexAuth.isAuthenticated) {
 			hasBeenUnauthenticatedRef.current = true
-	}, [sessionStatus])
+			hasClearedUnlinkRef.current = false
+			hasStartedKeyFetchRef.current = false
+			keyRef.current = null
+			lastReconciledRef.current = null
+			lastReconciledGachaRef.current = null
+			lastPushedMainHashRef.current = null
+			lastPushedGachaHashRef.current = null
+			hasPushedThisEpochRef.current = false
+			// eslint-disable-next-line react-hooks/set-state-in-effect
+			setKeyReady(false)
+			setStatus("idle")
+			setRestorePrompt(null)
+			setFailedRemoteRow(null)
+			setInitialReconcileDone(false)
+		}
+	}, [convexAuth.isLoading, convexAuth.isAuthenticated])
 
-	const clearUnlinked = useMutation(api.accountStatus.clearUnlinked)
+	const clearUnlinked = useMutation(api.backups.clearUnlinked)
 
-	// Live subscription to whether some other device unlinked this account.
-	// Any signed-in device (this one included) reacts to the push instantly -
-	// no need for that device to still be reachable or its own Google token
-	// to still be valid.
-	const isUnlinked = useQuery(
-		api.accountStatus.isUnlinked,
+	// Live subscription to the main application backup (checklist, inventory, planner, settings)
+	const row = useQuery(
+		api.backups.getBackup,
 		convexAuth.isAuthenticated ? {} : "skip"
 	)
 
+	// Live subscription to decoupled gacha pulls backup
+	const gachaRow = useQuery(
+		api.gachaBackups.getBackup,
+		convexAuth.isAuthenticated ? {} : "skip"
+	)
+
+	// Whether some other device unlinked this account - rides on the same
+	// `row` subscription used for main sync instead of a dedicated query.
+	// deleteBackup clears content on unlink but keeps the row so this marker
+	// survives (see convex/backups.ts), so any signed-in device (this one
+	// included) reacts to it instantly.
 	useEffect(() => {
-		if (!isUnlinked) return
+		if (row === undefined || row === null || row.unlinkedAt == null) return
 
 		// A fresh, explicit sign-in in this tab (session went unauthenticated
 		// -> authenticated) after being unlinked is the user deliberately
@@ -156,38 +204,21 @@ export function CloudSyncProvider({ children }: { children: React.ReactNode }) {
 		// elsewhere, or a device resuming a session that was unlinked while it
 		// was closed - either way, force it back to signed out.
 		signOut()
-	}, [isUnlinked, clearUnlinked])
-
-	// The live subscription itself - this is the "push update" mechanism.
-	// Any device's write to this row re-runs this hook on every other
-	// subscribed device, no polling or focus/visibility listeners needed.
-	const row = useQuery(
-		api.backups.getBackup,
-		convexAuth.isAuthenticated ? {} : "skip"
-	)
+	}, [row, clearUnlinked])
 
 	// True when this specific row (by lastUpdated) failed to decrypt or parse
 	// - the cloud backup itself is unreadable, not just local.
 	const remoteCorrupt = row != null && failedRemoteRow === row.lastUpdated
 
-	// row === undefined => still loading; null => resolved, no backup yet. A
-	// non-null row still needs the async reconcile effect below to decrypt
-	// and merge it before local data can be trusted, so we also wait on
-	// initialReconcileDone - otherwise writes unblock as soon as the row
-	// answers, racing ahead of the actual pull and making local look newer
-	// than the backup about to replace it (false conflict prompt on every
-	// load). hasCorruption bypasses this too, since a corrupted key makes the
-	// reconcile effect skip its decrypt forever - the corruption modal drives
-	// resolution from there instead.
-	const [initialReconcileDone, setInitialReconcileDone] = useState(false)
 	const initialCheckComplete =
 		keyReady &&
 		row !== undefined &&
-		(row === null || initialReconcileDone || hasCorruption)
+		(row === null ||
+			row.lastUpdated == null ||
+			initialReconcileDone ||
+			hasCorruption)
 
-	// Blocks the settings/planner/inventory stores from writing to localStorage
-	// while it's still unknown whether an authenticated pull is about to land -
-	// see syncGate.ts.
+	// Blocks stores from writing while it's still unknown whether an authenticated pull is about to land
 	useEffect(() => {
 		const pending =
 			sessionStatus === "loading" ||
@@ -196,10 +227,11 @@ export function CloudSyncProvider({ children }: { children: React.ReactNode }) {
 		setInitialSyncPending(pending)
 	}, [sessionStatus, initialCheckComplete])
 
-	// Reconciles whenever a new row comes down the live query, using the same
-	// rules as a manual file import.
+	// Reconciles main backup whenever a new row comes down the live query
 	useEffect(() => {
 		if (!keyReady || row === undefined || row === null) return
+		const { ciphertext, iv, lastUpdated } = row
+		if (ciphertext == null || iv == null || lastUpdated == null) return
 		if (
 			restorePrompt ||
 			hasCorruption ||
@@ -208,26 +240,26 @@ export function CloudSyncProvider({ children }: { children: React.ReactNode }) {
 			isReconcilingRef.current
 		)
 			return
-		if (lastReconciledRef.current === row.lastUpdated) return
+		if (lastReconciledRef.current === lastUpdated) return
 
 		const key = keyRef.current
 		if (!key) return
 
 		isReconcilingRef.current = true
-		decryptBackupPayload(key, row.ciphertext, row.iv)
-			.then((data) => {
+		decryptBackupPayload<MainBackupData>(key, ciphertext, iv)
+			.then(async (data) => {
 				if (!mountedRef.current) return
-				lastReconciledRef.current = row.lastUpdated
+				lastReconciledRef.current = lastUpdated
+				lastPushedMainHashRef.current = await hashBackupPayload(data)
 
 				const result = backupImport(JSON.stringify(data))
 
-				if (result.status === "synced") {
-					markSynced()
-					setStatus("synced")
-					setLastSyncedAt(Date.now())
-					setLatestBackupUpdatedAt(
-						Number(result.data.lastUpdated) || Date.now()
+				if (result.status === "overwrite") {
+					const localLastUpdated = memoryStorage.getItem<number | null>(
+						"lastUpdated",
+						null
 					)
+					setRestorePrompt({ data: result.data, localLastUpdated })
 				} else if (result.status === "newer") {
 					backupSetImport(result.data)
 					markSynced()
@@ -236,22 +268,26 @@ export function CloudSyncProvider({ children }: { children: React.ReactNode }) {
 					setLatestBackupUpdatedAt(
 						Number(result.data.lastUpdated) || Date.now()
 					)
-				} else if (
-					result.status === "older" ||
-					result.status === "overwrite"
-				) {
-					const localLastUpdated =
-						memoryStorage.getItem<number | null>("lastUpdated", null)
-					setRestorePrompt({
-						kind: result.status,
-						data: result.data,
-						localLastUpdated,
-					})
+				} else {
+					// "synced": local already matches or leads under LWW. Only
+					// reflect it here on an exact match - a strictly-ahead local
+					// gets pushed up immediately by the converge effect below,
+					// which sets this same state off the freshly-pushed value.
+					const localLastUpdated = memoryStorage.getItem<number>(
+						"lastUpdated",
+						0
+					)
+					if (localLastUpdated === lastUpdated) {
+						markSynced()
+						setStatus("synced")
+						setLastSyncedAt(Date.now())
+						setLatestBackupUpdatedAt(lastUpdated)
+					}
 				}
 			})
 			.catch((error) => {
 				console.error("Failed to decrypt Convex backup", error)
-				setFailedRemoteRow(row.lastUpdated)
+				setFailedRemoteRow(lastUpdated)
 			})
 			.finally(() => {
 				isReconcilingRef.current = false
@@ -259,55 +295,161 @@ export function CloudSyncProvider({ children }: { children: React.ReactNode }) {
 			})
 	}, [row, keyReady, restorePrompt, hasCorruption, remoteCorrupt])
 
-	const upsertBackup = useMutation(api.backups.upsertBackup)
+	// Reconciles decoupled gacha pulls without modal conflicts (auto-merges by uid & signature)
+	useEffect(() => {
+		if (!keyReady || gachaRow === undefined || gachaRow === null) return
+		if (lastReconciledGachaRef.current === gachaRow.lastUpdated) return
 
-	// Encrypts and uploads local data to Convex right now, unconditionally.
-	// Used both by the gated auto/manual sync path below and by the
-	// restore-conflict modal, which needs an immediate, deliberate push once
-	// the user has decided.
+		const key = keyRef.current
+		if (!key) return
+
+		decryptBackupPayload<GachaBackupData>(
+			key,
+			gachaRow.ciphertext,
+			gachaRow.iv
+		)
+			.then(async (data) => {
+				if (!mountedRef.current) return
+				lastReconciledGachaRef.current = gachaRow.lastUpdated
+				lastPushedGachaHashRef.current = await hashBackupPayload(data)
+
+				if (data.gachaPulls) {
+					mergePullsRecord(data.gachaPulls)
+					const localGachaLastUpdated = memoryStorage.getItem<number>(
+						"gachaLastUpdated",
+						0
+					)
+					if (gachaRow.lastUpdated > localGachaLastUpdated) {
+						memoryStorage.setItem(
+							"gachaLastUpdated",
+							gachaRow.lastUpdated
+						)
+					}
+				}
+			})
+			.catch((error) => {
+				console.error("Failed to decrypt gacha backup from Convex", error)
+			})
+	}, [gachaRow, keyReady])
+
+	const upsertBackup = useMutation(api.backups.upsertBackup)
+	const upsertGachaBackup = useMutation(api.gachaBackups.upsertBackup)
+
+	// Encrypts and pushes main payload and/or gacha payload to Convex
 	const pushToConvex = useCallback(async () => {
 		const key = keyRef.current
 		if (!key) return
 
 		setStatus("syncing")
 		try {
-			const payload = buildBackupPayload()
-			const { ciphertext, iv } = await encryptBackupPayload(key, payload)
-			const lastUpdated = Number(payload.lastUpdated) || Date.now()
+			const localLastUpdated = memoryStorage.getItem<number>(
+				"lastUpdated",
+				0
+			)
+			const localGachaLastUpdated = memoryStorage.getItem<number>(
+				"gachaLastUpdated",
+				0
+			)
 
-			await upsertBackup({ ciphertext, iv, lastUpdated })
-			lastReconciledRef.current = lastUpdated
+			// Push main payload if local is newer than what we last reconciled/pushed
+			if (
+				lastReconciledRef.current === null ||
+				localLastUpdated > lastReconciledRef.current
+			) {
+				const mainPayload = buildMainPayload()
+				const lastUpdated = Number(mainPayload.lastUpdated) || Date.now()
+				const hash = await hashBackupPayload(mainPayload)
+
+				// Content fingerprint unchanged since the last push - skip the
+				// mutation (and its bandwidth) even though lastUpdated ticked.
+				if (hash !== lastPushedMainHashRef.current) {
+					const { ciphertext, iv } = await encryptBackupPayload(
+						key,
+						mainPayload
+					)
+					await upsertBackup({ ciphertext, iv, lastUpdated })
+					lastPushedMainHashRef.current = hash
+				}
+
+				lastReconciledRef.current = lastUpdated
+				setLatestBackupUpdatedAt(lastUpdated)
+			}
+
+			// Push gacha payload if local gacha is newer than what we last reconciled/pushed
+			if (
+				lastReconciledGachaRef.current === null ||
+				localGachaLastUpdated > lastReconciledGachaRef.current
+			) {
+				const gachaPayload = buildGachaPayload()
+				const gachaLastUpdated =
+					Number(gachaPayload.gachaLastUpdated) || Date.now()
+				const gachaHash = await hashBackupPayload(gachaPayload)
+
+				if (gachaHash !== lastPushedGachaHashRef.current) {
+					const { ciphertext, iv } = await encryptBackupPayload(
+						key,
+						gachaPayload
+					)
+					await upsertGachaBackup({
+						ciphertext,
+						iv,
+						lastUpdated: gachaLastUpdated,
+					})
+					lastPushedGachaHashRef.current = gachaHash
+				}
+
+				lastReconciledGachaRef.current = gachaLastUpdated
+			}
 
 			markSynced()
 			setStatus("synced")
 			setLastSyncedAt(Date.now())
-			setLatestBackupUpdatedAt(lastUpdated)
 		} catch (error) {
 			console.error("Failed to sync backup to Convex", error)
 			setStatus("error")
 		}
-	}, [upsertBackup])
+	}, [upsertBackup, upsertGachaBackup])
 
-	// First-ever sign-in for this account: no cloud backup exists yet, so
-	// immediately back up whatever's on this device rather than waiting for
-	// the next local edit's debounce or a manual sync click.
+	// True LWW's "local wins" half: once the initial reconcile against `row`
+	// is done, push local up right away if it's strictly ahead of (or there's
+	// no) cloud backup, instead of waiting on the next edit's debounce. One
+	// push per key epoch - after this, routine edits drive pushToConvex via
+	// the debounced listener below.
 	useEffect(() => {
-		if (!keyReady || row !== null) return
-		if (restorePrompt || hasCorruption || hasPushedInitialBackupRef.current)
+		if (
+			!initialCheckComplete ||
+			restorePrompt ||
+			hasCorruption ||
+			remoteCorrupt
+		)
 			return
 
-		hasPushedInitialBackupRef.current = true
+		const localLastUpdated = memoryStorage.getItem<number>("lastUpdated", 0)
+		const localIsAhead =
+			row === null ||
+			row.lastUpdated == null ||
+			localLastUpdated > row.lastUpdated
+		if (!localIsAhead || hasPushedThisEpochRef.current) return
+
+		hasPushedThisEpochRef.current = true
 		pushToConvex()
-	}, [keyReady, row, restorePrompt, hasCorruption, pushToConvex])
+	}, [
+		initialCheckComplete,
+		row,
+		restorePrompt,
+		hasCorruption,
+		remoteCorrupt,
+		pushToConvex,
+	])
 
 	useEffect(() => {
 		async function runSync() {
-			// Never sync before the key + initial pull have resolved, and never
-			// sync while the user hasn't decided on a pending restore conflict
-			// or a data corruption prompt - pushing now could overwrite a good
-			// cloud backup with corrupt/partial local data, or silently paper
-			// over an unreadable cloud backup before the user even sees it.
-			if (!initialCheckComplete || restorePrompt || hasCorruption || remoteCorrupt)
+			if (
+				!initialCheckComplete ||
+				restorePrompt ||
+				hasCorruption ||
+				remoteCorrupt
+			)
 				return
 
 			if (isSyncingRef.current) {
@@ -346,8 +488,6 @@ export function CloudSyncProvider({ children }: { children: React.ReactNode }) {
 		if (sessionStatus !== "authenticated" || !accessToken) return
 
 		const handleChange = () => {
-			// A local edit restarts the auto-push debounce, so it doesn't fire
-			// mid-edit and interrupt what the user is doing.
 			if (debounceRef.current) clearTimeout(debounceRef.current)
 			debounceRef.current = setTimeout(() => {
 				debounceRef.current = null
@@ -355,10 +495,31 @@ export function CloudSyncProvider({ children }: { children: React.ReactNode }) {
 			}, AUTO_SYNC_DEBOUNCE_MS)
 		}
 
+		// A 30s debounce risks losing a pending edit if the tab closes before
+		// it fires - flush immediately once it looks like the user is leaving,
+		// instead of waiting out the rest of the debounce window.
+		const flushPending = () => {
+			if (!debounceRef.current) return
+			clearTimeout(debounceRef.current)
+			debounceRef.current = null
+			runSyncRef.current()
+		}
+
+		const handleVisibilityChange = () => {
+			if (document.visibilityState === "hidden") flushPending()
+		}
+
 		window.addEventListener("local-storage-update", handleChange)
+		window.addEventListener("blur", flushPending)
+		document.addEventListener("visibilitychange", handleVisibilityChange)
 
 		return () => {
 			window.removeEventListener("local-storage-update", handleChange)
+			window.removeEventListener("blur", flushPending)
+			document.removeEventListener(
+				"visibilitychange",
+				handleVisibilityChange
+			)
 			if (debounceRef.current) clearTimeout(debounceRef.current)
 		}
 	}, [sessionStatus, accessToken])
@@ -381,72 +542,48 @@ export function CloudSyncProvider({ children }: { children: React.ReactNode }) {
 		setRestorePrompt(null)
 	}
 
-	// Force-pulls whatever's in Convex right now and overwrites local with it,
-	// bypassing backupImport's older/newer comparison - local is known-bad
-	// here, so there's nothing worth comparing timestamps against.
-	const resyncFromCloud = useCallback(async () => {
+	const overwriteCloudWithLocal = async () => {
+		clearCorruption()
+		setFailedRemoteRow(null)
+		await pushToConvex()
+	}
+
+	const resyncFromCloud = async () => {
+		if (!row) return
+		const { ciphertext, iv, lastUpdated } = row
+		if (ciphertext == null || iv == null || lastUpdated == null) return
 		const key = keyRef.current
-		if (!key || !row) return
+		if (!key) return
 
-		setStatus("syncing")
 		try {
-			const data = await decryptBackupPayload(key, row.ciphertext, row.iv)
-			backupSetImport(data)
-			lastReconciledRef.current = row.lastUpdated
-
-			markSynced()
+			const data = await decryptBackupPayload<MainBackupData>(
+				key,
+				ciphertext,
+				iv
+			)
 			clearCorruption()
+			setFailedRemoteRow(null)
+			backupSetMainImport(data)
+			markSynced()
 			setStatus("synced")
 			setLastSyncedAt(Date.now())
 			setLatestBackupUpdatedAt(Number(data.lastUpdated) || Date.now())
 		} catch (error) {
-			console.error("Failed to resync from cloud", error)
-			setFailedRemoteRow(row.lastUpdated)
-			setStatus("error")
+			console.error("Failed to re-sync from cloud", error)
+			setFailedRemoteRow(lastUpdated)
 		}
-	}, [row])
+	}
 
-	// Overwrites a corrupt/unreadable cloud backup with this device's local
-	// data. Only meaningful when local itself isn't also flagged corrupted -
-	// the modal below never offers this otherwise.
-	const overwriteCloudWithLocal = useCallback(async () => {
-		await pushToConvex()
-	}, [pushToConvex])
-
-	// Wipes this device's corrupted data. "Erase" here means starting this
-	// device over, not nuking the account - if a cloud backup exists and is
-	// itself readable we pull it straight back down rather than leaving local
-	// empty, so the next auto-push debounce doesn't overwrite a good cloud
-	// backup with nothing. If the cloud backup is unreadable too, there's
-	// nothing good to pull, so push the freshly-erased (empty) local state
-	// instead - that's the only way to get both sides back to a known state.
-	const eraseAndResync = useCallback(async () => {
+	const eraseAndResync = () => {
 		eraseLocalData()
+		clearCorruption()
+		setFailedRemoteRow(null)
+		setStatus("idle")
+		setLastSyncedAt(null)
+		setLatestBackupUpdatedAt(null)
+	}
 
-		if (row && !remoteCorrupt) {
-			await resyncFromCloud()
-		} else if (remoteCorrupt) {
-			await pushToConvex()
-			clearCorruption()
-		} else {
-			clearCorruption()
-		}
-	}, [row, remoteCorrupt, resyncFromCloud, pushToConvex])
-
-	const remoteLastUpdated = restorePrompt
-		? Number(restorePrompt.data.lastUpdated) || null
-		: null
-	const localAge = restorePrompt
-		? describeAge(restorePrompt.localLastUpdated, remoteLastUpdated)
-		: null
-	const remoteAge = restorePrompt
-		? describeAge(remoteLastUpdated, restorePrompt.localLastUpdated)
-		: null
-
-	// Neither side is trustworthy - the only way forward is a clean slate.
 	const bothCorrupt = hasCorruption && remoteCorrupt
-	const corruptionModalOpen = (hasCorruption || remoteCorrupt) && !restorePrompt
-
 	let corruptionMessage: string
 	let corruptionConfirmLabel: string
 	let corruptionConfirmAction: () => void
@@ -454,49 +591,49 @@ export function CloudSyncProvider({ children }: { children: React.ReactNode }) {
 
 	if (bothCorrupt) {
 		corruptionMessage =
-			"Local data and your last cloud backup both failed to load. The only way forward is to erase this device and start fresh."
+			"Both your local data and your cloud backup couldn't be read. To continue, your data on this device will be erased to start fresh."
 		corruptionConfirmLabel = "Erase & Start Fresh"
 		corruptionConfirmAction = () => eraseAndResync()
 		corruptionCancelAction = undefined
 	} else if (remoteCorrupt) {
 		corruptionMessage =
-			"Your last cloud backup couldn't be read. You can overwrite it with this device's local data, or erase everything and start fresh."
-		corruptionConfirmLabel = "Push Local Data to Cloud"
+			"Your cloud backup couldn't be read and may be corrupted. Overwrite it with this device's data, or erase this device to start fresh."
+		corruptionConfirmLabel = "Overwrite Cloud with Local"
 		corruptionConfirmAction = () => overwriteCloudWithLocal()
 		corruptionCancelAction = () => eraseAndResync()
 	} else {
-		corruptionMessage = row
+		// A row that exists only to carry an unlink marker (no ciphertext) has
+		// nothing to resync from - treat it the same as no cloud backup.
+		const hasCloudContent = row != null && row.lastUpdated != null
+		corruptionMessage = hasCloudContent
 			? "Some of your local data couldn't be read and may be corrupted. Restore your last cloud backup, or erase this device's copy and pull it fresh."
 			: "Some of your local data couldn't be read and may be corrupted. No cloud backup is available yet, so erase this device's data to start fresh."
-		corruptionConfirmLabel = row ? "Resync from Cloud" : "Erase Local Data"
-		corruptionConfirmAction = row
+		corruptionConfirmLabel = hasCloudContent
+			? "Resync from Cloud"
+			: "Erase Local Data"
+		corruptionConfirmAction = hasCloudContent
 			? () => resyncFromCloud()
 			: () => eraseAndResync()
-		corruptionCancelAction = row ? () => eraseAndResync() : undefined
+		corruptionCancelAction = hasCloudContent
+			? () => eraseAndResync()
+			: undefined
 	}
 
 	return (
 		<CloudSyncContext.Provider
 			value={{ status, lastSyncedAt, latestBackupUpdatedAt, syncNow }}>
 			{children}
-			{(restorePrompt?.kind === "older" ||
-				restorePrompt?.kind === "overwrite") && (
-				<ModalContainer>
-					<AlertContainer
-						type="choices"
-						onConfirm={() => resolveRestorePrompt("drive")}
-						confirmLabel={`Use Cloud Data${remoteAge ? ` (${remoteAge})` : ""}`}
-						onCancel={() => resolveRestorePrompt("local")}
-						cancelLabel={`Keep Local Data${localAge ? ` (${localAge})` : ""}`}>
-						{restorePrompt.kind === "older"
-							? "Your BACKUP is older than your current data."
-							: "Your BACKUP may conflict with your current data."}
-						<br />
-						What would you like to do?
-					</AlertContainer>
-				</ModalContainer>
+			{restorePrompt && (
+				<SyncConflictModal
+					localLastUpdated={restorePrompt.localLastUpdated}
+					cloudLastUpdated={
+						Number(restorePrompt.data.lastUpdated) || null
+					}
+					onKeepLocal={() => resolveRestorePrompt("local")}
+					onUseCloud={() => resolveRestorePrompt("drive")}
+				/>
 			)}
-			{corruptionModalOpen && (
+			{(hasCorruption || remoteCorrupt) && !restorePrompt && (
 				<ModalContainer>
 					<AlertContainer
 						type={bothCorrupt ? "acknowledge" : "choices"}

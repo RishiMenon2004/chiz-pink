@@ -7,12 +7,12 @@ import { safeParse } from "@/helpers/dataCorruption"
 import * as idbStorage from "@/helpers/storage/idbStorage"
 import * as memoryStorage from "@/helpers/storage/memoryStorage"
 import {
-	MiracleBoxPull,
-	ScarboroughFairPull,
-	PullsRecord,
-	ImportMessage,
 	BannerType,
+	ImportMessage,
+	MiracleBoxPull,
 	Pull,
+	PullsRecord,
+	ScarboroughFairPull,
 	StoredPull,
 } from "@/types/pulls"
 
@@ -51,6 +51,17 @@ function cloneCache(): PullsRecord {
 	}
 }
 
+// Deterministic signature representing the physical roll event.
+// Disambiguates duplicate pulls even if uids differ across imports/devices.
+export function getPullSignature(
+	pull: Pull & { bannerType?: BannerType }
+): string {
+	const diceRoll = "diceRoll" in pull ? pull.diceRoll : ""
+	const quantity = "quantity" in pull ? pull.quantity : 1
+	const banner = pull.bannerType ?? ""
+	return `${banner}:${pull.timestamp}:${pull.rewardId}:${diceRoll}:${quantity}`
+}
+
 // Object key order = display order (see RenderPulls.tsx's Object.values()
 // and calculatePity.ts's newest-first iteration), so cachedPulls[banner]
 // must always be built newest-first.
@@ -84,14 +95,37 @@ function sortedBanner(
 // rather than assuming new pulls are always newer than everything already
 // cached - a plain prepend breaks the moment an import backfills older
 // history alongside (or instead of) new pulls.
-function applyPulls(pulls: StoredPull[]) {
+//
+// Deduplicates using both unique `uid` and composite event signature
+// `(bannerType:timestamp:rewardId:diceRoll:quantity)` so rolls with
+// different uids don't duplicate.
+export function applyPulls(pulls: StoredPull[]) {
 	if (pulls.length === 0) return
 
 	const next = cloneCache()
 	const touchedBanners = new Set<BannerType>()
 
+	const existingUids = new Set<string>()
+	const existingSignatures = new Set<string>()
+
+	for (const banner of BANNER_TYPES) {
+		for (const pull of Object.values(next[banner])) {
+			existingUids.add(pull.uid)
+			existingSignatures.add(
+				getPullSignature({ ...pull, bannerType: banner })
+			)
+		}
+	}
+
 	for (const { bannerType, ...pull } of pulls) {
+		const signature = getPullSignature({ ...pull, bannerType })
+		if (existingUids.has(pull.uid) || existingSignatures.has(signature)) {
+			continue
+		}
+
 		;(next[bannerType] as Record<string, Pull>)[pull.uid] = pull
+		existingUids.add(pull.uid)
+		existingSignatures.add(signature)
 		touchedBanners.add(bannerType)
 	}
 
@@ -102,6 +136,42 @@ function applyPulls(pulls: StoredPull[]) {
 	}
 
 	cachedPulls = next
+}
+
+// Merges a whole incoming PullsRecord (e.g. from cloud sync) into the current
+// local state without overwriting local-only pulls, deduplicating by uid & signature.
+export function mergePullsRecord(remotePulls: PullsRecord) {
+	const pullsToApply: StoredPull[] = []
+	for (const bannerType of BANNER_TYPES) {
+		const bannerPulls = Object.values(remotePulls[bannerType] || {})
+		for (const pull of bannerPulls) {
+			pullsToApply.push({
+				...pull,
+				bannerType,
+			})
+		}
+	}
+	applyPulls(pullsToApply)
+	memoryStorage.notifyListeners()
+
+	if (memoryStorage.isFallbackMode()) {
+		writeLegacyBlob(cachedPulls)
+		return
+	}
+
+	idbStorage
+		.replaceAllPulls(
+			BANNER_TYPES.map((bannerType) => ({
+				bannerType,
+				pulls: Object.values(cachedPulls[bannerType]).map((pull, seq) => ({
+					...pull,
+					seq,
+				})),
+			}))
+		)
+		.catch((error) => {
+			console.error("IndexedDB merge replace failed for pulls", error)
+		})
 }
 
 memoryStorage.onCustomBroadcast(PULLS_BROADCAST_CHANNEL, (payload) => {
@@ -122,7 +192,7 @@ memoryStorage.onCustomBroadcast(PULLS_BROADCAST_CHANNEL, (payload) => {
 
 // Bootstraps the pulls cache from IndexedDB. Safe to call more than once -
 // only the first call does anything. Mirrors memoryStorage.hydrate();
-// AppStorageInitializer (Phase 4) calls both on app start.
+// AppStorageInitializer calls both on app start.
 export async function hydratePullsCache(): Promise<void> {
 	if (hydrated || typeof window === "undefined") return
 	hydrated = true
@@ -150,8 +220,40 @@ export async function hydratePullsCache(): Promise<void> {
 	}
 }
 
+// Bulk import from NTE-exporter JSON. Expects rows grouped by banner,
+// newest-first within each banner.
+export function importParsedPulls(rowsByBanner: StoredPull[][]) {
+	if (typeof window === "undefined" || isInitialSyncPending()) return
+
+	if (memoryStorage.isFallbackMode()) {
+		applyPulls(rowsByBanner.flat())
+		writeLegacyBlob(cachedPulls)
+		memoryStorage.setItem("gachaLastUpdated", Date.now())
+		return
+	}
+
+	applyPulls(rowsByBanner.flat())
+	memoryStorage.broadcastCustom(PULLS_BROADCAST_CHANNEL, {
+		kind: "add",
+		pulls: rowsByBanner.flat(),
+	})
+
+	for (const rows of rowsByBanner) {
+		if (rows.length === 0) continue
+		const bannerType = rows[0].bannerType
+		idbStorage.putPulls(rows, bannerType).catch((error) => {
+			console.error(
+				`IndexedDB bulk put failed for pulls (${bannerType})`,
+				error
+			)
+		})
+	}
+
+	memoryStorage.setItem("gachaLastUpdated", Date.now())
+}
+
 // Degraded-mode read/write, mirroring memoryStorage's own localStorage
-// fallback (Phase 1 item 4) - used when IndexedDB is unavailable.
+// fallback - used when IndexedDB is unavailable.
 function readLegacyBlob(): PullsRecord {
 	const raw = window.localStorage.getItem(LEGACY_KEY)
 	return safeParse(raw, SERVER_FALLBACK, LEGACY_KEY)
@@ -165,7 +267,7 @@ function writeLegacyBlob(pullsRecord: PullsRecord) {
 	}
 }
 
-//Add new pulls and skip over existing ones using the timestamp and uid as descriminators
+// Add new pulls and skip over existing ones using composite event signature and uid
 export const gachaPullsActions = {
 	addPulls(pulls: MiracleBoxPull[] | ScarboroughFairPull[], bannerType: BannerType) {
 		const response: {
@@ -182,7 +284,19 @@ export const gachaPullsActions = {
 		if (memoryStorage.isFallbackMode()) {
 			const pullsData = readLegacyBlob()
 			const existingUids = new Set(Object.keys(pullsData[bannerType] || {}))
-			const filteredPulls = pulls.filter((pull) => !existingUids.has(pull.uid))
+			const existingSignatures = new Set(
+				Object.values(pullsData[bannerType] || {}).map((p) =>
+					getPullSignature({ ...p, bannerType })
+				)
+			)
+
+			const filteredPulls = pulls.filter(
+				(pull) =>
+					!existingUids.has(pull.uid) &&
+					!existingSignatures.has(
+						getPullSignature({ ...pull, bannerType })
+					)
+			)
 
 			const incomingPullsRecord: Record<string, Pull> = {}
 			for (const pull of filteredPulls) incomingPullsRecord[pull.uid] = pull
@@ -194,9 +308,7 @@ export const gachaPullsActions = {
 
 			writeLegacyBlob(updatedPulls)
 			cachedPulls = updatedPulls
-			// setItem("lastUpdated", ...) notifies this tab's subscribers - see
-			// memoryStorage.notifyListeners()'s doc comment.
-			memoryStorage.setItem("lastUpdated", Date.now())
+			memoryStorage.setItem("gachaLastUpdated", Date.now())
 
 			response.status = "success"
 			const skippedLength = pulls.length - filteredPulls.length
@@ -208,12 +320,19 @@ export const gachaPullsActions = {
 		}
 
 		const existingUids = new Set(Object.keys(cachedPulls[bannerType]))
-		const filteredPulls = pulls.filter((pull) => !existingUids.has(pull.uid))
+		const existingSignatures = new Set(
+			Object.values(cachedPulls[bannerType]).map((p) =>
+				getPullSignature({ ...p, bannerType })
+			)
+		)
+
+		const filteredPulls = pulls.filter(
+			(pull) =>
+				!existingUids.has(pull.uid) &&
+				!existingSignatures.has(getPullSignature({ ...pull, bannerType }))
+		)
 
 		if (filteredPulls.length > 0) {
-			// filteredPulls is already newest-first (parseNteExporterImport
-			// sorts it before addPulls ever sees it), so its own array index
-			// is a valid seq - see StoredPull's comment.
 			const storedPulls: StoredPull[] = filteredPulls.map((pull, seq) => ({
 				...pull,
 				bannerType,
@@ -233,10 +352,9 @@ export const gachaPullsActions = {
 				)
 			})
 
-			// Bumps lastUpdated and (via memoryStorage.setItem) notifies this
-			// tab's own useSyncExternalStore subscribers - see
-			// memoryStorage.notifyListeners()'s doc comment.
-			memoryStorage.setItem("lastUpdated", Date.now())
+			// Bumps gachaLastUpdated instead of lastUpdated, keeping routine
+			// edits decoupled from pulls history.
+			memoryStorage.setItem("gachaLastUpdated", Date.now())
 		}
 
 		response.status = "success"
@@ -267,9 +385,6 @@ export function replaceAllPulls(pullsRecord: PullsRecord): void {
 		.replaceAllPulls(
 			BANNER_TYPES.map((bannerType) => ({
 				bannerType,
-				// pullsRecord came from a cache that was itself built (and kept)
-				// in the correct order by applyPulls() - Object.values() here
-				// preserves that, same as migratePulls().
 				pulls: Object.values(pullsRecord[bannerType]).map(
 					(pull, seq) => ({ ...pull, seq })
 				),

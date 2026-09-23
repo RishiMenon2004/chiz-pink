@@ -3,6 +3,8 @@ import type { JWT } from "next-auth/jwt"
 import GoogleProvider from "next-auth/providers/google"
 
 const DRIVE_SCOPE = "https://www.googleapis.com/auth/drive.appdata"
+// Refresh 5 minutes before actual token expiration to prevent stale token race conditions
+const REFRESH_BUFFER_SECONDS = 300
 
 export const authOptions: NextAuthOptions = {
 	providers: [
@@ -31,12 +33,15 @@ export const authOptions: NextAuthOptions = {
 				}
 			}
 
-			// Existing token that's still valid.
-			if (token.expiresAt && Date.now() < token.expiresAt * 1000) {
+			// Token is still comfortably valid (outside the 5-minute pre-expiry window)
+			if (
+				token.expiresAt &&
+				Date.now() < (token.expiresAt - REFRESH_BUFFER_SECONDS) * 1000
+			) {
 				return token
 			}
 
-			// Expired: refresh it.
+			// Expired or close to expiry: refresh it proactively
 			return refreshAccessToken(token)
 		},
 		async session({ session, token }) {
@@ -50,6 +55,10 @@ export const authOptions: NextAuthOptions = {
 
 async function refreshAccessToken(token: JWT): Promise<JWT> {
 	try {
+		if (!token.refreshToken) {
+			throw new Error("No refresh token available")
+		}
+
 		const response = await fetch("https://oauth2.googleapis.com/token", {
 			method: "POST",
 			headers: { "Content-Type": "application/x-www-form-urlencoded" },
@@ -73,6 +82,7 @@ async function refreshAccessToken(token: JWT): Promise<JWT> {
 			refreshToken: refreshed.refresh_token ?? token.refreshToken,
 			// Same deal for the id token - not always reissued on refresh.
 			idToken: refreshed.id_token ?? token.idToken,
+			error: undefined,
 		}
 	} catch (error) {
 		console.error("Failed to refresh Google access token", error)

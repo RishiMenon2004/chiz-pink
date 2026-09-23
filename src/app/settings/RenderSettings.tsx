@@ -65,7 +65,7 @@ function hasExistingPlannerData() {
 export function RenderSettings() {
 	const { data: session, status } = useSession()
 	const deleteCloudBackup = useMutation(api.backups.deleteBackup)
-	const markUnlinked = useMutation(api.accountStatus.markUnlinked)
+	const markUnlinked = useMutation(api.backups.markUnlinked)
 
 	const [isImportOlder, setImportOlder] = useState<boolean>(false)
 	const [askOverwrite, setAskOverwrite] = useState<boolean>(false)
