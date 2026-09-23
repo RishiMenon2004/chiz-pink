@@ -2,6 +2,7 @@
 
 import React, { Component, type ErrorInfo, type ReactNode } from "react"
 import { CloudSyncContext } from "@/contexts"
+import { CloudSyncProvider } from "./CloudSyncProvider"
 
 interface SyncErrorBoundaryProps {
 	children: ReactNode
@@ -42,6 +43,11 @@ export class SyncErrorBoundary extends Component<
 		if (this.state.hasError) {
 			// Provide fallback context so downstream components using useCloudSyncContext()
 			// (e.g. Settings, Header) continue rendering smoothly without crashing the page.
+			// Critically, this branch does NOT mount CloudSyncProvider again - it's the
+			// thing that just threw, so re-rendering it here would throw again on every
+			// retry and this boundary's own fallback render would itself fail, which
+			// React treats as this boundary being unable to recover and re-throws past it
+			// to the next ancestor boundary (Next's root error page, in production).
 			return (
 				<CloudSyncContext.Provider value={FALLBACK_SYNC_CONTEXT}>
 					{this.props.children}
@@ -49,6 +55,6 @@ export class SyncErrorBoundary extends Component<
 			)
 		}
 
-		return this.props.children
+		return <CloudSyncProvider>{this.props.children}</CloudSyncProvider>
 	}
 }
