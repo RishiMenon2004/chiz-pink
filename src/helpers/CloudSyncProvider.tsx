@@ -269,10 +269,10 @@ export function CloudSyncProvider({ children }: { children: React.ReactNode }) {
 						Number(result.data.lastUpdated) || Date.now()
 					)
 				} else {
-					// "synced": local already matches or leads under LWW. Only
-					// reflect it here on an exact match - a strictly-ahead local
-					// gets pushed up immediately by the converge effect below,
-					// which sets this same state off the freshly-pushed value.
+					// "synced"/"older": local already matches or leads under LWW.
+					// Only reflect it here on an exact match - a strictly-ahead
+					// local gets pushed up immediately by the converge effect
+					// below, which sets this same state off the freshly-pushed value.
 					const localLastUpdated = memoryStorage.getItem<number>(
 						"lastUpdated",
 						0

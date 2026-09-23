@@ -65,6 +65,7 @@ function hasExistingPlannerData() {
 export function RenderSettings() {
 	const { data: session, status } = useSession()
 	const deleteCloudBackup = useMutation(api.backups.deleteBackup)
+	const deleteGachaBackup = useMutation(api.gachaBackups.deleteBackup)
 	const markUnlinked = useMutation(api.backups.markUnlinked)
 
 	const [isImportOlder, setImportOlder] = useState<boolean>(false)
@@ -101,6 +102,12 @@ export function RenderSettings() {
 			setExternalImportSummary(report)
 		}
 	}, [])
+
+	const closeImportOverwrite = () => {
+		setImportOlder(false)
+		setAskOverwrite(false)
+		setImportedJson(null)
+	}
 
 	const importData = useMemo(() => {
 		return () => {
@@ -196,9 +203,9 @@ export function RenderSettings() {
 					if (importedJson !== null) {
 						backupSetImport(importedJson)
 					}
-					setAskOverwrite(false)
+					closeImportOverwrite()
 				}}
-				setImportOlder={setImportOlder}
+				onCancel={closeImportOverwrite}
 			/>
 			<ExternalImportPendingModal
 				externalImportPending={externalImportPending}
@@ -230,6 +237,7 @@ export function RenderSettings() {
 				eraseSyncChoice={eraseSyncChoice}
 				setEraseSyncChoice={setEraseSyncChoice}
 				eraseLocalData={eraseLocalData}
+				deleteGachaBackup={deleteGachaBackup}
 				signOut={() => signOut()}
 			/>
 			<UnlinkAccountModal
@@ -238,6 +246,7 @@ export function RenderSettings() {
 				session={session}
 				markUnlinked={markUnlinked}
 				deleteCloudBackup={deleteCloudBackup}
+				deleteGachaBackup={deleteGachaBackup}
 				unlinkGoogleAccount={unlinkGoogleAccount}
 			/>
 		</main>

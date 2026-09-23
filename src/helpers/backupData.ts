@@ -147,11 +147,15 @@ export function backupImport(json: string) {
 		memoryStorage.getItem<number | null>("lastSynced", null)
 	)
 
-	// True Last-Write-Wins: local already matches or leads, so there's
-	// nothing to pull - if local is strictly ahead, the caller pushes it up
-	// instead of prompting. No separate "older" state to react to.
-	if (lastUpdated && remoteLastUpdated <= lastUpdated) {
+	if (lastUpdated && remoteLastUpdated === lastUpdated) {
 		return { status: "synced", data }
+	}
+
+	// Cloud sync treats this like "synced" (true LWW - a strictly-ahead local
+	// just gets pushed up); manual file import uses it to confirm before an
+	// older file overwrites newer local data.
+	if (lastUpdated && remoteLastUpdated < lastUpdated) {
+		return { status: "older", data }
 	}
 
 	// The one remaining conflict: first-ever sync on this device, with

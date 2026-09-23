@@ -24,12 +24,12 @@ export function ImportOverwriteModal({
 	isImportOlder,
 	askOverwrite,
 	onConfirm,
-	setImportOlder,
+	onCancel,
 }: {
 	isImportOlder: boolean
 	askOverwrite: boolean
 	onConfirm: () => void
-	setImportOlder: (v: boolean) => void
+	onCancel: () => void
 }) {
 	if (!isImportOlder && !askOverwrite) return null
 
@@ -41,7 +41,7 @@ export function ImportOverwriteModal({
 				onConfirm={onConfirm}
 				isConfirmDanger={true}
 				cancelLabel="Cancel"
-				onCancel={() => setImportOlder(false)}>
+				onCancel={onCancel}>
 				{isImportOlder
 					? "This file contains older information."
 					: "Existing data will be overwritten."}
@@ -241,11 +241,13 @@ export function EraseSyncChoiceModal({
 	eraseSyncChoice,
 	setEraseSyncChoice,
 	eraseLocalData,
+	deleteGachaBackup,
 	signOut,
 }: {
 	eraseSyncChoice: boolean
 	setEraseSyncChoice: (v: boolean) => void
 	eraseLocalData: () => void
+	deleteGachaBackup: (args: Record<string, never>) => Promise<unknown>
 	signOut: () => void
 }) {
 	const cloudSync = useCloudSyncContext()
@@ -259,6 +261,11 @@ export function EraseSyncChoiceModal({
 				onConfirm={() => {
 					eraseLocalData()
 					cloudSync.syncNow()
+					// Gacha reconcile only ever merges remote pulls in, so an
+					// empty local push can't erase them - the row has to go.
+					deleteGachaBackup({}).catch((error) => {
+						console.error("Failed to delete gacha cloud backup", error)
+					})
 					setEraseSyncChoice(false)
 				}}
 				onCancel={() => {
@@ -289,6 +296,7 @@ export function UnlinkAccountModal({
 	session,
 	markUnlinked,
 	deleteCloudBackup,
+	deleteGachaBackup,
 	unlinkGoogleAccount,
 }: {
 	unlinkWarning: boolean
@@ -296,6 +304,7 @@ export function UnlinkAccountModal({
 	session: Session | null
 	markUnlinked: (args: Record<string, never>) => Promise<unknown>
 	deleteCloudBackup: (args: Record<string, never>) => Promise<unknown>
+	deleteGachaBackup: (args: Record<string, never>) => Promise<unknown>
 	unlinkGoogleAccount: (accessToken?: string) => Promise<void>
 }) {
 	if (!unlinkWarning) return null
@@ -307,7 +316,10 @@ export function UnlinkAccountModal({
 				onConfirm={async () => {
 					try {
 						await markUnlinked({})
-						await deleteCloudBackup({})
+						await Promise.all([
+							deleteCloudBackup({}),
+							deleteGachaBackup({}),
+						])
 					} catch (error) {
 						// Don't let a failed delete trap the user into staying linked.
 						console.error(
