@@ -22,6 +22,7 @@ export { createSearchString } from "./createSearchString"
 
 export { unlinkGoogleAccount } from "./unlinkGoogleAccount"
 export { CloudSyncProvider } from "./CloudSyncProvider"
+export { SyncErrorBoundary } from "./SyncErrorBoundary"
 export { signInWithGooglePopup } from "./signInWithGooglePopup"
 
 export { isInitialSyncPending, setInitialSyncPending } from "./syncGate"
