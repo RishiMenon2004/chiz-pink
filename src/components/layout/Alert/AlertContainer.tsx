@@ -4,7 +4,7 @@ import { KeyboardEvent, ReactNode, useEffect, useRef } from "react"
 
 import { KeyMouseEventType } from "@/types"
 
-import { stopPropagation } from "@/helpers"
+import { stopPropagation } from "@/helpers/stopPropagation"
 
 import styles from "./alertContainer.module.css"
 export const alertTextBox = styles.alertTextBox

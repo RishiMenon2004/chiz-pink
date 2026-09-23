@@ -16,11 +16,11 @@ import { findMaterial } from "@/data/items"
 import { usePlannerOrderStore } from "@/hooks"
 import { getAggregatedMaterials, usePlannerStore } from "@/hooks/usePlannerStore"
 
-import { PlannerInventoryProvider } from "@/helpers"
+import { PlannerInventoryProvider } from "@/helpers/PlannerInventoryProvider"
 
 import { usePlannerMaterialsContext } from "@/contexts"
 
-import { PlannerMaterialBox } from "@/components/planner"
+import { PlannerMaterialBox } from "@/components/planner/MaterialBox"
 
 import pageStyles from "@/app/page.module.css"
 import styles from "./DashFarmingList.module.css"

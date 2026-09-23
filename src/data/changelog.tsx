@@ -1,4 +1,4 @@
-import { InstallPWAButton } from "@/components/layout"
+import { InstallPWAButton } from "@/components/layout/InstallPWAButton"
 
 export const ChangeLogs = {
 	"1.0.0": {

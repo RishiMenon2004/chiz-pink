@@ -17,7 +17,9 @@ import type { Material } from "@/types/item"
 
 import { findItem } from "@/data/items/findItem"
 
-import { useInventoryStore, usePlannerStore, useTooltip } from "@/hooks"
+import { useInventoryStore } from "@/hooks/useInventoryStore"
+import { usePlannerStore } from "@/hooks/usePlannerStore"
+import { useTooltip } from "@/hooks/useTooltip"
 import { getAggregatedMaterial } from "@/hooks/usePlannerStore"
 
 import styles from "./currencyBar.module.css"

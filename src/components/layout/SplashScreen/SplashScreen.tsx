@@ -10,7 +10,7 @@ import { useFirstVisit } from "@/hooks/useFirstVisit"
 import { useLastSeen } from "@/hooks/useLastSeen"
 
 import styles from "./splashScreen.module.css"
-import { parseDescription } from "@/helpers"
+import { parseDescription } from "@/helpers/parseDescription"
 import { InstallPWAButton } from "../InstallPWAButton"
 
 function WelcomeSplashScreen({ closeSplash }: { closeSplash: () => void }) {

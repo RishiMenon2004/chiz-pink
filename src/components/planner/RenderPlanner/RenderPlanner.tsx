@@ -10,10 +10,11 @@ import type { PlannerRecord } from "@/types/planner"
 
 import { getAllMaterialsList } from "@/data/items"
 
-import { usePlannerItems, usePlannerStore, useSettingsStore } from "@/hooks"
+import { usePlannerStore, useSettingsStore } from "@/hooks"
+import { usePlannerItems } from "@/hooks/usePlannerItems"
 import { getAggregatedMaterials } from "@/hooks/usePlannerStore"
 
-import { PlannerInventoryProvider } from "@/helpers"
+import { PlannerInventoryProvider } from "@/helpers/PlannerInventoryProvider"
 
 import { MaterialGroup } from "@/components/inventory/"
 import { PlannerMaterialsList } from "../MaterialsList"

@@ -8,7 +8,7 @@ import { api } from "@convex/_generated/api"
 
 import { CloudSyncContext } from "@/contexts"
 import { AlertContainer } from "@/components/layout/Alert"
-import { ModalContainer } from "@/components/layout/Modal"
+import { ModalContainer } from "@/components/layout/Modal/ModalContainer"
 import { SyncConflictModal } from "@/components/layout/SyncConflictModal"
 
 import {

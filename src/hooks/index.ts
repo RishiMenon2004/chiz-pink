@@ -8,7 +8,6 @@ export {
 	replaceInventory,
 } from "./useInventoryStore"
 export { usePlannerStore, plannerActions } from "./usePlannerStore"
-export { usePlannerItems } from "./usePlannerItems"
 export { usePlannerOrderStore } from "./usePlannerOrderStore"
 export { useSettingsStore, settingsActions } from "./useSettingsStore"
 export { useChecklistStore, checklistActions } from "./useChecklistStore"

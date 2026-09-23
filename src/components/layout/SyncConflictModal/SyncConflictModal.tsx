@@ -5,7 +5,7 @@ import {
 	alertTextBox,
 	alertTextColumns,
 } from "@/components/layout/Alert/AlertContainer"
-import { ModalContainer } from "@/components/layout/Modal"
+import { ModalContainer } from "@/components/layout/Modal/ModalContainer"
 
 function formatTimestamp(value: number | null) {
 	if (value == null) return "Unknown"

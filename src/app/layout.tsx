@@ -5,16 +5,15 @@ import { RoutesData } from "@/data/routes"
 
 import "./globals.css"
 
-import {
-	AuthProvider,
-	ConvexClientProvider,
-	CurrencyBar,
-	Footer,
-	Sidebar,
-	SplashScreen,
-} from "@/components/layout"
+import { AuthProvider } from "@/components/layout/AuthProvider"
+import { ConvexClientProvider } from "@/components/layout/ConvexClientProvider"
+import { CurrencyBar } from "@/components/layout/CurrencyBar/CurrencyBar"
+import { Footer } from "@/components/layout/Footer"
+import { Sidebar } from "@/components/layout/Sidebar"
+import { SplashScreen } from "@/components/layout/SplashScreen"
 
-import { ServiceWorkerRegister, SyncErrorBoundary } from "@/helpers"
+import { ServiceWorkerRegister } from "@/helpers/ServiceWorkerRegister"
+import { SyncErrorBoundary } from "@/helpers/SyncErrorBoundary"
 import { AppStorageInitializer } from "@/helpers/AppStorageInitializer"
 
 import { Analytics } from "@vercel/analytics/next"

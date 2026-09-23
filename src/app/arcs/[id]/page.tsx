@@ -2,7 +2,7 @@ import type { Metadata } from "next"
 import { notFound } from "next/navigation"
 
 import { findArc, getAllArcsList } from "@/data/arcs"
-import { parseDescription } from "@/helpers"
+import { parseDescription } from "@/helpers/parseDescription"
 
 type Props = {
 	params: Promise<{ id: string }>

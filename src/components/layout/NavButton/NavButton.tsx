@@ -5,7 +5,7 @@ import { usePathname } from "next/navigation"
 
 import { RoutesData } from "@/data/routes"
 
-import { useTooltip } from "@/hooks"
+import { useTooltip } from "@/hooks/useTooltip"
 
 import styles from "./navButton.module.css"
 

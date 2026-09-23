@@ -3,7 +3,7 @@
 import { PointerEvent, ReactNode, useEffect, useRef, useState } from "react"
 import { createPortal } from "react-dom"
 
-import { TooltipContainer, TooltipDrawer } from "@/components/layout"
+import { TooltipContainer, TooltipDrawer } from "@/components/layout/Tooltip"
 
 const LONG_PRESS_MS = 450
 const LONG_PRESS_MOVE_CANCEL_PX = 10

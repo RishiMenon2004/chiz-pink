@@ -2,9 +2,9 @@
 
 import { ReactNode, useState } from "react"
 
-import { PWAInstallPlatform, usePWAInstall } from "@/hooks"
+import { PWAInstallPlatform, usePWAInstall } from "@/hooks/usePWAInstall"
 
-import { ModalContainer } from "@/components/layout/Modal"
+import { ModalContainer } from "@/components/layout/Modal/ModalContainer"
 
 import styles from "./installPWAButton.module.css"
 import { AlertContainer } from "../Alert"

@@ -3,7 +3,7 @@ import { notFound } from "next/navigation"
 
 import { findCharacter, getAllCharactersList } from "@/data/characters"
 import { Ability } from "@/types/character"
-import { parseDescription } from "@/helpers"
+import { parseDescription } from "@/helpers/parseDescription"
 
 type Props = {
 	params: Promise<{ id: string }>
