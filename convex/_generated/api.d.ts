@@ -8,7 +8,6 @@
  * @module
  */
 
-import type * as accountStatus from "../accountStatus.js";
 import type * as backups from "../backups.js";
 import type * as gachaBackups from "../gachaBackups.js";
 
@@ -19,7 +18,6 @@ import type {
 } from "convex/server";
 
 declare const fullApi: ApiFromModules<{
-  accountStatus: typeof accountStatus;
   backups: typeof backups;
   gachaBackups: typeof gachaBackups;
 }>;
