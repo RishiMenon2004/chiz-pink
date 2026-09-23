@@ -24,17 +24,23 @@ export type SettingsRecord = {
 	}
 }
 
-export type BackupData = {
-	checklist: ChecklistRecord,
+// Decoupled main payload for Convex cloud sync (checklist, inventory, planner, settings)
+export type MainBackupData = {
+	checklist: ChecklistRecord
 	lastUpdated: number
 	inventory: Inventory
-	// Characters and arcs combined into one list, in hybrid-planner display
-	// order, instead of two separately-keyed collections - keeps the export
-	// human-readable as a single ordered sequence and makes plannerOrder's
-	// three views (hybrid/characters/arcs) simple to re-derive on import
-	// instead of needing to be exported and kept in sync themselves. See
-	// backupData.ts's buildBackupPayload()/backupSetImport().
 	planner: StoredPlannerItem[]
-	gachaPulls: PullsRecord
 	settings: SettingsRecord
+}
+
+// Decoupled gacha payload for Convex cloud sync
+export type GachaBackupData = {
+	gachaLastUpdated: number
+	gachaPulls: PullsRecord
+}
+
+// Combined export/import format for local JSON file backup/restore
+export type BackupData = MainBackupData & {
+	gachaPulls: PullsRecord
+	gachaLastUpdated?: number
 }

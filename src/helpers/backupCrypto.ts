@@ -1,5 +1,4 @@
-import type { BackupData } from "@/types/settings"
-import type { buildBackupPayload } from "./backupData"
+import type { BackupData, MainBackupData, GachaBackupData } from "@/types/settings"
 
 const IV_LENGTH_BYTES = 12
 
@@ -16,9 +15,9 @@ function base64ToBytes(base64: string) {
 	return bytes
 }
 
-export async function encryptBackupPayload(
+export async function encryptBackupPayload<T extends object>(
 	key: CryptoKey,
-	payload: ReturnType<typeof buildBackupPayload>
+	payload: T
 ) {
 	const iv = crypto.getRandomValues(new Uint8Array(IV_LENGTH_BYTES))
 	const plaintext = new TextEncoder().encode(JSON.stringify(payload))
@@ -35,16 +34,22 @@ export async function encryptBackupPayload(
 	}
 }
 
-export async function decryptBackupPayload(
+export async function decryptBackupPayload<T = BackupData>(
 	key: CryptoKey,
 	ciphertext: string,
 	iv: string
-): Promise<BackupData> {
+): Promise<T> {
 	const decrypted = await crypto.subtle.decrypt(
 		{ name: "AES-GCM", iv: base64ToBytes(iv) },
 		key,
 		base64ToBytes(ciphertext)
 	)
 
-	return JSON.parse(new TextDecoder().decode(decrypted)) as BackupData
+	return JSON.parse(new TextDecoder().decode(decrypted)) as T
+}
+
+export {
+	type MainBackupData,
+	type GachaBackupData,
+	type BackupData,
 }

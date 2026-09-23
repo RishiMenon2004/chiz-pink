@@ -1,5 +1,5 @@
 import type { PlannerRecord, StoredPlannerItem } from "@/types/planner"
-import { BackupData } from "@/types/settings"
+import { BackupData, MainBackupData, GachaBackupData } from "@/types/settings"
 import { SERVER_FALLBACK as CHECKLIST_FALLBACK } from "@/hooks/useChecklistStore"
 import {
 	getCachedPlanner,
@@ -18,7 +18,6 @@ import {
 } from "@/hooks/useInventoryStore"
 import { SERVER_FALLBACK as SETTINGS_FALLBACK } from "@/hooks/useSettingsStore"
 import {
-	SERVER_FALLBACK as GACHA_PULL_FALLBACK,
 	getCachedPulls,
 	replaceAllPulls,
 	clearAllPulls,
@@ -66,7 +65,8 @@ function getOrderedPlannerItems(): StoredPlannerItem[] {
 	)
 }
 
-export function buildBackupPayload(): BackupData {
+// Builds the decoupled main cloud sync payload (everything except gacha pulls)
+export function buildMainPayload(): MainBackupData {
 	const lastUpdated = memoryStorage.getItem<number>("lastUpdated", Date.now())
 
 	return {
@@ -74,8 +74,32 @@ export function buildBackupPayload(): BackupData {
 		checklist: memoryStorage.getItem("checklist", CHECKLIST_FALLBACK),
 		inventory: getCachedInventory(),
 		planner: getOrderedPlannerItems(),
-		gachaPulls: getCachedPulls(),
 		settings: memoryStorage.getItem("settings", SETTINGS_FALLBACK),
+	}
+}
+
+// Builds the decoupled gacha cloud sync payload
+export function buildGachaPayload(): GachaBackupData {
+	const gachaLastUpdated = memoryStorage.getItem<number>(
+		"gachaLastUpdated",
+		Date.now()
+	)
+
+	return {
+		gachaLastUpdated,
+		gachaPulls: getCachedPulls(),
+	}
+}
+
+// Combined payload for manual file export
+export function buildBackupPayload(): BackupData {
+	const main = buildMainPayload()
+	const gacha = buildGachaPayload()
+
+	return {
+		...main,
+		gachaPulls: gacha.gachaPulls,
+		gachaLastUpdated: gacha.gachaLastUpdated,
 	}
 }
 
@@ -147,6 +171,7 @@ const ERASABLE_KEYS = [
 	"plannerOrder",
 	"settings",
 	"lastUpdated",
+	"gachaLastUpdated",
 	"lastSeen",
 ] as const
 
@@ -202,16 +227,15 @@ type ImportedBackupData = BackupData & {
 	hybridPlanner?: { order?: string[] }
 }
 
-export function backupSetImport({
+export function backupSetMainImport({
 	lastUpdated,
 	checklist,
 	planner,
 	plannerOrder,
 	hybridPlanner,
-	gachaPulls,
 	inventory,
 	settings,
-}: ImportedBackupData) {
+}: Omit<ImportedBackupData, "gachaPulls" | "gachaLastUpdated">) {
 	memoryStorage.setItem("checklist", checklist ?? CHECKLIST_FALLBACK)
 	replaceInventory(inventory ?? INVENTORY_FALLBACK)
 
@@ -242,7 +266,16 @@ export function backupSetImport({
 			.map((item) => item.refId),
 	})
 
-	replaceAllPulls(gachaPulls ?? GACHA_PULL_FALLBACK)
 	memoryStorage.setItem("lastUpdated", lastUpdated)
 	memoryStorage.setItem("settings", settings ?? SETTINGS_FALLBACK)
+}
+
+export function backupSetImport(data: ImportedBackupData) {
+	backupSetMainImport(data)
+	if (data.gachaPulls) {
+		replaceAllPulls(data.gachaPulls)
+		if (data.gachaLastUpdated) {
+			memoryStorage.setItem("gachaLastUpdated", data.gachaLastUpdated)
+		}
+	}
 }

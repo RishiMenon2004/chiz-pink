@@ -10,6 +10,7 @@
 
 import type * as accountStatus from "../accountStatus.js";
 import type * as backups from "../backups.js";
+import type * as gachaBackups from "../gachaBackups.js";
 
 import type {
   ApiFromModules,
@@ -20,6 +21,7 @@ import type {
 declare const fullApi: ApiFromModules<{
   accountStatus: typeof accountStatus;
   backups: typeof backups;
+  gachaBackups: typeof gachaBackups;
 }>;
 
 /**

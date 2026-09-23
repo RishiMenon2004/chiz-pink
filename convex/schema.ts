@@ -9,6 +9,15 @@ export default defineSchema({
 		lastUpdated: v.number(),
 	}).index("by_user", ["userId"]),
 
+	// Decoupled gacha pull history. Stored in its own document so routine
+	// checklist/inventory/planner updates don't re-upload hundreds of KB of pull logs.
+	gachaBackups: defineTable({
+		userId: v.string(),
+		ciphertext: v.string(),
+		iv: v.string(),
+		lastUpdated: v.number(),
+	}).index("by_user", ["userId"]),
+
 	// Presence of a row here means this account was unlinked from some
 	// device and every other signed-in device should force a sign-out.
 	accountStatus: defineTable({
