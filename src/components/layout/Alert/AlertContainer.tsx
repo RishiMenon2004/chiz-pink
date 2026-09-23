@@ -74,6 +74,8 @@ export function AlertContainer({
 		return () => window.removeEventListener("keydown", handleGlobalKeyDown)
 	}, [onConfirm, onCancel])
 
+	const buttonClasses = `pill-button ${["dangerous-choices", "dangerous-confirm"].includes(type) ? "always-hover" : ""}`
+
 	return (
 		<div
 			ref={containerRef}
@@ -83,7 +85,7 @@ export function AlertContainer({
 			<div className={styles.alertBoxButtons}>
 				{type !== "acknowledge" && (
 					<button
-						className="pill-button always-hover"
+						className={buttonClasses}
 						id="cancel"
 						onClick={onCancel}
 						data-variant={buttonTypes[0]}>
@@ -91,7 +93,7 @@ export function AlertContainer({
 					</button>
 				)}
 				<button
-					className="pill-button always-hover"
+					className={buttonClasses}
 					id="confirm"
 					onClick={onConfirm}
 					data-variant={buttonTypes[1]}>

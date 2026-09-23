@@ -9,6 +9,7 @@ import { api } from "@convex/_generated/api"
 import { CloudSyncContext } from "@/contexts"
 import { AlertContainer } from "@/components/layout/Alert"
 import { ModalContainer } from "@/components/layout/Modal"
+import { SyncConflictModal } from "@/components/layout/SyncConflictModal"
 
 import {
 	backupImport,
@@ -34,17 +35,12 @@ import * as memoryStorage from "./storage/memoryStorage"
 const AUTO_SYNC_DEBOUNCE_MS = 4000
 
 type SyncStatus = "idle" | "syncing" | "synced" | "error"
+// The one remaining conflict prompt - first sign-in on this device with
+// pre-existing data on both sides. Every other case resolves silently via
+// true Last-Write-Wins.
 type RestorePrompt = {
-	kind: "older" | "overwrite"
 	data: ReturnType<typeof backupImport>["data"]
 	localLastUpdated: number | null
-}
-
-// Local's lastUpdated is missing entirely when there's no prior sync history
-// (the "overwrite" conflict case) - relative age can't be determined then.
-function describeAge(value: number | null, other: number | null) {
-	if (value == null || other == null || value === other) return null
-	return value > other ? "newer" : "older"
 }
 
 export function CloudSyncProvider({ children }: { children: React.ReactNode }) {
@@ -101,7 +97,10 @@ export function CloudSyncProvider({ children }: { children: React.ReactNode }) {
 	// an existing session (see the account-status effect below).
 	const hasBeenUnauthenticatedRef = useRef(false)
 	const hasClearedUnlinkRef = useRef(false)
-	const hasPushedInitialBackupRef = useRef(false)
+	// One-shot per key epoch (sign-in/out cycle) - guards the "converge"
+	// effect below so it pushes local up to Convex at most once per epoch
+	// instead of on every render once its condition is true.
+	const hasPushedThisEpochRef = useRef(false)
 
 	useEffect(() => {
 		mountedRef.current = true
@@ -125,7 +124,10 @@ export function CloudSyncProvider({ children }: { children: React.ReactNode }) {
 				setKeyReady(true)
 			})
 			.catch((error) => {
-				console.error("Failed to acquire backup key from Google Drive", error)
+				console.error(
+					"Failed to acquire backup key from Google Drive",
+					error
+				)
 				setStatus("error")
 			})
 	}, [convexAuth.isAuthenticated, accessToken])
@@ -145,7 +147,7 @@ export function CloudSyncProvider({ children }: { children: React.ReactNode }) {
 			keyRef.current = null
 			lastReconciledRef.current = null
 			lastReconciledGachaRef.current = null
-			hasPushedInitialBackupRef.current = false
+			hasPushedThisEpochRef.current = false
 			// eslint-disable-next-line react-hooks/set-state-in-effect
 			setKeyReady(false)
 			setStatus("idle")
@@ -241,13 +243,12 @@ export function CloudSyncProvider({ children }: { children: React.ReactNode }) {
 
 				const result = backupImport(JSON.stringify(data))
 
-				if (result.status === "synced") {
-					markSynced()
-					setStatus("synced")
-					setLastSyncedAt(Date.now())
-					setLatestBackupUpdatedAt(
-						Number(result.data.lastUpdated) || Date.now()
+				if (result.status === "overwrite") {
+					const localLastUpdated = memoryStorage.getItem<number | null>(
+						"lastUpdated",
+						null
 					)
+					setRestorePrompt({ data: result.data, localLastUpdated })
 				} else if (result.status === "newer") {
 					backupSetImport(result.data)
 					markSynced()
@@ -256,17 +257,21 @@ export function CloudSyncProvider({ children }: { children: React.ReactNode }) {
 					setLatestBackupUpdatedAt(
 						Number(result.data.lastUpdated) || Date.now()
 					)
-				} else if (
-					result.status === "older" ||
-					result.status === "overwrite"
-				) {
-					const localLastUpdated =
-						memoryStorage.getItem<number | null>("lastUpdated", null)
-					setRestorePrompt({
-						kind: result.status,
-						data: result.data,
-						localLastUpdated,
-					})
+				} else {
+					// "synced": local already matches or leads under LWW. Only
+					// reflect it here on an exact match - a strictly-ahead local
+					// gets pushed up immediately by the converge effect below,
+					// which sets this same state off the freshly-pushed value.
+					const localLastUpdated = memoryStorage.getItem<number>(
+						"lastUpdated",
+						0
+					)
+					if (localLastUpdated === row.lastUpdated) {
+						markSynced()
+						setStatus("synced")
+						setLastSyncedAt(Date.now())
+						setLatestBackupUpdatedAt(row.lastUpdated)
+					}
 				}
 			})
 			.catch((error) => {
@@ -287,7 +292,11 @@ export function CloudSyncProvider({ children }: { children: React.ReactNode }) {
 		const key = keyRef.current
 		if (!key) return
 
-		decryptBackupPayload<GachaBackupData>(key, gachaRow.ciphertext, gachaRow.iv)
+		decryptBackupPayload<GachaBackupData>(
+			key,
+			gachaRow.ciphertext,
+			gachaRow.iv
+		)
 			.then((data) => {
 				if (!mountedRef.current) return
 				lastReconciledGachaRef.current = gachaRow.lastUpdated
@@ -299,7 +308,10 @@ export function CloudSyncProvider({ children }: { children: React.ReactNode }) {
 						0
 					)
 					if (gachaRow.lastUpdated > localGachaLastUpdated) {
-						memoryStorage.setItem("gachaLastUpdated", gachaRow.lastUpdated)
+						memoryStorage.setItem(
+							"gachaLastUpdated",
+							gachaRow.lastUpdated
+						)
 					}
 				}
 			})
@@ -318,7 +330,10 @@ export function CloudSyncProvider({ children }: { children: React.ReactNode }) {
 
 		setStatus("syncing")
 		try {
-			const localLastUpdated = memoryStorage.getItem<number>("lastUpdated", 0)
+			const localLastUpdated = memoryStorage.getItem<number>(
+				"lastUpdated",
+				0
+			)
 			const localGachaLastUpdated = memoryStorage.getItem<number>(
 				"gachaLastUpdated",
 				0
@@ -330,7 +345,10 @@ export function CloudSyncProvider({ children }: { children: React.ReactNode }) {
 				localLastUpdated > lastReconciledRef.current
 			) {
 				const mainPayload = buildMainPayload()
-				const { ciphertext, iv } = await encryptBackupPayload(key, mainPayload)
+				const { ciphertext, iv } = await encryptBackupPayload(
+					key,
+					mainPayload
+				)
 				const lastUpdated = Number(mainPayload.lastUpdated) || Date.now()
 
 				await upsertBackup({ ciphertext, iv, lastUpdated })
@@ -344,7 +362,10 @@ export function CloudSyncProvider({ children }: { children: React.ReactNode }) {
 				localGachaLastUpdated > lastReconciledGachaRef.current
 			) {
 				const gachaPayload = buildGachaPayload()
-				const { ciphertext, iv } = await encryptBackupPayload(key, gachaPayload)
+				const { ciphertext, iv } = await encryptBackupPayload(
+					key,
+					gachaPayload
+				)
 				const gachaLastUpdated =
 					Number(gachaPayload.gachaLastUpdated) || Date.now()
 
@@ -365,19 +386,43 @@ export function CloudSyncProvider({ children }: { children: React.ReactNode }) {
 		}
 	}, [upsertBackup, upsertGachaBackup])
 
-	// Initial backup push if account has no cloud backup yet
+	// True LWW's "local wins" half: once the initial reconcile against `row`
+	// is done, push local up right away if it's strictly ahead of (or there's
+	// no) cloud backup, instead of waiting on the next edit's debounce. One
+	// push per key epoch - after this, routine edits drive pushToConvex via
+	// the debounced listener below.
 	useEffect(() => {
-		if (!keyReady || row !== null) return
-		if (restorePrompt || hasCorruption || hasPushedInitialBackupRef.current)
+		if (
+			!initialCheckComplete ||
+			restorePrompt ||
+			hasCorruption ||
+			remoteCorrupt
+		)
 			return
 
-		hasPushedInitialBackupRef.current = true
+		const localLastUpdated = memoryStorage.getItem<number>("lastUpdated", 0)
+		const localIsAhead = row === null || localLastUpdated > row.lastUpdated
+		if (!localIsAhead || hasPushedThisEpochRef.current) return
+
+		hasPushedThisEpochRef.current = true
 		pushToConvex()
-	}, [keyReady, row, restorePrompt, hasCorruption, pushToConvex])
+	}, [
+		initialCheckComplete,
+		row,
+		restorePrompt,
+		hasCorruption,
+		remoteCorrupt,
+		pushToConvex,
+	])
 
 	useEffect(() => {
 		async function runSync() {
-			if (!initialCheckComplete || restorePrompt || hasCorruption || remoteCorrupt)
+			if (
+				!initialCheckComplete ||
+				restorePrompt ||
+				hasCorruption ||
+				remoteCorrupt
+			)
 				return
 
 			if (isSyncingRef.current) {
@@ -488,16 +533,6 @@ export function CloudSyncProvider({ children }: { children: React.ReactNode }) {
 		setLatestBackupUpdatedAt(null)
 	}
 
-	const remoteLastUpdated = restorePrompt
-		? Number(restorePrompt.data.lastUpdated) || null
-		: null
-	const localAge = restorePrompt
-		? describeAge(restorePrompt.localLastUpdated, remoteLastUpdated)
-		: null
-	const remoteAge = restorePrompt
-		? describeAge(remoteLastUpdated, restorePrompt.localLastUpdated)
-		: null
-
 	const bothCorrupt = hasCorruption && remoteCorrupt
 	let corruptionMessage: string
 	let corruptionConfirmLabel: string
@@ -531,24 +566,17 @@ export function CloudSyncProvider({ children }: { children: React.ReactNode }) {
 		<CloudSyncContext.Provider
 			value={{ status, lastSyncedAt, latestBackupUpdatedAt, syncNow }}>
 			{children}
-			{(restorePrompt?.kind === "older" ||
-				restorePrompt?.kind === "overwrite") && (
-				<ModalContainer>
-					<AlertContainer
-						type="choices"
-						onConfirm={() => resolveRestorePrompt("drive")}
-						confirmLabel={`Use Cloud Data${remoteAge ? ` (${remoteAge})` : ""}`}
-						onCancel={() => resolveRestorePrompt("local")}
-						cancelLabel={`Keep Local Data${localAge ? ` (${localAge})` : ""}`}>
-						{restorePrompt.kind === "older"
-							? "Your BACKUP is older than your current data."
-							: "Your BACKUP may conflict with your current data."}
-						<br />
-						What would you like to do?
-					</AlertContainer>
-				</ModalContainer>
+			{restorePrompt && (
+				<SyncConflictModal
+					localLastUpdated={restorePrompt.localLastUpdated}
+					cloudLastUpdated={
+						Number(restorePrompt.data.lastUpdated) || null
+					}
+					onKeepLocal={() => resolveRestorePrompt("local")}
+					onUseCloud={() => resolveRestorePrompt("drive")}
+				/>
 			)}
-			{((hasCorruption || remoteCorrupt) && !restorePrompt) && (
+			{(hasCorruption || remoteCorrupt) && !restorePrompt && (
 				<ModalContainer>
 					<AlertContainer
 						type={bothCorrupt ? "acknowledge" : "choices"}

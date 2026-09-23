@@ -147,18 +147,15 @@ export function backupImport(json: string) {
 		memoryStorage.getItem<number | null>("lastSynced", null)
 	)
 
-	if (lastUpdated && remoteLastUpdated === lastUpdated) {
+	// True Last-Write-Wins: local already matches or leads, so there's
+	// nothing to pull - if local is strictly ahead, the caller pushes it up
+	// instead of prompting. No separate "older" state to react to.
+	if (lastUpdated && remoteLastUpdated <= lastUpdated) {
 		return { status: "synced", data }
 	}
 
-	if (lastUpdated && remoteLastUpdated < lastUpdated) {
-		return { status: "older", data }
-	}
-
-	if (remoteLastUpdated > Date.now()) {
-		return { status: "future", data } //WOW!
-	}
-
+	// The one remaining conflict: first-ever sync on this device, with
+	// pre-existing local data that would otherwise be silently discarded.
 	if (!hasSyncedBefore && hasLocalData) {
 		return { status: "overwrite", data }
 	}
