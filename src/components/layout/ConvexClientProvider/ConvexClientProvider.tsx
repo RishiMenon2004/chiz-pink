@@ -14,20 +14,28 @@ function useAuthFromNextAuth() {
 
 	const fetchAccessToken = useCallback(
 		async ({ forceRefreshToken }: { forceRefreshToken: boolean }) => {
-			// A forced refresh means Convex thinks the current token is stale -
-			// re-fetch the session so next-auth's jwt callback gets a chance to
-			// refresh an expired Google token before we hand over its id_token.
-			if (!forceRefreshToken) return session?.idToken ?? null
+			// A forced refresh means Convex thinks the current token is stale,
+			// or session has reported an error - re-fetch the session so next-auth's
+			// jwt callback gets a chance to refresh an expired Google token.
+			if (forceRefreshToken || session?.error === "RefreshAccessTokenError") {
+				const freshSession = await getSession()
+				if (freshSession?.error === "RefreshAccessTokenError") {
+					return null
+				}
+				return freshSession?.idToken ?? null
+			}
 
-			const freshSession = await getSession()
-			return freshSession?.idToken ?? null
+			return session?.idToken ?? null
 		},
-		[session?.idToken]
+		[session?.idToken, session?.error]
 	)
+
+	const hasError = session?.error === "RefreshAccessTokenError"
 
 	return {
 		isLoading: status === "loading",
-		isAuthenticated: status === "authenticated" && Boolean(session?.idToken),
+		isAuthenticated:
+			status === "authenticated" && Boolean(session?.idToken) && !hasError,
 		fetchAccessToken,
 	}
 }
