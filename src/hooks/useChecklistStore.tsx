@@ -49,11 +49,13 @@ function reconcileMissingActivities(record: ChecklistRecord): boolean {
 		Seasonal: "seasonal",
 	}
 
+	record.activities ??= { ...SERVER_FALLBACK.activities }
+
 	for (const activity of getAllActivitiesList()) {
 		const bucket = bucketForKey[activity.type]
 		if (!bucket) continue
 
-		const tasks = record.activities[bucket] ?? {}
+		const tasks = (record.activities[bucket] ??= {})
 		const normalized = normalizeTask(tasks[activity.id])
 
 		if (JSON.stringify(tasks[activity.id]) !== JSON.stringify(normalized)) {
@@ -112,8 +114,10 @@ const store = createKeyvalStore("checklist", SERVER_FALLBACK)
 let cachedChecklist: ChecklistRecord = SERVER_FALLBACK
 let lastProcessed: ChecklistRecord | null = null
 
+// Reads through getSnapshot() so edits build on the repaired record, not the
+// raw stored one.
 function readChecklist(): ChecklistRecord {
-	return store.read()
+	return getSnapshot()
 }
 
 export const checklistActions = {
@@ -157,15 +161,18 @@ export const checklistActions = {
 		const current = readChecklist()
 		const updated: ChecklistRecord = {
 			...current,
-			activities: { ...current.activities },
+			activities: {
+				...current.activities,
+				[type]: { ...current.activities[type] },
+				biWeekly: { ...current.activities.biWeekly },
+			},
 			resetTimestamps: {
 				...current.resetTimestamps,
 				[timestampKey]: resetAt,
 			},
 		}
 
-		updated.activities[type] ??= {}
-		const biWeeklies = updated.activities["biWeekly"] ?? {}
+		const biWeeklies = updated.activities["biWeekly"]
 
 		if (timestampKey === "lastBiWeeklyWednesdayReset") {
 			biWeeklies["btr"] = {
@@ -196,43 +203,49 @@ export const checklistActions = {
 	},
 }
 
-const getSnapshot = () => {
+function getSnapshot(): ChecklistRecord {
 	if (typeof window === "undefined") return SERVER_FALLBACK
 
 	const current = store.read()
+	if (current === lastProcessed) return cachedChecklist
 
-	if (current !== lastProcessed) {
-		lastProcessed = current
-		cachedChecklist = current
+	// Repair a deep copy - the stored object may be SERVER_FALLBACK itself
+	// (before hydration), which must never be mutated.
+	const next = structuredClone(current)
 
-		// Pre-resetTimestamps records kept lastDailyReset at the top level -
-		// fold it into resetTimestamps (creating it first, since old data
-		// won't have one) before the missing-key backfill below.
-		const legacy = cachedChecklist as Record<string, unknown>
-		const hadOldKey = "lastDailyReset" in legacy
-		if (hadOldKey) {
-			cachedChecklist.resetTimestamps ??= {
-				...SERVER_FALLBACK.resetTimestamps,
-			}
-			cachedChecklist.resetTimestamps.lastDailyReset =
-				legacy.lastDailyReset as number
-			delete legacy.lastDailyReset
-		}
+	// Pre-resetTimestamps records kept lastDailyReset at the top level -
+	// fold it into resetTimestamps (creating it first, since old data
+	// won't have one) before the missing-key backfill below.
+	const legacy = next as Record<string, unknown>
+	const hadOldKey = "lastDailyReset" in legacy
+	if (hadOldKey) {
+		next.resetTimestamps ??= { ...SERVER_FALLBACK.resetTimestamps }
+		next.resetTimestamps.lastDailyReset = legacy.lastDailyReset as number
+		delete legacy.lastDailyReset
+	}
 
-		cachedChecklist.resetTimestamps = {
-			...SERVER_FALLBACK.resetTimestamps,
-			...cachedChecklist.resetTimestamps,
-		}
+	next.resetTimestamps = {
+		...SERVER_FALLBACK.resetTimestamps,
+		...next.resetTimestamps,
+	}
 
-		// Fill in any activity ids that ship in the catalog but are missing
-		// from the stored save (players upgrading from an older version),
-		// dropping orphaned ids, and persist the reconciled shape back so the
-		// repair sticks. Mirrors the legacy-key rewrite above.
-		const repaired = reconcileMissingActivities(cachedChecklist)
+	// Fill in any activity ids that ship in the catalog but are missing
+	// from the stored save (players upgrading from an older version),
+	// dropping orphaned ids.
+	const repaired = reconcileMissingActivities(next)
 
-		if (hadOldKey || repaired) {
-			store.write(cachedChecklist, { silent: true })
-		}
+	lastProcessed = current
+	cachedChecklist = next
+
+	// Only persist the repair once local data has actually loaded - before
+	// hydration store.read() returns SERVER_FALLBACK, and writing that back
+	// would queue an IndexedDB write that overwrites the real save.
+	if ((hadOldKey || repaired) && !isInitialSyncPending()) {
+		// Set before writing: store.write() notifies synchronously, which
+		// re-enters getSnapshot() and must hit the early return above now
+		// that the store holds `next`.
+		lastProcessed = next
+		store.write(next, { silent: true })
 	}
 
 	return cachedChecklist
