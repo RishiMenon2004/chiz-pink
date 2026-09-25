@@ -4,7 +4,7 @@ import { useSyncExternalStore } from "react"
 
 import * as memoryStorage from "./memoryStorage"
 
-// Shared read/write/subscribe plumbing for the simple keyval-backed
+// Shared read/write/subscribe plumbing for the simple records-backed
 // *Store hooks (inventory, planner, plannerOrder, settings). Every one of
 // them reduces to "read memoryStorage.getItem(key, fallback), write back
 // through memoryStorage.setItem, expose it via useSyncExternalStore" - that
@@ -19,9 +19,9 @@ import * as memoryStorage from "./memoryStorage"
 //   getSnapshot can't do, so it keeps its own getSnapshot but still calls
 //   store.read()/write() for the plain parts.
 // - useGachaStore.tsx keeps its own cache entirely - pulls live in
-//   IndexedDB's normalized `pulls` store, not a "gachaPulls" keyval entry,
+//   IndexedDB's normalized `pulls` store, not a "gachaPulls" records entry,
 //   so there's no single key for this factory to wrap.
-export function createKeyvalStore<T>(key: string, fallback: T) {
+export function createRecordStore<T>(key: string, fallback: T) {
 	function read(): T {
 		if (typeof window === "undefined") return fallback
 		return memoryStorage.getItem(key, fallback)

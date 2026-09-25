@@ -26,7 +26,7 @@ import * as idbStorage from "./idbStorage"
 //   already-computed value, so other tabs update instantly without a round
 //   trip back through IndexedDB. The channel carries a `kind` discriminant
 //   so the normalized `pulls` store (useGachaStore.tsx), which isn't part of
-//   this module's keyval cache, can piggyback on the same channel instead of
+//   this module's records cache, can piggyback on the same channel instead of
 //   opening a second one - see broadcastCustom()/onCustomBroadcast().
 
 type Listener = () => void
@@ -41,7 +41,7 @@ type WriteState = {
 }
 
 type BroadcastEnvelope =
-	| { kind: "keyval"; key: string; value: unknown }
+	| { kind: "record"; key: string; value: unknown }
 	| { kind: "custom"; channel: string; payload: unknown }
 
 const cache = new Map<string, unknown>()
@@ -92,7 +92,7 @@ function getChannel(): BroadcastChannel | null {
 			const message = event.data
 			if (!message) return
 
-			if (message.kind === "keyval") {
+			if (message.kind === "record") {
 				if (typeof message.key !== "string") return
 				if (message.value === undefined) {
 					cache.delete(message.key)
@@ -113,7 +113,7 @@ function getChannel(): BroadcastChannel | null {
 }
 
 function broadcast(key: string, value: unknown) {
-	getChannel()?.postMessage({ kind: "keyval", key, value } satisfies BroadcastEnvelope)
+	getChannel()?.postMessage({ kind: "record", key, value } satisfies BroadcastEnvelope)
 }
 
 // Lets a sibling storage module (e.g. the pulls cache) ship its own

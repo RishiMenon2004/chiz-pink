@@ -10,7 +10,7 @@ import type { Inventory, StoredInventoryItem } from "@/types/inventory"
 
 // Inventory lives in IndexedDB's normalized `inventory` store (one row per
 // material - see docs/plans/localstorage-to-indexeddb-migration.md §4-style
-// rationale), not memoryStorage's generic keyval cache, so this module
+// rationale), not memoryStorage's generic records cache, so this module
 // keeps its own small in-memory cache instead of going through
 // memoryStorage.getItem/setItem. It rides memoryStorage's shared subscriber
 // list and BroadcastChannel via notifyListeners()/broadcastCustom(), the

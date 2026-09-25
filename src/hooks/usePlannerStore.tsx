@@ -36,7 +36,7 @@ import { plannerOrderActions } from "./usePlannerOrderStore"
 
 // Planner lives in IndexedDB's normalized `planner` store (one row per
 // character/weapon, keyed by [itemType, refId] - see
-// src/types/planner.ts), not memoryStorage's generic keyval cache, so this
+// src/types/planner.ts), not memoryStorage's generic records cache, so this
 // module keeps its own in-memory cache and rides memoryStorage's shared
 // subscriber list and BroadcastChannel, the same way useGachaStore.tsx and
 // useInventoryStore.tsx do for their own normalized stores.

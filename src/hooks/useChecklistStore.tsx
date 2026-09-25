@@ -7,7 +7,7 @@ import type { ChecklistRecord, ChecklistEntry } from "@/types/checklist"
 import { getAllActivitiesList } from "@/data/activities/activities"
 
 import { isInitialSyncPending } from "@/helpers/syncGate"
-import { createKeyvalStore } from "@/helpers/storage/keyvalStore"
+import { createRecordStore } from "@/helpers/storage/recordStore"
 import * as memoryStorage from "@/helpers/storage/memoryStorage"
 
 /**
@@ -109,7 +109,7 @@ export const SERVER_FALLBACK: ChecklistRecord = {
 	},
 }
 
-const store = createKeyvalStore("checklist", SERVER_FALLBACK)
+const store = createRecordStore("checklist", SERVER_FALLBACK)
 
 let cachedChecklist: ChecklistRecord = SERVER_FALLBACK
 let lastProcessed: ChecklistRecord | null = null

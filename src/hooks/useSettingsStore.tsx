@@ -2,7 +2,7 @@
 
 import { SettingsConfigContext } from "@/contexts"
 import { isInitialSyncPending, useInitialSyncPending } from "@/helpers/syncGate"
-import { createKeyvalStore } from "@/helpers/storage/keyvalStore"
+import { createRecordStore } from "@/helpers/storage/recordStore"
 import {
 	getBiWeeklyMondayResetBoundaries,
 	getBiWeeklyWednesdayResetBoundaries,
@@ -37,7 +37,7 @@ export const SERVER_FALLBACK: SettingsRecord = {
 	},
 }
 
-const store = createKeyvalStore("settings", SERVER_FALLBACK)
+const store = createRecordStore("settings", SERVER_FALLBACK)
 
 export function readSettings() {
 	return store.read()

@@ -1,7 +1,7 @@
 "use client"
 
 import { isInitialSyncPending } from "@/helpers/syncGate"
-import { createKeyvalStore } from "@/helpers/storage/keyvalStore"
+import { createRecordStore } from "@/helpers/storage/recordStore"
 
 import type { PlannerOrderRecord, PlannerRecord } from "@/types/planner"
 
@@ -11,7 +11,7 @@ export const SERVER_FALLBACK: PlannerOrderRecord = {
 	arcs: [],
 }
 
-const store = createKeyvalStore("plannerOrder", SERVER_FALLBACK)
+const store = createRecordStore("plannerOrder", SERVER_FALLBACK)
 
 // Items without an explicit position (new adds, or a fresh install with no
 // saved order yet) sort to the front, ahead of the explicitly-ordered ids -

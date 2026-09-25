@@ -64,7 +64,7 @@ export type PlannerRecord = {
 }
 
 // Three independent orderings, one per planner view, stored together under
-// a single `plannerOrder` keyval entry. They're independent arrays (not
+// a single `plannerOrder` records entry. They're independent arrays (not
 // derived from one another) because the views can diverge item-by-item -
 // hybrid interleaves both types, so filtering it down to one type after a
 // hybrid-mode reorder doesn't losslessly recover what a split-mode drag

@@ -6,8 +6,11 @@ import { PlannerItemType, StoredPlannerItem } from "@/types/planner"
 // synchronous layer stores actually talk to; this module only knows how to
 // read and write "chiz-pink-db" itself. See docs/plans/localstorage-to-indexeddb-migration.md.
 const DB_NAME = "chiz-pink-db"
-const DB_VERSION = 2
-const KEYVAL_STORE = "keyval"
+const DB_VERSION = 3
+const RECORDS_STORE = "records"
+// Pre-v3 name of RECORDS_STORE. Dropped (not migrated) on upgrade - data
+// carries over via a backup export/import instead.
+const LEGACY_KEYVAL_STORE = "keyval"
 const PULLS_STORE = "pulls"
 const PULLS_BANNER_INDEX = "bannerType"
 const PULLS_BANNER_TIMESTAMP_INDEX = "bannerType_timestamp"
@@ -33,8 +36,12 @@ function openDB(): Promise<IDBDatabase> {
 		request.onupgradeneeded = () => {
 			const db = request.result
 
-			if (!db.objectStoreNames.contains(KEYVAL_STORE)) {
-				db.createObjectStore(KEYVAL_STORE)
+			if (db.objectStoreNames.contains(LEGACY_KEYVAL_STORE)) {
+				db.deleteObjectStore(LEGACY_KEYVAL_STORE)
+			}
+
+			if (!db.objectStoreNames.contains(RECORDS_STORE)) {
+				db.createObjectStore(RECORDS_STORE)
 			}
 
 			if (!db.objectStoreNames.contains(PULLS_STORE)) {
@@ -91,7 +98,7 @@ function runRequest<T>(
 
 export async function get<T>(key: string): Promise<T | null> {
 	const value = await runRequest<T | undefined>(
-		KEYVAL_STORE,
+		RECORDS_STORE,
 		"readonly",
 		(store) => store.get(key)
 	)
@@ -99,13 +106,13 @@ export async function get<T>(key: string): Promise<T | null> {
 }
 
 export function set<T>(key: string, value: T): Promise<void> {
-	return runRequest(KEYVAL_STORE, "readwrite", (store) =>
+	return runRequest(RECORDS_STORE, "readwrite", (store) =>
 		store.put(value, key)
 	).then(() => undefined)
 }
 
 export function del(key: string): Promise<void> {
-	return runRequest(KEYVAL_STORE, "readwrite", (store) =>
+	return runRequest(RECORDS_STORE, "readwrite", (store) =>
 		store.delete(key)
 	).then(() => undefined)
 }
@@ -114,8 +121,8 @@ export function getAll(): Promise<Record<string, unknown>> {
 	return openDB().then(
 		(db) =>
 			new Promise<Record<string, unknown>>((resolve, reject) => {
-				const tx = db.transaction(KEYVAL_STORE, "readonly")
-				const store = tx.objectStore(KEYVAL_STORE)
+				const tx = db.transaction(RECORDS_STORE, "readonly")
+				const store = tx.objectStore(RECORDS_STORE)
 				const keysRequest = store.getAllKeys()
 				const valuesRequest = store.getAll()
 

@@ -18,7 +18,7 @@ import {
 
 // Pulls live in IndexedDB's normalized `pulls` store (one row per pull,
 // indexed by uid - see docs/plans/localstorage-to-indexeddb-migration.md
-// §4), not in memoryStorage's generic keyval cache, so this module keeps its
+// §4), not in memoryStorage's generic records cache, so this module keeps its
 // own small in-memory cache instead of going through memoryStorage.getItem/
 // setItem. It still rides memoryStorage's shared subscriber list (via
 // memoryStorage.notifyListeners()) and BroadcastChannel (via

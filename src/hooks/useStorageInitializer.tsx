@@ -11,13 +11,13 @@ import { hydratePlannerCache } from "./usePlannerStore"
 // Boots the IndexedDB-backed storage layer once per page load (see
 // docs/plans/localstorage-to-indexeddb-migration.md Phase 4):
 //
-// 1. memoryStorage.hydrate() - loads the keyval store into the synchronous
+// 1. memoryStorage.hydrate() - loads the records store into the synchronous
 //    cache every *Store hook reads from (or flips into localStorage
 //    fallback mode if IndexedDB isn't available).
 // 2. hydratePullsCache()/hydrateInventoryCache()/hydratePlannerCache() -
 //    same idea for the three stores' own caches (pulls, inventory, planner
 //    are normalized IndexedDB stores, not part of memoryStorage's generic
-//    keyval store). Run after step 1 since they need
+//    records store). Run after step 1 since they need
 //    memoryStorage.isFallbackMode() to already be accurate.
 //
 // setLocalBootstrapPending(false) always runs, even if a step throws -
