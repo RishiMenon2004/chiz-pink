@@ -50,6 +50,7 @@ const writeState = new Map<string, WriteState>()
 const customBroadcastHandlers = new Map<string, (payload: unknown) => void>()
 
 let fallbackMode = false
+let hydrationStarted = false
 let hydrated = false
 let channel: BroadcastChannel | null = null
 
@@ -240,11 +241,15 @@ export function removeItem(key: string): void {
 // the first call does anything. AppStorageInitializer (Phase 4) is
 // responsible for calling this once on app start, before any writes.
 export async function hydrate(): Promise<void> {
-	if (hydrated || typeof window === "undefined") return
-	hydrated = true
+	if (hydrationStarted || typeof window === "undefined") return
+	hydrationStarted = true
 
+	// `hydrated` only flips once the cache is actually populated (or fallback
+	// mode is on) - isHydrated() callers like useFirstVisit treat a missing
+	// key as "genuinely absent", which isn't true while getAll() is in flight.
 	if (!idbStorage.isIndexedDBAvailable()) {
 		fallbackMode = true
+		hydrated = true
 		notify()
 		return
 	}
@@ -255,10 +260,11 @@ export async function hydrate(): Promise<void> {
 			cache.set(key, value)
 		}
 		getChannel()
-		notify()
 	} catch (error) {
 		console.error("IndexedDB hydration failed, falling back to localStorage", error)
 		fallbackMode = true
-		notify()
 	}
+
+	hydrated = true
+	notify()
 }
