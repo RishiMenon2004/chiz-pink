@@ -12,8 +12,8 @@ import { useSyncExternalStore } from "react"
 //   write could race the incoming pull - either getting clobbered by it or
 //   bumping lastUpdated so local looks newer than a backup it hasn't
 //   actually seen yet. CloudSyncProvider is the only writer of this half.
-// - Local bootstrap: memoryStorage's IndexedDB hydration (plus the one-time
-//   localStorage migration and the pulls cache) is asynchronous, so on
+// - Local bootstrap: memoryStorage's IndexedDB hydration (plus the pulls,
+//   inventory and planner caches) is asynchronous, so on
 //   every load there's a window where getSnapshot() is still returning each
 //   store's empty SERVER_FALLBACK. A write during that window would persist
 //   stale defaults right before the real data lands and get clobbered by

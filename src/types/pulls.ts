@@ -111,8 +111,7 @@ export type Pull = MiracleBoxPull | ScarboroughFairPull
 // the pull for the bannerType/timestamp index.
 //
 // `seq` records where this pull fell in an already-correctly-ordered write
-// (the legacy localStorage blob's Object.values() order at migration time,
-// or an NTE-exporter batch's own sorted order for a live import) - see
+// (an NTE-exporter batch's own sorted order for a live import) - see
 // useGachaStore.tsx's comparePulls(). `timestamp` alone can't disambiguate
 // pulls from the same multi-pull session (they share one timestamp at
 // second granularity), so it's not a safe tiebreak on its own. Optional
