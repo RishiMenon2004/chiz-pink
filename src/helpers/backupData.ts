@@ -118,11 +118,47 @@ export function backupExport() {
 	window.URL.revokeObjectURL(url)
 }
 
+function isPlainObject(value: unknown): value is Record<string, unknown> {
+	return typeof value === "object" && value !== null && !Array.isArray(value)
+}
+
+function isStoredPlannerItem(value: unknown): value is StoredPlannerItem {
+	return (
+		isPlainObject(value) &&
+		(value.itemType === "character" || value.itemType === "weapon") &&
+		typeof value.refId === "string" &&
+		isPlainObject(value.data)
+	)
+}
+
+// Only the current export shape is accepted - JSON.parse gives no runtime
+// guarantee an imported file matches BackupData, and older chiz-pink export
+// formats aren't supported. gachaPulls is optional since the main cloud
+// payload (MainBackupData) goes through backupImport() too.
+function isCurrentBackup(data: unknown): data is BackupData {
+	return (
+		isPlainObject(data) &&
+		typeof data.lastUpdated === "number" &&
+		isPlainObject(data.checklist) &&
+		isPlainObject(data.checklist.activities) &&
+		isPlainObject(data.inventory) &&
+		Array.isArray(data.planner) &&
+		data.planner.every(isStoredPlannerItem) &&
+		isPlainObject(data.settings) &&
+		(data.gachaPulls === undefined || isPlainObject(data.gachaPulls))
+	)
+}
+
 export function backupImport(json: string) {
 	let data: BackupData | null = null
 
 	try {
-		data = JSON.parse(json) satisfies BackupData
+		const parsed: unknown = JSON.parse(json)
+		if (isCurrentBackup(parsed)) {
+			data = parsed
+		} else {
+			console.error("Unsupported backup format")
+		}
 	} catch (error) {
 		console.error(error)
 	}
@@ -185,65 +221,17 @@ export function eraseLocalData() {
 	clearAllPulls()
 }
 
-// Backward compatible with backup files exported before planner became a
-// single ordered list (previously two separately-keyed { characters, arcs }
-// collections, ordered via a separate top-level plannerOrder field) -
-// JSON.parse gives no runtime guarantee an imported file actually matches
-// the current BackupData shape. legacyHybridOrder (that old file's
-// plannerOrder.hybrid, if present) is applied the same way
-// getOrderedPlannerItems() applies the live order, so importing an old
-// export doesn't collapse its interleaving into "all characters then all
-// arcs".
-function normalizePlannerItems(
-	planner: unknown,
-	legacyHybridOrder?: string[]
-): StoredPlannerItem[] {
-	if (!planner) return []
-	if (Array.isArray(planner)) return planner as StoredPlannerItem[]
-
-	const legacy = planner as PlannerRecord
-	const characters = legacy.characters ?? {}
-	const arcs = legacy.arcs ?? {}
-	const combinedIds = [...Object.keys(characters), ...Object.keys(arcs)]
-	const order = legacyHybridOrder
-		? applyOrder(legacyHybridOrder, combinedIds)
-		: combinedIds
-
-	return order.map((refId): StoredPlannerItem =>
-		refId in characters
-			? { itemType: "character", refId, data: characters[refId] }
-			: { itemType: "weapon", refId, data: arcs[refId] }
-	)
-}
-
-// plannerOrder/hybridPlanner are accepted only for the legacy-format branch
-// above - current exports don't include either (see BackupData's planner
-// field comment). hybridPlanner is the pre-normalization field name (from
-// before planner/arcs+characters even had a shared `plannerOrder` key - see
-// migration.ts's migrateHybridPlanner()); a file that old still has its
-// order preserved rather than silently falling back to "characters then
-// arcs" grouping.
-type ImportedBackupData = BackupData & {
-	plannerOrder?: { hybrid?: string[] }
-	hybridPlanner?: { order?: string[] }
-}
-
 export function backupSetMainImport({
 	lastUpdated,
 	checklist,
 	planner,
-	plannerOrder,
-	hybridPlanner,
 	inventory,
 	settings,
-}: Omit<ImportedBackupData, "gachaPulls" | "gachaLastUpdated">) {
+}: MainBackupData) {
 	memoryStorage.setItem("checklist", checklist ?? CHECKLIST_FALLBACK)
 	replaceInventory(inventory ?? INVENTORY_FALLBACK)
 
-	const plannerItems = normalizePlannerItems(
-		planner,
-		plannerOrder?.hybrid ?? hybridPlanner?.order
-	)
+	const plannerItems = planner ?? []
 	const plannerRecord: PlannerRecord = { arcs: {}, characters: {} }
 	for (const item of plannerItems) {
 		if (item.itemType === "character") {
@@ -271,7 +259,7 @@ export function backupSetMainImport({
 	memoryStorage.setItem("settings", settings ?? SETTINGS_FALLBACK)
 }
 
-export function backupSetImport(data: ImportedBackupData) {
+export function backupSetImport(data: BackupData) {
 	backupSetMainImport(data)
 	if (data.gachaPulls) {
 		replaceAllPulls(data.gachaPulls)
