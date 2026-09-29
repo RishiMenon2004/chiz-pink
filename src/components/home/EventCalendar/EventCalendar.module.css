@@ -16,7 +16,9 @@
 
 	padding-inline: var(--left-margin) 1rem;
 
-	overflow: hidden;
+	/* clip, not hidden: hidden makes this a scroll container, which
+	   breaks the sticky event names/dates inside it */
+	overflow: clip;
 }
 
 .calendarRow {
