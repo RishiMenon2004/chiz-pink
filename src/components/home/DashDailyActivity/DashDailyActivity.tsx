@@ -28,7 +28,10 @@ export function DashDailyActivity({
 	const dailyTasksId = getAllActivities().dailyTasks.id
 	const { checklist, actions: checklistActions } = useChecklistStore()
 	const entry = checklist.activities.daily?.[dailyTasksId] ?? EMPTY_ENTRY
-	const { checked, claimed } = entry
+	const { checked } = entry
+	// resetChecklist rebuilds entries without `claimed`, so a missing value
+	// means nothing has been claimed since the last reset.
+	const claimed = entry.claimed ?? 0
 
 	// Merges against the store's current value (not the `entry` captured by
 	// this render) so back-to-back calls in the same tick - e.g. setCheckedStep
@@ -67,8 +70,8 @@ export function DashDailyActivity({
 
 	function claimUpTo(target: number) {
 		const clamped = Math.max(0, Math.min(target, parts.length))
-		if (clamped > claimed!) applyRewards(claimed!, clamped, 1)
-		else if (clamped < claimed!) applyRewards(clamped, claimed!, -1)
+		if (clamped > claimed) applyRewards(claimed, clamped, 1)
+		else if (clamped < claimed) applyRewards(clamped, claimed, -1)
 		updateEntry({
 			claimed: clamped,
 			claimedAt: clamped > 0 ? Date.now() : null,
@@ -81,7 +84,7 @@ export function DashDailyActivity({
 		// progress was last touched.
 		updateEntry({ checked: next, claimedAt: next > 0 ? Date.now() : null })
 
-		if (settings.behaviour["auto-claim"] || next < claimed!) {
+		if (settings.behaviour["auto-claim"] || next < claimed) {
 			claimUpTo(next)
 		}
 	}
