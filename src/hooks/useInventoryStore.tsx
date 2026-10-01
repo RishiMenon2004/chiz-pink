@@ -90,9 +90,11 @@ export function updateInventory(data: Inventory) {
 	memoryStorage.setItem("lastUpdated", Date.now())
 }
 
+// Not gated on isInitialSyncPending() - CloudSyncProvider applies the
+// initial cloud pull through this (via backupSetMainImport) while the gate is
+// still closed, same as replacePlanner()/replaceAllPulls().
 export function replaceInventory(data: Inventory) {
 	if (typeof window === "undefined") return
-	if (isInitialSyncPending()) return
 
 	cachedInventory = data
 
