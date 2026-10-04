@@ -76,7 +76,7 @@ export async function hydratePlannerCache(): Promise<void> {
 	hydrated = true
 
 	if (memoryStorage.isFallbackMode() || !idbStorage.isIndexedDBAvailable()) {
-		cachedPlanner = readLegacyBlob()
+		cachedPlanner = refreshRequiredMaterials(readLegacyBlob())
 		memoryStorage.notifyListeners()
 		return
 	}
@@ -88,7 +88,7 @@ export async function hydratePlannerCache(): Promise<void> {
 			if (row.itemType === "character") next.characters[row.refId] = row.data
 			else next.arcs[row.refId] = row.data
 		}
-		cachedPlanner = next
+		cachedPlanner = refreshRequiredMaterials(next)
 		memoryStorage.notifyListeners()
 	} catch (error) {
 		console.error("IndexedDB planner hydration failed", error)
@@ -194,6 +194,25 @@ function getCharRequiredMaterials(
 			amount: materialValues.talentMaterial[tier],
 		})),
 	]
+}
+
+// Recompute stored requiredMaterials so data changes reach saved items
+function refreshRequiredMaterials(planner: PlannerRecord): PlannerRecord {
+	const characters: PlannerRecord["characters"] = {}
+	for (const [refId, char] of Object.entries(planner.characters ?? {})) {
+		characters[refId] = findCharacter(char.id)
+			? { ...char, requiredMaterials: getCharRequiredMaterials(char) }
+			: char
+	}
+
+	const arcs: PlannerRecord["arcs"] = {}
+	for (const [refId, arc] of Object.entries(planner.arcs ?? {})) {
+		arcs[refId] = findArc(arc.id)
+			? { ...arc, requiredMaterials: getWeaponRequiredMaterials(arc) }
+			: arc
+	}
+
+	return { ...planner, characters, arcs }
 }
 
 function readPlanner(): PlannerRecord {
@@ -311,8 +330,10 @@ export const plannerActions = {
 
 // Full overwrite (backup restore / cloud pull) - unlike updatePlanner(),
 // this is a direct replace, not a partial merge. Used by backupData.ts.
-export function replacePlanner(data: PlannerRecord): void {
+export function replacePlanner(restored: PlannerRecord): void {
 	if (typeof window === "undefined") return
+
+	const data = refreshRequiredMaterials(restored)
 
 	cachedPlanner = data
 	memoryStorage.notifyListeners()
