@@ -20,9 +20,9 @@ export const linko: Character = {
 	element: EnumCharacterElement.ANIMA,
 	arcType: EnumArcType.Plasma,
 	ascensionMaterialSet: ascWhispersSet,
-	ascensionBossMaterial: dressSleevesOfVanity,
+	ascensionBossMaterial: waterMoonPick,
 	talentMaterialSet: talentRoseSet,
-	talentBossMaterial: waterMoonPick,
+	talentBossMaterial: dressSleevesOfVanity,
 	abilities: {
 		basicAttack: {
 			name: "Poltergeist CQC",
