@@ -1,4 +1,4 @@
-const CACHE_VERSION = "v7"
+const CACHE_VERSION = "v8"
 const SHELL_CACHE = `chiz-pink-shell-${CACHE_VERSION}`
 const RUNTIME_CACHE = `chiz-pink-runtime-${CACHE_VERSION}`
 const CURRENT_CACHES = [SHELL_CACHE, RUNTIME_CACHE]
@@ -23,8 +23,8 @@ const APP_SHELL_URLS = [
 
 	//placeholders
 	"/materials/placeholder.png",
-	"/arcs/placeholder.png",
-	"/characters/avatar/placeholder.png",
+	"/arcs/placeholder.webp",
+	"/characters/avatar/placeholder.webp",
 
 	//material borders
 	"/materials/borders/epic.png",
@@ -174,8 +174,8 @@ function originalImagePath(url) {
 // one regardless of whether it was an arc, character, or material image.
 function placeholderForPath(path) {
 	if (path.startsWith("/characters/avatar/"))
-		return "/characters/avatar/placeholder.png"
-	if (path.startsWith("/arcs/")) return "/arcs/placeholder.png"
+		return "/characters/avatar/placeholder.webp"
+	if (path.startsWith("/arcs/")) return "/arcs/placeholder.webp"
 	if (path.startsWith("/materials/")) return "/materials/placeholder.png"
 	return null
 }
@@ -207,15 +207,16 @@ async function cacheFirst(request, cacheName) {
 }
 
 // The Next.js image optimizer (/_next/image?url=...&w=...&q=...) isn't
-// hash-versioned or precached, so treat it as best-effort: try the network,
-// and if that fails (offline + never-cached size), fall back to whatever
-// we already have cached for the *original* /public path (materials/,
-// arcs/, characters/ etc. are kept warm by staleWhileRevalidate), then the
-// generic placeholder, rather than letting the fetch rejection go unhandled.
+// hash-versioned: replacing a /public image under the same filename (e.g. a
+// placeholder avatar or event banner swapped for the real art) keeps the
+// exact same URL. So go to the network first - the browser's HTTP cache
+// still honours the optimizer's own Cache-Control, so this isn't a full
+// re-download every time - and only fall back to our cached copy when
+// offline. If this exact size was never cached, fall back to whatever we
+// have for the *original* /public path (kept warm by staleWhileRevalidate),
+// then the category placeholder, rather than letting the fetch rejection go
+// unhandled.
 async function optimizedImage(request, url, cacheName) {
-	const cached = await caches.match(request)
-	if (cached) return cached
-
 	try {
 		const response = await fetch(request)
 		if (response.ok) {
@@ -224,6 +225,9 @@ async function optimizedImage(request, url, cacheName) {
 		}
 		return response
 	} catch {
+		const cached = await caches.match(request)
+		if (cached) return cached
+
 		const originalPath = originalImagePath(url)
 		if (originalPath) {
 			const originalCached = await caches.match(originalPath)
@@ -245,7 +249,7 @@ async function optimizedImage(request, url, cacheName) {
 // rarely change but aren't hash-versioned.
 //
 // Looks up the cached copy via the global caches.match() rather than
-// cache-scoped match(): the placeholder.png fallbacks these requests are
+// cache-scoped match(): the placeholder fallbacks these requests are
 // often for (see ArcIcon/CharacterAvatar/MaterialIcon onError handlers)
 // were precached into SHELL_CACHE at install time, not RUNTIME_CACHE, so a
 // lookup scoped to just RUNTIME_CACHE would miss them and fall through to
