@@ -17,7 +17,7 @@ export function Footer() {
 					<Link
 						target="_blank"
 						rel="noopener noreferrer"
-						href="https://github.com/RishiMenon2004/chiz-pink/issues"
+						href="https://discord.gg/rSeMKWMy69"
 						className="btn-anchor">
 						<b>BUG?</b>
 					</Link>
