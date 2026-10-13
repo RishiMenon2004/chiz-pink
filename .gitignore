@@ -24,6 +24,7 @@
 .DS_Store
 *.pem
 .claude
+desktop.ini
 
 # debug
 npm-debug.log*
@@ -43,3 +44,6 @@ next-env.d.ts
 
 certificates
 public/fonts/fonts.conf
+
+docs/audits/
+.design
