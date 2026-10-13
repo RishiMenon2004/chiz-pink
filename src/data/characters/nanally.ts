@@ -60,7 +60,7 @@ export const nanally: Character = {
 			description: [
 				{
 					description:
-						"Hehe, surprise time! Deals <dn>5</> instances of Anima DMG to surrounding enemies and wraps herself in Anima Esper Ability, gaining the Ichi-daime's Authority effect.\nLasts <dn>12</>s or until Nanally is switched out.\nEnds Ichi-daime's Authority early when recast.",
+						"Hehe, surprise time! Deals <dn>5</> instances of Anima DMG to surrounding enemies and wraps herself in Anima Esper Ability, gaining the <kw>Ichi-daime's Authority</> effect.\nLasts <dn>12s</> or until Nanally is switched out.\nEnds <kw>Ichi-daime's Authority</> early when recast.",
 				},
 			],
 			maxLvl: 10,
@@ -70,7 +70,7 @@ export const nanally: Character = {
 			description: [
 				{
 					description:
-						"I'm way stronger than them! Deals <dn>7</> instances of Anima DMG immediately to surrounding enemies and summons Underboss to fight alongside her.\nCreates a small pull effect on surrounding enemies with Nanally's attacks while Underboss is active, and coordinates with all of Nanally's attacks to launch strikes, dealing Anima DMG that also counts as follow-up attack damage.",
+						"I'm way stronger than them! Deals <dn>7</> instances of Anima DMG immediately to surrounding enemies and summons Underboss to fight alongside her.\nCreates a small pull effect on surrounding enemies with Nanally's attacks while Underboss is active, and coordinates with all of Nanally's attacks to launch strikes, dealing Anima DMG that also counts as <sh>follow-up attack</> damage.",
 				},
 			],
 			maxLvl: 10,
@@ -100,7 +100,7 @@ export const nanally: Character = {
 			description: [
 				{
 					description:
-						"Applies <dn>1</> follow-up attack to a single enemy, dealing Anima DMG of <dn>60%</> ATK whenever any ally deals <dn>1</> instance of Esper Cycle DMG while Nanally is in Ichi-daime's Authority state. DMG Ratio scales with Basic Attack skill level, reaching <dn>129.5%</> at Lvl 11.\nTriggers once every <dn>2</>s.",
+						"Applies <dn>1</> <sh>follow-up attack</> to a single enemy, dealing Anima DMG of <dn>60%</> ATK whenever any ally deals <dn>1</> instance of Esper Cycle DMG while Nanally is in <kw>Ichi-daime's Authority</> state. DMG Ratio scales with Basic Attack skill level, reaching <dn>129.5%</> at Lvl 11.\nTriggers <dn>once</> every <dn>2s</>.",
 				},
 			],
 			maxLvl: 1,

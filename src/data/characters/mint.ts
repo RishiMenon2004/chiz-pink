@@ -40,7 +40,7 @@ export const mint: Character = {
 				{
 					section: "Critical Riposte: Caramel Crisp",
 					description:
-						"Triggers when using Perfect Containment after a Critical Dodge. Leaps up to dodge an attack, seizes the enemy's opening, and swiftly swings her weapon, dealing 1 instance of Anima DMG to an area and reducing Break.",
+						"Triggers when using Perfect Containment after a Critical Dodge. Leaps up to dodge an attack, seizes the enemy's opening, and swiftly swings her weapon, dealing <dn>1</> instance of Anima DMG to an area and reducing Break.",
 				},
 				{
 					section: "Basic Attack: Justice from Above",

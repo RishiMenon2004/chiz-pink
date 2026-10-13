@@ -29,7 +29,7 @@ export const jiuyuan: Character = {
 				{
 					section: "Basic Attack: When Secrets Take Shape",
 					description:
-						"Dual-wields to perform up to <dn>5</> consecutive attacks, dealing Anima DMG. Grants <dn>2</> Rose Pact Bullets. Establishes a Lethal Rose Pact with the target when the final hit strikes.",
+						"Dual-wields to perform up to <dn>5</> consecutive attacks, dealing Anima DMG. Grants <dn>2</> <kw>Rose Pact Bullets</>. Establishes a <kw>Lethal Rose Pact</> with the target when the final hit strikes.",
 				},
 				{
 					section: "Basic Attack: Bird's Eye View",
@@ -39,7 +39,7 @@ export const jiuyuan: Character = {
 				{
 					section: "Basic Attack: Info-Guided Arts",
 					description:
-						"Hold Basic Attack to trigger. Auto-targets and fires a bullet, dealing <dn>1</> instance of Anima DMG. Consumes Rose Pact Bullets for continuous fire and prioritizes targets with Lethal Rose Pact when Rose Pact Bullets are available.",
+						"Hold Basic Attack to trigger. Auto-targets and fires a bullet, dealing <dn>1</> instance of Anima DMG. Consumes <kw>Rose Pact Bullets</> for continuous fire and prioritizes targets with <kw>Lethal Rose Pact</> when <kw>Rose Pact Bullets</> are available.",
 				},
 				{
 					section: "Basic Attack: Opportunity Lock-On",
@@ -48,7 +48,7 @@ export const jiuyuan: Character = {
 				},
 				{
 					section: "Critical Riposte: Turning the Tide",
-					description: "Triggers when using When Secrets Take Shape after a Critical Dodge. Swings both arms and fires in a cross pattern at targets in front, binding them with Lethal Rose Pact while dealing 1 instance of Anima DMG, reducing Break, and granting <dn>2</> Rose Pact Bullets."
+					description: "Triggers when using When Secrets Take Shape after a Critical Dodge. Swings both arms and fires in a cross pattern at targets in front, binding them with <kw>Lethal Rose Pact</> while dealing <dn>1</> instance of Anima DMG, reducing Break, and granting <dn>2</> <kw>Rose Pact Bullets</>."
 				}
 			],
 			maxLvl: 10,
@@ -58,7 +58,7 @@ export const jiuyuan: Character = {
 			description: [
 				{
 					description:
-						"Dashes across the battlefield, pulling the target into the range of control and attacking. Deals multiple instances of Anima DMG and grants <dn>4</> Rose Pact Bullets while establishing a Lethal Rose Pact.",
+						"Dashes across the battlefield, pulling the target into the range of control and attacking. Deals multiple instances of Anima DMG and grants <dn>4</> <kw>Rose Pact Bullets</> while establishing a <kw>Lethal Rose Pact</>.",
 				},
 			],
 			maxLvl: 10,
@@ -68,7 +68,7 @@ export const jiuyuan: Character = {
 			description: [
 				{
 					description:
-						"Dashes across the battlefield at high speed, continuously firing on surrounding targets before ending with a large-scale explosion, dealing Anima DMG.\nTriggers Final Reckoning, causing all Lethal Rose Pact targets within range to enter a stage where Pact Settlement can be triggered, executing all settlements simultaneously on the final hit.",
+						"Dashes across the battlefield at high speed, continuously firing on surrounding targets before ending with a large-scale explosion, dealing Anima DMG.\nTriggers Final Reckoning, causing all <kw>Lethal Rose Pact</> targets within range to enter a stage where <kw>Pact Settlement</> can be triggered, executing all settlements simultaneously on the final hit.",
 				},
 			],
 			maxLvl: 10,
@@ -78,7 +78,7 @@ export const jiuyuan: Character = {
 			description: [
 				{
 					description:
-						"Fires a curved bullet, dealing <dn>1</> instance of Anima DMG and granting <dn>2</> Rose Pact Bullets upon hit.",
+						"Fires a curved bullet, dealing <dn>1</> instance of Anima DMG and granting <dn>2</> <kw>Rose Pact Bullets</> upon hit.",
 				},
 			],
 			maxLvl: 10,
@@ -98,7 +98,7 @@ export const jiuyuan: Character = {
 			description: [
 				{
 					description:
-						"Binds targets not affected by Fatal Rose Pact when Vita Pistils hit them. Triggers an additional settlement on targets already bound, causing them to take an extra <dn>15%</> × Anima DMG.",
+						"Binds targets not affected by <kw>Fatal Rose Pact</> when Vita Pistils hit them. Triggers an additional settlement on targets already bound, causing them to take an extra <dn>15%</> × Anima DMG.",
 				},
 			],
 			maxLvl: 1,

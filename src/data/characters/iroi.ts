@@ -29,7 +29,7 @@ export const iroi: Character = {
 				{
 					section: "Basic Attack: Collaboration",
 					description:
-						"Summons lambs to perform up to 5 consecutive attacks, dealing Anima DMG. Builds up Imagination when attacks hit.",
+						"Summons lambs to perform up to 5 consecutive attacks, dealing Anima DMG. Builds up <kw>Imagination</> when attacks hit.",
 				},
 				{
 					section: "Basic Attack: Daydream",

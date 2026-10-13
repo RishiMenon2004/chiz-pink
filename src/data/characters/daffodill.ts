@@ -81,7 +81,7 @@ export const daffodill: Character = {
 			description: [
 				{
 					description:
-						"Casts Finale, dealing Chaos DMG to enemies in an area. Unseals her left eye, increasing damage and inflicting Insight on nearby enemies for the duration. Unlocks the skill Phantom Step, which can be used up to 2 times. Casting Finale resets Phantom Step charges.",
+						"Casts Finale, dealing Chaos DMG to enemies in an area. Unseals her left eye, increasing damage and inflicting <kw>Insight</> on nearby enemies for the duration. Unlocks the skill <kw>Phantom Step</>, which can be used up to 2 times. Casting Finale resets Phantom Step charges.",
 				},
 			],
 			maxLvl: 10,
@@ -108,7 +108,7 @@ export const daffodill: Character = {
 		},
 		passive2: {
 			name: "Cicada Shell",
-			description: [{ description: "Increases Phantom Step DMG by 80%." }],
+			description: [{ description: "Increases <kw>Phantom Step</> DMG by 80%." }],
 			maxLvl: 1,
 		},
 		lifeSkill1: {

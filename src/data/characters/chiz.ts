@@ -30,7 +30,7 @@ export const chiz: Character = {
 				{
 					section: "Basic Attack: Exiled Swordplay",
 					description:
-						"Swings the short staff to perform up to 5 consecutive attacks, dealing Cosmos DMG. Grants Grain on hit.",
+						"Swings the short staff to perform up to 5 consecutive attacks, dealing Cosmos DMG. Grants <kw>Grain</> on hit.",
 				},
 				{
 					section: "Basic Attack: Blighted Vale",
@@ -40,12 +40,12 @@ export const chiz: Character = {
 				{
 					section: "Basic Attack: Bountiful Grain",
 					description:
-						"Press Basic Attack while airborne to plunge, dealing 1 instance of Cosmos DMG to an area upon impact, while granting a certain amount of Grain. Increases DMG based on fall height, up to 100%.",
+						"Press Basic Attack while airborne to plunge, dealing 1 instance of Cosmos DMG to an area upon impact, while granting a certain amount of <kw>Grain</>. Increases DMG based on fall height, up to 100%.",
 				},
 				{
 					section: "Critical Riposte: Minsky Moment",
 					description:
-						"Triggers when pressing Basic Attack after a Critical Dodge. Leaps to evade and swings the staff, sending Brown Sugar Boba crashing into the target, dealing 1 instance of Cosmos DMG, reducing Break, and granting Grain.",
+						"Triggers when pressing Basic Attack after a Critical Dodge. Leaps to evade and swings the staff, sending Brown Sugar Boba crashing into the target, dealing 1 instance of Cosmos DMG, reducing Break, and granting <kw>Grain</>.",
 				},
 			],
 			maxLvl: 10,
@@ -73,7 +73,7 @@ export const chiz: Character = {
 			description: [
 				{
 					description:
-						"No turning back, max the leverage. Throws Brown Sugar Boba to strike, dealing AoE Cosmos DMG once and entering Grain Market for 7s. During this time, the first Grain Settlement DMG is guaranteed to Crit.\nConverts all remaining Grain Loans into Grains and enters the Surplus state after casting Zero-Sum Game. Invests all Grains into the Grain Market. Afterward, press Pink Paws Priority Principle to gain Grains based on current Grain Price fluctuations during Grain Settlement. Hold Pink Paws Priority Principle to trigger Grain Settlement once based on the Grain Price on first activation.\nLeaves the Grain Market and prioritizes repaying Grain Loans with all available Grains when Grain Market duration ends.\nGrants access to the Grain Market while in Debt state and holding any Grain Loans.",
+						"No turning back, max the leverage. Throws Brown Sugar Boba to strike, dealing AoE Cosmos DMG once and entering Grain Market for 7s. During this time, the first Grain Settlement DMG is guaranteed to Crit.\nConverts all remaining <kw>Grain Loans</> into <kw>Grains</> and enters the <kw>Surplus</> state after casting Zero-Sum Game. Invests all Grains into the Grain Market. Afterward, press Pink Paws Priority Principle to gain Grains based on current <kw>Grain Price</> fluctuations during <kw>Grain Settlement</>. Hold Pink Paws Priority Principle to trigger Grain Settlement once based on the Grain Price on first activation.\nLeaves the Grain Market and prioritizes repaying Grain Loans with all available Grains when Grain Market duration ends.\nGrants access to the Grain Market while in <kw>Debt</> state and holding any Grain Loans.",
 				},
 			],
 			maxLvl: 10,

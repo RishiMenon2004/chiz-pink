@@ -60,7 +60,7 @@ export const lacrimosa: Character = {
 				{
 					section: "Nightmare",
 					description:
-						"Inflicts Nightmare on the target when attacks hit, up to 10 stacks.\nInflicts 1 stack of Nightmare per damage instance when a single Basic Attack deals multiple instances of damage.",
+						"Inflicts <kw>Nightmare</> on the target when attacks hit, up to 10 stacks.\nInflicts 1 stack of <kw>Nightmare</> per damage instance when a single Basic Attack deals multiple instances of damage.",
 				},
 			],
 			maxLvl: 10,
@@ -71,7 +71,7 @@ export const lacrimosa: Character = {
 				{
 					section: "Skill: Morning Tomato",
 					description:
-						"Ah… Achoo! Throws a barrage of unfinished Esper Ability Constructs, dealing <dn>1</> instance of Chaos DMG to all targets within the area and inflicting Nightmare on the targets.\nCombos into the <dn>5</>th instance of Tomato Metal or Tomato Percussion after casting Morning Tomato.",
+						"Ah… Achoo! Throws a barrage of unfinished Esper Ability Constructs, dealing <dn>1</> instance of Chaos DMG to all targets within the area and inflicting <kw>Nightmare</> on the targets.\nCombos into the <dn>5</>th instance of Tomato Metal or Tomato Percussion after casting Morning Tomato.",
 				},
 				{
 					section: "Redirect Skill: Devilish Gift",

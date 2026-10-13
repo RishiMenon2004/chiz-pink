@@ -30,12 +30,12 @@ export const chaos: Character = {
 				{
 					section: "Basic Attack: Pursuit",
 					description:
-						"Wields his weapon and performs up to <dn>5</> consecutive attacks, dealing Lakshana DMG and building up Crime.",
+						"Wields his weapon and performs up to <dn>5</> consecutive attacks, dealing Lakshana DMG and building up <kw>Crime</>.",
 				},
 				{
 					section: "Basic Attack: Final Verdict",
 					description:
-						"Your guilt is plain to see. Hold Basic Attack to trigger Final Verdict. Consumes all Crime to add a 2nd hit to Final Verdict and deal heavy Settlement DMG if current Crime is at its cap (1000). Performs only the 1st hit of Final Verdict, dealing <dn>2</> instances of damage, if Crime has not reached its cap.",
+						"Your guilt is plain to see. Hold Basic Attack to trigger Final Verdict. Consumes all <kw>Crime</> to add a 2nd hit to Final Verdict and deal heavy Settlement DMG if current <kw>Crime</> is at its cap (1000). Performs only the 1st hit of Final Verdict, dealing <dn>2</> instances of damage, if <kw>Crime</> has not reached its cap.",
 				},
 				{
 					section: "Basic Attack: Overturn",
@@ -56,7 +56,7 @@ export const chaos: Character = {
 				{
 					section: "Doubtmark",
 					description:
-						"Target traits confirmed. Fires at enemies ahead and summons his hound to pounce on the target. The hound bites the target back and forth twice. Inflicts Warrant on up to <dn>2</> enemies for <dn>15</>s when the skill hits. Increases damage dealt by <dn>20%</> when attacking targets with Warrant.",
+						"Target traits confirmed. Fires at enemies ahead and summons his hound to pounce on the target. The hound bites the target back and forth <dn>twice</>. Inflicts <kw>Warrant</> on up to <dn>2</> enemies for <dn>15</>s when the skill hits. Increases damage dealt by <dn>20%</> when attacking targets with <kw>Warrant</>.",
 				},
 				{
 					description:
@@ -70,7 +70,7 @@ export const chaos: Character = {
 			description: [
 				{
 					description:
-						"Summons his hound to suppress nearby enemies, inflicting Warrant on all enemies within range and entering the Dread Echo state. Rapidly increases Crime over time while Chaos and Dread Echo are active, allowing Final Verdict to be cast more often and deal heavy Settlement DMG.",
+						"Summons his hound to suppress nearby enemies, inflicting <kw>Warrant</> on all enemies within range and entering the <kw>Dread Echo</> state. Rapidly increases <kw>Crime</> over time while Chaos and Dread Echo are active, allowing Final Verdict to be cast more often and deal heavy Settlement DMG.",
 				},
 			],
 			maxLvl: 10,
@@ -100,7 +100,7 @@ export const chaos: Character = {
 			description: [
 				{
 					description:
-						"Increases the damage bonus from Warrant to <dn>30%</>.",
+						"Increases the damage bonus from <kw>Warrant</> to <dn>30%</>.",
 				},
 			],
 			maxLvl: 1,

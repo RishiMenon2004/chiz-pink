@@ -30,7 +30,7 @@ export const skia: Character = {
 				{
 					section: "Basic Attack: Arresting Art",
 					description:
-						"Performs up to <dn>5</> consecutive attacks using steady martial arts techniques, dealing Lakshana DMG.\nSplits <dn>1</> Fang Thrust from his shadow to pursue each target hit. Locks each target with up to <dn>3</> Fang Thrusts simultaneously.",
+						"Performs up to <dn>5</> consecutive attacks using steady martial arts techniques, dealing Lakshana DMG.\nSplits <dn>1</> <kw>Fang Thrust</> from his shadow to pursue <dn>each</> target hit. Locks each target with up to <dn>3</> <kw>Fang Thrusts</> simultaneously.",
 				},
 				{
 					section: "Basic Attack: Territory Control",
@@ -40,7 +40,7 @@ export const skia: Character = {
 				{
 					section: "Fang Thrust",
 					description:
-						"Splitting from Skia's shadow, these shattered shadows resemble the fangs of a giant beast. They automatically track and attach to targets, disappearing after dealing <dn>1</> instance of Lakshana DMG.",
+						"Splitting from Skia's shadow, these shattered shadows resemble the fangs of a giant beast. They automatically track and <kw>attach</> to targets, disappearing after dealing <dn>1</> instance of Lakshana DMG.",
 				},
 				{
 					section: "Critical Riposte: Pen to Paper",
@@ -75,7 +75,7 @@ export const skia: Character = {
 			description: [
 				{
 					description:
-						"A workflow designed for suppression. Throws a spinning lighter, causing his shadow to spread across the ground in all directions, dealing <dn>1</> instance of Lakshana DMG to an area.\nConverges multiple shadows on a single location like well-trained canines, dealing <dn>3</> instances of Lakshana DMG to an area.\nIncreases Fang Thrust's damage after casting The Pack (including collision damage in Shadow Hound Gnaw mode) and inflicts a control effect on targets with each attack.",
+						"A workflow designed for suppression. Throws a spinning lighter, causing his shadow to spread across the ground in all directions, dealing <dn>1</> instance of Lakshana DMG to an area.\nConverges multiple shadows on a single location like well-trained canines, dealing <dn>3</> instances of Lakshana DMG to an area.\nIncreases <kw>Fang Thrust</>'s damage after casting The Pack (including collision damage in <kw>Shadow Hound Gnaw</> mode) and inflicts a control effect on targets with each attack.",
 				},
 			],
 			maxLvl: 10,
@@ -95,7 +95,7 @@ export const skia: Character = {
 			description: [
 				{
 					description:
-						"<sh>Remora Enhancement:</> Inflicts an additional Remora on a target when Fang Thrust locks onto them in Remora state.",
+						"<sh>Remora Enhancement:</> Inflicts an additional Remora on a target when <kw>Fang Thrust</> locks onto them in Remora state.",
 				},
 			],
 			maxLvl: 1,
@@ -105,7 +105,7 @@ export const skia: Character = {
 			description: [
 				{
 					description:
-						"Increases Fang Thrust damage by <dn>10%</> for <dn>15</>s after casting The Pack, including collision damage in Shadow Hound Gnaw mode.",
+						"Increases <kw>Fang Thrust</> damage by <dn>10%</> for <dn>15s</> after casting The Pack, including collision damage in <kw>Shadow Hound Gnaw</> mode.",
 				},
 			],
 			maxLvl: 1,

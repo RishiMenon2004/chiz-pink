@@ -30,7 +30,7 @@ export const shinku: Character = {
 				{
 					section: "Basic Attack: Special Combat Arts",
 					description:
-						"Performs up to <dn>5</> consecutive attacks, dealing Cosmos DMG. Grants Defiant Spirit on hit.",
+						"Performs up to <dn>5</> consecutive attacks, dealing Cosmos DMG. Grants <kw>Defiant Spirit</> on hit.",
 				},
 				{
 					section: "Basic Attack: Arrowfall",
@@ -40,32 +40,32 @@ export const shinku: Character = {
 				{
 					section: "Basic Attack: Special Combat Arts (Altered)",
 					description:
-						"Hold Basic Attack during the 3rd/4th/5th hit of Special Combat Arts to trigger Special Combat Arts (Altered), dealing Cosmos DMG and granting Defiant Spirit on hit.",
+						"Hold Basic Attack during the 3rd/4th/5th hit of Special Combat Arts to trigger Special Combat Arts (Altered), dealing Cosmos DMG and granting <kw>Defiant Spirit</> on hit.",
 				},
 				{
 					section: "Critical Riposte: Split-Second Victory",
 					description:
-						"Triggers when using Special Combat Arts after a Critical Dodge. Retaliates against the target with a sharp kick, dealing <dn>1</> instance of Cosmos DMG, reducing their Break, and gaining Defiant Spirit.",
+						"Triggers when using Special Combat Arts after a Critical Dodge. Retaliates against the target with a sharp kick, dealing <dn>1</> instance of Cosmos DMG, reducing their Break, and gaining <kw>Defiant Spirit</>.",
 				},
 				{
 					section: "Basic Attack: Tidal Assault",
 					description:
-						"Performs up to <dn>5</> consecutive attacks, dealing Cosmos DMG. Grants Fading Reason on hit.",
+						"Performs up to <dn>5</> consecutive attacks, dealing Cosmos DMG. Grants <kw>Fading Reason</> on hit.",
 				},
 				{
 					section: "Basic Attack: Hammerfall",
 					description:
-						"Press Basic Attack while airborne to plunge, dealing <dn>1</> instance of Cosmos DMG upon impact. Increases DMG based on fall height, up to 100%. Grants Fading Reason on hit.",
+						"Press Basic Attack while airborne to plunge, dealing <dn>1</> instance of Cosmos DMG upon impact. Increases DMG based on fall height, up to 100%. Grants <kw>Fading Reason</> on hit.",
 				},
 				{
 					section: "Basic Attack: Tidal Assault (Scorn)",
 					description:
-						"Hold Basic Attack during the 3rd/4th/5th hit of Tidal Assault to trigger Tidal Assault (Scorn), dealing <dn>1</> instance of Cosmos DMG and granting Fading Reason on hit.",
+						"Hold Basic Attack during the 3rd/4th/5th hit of Tidal Assault to trigger Tidal Assault (Scorn), dealing <dn>1</> instance of Cosmos DMG and granting <kw>Fading Reason</> on hit.",
 				},
 				{
 					section: "Critical Riposte: No Respite",
 					description:
-						"Triggers when using Tidal Assault after a Critical Dodge. Retaliates against the target with a sharp kick, dealing <dn>1</> instance of Cosmos DMG, reducing the target's Break, and gaining Fading Reason.\nInflicts Forced Knockback and briefly stuns (not effective against Bosses) the target when Parry Attack or Critical Riposte hits while in the Menacing Gaze state, then deals 1 additional instance of DMG to the target equal to <dn>20%</> of Instant Strike.",
+						"Triggers when using Tidal Assault after a Critical Dodge. Retaliates against the target with a sharp kick, dealing <dn>1</> instance of Cosmos DMG, reducing the target's Break, and gaining <kw>Fading Reason</>.\nInflicts Forced Knockback and briefly stuns (not effective against Bosses) the target when Parry Attack or Critical Riposte hits while in the <kw>Menacing Gaze</> state, then deals 1 additional instance of DMG to the target equal to <dn>20%</> of Instant Strike.",
 				},
 			],
 			maxLvl: 10,
@@ -76,12 +76,12 @@ export const shinku: Character = {
 				{
 					section: "Redirect Skill: High-Speed Breach",
 					description:
-						"No time to catch your breath. Charges toward the target and launches a fierce assault, dealing multiple instances of Cosmos DMG and gaining Defiant Spirit.",
+						"No time to catch your breath. Charges toward the target and launches a fierce assault, dealing multiple instances of Cosmos DMG and gaining <kw>Defiant Spirit</>.",
 				},
 				{
 					section: "Redirect Skill: Scarlet Descent",
 					description:
-						"Consumes all Fading Reason. Leaps above the target into their blind spot and unleashes a powerful downward claw strike, dealing high Cosmos DMG. Casts up to <dn>5</> times during each Surging Crimson state.",
+						"Consumes all <kw>Fading Reason</>. Leaps above the target into their blind spot and unleashes a powerful downward claw strike, dealing high Cosmos DMG. Casts up to <dn>5</> times during each <kw>Surging Crimson</> state.",
 				},
 			],
 			maxLvl: 10,
@@ -92,17 +92,17 @@ export const shinku: Character = {
 				{
 					section: "Ultimate: Crimson Fury",
 					description:
-						"Don't think you can pull something like that and escape unscathed… Consumes all Defiant Spirit to enter the Surging Crimson state, then launches multiple attacks, dealing high Cosmos DMG to the target.\nReplaces Special Combat Arts with Tidal Assault and High-Speed Breach with Scarlet Descent while in Surging Crimson state. Increases DMG dealt and Resistance to Interruptions, greatly boosts Movement, and lasts for <dn>13</>s. Ends Surging Crimson when switching characters.\nHold Dodge while moving to partially release her Esper Ability and greatly boost Movement.",
+						"Don't think you can pull something like that and escape unscathed… Consumes all <kw>Defiant Spirit</> to enter the <kw>Surging Crimson</> state, then launches multiple attacks, dealing high Cosmos DMG to the target.\nReplaces Special Combat Arts with Tidal Assault and High-Speed Breach with Scarlet Descent while in Surging Crimson state. Increases DMG dealt and Resistance to Interruptions, greatly boosts Movement, and lasts for <dn>13</>s. Ends <kw>Surging Crimson</> when switching characters.\nHold Dodge while moving to partially release her Esper Ability and greatly boost Movement.",
 				},
 				{
 					section: "Ultimate: Crimson Judgment",
 					description:
-						"Casts Crimson Judgment when Surging Crimson is about to end. Press Ultimate repeatedly to dash rapidly between targets, dealing high Cosmos DMG.\nGrants <dn>1</> additional instance of Crimson Judgment for each use of Scarlet Descent during Surging Crimson. Can be cast up to <dn>3</> times during each Surging Crimson state.",
+						"Casts Crimson Judgment when <kw>Surging Crimson</> is about to end. Press Ultimate repeatedly to dash rapidly between targets, dealing high Cosmos DMG.\nGrants <dn>1</> additional instance of Crimson Judgment for <dn>each</> use of Scarlet Descent during <kw>Surging Crimson</>. Can be cast up to <dn>3</> times during each <kw>Surging Crimson</> state.",
 				},
 				{
 					section: "Ultimate: Dragonflame Verdict",
 					description:
-						"Press Ultimate again to cast Dragonflame Verdict after all uses of Crimson Judgment have been consumed or after Surging Crimson ends, dealing massive Cosmos DMG to targets in a large area.",
+						"Press Ultimate again to cast Dragonflame Verdict after all uses of Crimson Judgment have been consumed or after <kw>Surging Crimson</> ends, dealing massive Cosmos DMG to targets in a large area.",
 				},
 			],
 			maxLvl: 10,
@@ -112,7 +112,7 @@ export const shinku: Character = {
 			description: [
 				{
 					description:
-						"Enough already! Delivers a forceful knee strike, dealing 1 instance of Cosmos DMG and gaining Defiant Spirit.",
+						"Enough already! Delivers a forceful knee strike, dealing <dn>1</> instance of Cosmos DMG and gaining <kw>Defiant Spirit</>.",
 				},
 			],
 			maxLvl: 10,
@@ -122,7 +122,7 @@ export const shinku: Character = {
 			description: [
 				{
 					description:
-						"<sh>Charge Enhancement:</> Grants off-field characters the same amount of Charge when the active character gains Ultimate Energy. While Shinku is active and in Charge state, each trigger deals AoE DMG equal to <dn>400%</> of ATK (scales with Basic Attack level, reaching <dn>863.6%</> at level 11), and increases her ATK by <dn>5%</> for <dn>30</>s, up to 10 stacks. Cooldown: <dn>1</>s.",
+						"<sh>Charge Enhancement:</> Grants off-field characters the same amount of Charge when the active character gains Ultimate Energy. While Shinku is active and in Charge state, each trigger deals AoE DMG equal to 400% of ATK (scales with Basic Attack level, reaching <dn>863.6%</> at level 11), and increases her ATK by 5% for 30s, up to 10 stacks. Cooldown: 1s.",
 				},
 			],
 			maxLvl: 1,

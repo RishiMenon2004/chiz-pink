@@ -34,7 +34,7 @@ export const sakiri: Character = {
 				{
 					section: "Basic Attack: Eating Mode",
 					description:
-						"Hold to activate Eating Mode with Kiroumaru. Mounts Sakiri onto Kiroumaru, allowing movement.\nOpens its mouth to continuously pull nearby targets within a cone while Hungry. Destroys movable objects in the scene and devours weak enemies.\nTakes <dn>180</>s to digest each devoured enemy, with only <dn>1</> target digested at a time.\nBecomes Full when the number of enemies being digested reaches the limit, remaining movable but unable to pull or devour enemies.\nRelease to exit the mode.",
+						"Hold to activate <kw>Eating Mode</> with Kiroumaru. Mounts Sakiri onto Kiroumaru, allowing movement.\nOpens its mouth to continuously pull nearby targets within a cone while Hungry. Destroys movable objects in the scene and devours weak enemies.\nTakes <dn>180s</> to digest <dn>each</> devoured enemy, with only <dn>1</> target digested at a time.\nBecomes Full when the number of enemies being digested reaches the limit, remaining movable but unable to pull or devour enemies.\nRelease to exit the mode.",
 				},
 				{
 					section: "Basic Attack: Swallow",
@@ -44,7 +44,7 @@ export const sakiri: Character = {
 				{
 					section: "Critical Riposte: Mischief",
 					description:
-						"Triggers when using Ram after a Critical Dodge. Leaps high into the air and strikes down hard with Kiroumaru against enemies left vulnerable by their missed attacks. Deals 1 instance of Incantation DMG to an area and reduces Break.",
+						"Triggers when using Ram after a Critical Dodge. Leaps high into the air and strikes down hard with Kiroumaru against enemies left vulnerable by their missed attacks. Deals <dn>1</> instance of Incantation DMG to an area and reduces Break.",
 				},
 			],
 			maxLvl: 10,
@@ -70,7 +70,7 @@ export const sakiri: Character = {
 			description: [
 				{
 					description:
-						"No escaping this time! Kiroumaru spits out a large amount of Gravity Slurry from above, dealing <dn>6</> instances of Incantation DMG to an area. Applies strong gravity to hit enemies, pressing them heavily to the ground (not effective against Bosses). Prevents Suppressed enemies from moving for a period. Increases Team ATK (excluding Sakiri) based on Sakiri's Base ATK.",
+						"No escaping this time! Kiroumaru spits out a large amount of Gravity Slurry from above, dealing <dn>6</> instances of Incantation DMG to an area. Applies strong gravity to hit enemies, pressing them heavily to the ground (not effective against Bosses). Prevents <sh>Suppressed</> enemies from moving for a period. Increases Team ATK (excluding Sakiri) based on Sakiri's Base ATK.",
 				},
 			],
 			maxLvl: 10,
@@ -100,7 +100,7 @@ export const sakiri: Character = {
 			description: [
 				{
 					description:
-						"Reduces enemies' DEF by 10% for 20s after inflicting Airborne or Suppress.",
+						"Reduces enemies' DEF by 10% for 20s after inflicting Airborne or <sh>Suppress</>.",
 				},
 			],
 			maxLvl: 1,

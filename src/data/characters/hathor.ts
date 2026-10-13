@@ -44,7 +44,7 @@ export const hathor: Character = {
 				},
 				{
 					section: "Critical Riposte: Zero-Error Operation",
-					description: "Triggers when using Rapid Delivery after a Critical Dodge. Launches a lightning-fast counterattack, dealing <dn>1</> instance of Lakshana DMG to an area, reducing Break, and gaining Express Delivery Power on hit (up to <dn>1</> stack every <dn>5</>s)."
+					description: "Triggers when using Rapid Delivery after a Critical Dodge. Launches a lightning-fast counterattack, dealing <dn>1</> instance of Lakshana DMG to an area, reducing Break, and gaining <kw>Express Delivery Power</> on hit (up to <dn>1</> stack every <dn>5s</>)."
 				}
 			],
 			maxLvl: 10,
@@ -55,12 +55,12 @@ export const hathor: Character = {
 				{
 					section: "Redirect Skill: Aerial Command",
 					description:
-						"Target locked, time to wrap this up quickly. Leaps into the air and slashes the target in front with wings, gaining <dn>2</> stacks of Express Delivery Power.\nHold to enter charge status, increasing the power of Aerial Command and inflicting targets in range with Five-Star Tracking effect. The charge lasts up to 5s, during which Hathor constantly deals AoE Lakshana DMG while the skill range gradually expands. The effect ends when the skill button is released, concluding the charging phase.\n<sh>Five-Star Tracking</>\nLasts for 5s. Grants 3 stacks of Express Delivery Power when the target attacks or hits Hathor or an ally during this time.",
+						"Target locked, time to wrap this up quickly. Leaps into the air and slashes the target in front with wings, gaining <dn>2</> stacks of <kw>Express Delivery Power</>.\nHold to enter charge status, increasing the power of Aerial Command and inflicting targets in range with <kw>Five-Star Tracking</> effect. The charge lasts up to 5s, during which Hathor constantly deals AoE Lakshana DMG while the skill range gradually expands. The effect ends when the skill button is released, concluding the charging phase.\n<sh>Five-Star Tracking</>\nLasts for 5s. Grants 3 stacks of <kw>Express Delivery Power</> when the target attacks or hits Hathor or an ally during this time.",
 				},
 				{
 					section: "Redirect Skill: Cyclone Strike",
 					description:
-						"Consumes Express Delivery Power to cast this skill while in Emergency Delivery status. Summons a motorcycle of thorns and unleashes a rapid combo on the target. Increases DEF while the skill is active.",
+						"Consumes <kw>Express Delivery Power</> to cast this skill while in <kw>Emergency Delivery</> status. Summons a motorcycle of thorns and unleashes a rapid combo on the target. Increases DEF while the skill is active.",
 				},
 			],
 			maxLvl: 10,
@@ -70,7 +70,7 @@ export const hathor: Character = {
 			description: [
 				{
 					description:
-						"Get out of the way. Summons a motorcycle made of thorns and circles around targets, charging at enemies ahead with increased speed. Launches into the air and dive-bombs the ground, dealing <dn>1</> instance of Lakshana DMG to an area.\nEnters <kw>Emergency Delivery</> state for a period after skill activation and stops gaining Express Delivery Power. Upgrades Aerial Command to Cyclone Strike in this state. Increases Movement Speed and grants ATK bonus based on Express Delivery Power stacks. Ends <kw>Emergency Delivery</> state immediately when switching characters during this period.",
+						"Get out of the way. Summons a motorcycle made of thorns and circles around targets, charging at enemies ahead with increased speed. Launches into the air and dive-bombs the ground, dealing <dn>1</> instance of Lakshana DMG to an area.\nEnters <sh>Emergency Delivery</> state for a period after skill activation and stops gaining <kw>Express Delivery Power</>. Upgrades Aerial Command to Cyclone Strike in this state. Increases Movement Speed and grants ATK bonus based on <kw>Express Delivery Power</> stacks. Ends <sh>Emergency Delivery</> state immediately when switching characters during this period.",
 				},
 			],
 			maxLvl: 10,
@@ -100,7 +100,7 @@ export const hathor: Character = {
 			description: [
 				{
 					description:
-						"Grants <dn>1</> stack of Express Delivery Power after defeating a target.",
+						"Grants <dn>1</> stack of <kw>Express Delivery Power</> after defeating a target.",
 				},
 			],
 			maxLvl: 1,

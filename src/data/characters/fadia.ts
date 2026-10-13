@@ -55,7 +55,7 @@ export const fadia: Character = {
 			description: [
 				{
 					description:
-						"Come, have a taste of this. Deals <dn>1</> instance of Psyche DMG to an area and inflicts Destructive Experience on the enemy with the highest Max HP in the area for a period.\nDuring the duration, when Fadia takes damage, the target shares a percentage of the damage taken.\nDestructive Experience ends when the duration expires, when the Redirection DMG taken by the target reaches its cap, or when the target and Fadia leave combat.",
+						"Come, have a taste of this. Deals <dn>1</> instance of Psyche DMG to an area and inflicts <kw>Destructive Experience</> on the enemy with the highest Max HP in the area for a period.\nDuring the duration, when Fadia takes damage, the target shares a percentage of the damage taken.\n<kw>Destructive Experience</> ends when the duration expires, when the Redirection DMG taken by the target reaches its cap, or when the target and Fadia leave combat.",
 				},
 			],
 			maxLvl: 10,
@@ -65,7 +65,7 @@ export const fadia: Character = {
 			description: [
 				{
 					description:
-						"Without pain, life closes in on itself. Enters Lilith state, dealing <dn>6</> instances of Mental DMG and restoring HP. Recasts Wordless Rejection while in Lilith state to perform up to <dn>5</> follow-up attacks, each dealing Mental DMG.\nFully restores the energy of Agony to Euphoria when lost HP reaches the Destructive Threshold. Increases the damage and HP restored by Agony to Euphoria when it is cast with lost HP greater than or equal to the Destructive Threshold.\nExits Lilith state when the duration ends, all 5 follow-up attacks are performed, characters are switched, or other skills of Fadia are used.",
+						"Without pain, life closes in on itself. Enters <kw>Lilith</> state, dealing <dn>6</> instances of Mental DMG and restoring HP. Recasts Wordless Rejection while in <kw>Lilith</> state to perform up to <dn>5</> follow-up attacks, each dealing Mental DMG.\nFully restores the energy of Agony to Euphoria when lost HP reaches the <sh>Destructive Threshold</>. Increases the damage and HP restored by Agony to Euphoria when it is cast with lost HP greater than or equal to the <sh>Destructive Threshold</>.\nExits <kw>Lilith</> state when the duration ends, all 5 follow-up attacks are performed, characters are switched, or other skills of Fadia are used.",
 				},
 			],
 			maxLvl: 10,
