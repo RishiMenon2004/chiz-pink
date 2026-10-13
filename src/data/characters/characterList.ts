@@ -24,8 +24,12 @@ import {
 	zankou,
 	zero,
 } from "@/data/characters"
+import { blackbird } from "./blackbird"
+import { akane } from "./akane"
 
 const allCharacters: Record<string, Character> = {
+	akane,
+	blackbird,
 	linko,
 	zankou,
 	iroi,

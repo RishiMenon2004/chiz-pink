@@ -16,12 +16,121 @@ import {
 import { EnumArcType } from "./arc"
 
 const allArcs: Record<string, Arc> = {
-	voice_of_the_voyager: {
+	far_side_of_the_moon: {
+		isPreview: true,
+		id: "far_side_of_the_moon",
+		imageSrc: "far_side_of_the_moon.webp",
+		name: "Far Side of the Moon",
+		description:
+			"Though we stand at opposite ends of the world, every step draws us closer.",
+		rarity: EnumRarity.Epic,
+		type: EnumArcType.Liquid,
+		baseAtk: 37,
+		mainAttribute: {
+			attribute: EnumStatAttribute.CritDMG,
+			baseValue: 0.192,
+		},
+		ascensionMaterialSet1: ascDramaCoreSet,
+		ascensionMaterialSet2: ascDelusionsSet,
+		effect: {
+			name: "Gravitide",
+			description:
+				"Increases Cycle Rate by <dn>{0}</>.\nIncreases Redirect Skill DMG by <dn>{1}</> for 5s after the wearer's Basic Attack deals DMG. Stacks up to 4 times and can gain at most 1 stack every 0.3s. Increases Basic Attack DMG by <dn>{2}</> for <dn>15</>s after the wearer casts a Redirect Skill. Increases the wearer's Lakshana DMG by <dn>{3}</> while both effects are active.",
+			values: {
+				"1": [
+					{ type: "Percent", value: 0.16 },
+					{ type: "Percent", value: 0.07 },
+					{ type: "Percent", value: 0.28 },
+					{ type: "Percent", value: 0.16 },
+				],
+				"2": [
+					{ type: "Percent", value: 0.2 },
+					{ type: "Percent", value: 0.0875 },
+					{ type: "Percent", value: 0.35 },
+					{ type: "Percent", value: 0.2 },
+				],
+				"3": [
+					{ type: "Percent", value: 0.24 },
+					{ type: "Percent", value: 0.105 },
+					{ type: "Percent", value: 0.42 },
+					{ type: "Percent", value: 0.24 },
+				],
+				"4": [
+					{ type: "Percent", value: 0.28 },
+					{ type: "Percent", value: 0.1225 },
+					{ type: "Percent", value: 0.49 },
+					{ type: "Percent", value: 0.28 },
+				],
+				"5": [
+					{ type: "Percent", value: 0.32 },
+					{ type: "Percent", value: 0.14 },
+					{ type: "Percent", value: 0.56 },
+					{ type: "Percent", value: 0.32 },
+				],
+			},
+		},
+	},
+
+	crime_and_punishment: {
 		isFeatured: true,
+		id: "crime_and_punishment",
+		imageSrc: "crime_and_punishment.webp",
+		name: "Crime and Punishment",
+		description: "Why spare me, only to draw me into your embrace?",
+		rarity: EnumRarity.Epic,
+		type: EnumArcType.Gas,
+		baseAtk: 37,
+		mainAttribute: {
+			attribute: EnumStatAttribute.CritRate,
+			baseValue: 0.096,
+		},
+		ascensionMaterialSet1: ascColdDessertSet,
+		ascensionMaterialSet2: ascNumeralSet,
+		effect: {
+			name: "Twinflight",
+			description:
+				"Increases Cycle Intensity by <dn>{0}</>.\nIncreases the wearer's Psyche DMG by <dn>{1}</>. Increases the team's Crit DMG by <dn>{2}</> and the wearer's by an additional <dn>{3}</>, for <dn>15</>s after the wearer casts Ultimate. Resets the duration when triggered again.",
+			values: {
+				"1": [
+					{ type: "Percent", value: 0.72 },
+					{ type: "Percent", value: 0.2 },
+					{ type: "Percent", value: 0.16 },
+					{ type: "Percent", value: 0.32 },
+				],
+				"2": [
+					{ type: "Percent", value: 0.9 },
+					{ type: "Percent", value: 0.25 },
+					{ type: "Percent", value: 0.2 },
+					{ type: "Percent", value: 0.4 },
+				],
+				"3": [
+					{ type: "Percent", value: 1.08 },
+					{ type: "Percent", value: 0.3 },
+					{ type: "Percent", value: 0.24 },
+					{ type: "Percent", value: 0.48 },
+				],
+				"4": [
+					{ type: "Percent", value: 1.26 },
+					{ type: "Percent", value: 0.35 },
+					{ type: "Percent", value: 0.28 },
+					{ type: "Percent", value: 0.56 },
+				],
+				"5": [
+					{ type: "Percent", value: 1.44 },
+					{ type: "Percent", value: 0.4 },
+					{ type: "Percent", value: 0.32 },
+					{ type: "Percent", value: 0.64 },
+				],
+			},
+		},
+	},
+
+	voice_of_the_voyager: {
 		id: "voice_of_the_voyager",
 		imageSrc: "voice_of_the_voyager.webp",
 		name: "Voice of The Voyager",
-		description: "",
+		description:
+			"The languages engraved upon it remain indecipherable. Yet their message is clear enough: somewhere in the cosmos, we are not alone.",
 		rarity: EnumRarity.Epic,
 		type: EnumArcType.Plasma,
 		baseAtk: 37,

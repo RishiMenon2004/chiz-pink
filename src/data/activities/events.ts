@@ -535,7 +535,7 @@ export const Events: EventData[] = [
 		yOffset: "39%",
 	},
 	{
-		name: "Phase 1: Blackbird",
+		name: "Foretold Finale: Blackbird",
 		type: "Gacha",
 		getStartDate: getPhase1Start("version1_4"),
 		getEndDate: getPhase1End("version1_4"),
@@ -544,7 +544,7 @@ export const Events: EventData[] = [
 		yOffset: "13%",
 	},
 	{
-		name: "Phase 2: Akane Rin",
+		name: "Dazzling Star: Akane Rin",
 		type: "Gacha",
 		getStartDate: getPhase2Start("version1_4"),
 		getEndDate: getPhase2End("version1_4"),

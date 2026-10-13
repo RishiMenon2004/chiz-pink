@@ -66,6 +66,24 @@ export const arcBanners = [
 		getStartDate: getPhase2Start("version1_3"),
 		getEndDate: getPhase2End("version1_3"),
 	},
+	{
+		name: "Roostfeather Special",
+		rateupItem: "crime_and_punishment",
+		getStartDate: getPhase1Start("version1_4"),
+		getEndDate: getPhase1End("version1_4"),
+	},
+	{
+		name: "Celestial Special",
+		rateupItem: "far_side_of_the_moon",
+		getStartDate: getPhase2Start("version1_4"),
+		getEndDate: getPhase2End("version1_4"),
+	},
+	{
+		name: "Nocturne Special",
+		rateupItem: "the_last_rose",
+		getStartDate: getPhase1Start("version1_4"),
+		getEndDate: getPhase1End("version1_4"),
+	},
 ]
 
 export const permanentBanner = {
