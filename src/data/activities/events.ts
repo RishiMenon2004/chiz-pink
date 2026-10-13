@@ -108,6 +108,12 @@ export const patchTimings = {
 		phase2Start: () => globalPatchStart(21, 10, 2026),
 		phase2End: () => globalPatchEnd(10, 11, 2026),
 	},
+	version1_5: {
+		phase1Start: () => globalPatchStart(11, 11, 2026),
+		phase1End: () => globalPatchEnd(1, 12, 2026),
+		phase2Start: () => globalPatchStart(2, 12, 2026),
+		phase2End: () => globalPatchEnd(22, 12, 2026),
+	},
 }
 
 export function getPhase1Start(version: keyof typeof patchTimings) {
@@ -642,6 +648,35 @@ export const Events: EventData[] = [
 		themeColor: "#c98990",
 		yOffset: "28%",
 	},
+
+	//v1.5
+	{
+		name: "Version 1.5",
+		type: "Patch",
+		getStartDate: getPhase1Start("version1_5"),
+		getEndDate: getPhase2End("version1_5"),
+		// eventImage: "version1.4/version_1.4.webp",
+		themeColor: "#6a7fe0",
+		yOffset: "39%",
+	},
+	{
+		name: "Phase 1: Elyms",
+		type: "Gacha",
+		getStartDate: getPhase1Start("version1_5"),
+		getEndDate: getPhase1End("version1_5"),
+		eventImage: "version1.5/gacha_elyms.webp",
+		themeColor: "#6a7fe0",
+		yOffset: "21%",
+	},
+	{
+		name: "Phase 2: Exe",
+		type: "Gacha",
+		getStartDate: getPhase2Start("version1_5"),
+		getEndDate: getPhase2End("version1_5"),
+		eventImage: "version1.5/gacha_exe.webp",
+		themeColor: "#3d4fa8",
+		yOffset: "20%",
+	},
 ]
 
 export const BTRTimeline: EventData[] = [
@@ -728,5 +763,11 @@ export const BTRTimeline: EventData[] = [
 		type: "BTR",
 		getStartDate: (server) => serverSOD(server, 19, 11, 2026),
 		getEndDate: (server) => serverEOD(server, 3, 12, 2026),
+	},
+	{
+		name: "TBA",
+		type: "BTR",
+		getStartDate: (server) => serverSOD(server, 3, 12, 2026),
+		getEndDate: (server) => serverEOD(server, 17, 12, 2026),
 	},
 ]
