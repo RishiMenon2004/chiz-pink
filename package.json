@@ -19,7 +19,7 @@
 		"next-auth": "^4.24.14",
 		"react": "19.2.4",
 		"react-dom": "19.2.4",
-		"sharp": "^0.35.2",
+		"sharp": "^0.34.5",
 		"unrs-resolver": "^1.12.2",
 		"uuid": "^14.0.1"
 	},
@@ -34,7 +34,6 @@
 	},
 	"allowScripts": {
 		"sharp@0.34.5": true,
-		"sharp@0.35.2": true,
 		"unrs-resolver@1.12.2": true
 	}
 }
