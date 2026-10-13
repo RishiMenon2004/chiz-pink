@@ -34,7 +34,7 @@ export const zankou: Character = {
 				{
 					section: "Basic Attack: Nightmare Waltz",
 					description:
-						"Wields her blade to pull the silk and perfroms up to 4 consecutive attacks while in Illusion form, dealing Incantation DMG and inflicting 1 stack of Heartwrench on hit. Pulls in targets within range on the 3rd instance of Basic Attack. Each Nightmare Waltz attack spreads up to 4 DoT effects from the target to all enemies in the area, including the original target. Gains the Delusion buff for the attack's duration. The DMG dealt by Nightmare Waltz counts as Follow-up Attack DMG.",
+						"Wields her blade to pull the silk and performs up to 4 consecutive attacks while in Illusion form, dealing Incantation DMG and inflicting 1 stack of Heartwrench on hit. Pulls in targets within range on the 3rd instance of Basic Attack. Each Nightmare Waltz attack spreads up to 4 DoT effects from the target to all enemies in the area, including the original target. Gains the Delusion buff for the attack's duration. The DMG dealt by Nightmare Waltz counts as Follow-up Attack DMG.",
 				},
 				{
 					section: "Basic Attack: Flickering Shadow",
@@ -65,12 +65,12 @@ export const zankou: Character = {
 				{
 					section: "Sanguine Dash",
 					description:
-						"Switches to Illusion Form after successfully castinh Sanguine Dash while in Reality Form. Enables an enhanced Sanguine Dash for a set time after the 4th or 5th stage of Wildfire, Flickering Shadow or Voidstep. Inflicts Heartwrench on targets hit and triggers Disarray, reducing massive Break of enemies in a large area. Delays removal of the Reality Form Hunt effect when switching to Illusion Form with Sanguine Dash. Prevents the form switch if the skill is interrupted before it is complete.",
+						"Switches to Illusion Form after successfully casting Sanguine Dash while in Reality Form. Enables an enhanced Sanguine Dash for a set time after the 4th or 5th stage of Wildfire, Flickering Shadow or Voidstep. Inflicts Heartwrench on targets hit and triggers Disarray, reducing massive Break of enemies in a large area. Delays removal of the Reality Form Hunt effect when switching to Illusion Form with Sanguine Dash. Prevents the form switch if the skill is interrupted before it is complete.",
 				},
 				{
 					section: "Soulcross",
 					description:
-						"Switches to Reality Form after successfully casting Soulcross while in Illusion Form. Enables an enhanced Soulcross shortly before Illusion Form ends. Deals massive DMG to enemies in a large area, inflicts Heartwrench on targets hit, and triggers Oblivion, activating Bloodfeast Reverie.\nGrants Illusion Form and returns Zankou to Reality Form when Soulcross or Bloodfeast Reverie is successfully cast, when its duration expires, or when Zankou leaves the field. Delays the removal of the Illusion Form Delusion effect when switching to Reality Form with Soulcross. Counts all DMG dealt by Soulcross and it's enhanced version as Follow-up Attack DMG. Prevents Form switch if the skill is interrupted before it is complete.",
+						"Switches to Reality Form after successfully casting Soulcross while in Illusion Form. Enables an enhanced Soulcross shortly before Illusion Form ends. Deals massive DMG to enemies in a large area, inflicts Heartwrench on targets hit, and triggers Oblivion, activating Bloodfeast Reverie.\nGrants Illusion Form and returns Zankou to Reality Form when Soulcross or Bloodfeast Reverie is successfully cast, when its duration expires, or when Zankou leaves the field. Delays the removal of the Illusion Form Delusion effect when switching to Reality Form with Soulcross. Counts all DMG dealt by Soulcross and its enhanced version as Follow-up Attack DMG. Prevents Form switch if the skill is interrupted before it is complete.",
 				},
 			],
 			maxLvl: 10,
@@ -90,7 +90,7 @@ export const zankou: Character = {
 			description: [
 				{
 					description:
-						"Wields her blode to attack, dealing 1 instance of Incantaion DMG.",
+						"Wields her blade to attack, dealing 1 instance of Incantation DMG.",
 				},
 			],
 			maxLvl: 10,
@@ -100,7 +100,7 @@ export const zankou: Character = {
 			description: [
 				{
 					description:
-						"<sh>Scorch Enhancement:</> Scorch can be stacked up to 3 times. For each DoT effect allies inflict on target afflicted with Scorch, Zankou inflicts 1 stack of Scorch on them, replacing the DMG, type, and duration of Existing Scorch on the target with those of the newly inflcited effect. Scorch inflicted by this effect cannot trigger it again.",
+						"<sh>Scorch Enhancement:</> Scorch can be stacked up to 3 times. For each DoT effect allies inflict on target afflicted with Scorch, Zankou inflicts 1 stack of Scorch on them, replacing the DMG, type, and duration of Existing Scorch on the target with those of the newly inflicted effect. Scorch inflicted by this effect cannot trigger it again.",
 				},
 			],
 			maxLvl: 1,
@@ -110,7 +110,7 @@ export const zankou: Character = {
 			description: [
 				{
 					description:
-						"Sets Sankou's Cycle Energy to 100 upon entering battle. Cooldown: 30s. Triggers only once per battle. Increases Zankou's Cycle Intensity by 100 while she is on the team.",
+						"Sets Zankou's Cycle Energy to 100 upon entering battle. Cooldown: 30s. Triggers only once per battle. Increases Zankou's Cycle Intensity by 100 while she is on the team.",
 				},
 			],
 			maxLvl: 1,

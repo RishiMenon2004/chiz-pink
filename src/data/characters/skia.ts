@@ -60,7 +60,7 @@ export const skia: Character = {
 				{
 					section: "Tailed",
 					description:
-						"Prevents Fang Thrusts from disappearing after dealing damage to targets during the state.",
+						"Prevents Fang Thrust from disappearing after dealing damage to targets during the state.",
 				},
 				{
 					section: "Shadow Hound Gnaw",

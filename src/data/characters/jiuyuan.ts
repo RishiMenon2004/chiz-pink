@@ -47,7 +47,7 @@ export const jiuyuan: Character = {
 						"Press Aim to enter Aim mode. Fires a bullet that deals <dn>1</> instance of Anima DMG to the enemy in the crosshair.",
 				},
 				{
-					section: "Critcal Riposte: Turning the Tide",
+					section: "Critical Riposte: Turning the Tide",
 					description: "Triggers when using When Secrets Take Shape after a Critical Dodge. Swings both arms and fires in a cross pattern at targets in front, binding them with Lethal Rose Pact while dealing 1 instance of Anima DMG, reducing Break, and granting <dn>2</> Rose Pact Bullets."
 				}
 			],

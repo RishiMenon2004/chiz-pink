@@ -43,7 +43,7 @@ export const adler: Character = {
 						"Plunges, dealing 1 instance of Incantation DMG to an area upon impact. Increases DMG based on fall height, up to 100%.",
 				},
 				{
-					section: "Critical Reposte: Revelation",
+					section: "Critical Riposte: Revelation",
 					description:
 						"Triggers when casting Deliverance after a Critical Dodge. Dodges an attack with a quick dash, seizes the enemy's opening and swiftly swings his weapon, dealing 1 instance of Incantation DMG to an area, reducing their Break.",
 				},

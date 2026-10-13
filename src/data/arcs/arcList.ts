@@ -453,7 +453,7 @@ const allArcs: Record<string, Arc> = {
 		effect: {
 			name: "Ready-Ready",
 			description:
-				"Increases ATK by <dn>{0}</>.\nIncreases Basic Atack and Critical Riposte damage by <dn>{0}</> for <dn>15</>s when casting a Redirect Skill or Ultimate, up to <dn>2</> stacks.\nGrants a Left Tiger Talisman when casting Redirect Skill and a Right Tiger Talisman when casting Ultimate.\nUnlocks Commander Tiger Talisman if the wearer obtains the other type of talisman within <dn>15</> of gaining one.\nArc Commander Tiger Talisman — Increases the wearer's damage to Bosses by <dn>{1}</> for <dn>10</>s.",
+				"Increases ATK by <dn>{0}</>.\nIncreases Basic Attack and Critical Riposte damage by <dn>{0}</> for <dn>15</>s when casting a Redirect Skill or Ultimate, up to <dn>2</> stacks.\nGrants a Left Tiger Talisman when casting Redirect Skill and a Right Tiger Talisman when casting Ultimate.\nUnlocks Commander Tiger Talisman if the wearer obtains the other type of talisman within <dn>15</> of gaining one.\nArc Commander Tiger Talisman — Increases the wearer's damage to Bosses by <dn>{1}</> for <dn>10</>s.",
 			values: {
 				"1": [
 					{ type: "Percent", value: 0.15 },
@@ -1120,7 +1120,7 @@ const allArcs: Record<string, Arc> = {
 		effect: {
 			name: "Silent Garden",
 			description:
-				"Increases the wearer's CRIT DMG by <dn>{0}</> for <dn>5</>s when the wearer's HP is reduced without taking damage, up to <dn>4</> stacks.\nUnlocks Arc: Silent Garden.\nConsumes <dn>5.00%</> of current HP and randomly performs one of the following attakcs (CD <dn>25</>s) in Arc: Silent Garden:\nHarsh Rebuke: Rains merciless rebukes like leaves in a storm, dealing <dn>5</> instances of Incantation DMG of <dn>{1}</> ATK.\nIncessant Nagging: Pierces targets with sharp, cutting words like thorns, dealing <dn>6</> instances of Incantation DMG of <dn>{3}</> ATK; the final instance deals double damage.",
+				"Increases the wearer's CRIT DMG by <dn>{0}</> for <dn>5</>s when the wearer's HP is reduced without taking damage, up to <dn>4</> stacks.\nUnlocks Arc: Silent Garden.\nConsumes <dn>5.00%</> of current HP and randomly performs one of the following attacks (CD <dn>25</>s) in Arc: Silent Garden:\nHarsh Rebuke: Rains merciless rebukes like leaves in a storm, dealing <dn>5</> instances of Incantation DMG of <dn>{1}</> ATK.\nIncessant Nagging: Pierces targets with sharp, cutting words like thorns, dealing <dn>6</> instances of Incantation DMG of <dn>{3}</> ATK; the final instance deals double damage.",
 			values: {
 				"1": [
 					{ type: "Percent", value: 0.12 },
@@ -1549,7 +1549,7 @@ const allArcs: Record<string, Arc> = {
 		effect: {
 			name: "Oraora!",
 			description:
-				"Increases the wearer's Basic Attack DMG by <dn>{0}</> for <dn>10</>s after each Basic Attack, upt to <dn>10</> stacks. Each stack's duration is calculated independently, and is not reset when new stacks are gained.",
+				"Increases the wearer's Basic Attack DMG by <dn>{0}</> for <dn>10</>s after each Basic Attack, up to <dn>10</> stacks. Each stack's duration is calculated independently, and is not reset when new stacks are gained.",
 			values: {
 				"1": [{ type: "Percent", value: 0.02 }],
 				"2": [{ type: "Percent", value: 0.024 }],
@@ -1821,7 +1821,7 @@ const allArcs: Record<string, Arc> = {
 		effect: {
 			name: '"Decomposer"',
 			description:
-				"Increases the wearer's Break Intesity by <dn>{0}</> for <dn>10</>s when reducing Break. Triggers at most every <dn>20</>s.",
+				"Increases the wearer's Break Intensity by <dn>{0}</> for <dn>10</>s when reducing Break. Triggers at most every <dn>20</>s.",
 			values: {
 				"1": [{ type: "Integer", value: 60 }],
 				"2": [{ type: "Integer", value: 66 }],
