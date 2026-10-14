@@ -9,6 +9,9 @@ import { EnumItemLvls, EnumRarity, getItemRarityStyle } from "@/data/items"
 import { findArc, EnumArcType, getAllArcsList } from "@/data/arcs"
 
 import { getRarityName, createSearchString, stopPropagation } from "@/helpers"
+import { sortByStatus } from "@/helpers/bannerStatus"
+
+import { useNow } from "@/hooks"
 
 import { useAddArcContext } from "@/contexts"
 
@@ -85,6 +88,7 @@ const PlannerArcsSelect = () => {
 	const [filterQuery, setFilterQuery] = useState<
 		[EnumArcType | null, EnumRarity | null]
 	>([null, null])
+	const now = useNow()
 
 	if (!newArcRecord) return null
 
@@ -92,7 +96,7 @@ const PlannerArcsSelect = () => {
 		setSearchQuery(e.currentTarget.value)
 	}
 
-	const filteredArcs = getAllArcsList().filter((arc) => {
+	const filteredArcs = sortByStatus(getAllArcsList(), now).filter((arc) => {
 		const matchesType = !filterQuery[0] || arc.type === filterQuery[0]
 		const matchesRarity = !filterQuery[1] || arc.rarity === filterQuery[1]
 		const searchTarget = createSearchString<Arc>(arc, ["id", "name"])

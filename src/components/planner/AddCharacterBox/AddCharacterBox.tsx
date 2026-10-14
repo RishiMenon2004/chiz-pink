@@ -13,7 +13,11 @@ import { getAllCharactersList } from "@/data/characters/characterList"
 import { useNow, usePlannerStore } from "@/hooks"
 
 import { createSearchString, stopPropagation } from "@/helpers"
-import { getItemStatus, type ItemStatus } from "@/helpers/bannerStatus"
+import {
+	getItemStatus,
+	sortByStatus,
+	type ItemStatus,
+} from "@/helpers/bannerStatus"
 
 import { useAddCharContext } from "@/contexts"
 
@@ -77,7 +81,7 @@ export function PlannerAddCharacterBox({
 		[EnumCharacterElement | null, EnumRarity | null]
 	>([null, null])
 
-	const filteredChars = getAllCharactersList().filter((char) => {
+	const filteredChars = sortByStatus(getAllCharactersList(), now).filter((char) => {
 		const doesPlannerHaveChar = Object.keys(plannerData.characters).includes(
 			char.id
 		)

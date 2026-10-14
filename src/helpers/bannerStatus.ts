@@ -68,3 +68,13 @@ export function getItemStatus(item: Item, now: number | null): ItemStatus {
 
 	return null
 }
+
+const STATUS_RANK = { preview: 0, featured: 1 }
+
+export function sortByStatus<T extends Item>(items: T[], now: number | null) {
+	const rank = (item: T) => {
+		const status = getItemStatus(item, now)
+		return status ? STATUS_RANK[status] : 2
+	}
+	return items.toSorted((a, b) => rank(a) - rank(b))
+}

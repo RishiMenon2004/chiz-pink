@@ -13,7 +13,11 @@ import { getAllArcsList } from "@/data/arcs"
 
 import { useNow } from "@/hooks"
 
-import { getItemStatus, type ItemStatus } from "@/helpers/bannerStatus"
+import {
+	getItemStatus,
+	sortByStatus,
+	type ItemStatus,
+} from "@/helpers/bannerStatus"
 
 import { ArcIcon } from "@/components/layout/ArcIcon"
 import {
@@ -89,29 +93,15 @@ function ArcCard({ arc, status }: { arc: Arc; status: ItemStatus }) {
 	)
 }
 
-const STATUS_RANK: Record<string, number> = { preview: 0, featured: 1 }
-
-// Banner status for every item, sorted previews first, then featured, then
-// by rarity (highest first) and name. useNow ticks every second, so the
-// work is keyed to the minute instead.
 function useCatalogItems<T extends Item>(items: T[], onlyFlagged: boolean) {
 	const now = useNow()
 	const minute = now === null ? null : Math.floor(now / MINUTE_MS)
 
 	return useMemo(() => {
 		const at = minute === null ? null : minute * MINUTE_MS
-		const withStatus: WithStatus<T>[] = items
+		return sortByStatus(items, at)
 			.map((item) => ({ item, status: getItemStatus(item, at) }))
 			.filter(({ status }) => !onlyFlagged || status !== null)
-
-		const rank = (status: ItemStatus) => (status ? STATUS_RANK[status] : 2)
-
-		return withStatus.toSorted(
-			(a, b) =>
-				rank(a.status) - rank(b.status) ||
-				b.item.rarity - a.item.rarity ||
-				a.item.name.localeCompare(b.item.name)
-		)
 	}, [items, onlyFlagged, minute])
 }
 
