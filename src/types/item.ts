@@ -1,7 +1,9 @@
 import { EnumMaterialType, EnumRarity } from "@/data/items"
 
 export interface Item {
-	isFeatured?: boolean
+	// Hand-set for content announced before its banner dates are known.
+	// Featured status, and previews with a scheduled banner, come from the
+	// banner data instead - see helpers/bannerStatus.ts.
 	isPreview?: boolean
 	id: string
 	name: string

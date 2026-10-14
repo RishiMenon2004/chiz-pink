@@ -10,9 +10,10 @@ import { EnumRarity, getItemRarityStyle } from "@/data/items"
 import { EnumCharacterElement } from "@/data/characters"
 import { getAllCharactersList } from "@/data/characters/characterList"
 
-import { usePlannerStore } from "@/hooks"
+import { useNow, usePlannerStore } from "@/hooks"
 
 import { createSearchString, stopPropagation } from "@/helpers"
+import { getItemStatus, type ItemStatus } from "@/helpers/bannerStatus"
 
 import { useAddCharContext } from "@/contexts"
 
@@ -22,9 +23,11 @@ import styles from "./addCharacterBox.module.css"
 
 function CharacterListItem({
 	char,
+	status,
 	onClick,
 }: {
 	char: Character
+	status: ItemStatus
 	onClick: (e: MouseEvent<HTMLElement>) => void
 }) {
 	return (
@@ -32,9 +35,9 @@ function CharacterListItem({
 			tabIndex={0}
 			className={`${styles.charSelectOption} ${getItemRarityStyle(char)}`}
 			onClick={onClick}>
-			{(char.isPreview || char.isFeatured) && (
+			{status && (
 				<div className={styles.featureTag}>
-					{char.isPreview ? "Preview" : "Featured"}
+					{status === "preview" ? "Preview" : "Featured"}
 				</div>
 			)}
 			<div className={styles.charSelectOptionAvatarContainer}>
@@ -63,6 +66,7 @@ export function PlannerAddCharacterBox({
 }) {
 	const { addCharacter } = useAddCharContext()
 	const { plannerData } = usePlannerStore()
+	const now = useNow()
 
 	const [searchQuery, setSearchQuery] = useState<string>("")
 	const handleSearch = (e: ChangeEvent<HTMLInputElement>) => {
@@ -208,6 +212,7 @@ export function PlannerAddCharacterBox({
 						<CharacterListItem
 							key={char.id}
 							char={char}
+							status={getItemStatus(char, now)}
 							onClick={(e) => addCharacter(e, char.id)}
 						/>
 					)

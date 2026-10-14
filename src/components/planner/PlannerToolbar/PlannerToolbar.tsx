@@ -25,6 +25,7 @@ import { useSelectedLayoutSegment } from "next/navigation"
 import { DragDropProvider } from "@dnd-kit/react"
 import { Feedback } from "@dnd-kit/dom"
 import { PlannerReorderBox } from "@/components/layout/ReorderBox/PlannerReorderBox"
+import { getItemStatus } from "@/helpers/bannerStatus"
 
 export function PlannerToolbar() {
 	const { actions } = usePlannerStore()
@@ -56,7 +57,10 @@ export function PlannerToolbar() {
 	> | null>(null)
 	const handleStartAddingArc = () =>
 		setNewArcRecord({
-			id: getAllArcsList().find((arc) => arc.isFeatured)?.id || "us",
+			id:
+				getAllArcsList().find(
+					(arc) => getItemStatus(arc, Date.now()) === "featured"
+				)?.id || "us",
 			currentLvl: EnumItemLvls.Lvl1,
 			targetLvl: EnumItemLvls.Lvl80,
 		})

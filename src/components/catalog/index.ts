@@ -1,6 +1,8 @@
 export {
-	ArcCard,
-	CatalogGrid,
-	CharacterCard,
-	sortCatalogItems,
+	ArcCards,
+	ArcCatalog,
+	CharacterCards,
+	CharacterCatalog,
+	useArcCatalog,
+	useCharacterCatalog,
 } from "./CatalogCards"

@@ -543,6 +543,7 @@ export const Events: EventData[] = [
 	{
 		name: "Foretold Finale: Blackbird",
 		type: "Gacha",
+		rateupItem: "blackbird",
 		getStartDate: getPhase1Start("version1_4"),
 		getEndDate: getPhase1End("version1_4"),
 		eventImage: "version1.4/gacha_blackbird.webp",
@@ -552,6 +553,7 @@ export const Events: EventData[] = [
 	{
 		name: "Dazzling Star: Akane Rin",
 		type: "Gacha",
+		rateupItem: "akane",
 		getStartDate: getPhase2Start("version1_4"),
 		getEndDate: getPhase2End("version1_4"),
 		eventImage: "version1.4/gacha_akane.webp",
@@ -561,6 +563,7 @@ export const Events: EventData[] = [
 	{
 		name: "Fading Reverie: Lacrimosa",
 		type: "Gacha",
+		rateupItem: "lacrimosa",
 		getStartDate: getPhase1Start("version1_4"),
 		getEndDate: getPhase1End("version1_4"),
 		eventImage: "version1.4/gacha_lacrimosa.webp",

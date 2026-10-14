@@ -10,7 +10,6 @@ import {
 } from "../items/materials"
 
 export const blackbird: Character = {
-	isFeatured: true,
 	id: "blackbird",
 	imageSrc: "blackbird.webp",
 	name: "Blackbird",

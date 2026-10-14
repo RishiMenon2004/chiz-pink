@@ -72,7 +72,6 @@ const allArcs: Record<string, Arc> = {
 	},
 
 	crime_and_punishment: {
-		isFeatured: true,
 		id: "crime_and_punishment",
 		imageSrc: "crime_and_punishment.webp",
 		name: "Crime and Punishment",
@@ -544,7 +543,6 @@ const allArcs: Record<string, Arc> = {
 	},
 
 	ready_ready: {
-		isFeatured: true,
 		id: "ready_ready",
 		imageSrc: "ready_ready.webp",
 		name: "Ready-Ready",
