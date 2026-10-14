@@ -1,0 +1,202 @@
+.grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(8rem, 1fr));
+	gap: 1.5rem 1rem;
+	justify-items: center;
+}
+
+.card {
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+
+	width: 8rem;
+
+	color: inherit;
+	text-decoration: none;
+
+	z-index: 0;
+	filter: drop-shadow(rgba(0, 0, 0, 0.5) 0 0 10px);
+
+	cursor: var(--pointer-cursor);
+
+	&:hover,
+	&:focus-visible {
+		.avatar {
+			box-shadow:
+				var(--shadow-dark-60) 0px 0px 2px 1px,
+				var(--foreground) 2px 3px 4px 1px,
+				var(--rarity-color) 0 0 20px 2px inset;
+		}
+
+		.arcImage {
+			outline-color: var(--rarity-color-highlight);
+		}
+
+		.name {
+			paint-order: stroke fill;
+			-webkit-text-stroke: 4px black;
+		}
+	}
+
+	&:focus-visible {
+		outline: none;
+		filter: drop-shadow(2px 0px 0px var(--pink))
+			drop-shadow(-2px 0px 0px var(--pink))
+			drop-shadow(0px 2px 0px var(--pink))
+			drop-shadow(0px -2px 0px var(--pink));
+	}
+}
+
+/* Arc cards rely on their outline instead of a drop shadow. */
+.arcCard {
+	filter: none;
+}
+
+.featureTag {
+	position: absolute;
+	left: 0;
+	top: 0;
+
+	font-family: var(--font-barlow-condensed);
+	font-style: italic;
+	letter-spacing: 2.5%;
+	font-size: 1.1rem;
+
+	filter: drop-shadow(var(--rarity-color) 0px 0px 2px);
+
+	paint-order: stroke fill;
+	-webkit-text-stroke: 4px black;
+
+	z-index: 3;
+}
+
+.avatarContainer {
+	position: relative;
+	display: flex;
+
+	width: 100%;
+	height: auto;
+	aspect-ratio: 1;
+	padding: 10%;
+
+	background-image: url("/characters/avatar/borders/planner_border_list.png");
+	background-size: contain;
+	background-repeat: no-repeat;
+
+	&::before {
+		content: "";
+		position: absolute;
+		inset: 0;
+		z-index: -1;
+
+		border-radius: 100%;
+
+		background-color: var(--rarity-color);
+	}
+
+	.avatar {
+		display: flex;
+
+		width: 100%;
+		height: auto;
+		border-radius: 100%;
+
+		background-color: var(--interactive-bg);
+		box-shadow:
+			var(--shadow-dark-60) 0px 0px 2px 1px,
+			var(--foreground) 2px 3px 4px 1px;
+	}
+
+	.element {
+		position: absolute;
+		bottom: 3%;
+		right: 3%;
+
+		width: 14%;
+		height: auto;
+		aspect-ratio: 1;
+		border-radius: 100%;
+
+		background-color: var(--interactive-bg);
+		box-shadow:
+			var(--shadow-dark-60) 0px -0.5px 2px 0.5px,
+			var(--foreground) 0 0.5px 2px;
+	}
+}
+
+.arcImageContainer {
+	display: flex;
+
+	width: 100%;
+	aspect-ratio: 1;
+	padding: 4%;
+
+	/* Same treatment as the event calendar items and banner selector:
+	   a 1px translucent outline over a rarity-colour gradient. */
+	.arcImage {
+		--start-color: oklch(
+			from var(--rarity-color) calc(l + 0.25) c calc(h + 30)
+		);
+
+		width: 100%;
+		height: auto;
+		aspect-ratio: 1;
+		border-radius: calc(0.5rem + 2px);
+
+		background-color: color-mix(
+			in srgb,
+			var(--rarity-color),
+			var(--interactive-bg) 85%
+		);
+		background-image: linear-gradient(
+			to bottom right,
+			var(--start-color) -25%,
+			var(--rarity-color) 20%,
+			transparent 95%
+		);
+
+		outline: 1px solid rgba(255, 255, 255, 0.25);
+		outline-offset: -1px;
+
+		transition: outline-color 100ms ease-out;
+	}
+}
+
+.name {
+	margin-block: 0.5em;
+
+	font-family: var(--font-syne);
+	font-weight: 650;
+	text-align: center;
+}
+
+@media (max-width: 750px) {
+	.grid {
+		grid-template-columns: repeat(auto-fill, minmax(6rem, 1fr));
+	}
+
+	.card {
+		width: 6rem;
+	}
+}
+
+@media (max-width: 550px) {
+	.grid {
+		grid-template-columns: repeat(auto-fill, minmax(5.25rem, 1fr));
+		gap: 1rem 0.5rem;
+	}
+
+	.card {
+		width: 5.25rem;
+	}
+
+	.featureTag {
+		font-size: 0.95rem;
+	}
+
+	.name {
+		font-size: 0.875rem;
+	}
+}
