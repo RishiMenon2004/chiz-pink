@@ -1,6 +1,6 @@
 "use client"
 
-import { useMemo } from "react"
+import { useMemo, useState } from "react"
 import Link from "next/link"
 
 import type { Character } from "@/types/character"
@@ -21,7 +21,15 @@ import {
 	CharacterElement,
 } from "@/components/layout/CharacterAvatar"
 
+import { InfoBox } from "@/components/layout/InfoBox"
+
+import {
+	CatalogFilterToolbar,
+	NO_FILTERS,
+	type CatalogFilters,
+} from "./CatalogFilterToolbar"
 import styles from "./catalog.module.css"
+import pageStyles from "@/app/page.module.css"
 
 const MINUTE_MS = 60_000
 
@@ -132,20 +140,92 @@ export function ArcCards({ entries }: { entries: WithStatus<Arc>[] }) {
 	))
 }
 
+function EmptyFilterNotice({ onReset }: { onReset: () => void }) {
+	return (
+		<InfoBox>
+			<div>
+				{
+					"I-I can't seem to find anything with those filters. Would you like to "
+				}
+				<a onClick={onReset} className="btn-anchor">
+					try again?
+				</a>
+			</div>
+		</InfoBox>
+	)
+}
+
+const uniqueSorted = <T extends string | number>(values: T[], descending = false) =>
+	[...new Set(values)].toSorted((a, b) =>
+		descending ? (a < b ? 1 : -1) : a < b ? -1 : 1
+	)
+
+const characterRarities = uniqueSorted(allCharacters.map((c) => c.rarity), true)
+const characterElements = uniqueSorted(allCharacters.map((c) => c.element))
+const characterArcTypes = uniqueSorted(allCharacters.map((c) => c.arcType))
+const arcRarities = uniqueSorted(allArcs.map((a) => a.rarity), true)
+const arcTypes = uniqueSorted(allArcs.map((a) => a.type))
+
 export function CharacterCatalog() {
 	const entries = useCharacterCatalog()
+	const [filters, setFilters] = useState<CatalogFilters>(NO_FILTERS)
+
+	const filtered = entries.filter(
+		({ item }) =>
+			(filters.rarity === null || item.rarity === filters.rarity) &&
+			(filters.element === null || item.element === filters.element) &&
+			(filters.arcType === null || item.arcType === filters.arcType)
+	)
+
 	return (
-		<div className={styles.grid}>
-			<CharacterCards entries={entries} />
-		</div>
+		<>
+			<CatalogFilterToolbar
+				filters={filters}
+				onChange={setFilters}
+				rarities={characterRarities}
+				elements={characterElements}
+				arcTypes={characterArcTypes}
+			/>
+			<main role="main" className={`page ${pageStyles.page}`}>
+				{filtered.length === 0 ? (
+					<EmptyFilterNotice onReset={() => setFilters(NO_FILTERS)} />
+				) : (
+					<div className={styles.grid}>
+						<CharacterCards entries={filtered} />
+					</div>
+				)}
+			</main>
+		</>
 	)
 }
 
 export function ArcCatalog() {
 	const entries = useArcCatalog()
+	const [filters, setFilters] = useState<CatalogFilters>(NO_FILTERS)
+
+	const filtered = entries.filter(
+		({ item }) =>
+			(filters.rarity === null || item.rarity === filters.rarity) &&
+			(filters.arcType === null || item.type === filters.arcType)
+	)
+
 	return (
-		<div className={styles.grid}>
-			<ArcCards entries={entries} />
-		</div>
+		<>
+			<CatalogFilterToolbar
+				filters={filters}
+				onChange={setFilters}
+				rarities={arcRarities}
+				arcTypes={arcTypes}
+			/>
+			<main role="main" className={`page ${pageStyles.page}`}>
+				{filtered.length === 0 ? (
+					<EmptyFilterNotice onReset={() => setFilters(NO_FILTERS)} />
+				) : (
+					<div className={styles.grid}>
+						<ArcCards entries={filtered} />
+					</div>
+				)}
+			</main>
+		</>
 	)
 }
