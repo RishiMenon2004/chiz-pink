@@ -18,8 +18,10 @@
 
 	h1 {
 		align-self: center;
+		flex-shrink: 0;
 		font-family: var(--font-syne);
 		line-height: 0;
+		white-space: nowrap;
 		font-weight: 740;
 		color: var(--interactive-bg);
 		filter: drop-shadow(-0.5px -0.5px 0.5px hsla(0, 0%, 4%));
@@ -216,7 +218,11 @@ div.currencyBox {
 
 @media (max-width: 1135px) {
 	.titleBar {
-		gap: 2rem;
+		gap: 1rem;
+
+		h1 {
+			font-size: clamp(1.25rem, 2.1vw, 2em);
+		}
 	}
 
 	.currencySection {
