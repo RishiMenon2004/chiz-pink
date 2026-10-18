@@ -13,6 +13,7 @@ import { useGachaStore } from "@/hooks"
 import {
 	calculatePityMap,
 	calculatePullNumberMap,
+	findRateUpBanner,
 	getBannerThemeColor,
 	getResolvedGachaBanners,
 	permanentRateupSet,
@@ -56,10 +57,8 @@ function extractBannerRateUps(
 		let themeColor: string | undefined
 
 		if (isArc) {
-			const arcBanner = staticArcBanners.find(
-				(b) => b.startDate < pull.timestamp && b.endDate > pull.timestamp
-			)
-			rateUp = arcBanner?.rateupItem === pull.rewardId
+			const arcBanner = findRateUpBanner(staticArcBanners, pull)
+			rateUp = arcBanner !== undefined
 			if (rateUp) {
 				themeColor =
 					arcBanner?.themeColor ??
@@ -71,10 +70,10 @@ function extractBannerRateUps(
 				themeColor = "#006fe2"
 			}
 		} else {
-			const activeBanner = resolvedLimited?.find(
-				(b) => b.startDate < pull.timestamp && b.endDate > pull.timestamp
-			)
-			rateUp = activeBanner?.rateupItem === pull.rewardId
+			const activeBanner = resolvedLimited
+				? findRateUpBanner(resolvedLimited, pull)
+				: undefined
+			rateUp = activeBanner !== undefined
 			if (rateUp) {
 				themeColor = activeBanner?.themeColor ?? "var(--pink)"
 			}

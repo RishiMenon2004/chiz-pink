@@ -53,6 +53,7 @@ export {
 	isScarboroughPull,
 	isArcRateUp,
 	isRateUp,
+	findRateUpBanner,
 	staticArcBanners,
 	getResolvedGachaBanners,
 	permanentRateupSet,

@@ -2,6 +2,7 @@ import { MiracleBoxPull, ScarboroughFairPull, PullsRecord } from "@/types/pulls"
 import { SettingsRecord } from "@/types/settings"
 import { EventData } from "@/data/activities/events"
 import {
+	findRateUpBanner,
 	getResolvedGachaBanners,
 	staticArcBanners,
 } from "./calculatePity"
@@ -36,6 +37,7 @@ export function getBannerThemeColor(
 
 	const banners = getResolvedGachaBanners(gachaBanners, server)
 	const banner =
+		findRateUpBanner(banners, pull) ??
 		banners.find(
 			(b) => b.startDate < pull.timestamp && b.endDate > pull.timestamp
 		) ?? banners.find((b) => b.rateupItem === pull.rewardId)

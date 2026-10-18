@@ -42,6 +42,17 @@ export function getResolvedGachaBanners(
 
 export const permanentRateupSet = new Set<string>(permanentBanner.rateupItems)
 
+export function findRateUpBanner<
+	T extends { rateupItem?: string; startDate: number; endDate: number },
+>(banners: T[], pull: MiracleBoxPull | ScarboroughFairPull): T | undefined {
+	return banners.find(
+		(b) =>
+			b.rateupItem === pull.rewardId &&
+			b.startDate < pull.timestamp &&
+			b.endDate > pull.timestamp
+	)
+}
+
 export function isScarboroughPull(
 	pull: MiracleBoxPull | ScarboroughFairPull
 ): pull is ScarboroughFairPull {
@@ -51,10 +62,7 @@ export function isScarboroughPull(
 export function isArcRateUp(
 	pull: MiracleBoxPull | ScarboroughFairPull
 ): boolean {
-	const banner = staticArcBanners.find(
-		(b) => b.startDate < pull.timestamp && b.endDate > pull.timestamp
-	)
-	return banner?.rateupItem === pull.rewardId
+	return findRateUpBanner(staticArcBanners, pull) !== undefined
 }
 
 export const isRateUp = (
@@ -66,13 +74,13 @@ export const isRateUp = (
 	switch (selectedBanner) {
 		case "arcsBanner":
 			return isArcRateUp(pull)
-		case "limitedBanner": {
-			const banners = getResolvedGachaBanners(gachaBanners, server)
-			const banner = banners.find(
-				(b) => b.startDate < pull.timestamp && b.endDate > pull.timestamp
+		case "limitedBanner":
+			return (
+				findRateUpBanner(
+					getResolvedGachaBanners(gachaBanners, server),
+					pull
+				) !== undefined
 			)
-			return banner?.rateupItem === pull.rewardId
-		}
 		case "permanentBanner":
 			return permanentRateupSet.has(pull.rewardId)
 	}
