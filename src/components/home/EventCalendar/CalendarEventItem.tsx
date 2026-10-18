@@ -1,6 +1,7 @@
 "use client"
 
 import Image from "next/image"
+import Link from "next/link"
 import {
 	CSSProperties,
 	MouseEventHandler,
@@ -13,6 +14,7 @@ import {
 import { createPortal } from "react-dom"
 
 import { EventData } from "@/data/activities/events"
+import { findCharacter } from "@/data/characters"
 import { stopPropagation } from "@/helpers"
 import { formatEventDateTime } from "@/helpers/serverTime"
 
@@ -172,6 +174,12 @@ function EventDetailsBox({
 
 	const { server, dayBoundaryMode } = useCalendarContext()
 
+	// Character banners link to the rate-up character's profile.
+	const rateUpCharacter =
+		eventData.type === "Gacha" && eventData.rateupItem
+			? findCharacter(eventData.rateupItem)
+			: undefined
+
 	return (
 		<div
 			onClick={stopPropagation}
@@ -214,6 +222,13 @@ function EventDetailsBox({
 						: " (Server Time)"}
 				</span>
 			</div>
+			{rateUpCharacter && (
+				<Link
+					href={`/characters/${rateUpCharacter.id}`}
+					className={`pill-button ${styles.eventProfileLink}`}>
+					{`VIEW ${rateUpCharacter.name.toUpperCase()}`}
+				</Link>
+			)}
 		</div>
 	)
 }
