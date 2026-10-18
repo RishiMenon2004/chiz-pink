@@ -40,6 +40,7 @@ export {
 	backupImport,
 	backupSetImport,
 	eraseLocalData,
+	erasePullHistory,
 } from "@/helpers/backupData"
 
 export {

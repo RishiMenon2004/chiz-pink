@@ -234,6 +234,43 @@ export function EraseDataWarningModal({
 }
 
 /* ------------------------------------------------------------------ */
+/*  Erase pull history warning                                         */
+/* ------------------------------------------------------------------ */
+
+export function ErasePullsWarningModal({
+	erasePullsWarning,
+	isSignedIn,
+	onConfirm,
+	setErasePullsWarning,
+}: {
+	erasePullsWarning: boolean
+	isSignedIn: boolean
+	onConfirm: () => void
+	setErasePullsWarning: (v: boolean) => void
+}) {
+	if (!erasePullsWarning) return null
+
+	return (
+		<ModalContainer>
+			<AlertContainer
+				type="dangerous-confirm"
+				onConfirm={onConfirm}
+				onCancel={() => setErasePullsWarning(false)}
+				confirmLabel="Erase"
+				cancelLabel="Cancel">
+				Erase pull history?
+				<br />
+				<p className={alertMessage}>
+					{isSignedIn
+						? "This erases your imported pulls from this device and your cloud backup."
+						: "This erases your imported pulls from this device."}
+				</p>
+			</AlertContainer>
+		</ModalContainer>
+	)
+}
+
+/* ------------------------------------------------------------------ */
 /*  Erase sync choice (keep / delete cloud backup)                     */
 /* ------------------------------------------------------------------ */
 

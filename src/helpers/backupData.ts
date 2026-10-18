@@ -221,6 +221,11 @@ export function eraseLocalData() {
 	clearAllPulls()
 }
 
+export function erasePullHistory() {
+	clearAllPulls()
+	memoryStorage.removeItem("gachaLastUpdated")
+}
+
 export function backupSetMainImport({
 	lastUpdated,
 	checklist,

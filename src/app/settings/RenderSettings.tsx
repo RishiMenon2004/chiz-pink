@@ -23,6 +23,7 @@ import {
 	backupImport,
 	backupSetImport,
 	eraseLocalData,
+	erasePullHistory,
 	isNtePlannerBackup,
 	isNteWizBackup,
 	parseNtePlannerImport,
@@ -43,6 +44,7 @@ import {
 	ExternalImportPendingModal,
 	ExternalImportSummaryModal,
 	EraseDataWarningModal,
+	ErasePullsWarningModal,
 	EraseSyncChoiceModal,
 	ImportOverwriteModal,
 	SignoutWarningModal,
@@ -74,6 +76,7 @@ export function RenderSettings() {
 	const [unlinkWarning, setUnlinkWarning] = useState<boolean>(false)
 	const [eraseWarning, setEraseWarning] = useState<boolean>(false)
 	const [eraseSyncChoice, setEraseSyncChoice] = useState<boolean>(false)
+	const [erasePullsWarning, setErasePullsWarning] = useState<boolean>(false)
 	const [importedJson, setImportedJson] = useState<BackupData | null>(null)
 	const [externalImportPending, setExternalImportPending] =
 		useState<ExternalImportResult | null>(null)
@@ -182,6 +185,7 @@ export function RenderSettings() {
 				<LocalDataSection
 					importData={importData}
 					setEraseWarning={setEraseWarning}
+					setErasePullsWarning={setErasePullsWarning}
 				/>
 				<CloudBackupSection
 					setSignoutWarning={setSignoutWarning}
@@ -232,6 +236,23 @@ export function RenderSettings() {
 					}
 				}}
 				setEraseWarning={setEraseWarning}
+			/>
+			<ErasePullsWarningModal
+				erasePullsWarning={erasePullsWarning}
+				isSignedIn={status === "authenticated"}
+				onConfirm={() => {
+					setErasePullsWarning(false)
+					erasePullHistory()
+					if (status === "authenticated") {
+						deleteGachaBackup({}).catch((error) => {
+							console.error(
+								"Failed to delete gacha cloud backup",
+								error
+							)
+						})
+					}
+				}}
+				setErasePullsWarning={setErasePullsWarning}
 			/>
 			<EraseSyncChoiceModal
 				eraseSyncChoice={eraseSyncChoice}

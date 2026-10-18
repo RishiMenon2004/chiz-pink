@@ -5,5 +5,6 @@ export {
 	SignoutWarningModal,
 	EraseDataWarningModal,
 	EraseSyncChoiceModal,
+	ErasePullsWarningModal,
 	UnlinkAccountModal,
 } from "./SettingsModals"

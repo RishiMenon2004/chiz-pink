@@ -9,7 +9,6 @@ import {
 	Blockquote,
 	Content,
 	ContentColumn,
-	ContentRow,
 	Section,
 	TitleBar,
 } from "../SettingsShared"
@@ -19,11 +18,13 @@ import styles from "@/app/settings/settings.module.css"
 interface LocalDataSectionProps {
 	importData: () => void
 	setEraseWarning: (value: boolean) => void
+	setErasePullsWarning: (value: boolean) => void
 }
 
 export function LocalDataSection({
 	importData,
 	setEraseWarning,
+	setErasePullsWarning,
 }: LocalDataSectionProps) {
 	return (
 		<Section>
@@ -56,32 +57,44 @@ export function LocalDataSection({
 						</span>
 					</Blockquote>
 				</ContentColumn>
-				<ContentRow buttonRow>
-					<button
-						className="pill-button"
-						data-variant="normal"
-						onClick={(e) => {
-							e.preventDefault()
-							backupExport()
-						}}>
-						Export Data
-					</button>
-					<button
-						className="pill-button"
-						data-variant="normal"
-						onClick={(e) => {
-							e.preventDefault()
-							importData()
-						}}>
-						Import Data
-					</button>
-					<button
-						className="pill-button"
-						data-variant="danger"
-						onClick={() => setEraseWarning(true)}>
-						Erase Data
-					</button>
-				</ContentRow>
+				<div className={styles.buttonGroups}>
+					<div className={styles.buttonGroup}>
+						<b>Backup</b>
+						<button
+							className="pill-button"
+							data-variant="normal"
+							onClick={(e) => {
+								e.preventDefault()
+								importData()
+							}}>
+							Import Data
+						</button>
+						<button
+							className="pill-button"
+							data-variant="normal"
+							onClick={(e) => {
+								e.preventDefault()
+								backupExport()
+							}}>
+							Export Data
+						</button>
+					</div>
+					<div className={styles.buttonGroup}>
+						<b>Erase</b>
+						<button
+							className="pill-button"
+							data-variant="danger"
+							onClick={() => setErasePullsWarning(true)}>
+							Pull History
+						</button>
+						<button
+							className="pill-button"
+							data-variant="danger"
+							onClick={() => setEraseWarning(true)}>
+							All Data
+						</button>
+					</div>
+				</div>
 			</Content>
 		</Section>
 	)
