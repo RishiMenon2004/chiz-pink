@@ -1,20 +1,26 @@
-# Chiz.Pink
+![Welcome Splash](docs/images/splash_panel.png)
 
-**Chiz.Pink** is your pinkest campanion and favourite planner and inventory tracker for Neverness To Everness. :3
+**Chiz.Pink** is your pinkest campanion and favourite planner and inventory tracker for Neverness To Everness :3
+
+<p align="center">
+  <img src="docs/ai-assisted-badge.svg" alt="AI-assisted with Claude Opus 5.5" width="260" />
+</p>
 
 I made this because I wanted a nice looking and easier to use
 companion tool than what already exists. Inspired by a combination
 of [Paimon.moe](https://paimon.moe), [Genshin Center](https://genshin-center.com), and [Star Rail Station](https://starrailstation.com).
 These are tools that I've used for a very long time and I wanted a similar experience for NTE.
 
-The inventories on Genshin Center and Star Rail Station were sorted in the same order
-as they are in-game. But every single NTE tool I've seen, sorts alphabetically or by the
-item type. It was frustrating to scroll up and down and find the right item. That frustration
-is what made **Chiz.Pink**.
+The inventories on Genshin Center and Star Rail Station were
+sorted in the same order as the items were in-game. But almost all
+NTE tools I've seen, sorts alphabetically or by the item type. It
+was frustrating to scroll up and down and find the right item.
+That frustration is what made **Chiz.Pink**.
 
 > I'm not affiliated with or endorsed by the Hotta Studio, it's just a fan project.
 
-# WARNING!!
+# !!WARNING!!
+
 As of now, I'm still working out the kinks, and [chiz-pink.vercel.app](http://chiz-pink.vercel.app) should not be used as a working release!
 
 Changes that I make might break existing data. This section will be removed once it is stable and released.
@@ -22,6 +28,7 @@ Changes that I make might break existing data. This section will be removed once
 ## What it does
 
 - :calendar: **Character & Arc Planners** - Plan and track levelling and ascension progress.
+- :books: **Character & Arc Catalog** - Browse every Character and Arc for a basic overview.
 - :school_satchel: **Inventory Tracker** - Keep account of every usable item - owned/required/acquired.
   Comes with a variety of ways to Filter, Group and Sort items just the way you need it.
 - :game_die: **Pull Tracker** - Keep a record of all your pulls across both the limited banners and the permanent banner, with a handy pity counter and stats for those nerds.
