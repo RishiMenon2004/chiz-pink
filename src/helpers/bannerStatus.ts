@@ -78,3 +78,33 @@ export function sortByStatus<T extends Item>(items: T[], now: number | null) {
 	}
 	return items.toSorted((a, b) => rank(a) - rank(b))
 }
+
+// Arc banners carry no colour of their own; each runs alongside a character
+// banner, so an arc takes the theme colour of the character banner live when
+// its first arc banner starts (the same fallback the pulls list uses).
+// Returns null for arcs that never had a banner.
+export function getArcBannerThemeColor(arcId: string): string | null {
+	const arcBanner = arcBanners.find((b) => b.rateupItem === arcId)
+	if (!arcBanner) return null
+
+	const start = arcBanner.getStartDate()
+	const companion = Events.find(
+		(event) =>
+			event.type === "Gacha" &&
+			event.themeColor &&
+			event.getStartDate(ANY_SERVER) <= start &&
+			start < event.getEndDate(ANY_SERVER)
+	)
+
+	return companion?.themeColor ?? null
+}
+
+// Theme colour of a character's first rate-up banner, or null if they've
+// never had one.
+export function getCharacterBannerThemeColor(characterId: string): string | null {
+	const banner = Events.find(
+		(event) =>
+			event.type === "Gacha" && event.rateupItem === characterId && event.themeColor
+	)
+	return banner?.themeColor ?? null
+}
