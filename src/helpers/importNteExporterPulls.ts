@@ -24,6 +24,20 @@ const RESULT_TYPE_MAP: Record<
 	chase_reward: "slumberland",
 }
 
+const REGION_SERVER_MAP: Record<
+	string,
+	Exclude<ImportedPullsResult["server"], "unknown">
+> = {
+	NA_SA: "America",
+	AS: "Asia",
+	EU: "Europe",
+	SE: "SEA",
+}
+
+function toServer(region: string | undefined) {
+	return region ? REGION_SERVER_MAP[region] : undefined
+}
+
 export function isNteExporterData(data: unknown): data is NteExporterData {
 	if (typeof data !== "object" || data === null) return false
 
@@ -74,28 +88,14 @@ export function parseNteExporterImport(
 			break
 	}
 
-	let server: ImportedPullsResult["server"]
-	switch (data.server_id) {
-		case "NA_SA":
-			server = "America"
-			break
-		case "AS":
-			server = "Asia"
-			break
-		case "EU":
-			server = "Europe"
-			break
-		case "SE":
-			server = "SEA"
-			break
-		default:
-			server = "unknown"
-			messages.push({
-				message:
-					"Unrecognised server detected in file. Using configured server instead.",
-				status: "warn",
-			})
-			break
+	const server: ImportedPullsResult["server"] =
+		toServer(data.account_region) ?? "unknown"
+	if (server === "unknown") {
+		messages.push({
+			message:
+				"Unrecognised server detected in file. Using configured server instead.",
+			status: "warn",
+		})
 	}
 
 	const pulls: ImportedPull[] = data.records
