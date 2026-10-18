@@ -412,3 +412,20 @@
 		}
 	}
 }
+
+/* The name links to the profile page. */
+a.charNameBox {
+	display: block;
+	cursor: var(--navigate-cursor, pointer);
+
+	&:hover,
+	&:focus-visible {
+		outline: none;
+		color: var(--darker-pink);
+		text-decoration: underline;
+	}
+}
+
+a.charImageContainer {
+	cursor: var(--navigate-cursor, pointer);
+}

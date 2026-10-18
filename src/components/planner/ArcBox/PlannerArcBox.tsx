@@ -2,6 +2,7 @@
 
 import { ChangeEvent, MouseEvent, useEffect, useState } from "react"
 import { createPortal } from "react-dom"
+import Link from "next/link"
 
 import { useSortable } from "@dnd-kit/react/sortable"
 
@@ -15,6 +16,7 @@ import {
 	useInventoryStore,
 	useMaterialEditorModal,
 	usePlannerStore,
+	useTooltip,
 } from "@/hooks"
 
 import { getRarityName } from "@/helpers"
@@ -89,6 +91,13 @@ export function PlannerArcBox({
 		}))
 
 	const arc = findArc(arcRecord.id)
+
+	// One tooltip shared by the name and image links to the profile page.
+	const {
+		Tooltip: ProfileTooltip,
+		showTooltip: showProfileTooltip,
+		hideTooltip: hideProfileTooltip,
+	} = useTooltip()
 
 	const dropPreviewOrDragOverlay = () => {
 		const classStyles = []
@@ -228,7 +237,12 @@ export function PlannerArcBox({
 					<div
 						className={`metallic-panel ${plannerBoxStyles.infoContainer} ${styles.infoContainer}`}>
 						<div className={styles.arcInfoTop}>
-							<div className={styles.arcImageContainer}>
+							<Link
+								href={`/arcs/${arc.id}`}
+								className={styles.arcImageContainer}
+								aria-label={`View ${arc.name}`}
+								onPointerEnter={showProfileTooltip}
+								onPointerLeave={hideProfileTooltip}>
 								<ArcIcon
 									arc={arc}
 									width={256}
@@ -240,11 +254,16 @@ export function PlannerArcBox({
 										arc.rarity
 									).toLocaleUpperCase()}
 								</div>
-							</div>
+							</Link>
 							<div className={styles.arcStatsSection}>
-								<div className={styles.arcStatsName}>
+								<Link
+									href={`/arcs/${arc.id}`}
+									className={styles.arcStatsName}
+									onPointerEnter={showProfileTooltip}
+									onPointerLeave={hideProfileTooltip}>
 									{arc.name}
-								</div>
+								</Link>
+								<ProfileTooltip offset={{ x: 6, y: 0 }}>View Index</ProfileTooltip>
 								<span
 									className={`${styles.arcStatsLvlContainer} ${styles.currentLvl}`}>
 									<div className={styles.arcPhases}>

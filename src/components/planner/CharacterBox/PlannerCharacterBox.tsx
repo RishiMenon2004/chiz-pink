@@ -2,6 +2,7 @@
 
 import { ChangeEvent, MouseEvent, useEffect, useState } from "react"
 import { createPortal } from "react-dom"
+import Link from "next/link"
 
 import { useSortable } from "@dnd-kit/react/sortable"
 
@@ -15,6 +16,7 @@ import {
 	useInventoryStore,
 	useMaterialEditorModal,
 	usePlannerStore,
+	useTooltip,
 } from "@/hooks"
 
 import { PlannerBoxContext, usePlannerMaterialsContext } from "@/contexts"
@@ -94,6 +96,13 @@ export function PlannerCharacterBox({
 		}))
 
 	const char = findCharacter(charRecord.id)
+
+	// One tooltip shared by the name and image links to the profile page.
+	const {
+		Tooltip: ProfileTooltip,
+		showTooltip: showProfileTooltip,
+		hideTooltip: hideProfileTooltip,
+	} = useTooltip()
 
 	const dropPreviewOrDragOverlay = () => {
 		const classStyles: string[] = []
@@ -372,16 +381,28 @@ export function PlannerCharacterBox({
 						className={`metallic-panel ${plannerBoxStyles.infoContainer}`}>
 						<div className={styles.charInfoTop}>
 							<div className={styles.charAvatarContainer}>
-								<div className={styles.charImageContainer}>
+								<Link
+									href={`/characters/${char.id}`}
+									className={styles.charImageContainer}
+									aria-label={`View ${char.name}'s profile`}
+									onPointerEnter={showProfileTooltip}
+									onPointerLeave={hideProfileTooltip}>
 									<CharacterAvatar
 										character={char}
 										width={256}
 										height={256}
 										loading="eager"
 									/>
-								</div>
+								</Link>
 							</div>
-							<div className={styles.charNameBox}>{char.name}</div>
+							<Link
+								href={`/characters/${char.id}`}
+								className={styles.charNameBox}
+								onPointerEnter={showProfileTooltip}
+								onPointerLeave={hideProfileTooltip}>
+								{char.name}
+							</Link>
+							<ProfileTooltip offset={{ x: 6, y: 0 }}>View Profile</ProfileTooltip>
 							<div className={styles.charLevels}>
 								<div className={styles.charLevelSection}>
 									<div className={styles.charLevelSectionLabel}>

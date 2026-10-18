@@ -319,3 +319,21 @@ div.infoContainer {
 		}
 	}
 }
+
+/* The name links to the profile page. Scoped like the nested rule that
+   sets its black colour, so the hover colour can win. */
+.arcInfoTop .arcStatsSection a.arcStatsName {
+	display: block;
+	cursor: var(--navigate-cursor, pointer);
+
+	&:hover,
+	&:focus-visible {
+		outline: none;
+		color: var(--darker-pink);
+		text-decoration: underline;
+	}
+}
+
+a.arcImageContainer {
+	cursor: var(--navigate-cursor, pointer);
+}
