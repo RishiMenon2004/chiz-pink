@@ -100,6 +100,7 @@ function PullEntry({
 					} as CSSProperties
 				}
 				className={`${styles.pullEntry} ${getItemRarityStyle(item)}`}>
+				<div className={styles.pullArt} aria-hidden />
 				<DiceRoll pull={pull} />
 
 				<div

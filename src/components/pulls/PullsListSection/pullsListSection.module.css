@@ -123,10 +123,12 @@
 		z-index: 1;
 	}
 
+	/* Blurred art wash behind everything. */
 	&::before {
 		content: "";
 		position: absolute;
 		inset: 0;
+		z-index: -2;
 		background-image: var(--bg-image);
 		background-position: center;
 		background-size: 125%;
@@ -139,47 +141,62 @@
 		background-position: center left -80%;
 	}
 
+	/* Rarity gradient and outline. */
 	&::after {
 		content: "";
 		position: absolute;
 		inset: 0;
-		background-image:
-			var(--bg-image),
-			linear-gradient(
-				to right,
-				var(--rarity-color-highlight) -10%,
-				color-mix(in srgb, var(--rarity-color), transparent 35%) 25% 75%,
-				var(--rarity-color-highlight) 110%
-			);
-		background-position:
-			center right 3.5ch,
-			center;
-		background-size: 5rem, 100%;
-		background-repeat: no-repeat;
+		z-index: -1;
+		background-image: linear-gradient(
+			to right,
+			var(--rarity-color-highlight) -10%,
+			color-mix(in srgb, var(--rarity-color), transparent 35%) 25% 75%,
+			var(--rarity-color-highlight) 110%
+		);
 
 		border-radius: inherit;
 		outline: 1px solid var(--outline-color);
 		outline-offset: -1px;
 	}
 
+	/* Sharp art, faded out at its left and right edges. Inset 1px
+	   vertically so it never covers the outline. */
+	.pullArt {
+		position: absolute;
+		inset-block: 1px;
+		right: 3.5ch;
+		z-index: 0;
+
+		width: var(--art-width, 5rem);
+
+		background-image: var(--bg-image);
+		background-position: center;
+		background-size: 100% auto;
+		background-repeat: no-repeat;
+
+		mask-image: linear-gradient(
+			to right,
+			transparent,
+			black 25% 75%,
+			transparent
+		);
+	}
+
 	&[data-rateup="true"] {
+		--art-width: 10rem;
+
 		&::after {
 			--outline-color: rgb(255, 255, 255, 0.75);
-			background-image:
-				var(--bg-image),
-				linear-gradient(
-					to right,
-					rgb(255, 249, 169) -10%,
-					var(--pink) 25% 75%,
-					rgb(255, 249, 169) 110%
-				);
-			background-size: 10rem, 100%;
+			background-image: linear-gradient(
+				to right,
+				rgb(255, 249, 169) -10%,
+				var(--pink) 25% 75%,
+				rgb(255, 249, 169) 110%
+			);
 		}
 
-		&[data-rewardtype="arc"]::after {
-			background-position-y:
-				top 30%,
-				center;
+		&[data-rewardtype="arc"] .pullArt {
+			background-position-y: top 30%;
 		}
 	}
 
