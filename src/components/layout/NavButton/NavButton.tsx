@@ -12,12 +12,20 @@ import styles from "./navButton.module.css"
 export function NavButton({
 	href,
 	icon = href,
+	activeFor = [href],
+	tooltip,
+	className = "",
 }: {
 	href: string
 	icon?: string
+	// Top-level route segments that light this button up (defaults to its
+	// own), e.g. the catalog button covers both /characters and /arcs.
+	activeFor?: string[]
+	tooltip?: string
+	className?: string
 }) {
 	const pathname = usePathname()
-	const active = pathname.split("/")[1] === href
+	const active = activeFor.includes(pathname.split("/")[1])
 
 	const { Tooltip, showTooltip, hideTooltip } = useTooltip()
 
@@ -25,7 +33,7 @@ export function NavButton({
 		<Link
 			tabIndex={1}
 			href={`/${href}`}
-			className={`inset-control ${styles.navBtn} ${active ? styles.active : ""}`}
+			className={`inset-control ${styles.navBtn} ${active ? styles.active : ""} ${className}`}
 			style={{ backgroundImage: `url("/nav/${icon}.png")` }}
 			onPointerEnter={showTooltip}
 			onPointerLeave={hideTooltip}>
@@ -35,7 +43,7 @@ export function NavButton({
 			/>
 
 			<Tooltip offset={{ x: 6, y: 0 }}>
-				{RoutesData[`/${href}`].tooltip}
+				{tooltip ?? RoutesData[`/${href}`].tooltip}
 			</Tooltip>
 		</Link>
 	)

@@ -1,6 +1,6 @@
 "use client"
 
-import { NavButton } from "@/components/layout/NavButton"
+import { NavButton } from "../NavButton"
 
 import styles from "./sidebar.module.css"
 
@@ -13,14 +13,20 @@ export function Sidebar() {
 				<NavButton href="planner" />
 				<NavButton href="pulls" />
 				<NavButton href="inventory" />
-				<NavButton href="settings" />
+				{/* Desktop only for now - the mobile bar has no room. */}
+				<NavButton
+					href="characters"
+					icon="catalog"
+					activeFor={["characters", "arcs"]}
+					tooltip="Catalog"
+					className={styles.desktopOnly}
+				/>
+				<NavButton href="settings" className={styles.settings} />
 			</nav>
 
 			<svg xmlns="http://www.w3.org/2000/svg" className={styles.fender}>
 				<path d="M68.1396 0C71.3754 0 74.293 1.94905 75.5312 4.93848L88.7852 36.9385C90.9669 42.2059 87.0959 47.9999 81.3945 48H0V0H68.1396Z" />
 			</svg>
-
-			<NavButton href="settings" icon="settings" />
 		</div>
 	)
 }

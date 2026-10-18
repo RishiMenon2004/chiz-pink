@@ -81,16 +81,18 @@
 		}
 	}
 
+	/* Fills the sidebar so Settings can sit at the bottom (margin-top:
+	   auto) while the rest stack from the top. */
 	nav {
+		flex: 1;
 		width: 100%;
-		display: grid;
-		grid-auto-flow: row;
-		justify-content: center;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
 		gap: 2rem;
-		height: fit-content;
 
-		& a:last-child {
-			display: none;
+		.settings {
+			margin-top: auto;
 		}
 	}
 }
@@ -119,10 +121,6 @@
 
 		background-image: unset;
 
-		& a:last-child {
-			display: none;
-		}
-
 		&::before {
 			display: none;
 		}
@@ -132,12 +130,17 @@
 		}
 
 		nav {
-			gap: unset;
-			display: flex;
+			flex-direction: row;
 			justify-content: space-evenly;
+			gap: unset;
+			height: 100%;
 
-			& a:last-child {
-				display: grid;
+			.settings {
+				margin-top: 0;
+			}
+
+			.desktopOnly {
+				display: none;
 			}
 		}
 	}
