@@ -1,0 +1,862 @@
+/* Shared layout for the character and arc detail pages: a sticky hero
+   panel on the left, content panels stacked on the right. */
+
+a.backLink {
+	align-self: flex-start;
+	display: flex;
+	align-items: center;
+	/* Same size as the settings page's pill buttons (pill-button's own
+	   1.25rem font, ~1.8rem tall); fixed here so the content column can
+	   offset by it - see .content. */
+	height: var(--back-link-height);
+	padding-left: 1.75rem;
+
+	text-decoration: none;
+
+	/* Back chevron, placed like the planner's "+" add button icon. */
+	background-image: url("/button_icons/back.png");
+	background-size: auto 90%;
+	background-position: 0.25rem center;
+	background-repeat: no-repeat;
+
+	/* Plain bevel only - no slot ring or outer shadow from pill-button. */
+	box-shadow: var(--shadow-button);
+}
+
+/* Beats pill-button's :not(:disabled):hover rule (0,3,0). */
+a.backLink:not(:disabled):is(:hover, :focus, :focus-visible) {
+	box-shadow: var(--shadow-button-hover);
+	/* Text turns white on the pink hover; the chevron follows. */
+	background-image: url("/button_icons/back_white.png");
+}
+
+.layout {
+	--back-link-height: 1.8rem;
+	--hero-column-gap: 1rem;
+
+	display: grid;
+	grid-template-columns: minmax(16rem, 24rem) minmax(0, 1fr);
+	gap: 2rem;
+	align-items: start;
+}
+
+.content {
+	display: flex;
+	flex-direction: column;
+	gap: 2rem;
+	min-width: 0;
+
+	/* Line the first panel up with the profile card, not the back link. */
+	margin-top: calc(var(--back-link-height) + var(--hero-column-gap));
+}
+
+.capitalize {
+	text-transform: capitalize;
+}
+
+/* ---------- Hero ---------- */
+
+.heroColumn {
+	/* Stick below the fixed currency bar, not the top of the viewport. */
+	position: sticky;
+	top: calc(var(--titlebar-height) + env(safe-area-inset-top, 0px) + 2rem);
+
+	display: flex;
+	flex-direction: column;
+	gap: var(--hero-column-gap);
+}
+
+.hero {
+	gap: 0.25rem;
+}
+
+.heroFrame {
+	position: relative;
+	container-type: inline-size;
+	overflow: clip;
+	isolation: isolate;
+
+	aspect-ratio: 27 / 32;
+	border-radius: 1.25rem;
+
+	/* Same rarity treatment as the arc cards: a lighter, hue-shifted
+	   corner fading through the rarity colour into the control bg. */
+	--start-color: oklch(from var(--rarity-color) calc(l + 0.25) c calc(h + 30));
+	background-image:
+		radial-gradient(
+			circle at 50% 30%,
+			color-mix(in srgb, var(--rarity-color-highlight), transparent 55%),
+			transparent 60%
+		),
+		linear-gradient(
+			to bottom right,
+			var(--start-color) -25%,
+			var(--rarity-color) 25%,
+			var(--interactive-bg) 100%
+		);
+
+	/* Dark fade at the bottom so the name stays legible over the art. */
+	&::after {
+		content: "";
+		position: absolute;
+		inset: 0;
+		z-index: 1;
+		pointer-events: none;
+
+		background: linear-gradient(to top, var(--shadow-dark-70), transparent 35%);
+	}
+
+	&[data-variant="arc"] {
+		aspect-ratio: 1;
+
+		.heroArt {
+			padding: 12%;
+		}
+	}
+}
+
+/* Landscape awaken card cropped to the portrait frame, anchored left so
+   the character's name lettering stays in view. */
+.heroBackground {
+	position: absolute;
+	inset: 0;
+
+	img {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		object-position: 15% center;
+	}
+}
+
+.heroArt {
+	position: absolute;
+	inset: 0;
+
+	img {
+		width: 100%;
+		height: 100%;
+		object-fit: contain;
+		filter: drop-shadow(var(--shadow-dark-50) 0 0.5rem 1rem);
+	}
+
+	/* Paired art (Esper Zero): both stacked over the full frame, male
+	   behind. Placeholder offsets - tune per taste. */
+	.artMale,
+	.artFemale {
+		position: absolute;
+		inset: 0;
+	}
+
+	.artMale {
+		translate: 18% 0;
+	}
+
+	.artFemale {
+		translate: -18% 0;
+	}
+}
+
+.heroRank,
+.heroBadge {
+	position: absolute;
+	top: 0.75rem;
+	z-index: 2;
+
+	width: 2.75rem;
+	height: auto;
+	aspect-ratio: 1;
+
+	filter: drop-shadow(var(--shadow-dark-60) 0 1px 3px);
+}
+
+.heroRank {
+	left: 0.75rem;
+}
+
+.heroBadge {
+	right: 0.75rem;
+	display: flex;
+	height: 2.75rem;
+	padding: 0.3rem;
+	border-radius: 100%;
+
+	background-color: var(--interactive-bg);
+	box-shadow:
+		var(--shadow-dark-60) 0px -0.5px 2px 0.5px,
+		var(--foreground) 0 0.5px 2px;
+
+	img {
+		width: 100%;
+		height: 100%;
+		object-fit: contain;
+	}
+}
+
+.heroName {
+	position: absolute;
+	left: 1rem;
+	right: 1rem;
+	bottom: 0.75rem;
+	z-index: 2;
+
+	color: var(--foreground);
+	font-family: var(--font-syne);
+	/* Two caps, whichever is smaller:
+	   - viewport: 2rem on wide screens down to 1.25rem on small phones;
+	   - fit: shrink long names (via --name-length from the component) so
+	     they stay on one line across the card (~0.9em per uppercase Syne
+	     glyph), never below 1rem. Names too long even at 1rem wrap. */
+	font-size: min(
+		clamp(1.25rem, 1rem + 1.2vw, 2rem),
+		max(1rem, calc((100cqi - 2rem) / (var(--name-length, 10) * 0.9)))
+	);
+	text-wrap: balance;
+	font-weight: 725;
+	line-height: 1.1;
+	text-transform: uppercase;
+
+	paint-order: stroke fill;
+	-webkit-text-stroke: 0.16em black;
+}
+
+.stats {
+	display: flex;
+	flex-direction: column;
+
+	margin: 0;
+	padding: 0.25rem 1rem;
+	border-radius: 1.25rem;
+}
+
+.statRow {
+	display: flex;
+	justify-content: space-between;
+	align-items: baseline;
+	gap: 1rem;
+
+	padding-block: 0.5rem;
+
+	& + & {
+		border-top: 1px solid rgba(255, 255, 255, 0.1);
+	}
+
+	dt {
+		color: color-mix(in srgb, var(--foreground), transparent 40%);
+		font-family: var(--font-barlow-condensed);
+		font-style: italic;
+		font-size: 1.05rem;
+	}
+
+	dd {
+		margin: 0;
+
+		color: var(--foreground);
+		font-family: var(--font-syne);
+		font-weight: 650;
+		text-align: right;
+	}
+}
+
+/* Description wrapped in big curly quotes in the theme (rarity/banner)
+   colour. line-height: 0 keeps the oversized marks from stretching the
+   lines they sit on. */
+.heroQuote {
+	margin: 0.5rem 1rem 0.75rem;
+	quotes: "“" "”";
+
+	color: var(--interactive-bg);
+	font-family: var(--font-barlow-condensed);
+	font-style: italic;
+	font-size: 1.1rem;
+	line-height: 1.35;
+
+	&::before,
+	&::after {
+		color: var(--quote-color, var(--rarity-color));
+		font-family: var(--font-syne);
+		font-style: normal;
+		font-weight: 800;
+		font-size: 2em;
+		line-height: 0;
+		vertical-align: -0.35em;
+		-webkit-text-stroke: 3px var(--shadow-dark-60);
+		paint-order: stroke fill;
+	}
+
+	&::before {
+		content: open-quote;
+		margin-right: 0.2em;
+	}
+
+	&::after {
+		content: close-quote;
+		margin-left: 0.2em;
+	}
+}
+
+/* ---------- Content panels ---------- */
+
+.panelBody {
+	display: flex;
+	flex-direction: column;
+
+	padding: 0.5rem 1.25rem;
+	border-radius: 1.25rem;
+
+	color: var(--foreground);
+}
+
+.ability {
+	display: flex;
+	flex-direction: column;
+	gap: 0.75rem;
+
+	padding-block: 1rem;
+
+	& + & {
+		border-top: 1px solid rgba(255, 255, 255, 0.1);
+	}
+}
+
+.abilityHeader {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 0.25rem 0.75rem;
+}
+
+/* Matches the <tag> description pill. */
+.abilityKind {
+	padding: 0.2em 0.85em;
+	border-radius: 100vh;
+
+	background-color: var(--pink);
+
+	font-family: var(--font-barlow-condensed);
+	font-size: 0.9rem;
+	font-weight: 750;
+	letter-spacing: 2.5%;
+	text-transform: uppercase;
+	white-space: nowrap;
+
+	paint-order: stroke fill;
+	-webkit-text-stroke: 3px black;
+}
+
+.abilityName {
+	font-family: var(--font-syne);
+	font-size: 1.2rem;
+	font-weight: 700;
+}
+
+.abilitySection {
+	display: flex;
+	flex-direction: column;
+	gap: 0.25rem;
+}
+
+.abilitySectionTitle {
+	color: var(--pink);
+	font-family: var(--font-syne);
+	font-size: 0.95rem;
+	font-weight: 650;
+	letter-spacing: 2.5%;
+}
+
+.descriptionText {
+	color: color-mix(in srgb, var(--foreground), transparent 12%);
+	line-height: 1.55;
+}
+
+/* ---------- Ability tabs ---------- */
+
+/* Pill tab strip in a panel's title row; the active tab takes the pink
+   kind-tag look used for ability tags. */
+.abilityTabs {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.25rem;
+	margin-inline-start: auto;
+	padding: 0.25rem;
+	border-radius: 100vh;
+}
+
+.abilityTab {
+	padding: 0.15em 0.9em;
+	border: none;
+	border-radius: 100vh;
+
+	color: color-mix(in srgb, var(--foreground), transparent 35%);
+	font-family: var(--font-barlow-condensed);
+	font-size: 1rem;
+	font-weight: 750;
+	letter-spacing: 2.5%;
+	text-transform: uppercase;
+	white-space: nowrap;
+
+	background-color: transparent;
+
+	transition:
+		background-color 150ms ease-out,
+		color 150ms ease-out;
+
+	&:hover,
+	&:focus-visible {
+		outline: none;
+		color: var(--foreground);
+	}
+
+	&:focus-visible {
+		box-shadow: 0 0 0 2px var(--pink);
+	}
+
+	&[aria-selected="true"] {
+		color: var(--foreground);
+		background-color: var(--pink);
+		paint-order: stroke fill;
+		-webkit-text-stroke: 3px black;
+		box-shadow:
+			var(--shadow-dark-60) -1px -1px 5px -2px inset,
+			rgba(255, 255, 255, 0.645) 2px 2px 3px -2px inset;
+	}
+}
+
+/* Narrow panel: tabs get their own full-width row, split evenly. */
+@container (width < 640px) {
+	.abilityTabs {
+		flex-basis: 100%;
+		flex-wrap: nowrap;
+		margin-inline: 0;
+	}
+
+	.abilityTab {
+		flex: 1;
+		padding-inline: 0.4em;
+		font-size: 0.9rem;
+	}
+}
+
+/* ---------- Arc tier selector ---------- */
+
+.tierSelector {
+	display: flex;
+	align-items: center;
+	gap: 1rem;
+	margin-inline-start: auto;
+	margin-inline-end: 0.5rem;
+	padding-block: 0.35rem;
+}
+
+.tierLabel {
+	color: var(--interactive-bg);
+	font-family: var(--font-barlow-condensed);
+	font-style: italic;
+	font-weight: 300;
+}
+
+/* Same look as the Daily Tasks progress track: dark embossed nodes on a
+   bar that fills pink up to the selected tier. */
+.tierTrack {
+	--node-size: 1.75rem;
+
+	position: relative;
+	z-index: 0;
+	display: flex;
+	gap: 2.25rem;
+
+	filter: drop-shadow(var(--shadow-dark-40) 0px -1px 1px)
+		drop-shadow(var(--shadow-glow-white-80) 0px 1px 1px);
+}
+
+.tierConnector {
+	@property --percentage {
+		syntax: "<percentage>";
+		inherits: true;
+		initial-value: 0%;
+	}
+
+	position: absolute;
+	top: calc(var(--node-size) / 2 - 0.3rem);
+	left: calc(var(--node-size) / 2);
+	right: calc(var(--node-size) / 2);
+	height: 0.6rem;
+	z-index: -1;
+	pointer-events: none;
+
+	background-color: var(--interactive-bg);
+	background-image: linear-gradient(
+		to right,
+		var(--pink) var(--percentage),
+		transparent var(--percentage)
+	);
+
+	transition: --percentage 200ms ease-out;
+}
+
+.tierNode {
+	display: grid;
+	place-items: center;
+
+	width: var(--node-size);
+	aspect-ratio: 1;
+	padding: 0;
+	border: none;
+	border-radius: 100%;
+
+	color: var(--foreground);
+	font-family: var(--font-barlow-condensed);
+	font-size: 1rem;
+	font-weight: 700;
+
+	background-color: var(--interactive-bg);
+	cursor: var(--pointer-cursor);
+
+	transition: background-color 100ms 100ms ease-out, scale 150ms ease-out;
+
+	&[data-reached="true"] {
+		background-color: var(--pink);
+		paint-order: stroke fill;
+		-webkit-text-stroke: 2px black;
+	}
+
+	&[aria-pressed="true"] {
+		scale: 1.2;
+		box-shadow:
+			var(--shadow-dark-60) -1px -1px 5px -2px inset,
+			rgba(255, 255, 255, 0.645) 2px 2px 3px -2px inset;
+	}
+
+	&:hover,
+	&:focus-visible {
+		outline: none;
+		scale: 1.2;
+	}
+}
+
+/* ---------- Materials ---------- */
+
+.levelReadout {
+	margin-inline-start: auto;
+	margin-inline-end: 0.5rem;
+
+	color: var(--interactive-bg);
+	font-family: var(--font-barlow-condensed);
+	font-style: italic;
+	font-size: 1.1rem;
+
+	strong {
+		color: var(--darker-pink);
+		font-size: 1.3rem;
+		font-weight: 700;
+	}
+}
+
+/* Same arrow the planner's skill rows use between current and target. */
+.levelArrow {
+	display: inline-block;
+	width: 1.5em;
+	height: 1em;
+	vertical-align: -0.15em;
+
+	background-image: url("/icons/upgrade.png");
+	background-size: cover;
+	background-position: center;
+}
+
+/* Level slider: a range input over the planner's level steps, drawn like
+   the tier track (dark bar filling pink), with notches underneath -
+   labelled for each level, small dots for the ascended "+" steps. */
+.levelSlider {
+	--thumb-size: 1.5rem;
+	/* Same shading as the arc tier nodes: their selected-node bevel plus
+	   the track's emboss (dark above, light below). */
+	--thumb-shadow:
+		var(--shadow-dark-40) 0px -1px 1px,
+		var(--shadow-glow-white-80) 0px 1px 1px,
+		var(--shadow-dark-60) -1px -1px 5px -2px inset,
+		rgba(255, 255, 255, 0.645) 2px 2px 3px -2px inset;
+
+	display: flex;
+	flex-direction: column;
+	gap: 0.4rem;
+
+	padding-block: 1.25rem 1rem;
+	border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+
+	input[type="range"] {
+		appearance: none;
+		position: relative;
+		width: 100%;
+		height: 0.6rem;
+		margin: 0;
+
+		/* The visible track is .levelTrack::before. */
+		background: transparent;
+
+		cursor: var(--pointer-cursor);
+
+		&::-webkit-slider-thumb {
+			appearance: none;
+			width: var(--thumb-size);
+			aspect-ratio: 1;
+			border-radius: 100%;
+
+			background-color: var(--pink);
+			box-shadow: var(--thumb-shadow);
+
+			/* Scaled, not resized: the notches line up with the full size. */
+			scale: 0.75;
+			transition: scale 150ms ease-out;
+		}
+
+		&::-moz-range-thumb {
+			width: var(--thumb-size);
+			height: var(--thumb-size);
+			border: none;
+			border-radius: 100%;
+
+			background-color: var(--pink);
+			box-shadow: var(--thumb-shadow);
+
+			scale: 0.75;
+			transition: scale 150ms ease-out;
+		}
+
+		/* Full size while hovered, focused or dragged. */
+		&:is(:hover, :focus-visible, :active) {
+			&::-webkit-slider-thumb {
+				scale: 1;
+			}
+
+			&::-moz-range-thumb {
+				scale: 1;
+			}
+		}
+
+		&:focus-visible {
+			outline: none;
+		}
+	}
+}
+
+/* The thumb's centre only travels from half a thumb in from each end,
+   so the drawn track is inset by that much to start and end on the
+   first and last notch. --percentage is then exactly the fill. */
+.levelTrack {
+	@property --percentage {
+		syntax: "<percentage>";
+		inherits: true;
+		initial-value: 0%;
+	}
+
+	position: relative;
+	display: flex;
+	transition: --percentage 150ms ease-out;
+
+	&::before {
+		content: "";
+		position: absolute;
+		inset-block: 0;
+		inset-inline: calc(var(--thumb-size) / 2);
+		border-radius: 100vh;
+
+		background-color: color-mix(in srgb, var(--shadow-deep), var(--interactive-bg) 35%);
+		background-image: linear-gradient(
+			to right,
+			var(--pink) var(--percentage),
+			transparent var(--percentage)
+		);
+		/* A softer take on --shadow-control: wider blurs, lighter tints. */
+		box-shadow:
+			var(--shadow-dark-40) 0px -1px 3px,
+			var(--shadow-glow-white-40) 0px 1px 2px,
+			var(--shadow-dark-20) 0px 1px 4px -1px inset;
+	}
+}
+
+/* Notch centres line up with the thumb's possible positions, which run
+   from half a thumb in from each end. */
+.levelNotches {
+	display: flex;
+	justify-content: space-between;
+
+	padding-inline: calc(var(--thumb-size) / 2);
+
+	span {
+		display: flex;
+		justify-content: center;
+		width: 0;
+
+		color: color-mix(in srgb, var(--foreground), transparent 45%);
+		font-family: var(--font-barlow-condensed);
+		font-size: 0.95rem;
+		white-space: nowrap;
+
+		cursor: var(--pointer-cursor);
+		user-select: none;
+
+		&[data-reached="true"] {
+			color: var(--foreground);
+		}
+
+		/* Ascended steps: a small dot instead of a label. */
+		&[data-ascension="true"]::before {
+			content: "";
+			width: 0.3rem;
+			height: 0.3rem;
+			margin-top: 0.45rem;
+			flex-shrink: 0;
+			border-radius: 100%;
+
+			background-color: color-mix(in srgb, var(--foreground), transparent 60%);
+		}
+
+		&[data-ascension="true"][data-reached="true"]::before {
+			background-color: var(--pink);
+		}
+	}
+}
+
+.materialsEmpty {
+	padding-block: 1rem;
+
+	color: color-mix(in srgb, var(--foreground), transparent 40%);
+	font-family: var(--font-barlow-condensed);
+	font-style: italic;
+}
+
+.materialList {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(14rem, 1fr));
+	gap: 0.25rem 1.5rem;
+
+	margin: 0;
+	padding: 0.75rem 0;
+	list-style: none;
+}
+
+.material {
+	display: flex;
+	align-items: center;
+	gap: 0.75rem;
+
+	padding-block: 0.4rem;
+}
+
+/* Rarity gradient tile; the icon inside casts its shadow onto it. */
+.materialFrame {
+	display: flex;
+	flex-shrink: 0;
+
+	width: 2.75rem;
+	aspect-ratio: 1;
+	padding: 0.25rem;
+	border-radius: 0.6rem;
+
+	background-image: linear-gradient(
+		to bottom right,
+		var(--rarity-color-highlight) -25%,
+		var(--rarity-color) 40%,
+		color-mix(in srgb, var(--rarity-color), var(--interactive-bg) 70%) 100%
+	);
+	outline: 1px solid rgba(255, 255, 255, 0.25);
+	outline-offset: -1px;
+}
+
+.materialIcon {
+	width: 100%;
+	height: 100%;
+	object-fit: contain;
+	filter: drop-shadow(var(--shadow-dark-60) 0 0px 5px);
+}
+
+.materialName {
+	flex: 1;
+	min-width: 0;
+
+	font-family: var(--font-barlow-condensed);
+	font-size: 1.05rem;
+	line-height: 1.15;
+}
+
+.materialAmount {
+	color: var(--pink);
+	font-family: var(--font-barlow-condensed);
+	font-size: 1.15rem;
+	font-weight: 700;
+	letter-spacing: 2.5%;
+	white-space: nowrap;
+}
+
+/* ---------- Responsive ---------- */
+
+@media (max-width: 1000px) {
+	.layout {
+		grid-template-columns: minmax(0, 1fr);
+	}
+
+	.heroColumn {
+		position: static;
+	}
+
+	/* No column offset to match below this width; size naturally (pill-
+	   button drops to 1rem on phones). */
+	a.backLink {
+		height: auto;
+	}
+
+	.content {
+		margin-top: 0;
+	}
+
+	/* Full-width banner: the landscape background fits as-is and the
+	   character art is cropped to the upper body. */
+	.heroFrame {
+		aspect-ratio: 16 / 9;
+
+		&[data-variant="character"] .heroArt img {
+			object-fit: cover;
+			object-position: 50% 12%;
+		}
+
+		&[data-variant="arc"] {
+			aspect-ratio: 16 / 9;
+
+			.heroArt {
+				padding: 5%;
+			}
+		}
+	}
+}
+
+@media (max-width: 550px) {
+	.heroFrame,
+	.heroFrame[data-variant="arc"] {
+		aspect-ratio: 4 / 3;
+	}
+
+	.panelBody {
+		padding-inline: 1rem;
+	}
+
+	.tierTrack {
+		--node-size: 1.5rem;
+	}
+}
+
+/* Narrow Effect panel: give the track its own full-width row under the
+   title, nodes spread end to end. */
+@container (width < 640px) {
+	.tierSelector {
+		flex-basis: 100%;
+		margin-inline: 0;
+		padding-block: 0.25rem 0.5rem;
+	}
+
+	.tierTrack {
+		flex: 1;
+		justify-content: space-between;
+		gap: 0;
+	}
+}

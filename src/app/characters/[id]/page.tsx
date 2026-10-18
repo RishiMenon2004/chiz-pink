@@ -2,8 +2,8 @@ import type { Metadata } from "next"
 import { notFound } from "next/navigation"
 
 import { findCharacter, getAllCharactersList } from "@/data/characters"
-import { Ability } from "@/types/character"
-import { parseDescription } from "@/helpers/parseDescription"
+
+import { CharacterProfile } from "@/components/profile"
 
 type Props = {
 	params: Promise<{ id: string }>
@@ -46,20 +46,6 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 	}
 }
 
-function AbilitySection({ ability }: { ability: Ability }) {
-	return (
-		<>
-			<h3>{ability.name}</h3>
-			{ability.description.map((section, index) => (
-				<div key={index}>
-					<h4>{section.section}</h4>
-					<div>{parseDescription(section.description, 1)}</div>
-				</div>
-			))}
-		</>
-	)
-}
-
 export default async function CharacterInfoPage({ params }: Props) {
 	const { id } = await params
 	const char = findCharacter(id)
@@ -68,22 +54,5 @@ export default async function CharacterInfoPage({ params }: Props) {
 		notFound()
 	}
 
-	return (
-		<main className="page" role="main">
-			<h1>{char.name}</h1>
-			{char.description && <div>{char.description}</div>}
-			<h2>Basic Attack</h2>
-			<AbilitySection ability={char.abilities.basicAttack} />
-			<h2>Skill</h2>
-			<AbilitySection ability={char.abilities.skill} />
-			<h2>Ultimate</h2>
-			<AbilitySection ability={char.abilities.ultimate} />
-			{char.abilities.support && (
-				<>
-					<h2>Support</h2>
-					<AbilitySection ability={char.abilities.support} />
-				</>
-			)}
-		</main>
-	)
+	return <CharacterProfile character={char} />
 }

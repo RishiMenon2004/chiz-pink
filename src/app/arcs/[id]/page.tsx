@@ -2,7 +2,8 @@ import type { Metadata } from "next"
 import { notFound } from "next/navigation"
 
 import { findArc, getAllArcsList } from "@/data/arcs"
-import { parseDescription } from "@/helpers/parseDescription"
+
+import { ArcProfile } from "@/components/profile"
 
 type Props = {
 	params: Promise<{ id: string }>
@@ -53,14 +54,5 @@ export default async function ArcInfoPage({ params }: Props) {
 		notFound()
 	}
 
-	return (
-		<main className="page" role="main">
-			<h1>{arc.name}</h1>
-			{arc.description && parseDescription(arc.description, 1)}
-			<h2>{arc.effect.name}</h2>
-			<div>
-				{parseDescription(arc.effect.description, 1, arc.effect.values)}
-			</div>
-		</main>
-	)
+	return <ArcProfile arc={arc} />
 }
