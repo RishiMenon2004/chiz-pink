@@ -16,7 +16,7 @@ import { EventData } from "@/data/activities/events"
 import { stopPropagation } from "@/helpers"
 import { formatEventDateTime } from "@/helpers/serverTime"
 
-import { useCalendarContext } from "./EventCalendar"
+import { useCalendarContext } from "@/contexts"
 
 import styles from "./EventCalendar.module.css"
 

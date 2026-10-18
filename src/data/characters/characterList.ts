@@ -1,31 +1,29 @@
 import { Character } from "@/types/character"
 
-import {
-	adler,
-	aurelia,
-	baicang,
-	chaos,
-	chiz,
-	daffodill,
-	edgar,
-	fadia,
-	haniel,
-	hathor,
-	hotori,
-	iroi,
-	jiuyuan,
-	lacrimosa,
-	linko,
-	mint,
-	nanally,
-	sakiri,
-	shinku,
-	skia,
-	zankou,
-	zero,
-} from "@/data/characters"
-import { blackbird } from "./blackbird"
+import { adler } from "./adler"
 import { akane } from "./akane"
+import { aurelia } from "./aurelia"
+import { baicang } from "./baicang"
+import { blackbird } from "./blackbird"
+import { chaos } from "./chaos"
+import { chiz } from "./chiz"
+import { daffodill } from "./daffodill"
+import { edgar } from "./edgar"
+import { fadia } from "./fadia"
+import { haniel } from "./haniel"
+import { hathor } from "./hathor"
+import { hotori } from "./hotori"
+import { iroi } from "./iroi"
+import { jiuyuan } from "./jiuyuan"
+import { lacrimosa } from "./lacrimosa"
+import { linko } from "./linko"
+import { mint } from "./mint"
+import { nanally } from "./nanally"
+import { sakiri } from "./sakiri"
+import { shinku } from "./shinku"
+import { skia } from "./skia"
+import { zankou } from "./zankou"
+import { zero } from "./zero"
 
 const allCharacters: Record<string, Character> = {
 	akane,

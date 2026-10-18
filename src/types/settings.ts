@@ -1,7 +1,8 @@
-import { ChecklistRecord } from "./checklist"
-import { Inventory } from "./inventory"
-import { StoredPlannerItem } from "./planner"
-import { PullsRecord } from "./pulls"
+import type { GameServer } from "./server"
+import type { ChecklistRecord } from "./checklist"
+import type { Inventory } from "./inventory"
+import type { StoredPlannerItem } from "./planner"
+import type { PullsRecord } from "./pulls"
 
 export type SettingsRecord = {
 	appearance: {
@@ -14,7 +15,7 @@ export type SettingsRecord = {
 	}
 	userdata: {
 		nickname: string
-		server: "America" | "Asia" | "Europe" | "SEA"
+		server: GameServer
 		"current-stamina": number
 		"max-stamina": number
 		"last-stamina-reset": number

@@ -15,13 +15,15 @@ import type { Material } from "@/types/item"
 
 import { getItemRarityStyle } from "@/data/items"
 
-import { useInventoryStore, useTooltip } from "@/hooks"
+import { useInventoryStore } from "@/hooks/useInventoryStore"
+import { useTooltip } from "@/hooks/useTooltip"
 
 import { useMaterialAdjustmentContext } from "@/contexts"
 
-import { MaterialIcon, QuantityInput } from "@/components/layout"
+import { MaterialIcon } from "../MaterialIcon"
+import { QuantityInput } from "../QuantityInput"
 
-import { styles } from "@/components/inventory/MaterialBox"
+import styles from "@/components/inventory/MaterialBox/inventoryMaterial.module.css"
 
 export function MaterialEditorBox({ material }: { material: Material }) {
 	const modalContext = useMaterialAdjustmentContext()

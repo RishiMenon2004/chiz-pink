@@ -1,11 +1,10 @@
 export {
+	EnumMaterialType,
 	EnumRarity,
 	EnumItemLvls,
 	EnumStatAttribute,
 	getItemRarityStyle,
 } from "./item"
-
-export { EnumMaterialType } from "./materials"
 
 export {
 	getAllMaterials,

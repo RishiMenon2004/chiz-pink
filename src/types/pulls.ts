@@ -1,5 +1,5 @@
-import { EnumRarity } from "@/data/items"
-import { SettingsRecord } from "./settings"
+import type { EnumRarity } from "@/data/items/item"
+import type { GameServer } from "./server"
 
 type NteBannerType =
 	"Lottery_LimitedCharacter" | "Lottery_Permanent" | "Arc_MiracleBox"
@@ -73,7 +73,7 @@ export type ImportMessage = {
 export type ImportedPullsResult = {
 	bannerType: "permanent" | "limited" | "arc" | "unknown"
 	bannerName: string
-	server: SettingsRecord["userdata"]["server"] | "unknown"
+	server: GameServer | "unknown"
 	pulls: ImportedPull[]
 	messages: ImportMessage[]
 }

@@ -1,50 +1,27 @@
 "use client"
 
-import {
-	createContext,
-	CSSProperties,
-	Ref,
-	useContext,
-	useEffect,
-	useMemo,
-	useRef,
-	useState,
-} from "react"
+import { CSSProperties, Ref, useEffect, useMemo, useRef, useState } from "react"
 
-import { useNow, useSettingsStore } from "@/hooks"
+import type { DayBoundaryMode, MonthChunk } from "@/types/calendar"
+import { SettingsRecord } from "@/types/settings"
 
 import { BTRTimeline, EventData, Events } from "@/data/activities/events"
 
-import { SettingsRecord } from "@/types/settings"
+import { useNow, useSettingsStore } from "@/hooks"
+
 import {
 	getDayBoundaryLabel,
 	SERVER_UTC_OFFSET_HOURS,
 } from "@/helpers/serverTime"
+
+import { CalendarContext, useCalendarContext } from "@/contexts"
+
 import { ConfigCheckbox } from "@/components/settings"
 
-import styles from "./EventCalendar.module.css"
-import pageStyles from "@/app/page.module.css"
 import { CalendarEventItem } from "./CalendarEventItem"
 
-export type DayBoundaryMode = SettingsRecord["behaviour"]["calendar-day-boundary"]
-
-export const CalendarContext = createContext<{
-	daySize: number
-	msPerDay: number
-	monthChunks: MonthChunk[]
-	server: SettingsRecord["userdata"]["server"]
-	dayBoundaryMode: DayBoundaryMode
-	windowStart: number
-	windowEnd: number
-	calendarOrigin: number
-	calendarEnd: number
-	now: number | null
-	scrollToPos: (el: HTMLElement, behavior?: ScrollBehavior) => Promise<void>
-}>(null!)
-
-export const useCalendarContext = () => {
-	return useContext(CalendarContext)
-}
+import pageStyles from "@/app/page.module.css"
+import styles from "./EventCalendar.module.css"
 
 const MONTHS_BEFORE = 2
 const MONTHS_AFTER = 1
@@ -124,13 +101,6 @@ function CalendarDateMarker({
 			<div className={styles.markerNumber}>{date}</div>
 		</div>
 	)
-}
-
-type MonthChunk = {
-	year: number
-	month: number
-	firstDay: number
-	lastDay: number
 }
 
 function getDaysInMonth(year: number, month: number) {

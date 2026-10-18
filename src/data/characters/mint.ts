@@ -8,7 +8,7 @@ import {
 	talentHeartSet,
 } from "@/data/items/materials"
 import { EnumArcType } from "@/data/arcs"
-import { EnumCharacterElement } from "@/data/characters"
+import { EnumCharacterElement } from "./character"
 
 export const mint: Character = {
 	id: "mint",

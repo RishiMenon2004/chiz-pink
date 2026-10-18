@@ -1,4 +1,4 @@
-import { EnumItemLvls } from "../items"
+import { EnumItemLvls } from "../items/item"
 
 export enum EnumCharacterElement {
 	COSMOS = "cosmos",

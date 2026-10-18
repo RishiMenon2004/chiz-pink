@@ -1,18 +1,6 @@
 import type { Material, MaterialSet } from "@/types/item"
 
-import { EnumRarity } from "./item"
-
-export enum EnumMaterialType {
-	WeeklyBossDrop = "Weekly Boss Drops",
-	BossDrop = "World Boss Drops",
-	CharacterExp = "Esper XP",
-	CharacterAscension = "Esper Ascension",
-	Talent = "Esper Talent",
-	WeaponAscension = "Arc Ascension",
-	WeaponExp = "Arc XP",
-	Currency = "Currency",
-	Reward = "Reward",
-}
+import { EnumMaterialType, EnumRarity } from "./item"
 
 /* Rewards */
 export const diceLimited: Material = {

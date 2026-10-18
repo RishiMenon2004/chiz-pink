@@ -8,7 +8,7 @@ import {
 	waterMoonPick,
 } from "@/data/items/materials"
 import { EnumArcType } from "@/data/arcs"
-import { EnumCharacterElement } from "@/data/characters"
+import { EnumCharacterElement } from "./character"
 
 export const fadia: Character = {
 	id: "fadia",

@@ -1,6 +1,6 @@
 import type { Material } from "@/types/item"
 
-import { EnumMaterialType } from "./materials"
+import { EnumMaterialType } from "./item"
 import {
 	annulith,
 	beetleCoin,

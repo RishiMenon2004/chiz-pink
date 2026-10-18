@@ -24,12 +24,10 @@ import {
 	CharacterAvatar,
 	ModalContainer,
 } from "@/components/layout"
-import {
-	CharacterSkillGroup,
-	ItemPhases,
-	PlannerBoxButtonsContainer,
-	PlannerMaterialsList,
-} from "@/components/planner"
+import { CharacterSkillGroup } from "../CharacterSkillGroup"
+import { ItemPhases } from "../ItemPhases"
+import { PlannerBoxButtonsContainer } from "../PlannerBoxButtonsContainer"
+import { PlannerMaterialsList } from "../MaterialsList"
 
 import plannerBoxStyles from "@/components/planner/RenderPlanner/plannerBox.module.css"
 import styles from "./PlannerCharacterBox.module.css"

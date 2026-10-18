@@ -9,6 +9,7 @@ import {
 } from "react"
 
 import type { KeyMouseEventType } from "@/types"
+import type { DayBoundaryMode, MonthChunk } from "@/types/calendar"
 import type {
 	CumulativeInventory,
 	FilterByType,
@@ -134,4 +135,22 @@ export const PlannerSectionContext = createContext<{
 
 export function usePlannerSectionContext() {
 	return useContext(PlannerSectionContext)
+}
+
+export const CalendarContext = createContext<{
+	daySize: number
+	msPerDay: number
+	monthChunks: MonthChunk[]
+	server: SettingsRecord["userdata"]["server"]
+	dayBoundaryMode: DayBoundaryMode
+	windowStart: number
+	windowEnd: number
+	calendarOrigin: number
+	calendarEnd: number
+	now: number | null
+	scrollToPos: (el: HTMLElement, behavior?: ScrollBehavior) => Promise<void>
+}>(null!)
+
+export function useCalendarContext() {
+	return useContext(CalendarContext)
 }

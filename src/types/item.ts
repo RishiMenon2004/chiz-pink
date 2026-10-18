@@ -1,4 +1,4 @@
-import { EnumMaterialType, EnumRarity } from "@/data/items"
+import type { EnumMaterialType, EnumRarity } from "@/data/items/item"
 
 export interface Item {
 	// Hand-set for content announced before its banner dates are known.

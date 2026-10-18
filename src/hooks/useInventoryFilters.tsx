@@ -11,8 +11,8 @@ import type {
 
 import { EnumMaterialType, getInventoryMaterialsList } from "@/data/items"
 
-import { useInventoryStore, usePlannerStore } from "@/hooks"
-import { getAggregatedMaterials } from "./usePlannerStore"
+import { useInventoryStore } from "./useInventoryStore"
+import { getAggregatedMaterials, usePlannerStore } from "./usePlannerStore"
 
 export function useInventoryFilters(
 	filter: FilterByType,

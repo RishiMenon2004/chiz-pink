@@ -1,6 +1,6 @@
 import { Item } from "./item"
 
-import { EnumItemLvls } from "@/data/items"
+import type { EnumItemLvls } from "@/data/items/item"
 
 export interface SkillLvlRecord {
 	isDisabled: boolean

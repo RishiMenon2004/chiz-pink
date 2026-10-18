@@ -22,7 +22,8 @@ import { getRarityName } from "@/helpers"
 import { PlannerBoxContext, usePlannerMaterialsContext } from "@/contexts"
 
 import { AlertContainer, ArcIcon, ModalContainer } from "@/components/layout"
-import { ItemPhases, PlannerMaterialsList } from "@/components/planner"
+import { ItemPhases } from "../ItemPhases"
+import { PlannerMaterialsList } from "../MaterialsList"
 import { PlannerBoxButtonsContainer } from "@/components/planner/PlannerBoxButtonsContainer"
 
 import plannerBoxStyles from "@/components/planner/RenderPlanner/plannerBox.module.css"

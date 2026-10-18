@@ -24,11 +24,11 @@ import styles from "./renderPlanner.module.css"
 import { useRouter } from "next/navigation"
 
 const PlannerCharacterBox = dynamic(
-	() => import("@/components/planner").then((mod) => mod.PlannerCharacterBox),
+	() => import("../CharacterBox").then((mod) => mod.PlannerCharacterBox),
 	{ ssr: false }
 )
 const PlannerArcBox = dynamic(
-	() => import("@/components/planner").then((mod) => mod.PlannerArcBox),
+	() => import("../ArcBox").then((mod) => mod.PlannerArcBox),
 	{ ssr: false }
 )
 

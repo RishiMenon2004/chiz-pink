@@ -1,4 +1,14 @@
-import type { Item } from "@/types/item"
+export enum EnumMaterialType {
+	WeeklyBossDrop = "Weekly Boss Drops",
+	BossDrop = "World Boss Drops",
+	CharacterExp = "Esper XP",
+	CharacterAscension = "Esper Ascension",
+	Talent = "Esper Talent",
+	WeaponAscension = "Arc Ascension",
+	WeaponExp = "Arc XP",
+	Currency = "Currency",
+	Reward = "Reward",
+}
 
 export enum EnumRarity {
 	Common = 2,
@@ -47,7 +57,7 @@ export enum EnumItemLvls {
 }
 
 export function getItemRarityStyle(
-	item: Item,
+	item: { rarity: EnumRarity },
 	styleSheet?: Readonly<Record<string, string>>
 ) {
 	if (styleSheet) {

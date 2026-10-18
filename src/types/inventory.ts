@@ -1,4 +1,4 @@
-import { EnumMaterialType, EnumRarity } from "@/data/items"
+import type { EnumMaterialType, EnumRarity } from "@/data/items/item"
 
 export type Inventory = Record<string, number>
 

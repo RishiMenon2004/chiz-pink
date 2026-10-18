@@ -1,8 +1,8 @@
 import { Item, Material, MaterialSet } from "./item"
 
-import { EnumRarity } from "@/data/items"
-import { EnumArcType } from "@/data/arcs"
-import { EnumCharacterElement } from "@/data/characters"
+import type { EnumRarity } from "@/data/items/item"
+import type { EnumArcType } from "@/data/arcs/arc"
+import type { EnumCharacterElement } from "@/data/characters/character"
 
 export type AbilityDescription = {
 	section?: string

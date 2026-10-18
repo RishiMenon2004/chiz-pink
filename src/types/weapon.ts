@@ -1,7 +1,7 @@
 import { DescriptionValuesRecord, Item, MaterialSet } from "./item"
 
-import { EnumRarity, EnumStatAttribute } from "@/data/items"
-import { EnumArcType } from "@/data/arcs"
+import type { EnumRarity, EnumStatAttribute } from "@/data/items/item"
+import type { EnumArcType } from "@/data/arcs/arc"
 
 type MainAttrInfo = {
 	attribute: EnumStatAttribute
