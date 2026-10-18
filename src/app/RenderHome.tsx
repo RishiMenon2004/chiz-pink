@@ -4,6 +4,7 @@ import {
 	DashDailyActivity,
 	DashDailyChecklist,
 	DashFarmingList,
+	DashShowcase,
 	DashStaminaGauge,
 	EventCalendar,
 } from "@/components/home"
@@ -19,6 +20,7 @@ export function RenderHome() {
 				<DashDailyChecklist />
 				<DashFarmingList />
 			</div>
+			<DashShowcase />
 			<EventCalendar />
 		</main>
 	)

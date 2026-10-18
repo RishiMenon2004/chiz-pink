@@ -1,0 +1,30 @@
+.cards {
+	display: flex;
+	flex-wrap: wrap;
+	flex-grow: 1;
+	align-content: flex-start;
+	gap: 1rem;
+
+	padding: 1rem 1.25rem;
+	border-radius: 1.25rem;
+
+	font-size: 0.9rem;
+
+	/* Smaller than the catalog pages' 8rem cards. The element + child
+	   selector outranks the catalog's .card width. */
+	& > a {
+		width: 6.5rem;
+	}
+}
+
+@media (max-width: 750px) {
+	.cards > a {
+		width: 5.5rem;
+	}
+}
+
+@media (max-width: 550px) {
+	.cards > a {
+		width: 5rem;
+	}
+}
