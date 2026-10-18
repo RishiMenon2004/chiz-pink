@@ -62,6 +62,70 @@ export function getPullSignature(
 	return `${banner}:${pull.timestamp}:${pull.rewardId}:${diceRoll}:${quantity}`
 }
 
+function isSamePull(a: Pull, b: Pull): boolean {
+	const fields = new Set([...Object.keys(a), ...Object.keys(b)])
+	fields.delete("seq")
+	fields.delete("bannerType")
+	for (const field of fields) {
+		if (
+			(a as Record<string, unknown>)[field] !==
+			(b as Record<string, unknown>)[field]
+		) {
+			return false
+		}
+	}
+	return true
+}
+
+// Returns the incoming pulls of one banner that aren't already stored.
+// Signatures are counted rather than just checked for presence: one
+// 10-pull can legitimately hold several identical pulls (e.g. two copies
+// of the same B-rank arc), so a pull is only a duplicate once `existing`
+// holds as many copies of its signature as `incoming` does.
+//
+// With `overwrite`, an incoming pull whose uid is already stored is
+// returned too (when it differs) so it can replace the stored copy - an
+// import is authoritative for its own uids, which lets re-importing repair
+// pulls saved by an older, buggier parser (including ones a cloud merge
+// brought back after a local clear).
+function filterNewPulls<T extends Pull>(
+	existing: Pull[],
+	incoming: T[],
+	bannerType: BannerType,
+	overwrite = false
+): T[] {
+	const existingByUid = new Map(existing.map((pull) => [pull.uid, pull]))
+	const incomingByUid = new Map(incoming.map((pull) => [pull.uid, pull]))
+	const signatureOf = (pull: Pull) => getPullSignature({ ...pull, bannerType })
+
+	// A stored pull that's about to be replaced counts under its incoming
+	// (corrected) signature, not its stale one
+	const existingCounts = new Map<string, number>()
+	for (const pull of existing) {
+		const signature = signatureOf(
+			(overwrite && incomingByUid.get(pull.uid)) || pull
+		)
+		existingCounts.set(signature, (existingCounts.get(signature) ?? 0) + 1)
+	}
+	const incomingCounts = new Map<string, number>()
+	for (const pull of incoming) {
+		const signature = signatureOf(pull)
+		incomingCounts.set(signature, (incomingCounts.get(signature) ?? 0) + 1)
+	}
+
+	return incoming.filter((pull) => {
+		const stored = existingByUid.get(pull.uid)
+		if (stored) return overwrite && !isSamePull(stored, pull)
+
+		const signature = signatureOf(pull)
+		const count = existingCounts.get(signature) ?? 0
+		if (count >= (incomingCounts.get(signature) ?? 0)) return false
+		existingByUid.set(pull.uid, pull)
+		existingCounts.set(signature, count + 1)
+		return true
+	})
+}
+
 // Object key order = display order (see RenderPulls.tsx's Object.values()
 // and calculatePity.ts's newest-first iteration), so cachedPulls[banner]
 // must always be built newest-first.
@@ -98,35 +162,28 @@ function sortedBanner(
 //
 // Deduplicates using both unique `uid` and composite event signature
 // `(bannerType:timestamp:rewardId:diceRoll:quantity)` so rolls with
-// different uids don't duplicate.
-export function applyPulls(pulls: StoredPull[]) {
+// different uids don't duplicate - see filterNewPulls(), including for
+// what `overwrite` does.
+export function applyPulls(pulls: StoredPull[], overwrite = false) {
 	if (pulls.length === 0) return
 
 	const next = cloneCache()
 	const touchedBanners = new Set<BannerType>()
 
-	const existingUids = new Set<string>()
-	const existingSignatures = new Set<string>()
-
-	for (const banner of BANNER_TYPES) {
-		for (const pull of Object.values(next[banner])) {
-			existingUids.add(pull.uid)
-			existingSignatures.add(
-				getPullSignature({ ...pull, bannerType: banner })
-			)
+	for (const bannerType of BANNER_TYPES) {
+		const incoming = pulls.filter((pull) => pull.bannerType === bannerType)
+		const newPulls = filterNewPulls(
+			Object.values(next[bannerType]),
+			incoming,
+			bannerType,
+			overwrite
+		)
+		for (const stored of newPulls) {
+			const pull: Pull & { bannerType?: BannerType } = { ...stored }
+			delete pull.bannerType
+			;(next[bannerType] as Record<string, Pull>)[pull.uid] = pull
+			touchedBanners.add(bannerType)
 		}
-	}
-
-	for (const { bannerType, ...pull } of pulls) {
-		const signature = getPullSignature({ ...pull, bannerType })
-		if (existingUids.has(pull.uid) || existingSignatures.has(signature)) {
-			continue
-		}
-
-		;(next[bannerType] as Record<string, Pull>)[pull.uid] = pull
-		existingUids.add(pull.uid)
-		existingSignatures.add(signature)
-		touchedBanners.add(bannerType)
 	}
 
 	for (const bannerType of touchedBanners) {
@@ -176,12 +233,12 @@ export function mergePullsRecord(remotePulls: PullsRecord) {
 
 memoryStorage.onCustomBroadcast(PULLS_BROADCAST_CHANNEL, (payload) => {
 	const message = payload as
-		| { kind: "add"; pulls: StoredPull[] }
+		| { kind: "add"; pulls: StoredPull[]; overwrite?: boolean }
 		| { kind: "replace"; pullsRecord: PullsRecord }
 		| { kind: "clear" }
 
 	if (message.kind === "add") {
-		applyPulls(message.pulls)
+		applyPulls(message.pulls, message.overwrite)
 	} else if (message.kind === "replace") {
 		cachedPulls = message.pullsRecord
 	} else {
@@ -267,7 +324,26 @@ function writeLegacyBlob(pullsRecord: PullsRecord) {
 	}
 }
 
-// Add new pulls and skip over existing ones using composite event signature and uid
+function importSummary(
+	total: number,
+	written: Pull[],
+	existing: Record<string, Pull>
+): ImportMessage {
+	const updated = written.filter((pull) => pull.uid in existing).length
+	const added = written.length - updated
+	const skipped = total - written.length
+	return {
+		message:
+			`Imported ${added} pulls.` +
+			(updated > 0 ? ` (Updated ${updated} existing pulls.)` : "") +
+			(skipped > 0 ? ` (Skipped ${skipped} existing pulls.)` : ""),
+		status: "info",
+	}
+}
+
+// Adds imported pulls. Pulls already stored under the same uid are replaced
+// when they differ (see filterNewPulls()), so re-importing repairs pulls
+// saved by an older parser; other duplicates are skipped by signature.
 export const gachaPullsActions = {
 	addPulls(pulls: MiracleBoxPull[] | ScarboroughFairPull[], bannerType: BannerType) {
 		const response: {
@@ -283,19 +359,12 @@ export const gachaPullsActions = {
 
 		if (memoryStorage.isFallbackMode()) {
 			const pullsData = readLegacyBlob()
-			const existingUids = new Set(Object.keys(pullsData[bannerType] || {}))
-			const existingSignatures = new Set(
-				Object.values(pullsData[bannerType] || {}).map((p) =>
-					getPullSignature({ ...p, bannerType })
-				)
-			)
-
-			const filteredPulls = pulls.filter(
-				(pull) =>
-					!existingUids.has(pull.uid) &&
-					!existingSignatures.has(
-						getPullSignature({ ...pull, bannerType })
-					)
+			const existing = pullsData[bannerType] || {}
+			const filteredPulls = filterNewPulls(
+				Object.values(existing),
+				pulls,
+				bannerType,
+				true
 			)
 
 			const incomingPullsRecord: Record<string, Pull> = {}
@@ -303,7 +372,7 @@ export const gachaPullsActions = {
 
 			const updatedPulls: PullsRecord = {
 				...pullsData,
-				[bannerType]: { ...incomingPullsRecord, ...pullsData[bannerType] },
+				[bannerType]: sortedBanner({ ...existing, ...incomingPullsRecord }),
 			}
 
 			writeLegacyBlob(updatedPulls)
@@ -311,25 +380,21 @@ export const gachaPullsActions = {
 			memoryStorage.setItem("gachaLastUpdated", Date.now())
 
 			response.status = "success"
-			const skippedLength = pulls.length - filteredPulls.length
-			response.messages.push({
-				message: `Imported ${filteredPulls.length} pulls.${(skippedLength > 0 && ` (Skipped ${skippedLength} existing pulls.)`) || ""}`,
-				status: "info",
-			})
+			response.messages.push(
+				importSummary(pulls.length, filteredPulls, existing)
+			)
 			return response
 		}
 
-		const existingUids = new Set(Object.keys(cachedPulls[bannerType]))
-		const existingSignatures = new Set(
-			Object.values(cachedPulls[bannerType]).map((p) =>
-				getPullSignature({ ...p, bannerType })
-			)
+		const existing = cachedPulls[bannerType]
+		const filteredPulls = filterNewPulls(
+			Object.values(existing),
+			pulls,
+			bannerType,
+			true
 		)
-
-		const filteredPulls = pulls.filter(
-			(pull) =>
-				!existingUids.has(pull.uid) &&
-				!existingSignatures.has(getPullSignature({ ...pull, bannerType }))
+		response.messages.push(
+			importSummary(pulls.length, filteredPulls, existing)
 		)
 
 		if (filteredPulls.length > 0) {
@@ -339,10 +404,11 @@ export const gachaPullsActions = {
 				seq,
 			}))
 
-			applyPulls(storedPulls)
+			applyPulls(storedPulls, true)
 			memoryStorage.broadcastCustom(PULLS_BROADCAST_CHANNEL, {
 				kind: "add",
 				pulls: storedPulls,
+				overwrite: true,
 			})
 
 			idbStorage.putPulls(storedPulls, bannerType).catch((error) => {
@@ -358,12 +424,6 @@ export const gachaPullsActions = {
 		}
 
 		response.status = "success"
-		const skippedLength = pulls.length - filteredPulls.length
-		response.messages.push({
-			message: `Imported ${filteredPulls.length} pulls.${(skippedLength > 0 && ` (Skipped ${skippedLength} existing pulls.)`) || ""}`,
-			status: "info",
-		})
-
 		return response
 	},
 }
