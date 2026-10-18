@@ -455,14 +455,6 @@
 	overflow: hidden;
 	text-wrap-mode: nowrap;
 	text-overflow: ellipsis;
-
-	&[data-variant="normal"] {
-		--hover-color: var(--pink);
-	}
-
-	&[data-variant="danger"] {
-		--hover-color: var(--danger-color);
-	}
 }
 
 .settingsBlockquote,

@@ -313,6 +313,10 @@ button {
 
 	position: relative;
 
+	&[data-variant="danger"] {
+		--hover-color: var(--danger-color);
+	}
+
 	&:not(:disabled) {
 		&:hover,
 		&:focus,
