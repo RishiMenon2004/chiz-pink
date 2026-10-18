@@ -5,6 +5,82 @@
 	justify-items: center;
 }
 
+/* The planner switch's buttons get the custom pointer from the global
+   button rule; these are links, so set it here. */
+.switchLink {
+	cursor: var(--pointer-cursor);
+}
+
+/* Toolbar search box, styled like the planner's character search. */
+/* In the toolbar's two-column layout (narrower screens), search can take
+   its own full-width row so the remaining controls pair up evenly. */
+@media (max-width: 1135px) {
+	.searchFieldWide {
+		grid-column: 1 / -1;
+	}
+}
+
+/* Mobile (pull-out toolbar): search moves to the bottom, just above the
+   pull tab - which is the toolbar's last child, so it's bumped after it. */
+@media (max-width: 1000px) {
+	.searchField {
+		order: 1;
+
+		& ~ :last-child {
+			order: 2;
+		}
+	}
+}
+
+.searchInput {
+	flex: 1;
+	/* An input's default intrinsic width (~20ch) would widen its grid
+	   column; let it shrink and fill via flex instead. */
+	width: 0;
+	min-width: 0;
+	/* Fill the wrapper's block padding so the focus fill reaches the pill
+	   edges. */
+	height: calc(100% + 0.5rem);
+	margin-block: -0.25rem;
+	padding-inline: 2.25rem 0.75rem;
+	border: none;
+	border-radius: 100vh;
+
+	color: var(--foreground);
+	font-family: var(--font-barlow-condensed);
+	font-size: 1.25rem;
+
+	background-color: var(--interactive-bg);
+	background-image: url("/icons/search.png");
+	background-size: 1.5rem;
+	background-position: 0.4rem center;
+	background-repeat: no-repeat;
+
+	cursor: var(--search-cursor);
+
+	&::placeholder {
+		color: color-mix(in srgb, var(--foreground), transparent 50%);
+		font-style: italic;
+	}
+
+	&::-webkit-search-cancel-button {
+		display: none;
+	}
+
+	&:focus-visible {
+		outline: none;
+		background-color: var(--darker-pink);
+	}
+}
+
+/* Grid inside a "group by" panel: inset like the inventory's grouped
+   material lists. */
+.groupGrid {
+	margin: 0 0.25rem 0.25rem;
+	padding: 1.25rem 1rem;
+	border-radius: 1.375rem;
+}
+
 .card {
 	position: relative;
 	display: flex;
@@ -23,14 +99,20 @@
 
 	&:hover,
 	&:focus-visible {
-		.avatar {
+		.avatar,
+		.arcImage {
+			scale: 1.15;
+			transition-timing-function: var(--ease-in-out-back);
+		}
+
+		.avatarFrame {
 			box-shadow:
 				var(--shadow-dark-60) 0px 0px 2px 1px,
 				var(--foreground) 2px 3px 4px 1px,
 				var(--rarity-color) 0 0 20px 2px inset;
 		}
 
-		.arcImage {
+		.arcFrame {
 			outline-color: var(--rarity-color-highlight);
 		}
 
@@ -49,7 +131,6 @@
 	}
 }
 
-/* Arc cards rely on their outline instead of a drop shadow. */
 .arcCard {
 	filter: none;
 }
@@ -96,17 +177,25 @@
 		background-color: var(--rarity-color);
 	}
 
-	.avatar {
+	.avatarFrame {
 		display: flex;
 
 		width: 100%;
-		height: auto;
+		aspect-ratio: 1;
 		border-radius: 100%;
+		overflow: clip;
 
 		background-color: var(--interactive-bg);
 		box-shadow:
 			var(--shadow-dark-60) 0px 0px 2px 1px,
 			var(--foreground) 2px 3px 4px 1px;
+	}
+
+	.avatar {
+		width: 100%;
+		height: auto;
+
+		transition: scale 250ms ease-out;
 	}
 
 	.element {
@@ -133,17 +222,17 @@
 	aspect-ratio: 1;
 	padding: 4%;
 
-	/* Same treatment as the event calendar items and banner selector:
-	   a 1px translucent outline over a rarity-colour gradient. */
-	.arcImage {
+	.arcFrame {
 		--start-color: oklch(
 			from var(--rarity-color) calc(l + 0.25) c calc(h + 30)
 		);
 
+		display: flex;
+
 		width: 100%;
-		height: auto;
 		aspect-ratio: 1;
 		border-radius: calc(0.5rem + 2px);
+		overflow: clip;
 
 		background-color: color-mix(
 			in srgb,
@@ -162,6 +251,13 @@
 
 		transition: outline-color 100ms ease-out;
 	}
+
+	.arcImage {
+		width: 100%;
+		height: auto;
+
+		transition: scale 250ms ease-out;
+	}
 }
 
 .name {
@@ -170,6 +266,16 @@
 	font-family: var(--font-syne);
 	font-weight: 650;
 	text-align: center;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.card:hover,
+	.card:focus-visible {
+		.avatar,
+		.arcImage {
+			scale: none;
+		}
+	}
 }
 
 @media (max-width: 750px) {

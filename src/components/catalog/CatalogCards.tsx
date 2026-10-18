@@ -1,6 +1,6 @@
 "use client"
 
-import { useMemo, useState } from "react"
+import { CSSProperties, ReactNode, useMemo, useState } from "react"
 import Link from "next/link"
 
 import type { Character } from "@/types/character"
@@ -13,25 +13,29 @@ import { getAllArcsList } from "@/data/arcs"
 
 import { useNow } from "@/hooks"
 
+import { fuzzyScoreAny } from "@/helpers/fuzzyMatch"
+import { getRarityName } from "@/helpers/getRarityName"
+
 import {
+	getArcBannerThemeColor,
 	getItemStatus,
 	sortByStatus,
 	type ItemStatus,
 } from "@/helpers/bannerStatus"
 
 import { ArcIcon } from "@/components/layout/ArcIcon"
-import {
-	CharacterAvatar,
-	CharacterElement,
-} from "@/components/layout/CharacterAvatar"
+import { CharacterAvatar, CharacterElement } from "@/components/layout/CharacterAvatar"
 
 import { InfoBox } from "@/components/layout/InfoBox"
+import { MaterialGroup } from "@/components/inventory/MaterialGroup"
 
 import {
 	CatalogFilterToolbar,
 	NO_FILTERS,
 	type CatalogFilters,
+	type CatalogGroupBy,
 } from "./CatalogFilterToolbar"
+import { CatalogSwitch } from "./CatalogSwitch"
 import styles from "./catalog.module.css"
 import pageStyles from "@/app/page.module.css"
 
@@ -49,19 +53,27 @@ function FeatureTag({ status }: { status: ItemStatus }) {
 	)
 }
 
-function CharacterCard({ character, status }: { character: Character; status: ItemStatus }) {
+function CharacterCard({
+	character,
+	status,
+}: {
+	character: Character
+	status: ItemStatus
+}) {
 	return (
 		<Link
 			href={`/characters/${character.id}`}
 			className={`${styles.card} ${getItemRarityStyle(character)}`}>
 			<FeatureTag status={status} />
 			<div className={styles.avatarContainer}>
-				<CharacterAvatar
-					character={character}
-					className={styles.avatar}
-					height={256}
-					width={256}
-				/>
+				<div className={styles.avatarFrame}>
+					<CharacterAvatar
+						character={character}
+						className={styles.avatar}
+						height={256}
+						width={256}
+					/>
+				</div>
 				<CharacterElement
 					element={character.element}
 					className={styles.element}
@@ -74,19 +86,32 @@ function CharacterCard({ character, status }: { character: Character; status: It
 	)
 }
 
+// Rate-up arcs take their banner's theme colour (same as the profile page);
+// the rest keep their rarity colour.
+const arcThemeColors = new Map(
+	getAllArcsList().map((arc) => [arc.id, getArcBannerThemeColor(arc.id)])
+)
+
 function ArcCard({ arc, status }: { arc: Arc; status: ItemStatus }) {
+	const themeColor = arcThemeColors.get(arc.id)
+
 	return (
 		<Link
 			href={`/arcs/${arc.id}`}
-			className={`${styles.card} ${styles.arcCard} ${getItemRarityStyle(arc)}`}>
+			className={`${styles.card} ${styles.arcCard} ${getItemRarityStyle(arc)}`}
+			style={
+				themeColor
+					? ({
+							"--rarity-color": themeColor,
+							"--rarity-color-highlight": `color-mix(in srgb, ${themeColor}, white 45%)`,
+						} as CSSProperties)
+					: undefined
+			}>
 			<FeatureTag status={status} />
 			<div className={styles.arcImageContainer}>
-				<ArcIcon
-					arc={arc}
-					className={styles.arcImage}
-					height={256}
-					width={256}
-				/>
+				<div className={styles.arcFrame}>
+					<ArcIcon arc={arc} className={styles.arcImage} height={256} width={256} />
+				</div>
 			</div>
 			<div className={styles.name}>{arc.name}</div>
 		</Link>
@@ -134,9 +159,7 @@ function EmptyFilterNotice({ onReset }: { onReset: () => void }) {
 	return (
 		<InfoBox>
 			<div>
-				{
-					"I-I can't seem to find anything with those filters. Would you like to "
-				}
+				{"I-I can't seem to find anything with those filters. Would you like to "}
 				<a onClick={onReset} className="btn-anchor">
 					try again?
 				</a>
@@ -150,39 +173,122 @@ const uniqueSorted = <T extends string | number>(values: T[], descending = false
 		descending ? (a < b ? 1 : -1) : a < b ? -1 : 1
 	)
 
-const characterRarities = uniqueSorted(allCharacters.map((c) => c.rarity), true)
+const characterRarities = uniqueSorted(
+	allCharacters.map((c) => c.rarity),
+	true
+)
 const characterElements = uniqueSorted(allCharacters.map((c) => c.element))
 const characterArcTypes = uniqueSorted(allCharacters.map((c) => c.arcType))
-const arcRarities = uniqueSorted(allArcs.map((a) => a.rarity), true)
+const arcRarities = uniqueSorted(
+	allArcs.map((a) => a.rarity),
+	true
+)
 const arcTypes = uniqueSorted(allArcs.map((a) => a.type))
+
+const capitalise = (text: string) => text.charAt(0).toUpperCase() + text.slice(1)
+
+type Group<T> = { key: string | number; title: string; entries: T[] }
+
+// Buckets entries in the order `keys` lists them (empty buckets dropped);
+// each bucket keeps the incoming featured/preview-first order.
+function groupEntries<T, K extends string | number>(
+	entries: T[],
+	keys: K[],
+	keyOf: (entry: T) => K,
+	titleOf: (key: K) => string
+): Group<T>[] {
+	return keys
+		.map((key) => ({
+			key,
+			title: titleOf(key),
+			entries: entries.filter((entry) => keyOf(entry) === key),
+		}))
+		.filter((group) => group.entries.length > 0)
+}
+
+function CatalogGrid<T>({
+	entries,
+	groups,
+	render,
+}: {
+	entries: T[]
+	groups: Group<T>[] | null
+	render: (entries: T[]) => ReactNode
+}) {
+	if (!groups) return <div className={styles.grid}>{render(entries)}</div>
+
+	return groups.map((group) => (
+		<MaterialGroup key={group.key} title={`${group.title} (${group.entries.length})`}>
+			<div className={`inset-control ${styles.grid} ${styles.groupGrid}`}>
+				{render(group.entries)}
+			</div>
+		</MaterialGroup>
+	))
+}
+
+// Drops entries that don't fuzzy-match the search and, while searching,
+// orders the rest best match first (ties keep featured/preview-first).
+function applySearch<T extends Item>(
+	entries: WithStatus<T>[],
+	search: string
+): WithStatus<T>[] {
+	if (!search.trim()) return entries
+
+	return entries
+		.map((entry) => ({
+			entry,
+			score: fuzzyScoreAny(search, [entry.item.name, entry.item.id]),
+		}))
+		.filter((scored) => scored.score !== null)
+		.toSorted((a, b) => b.score! - a.score!)
+		.map(({ entry }) => entry)
+}
 
 export function CharacterCatalog() {
 	const entries = useCharacterCatalog()
 	const [filters, setFilters] = useState<CatalogFilters>(NO_FILTERS)
+	const [groupBy, setGroupBy] = useState<CatalogGroupBy>(null)
 
-	const filtered = entries.filter(
-		({ item }) =>
-			(filters.rarity === null || item.rarity === filters.rarity) &&
-			(filters.element === null || item.element === filters.element) &&
-			(filters.arcType === null || item.arcType === filters.arcType)
+	const filtered = applySearch(
+		entries.filter(
+			({ item }) =>
+				(filters.rarity === null || item.rarity === filters.rarity) &&
+				(filters.element === null || item.element === filters.element) &&
+				(filters.arcType === null || item.arcType === filters.arcType)
+		),
+		filters.search
 	)
+
+	const groups =
+		groupBy === "rarity"
+			? groupEntries(filtered, characterRarities, (e) => e.item.rarity, getRarityName)
+			: groupBy === "element"
+				? groupEntries(filtered, characterElements, (e) => e.item.element, capitalise)
+				: groupBy === "arcType"
+					? groupEntries(filtered, characterArcTypes, (e) => e.item.arcType, String)
+					: null
 
 	return (
 		<>
 			<CatalogFilterToolbar
 				filters={filters}
 				onChange={setFilters}
+				groupBy={groupBy}
+				onGroupByChange={setGroupBy}
 				rarities={characterRarities}
 				elements={characterElements}
 				arcTypes={characterArcTypes}
 			/>
+			<CatalogSwitch active="characters" />
 			<main role="main" className={`page ${pageStyles.page}`}>
 				{filtered.length === 0 ? (
 					<EmptyFilterNotice onReset={() => setFilters(NO_FILTERS)} />
 				) : (
-					<div className={styles.grid}>
-						<CharacterCards entries={filtered} />
-					</div>
+					<CatalogGrid
+						entries={filtered}
+						groups={groups}
+						render={(entries) => <CharacterCards entries={entries} />}
+					/>
 				)}
 			</main>
 		</>
@@ -192,28 +298,44 @@ export function CharacterCatalog() {
 export function ArcCatalog() {
 	const entries = useArcCatalog()
 	const [filters, setFilters] = useState<CatalogFilters>(NO_FILTERS)
+	const [groupBy, setGroupBy] = useState<CatalogGroupBy>(null)
 
-	const filtered = entries.filter(
-		({ item }) =>
-			(filters.rarity === null || item.rarity === filters.rarity) &&
-			(filters.arcType === null || item.type === filters.arcType)
+	const filtered = applySearch(
+		entries.filter(
+			({ item }) =>
+				(filters.rarity === null || item.rarity === filters.rarity) &&
+				(filters.arcType === null || item.type === filters.arcType)
+		),
+		filters.search
 	)
+
+	const groups =
+		groupBy === "rarity"
+			? groupEntries(filtered, arcRarities, (e) => e.item.rarity, getRarityName)
+			: groupBy === "arcType"
+				? groupEntries(filtered, arcTypes, (e) => e.item.type, String)
+				: null
 
 	return (
 		<>
 			<CatalogFilterToolbar
 				filters={filters}
 				onChange={setFilters}
+				groupBy={groupBy}
+				onGroupByChange={setGroupBy}
 				rarities={arcRarities}
 				arcTypes={arcTypes}
 			/>
+			<CatalogSwitch active="arcs" />
 			<main role="main" className={`page ${pageStyles.page}`}>
 				{filtered.length === 0 ? (
 					<EmptyFilterNotice onReset={() => setFilters(NO_FILTERS)} />
 				) : (
-					<div className={styles.grid}>
-						<ArcCards entries={filtered} />
-					</div>
+					<CatalogGrid
+						entries={filtered}
+						groups={groups}
+						render={(entries) => <ArcCards entries={entries} />}
+					/>
 				)}
 			</main>
 		</>
