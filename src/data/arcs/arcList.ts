@@ -127,7 +127,7 @@ const allArcs: Record<string, Arc> = {
 	voice_of_the_voyager: {
 		id: "voice_of_the_voyager",
 		imageSrc: "voice_of_the_voyager.webp",
-		name: "Voice of The Voyager",
+		name: "Voice of the Voyager",
 		description:
 			"The languages engraved upon it remain indecipherable. Yet their message is clear enough: somewhere in the cosmos, we are not alone.",
 		rarity: EnumRarity.Epic,
@@ -1954,6 +1954,8 @@ export function findArc(arcId: string) {
 	return allArcs[arcId]
 }
 
+// Case-insensitive: imported names don't always match our capitalisation
 export function findArcByName(arcName: string) {
-	return allArcsList.find((arc) => arc.name === arcName)
+	const name = arcName.toLowerCase()
+	return allArcsList.find((arc) => arc.name.toLowerCase() === name)
 }

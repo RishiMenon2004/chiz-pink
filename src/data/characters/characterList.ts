@@ -69,5 +69,8 @@ export function findCharacter(charId: string) {
 }
 
 export function findCharacterByName(characterName: string) {
-	return allCharactersList.find((character) => character.name === characterName)
+	const name = characterName.toLowerCase()
+	return allCharactersList.find(
+		(character) => character.name.toLowerCase() === name
+	)
 }

@@ -264,5 +264,6 @@ export function findReward(materialId: string) {
 }
 
 export function findRewardByName(rewardName: string) {
-	return allRewardsList.find((reward) => reward.name === rewardName)
+	const name = rewardName.toLowerCase()
+	return allRewardsList.find((reward) => reward.name.toLowerCase() === name)
 }
