@@ -14,14 +14,21 @@ export function useTooltip() {
 	>(false)
 	const [isDrawerShown, setIsDrawerShown] = useState(false)
 
+	const hideTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+
 	const showTooltip = (e: PointerEvent<HTMLElement>) => {
 		e.stopPropagation()
 		if (e.pointerType === "mouse") {
+			// Moving straight from one element sharing this tooltip to another
+			// fires leave (which defers a hide) then enter - cancel that pending
+			// hide, or it lands right after this show and closes the tooltip.
+			if (hideTimeoutRef.current) {
+				clearTimeout(hideTimeoutRef.current)
+				hideTimeoutRef.current = null
+			}
 			setIsTooltipShown({ x: e.clientX, y: e.clientY })
 		}
 	}
-
-	const hideTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
 	const hideTooltip = () => {
 		if (hideTimeoutRef.current) clearTimeout(hideTimeoutRef.current)

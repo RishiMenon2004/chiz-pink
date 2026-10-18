@@ -413,6 +413,11 @@ button {
 	top: 0;
 	left: 0;
 
+	/* It trails the cursor (repositioned on mousemove), so a quick move
+	   can land the pointer on it first - which counts as leaving the
+	   hovered element and hides it. It's display-only; let hits pass. */
+	pointer-events: none;
+
 	width: max-content;
 	max-width: 250px;
 
