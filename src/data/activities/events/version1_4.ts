@@ -1,0 +1,100 @@
+import { regaliaDraco } from "@/data/items/materials"
+
+import type { EventData } from "./event"
+import { serverEOD, serverSOD } from "./event"
+import { patchTimings } from "./patches"
+
+const timings = patchTimings.version1_4
+
+export const events: EventData[] = [
+	{
+		name: 'Version 1.4 ("For Whom the Verses Mourn")',
+		type: "Patch",
+		getStartDate: timings.phase1Start,
+		getEndDate: timings.phase2End,
+		eventImage: "version1.4/version_1.4.webp",
+		themeColor: "#72abea",
+		yOffset: "39%",
+	},
+	{
+		name: '"Born to Race" Mystery Box: NTE × PORSCHE Pt.2',
+		type: "Mystery Box",
+		getStartDate: timings.phase1Start,
+		getEndDate: timings.phase2End,
+		rewards: [regaliaDraco],
+		eventImage: "version1.4/mystery_porsche.webp",
+		themeColor: "#335b9a",
+	},
+	{
+		name: "Pukaland Travelogue",
+		type: "Event",
+		getStartDate: timings.phase1Start,
+		getEndDate: timings.phase2End,
+		eventImage: "version1.4/event_pukaland_travelogue.webp",
+		themeColor: "#12153d",
+		yOffset: "28%",
+	},
+	{
+		name: "Terminal Depths",
+		type: "Event",
+		getStartDate: timings.phase1Start,
+		getEndDate: timings.phase2End,
+		eventImage: "version1.4/event_terminal_depths.webp",
+		themeColor: "#84fff8",
+		yOffset: "28%",
+	},
+	{
+		name: "Stamina Recharge",
+		type: "Event",
+		getStartDate: (server) => serverSOD(server, 5, 10, 2026),
+		getEndDate: (server) => serverEOD(server, 19, 10, 2026),
+		eventImage: "version1.4/event_stamina_recharge.webp",
+		themeColor: "var(--stamina-recharge)",
+		yOffset: "28%",
+	},
+	{
+		name: "Pixel Surge",
+		type: "Event",
+		getStartDate: (server) => serverSOD(server, 19, 10, 2026),
+		getEndDate: (server) => serverEOD(server, 26, 10, 2026),
+		eventImage: "version1.4/event_pixel_surge.webp",
+		themeColor: "var(--pixel-surge)",
+		yOffset: "28%",
+	},
+	{
+		name: "Gold Clash",
+		type: "Event",
+		getStartDate: (server) => serverSOD(server, 26, 10, 2026),
+		getEndDate: (server) => serverEOD(server, 9, 11, 2026),
+		eventImage: "version1.4/event_gold_clash.webp",
+		themeColor: "var(--gold-clash)",
+		yOffset: "28%",
+	},
+	{
+		name: "Coal Lump's Treasure",
+		type: "Event",
+		getStartDate: (server) => serverSOD(server, 8, 10, 2026),
+		getEndDate: timings.phase2End,
+		eventImage: "version1.4/event_coal_lumps_treasure.webp",
+		themeColor: "#ff8fe5",
+		yOffset: "28%",
+	},
+	{
+		name: "Snap! Golden Crackshot",
+		type: "Event",
+		getStartDate: (server) => serverSOD(server, 21, 10, 2026),
+		getEndDate: timings.phase2End,
+		eventImage: "version1.4/event_snap_golden_crackshot.webp",
+		themeColor: "#e9c08d",
+		yOffset: "28%",
+	},
+	{
+		name: "Puka Lucky Flip",
+		type: "Event",
+		getStartDate: (server) => serverSOD(server, 29, 10, 2026),
+		getEndDate: timings.phase2End,
+		eventImage: "version1.4/event_puka_lucky_flip.webp",
+		themeColor: "#c98990",
+		yOffset: "28%",
+	},
+]
