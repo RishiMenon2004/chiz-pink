@@ -96,7 +96,7 @@ export function DashFeaturedArcs({ entries }: { entries: Entry[] }) {
 				/>
 			))}
 
-			<Tooltip offset={{ x: 6, y: 0 }}>View Profile</Tooltip>
+			<Tooltip offset={{ x: 6, y: 0 }}>View Index</Tooltip>
 		</div>
 	)
 }
