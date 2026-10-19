@@ -2,7 +2,7 @@ a.navBtn {
 	display: grid;
 	place-items: center;
 
-	width: 4rem;
+	width: clamp(3rem, 8.5dvh, 4rem);
 	aspect-ratio: 1;
 	border-radius: 100%;
 
