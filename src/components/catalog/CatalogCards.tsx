@@ -31,9 +31,11 @@ import { MaterialGroup } from "@/components/inventory/MaterialGroup"
 
 import {
 	CatalogFilterToolbar,
+	DEFAULT_SORT,
 	NO_FILTERS,
 	type CatalogFilters,
 	type CatalogGroupBy,
+	type CatalogSort,
 } from "./CatalogFilterToolbar"
 import { CatalogSwitch } from "./CatalogSwitch"
 import styles from "./catalog.module.css"
@@ -244,10 +246,39 @@ function applySearch<T extends Item>(
 		.map(({ entry }) => entry)
 }
 
+const byName = (a: Item, b: Item) => a.name.localeCompare(b.name)
+
+// Highest rank first, then A-Z within a rank.
+const byRarity = (a: Item, b: Item) => b.rarity - a.rarity || byName(a, b)
+
+// Applies a non-default sort (the default keeps the incoming featured /
+// best-match order). Reverse flips whichever order is in effect.
+function applySort<T extends Item>(
+	entries: WithStatus<T>[],
+	sort: CatalogSort,
+	compare: Partial<Record<CatalogSort["by"], (a: T, b: T) => number>>
+): WithStatus<T>[] {
+	const compareFn = compare[sort.by]
+	const sorted = compareFn
+		? entries.toSorted((a, b) => compareFn(a.item, b.item))
+		: entries
+	return sort.reverse ? sorted.toReversed() : sorted
+}
+
+const characterSorts = {
+	rarity: byRarity,
+	name: byName,
+	element: (a: Character, b: Character) =>
+		a.element.localeCompare(b.element) || byRarity(a, b),
+}
+
+const arcSorts = { rarity: byRarity, name: byName }
+
 export function CharacterCatalog() {
 	const entries = useCharacterCatalog()
 	const [filters, setFilters] = useState<CatalogFilters>(NO_FILTERS)
 	const [groupBy, setGroupBy] = useState<CatalogGroupBy>(null)
+	const [sort, setSort] = useState<CatalogSort>(DEFAULT_SORT)
 
 	const filtered = applySearch(
 		entries.filter(
@@ -258,14 +289,15 @@ export function CharacterCatalog() {
 		),
 		filters.search
 	)
+	const sorted = applySort(filtered, sort, characterSorts)
 
 	const groups =
 		groupBy === "rarity"
-			? groupEntries(filtered, characterRarities, (e) => e.item.rarity, getRarityName)
+			? groupEntries(sorted, characterRarities, (e) => e.item.rarity, getRarityName)
 			: groupBy === "element"
-				? groupEntries(filtered, characterElements, (e) => e.item.element, capitalise)
+				? groupEntries(sorted, characterElements, (e) => e.item.element, capitalise)
 				: groupBy === "arcType"
-					? groupEntries(filtered, characterArcTypes, (e) => e.item.arcType, String)
+					? groupEntries(sorted, characterArcTypes, (e) => e.item.arcType, String)
 					: null
 
 	return (
@@ -275,6 +307,8 @@ export function CharacterCatalog() {
 				onChange={setFilters}
 				groupBy={groupBy}
 				onGroupByChange={setGroupBy}
+				sort={sort}
+				onSortChange={setSort}
 				rarities={characterRarities}
 				elements={characterElements}
 				arcTypes={characterArcTypes}
@@ -285,7 +319,7 @@ export function CharacterCatalog() {
 					<EmptyFilterNotice onReset={() => setFilters(NO_FILTERS)} />
 				) : (
 					<CatalogGrid
-						entries={filtered}
+						entries={sorted}
 						groups={groups}
 						render={(entries) => <CharacterCards entries={entries} />}
 					/>
@@ -299,6 +333,7 @@ export function ArcCatalog() {
 	const entries = useArcCatalog()
 	const [filters, setFilters] = useState<CatalogFilters>(NO_FILTERS)
 	const [groupBy, setGroupBy] = useState<CatalogGroupBy>(null)
+	const [sort, setSort] = useState<CatalogSort>(DEFAULT_SORT)
 
 	const filtered = applySearch(
 		entries.filter(
@@ -308,12 +343,13 @@ export function ArcCatalog() {
 		),
 		filters.search
 	)
+	const sorted = applySort(filtered, sort, arcSorts)
 
 	const groups =
 		groupBy === "rarity"
-			? groupEntries(filtered, arcRarities, (e) => e.item.rarity, getRarityName)
+			? groupEntries(sorted, arcRarities, (e) => e.item.rarity, getRarityName)
 			: groupBy === "arcType"
-				? groupEntries(filtered, arcTypes, (e) => e.item.type, String)
+				? groupEntries(sorted, arcTypes, (e) => e.item.type, String)
 				: null
 
 	return (
@@ -323,6 +359,8 @@ export function ArcCatalog() {
 				onChange={setFilters}
 				groupBy={groupBy}
 				onGroupByChange={setGroupBy}
+				sort={sort}
+				onSortChange={setSort}
 				rarities={arcRarities}
 				arcTypes={arcTypes}
 			/>
@@ -332,7 +370,7 @@ export function ArcCatalog() {
 					<EmptyFilterNotice onReset={() => setFilters(NO_FILTERS)} />
 				) : (
 					<CatalogGrid
-						entries={filtered}
+						entries={sorted}
 						groups={groups}
 						render={(entries) => <ArcCards entries={entries} />}
 					/>

@@ -19,6 +19,14 @@ export type CatalogFilters = {
 
 export type CatalogGroupBy = "rarity" | "element" | "arcType" | null
 
+// "default" is featured/preview first, then data order (or best match
+// while searching).
+export type CatalogSortBy = "default" | "rarity" | "name" | "element"
+
+export type CatalogSort = { by: CatalogSortBy; reverse: boolean }
+
+export const DEFAULT_SORT: CatalogSort = { by: "default", reverse: false }
+
 export const NO_FILTERS: CatalogFilters = {
 	search: "",
 	rarity: null,
@@ -116,6 +124,48 @@ function GroupSelect({
 	)
 }
 
+// Same control as the inventory's sort select, reverse toggle included.
+function SortSelect({
+	value,
+	options,
+	onChange,
+}: {
+	value: CatalogSort
+	options: { value: CatalogSortBy; label: string }[]
+	onChange: (value: CatalogSort) => void
+}) {
+	const toggleReverse = () => onChange({ ...value, reverse: !value.reverse })
+
+	return (
+		<div className={`inset-control ${styles.filterSelection}`}>
+			<span className={`${styles.filterIcon} ${styles.iconSort}`} />
+
+			<select
+				name="sorting"
+				value={value.by}
+				onChange={(e) =>
+					onChange({ by: e.currentTarget.value as CatalogSortBy, reverse: false })
+				}
+				className={styles.sortSelect}>
+				{options.map((option) => (
+					<option value={option.value} key={option.value}>
+						{option.label}
+					</option>
+				))}
+			</select>
+
+			<span
+				className={`${styles.filterIcon} ${styles.hasHover} ${value.reverse && styles.doHover} ${styles.iconReverseSort}`}
+				tabIndex={0}
+				onClick={toggleReverse}
+				onKeyDown={(e) => {
+					if (e.key === "Enter") toggleReverse()
+				}}
+			/>
+		</div>
+	)
+}
+
 const capitalise = (text: string) => text.charAt(0).toUpperCase() + text.slice(1)
 
 // Rank, element and arc type dropdowns in the same pull-out toolbar the
@@ -128,6 +178,8 @@ export function CatalogFilterToolbar({
 	onChange,
 	groupBy,
 	onGroupByChange,
+	sort,
+	onSortChange,
 	rarities,
 	arcTypes,
 	elements,
@@ -136,6 +188,8 @@ export function CatalogFilterToolbar({
 	onChange: (filters: CatalogFilters) => void
 	groupBy: CatalogGroupBy
 	onGroupByChange: (groupBy: CatalogGroupBy) => void
+	sort: CatalogSort
+	onSortChange: (sort: CatalogSort) => void
 	rarities: number[]
 	arcTypes: EnumArcType[]
 	elements?: EnumCharacterElement[]
@@ -148,10 +202,10 @@ export function CatalogFilterToolbar({
 
 	return (
 		<PullOutToolbar>
-			{/* Full row only when it evens out the grid: characters have four
-			    other controls, arcs three (search + 3 pairs up 2x2). */}
+			{/* Full row only when it evens out the grid: characters have five
+			    other controls (search + 5 pairs up 3x2), arcs four. */}
 			<div
-				className={`inset-control ${styles.filterSelection} ${catalogStyles.searchField} ${elements ? catalogStyles.searchFieldWide : ""}`}>
+				className={`inset-control ${styles.filterSelection} ${catalogStyles.searchField} ${elements ? "" : catalogStyles.searchFieldWide}`}>
 				<input
 					type="search"
 					name="search"
@@ -221,6 +275,17 @@ export function CatalogFilterToolbar({
 					},
 				]}
 				onChange={onGroupByChange}
+			/>
+
+			<SortSelect
+				value={sort}
+				options={[
+					{ value: "default", label: "By Featured" },
+					{ value: "rarity", label: "By Rank" },
+					{ value: "name", label: "By Name" },
+					...(elements ? [{ value: "element" as const, label: "By Element" }] : []),
+				]}
+				onChange={onSortChange}
 			/>
 
 			<div className={`${styles.clearAllContainer} ${hasFilters && styles.show}`}>
