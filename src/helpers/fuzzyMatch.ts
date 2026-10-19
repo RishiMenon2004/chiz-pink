@@ -102,3 +102,19 @@ export function fuzzyScoreAny(query: string, fields: string[]): number | null {
 	}
 	return best
 }
+
+// Keeps the items that match the query, best match first. Ties keep their
+// original order, so a pre-sorted list stays sorted within equal scores.
+export function fuzzyFilter<T>(
+	items: T[],
+	query: string,
+	getFields: (item: T) => string[]
+): T[] {
+	if (!query.trim()) return items
+
+	return items
+		.map((item) => ({ item, score: fuzzyScoreAny(query, getFields(item)) }))
+		.filter((scored) => scored.score !== null)
+		.toSorted((a, b) => b.score! - a.score!)
+		.map(({ item }) => item)
+}

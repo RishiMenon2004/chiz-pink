@@ -15,12 +15,13 @@ import type { Arc } from "@/types/weapon"
 import { EnumItemLvls, EnumRarity, getItemRarityStyle } from "@/data/items"
 import { findArc, EnumArcType, getAllArcsList } from "@/data/arcs"
 
-import { getRarityName, createSearchString, stopPropagation } from "@/helpers"
+import { getRarityName, stopPropagation } from "@/helpers"
 import {
 	getArcBannerThemeColor,
 	isItemRevealed,
 	sortByStatus,
 } from "@/helpers/bannerStatus"
+import { fuzzyFilter } from "@/helpers/fuzzyMatch"
 
 import { useNow } from "@/hooks"
 
@@ -152,19 +153,16 @@ const PlannerArcsSelect = () => {
 		setSearchQuery(e.currentTarget.value)
 	}
 
-	const filteredArcs = sortByStatus(getAllArcsList(), now).filter((arc) => {
+	const availableArcs = sortByStatus(getAllArcsList(), now).filter((arc) => {
 		const matchesType = !filterQuery[0] || arc.type === filterQuery[0]
 		const matchesRarity = !filterQuery[1] || arc.rarity === filterQuery[1]
-		const searchTarget = createSearchString<Arc>(arc, ["id", "name"])
-		const cleanSearchQuery = searchQuery
-			.toLowerCase()
-			.replaceAll(/[_\s]/g, "")
-		const matchesSearch = searchTarget.includes(cleanSearchQuery)
 
-		return (
-			isItemRevealed(arc, now) && matchesType && matchesRarity && matchesSearch
-		)
+		return isItemRevealed(arc, now) && matchesType && matchesRarity
 	})
+	const filteredArcs = fuzzyFilter(availableArcs, searchQuery, (arc) => [
+		arc.name,
+		arc.id,
+	])
 
 	const rarityFilters = Object.values(EnumRarity)
 		.filter((value) => typeof value === "number")

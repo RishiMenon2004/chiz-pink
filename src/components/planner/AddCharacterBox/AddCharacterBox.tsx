@@ -12,7 +12,7 @@ import { getAllCharactersList } from "@/data/characters/characterList"
 
 import { useNow, usePlannerStore } from "@/hooks"
 
-import { createSearchString, stopPropagation } from "@/helpers"
+import { stopPropagation } from "@/helpers"
 import {
 	getCharacterBannerThemeColor,
 	getItemStatus,
@@ -20,6 +20,7 @@ import {
 	sortByStatus,
 	type ItemStatus,
 } from "@/helpers/bannerStatus"
+import { fuzzyFilter } from "@/helpers/fuzzyMatch"
 
 import { useAddCharContext } from "@/contexts"
 
@@ -99,27 +100,25 @@ export function PlannerAddCharacterBox({
 		[EnumCharacterElement | null, EnumRarity | null]
 	>([null, null])
 
-	const filteredChars = sortByStatus(getAllCharactersList(), now).filter((char) => {
+	const availableChars = sortByStatus(getAllCharactersList(), now).filter((char) => {
 		const doesPlannerHaveChar = Object.keys(plannerData.characters).includes(
 			char.id
 		)
 		const matchesElement = !filterQuery[0] || char.element === filterQuery[0]
 		const matchesRarity = !filterQuery[1] || char.rarity === filterQuery[1]
-		const searchTarget = createSearchString<Character>(char, ["id", "name"])
-		const cleanSearchQuery = searchQuery
-			.toLowerCase()
-			.replaceAll(/[_\s]/g, "")
-		const matchesSearch = searchTarget.includes(cleanSearchQuery)
 
 		return (
 			!char.isPlaceholder &&
 			isItemRevealed(char, now) &&
 			!doesPlannerHaveChar &&
 			matchesElement &&
-			matchesRarity &&
-			matchesSearch
+			matchesRarity
 		)
 	})
+	const filteredChars = fuzzyFilter(availableChars, searchQuery, (char) => [
+		char.name,
+		char.id,
+	])
 
 	const rarityFilters = Object.values(EnumRarity)
 		.filter((value) => typeof value === "number")

@@ -13,7 +13,7 @@ import { getAllArcsList } from "@/data/arcs"
 
 import { useNow } from "@/hooks"
 
-import { fuzzyScoreAny } from "@/helpers/fuzzyMatch"
+import { fuzzyFilter } from "@/helpers/fuzzyMatch"
 import { getRarityName } from "@/helpers/getRarityName"
 
 import {
@@ -247,16 +247,7 @@ function applySearch<T extends Item>(
 	entries: WithStatus<T>[],
 	search: string
 ): WithStatus<T>[] {
-	if (!search.trim()) return entries
-
-	return entries
-		.map((entry) => ({
-			entry,
-			score: fuzzyScoreAny(search, [entry.item.name, entry.item.id]),
-		}))
-		.filter((scored) => scored.score !== null)
-		.toSorted((a, b) => b.score! - a.score!)
-		.map(({ entry }) => entry)
+	return fuzzyFilter(entries, search, ({ item }) => [item.name, item.id])
 }
 
 const byName = (a: Item, b: Item) => a.name.localeCompare(b.name)

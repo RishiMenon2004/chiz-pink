@@ -13,7 +13,6 @@ export { getOptimizedImageUrl } from "./getOptimizedImageUrl"
 export { parseDescription } from "./parseDescription"
 
 export { generateNewCharacter } from "./generateNewCharacter"
-export { createSearchString } from "./createSearchString"
 
 export { unlinkGoogleAccount } from "./unlinkGoogleAccount"
 export { signInWithGooglePopup } from "./signInWithGooglePopup"
