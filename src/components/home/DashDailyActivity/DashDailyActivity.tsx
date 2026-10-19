@@ -1,17 +1,22 @@
 "use client"
 
-import { CSSProperties } from "react"
+import { CSSProperties, useMemo } from "react"
 
 import { ChecklistEntry } from "@/types/checklist"
+import { Material } from "@/types/item"
 
 import { getAllActivities } from "@/data/activities/activities"
 
 import { useChecklistStore, useInventoryStore, useSettingsStore } from "@/hooks"
 
+import { MaterialIcon } from "@/components/layout/MaterialIcon"
 import { ConfigCheckbox } from "@/components/settings"
 
 import pageStyles from "@/app/page.module.css"
 import styles from "./DashDailyActivity.module.css"
+
+const formatRewardAmount = (amount: number) =>
+	amount >= 1000 ? `${amount / 1000}k` : `${amount}`
 
 const EMPTY_ENTRY: ChecklistEntry = {
 	checked: 0,
@@ -50,6 +55,28 @@ export function DashDailyActivity({
 	}
 
 	const parts = getAllActivities().dailyTasks.parts
+
+	const rewardTotals = useMemo(() => {
+		const totals = new Map<
+			string,
+			{ material: Material; total: number; claimed: number }
+		>()
+		parts.forEach(({ rewards }, index) => {
+			for (const { material, amount } of rewards) {
+				const current = totals.get(material.id) ?? {
+					material,
+					total: 0,
+					claimed: 0,
+				}
+				totals.set(material.id, {
+					material,
+					total: current.total + amount,
+					claimed: current.claimed + (index < claimed ? amount : 0),
+				})
+			}
+		})
+		return [...totals.values()]
+	}, [parts, claimed])
 	const { inventory, updateInventory } = useInventoryStore()
 	const { settings, actions } = useSettingsStore()
 
@@ -145,6 +172,26 @@ export function DashDailyActivity({
 					)
 				})}
 			</div>
+			<ul className={`inset-control ${styles.rewards}`}>
+				{rewardTotals.map(({ material, total, claimed }) => (
+					<li
+						key={material.id}
+						className={styles.reward}
+						data-complete={claimed >= total}>
+						<MaterialIcon
+							material={material}
+							alt={material.name}
+							className={styles.rewardIcon}
+							width={64}
+							height={64}
+						/>
+						<span>
+							<strong>{formatRewardAmount(claimed)}</strong>
+							{` / ${formatRewardAmount(total)}`}
+						</span>
+					</li>
+				))}
+			</ul>
 		</div>
 	)
 }

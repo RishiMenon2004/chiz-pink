@@ -1,11 +1,11 @@
 .section {
 	grid-area: tasks;
 	display: grid;
-	grid-template-rows: auto 1fr;
-	align-items: center;
+	grid-template-rows: auto 1fr auto;
 }
 
 .partsContainer {
+	align-self: center;
 	display: flex;
 	flex-direction: row;
 	justify-content: space-between;
@@ -21,6 +21,47 @@
 .part {
 	display: grid;
 	place-items: center;
+}
+
+.rewards {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(6.75rem, 1fr));
+	justify-items: center;
+	gap: 0.75rem 0.5rem;
+
+	margin: 0;
+	padding: 0.5rem 0.75rem;
+	border-radius: 1.25rem;
+	list-style: none;
+}
+
+.reward {
+	display: flex;
+	align-items: center;
+	gap: 0.35rem;
+
+	color: var(--foreground);
+	font-family: var(--font-barlow-condensed);
+	font-size: clamp(1rem, 2.6cqi, 1.15rem);
+	font-weight: 500;
+	font-style: italic;
+	font-variant-numeric: tabular-nums;
+	white-space: nowrap;
+
+	strong {
+		font-weight: 600;
+	}
+
+	&[data-complete="true"] strong {
+		color: var(--pink);
+	}
+}
+
+.rewardIcon {
+	width: clamp(1.75rem, 4.5cqi, 2.25rem);
+	height: clamp(1.75rem, 4.5cqi, 2.25rem);
+	object-fit: contain;
+	filter: drop-shadow(var(--shadow-dark-40) 0 1px 1px);
 }
 
 .partCheckbox {
@@ -106,10 +147,27 @@
 	);
 }
 
+@container (width < 700px) {
+	.rewards {
+		padding-inline: 0.5rem;
+		gap: 0.5rem 0.75rem;
+	}
+
+	.reward {
+		font-size: clamp(1rem, 3.5cqi, 1.15rem);
+	}
+
+	.rewardIcon {
+		width: clamp(1.75rem, 7cqi, 2.25rem);
+		height: clamp(1.75rem, 7cqi, 2.25rem);
+	}
+}
+
 @container (width < 500px) {
 	.partsContainer {
 		padding-inline: 1rem 0.5rem;
 	}
+
 	.partConnector {
 		left: 2rem;
 		right: 1.5rem;
