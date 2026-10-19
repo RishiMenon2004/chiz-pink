@@ -381,14 +381,10 @@
 		font-size: 1rem;
 	}
 	.pullEntry {
-		&::after {
-			background-size: 3rem, 100%;
-		}
+		--art-width: 3rem;
 
 		&[data-rateup="true"] {
-			&::after {
-				background-size: 7rem, 100%;
-			}
+			--art-width: 7rem;
 		}
 	}
 }
