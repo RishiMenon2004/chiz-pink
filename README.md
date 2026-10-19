@@ -1,10 +1,8 @@
 ![Welcome Splash](docs/images/splash_panel.png)
 
-**Chiz.Pink** is your pinkest campanion and favourite planner and inventory tracker for Neverness To Everness :3
+<img src="docs/ai-assisted-badge.svg" alt="AI-assisted with Claude Opus 5.5" width="260" />
 
-<p align="center">
-  <img src="docs/ai-assisted-badge.svg" alt="AI-assisted with Claude Opus 5.5" width="260" />
-</p>
+**Chiz.Pink** is your pinkest campanion and favourite planner and inventory tracker for Neverness To Everness :3
 
 I made this because I wanted a nice looking and easier to use
 companion tool than what already exists. Inspired by a combination
