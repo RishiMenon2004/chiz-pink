@@ -17,6 +17,10 @@ export enum EnumArcTiers {
 }
 
 export interface Arc extends Item {
+	// Announced but stats unknown: base ATK, main stat and materials are
+	// stand-ins until the global release. Hidden from the planner; the
+	// profile shows TBD stats.
+	isPlaceholder?: boolean
 	rarity: EnumRarity.Uncommon | EnumRarity.Rare | EnumRarity.Epic
 	type: EnumArcType
 	baseAtk: number

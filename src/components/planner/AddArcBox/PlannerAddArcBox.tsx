@@ -112,7 +112,10 @@ function ArcTile({ arc, className }: { arc: Arc; className: string }) {
 const PlannerArcsSelect = () => {
 	const { newArcRecord, setNewArcRecord } = useAddArcContext()
 	const [selected, setSelected] = useState<Arc>(() =>
-		findArc(newArcRecord?.id ?? getAllArcsList()[0].id)
+		findArc(
+			newArcRecord?.id ??
+				getAllArcsList().find((arc) => !arc.isPlaceholder)!.id
+		)
 	)
 	const [dropdown, setDropdown] = useState<boolean>(false)
 	const selectRef = useRef<HTMLDivElement>(null)
@@ -157,7 +160,12 @@ const PlannerArcsSelect = () => {
 		const matchesType = !filterQuery[0] || arc.type === filterQuery[0]
 		const matchesRarity = !filterQuery[1] || arc.rarity === filterQuery[1]
 
-		return isItemRevealed(arc, now) && matchesType && matchesRarity
+		return (
+			!arc.isPlaceholder &&
+			isItemRevealed(arc, now) &&
+			matchesType &&
+			matchesRarity
+		)
 	})
 	const filteredArcs = fuzzyFilter(availableArcs, searchQuery, (arc) => [
 		arc.name,

@@ -60,7 +60,9 @@ export function PlannerToolbar() {
 		setNewArcRecord({
 			id:
 				getAllArcsList().find(
-					(arc) => getItemStatus(arc, Date.now()) === "featured"
+					(arc) =>
+						!arc.isPlaceholder &&
+						getItemStatus(arc, Date.now()) === "featured"
 				)?.id || "us",
 			currentLvl: EnumItemLvls.Lvl1,
 			targetLvl: EnumItemLvls.Lvl80,

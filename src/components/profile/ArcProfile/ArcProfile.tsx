@@ -7,6 +7,8 @@ import { getArcBannerThemeColor } from "@/helpers/bannerStatus"
 import { formatAttributeValue } from "@/helpers/formatAttributeValue"
 import { parseDescription } from "@/helpers/parseDescription"
 
+import { InfoBox } from "@/components/layout/InfoBox"
+
 import { ArcEffect } from "../ArcEffect"
 import { ProfileHero } from "../ProfileHero"
 import { ProfileMaterials } from "../ProfileMaterials"
@@ -38,14 +40,22 @@ export function ArcProfile({ arc }: { arc: Arc }) {
 								fetchPriority="high"
 							/>
 						}
-						stats={[
-							{ label: "Type", value: arc.type },
-							{ label: "Base ATK", value: arc.baseAtk },
-							{
-								label: arc.mainAttribute.attribute,
-								value: formatAttributeValue(arc.mainAttribute.baseValue),
-							},
-						]}
+						stats={
+							arc.isPlaceholder
+								? [
+										{ label: "Type", value: arc.type },
+										{ label: "Base ATK", value: "TBD" },
+										{ label: "Main Stat", value: "TBD" },
+									]
+								: [
+										{ label: "Type", value: arc.type },
+										{ label: "Base ATK", value: arc.baseAtk },
+										{
+											label: arc.mainAttribute.attribute,
+											value: formatAttributeValue(arc.mainAttribute.baseValue),
+										},
+									]
+						}
 						description={
 							arc.description && parseDescription(arc.description, 1)
 						}
@@ -54,7 +64,13 @@ export function ArcProfile({ arc }: { arc: Arc }) {
 
 				<div className={styles.content}>
 					<ArcEffect effect={arc.effect} />
-					<ProfileMaterials kind="arc" id={arc.id} />
+					{arc.isPlaceholder ? (
+						<InfoBox sticker="peek">
+							{`U-um... I don't have ${arc.name}'s stats or materials on file yet. I'll a-add them once it's out, I promise!`}
+						</InfoBox>
+					) : (
+						<ProfileMaterials kind="arc" id={arc.id} />
+					)}
 				</div>
 			</div>
 		</main>

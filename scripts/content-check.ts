@@ -169,6 +169,11 @@ section(
 	"Placeholder characters (kit not announced yet)",
 	characters.filter((c) => c.isPlaceholder).map(label)
 )
+section(
+	unfinished,
+	"Placeholder arcs (stats not out yet)",
+	arcs.filter((a) => a.isPlaceholder).map(label)
+)
 section(unfinished, "Placeholder images", placeholderImages)
 section(unfinished, "Characters without a profile background", missingBackgrounds)
 section(unfinished, "Events without an image", eventsWithoutImage)
