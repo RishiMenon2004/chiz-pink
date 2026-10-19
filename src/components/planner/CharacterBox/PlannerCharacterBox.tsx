@@ -85,7 +85,9 @@ export function PlannerCharacterBox({
 			}
 		})
 
-		return matList
+		// Crafted materials in the same tier family share linked materials, so
+		// the list repeats them; keep each material's first position.
+		return [...new Map(matList.map((mat) => [mat.id, mat])).values()]
 	}
 
 	const [adjustmentMaterials, setAdjustmentMaterials] = useState<Material[]>(
