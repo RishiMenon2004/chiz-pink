@@ -1,6 +1,6 @@
 "use client"
 
-import { ChangeEvent, MouseEvent, useState } from "react"
+import { ChangeEvent, CSSProperties, MouseEvent, useEffect, useRef, useState } from "react"
 import Image from "next/image"
 
 import { KeyMouseEventType } from "@/types"
@@ -14,6 +14,7 @@ import { useNow, usePlannerStore } from "@/hooks"
 
 import { createSearchString, stopPropagation } from "@/helpers"
 import {
+	getCharacterBannerThemeColor,
 	getItemStatus,
 	isItemRevealed,
 	sortByStatus,
@@ -35,10 +36,20 @@ function CharacterListItem({
 	status: ItemStatus
 	onClick: (e: MouseEvent<HTMLElement>) => void
 }) {
+	const themeColor = getCharacterBannerThemeColor(char.id)
+
 	return (
 		<div
 			tabIndex={0}
 			className={`${styles.charSelectOption} ${getItemRarityStyle(char)}`}
+			style={
+				themeColor
+					? ({
+							"--rarity-color": themeColor,
+							"--rarity-color-highlight": `color-mix(in srgb, ${themeColor}, white 45%)`,
+						} as CSSProperties)
+					: undefined
+			}
 			onClick={onClick}>
 			{status && (
 				<div className={styles.featureTag}>
@@ -72,6 +83,12 @@ export function PlannerAddCharacterBox({
 	const { addCharacter } = useAddCharContext()
 	const { plannerData } = usePlannerStore()
 	const now = useNow()
+
+	const searchRef = useRef<HTMLInputElement>(null)
+
+	useEffect(() => {
+		searchRef.current?.focus()
+	}, [])
 
 	const [searchQuery, setSearchQuery] = useState<string>("")
 	const handleSearch = (e: ChangeEvent<HTMLInputElement>) => {
@@ -115,103 +132,106 @@ export function PlannerAddCharacterBox({
 			onClick={stopPropagation}>
 			<div className={styles.addCharBoxTitle}>Add Character</div>
 			<button className={`pill-button always-hover ${styles.addCharBoxCancel}`} onClick={onCancel} />
-			<div className={styles.addCharFilters}>
-				<div className={styles.charFilterList} style={{ flexGrow: 0.25 }}>
-					{Object.values(EnumCharacterElement).map((element) => {
-						const isActive = filterQuery[0] === element
-						const toggleElement = (e: KeyMouseEventType) => {
-							e.stopPropagation()
-							setFilterQuery(([prevType, prevRank]) => {
-								if (prevType === element) return [null, prevRank]
-								return [element, prevRank]
-							})
-						}
-						return (
-							<span
-								key={element}
-								tabIndex={0}
-								className={`${styles.charFilter} ${styles.filterElement} ${isActive ? styles.active : ""}`}
-								onClick={toggleElement}
-								onKeyDown={(e) => {
-									e.stopPropagation()
-									if (e.key === "Enter") {
-										toggleElement(e)
-									}
-								}}>
-								<CharacterElement
-									element={element}
-									active={isActive}
-									height={64}
-									width={64}
-								/>
-							</span>
-						)
-					})}
-				</div>
-			</div>
-			<div className={styles.addCharFilters}>
-				<div className={styles.charFilterList}>
-					{rarityFilters.map((charRank) => {
-						const isActive = filterQuery[1] === charRank
-						const toggleRank = (e: KeyMouseEventType) => {
-							e.stopPropagation()
-							setFilterQuery(([prevType, prevRank]) => [
-								prevType,
-								prevRank === charRank ? null : charRank,
-							])
-						}
+			<input
+				ref={searchRef}
+				type="text"
+				value={searchQuery}
+				placeholder="Search"
+				enterKeyHint="done"
+				className={`inset-control ${styles.charFilterSearch}`}
+				onChange={handleSearch}
+				onKeyDown={(e) => {
+					e.stopPropagation()
+					if (e.key === "Enter") {
+						e.currentTarget.blur()
+					}
 
-						const rankIcon = (Object.entries(EnumRarity).find(
-							([key]) => {
-								return key === String(charRank)
-							}
-						) ?? ["", "rare"])[1]
-							.toString()
-							.toLowerCase()
-
-						return (
-							<span
-								key={charRank}
-								tabIndex={0}
-								className={`${styles.charFilter} ${isActive ? styles.active : ""}`}
-								onClick={toggleRank}
-								onKeyDown={(e) => {
-									e.stopPropagation()
-									if (e.key === "Enter") {
-										toggleRank(e)
-									}
-								}}>
-								<Image
-									src={`/icons/ranks/${rankIcon}.png`}
-									width={64}
-									height={64}
-									alt={`${charRank} icon`}
-								/>
-							</span>
-						)
-					})}
-				</div>
-				<input
-					type="text"
-					value={searchQuery}
-					placeholder="Search"
-					className={styles.charFilterSearch}
-					onChange={handleSearch}
-					onKeyDown={(e) => {
-						e.stopPropagation()
-						if (e.key === "Enter") {
+					if (e.key === "Escape") {
+						if (searchQuery === "") {
 							e.currentTarget.blur()
+						} else {
+							setSearchQuery("")
 						}
-
-						if (e.key === "Escape") {
-							if (searchQuery === "") {
-								e.currentTarget.blur()
-							} else {
-								setSearchQuery("")
+					}
+				}}
+			/>
+			<div className={styles.addCharFilters}>
+				<div className={styles.charFilterRow}>
+					<div className={styles.charFilterList}>
+						{Object.values(EnumCharacterElement).map((element) => {
+							const isActive = filterQuery[0] === element
+							const toggleElement = (e: KeyMouseEventType) => {
+								e.stopPropagation()
+								setFilterQuery(([prevType, prevRank]) => {
+									if (prevType === element) return [null, prevRank]
+									return [element, prevRank]
+								})
 							}
-						}
-					}}
-				/>
+							return (
+								<span
+									key={element}
+									tabIndex={0}
+									className={`${styles.charFilter} ${styles.filterElement} ${isActive ? styles.active : ""}`}
+									onClick={toggleElement}
+									onKeyDown={(e) => {
+										e.stopPropagation()
+										if (e.key === "Enter") {
+											toggleElement(e)
+										}
+									}}>
+									<CharacterElement
+										element={element}
+										active={isActive}
+										height={64}
+										width={64}
+									/>
+								</span>
+							)
+						})}
+					</div>
+					<span className={styles.charFilterDivider} />
+					<div className={styles.charFilterList}>
+						{rarityFilters.map((charRank) => {
+							const isActive = filterQuery[1] === charRank
+							const toggleRank = (e: KeyMouseEventType) => {
+								e.stopPropagation()
+								setFilterQuery(([prevType, prevRank]) => [
+									prevType,
+									prevRank === charRank ? null : charRank,
+								])
+							}
+
+							const rankIcon = (Object.entries(EnumRarity).find(
+								([key]) => {
+									return key === String(charRank)
+								}
+							) ?? ["", "rare"])[1]
+								.toString()
+								.toLowerCase()
+
+							return (
+								<span
+									key={charRank}
+									tabIndex={0}
+									className={`${styles.charFilter} ${isActive ? styles.active : ""}`}
+									onClick={toggleRank}
+									onKeyDown={(e) => {
+										e.stopPropagation()
+										if (e.key === "Enter") {
+											toggleRank(e)
+										}
+									}}>
+									<Image
+										src={`/icons/ranks/${rankIcon}.png`}
+										width={64}
+										height={64}
+										alt={`${charRank} icon`}
+									/>
+								</span>
+							)
+						})}
+					</div>
+				</div>
 			</div>
 			<div className={styles.charSelectList}>
 				{filteredChars.map((char) => {
