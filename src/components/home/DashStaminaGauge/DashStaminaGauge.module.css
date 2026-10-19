@@ -159,13 +159,6 @@
 	padding: 0;
 }
 
-.footer {
-	color: black;
-	padding-inline: 1rem;
-	margin-bottom: 1rem;
-	font-weight: 550;
-}
-
 @container (width < 500px) {
 	.pixelsGauge {
 		padding-right: 2rem;

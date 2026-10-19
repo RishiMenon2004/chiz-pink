@@ -134,6 +134,11 @@ export function DashStaminaGauge() {
 		<div className={`metallic-panel ${pageStyles.section} ${styles.section}`}>
 			<div className={pageStyles.sectionTitleRow}>
 				<div className={pageStyles.sectionTitle}>Stamina</div>
+				<Link
+					href="/settings"
+					className={`pill-button ${pageStyles.sectionButton}`}>
+					EDIT MAX STAMINA
+				</Link>
 			</div>
 			<div className={styles.gaugeRow}>
 				<div className={styles.gaugeColumn}>
@@ -225,12 +230,6 @@ export function DashStaminaGauge() {
 					</div>
 				</div>
 			</div>
-			<small className={styles.footer}>
-				{"Set max Pixels/City Stamina in "}
-				<Link href={"/settings"} className="btn-anchor">
-					Settings
-				</Link>
-			</small>
 		</div>
 	)
 }
