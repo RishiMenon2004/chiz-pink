@@ -1,12 +1,12 @@
 import { ReactNode } from "react"
 import Link from "next/link"
 
-import { ArcCards, useArcCatalog, useCharacterCatalog } from "@/components/catalog"
+import { useArcCatalog, useCharacterCatalog } from "@/components/catalog"
 
+import { DashFeaturedArcs } from "../DashFeaturedArcs"
 import { DashFeaturedCarousel } from "../DashFeaturedCarousel"
 
 import pageStyles from "@/app/page.module.css"
-import styles from "./DashShowcase.module.css"
 
 export function DashShowcase() {
 	const characters = useCharacterCatalog(true)
@@ -23,9 +23,7 @@ export function DashShowcase() {
 			)}
 			{arcs.length > 0 && (
 				<ShowcaseSection title="Featured Arcs" href="/arcs">
-					<div className={`inset-control ${styles.cards}`}>
-						<ArcCards entries={arcs} />
-					</div>
+					<DashFeaturedArcs entries={arcs} />
 				</ShowcaseSection>
 			)}
 		</div>

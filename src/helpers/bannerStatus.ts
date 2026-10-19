@@ -109,6 +109,20 @@ export function getCharacterBannerThemeColor(characterId: string): string | null
 	return banner?.themeColor ?? null
 }
 
+// An item's running banner window (character or arc), else its next
+// scheduled one. Null when it has none coming up.
+export function getActiveBannerWindow(itemId: string, now: number) {
+	const windows = getBannerWindows().get(itemId) ?? []
+
+	return (
+		windows.find(({ start, end }) => start <= now && now < end) ??
+		windows
+			.filter(({ start }) => start > now)
+			.toSorted((a, b) => a.start - b.start)[0] ??
+		null
+	)
+}
+
 export type CharacterBanner = BannerWindow & { event: EventData }
 
 // A character's running rate-up banner, else their next scheduled one.

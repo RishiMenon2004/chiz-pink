@@ -145,13 +145,13 @@ export function useArcCatalog(onlyFlagged = false) {
 	return useCatalogItems(allArcs, onlyFlagged)
 }
 
-export function CharacterCards({ entries }: { entries: WithStatus<Character>[] }) {
+function CharacterCards({ entries }: { entries: WithStatus<Character>[] }) {
 	return entries.map(({ item, status }) => (
 		<CharacterCard key={item.id} character={item} status={status} />
 	))
 }
 
-export function ArcCards({ entries }: { entries: WithStatus<Arc>[] }) {
+function ArcCards({ entries }: { entries: WithStatus<Arc>[] }) {
 	return entries.map(({ item, status }) => (
 		<ArcCard key={item.id} arc={item} status={status} />
 	))
