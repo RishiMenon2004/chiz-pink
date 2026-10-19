@@ -297,6 +297,85 @@ a.backLink:not(:disabled):is(:hover, :focus, :focus-visible) {
 
 /* ---------- Content panels ---------- */
 
+/* Rate-up banner art with its timing overlaid along the bottom. */
+.bannerFrame {
+	position: relative;
+	overflow: clip;
+	border-radius: 1.25rem;
+	aspect-ratio: 16 / 9;
+	cursor: var(--resize-ne-cursor, pointer);
+
+	/* Same hairline as the expanded EventDetails card, on an overlay so it
+	   stays put while the image scales on hover. */
+	&::after {
+		content: "";
+		position: absolute;
+		inset: 0;
+		z-index: 1;
+		border-radius: inherit;
+		pointer-events: none;
+		box-shadow: rgba(255, 255, 255, 0.25) 0 0 0 1px inset;
+	}
+
+	&:focus-visible {
+		outline: var(--pink) 2px solid;
+		outline-offset: 2px;
+	}
+
+	img {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		border-radius: inherit;
+
+		transition: transform 0.4s ease;
+	}
+
+	&:hover img {
+		transform: scale(1.04);
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		img {
+			transition: none;
+		}
+	}
+}
+
+.bannerInfo {
+	position: absolute;
+	inset: auto 0 0 0;
+
+	display: flex;
+	align-items: flex-end;
+	justify-content: space-between;
+	flex-wrap: wrap;
+	gap: 0.25rem 1rem;
+
+	padding: 2.5rem 1.25rem 0.85rem;
+
+	color: var(--foreground);
+	background: linear-gradient(to top, var(--shadow-dark-70), transparent);
+}
+
+.bannerName {
+	font-family: var(--font-syne);
+	font-size: 1.15rem;
+	font-weight: 700;
+	text-shadow: var(--shadow-dark-60) 0 1px 4px;
+}
+
+.bannerCountdown {
+	font-family: var(--font-barlow-condensed);
+	font-size: 1.15rem;
+	font-weight: 600;
+
+	strong {
+		color: oklch(from var(--theme-color) 0.85 calc(c * 1.2) h);
+		font-weight: 700;
+	}
+}
+
 .panelBody {
 	display: flex;
 	flex-direction: column;

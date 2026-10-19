@@ -12,6 +12,7 @@ import { getCharacterBannerThemeColor } from "@/helpers/bannerStatus"
 import { CharacterElement } from "@/components/layout/CharacterAvatar"
 
 import { ProfileAbilityGroup } from "../ProfileAbilityGroup"
+import { ProfileBanner } from "../ProfileBanner"
 import { ProfileHero } from "../ProfileHero"
 import { ProfileMaterials } from "../ProfileMaterials"
 
@@ -139,6 +140,7 @@ export async function CharacterProfile({ character }: { character: Character }) 
 						]}
 						description={character.description}
 					/>
+					<ProfileBanner characterId={character.id} />
 				</div>
 
 				<div className={styles.content}>
