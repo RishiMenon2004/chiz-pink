@@ -15,7 +15,7 @@ export const skia: Character = {
 	imageSrc: "skia.webp",
 	name: "Skia",
 	description:
-		"Often mistaken for Squad 4's captain, despite being the lieutenant.",
+		"Often mistaken for Squad <dn>4</>'s captain, despite being the lieutenant.",
 	rarity: EnumRarity.Rare,
 	element: EnumCharacterElement.LAKSHANA,
 	arcType: EnumArcType.Gas,
@@ -35,7 +35,7 @@ export const skia: Character = {
 				{
 					section: "Basic Attack: Territory Control",
 					description:
-						"Strikes in the air and plunges, dealing <dn>1</> instance of <el>Lakshana DMG</> to an area upon impact. Increases DMG based on fall height, up to 100%.",
+						"Strikes in the air and plunges, dealing <dn>1</> instance of <el>Lakshana DMG</> to an area upon impact. Increases DMG based on fall height, up to <dn>100%</>.",
 				},
 				{
 					section: "Fang Thrust",
@@ -55,7 +55,7 @@ export const skia: Character = {
 			description: [
 				{
 					description:
-						"A workflow designed for pursuit. Enters the Tailed state, leaps into own shadow, and deals <dn>6</> instances of <el>Lakshana DMG</> to an area. Splits 3 Fang Thrusts from shadow for each target hit, then enters Shadow Hound Gnaw mode.",
+						"A workflow designed for pursuit. Enters the Tailed state, leaps into own shadow, and deals <dn>6</> instances of <el>Lakshana DMG</> to an area. Splits <dn>3</> Fang Thrusts from shadow for each target hit, then enters Shadow Hound Gnaw mode.",
 				},
 				{
 					section: "Tailed",

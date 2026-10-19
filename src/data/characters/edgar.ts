@@ -30,12 +30,12 @@ export const edgar: Character = {
 				{
 					section: "Basic Attack: Combat Practice",
 					description:
-						"Applies what he learned in Lamplight Academy's physical education class to perform up to 5 consecutive attacks that deal <el>Cosmos DMG</>.",
+						"Applies what he learned in Lamplight Academy's physical education class to perform up to <dn>5</> consecutive attacks that deal <el>Cosmos DMG</>.",
 				},
 				{
 					section: "Basic Attack: Calculated Landing",
 					description:
-						"Press Basic Attack while airborne to plunge, dealing <dn>1</> instance of <el>Cosmos DMG</> to an area upon impact. Increases DMG based on fall height, up to 100%.",
+						"Press Basic Attack while airborne to plunge, dealing <dn>1</> instance of <el>Cosmos DMG</> to an area upon impact. Increases DMG based on fall height, up to <dn>100%</>.",
 				},
 				{
 					section: "Critical Riposte: Crisis is Opportunity",
@@ -60,7 +60,7 @@ export const edgar: Character = {
 			description: [
 				{
 					description:
-						"Immerses in his own thoughts, unleashing a labyrinthine domain for 10s. Deals 1 instance of AoE <el>Cosmos DMG</>. Heals the current character over the domain's duration.",
+						"Immerses in his own thoughts, unleashing a labyrinthine domain for <dn>10</>s. Deals <dn>1</> instance of AoE <el>Cosmos DMG</>. Heals the current character over the domain's duration.",
 				},
 			],
 			maxLvl: 10,
@@ -70,7 +70,7 @@ export const edgar: Character = {
 			description: [
 				{
 					description:
-						"This bag is really heavy. Edgar charges toward the target and swings his bag with all his might, dealing 1 instance of <el>Cosmos DMG</> to an area.",
+						"This bag is really heavy. Edgar charges toward the target and swings his bag with all his might, dealing <dn>1</> instance of <el>Cosmos DMG</> to an area.",
 				},
 			],
 			maxLvl: 10,
@@ -80,7 +80,7 @@ export const edgar: Character = {
 			description: [
 				{
 					description:
-						"<sh>Charge Enhancement:</> Grants 120 Ultimate Energy instantly when a character triggers Charge using a Support Skill. Disables Ultimate Energy gain from Vita Pistils when hitting Slowed targets afterward. Cooldown: 30s.",
+						"<sh>Charge Enhancement:</> Grants <dn>120</> Ultimate Energy instantly when a character triggers Charge using a Support Skill. Disables Ultimate Energy gain from Vita Pistils when hitting Slowed targets afterward. Cooldown: <dn>30</>s.",
 				},
 			],
 			maxLvl: 1,
@@ -90,7 +90,7 @@ export const edgar: Character = {
 			description: [
 				{
 					description:
-						"Cast Redirect Skill Wild Current or Support Skill Weight of Knowledge to gain a Key of Truth, up to 3 keys.\nEach Key of Truth extends the duration of Ultimate: Finnegan's Vigil by 1s.",
+						"Cast Redirect Skill Wild Current or Support Skill Weight of Knowledge to gain a Key of Truth, up to <dn>3</> keys.\nEach Key of Truth extends the duration of Ultimate: Finnegan's Vigil by <dn>1</>s.",
 				},
 			],
 			maxLvl: 1,

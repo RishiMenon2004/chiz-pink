@@ -69,7 +69,7 @@ export const akane: Character = {
 			description: [
 				{
 					description:
-						"Strikes the strings with a powerful strum, dealing 1 instance of <el>Lakshana DMG</> and triggering a Reaction.",
+						"Strikes the strings with a powerful strum, dealing <dn>1</> instance of <el>Lakshana DMG</> and triggering a Reaction.",
 				},
 			],
 			maxLvl: 10,

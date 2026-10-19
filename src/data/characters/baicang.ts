@@ -29,7 +29,7 @@ export const baicang: Character = {
 				{
 					section: "Basic Attack: Walk the Talk",
 					description:
-						"Uses martial arts to perform up to 5 consecutive attacks, dealing <el>Incantation DMG</>.",
+						"Uses martial arts to perform up to <dn>5</> consecutive attacks, dealing <el>Incantation DMG</>.",
 				},
 				{
 					section: "Basic Attack: Formless Words",
@@ -44,7 +44,7 @@ export const baicang: Character = {
 				{
 					section: "Basic Attack: In the Wind",
 					description:
-						"Leaps in the wind and strikes, dealing <dn>1</> instance of <el>Incantation DMG</> to an area upon impact. Increases DMG based on fall height, up to 100%.",
+						"Leaps in the wind and strikes, dealing <dn>1</> instance of <el>Incantation DMG</> to an area upon impact. Increases DMG based on fall height, up to <dn>100%</>.",
 				},
 				{
 					section: "Critical Riposte: Truth Exposed",
@@ -115,7 +115,7 @@ export const baicang: Character = {
 			description: [
 				{
 					description:
-						"Increases Baicang's ATK by <dn>20%</>.\nLaunches coordinate attacks with the allies when there are ETD-4 members in the Team.\nIn combat, switching to Baicang while Skia is in stealth to immediately attack with Baicang and generate 1 Power Word <kw>Silence</> on target. Cooldown: <dn>30s</>.\nIn combat, when Fadia's HP drops below <dn>20%</>, Baicang attacks the enemy <dn>1</> time, heals Fadia <dn>1</> time, and generates <dn>1</> Power Word <kw>Silence</> on target. Cooldown: <dn>30s</>.\nSwitching to Baicang while Lacrimosa is in bat form can trigger <dn>1</> super jump for Baicang.",
+						"Increases Baicang's ATK by <dn>20%</>.\nLaunches coordinate attacks with the allies when there are ETD-4 members in the Team.\nIn combat, switching to Baicang while Skia is in stealth to immediately attack with Baicang and generate <dn>1</> Power Word <kw>Silence</> on target. Cooldown: <dn>30s</>.\nIn combat, when Fadia's HP drops below <dn>20%</>, Baicang attacks the enemy <dn>1</> time, heals Fadia <dn>1</> time, and generates <dn>1</> Power Word <kw>Silence</> on target. Cooldown: <dn>30s</>.\nSwitching to Baicang while Lacrimosa is in bat form can trigger <dn>1</> super jump for Baicang.",
 				},
 			],
 			maxLvl: 1,

@@ -40,7 +40,7 @@ export const fadia: Character = {
 				{
 					section: "Falling Contempt",
 					description:
-						"Swings her cross shield in the air and plunges, dealing <dn>1</> instance of <el>Psyche DMG</> to an area upon impact. Increases DMG based on fall height, up to 100%.",
+						"Swings her cross shield in the air and plunges, dealing <dn>1</> instance of <el>Psyche DMG</> to an area upon impact. Increases DMG based on fall height, up to <dn>100%</>.",
 				},
 				{
 					section: "Critical Riposte: Evasion Trigger",
@@ -65,7 +65,7 @@ export const fadia: Character = {
 			description: [
 				{
 					description:
-						"Without pain, life closes in on itself. Enters <kw>Lilith</> state, dealing <dn>6</> instances of Mental DMG and restoring HP. Recasts Wordless Rejection while in <kw>Lilith</> state to perform up to <dn>5</> follow-up attacks, each dealing Mental DMG.\nFully restores the energy of Agony to Euphoria when lost HP reaches the <sh>Destructive Threshold</>. Increases the damage and HP restored by Agony to Euphoria when it is cast with lost HP greater than or equal to the <sh>Destructive Threshold</>.\nExits <kw>Lilith</> state when the duration ends, all 5 follow-up attacks are performed, characters are switched, or other skills of Fadia are used.",
+						"Without pain, life closes in on itself. Enters <kw>Lilith</> state, dealing <dn>6</> instances of Mental DMG and restoring HP. Recasts Wordless Rejection while in <kw>Lilith</> state to perform up to <dn>5</> follow-up attacks, each dealing Mental DMG.\nFully restores the energy of Agony to Euphoria when lost HP reaches the <sh>Destructive Threshold</>. Increases the damage and HP restored by Agony to Euphoria when it is cast with lost HP greater than or equal to the <sh>Destructive Threshold</>.\nExits <kw>Lilith</> state when the duration ends, all <dn>5</> follow-up attacks are performed, characters are switched, or other skills of Fadia are used.",
 				},
 			],
 			maxLvl: 10,
@@ -85,7 +85,7 @@ export const fadia: Character = {
 			description: [
 				{
 					description:
-						"<sh>Nova Enhancement:</> Allows all allies to drain Max HP from the target when Nova ends. The target loses Max HP equal to 200% of Fadia's base Max HP, and each ally gains Max HP equal to 10% of Fadia's base Max HP. Total drained cannot exceed 50% of Fadia's base Max HP. Restores both parties' stats upon exiting combat.",
+						"<sh>Nova Enhancement:</> Allows all allies to drain Max HP from the target when Nova ends. The target loses Max HP equal to <dn>200%</> of Fadia's base Max HP, and each ally gains Max HP equal to <dn>10%</> of Fadia's base Max HP. Total drained cannot exceed <dn>50%</> of Fadia's base Max HP. Restores both parties' stats upon exiting combat.",
 				},
 			],
 			maxLvl: 1,

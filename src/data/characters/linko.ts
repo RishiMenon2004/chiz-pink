@@ -39,7 +39,7 @@ export const linko: Character = {
 				{
 					section: "Basic Attack: Spectral Entrance",
 					description:
-						"Press Basic Attack while airborne to plunge, dealing <dn>1</> instance of <el>Anima DMG</> in an area upon impact. Increases DMG based on fall height by up to 100%.",
+						"Press Basic Attack while airborne to plunge, dealing <dn>1</> instance of <el>Anima DMG</> in an area upon impact. Increases DMG based on fall height by up to <dn>100%</>.",
 				},
 				{
 					section: "Basic Attack: Spectral Rush",

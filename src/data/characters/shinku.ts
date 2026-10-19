@@ -35,12 +35,12 @@ export const shinku: Character = {
 				{
 					section: "Basic Attack: Arrowfall",
 					description:
-						"Press Basic Attack while airborne to plunge, dealing <dn>1</> instance of <el>Cosmos DMG</> upon impact. Increases DMG based on fall height, up to 100%.",
+						"Press Basic Attack while airborne to plunge, dealing <dn>1</> instance of <el>Cosmos DMG</> upon impact. Increases DMG based on fall height, up to <dn>100%</>.",
 				},
 				{
 					section: "Basic Attack: Special Combat Arts (Altered)",
 					description:
-						"Hold Basic Attack during the 3rd/4th/5th hit of Special Combat Arts to trigger Special Combat Arts (Altered), dealing <el>Cosmos DMG</> and granting <kw>Defiant Spirit</> on hit.",
+						"Hold Basic Attack during the <dn>3rd</>/<dn>4th</>/<dn>5th</> hit of Special Combat Arts to trigger Special Combat Arts (Altered), dealing <el>Cosmos DMG</> and granting <kw>Defiant Spirit</> on hit.",
 				},
 				{
 					section: "Critical Riposte: Split-Second Victory",
@@ -55,17 +55,17 @@ export const shinku: Character = {
 				{
 					section: "Basic Attack: Hammerfall",
 					description:
-						"Press Basic Attack while airborne to plunge, dealing <dn>1</> instance of <el>Cosmos DMG</> upon impact. Increases DMG based on fall height, up to 100%. Grants <kw>Fading Reason</> on hit.",
+						"Press Basic Attack while airborne to plunge, dealing <dn>1</> instance of <el>Cosmos DMG</> upon impact. Increases DMG based on fall height, up to <dn>100%</>. Grants <kw>Fading Reason</> on hit.",
 				},
 				{
 					section: "Basic Attack: Tidal Assault (Scorn)",
 					description:
-						"Hold Basic Attack during the 3rd/4th/5th hit of Tidal Assault to trigger Tidal Assault (Scorn), dealing <dn>1</> instance of <el>Cosmos DMG</> and granting <kw>Fading Reason</> on hit.",
+						"Hold Basic Attack during the <dn>3rd</>/<dn>4th</>/<dn>5th</> hit of Tidal Assault to trigger Tidal Assault (Scorn), dealing <dn>1</> instance of <el>Cosmos DMG</> and granting <kw>Fading Reason</> on hit.",
 				},
 				{
 					section: "Critical Riposte: No Respite",
 					description:
-						"Triggers when using Tidal Assault after a Critical Dodge. Retaliates against the target with a sharp kick, dealing <dn>1</> instance of <el>Cosmos DMG</>, reducing the target's Break, and gaining <kw>Fading Reason</>.\nInflicts Forced Knockback and briefly stuns (not effective against Bosses) the target when Parry Attack or Critical Riposte hits while in the <kw>Menacing Gaze</> state, then deals 1 additional instance of DMG to the target equal to <dn>20%</> of Instant Strike.",
+						"Triggers when using Tidal Assault after a Critical Dodge. Retaliates against the target with a sharp kick, dealing <dn>1</> instance of <el>Cosmos DMG</>, reducing the target's Break, and gaining <kw>Fading Reason</>.\nInflicts Forced Knockback and briefly stuns (not effective against Bosses) the target when Parry Attack or Critical Riposte hits while in the <kw>Menacing Gaze</> state, then deals <dn>1</> additional instance of DMG to the target equal to <dn>20%</> of Instant Strike.",
 				},
 			],
 			maxLvl: 10,
@@ -122,7 +122,7 @@ export const shinku: Character = {
 			description: [
 				{
 					description:
-						"<sh>Charge Enhancement:</> Grants off-field characters the same amount of Charge when the active character gains Ultimate Energy. While Shinku is active and in Charge state, each trigger deals AoE DMG equal to 400% of ATK (scales with Basic Attack level, reaching <dn>863.6%</> at level 11), and increases her ATK by 5% for 30s, up to 10 stacks. Cooldown: 1s.",
+						"<sh>Charge Enhancement:</> Grants off-field characters the same amount of Charge when the active character gains Ultimate Energy. While Shinku is active and in Charge state, each trigger deals AoE DMG equal to <dn>400%</> of ATK (scales with Basic Attack level, reaching <dn>863.6%</> at level <dn>11</>), and increases her ATK by <dn>5%</> for <dn>30</>s, up to <dn>10</> stacks. Cooldown: <dn>1</>s.",
 				},
 			],
 			maxLvl: 1,
@@ -142,7 +142,7 @@ export const shinku: Character = {
 			description: [
 				{
 					description:
-						"<sh>Level 1:</> Shinku increases dish prices by <dn>0.3</> Fons for every 3 Beverage Tags on dishes.",
+						"<sh>Level 1:</> Shinku increases dish prices by <dn>0.3</> Fons for every <dn>3</> Beverage Tags on dishes.",
 				},
 				{
 					description:
@@ -150,7 +150,7 @@ export const shinku: Character = {
 				},
 				{
 					description:
-						"<sh>Level 3:</> Shinku increases dish prices by <dn>0.3</> Fons for every 3 Beverage Tags on dishes.",
+						"<sh>Level 3:</> Shinku increases dish prices by <dn>0.3</> Fons for every <dn>3</> Beverage Tags on dishes.",
 				},
 				{
 					description:
@@ -158,7 +158,7 @@ export const shinku: Character = {
 				},
 				{
 					description:
-						"<sh>Level 5:</> Shinku increases dish prices by <dn>3%</> for every 3 Beverage Tags on dishes.",
+						"<sh>Level 5:</> Shinku increases dish prices by <dn>3%</> for every <dn>3</> Beverage Tags on dishes.",
 				},
 			],
 			maxLvl: 5,

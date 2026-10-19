@@ -40,7 +40,7 @@ export const adler: Character = {
 				{
 					section: "Basic Attack: Ignorance",
 					description:
-						"Plunges, dealing <dn>1</> instance of <el>Incantation DMG</> to an area upon impact. Increases DMG based on fall height, up to 100%.",
+						"Plunges, dealing <dn>1</> instance of <el>Incantation DMG</> to an area upon impact. Increases DMG based on fall height, up to <dn>100%</>.",
 				},
 				{
 					section: "Critical Riposte: Revelation",
@@ -90,7 +90,7 @@ export const adler: Character = {
 			description: [
 				{
 					description:
-						"<sh>Scorch Enhancement:</> Applies one of three random debuffs whenever Scorch is inflicted on a target: -20% ATK, -10% Esper Resistance, or +10% Break Efficiency, lasting for 15s. The same effect cannot stack.",
+						"<sh>Scorch Enhancement:</> Applies one of three random debuffs whenever Scorch is inflicted on a target: -20% ATK, -10% Esper Resistance, or +<dn>10%</> Break Efficiency, lasting for <dn>15</>s. The same effect cannot stack.",
 				},
 			],
 			maxLvl: 1,

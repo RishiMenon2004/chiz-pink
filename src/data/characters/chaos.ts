@@ -35,7 +35,7 @@ export const chaos: Character = {
 				{
 					section: "Basic Attack: Final Verdict",
 					description:
-						"Your guilt is plain to see. Hold Basic Attack to trigger Final Verdict. Consumes all <kw>Crime</> to add a 2nd hit to Final Verdict and deal heavy Settlement DMG if current <kw>Crime</> is at its cap (1000). Performs only the 1st hit of Final Verdict, dealing <dn>2</> instances of damage, if <kw>Crime</> has not reached its cap.",
+						"Your guilt is plain to see. Hold Basic Attack to trigger Final Verdict. Consumes all <kw>Crime</> to add a <dn>2nd</> hit to Final Verdict and deal heavy Settlement DMG if current <kw>Crime</> is at its cap (<dn>1000</>). Performs only the <dn>1st</> hit of Final Verdict, dealing <dn>2</> instances of damage, if <kw>Crime</> has not reached its cap.",
 				},
 				{
 					section: "Basic Attack: Overturn",
@@ -90,7 +90,7 @@ export const chaos: Character = {
 			description: [
 				{
 					description:
-						"<sh>Remora Enhancement:</> Deals <el>Lakshana DMG</> equal to 800% of ATK to the target when Remora ends, based on Remora's duration. Each second beyond the base 5s duration increases total DMG by 45%, up to 300%. Resets Remora's duration when reapplied.",
+						"<sh>Remora Enhancement:</> Deals <el>Lakshana DMG</> equal to <dn>800%</> of ATK to the target when Remora ends, based on Remora's duration. Each second beyond the base <dn>5</>s duration increases total DMG by <dn>45%</>, up to <dn>300%</>. Resets Remora's duration when reapplied.",
 				},
 			],
 			maxLvl: 1,

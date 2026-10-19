@@ -29,17 +29,17 @@ export const blackbird: Character = {
 				{
 					section: "Basic Attack: Fleeting Shadow",
 					description:
-						"Uses Chain Cage to perform up to 5 consecutive attacks, dealing <el>Psyche DMG</>. Gains <kw>Malice</> after hitting an enemy.",
+						"Uses Chain Cage to perform up to <dn>5</> consecutive attacks, dealing <el>Psyche DMG</>. Gains <kw>Malice</> after hitting an enemy.",
 				},
 				{
 					section: "Basic Attack: Roostcall",
 					description:
-						"Hold Basic Attack during the 1st, 2nd, or 3rd hit of Fleeting Shadow to trigger Roostcall, imprisoning the target with Chain Cage, dealing <el>Psyche DMG</>, and greatly reducing their Movement Speed for a set duration. Gains <kw>Malice</> after hitting an enemy.",
+						"Hold Basic Attack during the <dn>1st</>, <dn>2nd</>, or <dn>3rd</> hit of Fleeting Shadow to trigger Roostcall, imprisoning the target with Chain Cage, dealing <el>Psyche DMG</>, and greatly reducing their Movement Speed for a set duration. Gains <kw>Malice</> after hitting an enemy.",
 				},
 				{
 					section: "Basic Attack: Lingering Affliction",
 					description:
-						"Press Basic Attack while airborne to plunge, dealing 1 instance of <el>Psyche DMG</> to an area upon impact. Increases DMG based on fall height by up to 100%. Gains <kw>Malice</> after hitting an enemy.",
+						"Press Basic Attack while airborne to plunge, dealing <dn>1</> instance of <el>Psyche DMG</> to an area upon impact. Increases DMG based on fall height by up to <dn>100%</>. Gains <kw>Malice</> after hitting an enemy.",
 				},
 				{
 					section: "Critical Riposte: Avian Instinct",
@@ -49,12 +49,12 @@ export const blackbird: Character = {
 				{
 					section: "Basic Attack: Pyreflame",
 					description:
-						"Blackbird is engulfed in flames, and the <kw>Witch of Deliverance</> emerges from the blaze, unleashing up to 5 consecutive attacks that deal <el>Psyche DMG</>. Consumes <kw>Malice</> after hitting an enemy.",
+						"Blackbird is engulfed in flames, and the <kw>Witch of Deliverance</> emerges from the blaze, unleashing up to <dn>5</> consecutive attacks that deal <el>Psyche DMG</>. Consumes <kw>Malice</> after hitting an enemy.",
 				},
 				{
 					section: "Basic Attack: Bestowed Grace",
 					description:
-						"Hold Basic Attack during the 2nd hit of Pyreflame to trigger Bestowed Grace. The <kw>Witch of Deliverance</> rises into the air, briefly charges up, then deals <el>Psyche DMG</> over a large area. Consumes <kw>Malice</> after hitting an enemy.",
+						"Hold Basic Attack during the <dn>2nd</> hit of Pyreflame to trigger Bestowed Grace. The <kw>Witch of Deliverance</> rises into the air, briefly charges up, then deals <el>Psyche DMG</> over a large area. Consumes <kw>Malice</> after hitting an enemy.",
 				},
 				{
 					section: "Basic Attack: Tidings Unto All",
@@ -64,7 +64,7 @@ export const blackbird: Character = {
 				{
 					section: "Basic Attack: Searing Scar",
 					description:
-						"Press Basic Attack while the <kw>Witch of Deliverance</> is airborne to plunge, dealing 1 instance of <el>Psyche DMG</> to an area upon impact. Increases DMG based on fall height, by up to 100%. Consumes <kw>Malice</> after hitting an enemy.",
+						"Press Basic Attack while the <kw>Witch of Deliverance</> is airborne to plunge, dealing <dn>1</> instance of <el>Psyche DMG</> to an area upon impact. Increases DMG based on fall height, by up to <dn>100%</>. Consumes <kw>Malice</> after hitting an enemy.",
 				},
 				{
 					section: "Critical Riposte: Born of Calamity",
@@ -84,12 +84,12 @@ export const blackbird: Character = {
 			description: [
 				{
 					description:
-						"Uses Chain Cage to deal <el>Psyche DMG</> to the target and inflict a <kw>Forsaken Feather</> mark on targets hit for a set duration. Casts to gain <kw>Malice</>.\nWhile <kw>Forsaken Feather</> is active, triggers <kw>Forsaken Bird</> to perform a coordinated attack when another active ally deals DMG to the marked target. <kw>Forsaken Bird</> deals <el>Psyche DMG</> in an area around the target. Triggers no more than once every 2s, up to 5 times in total.",
+						"Uses Chain Cage to deal <el>Psyche DMG</> to the target and inflict a <kw>Forsaken Feather</> mark on targets hit for a set duration. Casts to gain <kw>Malice</>.\nWhile <kw>Forsaken Feather</> is active, triggers <kw>Forsaken Bird</> to perform a coordinated attack when another active ally deals DMG to the marked target. <kw>Forsaken Bird</> deals <el>Psyche DMG</> in an area around the target. Triggers no more than once every <dn>2</>s, up to <dn>5</> times in total.",
 				},
 				{
 					section: "Flames of Deliverance",
 					description:
-						"Charges toward the target at high speed while Blackbird is in the <kw>Witch of Deliverance</> state, dealing <el>Psyche DMG</>. Consumes <kw>Malice</> after hitting an enemy.\nActivation: Activates after <kw>Witch of Deliverance</> performs the 5th hit of Pyreflame or casts No Quarter. This skill is inactive by default.",
+						"Charges toward the target at high speed while Blackbird is in the <kw>Witch of Deliverance</> state, dealing <el>Psyche DMG</>. Consumes <kw>Malice</> after hitting an enemy.\nActivation: Activates after <kw>Witch of Deliverance</> performs the <dn>5th</> hit of Pyreflame or casts No Quarter. This skill is inactive by default.",
 				},
 			],
 			maxLvl: 10,

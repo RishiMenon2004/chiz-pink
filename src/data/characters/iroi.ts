@@ -29,27 +29,27 @@ export const iroi: Character = {
 				{
 					section: "Basic Attack: Collaboration",
 					description:
-						"Summons lambs to perform up to 5 consecutive attacks, dealing <el>Anima DMG</>. Builds up <kw>Imagination</> when attacks hit.",
+						"Summons lambs to perform up to <dn>5</> consecutive attacks, dealing <el>Anima DMG</>. Builds up <kw>Imagination</> when attacks hit.",
 				},
 				{
 					section: "Basic Attack: Daydream",
 					description:
-						"Hold Basic Attack again after Iroi uses Daydream to consume Imagination and summon Morpheus, unleashing sustained fire that deals <el>Anima DMG</>.",
+						"Hold Basic Attack to consume Imagination and charge up. Unleashes up to <dn>3</> stages of Daydream depending on the charge level.",
 				},
 				{
 					section: "Basic Attack: Lucid Dream",
 					description:
-						"Press Basic Attack while airborne to plunge, dealing 1 instance of <el>Anima DMG</> to an area upon impact. Increases DMG based on fall height, up to 100%. Builds up Imagination when attacks hit.",
+						"Hold Basic Attack again after Iroi uses Daydream to consume Imagination and summon Morpheus, unleashing sustained fire that deals <el>Anima DMG</>.",
 				},
 				{
 					section: "Basic Attack: Wakey-Wakey",
 					description:
-						"Triggers when casting Deliverance after a Critical Dodge. Dodges an attack with a quick dash, seizes the enemy's opening and swiftly swings his weapon, dealing 1 instance of <el>Incantation DMG</> to an area, reducing their Break.",
+						"Press Basic Attack while airborne to plunge, dealing <dn>1</> instance of <el>Anima DMG</> to an area upon impact. Increases DMG based on fall height, up to <dn>100%</>. Builds up Imagination when attacks hit.",
 				},
 				{
 					section: "Critical Riposte: Reflexive Response",
 					description:
-						"Triggers when using Collaboration after performing a Critical Dodge. Swings Phantasos at the target, dealing 1 instance of <el>Anima DMG</> and reducing Break. Builds up Imagination when attacks hit.",
+						"Triggers when using Collaboration after performing a Critical Dodge. Swings Phantasos at the target, dealing <dn>1</> instance of <el>Anima DMG</> and reducing Break. Builds up Imagination when attacks hit.",
 				},
 			],
 			maxLvl: 10,
@@ -65,7 +65,7 @@ export const iroi: Character = {
 				{
 					section: "Redirect Skill: Future Self Continuity",
 					description:
-						"Hold to activate. Creates dreamlike illusions while in combat, causing 3 allies to enter the Regression state and assist in battle. Regression is automatically removed after leaving combat.",
+						"Hold to activate. Creates dreamlike illusions while in combat, causing <dn>3</> allies to enter the Regression state and assist in battle. Regression is automatically removed after leaving combat.",
 				},
 				{
 					description:
@@ -79,7 +79,7 @@ export const iroi: Character = {
 			description: [
 				{
 					description:
-						"Return to the first dream. Opens the gate to a dream and triggers different effects based on the amount of Imagination built up.\nIf Imagination has not reached the required threshold: Iroi opens the Dream of the Horned Gate, continuously healing all allies.\nIf Imagination has reached the required threshold: Iroi opens the Dream of the Ivory Gate, continuously dealing DMG to enemies inside the dream. During this time, press and hold the avatar icon of a character in the Regression state to revive them and restore some HP. This effect can revive up to 1 character during each dream.\nThe dream continuously consumes Imagination. When Imagination is depleted, the dream ends, and revived characters return to the Regression state.\nWhile the Ultimate's effect is active, Imagination cannot be built up, but Daydream and Lucid Dream do not consume Imagination.",
+						"Return to the first dream. Opens the gate to a dream and triggers different effects based on the amount of Imagination built up.\nIf Imagination has not reached the required threshold: Iroi opens the Dream of the Horned Gate, continuously healing all allies.\nIf Imagination has reached the required threshold: Iroi opens the Dream of the Ivory Gate, continuously dealing DMG to enemies inside the dream. During this time, press and hold the avatar icon of a character in the Regression state to revive them and restore some HP. This effect can revive up to <dn>1</> character during each dream.\nThe dream continuously consumes Imagination. When Imagination is depleted, the dream ends, and revived characters return to the Regression state.\nWhile the Ultimate's effect is active, Imagination cannot be built up, but Daydream and Lucid Dream do not consume Imagination.",
 				},
 			],
 			maxLvl: 10,
@@ -89,7 +89,7 @@ export const iroi: Character = {
 			description: [
 				{
 					description:
-						"Just in time! Picks up Morpheus and attacks forward, dealing 1 instance of <el>Anima DMG</>, healing all allies, and building up Imagination.",
+						"Just in time! Picks up Morpheus and attacks forward, dealing <dn>1</> instance of <el>Anima DMG</>, healing all allies, and building up Imagination.",
 				},
 			],
 			maxLvl: 10,
@@ -145,11 +145,11 @@ export const iroi: Character = {
 			description: [
 				{
 					description:
-						"<sh>Level 1:</> Grants an additional 1000 Fons in Base Fare for each order in Swift Travel.",
+						"<sh>Level 1:</> Grants an additional <dn>1000</> Fons in Base Fare for each order in Swift Travel.",
 				},
 				{
 					description:
-						"<sh>Level 2:</> Increases each customer's satisfaction limit in Swift Travel by 25 points.",
+						"<sh>Level 2:</> Increases each customer's satisfaction limit in Swift Travel by <dn>25</> points.",
 				},
 			],
 			maxLvl: 2,

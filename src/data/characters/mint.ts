@@ -35,7 +35,7 @@ export const mint: Character = {
 				{
 					section: "Basic Attack: Justice from Above",
 					description:
-						"Wields her weapon in the air and plunges, dealing <dn>1</> instance of <el>Anima DMG</> to an area upon impact. Increases DMG based on fall height, up to 100%.",
+						"Wields her weapon in the air and plunges, dealing <dn>1</> instance of <el>Anima DMG</> to an area upon impact. Increases DMG based on fall height, up to <dn>100%</>.",
 				},
 				{
 					section: "Critical Riposte: Caramel Crisp",

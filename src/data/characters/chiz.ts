@@ -30,22 +30,22 @@ export const chiz: Character = {
 				{
 					section: "Basic Attack: Exiled Swordplay",
 					description:
-						"Swings the short staff to perform up to 5 consecutive attacks, dealing <el>Cosmos DMG</>. Grants <kw>Grain</> on hit.",
+						"Swings the short staff to perform up to <dn>5</> consecutive attacks, dealing <el>Cosmos DMG</>. Grants <kw>Grain</> on hit.",
 				},
 				{
 					section: "Basic Attack: Blighted Vale",
 					description:
-						"Press Blighted Vale to throw Brown Sugar Boba to devour the target, dealing 2 instance of <el>Cosmos DMG</>, granting a certain amount of Grain and Fons. Triggers up to once every 2.5s.\nHold Blighted Vale during any instance of Exiled Swordplay attacks to create a branch attack, dealing 2 instance of <el>Cosmos DMG</> and granting a certain amount of Grain and Fons.\nGrants bonus Fons if this skill defeats the target.\nUp to 250,000 Fons can be earned this way. Increasing the Tycoon Level to 25 raises the cap to 500,000 Fons. Grants 1 Fons per use once the daily cap is reached. After reaching the total limit, no more Fons can be obtained this way.",
+						"Press Blighted Vale to throw Brown Sugar Boba to devour the target, dealing <dn>2</> instance of <el>Cosmos DMG</>, granting a certain amount of Grain and Fons. Triggers up to once every <dn>2.5</>s.\nHold Blighted Vale during any instance of Exiled Swordplay attacks to create a branch attack, dealing <dn>2</> instance of <el>Cosmos DMG</> and granting a certain amount of Grain and Fons.\nGrants bonus Fons if this skill defeats the target.\nUp to <dn>250,000</> Fons can be earned this way. Increasing the Tycoon Level to <dn>25</> raises the cap to <dn>500,000</> Fons. Grants <dn>1</> Fons per use once the daily cap is reached. After reaching the total limit, no more Fons can be obtained this way.",
 				},
 				{
 					section: "Basic Attack: Bountiful Grain",
 					description:
-						"Press Basic Attack while airborne to plunge, dealing 1 instance of <el>Cosmos DMG</> to an area upon impact, while granting a certain amount of <kw>Grain</>. Increases DMG based on fall height, up to 100%.",
+						"Press Basic Attack while airborne to plunge, dealing <dn>1</> instance of <el>Cosmos DMG</> to an area upon impact, while granting a certain amount of <kw>Grain</>. Increases DMG based on fall height, up to <dn>100%</>.",
 				},
 				{
 					section: "Critical Riposte: Minsky Moment",
 					description:
-						"Triggers when pressing Basic Attack after a Critical Dodge. Leaps to evade and swings the staff, sending Brown Sugar Boba crashing into the target, dealing 1 instance of <el>Cosmos DMG</>, reducing Break, and granting <kw>Grain</>.",
+						"Triggers when pressing Basic Attack after a Critical Dodge. Leaps to evade and swings the staff, sending Brown Sugar Boba crashing into the target, dealing <dn>1</> instance of <el>Cosmos DMG</>, reducing Break, and granting <kw>Grain</>.",
 				},
 			],
 			maxLvl: 10,
@@ -55,15 +55,15 @@ export const chiz: Character = {
 			description: [
 				{
 					description:
-						"The more, the merrier; the more, the better. Stacks Redirect Skill attempts, up to 3 stacks.",
+						"The more, the merrier; the more, the better. Stacks Redirect Skill attempts, up to <dn>3</> stacks.",
 				},
 				{
 					description:
-						"Press Redirect Skill to consume 1 stack and cast No Grain, dealing <el>Cosmos DMG</> once. Press Redirect Skill consecutively to consume stacks and cast No Grain, Half Grain, and Full Grain in order, up to 3 times in a row.\nPress to cast Pink Paws Priority Principle while in the Surplus state, dealing bonus <el>Cosmos DMG</> based on available Grains using Redirect Skills. Cannot Crit.",
+						"Press Redirect Skill to consume <dn>1</> stack and cast No Grain, dealing <el>Cosmos DMG</> once. Press Redirect Skill consecutively to consume stacks and cast No Grain, Half Grain, and Full Grain in order, up to <dn>3</> times in a row.\nPress to cast Pink Paws Priority Principle while in the Surplus state, dealing bonus <el>Cosmos DMG</> based on available Grains using Redirect Skills. Cannot Crit.",
 				},
 				{
 					description:
-						"Hold Redirect Skill to consume 2 stacks and cast No Grain and Half Grain. Continuously consumes Grains while Half Grain is active, dealing consecutive bonus <el>Cosmos DMG</> based on available Grains. Cannot Crit. Consumes all available Grains (including all Grain Loans from the Debt state) when Half Grain ends. Press Redirect Skill again to consume 1 stack and end Half Grain early, allowing Full Grain to be cast without consuming Grains. Hold Redirect Skill to consume 3 stacks and use all available Grains (including all Grain Loans from the Debt state). Casts No Grain, Half Grain, and Full Grain in order.\nHold to cast Pink Paws Priority Principle while Surplus is active, dealing bonus <el>Cosmos DMG</> with No Grain based on remaining Grains. Cannot Crit.",
+						"Hold Redirect Skill to consume <dn>2</> stacks and cast No Grain and Half Grain. Continuously consumes Grains while Half Grain is active, dealing consecutive bonus <el>Cosmos DMG</> based on available Grains. Cannot Crit. Consumes all available Grains (including all Grain Loans from the Debt state) when Half Grain ends. Press Redirect Skill again to consume <dn>1</> stack and end Half Grain early, allowing Full Grain to be cast without consuming Grains. Hold Redirect Skill to consume <dn>3</> stacks and use all available Grains (including all Grain Loans from the Debt state). Casts No Grain, Half Grain, and Full Grain in order.\nHold to cast Pink Paws Priority Principle while Surplus is active, dealing bonus <el>Cosmos DMG</> with No Grain based on remaining Grains. Cannot Crit.",
 				},
 			],
 			maxLvl: 10,
@@ -73,7 +73,7 @@ export const chiz: Character = {
 			description: [
 				{
 					description:
-						"No turning back, max the leverage. Throws Brown Sugar Boba to strike, dealing AoE <el>Cosmos DMG</> once and entering Grain Market for 7s. During this time, the first Grain Settlement DMG is guaranteed to Crit.\nConverts all remaining <kw>Grain Loans</> into <kw>Grains</> and enters the <kw>Surplus</> state after casting Zero-Sum Game. Invests all Grains into the Grain Market. Afterward, press Pink Paws Priority Principle to gain Grains based on current <kw>Grain Price</> fluctuations during <kw>Grain Settlement</>. Hold Pink Paws Priority Principle to trigger Grain Settlement once based on the Grain Price on first activation.\nLeaves the Grain Market and prioritizes repaying Grain Loans with all available Grains when Grain Market duration ends.\nGrants access to the Grain Market while in <kw>Debt</> state and holding any Grain Loans.",
+						"No turning back, max the leverage. Throws Brown Sugar Boba to strike, dealing AoE <el>Cosmos DMG</> once and entering Grain Market for <dn>7</>s. During this time, the first Grain Settlement DMG is guaranteed to Crit.\nConverts all remaining <kw>Grain Loans</> into <kw>Grains</> and enters the <kw>Surplus</> state after casting Zero-Sum Game. Invests all Grains into the Grain Market. Afterward, press Pink Paws Priority Principle to gain Grains based on current <kw>Grain Price</> fluctuations during <kw>Grain Settlement</>. Hold Pink Paws Priority Principle to trigger Grain Settlement once based on the Grain Price on first activation.\nLeaves the Grain Market and prioritizes repaying Grain Loans with all available Grains when Grain Market duration ends.\nGrants access to the Grain Market while in <kw>Debt</> state and holding any Grain Loans.",
 				},
 			],
 			maxLvl: 10,
@@ -83,7 +83,7 @@ export const chiz: Character = {
 			description: [
 				{
 					description:
-						"Hope I can m-make it in time…\nBrown Sugar Boba carries Chiz and crashes into the target, dealing 1 instance of <el>Cosmos DMG</>.",
+						"Hope I can m-make it in time…\nBrown Sugar Boba carries Chiz and crashes into the target, dealing <dn>1</> instance of <el>Cosmos DMG</>.",
 				},
 			],
 			maxLvl: 10,
@@ -93,7 +93,7 @@ export const chiz: Character = {
 			description: [
 				{
 					description:
-						"<sh>Charge Enhancement:</> Grants active characters 4 additional Ultimate Energy.",
+						"<sh>Charge Enhancement:</> Grants active characters <dn>4</> additional Ultimate Energy.",
 				},
 			],
 			maxLvl: 1,
@@ -103,7 +103,7 @@ export const chiz: Character = {
 			description: [
 				{
 					description:
-						"Increases Chiz's Charge Efficiency by 20% while on the field.",
+						"Increases Chiz's Charge Efficiency by <dn>20%</> while on the field.",
 				},
 			],
 			maxLvl: 1,

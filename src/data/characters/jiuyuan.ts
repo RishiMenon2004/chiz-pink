@@ -34,7 +34,7 @@ export const jiuyuan: Character = {
 				{
 					section: "Basic Attack: Bird's Eye View",
 					description:
-						"Wields her weapon while airborne and plunges, dealing <dn>1</> instance of <el>Anima DMG</> to an area upon impact. Increases DMG based on fall height, up to 100%.",
+						"Wields her weapon while airborne and plunges, dealing <dn>1</> instance of <el>Anima DMG</> to an area upon impact. Increases DMG based on fall height, up to <dn>100%</>.",
 				},
 				{
 					section: "Basic Attack: Info-Guided Arts",
@@ -88,7 +88,7 @@ export const jiuyuan: Character = {
 			description: [
 				{
 					description:
-						"<sh>Blossom Enhancement:</> Spawns 1 additional Vita Bud and increases Vita Bud limit on field to 6.",
+						"<sh>Blossom Enhancement:</> Spawns <dn>1</> additional Vita Bud and increases Vita Bud limit on field to <dn>6</>.",
 				},
 			],
 			maxLvl: 1,

@@ -35,7 +35,7 @@ export const zero: Character = {
 				{
 					section: "Basic Attack: Appraisal - Break",
 					description:
-						"Wields the weapon mid-air and plunges, dealing <dn>1</> instance of <el>Cosmos DMG</> to an area upon impact. Increases DMG based on fall height, up to 100%.",
+						"Wields the weapon mid-air and plunges, dealing <dn>1</> instance of <el>Cosmos DMG</> to an area upon impact. Increases DMG based on fall height, up to <dn>100%</>.",
 				},
 			],
 			maxLvl: 10,
@@ -75,7 +75,7 @@ export const zero: Character = {
 			description: [
 				{
 					description:
-						"<sh>Charge Enhancement:</> Restores HP equal to 50% of Zero's Base ATK when the active character gains Ultimate Energy.",
+						"<sh>Charge Enhancement:</> Restores HP equal to <dn>50%</> of Zero's Base ATK when the active character gains Ultimate Energy.",
 				},
 			],
 			maxLvl: 1,

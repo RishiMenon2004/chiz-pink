@@ -35,12 +35,12 @@ export const haniel: Character = {
 				{
 					section: "Basic Attack: Paranormal Cannon",
 					description:
-						"Hold Basic Attack during the 1st hit to charge, then fire <dn>a</> charged cannon forward.",
+						"Hold Basic Attack during the <dn>1st</> hit to charge, then fire <dn>a</> charged cannon forward.",
 				},
 				{
 					section: "Basic Attack: Paranormal Entrance",
 					description:
-						"Press Basic Attack while airborne to plunge, dealing <dn>1</> instance of <el>Psyche DMG</> to an area upon impact. Increases DMG based on fall height, up to 100%.",
+						"Press Basic Attack while airborne to plunge, dealing <dn>1</> instance of <el>Psyche DMG</> to an area upon impact. Increases DMG based on fall height, up to <dn>100%</>.",
 				},
 				{
 					section: "Critical Riposte: Ace Sweep",
@@ -65,7 +65,7 @@ export const haniel: Character = {
 			description: [
 				{
 					description:
-						"Genesse Girls' Academy Paranormal Department! Assuming control! Releases an enhancement field centered on herself and gaining the Paranormal Ace effect for a period of time.\nGrants the Team an ATK bonus based on Haniel's Base ATK.\nTriggering <kw>Ensemble</> simultaneously triggers 1 additional Ensemble - Symphony effect around the character with increased DMG and range. Ensemble - Symphony does not grant <kw>Plot Armor</> for Haniel. When triggering <kw>Ensemble</>, the current active character's next attack deals additional damage for <dn>3s</>. Effect does not stack.\nWhile Paranormal Ace is active, Hootie's duration timer is paused until the end of the effect.",
+						"Genesse Girls' Academy Paranormal Department! Assuming control! Releases an enhancement field centered on herself and gaining the Paranormal Ace effect for a period of time.\nGrants the Team an ATK bonus based on Haniel's Base ATK.\nTriggering <kw>Ensemble</> simultaneously triggers <dn>1</> additional Ensemble - Symphony effect around the character with increased DMG and range. Ensemble - Symphony does not grant <kw>Plot Armor</> for Haniel. When triggering <kw>Ensemble</>, the current active character's next attack deals additional damage for <dn>3s</>. Effect does not stack.\nWhile Paranormal Ace is active, Hootie's duration timer is paused until the end of the effect.",
 				},
 			],
 			maxLvl: 10,
@@ -85,7 +85,7 @@ export const haniel: Character = {
 			description: [
 				{
 					description:
-						"<sh>Nova Enhancement:</> Allows all allies to drain ATK from the target when Nova ends. The target loses ATK equal to 4% of Haniel's Base ATK, and each ally gains ATK equal to 8% of Haniel's Base ATK. The total drain is capped at 16% of Haniel's Base ATK, and the target cannot lose more than 20% of their initial ATK. Restores both parties' stats upon exiting combat.",
+						"<sh>Nova Enhancement:</> Allows all allies to drain ATK from the target when Nova ends. The target loses ATK equal to <dn>4%</> of Haniel's Base ATK, and each ally gains ATK equal to <dn>8%</> of Haniel's Base ATK. The total drain is capped at <dn>16%</> of Haniel's Base ATK, and the target cannot lose more than <dn>20%</> of their initial ATK. Restores both parties' stats upon exiting combat.",
 				},
 			],
 			maxLvl: 1,

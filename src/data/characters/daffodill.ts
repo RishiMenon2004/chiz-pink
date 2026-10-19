@@ -30,12 +30,12 @@ export const daffodill: Character = {
 				{
 					section: "Basic Attack: Still Waters",
 					description:
-						"Her heart is as calm as still waters, long accustomed to battle. Wields her twin blades to perform up to 5 consecutive attacks, dealing <el>Chaos DMG</>.",
+						"Her heart is as calm as still waters, long accustomed to battle. Wields her twin blades to perform up to <dn>5</> consecutive attacks, dealing <el>Chaos DMG</>.",
 				},
 				{
 					section: "Basic Attack: Light Prism",
 					description:
-						"Light and shadow exist in separate realms. Daffodill's Break Damage contribution is increased by 20%.",
+						"Light and shadow exist in separate realms. Daffodill's Break Damage contribution is increased by <dn>20%</>.",
 				},
 				{
 					section: "Basic Attack: Mirror on Water",
@@ -50,12 +50,12 @@ export const daffodill: Character = {
 				{
 					section: "Basic Attack: Crosshair Lock",
 					description:
-						"Wields her weapon while airborne and plunges, dealing 1 instance of <el>Chaos DMG</> to an area upon impact. Increases DMG based on fall height, up to 100%.",
+						"Wields her weapon while airborne and plunges, dealing <dn>1</> instance of <el>Chaos DMG</> to an area upon impact. Increases DMG based on fall height, up to <dn>100%</>.",
 				},
 				{
 					section: "Critical Riposte: Close Call",
 					description:
-						"Triggers when using Still Waters after performing a Critical Dodge. Instantly lifts her foot, pulling the rope to swing her blade toward the target, dealing 1 instance of <el>Chaos DMG</> and reducing Break.",
+						"Triggers when using Still Waters after performing a Critical Dodge. Instantly lifts her foot, pulling the rope to swing her blade toward the target, dealing <dn>1</> instance of <el>Chaos DMG</> and reducing Break.",
 				},
 			],
 			maxLvl: 10,
@@ -66,7 +66,7 @@ export const daffodill: Character = {
 				{
 					section: "Redirect Skill: Resonance",
 					description:
-						"Resonating with the blade. Deals damage to the target. Grants Resonance stacks and increases damage when any team member casts a Support Skill. Increases Resonance's DMG and Break per Support Skill cast, up to 2 stacks. Enhances Resonance and replaces it with Echoes when stacks reach the maximum.",
+						"Resonating with the blade. Deals damage to the target. Grants Resonance stacks and increases damage when any team member casts a Support Skill. Increases Resonance's DMG and Break per Support Skill cast, up to <dn>2</> stacks. Enhances Resonance and replaces it with Echoes when stacks reach the maximum.",
 				},
 				{
 					section: "Redirect Skill: Echoes",
@@ -81,7 +81,7 @@ export const daffodill: Character = {
 			description: [
 				{
 					description:
-						"Casts Finale, dealing <el>Chaos DMG</> to enemies in an area. Unseals her left eye, increasing damage and inflicting <kw>Insight</> on nearby enemies for the duration. Unlocks the skill <kw>Phantom Step</>, which can be used up to 2 times. Casting Finale resets Phantom Step charges.",
+						"Casts Finale, dealing <el>Chaos DMG</> to enemies in an area. Unseals her left eye, increasing damage and inflicting <kw>Insight</> on nearby enemies for the duration. Unlocks the skill <kw>Phantom Step</>, which can be used up to <dn>2</> times. Casting Finale resets Phantom Step charges.",
 				},
 			],
 			maxLvl: 10,
@@ -91,7 +91,7 @@ export const daffodill: Character = {
 			description: [
 				{
 					description:
-						"Leave the rest to me. Swings her blade in a slashing motion, dealing 1 instance of <el>Chaos DMG</> to the target.",
+						"Leave the rest to me. Swings her blade in a slashing motion, dealing <dn>1</> instance of <el>Chaos DMG</> to the target.",
 				},
 			],
 			maxLvl: 10,
@@ -101,14 +101,14 @@ export const daffodill: Character = {
 			description: [
 				{
 					description:
-						"<sh>Discord Enhancement:</> Further reduces the target's Break cap by 10% for 30s while affected by Discord and restores it to normal upon leaving combat. Stacks Discord Enhancement effects up to a maximum reduction of 20% of the target's initial Break cap.",
+						"<sh>Discord Enhancement:</> Further reduces the target's Break cap by <dn>10%</> for <dn>30</>s while affected by Discord and restores it to normal upon leaving combat. Stacks Discord Enhancement effects up to a maximum reduction of <dn>20%</> of the target's initial Break cap.",
 				},
 			],
 			maxLvl: 1,
 		},
 		passive2: {
 			name: "Cicada Shell",
-			description: [{ description: "Increases <kw>Phantom Step</> DMG by 80%." }],
+			description: [{ description: "Increases <kw>Phantom Step</> DMG by <dn>80%</>." }],
 			maxLvl: 1,
 		},
 		lifeSkill1: {

@@ -39,7 +39,7 @@ export const sakiri: Character = {
 				{
 					section: "Basic Attack: Swallow",
 					description:
-						"Wields Kiroumaru in the air and plunges, dealing <dn>1</> instance of <el>Incantation DMG</> to an area upon impact. Increases DMG based on fall height, up to 100%.",
+						"Wields Kiroumaru in the air and plunges, dealing <dn>1</> instance of <el>Incantation DMG</> to an area upon impact. Increases DMG based on fall height, up to <dn>100%</>.",
 				},
 				{
 					section: "Critical Riposte: Mischief",
@@ -90,7 +90,7 @@ export const sakiri: Character = {
 			description: [
 				{
 					description:
-						"<sh>Scorch Enhancement:</> Increases DoT taken by the target by 25% for each type of DoT effect while in Scorch state, up to 100%.",
+						"<sh>Scorch Enhancement:</> Increases DoT taken by the target by <dn>25%</> for each type of DoT effect while in Scorch state, up to <dn>100%</>.",
 				},
 			],
 			maxLvl: 1,
@@ -100,7 +100,7 @@ export const sakiri: Character = {
 			description: [
 				{
 					description:
-						"Reduces enemies' DEF by 10% for 20s after inflicting Airborne or <sh>Suppress</>.",
+						"Reduces enemies' DEF by <dn>10%</> for <dn>20</>s after inflicting Airborne or <sh>Suppress</>.",
 				},
 			],
 			maxLvl: 1,
@@ -126,7 +126,7 @@ export const sakiri: Character = {
 				},
 				{
 					description:
-						"<sh>Level 5:</> Sakiri increases dish prices by <dn>0.3</> Fons when a dish contains 3 identical tags.",
+						"<sh>Level 5:</> Sakiri increases dish prices by <dn>0.3</> Fons when a dish contains <dn>3</> identical tags.",
 				},
 			],
 			maxLvl: 5,

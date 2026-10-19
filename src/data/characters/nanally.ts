@@ -35,7 +35,7 @@ export const nanally: Character = {
 				{
 					section: "Basic Attack: Heavy Hitter!",
 					description:
-						"Triggers by holding Basic Attack. Performs up to 3 powerful attacks, dealing <el>Anima DMG</>. Chains after Critical Riposte and the 1st, 2nd, 3rd, and 5th attacks of Colucci Secret Skill. Dodging does not interrupt the combo.",
+						"Triggers by holding Basic Attack. Performs up to <dn>3</> powerful attacks, dealing <el>Anima DMG</>. Chains after Critical Riposte and the <dn>1st</>, <dn>2nd</>, <dn>3rd</>, and <dn>5th</> attacks of Colucci Secret Skill. Dodging does not interrupt the combo.",
 				},
 				{
 					section: "Basic Attack: Colucci Secret Gundo",
@@ -45,7 +45,7 @@ export const nanally: Character = {
 				{
 					section: "Basic Attack: Grand Entrance!",
 					description:
-						"Swings her claws in the air and plunges, dealing <dn>1</> instance of <el>Anima DMG</> to an area upon impact. Increases DMG based on fall height, up to 100%.",
+						"Swings her claws in the air and plunges, dealing <dn>1</> instance of <el>Anima DMG</> to an area upon impact. Increases DMG based on fall height, up to <dn>100%</>.",
 				},
 				{
 					section: "Critical Riposte: Can't Touch This!",
@@ -90,7 +90,7 @@ export const nanally: Character = {
 			description: [
 				{
 					description:
-						"<sh>Blossom Enhancement:</> Fires 10 Vita Pistils with Vita Bud, reducing the interval between each shot to 1s.",
+						"<sh>Blossom Enhancement:</> Fires <dn>10</> Vita Pistils with Vita Bud, reducing the interval between each shot to <dn>1</>s.",
 				},
 			],
 			maxLvl: 1,
@@ -100,7 +100,7 @@ export const nanally: Character = {
 			description: [
 				{
 					description:
-						"Applies <dn>1</> <sh>follow-up attack</> to a single enemy, dealing <el>Anima DMG</> of <dn>60%</> ATK whenever any ally deals <dn>1</> instance of Esper Cycle DMG while Nanally is in <kw>Ichi-daime's Authority</> state. DMG Ratio scales with Basic Attack skill level, reaching <dn>129.5%</> at Lvl 11.\nTriggers <dn>once</> every <dn>2s</>.",
+						"Applies <dn>1</> <sh>follow-up attack</> to a single enemy, dealing <el>Anima DMG</> of <dn>60%</> ATK whenever any ally deals <dn>1</> instance of Esper Cycle DMG while Nanally is in <kw>Ichi-daime's Authority</> state. DMG Ratio scales with Basic Attack skill level, reaching <dn>129.5%</> at Lvl <dn>11</>.\nTriggers <dn>once</> every <dn>2s</>.",
 				},
 			],
 			maxLvl: 1,
@@ -126,7 +126,7 @@ export const nanally: Character = {
 				},
 				{
 					description:
-						"<sh>Level 5:</> Nanally increases dish prices by <dn>0.3</> Fons for every 2 Main Dish tags on dishes.",
+						"<sh>Level 5:</> Nanally increases dish prices by <dn>0.3</> Fons for every <dn>2</> Main Dish tags on dishes.",
 				},
 			],
 			maxLvl: 5,

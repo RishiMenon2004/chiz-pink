@@ -29,12 +29,12 @@ export const zankou: Character = {
 				{
 					section: "Basic Attack: Wildfire",
 					description:
-						"Wields her blade and performs up to <dn>5</> consecutive attacks while in Reality Form, dealing <el>Incantation DMG</>. Pulls in targets within range on the 5th instance of Basic Attack. Gains the <kw>Hunt</> buff for the attack's duration.",
+						"Wields her blade and performs up to <dn>5</> consecutive attacks while in Reality Form, dealing <el>Incantation DMG</>. Pulls in targets within range on the <dn>5th</> instance of Basic Attack. Gains the <kw>Hunt</> buff for the attack's duration.",
 				},
 				{
 					section: "Basic Attack: Nightmare Waltz",
 					description:
-						"Wields her blade to pull the silk and performs up to 4 consecutive attacks while in Illusion form, dealing <el>Incantation DMG</> and inflicting 1 stack of Heartwrench on hit. Pulls in targets within range on the 3rd instance of Basic Attack. Each Nightmare Waltz attack spreads up to 4 DoT effects from the target to all enemies in the area, including the original target. Gains the Delusion buff for the attack's duration. The DMG dealt by Nightmare Waltz counts as Follow-up Attack DMG.",
+						"Wields her blade to pull the silk and performs up to <dn>4</> consecutive attacks while in Illusion form, dealing <el>Incantation DMG</> and inflicting <dn>1</> stack of Heartwrench on hit. Pulls in targets within range on the <dn>3rd</> instance of Basic Attack. Each Nightmare Waltz attack spreads up to <dn>4</> DoT effects from the target to all enemies in the area, including the original target. Gains the Delusion buff for the attack's duration. The DMG dealt by Nightmare Waltz counts as Follow-up Attack DMG.",
 				},
 				{
 					section: "Basic Attack: Flickering Shadow",
@@ -49,7 +49,7 @@ export const zankou: Character = {
 				{
 					section: "Basic Attack: Broken Twigs",
 					description:
-						"Press Basic Attack while airborne to plunge, dealing <dn>1</> instance of <el>Incantation DMG</> in an area upon impact. Increases DMG based on fall height by up to 100%.",
+						"Press Basic Attack while airborne to plunge, dealing <dn>1</> instance of <el>Incantation DMG</> in an area upon impact. Increases DMG based on fall height by up to <dn>100%</>.",
 				},
 				{
 					section: "Critical Riposte: Voidstep",
@@ -65,7 +65,7 @@ export const zankou: Character = {
 				{
 					section: "Sanguine Dash",
 					description:
-						"Switches to Illusion Form after successfully casting Sanguine Dash while in Reality Form. Enables an enhanced Sanguine Dash for a set time after the 4th or 5th stage of Wildfire, Flickering Shadow or Voidstep. Inflicts Heartwrench on targets hit and triggers Disarray, reducing massive Break of enemies in a large area. Delays removal of the Reality Form Hunt effect when switching to Illusion Form with Sanguine Dash. Prevents the form switch if the skill is interrupted before it is complete.",
+						"Switches to Illusion Form after successfully casting Sanguine Dash while in Reality Form. Enables an enhanced Sanguine Dash for a set time after the <dn>4th</> or <dn>5th</> stage of Wildfire, Flickering Shadow or Voidstep. Inflicts Heartwrench on targets hit and triggers Disarray, reducing massive Break of enemies in a large area. Delays removal of the Reality Form Hunt effect when switching to Illusion Form with Sanguine Dash. Prevents the form switch if the skill is interrupted before it is complete.",
 				},
 				{
 					section: "Soulcross",
@@ -80,7 +80,7 @@ export const zankou: Character = {
 			description: [
 				{
 					description:
-						"Press to cast the Ultimate when Ultimate Energy is full. Has 2 Ultimates: Inferno Flamenco and Bloodfeast Reverie.\nCasts Inferno Flamenco if Bloodfeast Reverie is inactive\nPrioritizes Bloodfeast Reverie if it is active. Counts DMG dealt by Bloodfeast Reverie as Follow-up Attack DMG and inflicts Vile Ash on enemies in a large area. Enables one enhanced Inferno Flamenco to be cast without consuming Ultimate Energy within a limited time after successfully casting Bloodfeast Reverie. Removes this cast opportunity when the time limit expires.",
+						"Press to cast the Ultimate when Ultimate Energy is full. Has <dn>2</> Ultimates: Inferno Flamenco and Bloodfeast Reverie.\nCasts Inferno Flamenco if Bloodfeast Reverie is inactive\nPrioritizes Bloodfeast Reverie if it is active. Counts DMG dealt by Bloodfeast Reverie as Follow-up Attack DMG and inflicts Vile Ash on enemies in a large area. Enables one enhanced Inferno Flamenco to be cast without consuming Ultimate Energy within a limited time after successfully casting Bloodfeast Reverie. Removes this cast opportunity when the time limit expires.",
 				},
 			],
 			maxLvl: 10,
@@ -100,7 +100,7 @@ export const zankou: Character = {
 			description: [
 				{
 					description:
-						"<sh>Scorch Enhancement:</> Scorch can be stacked up to 3 times. For each DoT effect allies inflict on target afflicted with Scorch, Zankou inflicts 1 stack of Scorch on them, replacing the DMG, type, and duration of Existing Scorch on the target with those of the newly inflicted effect. Scorch inflicted by this effect cannot trigger it again.",
+						"<sh>Scorch Enhancement:</> Scorch can be stacked up to <dn>3</> times. For each DoT effect allies inflict on target afflicted with Scorch, Zankou inflicts <dn>1</> stack of Scorch on them, replacing the DMG, type, and duration of Existing Scorch on the target with those of the newly inflicted effect. Scorch inflicted by this effect cannot trigger it again.",
 				},
 			],
 			maxLvl: 1,

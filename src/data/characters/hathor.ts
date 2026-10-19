@@ -35,7 +35,7 @@ export const hathor: Character = {
 				{
 					section: "Basic Attack: Final Dispatch",
 					description:
-						"Plunges from the air, dealing <dn>1</> instance of <el>Lakshana DMG</> to an area upon impact. Increases DMG based on fall height, up to 100%.",
+						"Plunges from the air, dealing <dn>1</> instance of <el>Lakshana DMG</> to an area upon impact. Increases DMG based on fall height, up to <dn>100%</>.",
 				},
 				{
 					section: "Basic Attack: To The Skies",
@@ -55,7 +55,7 @@ export const hathor: Character = {
 				{
 					section: "Redirect Skill: Aerial Command",
 					description:
-						"Target locked, time to wrap this up quickly. Leaps into the air and slashes the target in front with wings, gaining <dn>2</> stacks of <kw>Express Delivery Power</>.\nHold to enter charge status, increasing the power of Aerial Command and inflicting targets in range with <kw>Five-Star Tracking</> effect. The charge lasts up to 5s, during which Hathor constantly deals AoE <el>Lakshana DMG</> while the skill range gradually expands. The effect ends when the skill button is released, concluding the charging phase.\n<sh>Five-Star Tracking</>\nLasts for 5s. Grants 3 stacks of <kw>Express Delivery Power</> when the target attacks or hits Hathor or an ally during this time.",
+						"Target locked, time to wrap this up quickly. Leaps into the air and slashes the target in front with wings, gaining <dn>2</> stacks of <kw>Express Delivery Power</>.\nHold to enter charge status, increasing the power of Aerial Command and inflicting targets in range with <kw>Five-Star Tracking</> effect. The charge lasts up to <dn>5</>s, during which Hathor constantly deals AoE <el>Lakshana DMG</> while the skill range gradually expands. The effect ends when the skill button is released, concluding the charging phase.\n<sh>Five-Star Tracking</>\nLasts for <dn>5</>s. Grants <dn>3</> stacks of <kw>Express Delivery Power</> when the target attacks or hits Hathor or an ally during this time.",
 				},
 				{
 					section: "Redirect Skill: Cyclone Strike",
@@ -90,7 +90,7 @@ export const hathor: Character = {
 			description: [
 				{
 					description:
-						"<sh>Remora Enhancement:</> Extends the target's Remora duration to 12s and increases Crit Rate by 10% when allies attacking a target affected by Remora.",
+						"<sh>Remora Enhancement:</> Extends the target's Remora duration to <dn>12</>s and increases Crit Rate by <dn>10%</> when allies attacking a target affected by Remora.",
 				},
 			],
 			maxLvl: 1,

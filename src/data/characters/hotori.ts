@@ -34,7 +34,7 @@ export const hotori: Character = {
 				{
 					section: "Basic Attack: Non-Closed Timepiece",
 					description:
-						"Displays a <kw>Non-Closed Timepiece</> when Hotori is switched in. Rotates its pointer slowly clockwise over time, accumulating energy. Caps the energy the <kw>Non-Closed Timepiece</> can accumulate at 120.",
+						"Displays a <kw>Non-Closed Timepiece</> when Hotori is switched in. Rotates its pointer slowly clockwise over time, accumulating energy. Caps the energy the <kw>Non-Closed Timepiece</> can accumulate at <dn>120</>.",
 				},
 				{
 					section: "Basic Attack: Rippling Waves",
@@ -44,7 +44,7 @@ export const hotori: Character = {
 				{
 					section: "Basic Attack: Crescent",
 					description:
-						"Wields the weapon mid-air and plunges, dealing <dn>1</> instance of <el>Cosmos DMG</> to an area upon impact. Increases DMG based on fall height, up to 100%.",
+						"Wields the weapon mid-air and plunges, dealing <dn>1</> instance of <el>Cosmos DMG</> to an area upon impact. Increases DMG based on fall height, up to <dn>100%</>.",
 				},
 				{
 					section: "Critical Riposte: Half Moment",

@@ -30,7 +30,7 @@ export const aurelia: Character = {
 				{
 					section: "Basic Attack: Legato",
 					description:
-						"Sing smoothly and naturally! Wields her weapon and performs up to 4 consecutive attacks, dealing <el>Psyche DMG</>.",
+						"Sing smoothly and naturally! Wields her weapon and performs up to <dn>4</> consecutive attacks, dealing <el>Psyche DMG</>.",
 				},
 				{
 					section: "Basic Attack: Staccato",
@@ -40,7 +40,7 @@ export const aurelia: Character = {
 				{
 					section: "Basic Attack: Portamento",
 					description:
-						"Sing clearly and beautifully! Wields the weapon mid-air and plunges, dealing <dn>1</> instance of <el>Psyche DMG</> to an area upon impact. Increases DMG based on fall height, up to 100%.",
+						"Sing clearly and beautifully! Wields the weapon mid-air and plunges, dealing <dn>1</> instance of <el>Psyche DMG</> to an area upon impact. Increases DMG based on fall height, up to <dn>100%</>.",
 				},
 				{
 					section: "Critical Riposte: Syncopation",
@@ -65,7 +65,7 @@ export const aurelia: Character = {
 			description: [
 				{
 					description:
-						"Let's play the next verse together. Gathers nearby jellyfish, dealing 6 instances of AoE <el>Psyche DMG</> and slightly pulling targets together.",
+						"Let's play the next verse together. Gathers nearby jellyfish, dealing <dn>6</> instances of AoE <el>Psyche DMG</> and slightly pulling targets together.",
 				},
 			],
 			maxLvl: 10,
@@ -75,7 +75,7 @@ export const aurelia: Character = {
 			description: [
 				{
 					description:
-						"True command means never mistaking the timing. Commands the jellyfish to strike, dealing 1 instance of AoE <el>Psyche DMG</> on hit.",
+						"True command means never mistaking the timing. Commands the jellyfish to strike, dealing <dn>1</> instance of AoE <el>Psyche DMG</> on hit.",
 				},
 			],
 			maxLvl: 10,
@@ -85,7 +85,7 @@ export const aurelia: Character = {
 			description: [
 				{
 					description:
-						"<sh>Nova Enhancement:</> Deals 3 instances of <el>Psyche DMG</> to the target after their Nova status ends, each equal to 50% of ATK.",
+						"<sh>Nova Enhancement:</> Deals <dn>3</> instances of <el>Psyche DMG</> to the target after their Nova status ends, each equal to <dn>50%</> of ATK.",
 				},
 			],
 			maxLvl: 1,
@@ -109,7 +109,7 @@ export const aurelia: Character = {
 				},
 				{
 					description:
-						"<sh>Level 2:</> Aurelia increases traffic by <dn>1%</> for every 2 Beverage tag on dishes.",
+						"<sh>Level 2:</> Aurelia increases traffic by <dn>1%</> for every <dn>2</> Beverage tag on dishes.",
 				},
 				{
 					description:
@@ -121,7 +121,7 @@ export const aurelia: Character = {
 				},
 				{
 					description:
-						"<sh>Level 5:</> Aurelia increases traffic by <dn>1.5%</> for every 2 Beverage tags on dishes.",
+						"<sh>Level 5:</> Aurelia increases traffic by <dn>1.5%</> for every <dn>2</> Beverage tags on dishes.",
 				},
 			],
 			maxLvl: 5,
