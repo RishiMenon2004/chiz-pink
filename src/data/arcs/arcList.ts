@@ -34,37 +34,32 @@ const allArcs: Record<string, Arc> = {
 		effect: {
 			name: "Gravitide",
 			description:
-				"Increases Cycle Rate by <dn>{0}</>.\nIncreases Redirect Skill DMG by <dn>{1}</> for 5s after the wearer's Basic Attack deals DMG. Stacks up to 4 times and can gain at most 1 stack every 0.3s. Increases Basic Attack DMG by <dn>{2}</> for <dn>15</>s after the wearer casts a Redirect Skill. Increases the wearer's <el>Lakshana DMG</> by <dn>{3}</> while both effects are active.",
+				"Increases Crit Rate by <dn>{0}</>.\nIncreases the wearer's Redirect Skill DMG by <dn>{1}</>. Increases the wearer's Basic Attack DMG by <dn>{1}</> and <el>Lakshana DMG</> by <dn>{2}</> for <dn>15</>s after casting a Redirect Skill.",
 			values: {
 				"1": [
-					{ type: "Percent", value: 0.16 },
-					{ type: "Percent", value: 0.07 },
+					{ type: "Percent", value: 0.15 },
 					{ type: "Percent", value: 0.28 },
-					{ type: "Percent", value: 0.16 },
+					{ type: "Percent", value: 0.2 },
 				],
 				"2": [
-					{ type: "Percent", value: 0.2 },
-					{ type: "Percent", value: 0.0875 },
+					{ type: "Percent", value: 0.18 },
 					{ type: "Percent", value: 0.35 },
-					{ type: "Percent", value: 0.2 },
+					{ type: "Percent", value: 0.25 },
 				],
 				"3": [
-					{ type: "Percent", value: 0.24 },
-					{ type: "Percent", value: 0.105 },
+					{ type: "Percent", value: 0.21 },
 					{ type: "Percent", value: 0.42 },
-					{ type: "Percent", value: 0.24 },
+					{ type: "Percent", value: 0.3 },
 				],
 				"4": [
-					{ type: "Percent", value: 0.28 },
-					{ type: "Percent", value: 0.1225 },
+					{ type: "Percent", value: 0.24 },
 					{ type: "Percent", value: 0.49 },
-					{ type: "Percent", value: 0.28 },
+					{ type: "Percent", value: 0.35 },
 				],
 				"5": [
-					{ type: "Percent", value: 0.32 },
-					{ type: "Percent", value: 0.14 },
+					{ type: "Percent", value: 0.27 },
 					{ type: "Percent", value: 0.56 },
-					{ type: "Percent", value: 0.32 },
+					{ type: "Percent", value: 0.4 },
 				],
 			},
 		},
@@ -87,34 +82,34 @@ const allArcs: Record<string, Arc> = {
 		effect: {
 			name: "Twinflight",
 			description:
-				"Increases Cycle Intensity by <dn>{0}</>.\nIncreases the wearer's <el>Psyche DMG</> by <dn>{1}</>. Increases the team's Crit DMG by <dn>{2}</> and the wearer's by an additional <dn>{3}</>, for <dn>15</>s after the wearer casts Ultimate. Resets the duration when triggered again.",
+				"Increases Cycle Intensity by <dn>{0}</>.\nIncreases the wearer's <el>Psyche DMG</> by <dn>{1}</>. Increases the team's Crit DMG by <dn>{2}</>, and the wearer's by an additional <dn>{3}</>, for <dn>15</>s after the wearer casts Ultimate. Resets the duration when triggered again.",
 			values: {
 				"1": [
-					{ type: "Percent", value: 0.72 },
+					{ type: "Integer", value: 72 },
 					{ type: "Percent", value: 0.2 },
 					{ type: "Percent", value: 0.16 },
 					{ type: "Percent", value: 0.32 },
 				],
 				"2": [
-					{ type: "Percent", value: 0.9 },
+					{ type: "Integer", value: 90 },
 					{ type: "Percent", value: 0.25 },
 					{ type: "Percent", value: 0.2 },
 					{ type: "Percent", value: 0.4 },
 				],
 				"3": [
-					{ type: "Percent", value: 1.08 },
+					{ type: "Integer", value: 108 },
 					{ type: "Percent", value: 0.3 },
 					{ type: "Percent", value: 0.24 },
 					{ type: "Percent", value: 0.48 },
 				],
 				"4": [
-					{ type: "Percent", value: 1.26 },
+					{ type: "Integer", value: 126 },
 					{ type: "Percent", value: 0.35 },
 					{ type: "Percent", value: 0.28 },
 					{ type: "Percent", value: 0.56 },
 				],
 				"5": [
-					{ type: "Percent", value: 1.44 },
+					{ type: "Integer", value: 144 },
 					{ type: "Percent", value: 0.4 },
 					{ type: "Percent", value: 0.32 },
 					{ type: "Percent", value: 0.64 },
@@ -137,11 +132,11 @@ const allArcs: Record<string, Arc> = {
 			baseValue: 0.096,
 		},
 		ascensionMaterialSet1: ascLiquidDreamSet,
-		ascensionMaterialSet2: ascDelusionsSet,
+		ascensionMaterialSet2: ascWhispersSet,
 		effect: {
 			name: "Golden Record",
 			description:
-				"Increases ATK by <dn>{0}</>.\nIncreases the wearer's Support Skill Crit DMG by <dn>{1}</>. Dealing DMG with a Support Skill increases their Ultimate Crit DMG by <dn>{2}</> for <dn>3</>s, up to <dn>3</> stacks. Resets the duration when triggered again.",
+				"Increases ATK by <dn>{0}</>.\nIncreases the wearer's Support Skill Crit DMG by <dn>{1}</>. Dealing DMG with a triggered Support Skill increases their Ultimate Crit DMG by <dn>{2}</> for <dn>3</>s, up to <dn>3</> stacks. Resets the duration when triggered again.",
 			values: {
 				"1": [
 					{ type: "Percent", value: 0.24 },
@@ -176,7 +171,7 @@ const allArcs: Record<string, Arc> = {
 		id: "ravenous_blade",
 		imageSrc: "ravenous_blade.webp",
 		name: "Ravenous Blade",
-		description: "",
+		description: "Where fear takes hold, death is never far behind.",
 		rarity: EnumRarity.Epic,
 		type: EnumArcType.Gas,
 		baseAtk: 37,
@@ -193,7 +188,7 @@ const allArcs: Record<string, Arc> = {
 			values: {
 				"1": [
 					{ type: "Percent", value: 0.16 },
-					{ type: "Percent", value: 0.9 },
+					{ type: "Percent", value: 0.09 },
 				],
 				"2": [
 					{ type: "Percent", value: 0.2 },
@@ -233,7 +228,7 @@ const allArcs: Record<string, Arc> = {
 		effect: {
 			name: "Reverie Gate",
 			description:
-				"Increases ATK by <dn>{0}</>.\nWhen the wearer performs healing, increases the wearer's <el>Anima DMG</> dealt by <dn>{2}</> and all  allies' DMG dealt by <dn>{1}</> for <dn>20</>s. Resets the duration when triggered again. Effects with the same name do not stack.",
+				"Increases ATK by <dn>{0}</>.\nWhen the wearer performs healing, increases the wearer's <el>Anima DMG</> dealt by <dn>{2}</> and all allies' DMG dealt by <dn>{1}</> for <dn>20</>s. Resets the duration when triggered again. Effects with the same name do not stack.",
 			values: {
 				"1": [
 					{ type: "Percent", value: 0.16 },
@@ -422,23 +417,23 @@ const allArcs: Record<string, Arc> = {
 			values: {
 				"1": [
 					{ type: "Percent", value: 0.3 },
-					{ type: "Percent", value: 36 },
+					{ type: "Integer", value: 36 },
 				],
 				"2": [
 					{ type: "Percent", value: 0.33 },
-					{ type: "Percent", value: 45 },
+					{ type: "Integer", value: 45 },
 				],
 				"3": [
 					{ type: "Percent", value: 0.36 },
-					{ type: "Percent", value: 54 },
+					{ type: "Integer", value: 54 },
 				],
 				"4": [
 					{ type: "Percent", value: 0.39 },
-					{ type: "Percent", value: 63 },
+					{ type: "Integer", value: 63 },
 				],
 				"5": [
 					{ type: "Percent", value: 0.42 },
-					{ type: "Percent", value: 72 },
+					{ type: "Integer", value: 72 },
 				],
 			},
 		},
@@ -557,9 +552,9 @@ const allArcs: Record<string, Arc> = {
 		ascensionMaterialSet1: ascMuiscSet,
 		ascensionMaterialSet2: ascWhispersSet,
 		effect: {
-			name: "Ready-Ready",
+			name: "Commander Tiger Talisman",
 			description:
-				"Increases ATK by <dn>{0}</>.\nIncreases Basic Attack and Critical Riposte damage by <dn>{0}</> for <dn>15</>s when casting a Redirect Skill or Ultimate, up to <dn>2</> stacks.\nGrants a Left Tiger Talisman when casting Redirect Skill and a Right Tiger Talisman when casting Ultimate.\nUnlocks Commander Tiger Talisman if the wearer obtains the other type of talisman within <dn>15</> of gaining one.\nArc Commander Tiger Talisman — Increases the wearer's damage to Bosses by <dn>{1}</> for <dn>10</>s.",
+				"Increases ATK by <dn>{0}</>.\nIncreases Basic Attack and Critical Riposte damage by <dn>{0}</> for <dn>15</>s when casting a Redirect Skill or Ultimate, up to <dn>2</> stacks.\nGrants a Left Tiger Talisman when casting Redirect Skill and a Right Tiger Talisman when casting Ultimate.\nUnlocks Commander Tiger Talisman if the wearer obtains the other type of talisman within <dn>15</>s of gaining one.\nArc: Commander Tiger Talisman — Increases the wearer's damage to Bosses by <dn>{1}</> for <dn>10</>s.",
 			values: {
 				"1": [
 					{ type: "Percent", value: 0.15 },
@@ -602,13 +597,25 @@ const allArcs: Record<string, Arc> = {
 		effect: {
 			name: "Deep Blue Sorrow",
 			description:
-				"Increases ATK by <dn>{0}</>.\nIncreases the wearer's damage to Broken enemies by <dn>{0}</>. Restores <dn>30.00%</> HP to the wearer if a Broken enemy is defeated. Triggers at most <dn>once</> every <dn>30</>s.",
+				"Increases ATK by <dn>{0}</>.\nIncreases the wearer's damage to Broken enemies by <dn>{0}</>. Restores <dn>{1}</> HP to the wearer if a Broken enemy is defeated. Triggers at most <dn>once</> every <dn>30</>s.",
 			values: {
-				"1": [{ type: "Percent", value: 0.12 }],
-				"2": [{ type: "Percent", value: 0.14 }],
-				"3": [{ type: "Percent", value: 0.16 }],
-				"4": [{ type: "Percent", value: 0.18 }],
-				"5": [{ type: "Percent", value: 0.2 }],
+				"1": [
+					{ type: "Percent", value: 0.12 },
+					{ type: "Percent", value: 0.3 },
+				],
+				"2": [
+					{ type: "Percent", value: 0.14 },
+					{ type: "Percent", value: 0.3 },
+				],
+				"3": [
+					{ type: "Percent", value: 0.16 },
+					{ type: "Percent", value: 0.3 },
+				],
+				"4": [
+					{ type: "Percent", value: 0.18 },
+					{ type: "Percent", value: 0.3 },
+				],
+				"5": [{ type: "Percent", value: 0.2 }, { type: "Percent", value: 0.3 }],
 			},
 		},
 	},
@@ -953,7 +960,7 @@ const allArcs: Record<string, Arc> = {
 		effect: {
 			name: "Headless Rider",
 			description:
-				"Increases the wearer's <el>Lakshana DMG</> by <dn>{0}</>. Increases the wearer's Redirect Skill and Ultimate DMG by <dn>{1}</> for <dn>10</>s after casting Ultimate. Increases the wearer's Redirect Skill DMG by <dn>{2}</> per cast while still active, up to 2 stacks.",
+				"Increases <el>Lakshana DMG</> by <dn>{0}</>.\nIncreases the wearer's Redirect Skill and Ultimate DMG by <dn>{1}</> for <dn>10</>s after casting Ultimate. Increases the wearer's Redirect Skill DMG by <dn>{2}</> per cast while active, up to 2 stacks.",
 			values: {
 				"1": [
 					{ type: "Percent", value: 0.15 },
@@ -1002,7 +1009,7 @@ const allArcs: Record<string, Arc> = {
 		effect: {
 			name: "Nacupeda",
 			description:
-				"Increases HP by <dn>{0}</>.\nGrants one of the following random effects when the wearer casts an Ultimate:\n1. Recovers <dn>{1}</> of Max HP for the team member with the lowest HP percentage.\n2. Grants a Shield equal to <dn>{1}</> of the wearer's Max HP for <dn>15</>s\n3. Recovers <dn>{2}</> for all team members.\nTriggers once every <dn>30</>s.",
+				"Increases HP by <dn>{0}</>.\nGrants one of the following random effects when the wearer casts an Ultimate:\n1. Recovers <dn>{1}</> of Max HP for the team member with the lowest HP percentage.\n2. Grants a Shield equal to <dn>{1}</> of the wearer's Max HP for <dn>15</>s.\n3. Recovers <dn>{2}</> HP for all team members.\nTriggers once every <dn>30</>s.",
 			values: {
 				"1": [
 					{ type: "Percent", value: 0.24 },
@@ -1080,7 +1087,7 @@ const allArcs: Record<string, Arc> = {
 		effect: {
 			name: '"Black Tome"',
 			description:
-				"Increases Break Intensity by <dn>{0}</>.\nSeals Arc: Black Tome with two chains by default. Unleashes 1 chain each time any character on the team casts a Support Skill. Makes Arc: Black Tome available when all two chains are unleashed.\nArc: Black Tome — Summons the Black Tome for <dn>20</>s. Designates an enemy every <dn>5</>s. Increases the wearer's <el>Chaos DMG</> dealt to designated enemies enemies by <dn>{1}</>. Deals <el>Chaos DMG</> equal to <dn>{2}</> of the wearer's ATK to designated enemies when they take Break Damage.",
+				"Increases Break Intensity by <dn>{0}</>.\nSeals Arc: Black Tome with two chains by default. Unleashes 1 chain each time any character on the team casts a Support Skill. Makes Arc: Black Tome available when all two chains are unleashed.\nArc: Black Tome — Summons the Black Tome for <dn>20</>s. Designates an enemy every <dn>5</>s. Increases the wearer's <el>Chaos DMG</> dealt to designated enemies by <dn>{1}</>. Deals <el>Chaos DMG</> equal to <dn>{2}</> of the wearer's ATK to designated enemies when they take Break Damage.",
 			values: {
 				"1": [
 					{ type: "Integer", value: 60 },
@@ -1182,28 +1189,13 @@ const allArcs: Record<string, Arc> = {
 		effect: {
 			name: "Eclipse",
 			description:
-				"Increases the wearer's ATK by <dn>{0}</>.\nUnlocks Arc: Eclipse.\nArc: Eclipse — The wearer creates a <dn>40</>s Eclipse. During the Eclipse, each enemy defeated restores <dn>{1}</> Ultimate Energy, up to <dn>5</> times. (cooldown: <dn>300</>s).",
+				"Increases wearer's ATK by <dn>{0}</>. Unlocks Arc: Eclipse.\nArc: Eclipse — The wearer creates a <dn>40</>s Eclipse. During the Eclipse, each enemy defeated restores <dn>{1}</> Ultimate Energy, up to <dn>5</> times. (cooldown: <dn>300</>s).",
 			values: {
-				"1": [
-					{ type: "Percent", value: 0.3 },
-					{ type: "Percent", value: 6 },
-				],
-				"2": [
-					{ type: "Percent", value: 0.35 },
-					{ type: "Percent", value: 7 },
-				],
-				"3": [
-					{ type: "Percent", value: 0.4 },
-					{ type: "Percent", value: 8 },
-				],
-				"4": [
-					{ type: "Percent", value: 0.45 },
-					{ type: "Percent", value: 9 },
-				],
-				"5": [
-					{ type: "Percent", value: 0.5 },
-					{ type: "Percent", value: 10 },
-				],
+				"1": [{ type: "Percent", value: 0.3 }, { type: "Integer", value: 6 }],
+				"2": [{ type: "Percent", value: 0.35 }, { type: "Integer", value: 7 }],
+				"3": [{ type: "Percent", value: 0.4 }, { type: "Integer", value: 8 }],
+				"4": [{ type: "Percent", value: 0.45 }, { type: "Integer", value: 9 }],
+				"5": [{ type: "Percent", value: 0.5 }, { type: "Integer", value: 10 }],
 			},
 		},
 	},
@@ -1226,30 +1218,35 @@ const allArcs: Record<string, Arc> = {
 		effect: {
 			name: "Silent Garden",
 			description:
-				"Increases the wearer's CRIT DMG by <dn>{0}</> for <dn>5</>s when the wearer's HP is reduced without taking damage, up to <dn>4</> stacks.\nUnlocks Arc: Silent Garden.\nConsumes <dn>5.00%</> of current HP and randomly performs one of the following attacks (CD <dn>25</>s) in Arc: Silent Garden:\nHarsh Rebuke: Rains merciless rebukes like leaves in a storm, dealing <dn>5</> instances of <el>Incantation DMG</> of <dn>{1}</> ATK.\nIncessant Nagging: Pierces targets with sharp, cutting words like thorns, dealing <dn>6</> instances of <el>Incantation DMG</> of <dn>{2}</> ATK; the final instance deals double damage.",
+				"Increases CRIT DMG by <dn>{0}</> for <dn>5</>s when the wearer's HP is reduced without taking damage, up to <dn>4</> stacks. Unlocks Arc: Silent Garden.\nConsumes <dn>{1}</> of current HP and randomly performs one of the following attacks (CD <dn>25</>s) in Arc: Silent Garden:\nHarsh Rebuke: Rains merciless rebukes like leaves in a storm, dealing <dn>5</> instances of <el>Incantation DMG</> of <dn>{2}</> ATK.\nIncessant Nagging: Pierces targets with sharp, cutting words like thorns, dealing <dn>6</> instances of <el>Incantation DMG</> of <dn>{3}</> ATK; the final instance deals double damage.",
 			values: {
 				"1": [
 					{ type: "Percent", value: 0.12 },
+					{ type: "Percent", value: 0.05 },
 					{ type: "Percent", value: 0.24 },
 					{ type: "Percent", value: 0.18 },
 				],
 				"2": [
 					{ type: "Percent", value: 0.14 },
+					{ type: "Percent", value: 0.05 },
 					{ type: "Percent", value: 0.28 },
 					{ type: "Percent", value: 0.21 },
 				],
 				"3": [
 					{ type: "Percent", value: 0.16 },
+					{ type: "Percent", value: 0.05 },
 					{ type: "Percent", value: 0.32 },
 					{ type: "Percent", value: 0.24 },
 				],
 				"4": [
 					{ type: "Percent", value: 0.18 },
+					{ type: "Percent", value: 0.05 },
 					{ type: "Percent", value: 0.36 },
 					{ type: "Percent", value: 0.27 },
 				],
 				"5": [
 					{ type: "Percent", value: 0.2 },
+					{ type: "Percent", value: 0.05 },
 					{ type: "Percent", value: 0.4 },
 					{ type: "Percent", value: 0.3 },
 				],
@@ -1275,7 +1272,7 @@ const allArcs: Record<string, Arc> = {
 		effect: {
 			name: "Morphix",
 			description:
-				"Increases Charge Efficiency by <dn>{0}</>. Increases Team ATK by <dn>{1}</> for <dn>20</>s after the wearer casts an Ultimate. Increases Team ATK by an additional <dn>{2}</> if enemies are controlled by the Ultimate. Effects with the same name do not stack.",
+				"Increases Charge Efficiency by <dn>{0}</>.\nIncreases Team ATK by <dn>{1}</> for <dn>20</>s after the wearer casts an Ultimate. Increases Team ATK by an additional <dn>{2}</> if enemies are controlled by the Ultimate. Effects with the same name do not stack.",
 			values: {
 				"1": [
 					{ type: "Percent", value: 0.18 },
@@ -1353,7 +1350,7 @@ const allArcs: Record<string, Arc> = {
 		effect: {
 			name: "Picky",
 			description:
-				"Increases Break Intensity by <dn>{0}</> for <dn>50</>s after the wearer uses a Redirect Skill. Effect does not stack\nAllows use of Arc — Picky. (Cooldown: <dn>50</>s).\nArc — Picky: Summons Picky to pry open all nearby lockable objects.",
+				"Increases Break Intensity by <dn>{0}</> for <dn>50</>s after the wearer uses a Redirect Skill. Effect does not stack.\nAllows use of Arc - Picky. (Cooldown: <dn>50</>s).\nArc - Picky: Summons Picky to pry open all nearby lockable objects.",
 			values: {
 				"1": [{ type: "Integer", value: 90 }],
 				"2": [{ type: "Integer", value: 108 }],
@@ -1381,7 +1378,7 @@ const allArcs: Record<string, Arc> = {
 		effect: {
 			name: "Solifugae Vita",
 			description:
-				"Increases ATK by <dn>{0}</> while the wearer has a Shield",
+				"Increases ATK by <dn>{0}</> while the wearer has a Shield.",
 			values: {
 				"1": [{ type: "Percent", value: 0.18 }],
 				"2": [{ type: "Percent", value: 0.21 }],
@@ -1468,7 +1465,7 @@ const allArcs: Record<string, Arc> = {
 		effect: {
 			name: "Spider Knowledge Collector",
 			description:
-				"Grants the wearer <dn>1</> stack of Spider Knowledge when dealing damage with Basic Attacks, up to <dn>8</> stacks (up to 1 stack every <dn>0.5</>s). All stakcks are consumed when casting Ultimate. Increases the entire teams's ATK by <dn>{0}</> for <dn>10</>s <dn>per</> stack consumed. Increases ATK by an additional <dn>{1}</> when <dn>8</> stacks are consumed.",
+				"Grants the wearer <dn>1</> stack of Spider Knowledge when dealing damage with Basic Attacks, up to <dn>8</> stacks (up to <dn>1</> stack every <dn>0.5</>s). All stacks are consumed when casting Ultimate. Increases the entire team's ATK by <dn>{0}</> for <dn>10</>s <dn>per</> stack consumed. Increases ATK by an additional <dn>{1}</> when <dn>8</> stacks are consumed.",
 			values: {
 				"1": [
 					{ type: "Percent", value: 0.01 },
@@ -1539,7 +1536,7 @@ const allArcs: Record<string, Arc> = {
 		effect: {
 			name: "Ghostly Kite",
 			description:
-				"Increases ATK by <dn>{0}</> and <el>Lakshana DMG</> to targets affected by Remora and Stain <dn>{0}</> for <dn>15</>s after the wearer casts a Redirect Skill. Effect does not stack.",
+				"Increases ATK by <dn>{0}</> and <el>Lakshana DMG</> to targets affected by Remora and Stain by <dn>{0}</> for <dn>15</>s after the wearer casts a Redirect Skill. Effect does not stack.",
 			values: {
 				"1": [{ type: "Percent", value: 0.1 }],
 				"2": [{ type: "Percent", value: 0.12 }],
@@ -1626,13 +1623,13 @@ const allArcs: Record<string, Arc> = {
 		effect: {
 			name: "Inspiration Terminator",
 			description:
-				"Increases the wearer <dn>10</> Ultimate Energy when casting a Redirect Skill. Triggers up to once every <dn>20s</>",
+				"Grants the wearer <dn>{0}</> Ultimate Energy when casting a Redirect Skill. Triggers up to once every <dn>20</>s.",
 			values: {
-				"1": [{ type: "Percent", value: 0.1 }],
-				"2": [{ type: "Percent", value: 0.12 }],
-				"3": [{ type: "Percent", value: 0.14 }],
-				"4": [{ type: "Percent", value: 0.16 }],
-				"5": [{ type: "Percent", value: 0.18 }],
+				"1": [{ type: "Integer", value: 10 }],
+				"2": [{ type: "Integer", value: 12 }],
+				"3": [{ type: "Integer", value: 14 }],
+				"4": [{ type: "Integer", value: 16 }],
+				"5": [{ type: "Integer", value: 18 }],
 			},
 		},
 	},
@@ -1653,7 +1650,7 @@ const allArcs: Record<string, Arc> = {
 		ascensionMaterialSet1: ascMuiscSet,
 		ascensionMaterialSet2: ascSilhouetteSet,
 		effect: {
-			name: "Oraora!",
+			name: "Ora Puncher",
 			description:
 				"Increases the wearer's Basic Attack DMG by <dn>{0}</> for <dn>10</>s after each Basic Attack, up to <dn>10</> stacks. Each stack's duration is calculated independently, and is not reset when new stacks are gained.",
 			values: {
@@ -1713,28 +1710,13 @@ const allArcs: Record<string, Arc> = {
 		effect: {
 			name: "Film - MANISH",
 			description:
-				"Increases Break Intensity by <dn>{0}</>. Increases DMG by <dn>{1}</> against Broken units.",
+				"Increases Break Intensity by <dn>{0}</>.\nIncreases DMG by <dn>{1}</> against Broken units.",
 			values: {
-				"1": [
-					{ type: "Integer", value: 48 },
-					{ type: "Percent", value: 0.1 },
-				],
-				"2": [
-					{ type: "Integer", value: 57 },
-					{ type: "Percent", value: 0.12 },
-				],
-				"3": [
-					{ type: "Integer", value: 66 },
-					{ type: "Percent", value: 0.14 },
-				],
-				"4": [
-					{ type: "Integer", value: 75 },
-					{ type: "Percent", value: 0.16 },
-				],
-				"5": [
-					{ type: "Integer", value: 84 },
-					{ type: "Percent", value: 0.18 },
-				],
+				"1": [{ type: "Integer", value: 48 }, { type: "Percent", value: 0.1 }],
+				"2": [{ type: "Integer", value: 57 }, { type: "Percent", value: 0.12 }],
+				"3": [{ type: "Integer", value: 66 }, { type: "Percent", value: 0.14 }],
+				"4": [{ type: "Integer", value: 75 }, { type: "Percent", value: 0.16 }],
+				"5": [{ type: "Integer", value: 84 }, { type: "Percent", value: 0.18 }],
 			},
 		},
 	},
@@ -1756,7 +1738,7 @@ const allArcs: Record<string, Arc> = {
 		effect: {
 			name: '"Bopp"',
 			description:
-				"Increases wearer's damage dealt by <dn>{0}</> for <dn>10</>s after casting Support Skill. Triggers at most once every <dn>20</>s.",
+				"Increases the wearer's damage dealt by <dn>{0}</> for <dn>10s</> after casting Support Skill. Triggers at most once every <dn>20s</>.",
 			values: {
 				"1": [{ type: "Percent", value: 0.18 }],
 				"2": [{ type: "Percent", value: 0.21 }],
@@ -1927,7 +1909,7 @@ const allArcs: Record<string, Arc> = {
 		effect: {
 			name: '"Decomposer"',
 			description:
-				"Increases the wearer's Break Intensity by <dn>{0}</> for <dn>10</>s when reducing Break. Triggers at most every <dn>20</>s.",
+				"Increases wearer's Break Intensity by <dn>{0}</> for <dn>10</>s when reducing Break. Triggers at most once every <dn>20</>s.",
 			values: {
 				"1": [{ type: "Integer", value: 60 }],
 				"2": [{ type: "Integer", value: 66 }],
