@@ -174,14 +174,14 @@ const utcCode = (date: ParsedDate) =>
 
 // Copies <name>.webp from the intake folder if it's there. Returns whether
 // the destination exists afterwards (copied now or already in public/).
-function placeImage(name: string, destination: string) {
-	const source = path.join(folder, `${name}.webp`)
+function placeImage(name: string, destination: string, extension = "webp") {
+	const source = path.join(folder, `${name}.${extension}`)
 	const target = fromRoot("public", destination)
 
 	if (existsSync(source)) {
 		mkdirSync(path.dirname(target), { recursive: true })
 		copyFileSync(source, target)
-		report.push(`Image: ${name}.webp → public/${destination}`)
+		report.push(`Image: ${name}.${extension} → public/${destination}`)
 	}
 
 	return existsSync(target)
@@ -417,6 +417,19 @@ for (const [index, character] of (content.characters ?? []).entries()) {
 	const where = `characters[${index}] "${character.name}"`
 	const file = characterFile(character.id)
 
+	// Images go in whether or not the character has real data yet (the game
+	// art usually arrives after the kit).
+	const hasAvatar = placeImage(`avatar_${character.id}`, `characters/avatar/${character.id}.webp`)
+	const hasFull = placeImage(`full_${character.id}`, `characters/full/${character.id}.webp`)
+	const hasBackground = placeImage(
+		`background_${character.id}`,
+		`characters/background/${character.id}.png`,
+		"png"
+	)
+	if (!hasFull) warnings.push(`${where}: no full_${character.id}.webp yet`)
+	if (!hasAvatar) warnings.push(`${where}: no avatar_${character.id}.webp yet`)
+	if (!hasBackground) warnings.push(`${where}: no background_${character.id}.png yet`)
+
 	if (!isPlaceholderFile(file)) {
 		report.push(`Character: ${character.name} already has real data, left as is`)
 		continue
@@ -427,11 +440,6 @@ for (const [index, character] of (content.characters ?? []).entries()) {
 		fail(`${where}: element must be one of ${ELEMENTS.join(", ")}`)
 	}
 	if (element === undefined) warnings.push(`${where}: no element, using cosmos`)
-
-	const hasAvatar = placeImage(`avatar_${character.id}`, `characters/avatar/${character.id}.webp`)
-	const hasFull = placeImage(`full_${character.id}`, `characters/full/${character.id}.webp`)
-	if (!hasFull) warnings.push(`${where}: no full_${character.id}.webp yet`)
-	if (!hasAvatar) warnings.push(`${where}: no avatar_${character.id}.webp yet`)
 
 	const name = identifier(character.id)
 	const materials = Object.values(placeholderMaterials).toSorted()
@@ -502,13 +510,22 @@ for (const [index, arc] of (content.arcs ?? []).entries()) {
 	const entry = new RegExp(`\\t${arc.id}: \\{\\n[\\s\\S]*?\\n\\t\\},\\n`)
 	const existing = arcList.match(entry)?.[0]
 
-	if (existing && !existing.includes("isPlaceholder: true")) {
-		report.push(`Arc: ${arc.name} already has real data, left as is`)
-		continue
-	}
-
 	const hasArt = placeImage(`arc_${arc.id}`, `arcs/${arc.id}.webp`)
 	if (!hasArt) warnings.push(`${where}: no arc_${arc.id}.webp yet`)
+
+	if (existing && !existing.includes("isPlaceholder: true")) {
+		// Art that arrives after the arc was filled in still needs pointing at.
+		if (hasArt && existing.includes('imageSrc: "placeholder.webp"')) {
+			arcList = arcList.replace(
+				existing,
+				existing.replace('imageSrc: "placeholder.webp"', `imageSrc: ${str(`${arc.id}.webp`)}`)
+			)
+			report.push(`Arc: ${arc.id} now uses ${arc.id}.webp`)
+		} else {
+			report.push(`Arc: ${arc.name} already has real data, left as is`)
+		}
+		continue
+	}
 
 	const values = Object.entries(arc.effect?.values ?? {})
 		.map(

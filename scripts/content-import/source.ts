@@ -2,7 +2,7 @@
 // game's tables (from the NTE_Assets repo or a local FModel export), and the
 // helpers for comparing with and writing the site's data files.
 
-import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs"
+import { existsSync, mkdirSync, readdirSync, readFileSync, writeFileSync } from "node:fs"
 import path from "node:path"
 import { fileURLToPath } from "node:url"
 import { styleText } from "node:util"
@@ -31,6 +31,7 @@ export const write = args.includes("--write") || updateIds.size > 0
 const exportDir = option("--from")
 const ref = option("--ref") ?? DEFAULT_REF
 export const only = option("--only")
+export const imagesFolder = option("--images")
 
 export const sourceLabel = exportDir ? path.basename(path.resolve(exportDir)) : `${REPO}@${ref.slice(0, 7)}`
 
@@ -57,6 +58,51 @@ export async function readSource(paths: readonly string[]): Promise<unknown> {
 		if (!response.ok) fail(`${url} returned ${response.status}`)
 		mkdirSync(path.dirname(cached), { recursive: true })
 		writeFileSync(cached, await response.text())
+	}
+	return JSON.parse(readFileSync(cached, "utf8"))
+}
+
+// A texture by its game path ("/Game/UI/UI_Icon/Fork/1024/fork_moon.fork_moon").
+// The repo keeps textures without the "UI/" folder the export has, as PNGs.
+export async function readAsset(gamePath: string): Promise<Buffer> {
+	const relative = gamePath.replace(/^\/Game\//, "").replace(/\.[^/]*$/, "")
+	if (exportDir) {
+		const file = path.resolve(exportDir, `${relative}.png`)
+		if (!existsSync(file)) fail(`${relative}.png isn't in ${exportDir}`)
+		return readFileSync(file)
+	}
+
+	const repoPath = `${relative.replace(/^UI\//, "")}.png`
+	const cached = fromRoot(".cache", "nte-assets", ref, repoPath)
+	if (!existsSync(cached)) {
+		const url = `https://raw.githubusercontent.com/${REPO}/${ref}/${repoPath}`
+		const response = await fetch(url)
+		if (!response.ok) throw new Error(`${url} returned ${response.status}`)
+		mkdirSync(path.dirname(cached), { recursive: true })
+		writeFileSync(cached, Buffer.from(await response.arrayBuffer()))
+	}
+	return readFileSync(cached)
+}
+
+// The names in a texture folder, for textures no table points to (their
+// folder and file names vary in case). Game path style: "/Game/UI/UI/Awaken".
+export async function listAssets(gameFolder: string): Promise<string[]> {
+	const relative = gameFolder.replace(/^\/Game\//, "")
+	if (exportDir) {
+		const folder = path.resolve(exportDir, relative)
+		return existsSync(folder) ? readdirSync(folder) : []
+	}
+
+	const repoPath = relative.replace(/^UI\//, "")
+	const cached = fromRoot(".cache", "nte-assets", ref, ".listings", `${repoPath.replaceAll("/", "__")}.json`)
+	if (!existsSync(cached)) {
+		const url = `https://api.github.com/repos/${REPO}/contents/${repoPath}?ref=${ref}`
+		const response = await fetch(url, { headers: { Accept: "application/vnd.github+json" } })
+		if (response.status === 404) return []
+		if (!response.ok) throw new Error(`${url} returned ${response.status}`)
+		const entries = (await response.json()) as { name: string }[]
+		mkdirSync(path.dirname(cached), { recursive: true })
+		writeFileSync(cached, JSON.stringify(entries.map((entry) => entry.name)))
 	}
 	return JSON.parse(readFileSync(cached, "utf8"))
 }

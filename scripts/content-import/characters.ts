@@ -70,7 +70,7 @@ const ELEMENTS: Record<string, EnumCharacterElement> = {
 }
 
 // Game names that differ from the site's, to the site's character id.
-const SITE_IDS: Record<string, string> = {
+export const SITE_IDS: Record<string, string> = {
 	Zero: "zero",
 }
 

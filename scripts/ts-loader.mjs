@@ -38,7 +38,13 @@ registerHooks({
 			}
 		}
 
-		if (specifier.startsWith(".") && context.parentURL?.startsWith("file:")) {
+		// Only the project's own files: packages resolve their own relative
+		// requires (rewriting them to file: URLs breaks require()).
+		if (
+			specifier.startsWith(".") &&
+			context.parentURL?.startsWith("file:") &&
+			!context.parentURL.includes("/node_modules/")
+		) {
 			base = path.resolve(path.dirname(fileURLToPath(context.parentURL)), specifier)
 		}
 
