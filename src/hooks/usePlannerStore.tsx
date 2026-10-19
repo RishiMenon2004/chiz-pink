@@ -43,6 +43,9 @@ const LEGACY_KEY = "planner"
 
 let cachedPlanner: PlannerRecord = SERVER_FALLBACK
 let hydrated = false
+// Flips once the cache actually holds the stored planner (hydrated flips when
+// loading starts) - lets empty-state UI tell "no plans" from "not loaded".
+let loaded = false
 
 function readLegacyBlob(): PlannerRecord {
 	const raw = window.localStorage.getItem(LEGACY_KEY)
@@ -72,6 +75,7 @@ export async function hydratePlannerCache(): Promise<void> {
 
 	if (memoryStorage.isFallbackMode() || !idbStorage.isIndexedDBAvailable()) {
 		cachedPlanner = refreshRequiredMaterials(readLegacyBlob())
+		loaded = true
 		memoryStorage.notifyListeners()
 		return
 	}
@@ -84,10 +88,11 @@ export async function hydratePlannerCache(): Promise<void> {
 			else next.arcs[row.refId] = row.data
 		}
 		cachedPlanner = refreshRequiredMaterials(next)
-		memoryStorage.notifyListeners()
 	} catch (error) {
 		console.error("IndexedDB planner hydration failed", error)
 	}
+	loaded = true
+	memoryStorage.notifyListeners()
 }
 
 // Diffs two PlannerRecords by reference (every mutation helper below always
@@ -448,15 +453,24 @@ const getServerSnapshot = () => {
 	return SERVER_FALLBACK
 }
 
+const getLoadedSnapshot = () => loaded
+const getServerLoadedSnapshot = () => false
+
 export function usePlannerStore() {
 	const plannerData = useSyncExternalStore<PlannerRecord>(
 		memoryStorage.subscribe,
 		getSnapshot,
 		getServerSnapshot
 	)
+	const isLoaded = useSyncExternalStore(
+		memoryStorage.subscribe,
+		getLoadedSnapshot,
+		getServerLoadedSnapshot
+	)
 
 	return {
 		plannerData,
+		isLoaded,
 		actions: {
 			updatePlanner: plannerActions.updatePlanner,
 			addWeapon: plannerActions.addWeapon,

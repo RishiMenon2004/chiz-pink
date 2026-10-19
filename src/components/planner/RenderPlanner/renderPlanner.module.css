@@ -6,6 +6,12 @@
 	margin-inline: 1rem !important;
 }
 
+/* The page already pads its sides; drop InfoBox's own page margins (the
+   child selector outranks InfoBox's rule). */
+.page > .emptyNotice {
+	margin: 0;
+}
+
 .plannerGrid {
 	display: grid;
 	grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));

@@ -17,6 +17,7 @@ import { getAggregatedMaterials } from "@/hooks/usePlannerStore"
 import { PlannerInventoryProvider } from "@/helpers/PlannerInventoryProvider"
 
 import { MaterialGroup } from "@/components/inventory/"
+import { InfoBox } from "@/components/layout/InfoBox"
 import { PlannerMaterialsList } from "../MaterialsList"
 
 import plannerBoxStyles from "./plannerBox.module.css"
@@ -57,7 +58,7 @@ export function RenderPlanner({
 		if (shouldRedirect) router.replace(redirectTo)
 	}, [shouldRedirect, redirectTo, router])
 
-	const { plannerData } = usePlannerStore()
+	const { plannerData, isLoaded } = usePlannerStore()
 	const { items, itemsList, handleDragEnd } = usePlannerItems(plannerType)
 
 	const [activeDragId, setActiveDragId] = useState<string | null>(null)
@@ -105,6 +106,20 @@ export function RenderPlanner({
 							/>
 						</div>
 					</MaterialGroup>
+				)}
+
+				{isLoaded && itemsList.length === 0 && (
+					<InfoBox sticker="peek" className={styles.emptyNotice}>
+						<div>
+							{`Th-there's nothing planned yet... Press ${
+								plannerType === "arcs"
+									? "ADD ARC"
+									: plannerType === "characters"
+										? "ADD CHARACTER"
+										: "ADD CHARACTER or ADD ARC"
+							} up top, and I'll w-work out what you need!`}
+						</div>
+					</InfoBox>
 				)}
 
 				<DragDropProvider

@@ -1,5 +1,6 @@
 "use client"
 
+import Link from "next/link"
 import {
 	Dispatch,
 	SetStateAction,
@@ -20,13 +21,14 @@ import { PlannerInventoryProvider } from "@/helpers/PlannerInventoryProvider"
 
 import { usePlannerMaterialsContext } from "@/contexts"
 
+import { InfoBox } from "@/components/layout/InfoBox"
 import { PlannerMaterialBox } from "@/components/planner/MaterialBox"
 
 import pageStyles from "@/app/page.module.css"
 import styles from "./DashFarmingList.module.css"
 
 export function DashFarmingList() {
-	const { plannerData } = usePlannerStore()
+	const { plannerData, isLoaded } = usePlannerStore()
 	const { plannerOrder } = usePlannerOrderStore()
 
 	const listRef = useRef<HTMLDivElement>(null)
@@ -100,6 +102,7 @@ export function DashFarmingList() {
 				className={`inset-control ${styles.materialsList}`}>
 				<PlannerInventoryProvider itemRecords={itemsList}>
 					<FarmingMaterialsList
+						isLoaded={isLoaded}
 						materials={materials}
 						columnCount={columnCount}
 						showAllState={showAllState}
@@ -111,10 +114,12 @@ export function DashFarmingList() {
 }
 
 function FarmingMaterialsList({
+	isLoaded,
 	materials,
 	columnCount,
 	showAllState,
 }: {
+	isLoaded: boolean
 	materials: [string, { amount: number }][]
 	columnCount: number
 	showAllState: [boolean, Dispatch<SetStateAction<boolean>>]
@@ -153,6 +158,30 @@ function FarmingMaterialsList({
 				.filter(({ remainingAmount }) => remainingAmount >= 1),
 		[materials, usableInventory]
 	)
+
+	if (isLoaded && materials.length === 0) {
+		return (
+			<InfoBox sticker="peek" className={styles.emptyNotice}>
+				<div>
+					{"Y-you haven't planned anything yet... "}
+					<Link href="/planner" className="btn-anchor">
+						Start planning
+					</Link>
+					{" and I'll l-list what to farm right here!"}
+				</div>
+			</InfoBox>
+		)
+	}
+
+	if (isLoaded && requiredMaterials.length === 0) {
+		return (
+			<InfoBox sticker="rich" className={styles.emptyNotice}>
+				<div>
+					{"Wow, you already have e-everything your plans need! Nothing to farm right now."}
+				</div>
+			</InfoBox>
+		)
+	}
 
 	const visibleCount = showAll ? 100 : columnCount * 2
 	const overflowMaterials = requiredMaterials.length - visibleCount

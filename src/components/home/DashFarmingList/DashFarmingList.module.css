@@ -13,6 +13,17 @@
 	border-radius: 1.25rem;
 }
 
+/* Empty state: drop the grid so the notice fills the list, and override
+   InfoBox's page margins (the child selector outranks its own rule). */
+.materialsList:has(> .emptyNotice) {
+	display: flex;
+}
+
+.materialsList > .emptyNotice {
+	flex: 1;
+	margin: 0;
+}
+
 .viewMore {
 	display: grid;
 	place-items: center;
