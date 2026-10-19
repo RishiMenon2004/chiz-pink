@@ -1,6 +1,6 @@
 import type { Item } from "@/types/item"
 
-import { Events, type EventData } from "@/data/activities/events"
+import { Events, patchTimings, type EventData } from "@/data/activities/events"
 import { arcBanners } from "@/data/activities/banners"
 
 export type ItemStatus = "featured" | "preview" | null
@@ -44,10 +44,28 @@ function getBannerWindows() {
 	return windowsByItem
 }
 
+const patches = Object.values(patchTimings)
+
+// Latest point an upcoming banner may start and still count as a preview.
+// First half of a patch: the rest of that patch (its second-half banners).
+// Second half, or the gap before the next patch: through the next patch, so
+// its characters appear once the current patch's last banners are live.
+// Past the last patch on record, anything scheduled counts.
+function getPreviewHorizon(now: number) {
+	const index = patches.findLastIndex((patch) => patch.phase1Start() <= now)
+	if (index === -1) return patches[0]?.phase2End() ?? Infinity
+
+	const current = patches[index]
+	if (now < current.phase2Start()) return current.phase2End()
+
+	return patches[index + 1]?.phase2End() ?? Infinity
+}
+
 // "featured" while one of the item's banners is running. "preview" when it
-// hasn't had a banner start yet but either has one scheduled or is flagged
-// isPreview by hand (announced before its banner dates are known). Reruns
-// coming up later don't count as previews - the item is already out.
+// hasn't had a banner start yet and its next one starts within the preview
+// horizon (see getPreviewHorizon). Items with no banner scheduled fall back
+// to the hand-set isPreview flag (announced before their dates are known).
+// Reruns coming up later don't count as previews - the item is already out.
 //
 // `now` is null during server render and the first client render (see
 // useNow), so only the hand-set preview flag applies until the clock is
@@ -61,12 +79,35 @@ export function getItemStatus(item: Item, now: number | null): ItemStatus {
 		return "featured"
 	}
 
-	const hasStarted = windows.some(({ start }) => start <= now)
-	const hasUpcoming = windows.some(({ start }) => start > now)
+	if (windows.some(({ start }) => start <= now)) return null
 
-	if (!hasStarted && (item.isPreview || hasUpcoming)) return "preview"
+	const upcoming = windows.filter(({ start }) => start > now)
+	if (upcoming.length === 0) return item.isPreview ? "preview" : null
 
-	return null
+	const horizon = getPreviewHorizon(now)
+	return upcoming.some(({ start }) => start <= horizon) ? "preview" : null
+}
+
+// Whether an item is public yet: it has no banner (standard items and
+// hand-flagged previews), one of its banners has started, or it's within the
+// preview horizon. Items further out stay hidden until their preview starts.
+//
+// With no clock yet (server render / first client paint, see useNow) this
+// can only go by the data: items whose banners all fall in the latest patch
+// on record stay hidden, so the render stays consistent; anything revealed
+// early by the clock pops in once it's known.
+export function isItemRevealed(item: Item, now: number | null) {
+	const windows = getBannerWindows().get(item.id) ?? []
+	if (windows.length === 0) return true
+
+	if (now === null) {
+		const latestPatchStart = patches.at(-1)?.phase1Start() ?? Infinity
+		return windows.some(({ start }) => start < latestPatchStart)
+	}
+
+	return (
+		windows.some(({ start }) => start <= now) || getItemStatus(item, now) !== null
+	)
 }
 
 const STATUS_RANK = { preview: 0, featured: 1 }

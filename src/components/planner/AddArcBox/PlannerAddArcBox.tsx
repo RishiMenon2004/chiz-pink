@@ -9,7 +9,7 @@ import { EnumItemLvls, EnumRarity, getItemRarityStyle } from "@/data/items"
 import { findArc, EnumArcType, getAllArcsList } from "@/data/arcs"
 
 import { getRarityName, createSearchString, stopPropagation } from "@/helpers"
-import { sortByStatus } from "@/helpers/bannerStatus"
+import { isItemRevealed, sortByStatus } from "@/helpers/bannerStatus"
 
 import { useNow } from "@/hooks"
 
@@ -105,7 +105,9 @@ const PlannerArcsSelect = () => {
 			.replaceAll(/[_\s]/g, "")
 		const matchesSearch = searchTarget.includes(cleanSearchQuery)
 
-		return matchesType && matchesRarity && matchesSearch
+		return (
+			isItemRevealed(arc, now) && matchesType && matchesRarity && matchesSearch
+		)
 	})
 
 	const rarityFilters = Object.values(EnumRarity)

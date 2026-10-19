@@ -15,6 +15,7 @@ import { useNow, usePlannerStore } from "@/hooks"
 import { createSearchString, stopPropagation } from "@/helpers"
 import {
 	getItemStatus,
+	isItemRevealed,
 	sortByStatus,
 	type ItemStatus,
 } from "@/helpers/bannerStatus"
@@ -94,6 +95,7 @@ export function PlannerAddCharacterBox({
 		const matchesSearch = searchTarget.includes(cleanSearchQuery)
 
 		return (
+			isItemRevealed(char, now) &&
 			!doesPlannerHaveChar &&
 			matchesElement &&
 			matchesRarity &&
