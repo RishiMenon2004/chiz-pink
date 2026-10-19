@@ -1,4 +1,5 @@
 export { EnumCharacterElement } from "./character"
+export { characterLevelStats } from "./characterLevelStats"
 export {
 	getAllCharacters,
 	getAllCharactersList,

@@ -27,6 +27,14 @@ export type CharacterAbilitySet = {
 	lifeSkill2?: Ability
 }
 
+// Base stats, one entry per planner level step (1, 20, 20+, ... 80), in
+// EnumItemLvls order.
+export type CharacterLevelStats = {
+	hp: number[]
+	atk: number[]
+	def: number[]
+}
+
 export interface Character extends Item {
 	// Announced but kit unknown: abilities, arc type and materials are
 	// stand-ins. Hidden from the planner; the profile shows a TBD notice.

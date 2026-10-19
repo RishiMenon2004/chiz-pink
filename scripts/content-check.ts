@@ -18,6 +18,7 @@ import { BTRTimeline, Events, patchTimings } from "@/data/activities/events"
 import { arcLevelStats } from "@/data/arcs/arcLevelStats"
 import { getAllArcsList } from "@/data/arcs/arcList"
 import { EnumCharacterElement } from "@/data/characters/character"
+import { characterLevelStats } from "@/data/characters/characterLevelStats"
 import { getAllCharactersList } from "@/data/characters/characterList"
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..")
@@ -179,6 +180,11 @@ section(
 	unfinished,
 	"Arcs without level stats (run npm run content:import -- --write)",
 	arcs.filter((a) => !a.isPlaceholder && !arcLevelStats[a.id]).map(label)
+)
+section(
+	unfinished,
+	"Characters without level stats (run npm run content:import -- --write)",
+	characters.filter((c) => !c.isPlaceholder && !characterLevelStats[c.id]).map(label)
 )
 section(unfinished, "Placeholder images", placeholderImages)
 section(unfinished, "Characters without a profile background", missingBackgrounds)
