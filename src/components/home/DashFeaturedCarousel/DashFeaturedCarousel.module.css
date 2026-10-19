@@ -1,0 +1,361 @@
+/* Autoplay dwell per slide - the progress bar's duration. */
+.carousel {
+	--slide-duration: 6s;
+
+	position: relative;
+	flex-grow: 1;
+	overflow: clip;
+	isolation: isolate;
+
+	border-radius: 1.25rem;
+	container-type: inline-size;
+}
+
+.stage {
+	position: relative;
+	height: 100%;
+	min-height: 17rem;
+	aspect-ratio: 16 / 9;
+}
+
+/* ---------- Slide ---------- */
+
+.slide {
+	--theme: var(--theme-color, var(--rarity-color));
+
+	position: absolute;
+	inset: 0;
+
+	color: var(--foreground);
+	text-decoration: none;
+	cursor: var(--navigate-cursor);
+
+	/* Theme colour as the base; the greyscale background card is blended
+	   over it below, so every character's card picks up their banner hue. */
+	background-color: oklch(from var(--theme) 0.32 calc(c * 0.8) h);
+
+	opacity: 0;
+	transition: opacity 0.6s ease;
+
+	&[data-active="true"] {
+		opacity: 1;
+		z-index: 1;
+	}
+
+	/* Darken behind the text (left/bottom) so it reads over any art. */
+	&::after {
+		content: "";
+		position: absolute;
+		inset: 0;
+		z-index: 1;
+		pointer-events: none;
+		background:
+			linear-gradient(
+				to right,
+				oklch(from var(--theme) 0.18 calc(c * 0.5) h / 0.85) 0%,
+				transparent 55%
+			),
+			linear-gradient(to top, var(--shadow-dark-60) 0%, transparent 40%);
+	}
+
+	&:focus-visible {
+		outline: var(--pink) 2px solid;
+		outline-offset: -2px;
+	}
+}
+
+.background {
+	position: absolute;
+	inset: 0;
+
+	img {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		object-position: 15% center;
+		mix-blend-mode: luminosity;
+		opacity: 0.6;
+
+		transform: scale(1.08);
+		transition: transform var(--slide-duration) linear;
+	}
+
+	/* Slow push-in while a slide is up. */
+	.slide[data-active="true"] & img {
+		transform: scale(1);
+	}
+}
+
+.art {
+	position: absolute;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	width: 62%;
+
+	opacity: 0;
+	transform: translateX(8%);
+	transition:
+		opacity 0.6s ease,
+		transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+
+	.slide[data-active="true"] & {
+		opacity: 1;
+		transform: none;
+	}
+
+	img {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		object-position: 50% 8%;
+		filter: drop-shadow(var(--shadow-dark-50) -0.5rem 0.5rem 1rem);
+
+		/* Fade the art's left edge into the background. */
+		mask-image: linear-gradient(to right, transparent 0%, black 25%);
+
+		transform-origin: 50% 20%;
+		transition: transform 0.4s ease;
+	}
+
+	.slide:hover & img {
+		transform: scale(1.03);
+	}
+}
+
+.info {
+	position: absolute;
+	left: 1.25rem;
+	right: 40%;
+	bottom: 4.75rem;
+	z-index: 2;
+
+	display: flex;
+	flex-direction: column;
+	gap: 0.35rem;
+
+	opacity: 0;
+	transform: translateY(0.75rem);
+	transition:
+		opacity 0.5s ease 0.15s,
+		transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) 0.15s;
+
+	.slide[data-active="true"] & {
+		opacity: 1;
+		transform: none;
+	}
+}
+
+/* Same treatment as the catalog cards' Featured / Preview tag. */
+.tag {
+	align-self: flex-start;
+
+	font-family: var(--font-barlow-condensed);
+	font-style: italic;
+	font-size: 1.35rem;
+	letter-spacing: 2.5%;
+
+	filter: drop-shadow(var(--theme) 0px 0px 3px);
+	paint-order: stroke fill;
+	-webkit-text-stroke: 4px black;
+}
+
+.name {
+	font-family: var(--font-syne);
+	font-size: clamp(1.5rem, 7cqi, 2.75rem);
+	font-weight: 800;
+	line-height: 0.95;
+	text-transform: uppercase;
+	text-wrap: balance;
+
+	text-shadow: var(--shadow-dark-60) 0 2px 8px;
+}
+
+.meta {
+	display: flex;
+	align-items: center;
+	flex-wrap: wrap;
+	gap: 0.4rem;
+
+	font-family: var(--font-barlow-condensed);
+	font-size: 1.05rem;
+	font-weight: 600;
+
+	strong {
+		color: oklch(from var(--theme) 0.85 calc(c * 1.2) h);
+		font-weight: 700;
+	}
+}
+
+.element {
+	width: 1.5rem;
+	height: 1.5rem;
+	filter: drop-shadow(var(--shadow-dark-60) 0 1px 2px);
+}
+
+.capitalize {
+	text-transform: capitalize;
+}
+
+.divider {
+	width: 1px;
+	height: 0.9em;
+	margin-inline: 0.2rem;
+	background-color: currentColor;
+	opacity: 0.5;
+}
+
+/* ---------- Pager ---------- */
+
+.pager {
+	position: absolute;
+	left: 1.25rem;
+	bottom: 1rem;
+	z-index: 2;
+
+	display: flex;
+	gap: 0.5rem;
+}
+
+.thumb {
+	position: relative;
+	overflow: clip;
+
+	width: 2.75rem;
+	height: 2.75rem;
+	padding: 0;
+	border: none;
+	border-radius: 0.75rem;
+
+	background-color: var(--interactive-bg);
+	opacity: 0.55;
+
+	cursor: var(--pointer-cursor);
+	transition:
+		opacity 0.2s ease,
+		transform 0.2s ease;
+
+	/* Ring drawn on an overlay - an inset box-shadow on the button itself
+	   sits under the avatar and opaque art (e.g. Blackbird) hides it. */
+	&::after {
+		content: "";
+		position: absolute;
+		inset: 0;
+		z-index: 1;
+		border-radius: inherit;
+		pointer-events: none;
+		box-shadow: var(--foreground) 0 0 0 1px inset;
+	}
+
+	&:hover,
+	&:focus-visible {
+		opacity: 0.9;
+		outline: none;
+	}
+
+	&:focus-visible::after {
+		box-shadow: var(--pink) 0 0 0 2px inset;
+	}
+
+	&[aria-current="true"] {
+		opacity: 1;
+		transform: translateY(-0.15rem);
+		box-shadow: var(--shadow-dark-60) 0 0.25rem 0.5rem;
+
+		&::after {
+			box-shadow: var(--rarity-color-highlight) 0 0 0 2px inset;
+		}
+	}
+}
+
+.thumbAvatar {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+}
+
+/* Registered so the conic stop can animate (unregistered custom properties
+   only flip at the end). */
+@property --thumb-progress {
+	syntax: "<percentage>";
+	inherits: false;
+	initial-value: 0%;
+}
+
+/* Fills clockwise around the active thumb's ring, over the yellow outline;
+   its animationend advances the carousel (see the component). The mask
+   cuts the conic fill down to a 2px band matching the ring. */
+.progress {
+	position: absolute;
+	inset: 0;
+	z-index: 2;
+	padding: 2px;
+	border-radius: inherit;
+	pointer-events: none;
+
+	background: conic-gradient(var(--pink) var(--thumb-progress), transparent 0);
+	mask:
+		linear-gradient(#000 0 0) content-box exclude,
+		linear-gradient(#000 0 0);
+
+	.carousel[data-autoplay="true"] & {
+		animation: slide-progress var(--slide-duration) linear forwards;
+	}
+
+	/* Hold while the reader is looking at or tabbing through it. */
+	.carousel:hover &,
+	.carousel:focus-within & {
+		animation-play-state: paused;
+	}
+}
+
+@keyframes slide-progress {
+	to {
+		--thumb-progress: 100%;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.progress {
+		display: none;
+	}
+
+	.slide,
+	.art,
+	.info,
+	.background img {
+		transition: none;
+	}
+}
+
+/* ---------- Narrow ---------- */
+
+@container (width < 480px) {
+	.art {
+		width: 75%;
+	}
+
+	.info {
+		left: 1rem;
+		right: 30%;
+		bottom: 4.25rem;
+	}
+
+	.tag {
+		font-size: 1.1rem;
+	}
+
+	.meta {
+		font-size: 0.95rem;
+	}
+
+	.pager {
+		left: 1rem;
+		bottom: 0.85rem;
+	}
+
+	.thumb {
+		width: 2.4rem;
+		height: 2.4rem;
+	}
+}

@@ -1,6 +1,6 @@
 import type { Item } from "@/types/item"
 
-import { Events } from "@/data/activities/events"
+import { Events, type EventData } from "@/data/activities/events"
 import { arcBanners } from "@/data/activities/banners"
 
 export type ItemStatus = "featured" | "preview" | null
@@ -107,4 +107,41 @@ export function getCharacterBannerThemeColor(characterId: string): string | null
 			event.type === "Gacha" && event.rateupItem === characterId && event.themeColor
 	)
 	return banner?.themeColor ?? null
+}
+
+export type CharacterBanner = BannerWindow & { event: EventData }
+
+// A character's running rate-up banner, else their next scheduled one.
+// Null for hand-flagged previews whose banner dates aren't known yet.
+export function getCharacterActiveBanner(
+	characterId: string,
+	now: number
+): CharacterBanner | null {
+	const banners = Events.filter(
+		(event) => event.type === "Gacha" && event.rateupItem === characterId
+	).map((event) => ({
+		event,
+		start: event.getStartDate(ANY_SERVER),
+		end: event.getEndDate(ANY_SERVER),
+	}))
+
+	return (
+		banners.find(({ start, end }) => start <= now && now < end) ??
+		banners
+			.filter(({ start }) => start > now)
+			.toSorted((a, b) => a.start - b.start)[0] ??
+		null
+	)
+}
+
+// Coarser than formatTimeRemaining - a banner countdown only needs the
+// two largest units.
+export function formatBannerCountdown(ms: number) {
+	const minutes = Math.max(0, Math.floor(ms / 60_000))
+	const days = Math.floor(minutes / 1440)
+	const hours = Math.floor((minutes % 1440) / 60)
+
+	if (days > 0) return `${days}d ${hours}h`
+	if (hours > 0) return `${hours}h ${minutes % 60}m`
+	return `${minutes % 60}m`
 }

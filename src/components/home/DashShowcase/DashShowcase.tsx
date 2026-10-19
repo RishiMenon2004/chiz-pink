@@ -1,12 +1,9 @@
 import { ReactNode } from "react"
 import Link from "next/link"
 
-import {
-	ArcCards,
-	CharacterCards,
-	useArcCatalog,
-	useCharacterCatalog,
-} from "@/components/catalog"
+import { ArcCards, useArcCatalog, useCharacterCatalog } from "@/components/catalog"
+
+import { DashFeaturedCarousel } from "../DashFeaturedCarousel"
 
 import pageStyles from "@/app/page.module.css"
 import styles from "./DashShowcase.module.css"
@@ -21,12 +18,14 @@ export function DashShowcase() {
 		<div className={pageStyles.twoColumns}>
 			{characters.length > 0 && (
 				<ShowcaseSection title="Featured Characters" href="/characters">
-					<CharacterCards entries={characters} />
+					<DashFeaturedCarousel entries={characters} />
 				</ShowcaseSection>
 			)}
 			{arcs.length > 0 && (
 				<ShowcaseSection title="Featured Arcs" href="/arcs">
-					<ArcCards entries={arcs} />
+					<div className={`inset-control ${styles.cards}`}>
+						<ArcCards entries={arcs} />
+					</div>
 				</ShowcaseSection>
 			)}
 		</div>
@@ -52,7 +51,7 @@ function ShowcaseSection({
 					VIEW ALL
 				</Link>
 			</div>
-			<div className={`inset-control ${styles.cards}`}>{children}</div>
+			{children}
 		</section>
 	)
 }
