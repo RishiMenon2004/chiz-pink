@@ -1,6 +1,13 @@
 "use client"
 
-import { ChangeEvent, CSSProperties, MouseEvent, useState } from "react"
+import {
+	ChangeEvent,
+	CSSProperties,
+	MouseEvent,
+	useEffect,
+	useRef,
+	useState,
+} from "react"
 
 import type { KeyMouseEventType } from "@/types"
 import type { Arc } from "@/types/weapon"
@@ -9,7 +16,11 @@ import { EnumItemLvls, EnumRarity, getItemRarityStyle } from "@/data/items"
 import { findArc, EnumArcType, getAllArcsList } from "@/data/arcs"
 
 import { getRarityName, createSearchString, stopPropagation } from "@/helpers"
-import { isItemRevealed, sortByStatus } from "@/helpers/bannerStatus"
+import {
+	getArcBannerThemeColor,
+	isItemRevealed,
+	sortByStatus,
+} from "@/helpers/bannerStatus"
 
 import { useNow } from "@/hooks"
 
@@ -78,12 +89,57 @@ const LvlSelectGrid = ({
 	)
 }
 
+function ArcTile({ arc, className }: { arc: Arc; className: string }) {
+	const themeColor = getArcBannerThemeColor(arc.id)
+
+	return (
+		<span
+			className={`${styles.arcTile} ${className} ${getItemRarityStyle(arc)}`}
+			style={
+				themeColor
+					? ({
+							"--rarity-color": themeColor,
+							"--rarity-color-highlight": `color-mix(in srgb, ${themeColor}, white 45%)`,
+						} as CSSProperties)
+					: undefined
+			}>
+			<ArcIcon arc={arc} width={256} height={256} />
+		</span>
+	)
+}
+
 const PlannerArcsSelect = () => {
 	const { newArcRecord, setNewArcRecord } = useAddArcContext()
 	const [selected, setSelected] = useState<Arc>(() =>
 		findArc(newArcRecord?.id ?? getAllArcsList()[0].id)
 	)
 	const [dropdown, setDropdown] = useState<boolean>(false)
+	const selectRef = useRef<HTMLDivElement>(null)
+	const searchRef = useRef<HTMLInputElement>(null)
+
+	useEffect(() => {
+		if (!dropdown) return
+		if (matchMedia("(pointer: fine)").matches) searchRef.current?.focus()
+
+		// Close on taps outside rather than on blur, so dismissing the mobile
+		// keyboard doesn't close the dropdown with it.
+		const handlePointerDown = (e: PointerEvent) => {
+			if (!selectRef.current?.contains(e.target as Node)) setDropdown(false)
+		}
+		const handleKeyDown = (e: KeyboardEvent) => {
+			if (e.key !== "Escape") return
+			// Runs before the modal's window listener, so the first Escape
+			// only closes the dropdown.
+			e.stopPropagation()
+			setDropdown(false)
+		}
+		document.addEventListener("pointerdown", handlePointerDown)
+		document.addEventListener("keydown", handleKeyDown)
+		return () => {
+			document.removeEventListener("pointerdown", handlePointerDown)
+			document.removeEventListener("keydown", handleKeyDown)
+		}
+	}, [dropdown])
 	const [searchQuery, setSearchQuery] = useState<string>("")
 	const [filterQuery, setFilterQuery] = useState<
 		[EnumArcType | null, EnumRarity | null]
@@ -115,105 +171,116 @@ const PlannerArcsSelect = () => {
 		.slice(1)
 
 	return (
-		<div
-			className={styles.arcSelect}
-			aria-roledescription="select"
-			onClick={stopPropagation}>
-			<div
-				className={`${styles.arcSelectSelected} ${getItemRarityStyle(selected)}`}
+		<div ref={selectRef} className={styles.arcSelect} onClick={stopPropagation}>
+			<button
+				type="button"
+				className={`inset-control ${styles.arcSelectSelected}`}
+				data-open={dropdown}
+				aria-expanded={dropdown}
 				onClick={(e) => {
 					e.stopPropagation()
-					setDropdown(true)
+					setDropdown(!dropdown)
 				}}>
-				<div className={styles.arcSelectSelectedImageContainer}>
-					<ArcIcon arc={selected} width={256} height={256} />
-				</div>
-				<p>{selected.name}</p>
-				<p>{`${getRarityName(selected.rarity)} ${selected.type} Arc`}</p>
-			</div>
-			<div
-				className={`${styles.arcSelectOptionDropdown} ${!dropdown && styles.closed}`}
-				onBlur={() => setDropdown(false)}>
-				<span className={styles.arcSelectOptionSearchSection}>
-					<input
-						className={styles.arcSelectOptionSearchBox}
-						type="text"
-						value={searchQuery}
-						onChange={handleSearch}
-					/>
-					<button onClick={() => setDropdown(false)}>X</button>
+				<ArcTile arc={selected} className={styles.arcTileLarge} />
+				<span className={styles.arcSelectInfo}>
+					<span className={styles.arcSelectName}>{selected.name}</span>
+					<span className={styles.arcSelectMeta}>
+						{`${getRarityName(selected.rarity)} ${selected.type} Arc`}
+					</span>
 				</span>
-				<div className={styles.arcTypeFilterList}>
-					<div style={{ width: "100%" }}>Filter by Type:</div>
-					{Object.values(EnumArcType).map((arcType) => {
-						const isActive = filterQuery[0] === arcType
-						const toggleType = (e: MouseEvent) => {
-							e.stopPropagation()
-							setFilterQuery(([prevType, prevRank]) => {
-								if (prevType === arcType) return [null, prevRank]
-								return [arcType, prevRank]
-							})
-						}
-						return (
-							<span
-								key={arcType}
-								className={`${styles.arcTypeFilter} ${isActive ? styles.active : ""}`}
-								onClick={toggleType}>
-								{arcType}
-							</span>
-						)
-					})}
-				</div>
-				<div className={styles.arcTypeFilterList}>
-					<div style={{ width: "100%" }}>Filter by Rank:</div>
-					{rarityFilters.map((arcRank) => {
-						const isActive = filterQuery[1] === arcRank
-						const toggleRank = (e: MouseEvent) => {
-							e.stopPropagation()
-							setFilterQuery(([prevType, prevRank]) => {
-								if (prevRank === arcRank) return [prevType, null]
-								return [prevType, arcRank]
-							})
-						}
-						return (
-							<span
-								key={arcRank}
-								className={`${styles.arcTypeFilter} ${isActive ? styles.active : ""}`}
-								onClick={toggleRank}>
-								{getRarityName(arcRank)}
-							</span>
-						)
-					})}
-				</div>
-				<div className={styles.arcSelectOptionList}>
-					{filteredArcs.map((arc) => {
-						const addArc = (e: MouseEvent) => {
-							e.stopPropagation()
-							setSelected(arc)
-							setNewArcRecord(() => {
-								return { ...newArcRecord, id: arc.id }
-							})
-							setDropdown(false)
-						}
-						return (
-							<div
-								aria-roledescription="option"
-								className={styles.arcSelectOption}
-								key={arc.id}
-								onClick={addArc}>
-								<ArcIcon
-									arc={arc}
-									width={256}
-									height={256}
-									className={getItemRarityStyle(arc)}
-								/>
-								<p>{arc.name}</p>
-								<p>
-									{`${getRarityName(arc.rarity)} ${arc.type} Arc`}
-								</p>
-							</div>
-						)
-					})}
+			</button>
+			<div
+				className={`metallic-panel ${styles.arcSelectOptionDropdown} ${!dropdown && styles.closed}`}>
+				<div className={`inset-control ${styles.arcSelectOptionBody}`}>
+					<input
+						ref={searchRef}
+						className={`inset-control ${styles.arcSelectOptionSearchBox}`}
+						type="text"
+						placeholder="Search"
+						value={searchQuery}
+						enterKeyHint="done"
+						onChange={handleSearch}
+						onKeyDown={(e) => {
+							if (e.key === "Enter") e.currentTarget.blur()
+						}}
+					/>
+					<div className={styles.arcFilters}>
+						<span className={styles.arcFilterLabel}>Type</span>
+						<div className={styles.arcFilterRow}>
+							{Object.values(EnumArcType).map((arcType) => {
+								const isActive = filterQuery[0] === arcType
+								const toggleType = (e: MouseEvent) => {
+									e.stopPropagation()
+									setFilterQuery(([prevType, prevRank]) => {
+										if (prevType === arcType) return [null, prevRank]
+										return [arcType, prevRank]
+									})
+								}
+								return (
+									<button
+										type="button"
+										key={arcType}
+										className={`${styles.arcFilter} ${isActive ? styles.active : ""}`}
+										onClick={toggleType}>
+										{arcType}
+									</button>
+								)
+							})}
+						</div>
+						<span className={styles.arcFilterLabel}>Rank</span>
+						<div className={styles.arcFilterRow}>
+							{rarityFilters.map((arcRank) => {
+								const isActive = filterQuery[1] === arcRank
+								const toggleRank = (e: MouseEvent) => {
+									e.stopPropagation()
+									setFilterQuery(([prevType, prevRank]) => {
+										if (prevRank === arcRank) return [prevType, null]
+										return [prevType, arcRank]
+									})
+								}
+								return (
+									<button
+										type="button"
+										key={arcRank}
+										className={`${styles.arcFilter} ${isActive ? styles.active : ""}`}
+										onClick={toggleRank}>
+										{getRarityName(arcRank)}
+									</button>
+								)
+							})}
+						</div>
+					</div>
+					<div className={styles.arcSelectOptionListContainer}>
+						<div className={styles.arcSelectOptionList}>
+							{filteredArcs.map((arc) => {
+								const addArc = (e: MouseEvent) => {
+									e.stopPropagation()
+									setSelected(arc)
+									setNewArcRecord(() => {
+										return { ...newArcRecord, id: arc.id }
+									})
+									setDropdown(false)
+								}
+								return (
+									<button
+										type="button"
+										aria-roledescription="option"
+										data-selected={arc.id === selected.id}
+										className={styles.arcSelectOption}
+										key={arc.id}
+										onClick={addArc}>
+										<ArcTile arc={arc} className={styles.arcTileSmall} />
+										<span className={styles.arcSelectInfo}>
+											<span className={styles.arcSelectName}>{arc.name}</span>
+											<span className={styles.arcSelectMeta}>
+												{`${getRarityName(arc.rarity)} ${arc.type} Arc`}
+											</span>
+										</span>
+									</button>
+								)
+							})}
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -236,7 +303,7 @@ export function PlannerAddArcBox({
 			<div className={styles.addArcBoxTitle}>Add Arc</div>
 			<PlannerArcsSelect />
 			<div className={styles.addArcLvlSection}>
-				<span>Current Lvl.</span>
+				<span className={styles.addArcLvlLabel}>Current Level</span>
 				<LvlSelectGrid
 					selectedLvl={newArcRecord.currentLvl}
 					onChange={(value: EnumItemLvls) => {
@@ -252,7 +319,7 @@ export function PlannerAddArcBox({
 				/>
 			</div>
 			<div className={styles.addArcLvlSection}>
-				<span>Target Lvl.</span>
+				<span className={styles.addArcLvlLabel}>Target Level</span>
 				<LvlSelectGrid
 					selectedLvl={newArcRecord.targetLvl}
 					onChange={(value: EnumItemLvls) => {
