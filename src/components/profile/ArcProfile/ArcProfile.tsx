@@ -4,6 +4,7 @@ import Link from "next/link"
 import type { Arc } from "@/types/weapon"
 
 import { getArcBannerThemeColor } from "@/helpers/bannerStatus"
+import { formatAttributeValue } from "@/helpers/formatAttributeValue"
 import { parseDescription } from "@/helpers/parseDescription"
 
 import { ArcEffect } from "../ArcEffect"
@@ -12,10 +13,6 @@ import { ProfileMaterials } from "../ProfileMaterials"
 
 import pageStyles from "@/app/page.module.css"
 import styles from "../profile.module.css"
-
-function formatAttributeValue(value: number) {
-	return value < 1 ? `${+(value * 100).toFixed(2)}%` : `${value}`
-}
 
 export function ArcProfile({ arc }: { arc: Arc }) {
 	return (
