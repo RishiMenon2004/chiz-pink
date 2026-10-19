@@ -1,6 +1,12 @@
 "use client"
 
-import { ChangeEvent, MouseEvent, useEffect, useState } from "react"
+import {
+	ChangeEvent,
+	CSSProperties,
+	MouseEvent,
+	useEffect,
+	useState,
+} from "react"
 import { createPortal } from "react-dom"
 import Link from "next/link"
 
@@ -19,6 +25,8 @@ import {
 	useTooltip,
 } from "@/hooks"
 
+import { getCharacterBannerThemeColor } from "@/helpers/bannerStatus"
+
 import { PlannerBoxContext, usePlannerMaterialsContext } from "@/contexts"
 
 import {
@@ -32,6 +40,7 @@ import { PlannerBoxButtonsContainer } from "../PlannerBoxButtonsContainer"
 import { PlannerMaterialsList } from "../MaterialsList"
 
 import plannerBoxStyles from "@/components/planner/RenderPlanner/plannerBox.module.css"
+import topStyles from "../ArcBox/plannerArcBox.module.css"
 import styles from "./PlannerCharacterBox.module.css"
 import { beetleCoin, expHunterGuideSet } from "@/data/items/materials"
 import { Material } from "@/types/item"
@@ -96,6 +105,7 @@ export function PlannerCharacterBox({
 		}))
 
 	const char = findCharacter(charRecord.id)
+	const themeColor = getCharacterBannerThemeColor(char.id)
 
 	// One tooltip shared by the name and image links to the profile page.
 	const {
@@ -376,43 +386,48 @@ export function PlannerCharacterBox({
 					dragRef: handleRef,
 				}}>
 				<div
-					className={`${plannerBoxStyles.plannerBox} ${getItemRarityStyle(char)} ${CharacterState.isDisabled ? `${plannerBoxStyles.plannerBoxDisabled} ${styles.noInteract}` : ""} ${dropPreviewOrDragOverlay().join(" ")}`}>
+					className={`${plannerBoxStyles.plannerBox} ${getItemRarityStyle(char)} ${CharacterState.isDisabled ? `${plannerBoxStyles.plannerBoxDisabled} ${topStyles.noInteract}` : ""} ${dropPreviewOrDragOverlay().join(" ")}`}>
 					<div
-						className={`metallic-panel ${plannerBoxStyles.infoContainer}`}>
-						<div className={styles.charInfoTop}>
-							<div className={styles.charAvatarContainer}>
-								<Link
-									href={`/characters/${char.id}`}
-									className={styles.charImageContainer}
-									aria-label={`View ${char.name}'s profile`}
-									onPointerEnter={showProfileTooltip}
-									onPointerLeave={hideProfileTooltip}>
-									<CharacterAvatar
-										character={char}
-										width={256}
-										height={256}
-										loading="eager"
-									/>
-								</Link>
-							</div>
+						className={`metallic-panel ${plannerBoxStyles.infoContainer} ${topStyles.infoContainer}`}>
+						<div className={topStyles.arcInfoTop}>
 							<Link
 								href={`/characters/${char.id}`}
-								className={styles.charNameBox}
+								className={`${topStyles.arcImageContainer} ${styles.avatarTile}`}
+								style={
+									themeColor
+										? ({
+												"--rarity-color": themeColor,
+												"--rarity-color-highlight": `color-mix(in srgb, ${themeColor}, white 45%)`,
+											} as CSSProperties)
+										: undefined
+								}
+								aria-label={`View ${char.name}'s profile`}
 								onPointerEnter={showProfileTooltip}
 								onPointerLeave={hideProfileTooltip}>
-								{char.name}
+								<CharacterAvatar
+									character={char}
+									width={256}
+									height={256}
+									loading="eager"
+								/>
 							</Link>
-							<ProfileTooltip offset={{ x: 6, y: 0 }}>View Profile</ProfileTooltip>
-							<div className={styles.charLevels}>
-								<div className={styles.charLevelSection}>
-									<div className={styles.charLevelSectionLabel}>
+							<div className={topStyles.arcStatsSection}>
+								<Link
+									href={`/characters/${char.id}`}
+									className={topStyles.arcStatsName}
+									onPointerEnter={showProfileTooltip}
+									onPointerLeave={hideProfileTooltip}>
+									{char.name}
+								</Link>
+								<ProfileTooltip offset={{ x: 6, y: 0 }}>View Profile</ProfileTooltip>
+								<span
+									className={`${topStyles.arcStatsLvlContainer} ${topStyles.currentLvl}`}>
+									<div className={topStyles.arcPhases}>
+										<ItemPhases lvl={CharacterState.currentLvl} />
+									</div>
+									<span className={topStyles.arcLevelSectionLabel}>
 										Current Level
-									</div>
-									<div className={styles.charLvlPhases}>
-										<ItemPhases
-											lvl={CharacterState.currentLvl}
-										/>
-									</div>
+									</span>
 									<select
 										className="inset-control"
 										value={CharacterState.currentLvl}
@@ -426,16 +441,16 @@ export function PlannerCharacterBox({
 											</option>
 										))}
 									</select>
-								</div>
-								<div className={styles.charLevelSection}>
-									<div className={styles.charLevelSectionLabel}>
+								</span>
+
+								<span
+									className={`${topStyles.arcStatsLvlContainer}`}>
+									<div className={topStyles.arcPhases}>
+										<ItemPhases lvl={CharacterState.targetLvl} />
+									</div>
+									<span className={topStyles.arcLevelSectionLabel}>
 										Target Level
-									</div>
-									<div className={styles.charLvlPhases}>
-										<ItemPhases
-											lvl={CharacterState.targetLvl}
-										/>
-									</div>
+									</span>
 									<select
 										className="inset-control"
 										value={CharacterState.targetLvl}
@@ -449,7 +464,7 @@ export function PlannerCharacterBox({
 											</option>
 										))}
 									</select>
-								</div>
+								</span>
 							</div>
 						</div>
 						<div className={styles.charStatsSection}>

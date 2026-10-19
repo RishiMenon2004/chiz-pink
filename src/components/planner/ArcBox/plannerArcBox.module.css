@@ -9,6 +9,10 @@ div.infoContainer {
 	.arcImageContainer {
 		position: relative;
 		flex-shrink: 0;
+		align-self: flex-start;
+
+		width: 10rem;
+		height: 10rem;
 
 		display: grid;
 		place-items: center;
@@ -18,26 +22,31 @@ div.infoContainer {
 		user-select: none;
 
 		padding-inline: 1rem;
-		margin: 0.5rem;
-		margin-bottom: 0;
-		padding-block: 0.25rem 1.5rem;
-		border-radius: calc(var(--outer-radius) - 0.5rem);
+		margin: 0.25rem 0 0 0.25rem;
+		padding-block: 0.25rem;
+		border-radius: calc(var(--outer-radius) - 0.25rem) 0.75rem 0.75rem;
 
-		background-color: var(--interactive-bg);
-		background-image: linear-gradient(
-			to top,
-			color-mix(in srgb, var(--rarity-color) 20%, transparent)
+		--start-color: oklch(
+			from var(--rarity-color) calc(l + 0.25) c calc(h + 30)
 		);
-
+		background-color: color-mix(
+			in srgb,
+			var(--rarity-color),
+			var(--interactive-bg) 85%
+		);
+		background-image: linear-gradient(
+			to bottom right,
+			var(--start-color) -25%,
+			var(--rarity-color) 20%,
+			transparent 95%
+		);
 		box-shadow:
 			var(--shadow-dark-60) 0px 0px 2px 1px,
-			var(--shadow-dark-70) 1px 2px 2px inset,
-			var(--rarity-color) 0 calc(-1.25rem) 0px 5px inset,
-			var(--rarity-color) 0 0 0px 5px inset;
+			var(--shadow-dark-40) 0px 0px 10px 1px inset;
 
 		img {
 			width: auto;
-			height: 6.5rem;
+			height: 8rem;
 			aspect-ratio: 1;
 			filter: drop-shadow(black 0 0 6px);
 			transition: scale 300ms ease-out;
@@ -49,22 +58,6 @@ div.infoContainer {
 				transition-timing-function: var(--ease-in-out-back);
 			}
 		}
-	}
-
-	.arcLabelContainer {
-		position: absolute;
-		bottom: 0;
-		right: 0;
-		left: 0;
-
-		color: black;
-		font-size: 0.75rem;
-		font-weight: 740;
-		line-height: 1.5rem;
-		text-align: center;
-		text-shadow:
-			var(--shadow-glow-white-40) 1px 1px 0.5px,
-			var(--shadow-dark-30) -0.5px -1px 0.5px;
 	}
 
 	.arcStatsSection {
@@ -110,7 +103,7 @@ div.infoContainer {
 			font-weight: 600;
 			font-style: italic;
 
-			padding-inline: 0.5rem var(--padding-right);
+			padding-inline: 1rem var(--padding-right);
 
 			&.currentLvl {
 				margin-bottom: 0.25rem;

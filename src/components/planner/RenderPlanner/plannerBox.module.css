@@ -38,12 +38,17 @@ div.infoContainer {
 	user-select: none;
 }
 
+.plannerSectionLabel:has(+ .plannerRequiredMaterialsBox) {
+	margin-left: 1.25rem;
+}
+
 .plannerRequiredMaterialsBox {
 	flex-grow: 1;
 
 	padding: 1rem;
-	margin-inline: var(--padding-left) var(--padding-right);
-	border-radius: 0.75rem 0.75rem 0 0;
+	margin: 0 0.25rem 0.25rem;
+	border-radius: 0.75rem 0.75rem calc(var(--inner-radius) - 0.25rem)
+		calc(var(--outer-radius) - 0.25rem);
 
 	background-color: var(--interactive-bg);
 
@@ -130,5 +135,7 @@ div.infoContainer {
 
 	.plannerRequiredMaterialsBox {
 		padding: 1.25rem;
+		border-radius: 0.75rem 0.75rem calc(var(--outer-radius) - 0.25rem)
+			calc(var(--outer-radius) - 0.25rem);
 	}
 }

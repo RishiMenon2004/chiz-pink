@@ -3,7 +3,8 @@
 }
 
 .plannerRequiredMaterialsBox {
-	margin-inline: 1rem !important;
+	margin: 0 0.25rem 0.25rem !important;
+	border-radius: 1.375rem !important;
 }
 
 /* The page already pads its sides; drop InfoBox's own page margins (the

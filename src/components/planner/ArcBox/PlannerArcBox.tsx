@@ -1,6 +1,12 @@
 "use client"
 
-import { ChangeEvent, MouseEvent, useEffect, useState } from "react"
+import {
+	ChangeEvent,
+	CSSProperties,
+	MouseEvent,
+	useEffect,
+	useState,
+} from "react"
 import { createPortal } from "react-dom"
 import Link from "next/link"
 
@@ -19,7 +25,7 @@ import {
 	useTooltip,
 } from "@/hooks"
 
-import { getRarityName } from "@/helpers"
+import { getArcBannerThemeColor } from "@/helpers/bannerStatus"
 
 import { PlannerBoxContext, usePlannerMaterialsContext } from "@/contexts"
 
@@ -91,6 +97,7 @@ export function PlannerArcBox({
 		}))
 
 	const arc = findArc(arcRecord.id)
+	const themeColor = getArcBannerThemeColor(arc.id)
 
 	// One tooltip shared by the name and image links to the profile page.
 	const {
@@ -240,6 +247,14 @@ export function PlannerArcBox({
 							<Link
 								href={`/arcs/${arc.id}`}
 								className={styles.arcImageContainer}
+								style={
+									themeColor
+										? ({
+												"--rarity-color": themeColor,
+												"--rarity-color-highlight": `color-mix(in srgb, ${themeColor}, white 45%)`,
+											} as CSSProperties)
+										: undefined
+								}
 								aria-label={`View ${arc.name}`}
 								onPointerEnter={showProfileTooltip}
 								onPointerLeave={hideProfileTooltip}>
@@ -249,11 +264,6 @@ export function PlannerArcBox({
 									height={256}
 									loading="eager"
 								/>
-								<div className={styles.arcLabelContainer}>
-									{getRarityName(
-										arc.rarity
-									).toLocaleUpperCase()}
-								</div>
 							</Link>
 							<div className={styles.arcStatsSection}>
 								<Link
