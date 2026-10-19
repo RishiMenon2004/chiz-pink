@@ -126,7 +126,7 @@ export function MaterialItemBox({
 
 	return (
 		<div
-			className={`${styles.materialBox} ${getItemRarityStyle(material, styles)} ${isMultiMat ? styles.multi : ""} ${ownedOrNeededStyle}`}
+			className={`${styles.materialBox} ${getItemRarityStyle(material)} ${isMultiMat ? styles.multi : ""} ${ownedOrNeededStyle}`}
 			onClick={(e) => {
 				e.stopPropagation()
 				hideTooltip()

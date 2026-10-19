@@ -83,7 +83,7 @@
 
 .materialList {
 	display: grid;
-	grid-template-columns: repeat(auto-fill, minmax(12.25rem, 1fr));
+	grid-template-columns: repeat(auto-fill, minmax(10.75rem, 1fr));
 	place-items: center;
 	gap: 2rem;
 
@@ -129,7 +129,7 @@
 
 	.multiMatContainer {
 		width: 100%;
-		grid-template-columns: repeat(auto-fit, minmax(12.25rem, 1fr));
+		grid-template-columns: repeat(auto-fit, minmax(10.75rem, 1fr));
 	}
 }
 

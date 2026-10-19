@@ -112,7 +112,7 @@ export function MaterialEditorBox({ material }: { material: Material }) {
 
 	return (
 		<div
-			className={`${styles.materialBox} ${getItemRarityStyle(material, styles)}`}
+			className={`${styles.materialBox} ${getItemRarityStyle(material)}`}
 			onClick={(e) => {
 				e.stopPropagation()
 				hideTooltip()

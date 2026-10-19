@@ -64,10 +64,14 @@
 	.iconContainer {
 		background-color: var(--interactive-bg);
 		background-image: linear-gradient(
-			to top,
-			color-mix(in srgb, var(--rarity-color) 30%, transparent)
+			to bottom right,
+			color-mix(in srgb, var(--rarity-color-highlight) 50%, transparent) -25%,
+			color-mix(in srgb, var(--rarity-color) 50%, transparent) 40%,
+			color-mix(in srgb, var(--rarity-color) 15%, transparent) 100%
 		);
-		box-shadow: var(--shadow-dark-40) 1px 1px 2px inset;
+		outline: 1px solid rgba(255, 255, 255, 0.25);
+		outline-offset: -1px;
+		box-shadow: var(--shadow-dark-40) 0px 0px 3px 1px inset;
 		border-radius: calc(0.5rem - 0.125rem);
 		padding: 0.125rem 0.25rem;
 
@@ -80,7 +84,7 @@
 		img {
 			width: 2.5rem;
 			height: auto;
-			filter: drop-shadow(black 0 0 5px);
+			filter: drop-shadow(var(--shadow-dark-60) 0 0 5px);
 		}
 	}
 
@@ -107,7 +111,7 @@
 	width: fit-content;
 	display: grid;
 	place-items: center;
-	grid-template-columns: repeat(auto-fit, minmax(12.25rem, 1fr));
+	grid-template-columns: repeat(auto-fit, minmax(10.75rem, 1fr));
 	gap: 2rem;
 
 	&:not(:has(> *:only-child)) {

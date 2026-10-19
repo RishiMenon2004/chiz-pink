@@ -834,14 +834,16 @@ a.backLink:not(:disabled):is(:hover, :focus, :focus-visible) {
 	padding: 0.25rem;
 	border-radius: 0.6rem;
 
+	background-color: var(--interactive-bg);
 	background-image: linear-gradient(
 		to bottom right,
-		var(--rarity-color-highlight) -25%,
-		var(--rarity-color) 40%,
-		color-mix(in srgb, var(--rarity-color), var(--interactive-bg) 70%) 100%
+		color-mix(in srgb, var(--rarity-color-highlight) 50%, transparent) -25%,
+		color-mix(in srgb, var(--rarity-color) 50%, transparent) 40%,
+		color-mix(in srgb, var(--rarity-color) 15%, transparent) 100%
 	);
 	outline: 1px solid rgba(255, 255, 255, 0.25);
 	outline-offset: -1px;
+	box-shadow: var(--shadow-dark-40) 1px 1px 3px 1px inset;
 }
 
 .materialIcon {
