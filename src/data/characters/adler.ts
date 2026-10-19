@@ -30,22 +30,22 @@ export const adler: Character = {
 				{
 					section: "Basic Attack: Deliverance",
 					description:
-						"Wields his weapon and performs up to <dn>5</> consecutive attacks, dealing Incantation DMG.",
+						"Wields his weapon and performs up to <dn>5</> consecutive attacks, dealing <el>Incantation DMG</>.",
 				},
 				{
 					section: "Basic Attack: Liberation",
 					description:
-						"Enters aim mode, dealing <dn>1</> instance of single-target Incantation DMG to the enemy in the crosshair.",
+						"Enters aim mode, dealing <dn>1</> instance of single-target <el>Incantation DMG</> to the enemy in the crosshair.",
 				},
 				{
 					section: "Basic Attack: Ignorance",
 					description:
-						"Plunges, dealing <dn>1</> instance of Incantation DMG to an area upon impact. Increases DMG based on fall height, up to 100%.",
+						"Plunges, dealing <dn>1</> instance of <el>Incantation DMG</> to an area upon impact. Increases DMG based on fall height, up to 100%.",
 				},
 				{
 					section: "Critical Riposte: Revelation",
 					description:
-						"Triggers when casting Deliverance after a Critical Dodge. Dodges an attack with a quick dash, seizes the enemy's opening and swiftly swings his weapon, dealing <dn>1</> instance of Incantation DMG to an area, reducing their Break.",
+						"Triggers when casting Deliverance after a Critical Dodge. Dodges an attack with a quick dash, seizes the enemy's opening and swiftly swings his weapon, dealing <dn>1</> instance of <el>Incantation DMG</> to an area, reducing their Break.",
 				},
 				{
 					section: "Karma",
@@ -60,7 +60,7 @@ export const adler: Character = {
 			description: [
 				{
 					description:
-						"Need help? Summons Sunya phantoms to strike enemies, dealing <dn>1</> instance of Incantation DMG to an area, then inflicting Incantation DMG over time on enemies and granting active characters a shield with Blessing\nConsumes all stacks of Karma on skill cast. Each stack consumed grants Adler <dn>2%</> Skill DMG.",
+						"Need help? Summons Sunya phantoms to strike enemies, dealing <dn>1</> instance of <el>Incantation DMG</> to an area, then inflicting <el>Incantation DMG</> over time on enemies and granting active characters a shield with Blessing\nConsumes all stacks of Karma on skill cast. Each stack consumed grants Adler <dn>2%</> Skill DMG.",
 				},
 			],
 			maxLvl: 10,
@@ -70,7 +70,7 @@ export const adler: Character = {
 			description: [
 				{
 					description:
-						"I wish not fight if possible. Summons Rupa, Vedana, Sanna, Vinnana, and Sankhara, <dn>5</> Sunyas in total, to strike all enemy targets. Each target takes <dn>5</> instances of Incantation DMG. When only a single enemy remains on the field, Sunyas will perform a second strike, dealing a total of <dn>10</> instances of Incantation DMG.",
+						"I wish not fight if possible. Summons Rupa, Vedana, Sanna, Vinnana, and Sankhara, <dn>5</> Sunyas in total, to strike all enemy targets. Each target takes <dn>5</> instances of <el>Incantation DMG</>. When only a single enemy remains on the field, Sunyas will perform a second strike, dealing a total of <dn>10</> instances of <el>Incantation DMG</>.",
 				},
 			],
 			maxLvl: 10,
@@ -80,7 +80,7 @@ export const adler: Character = {
 			description: [
 				{
 					description:
-						"This fight shall not be prolonged any longer. Aims and fires <dn>1</> Compressed Round at the enemy, dealing <dn>1</> instance of Incantation DMG to an area on hit.",
+						"This fight shall not be prolonged any longer. Aims and fires <dn>1</> Compressed Round at the enemy, dealing <dn>1</> instance of <el>Incantation DMG</> to an area on hit.",
 				},
 			],
 			maxLvl: 10,

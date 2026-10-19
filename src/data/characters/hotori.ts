@@ -29,7 +29,7 @@ export const hotori: Character = {
 				{
 					section: "Basic Attack: Misty Moon Style",
 					description:
-						"Wields her weapon and performs up to <dn>5</> consecutive attacks, dealing Cosmos DMG.",
+						"Wields her weapon and performs up to <dn>5</> consecutive attacks, dealing <el>Cosmos DMG</>.",
 				},
 				{
 					section: "Basic Attack: Non-Closed Timepiece",
@@ -39,17 +39,17 @@ export const hotori: Character = {
 				{
 					section: "Basic Attack: Rippling Waves",
 					description:
-						"Hold Basic Attack in combat to trigger. Gracefully dashes forward and attacks, dealing <dn>4</> instances of Cosmos DMG to an area.",
+						"Hold Basic Attack in combat to trigger. Gracefully dashes forward and attacks, dealing <dn>4</> instances of <el>Cosmos DMG</> to an area.",
 				},
 				{
 					section: "Basic Attack: Crescent",
 					description:
-						"Wields the weapon mid-air and plunges, dealing <dn>1</> instance of Cosmos DMG to an area upon impact. Increases DMG based on fall height, up to 100%.",
+						"Wields the weapon mid-air and plunges, dealing <dn>1</> instance of <el>Cosmos DMG</> to an area upon impact. Increases DMG based on fall height, up to 100%.",
 				},
 				{
 					section: "Critical Riposte: Half Moment",
 					description:
-						"Triggers when using Misty Moon Style after a Critical Dodge. Raises the umbrella to counterattack opponents instantly, dealing <dn>1</> instance of Cosmos DMG and reducing Break.",
+						"Triggers when using Misty Moon Style after a Critical Dodge. Raises the umbrella to counterattack opponents instantly, dealing <dn>1</> instance of <el>Cosmos DMG</> and reducing Break.",
 				},
 			],
 			maxLvl: 10,
@@ -59,7 +59,7 @@ export const hotori: Character = {
 			description: [
 				{
 					description:
-						"Requires no cooldown for Present Replay.\nAllows Hotori to spend <dn>60</> <kw>Non-Closed Timepiece</> energy to cast Present Replay when energy is greater than <dn>60</>. Deals <dn>7</> instances of Cosmos DMG to an area. Records Support Skills and Redirect Skills used by allies for the next <dn>5</>s, appreciating up to <dn>3</> timings per use, with each character recorded at most once.\nRewinds the Non-Closed Timepiece pointer continuously during use. Stops recording after the pointer rewinds a certain amount, and continues rewinding a fixed amount if recording completes early. Clears records when entering or leaving battle. Overwrites existing records when using Present Replay again.",
+						"Requires no cooldown for Present Replay.\nAllows Hotori to spend <dn>60</> <kw>Non-Closed Timepiece</> energy to cast Present Replay when energy is greater than <dn>60</>. Deals <dn>7</> instances of <el>Cosmos DMG</> to an area. Records Support Skills and Redirect Skills used by allies for the next <dn>5</>s, appreciating up to <dn>3</> timings per use, with each character recorded at most once.\nRewinds the Non-Closed Timepiece pointer continuously during use. Stops recording after the pointer rewinds a certain amount, and continues rewinding a fixed amount if recording completes early. Clears records when entering or leaving battle. Overwrites existing records when using Present Replay again.",
 				},
 			],
 			maxLvl: 10,
@@ -69,7 +69,7 @@ export const hotori: Character = {
 			description: [
 				{
 					description:
-						"Has no cooldown or Ultimate Energy cost for World's Tide.\nAllows Hotori to unleash World's Tide when <kw>Non-Closed Timepiece</> energy is fully charged, dealing <dn>10</> instances of Cosmos DMG to an area. Draws a katana from the umbrella handle and changes attack mode. Slows surrounding time to near standstill for a period, disabling character switching. Cleanses any received time control debuffs and grants immunity to time control debuffs during Time Stop. Replays all attacks recorded by Present Replay <dn>1</> time and clears the records if any exist.\nRewinds the <kw>Non-Closed Timepiece</> pointer continuously during Time Stop. Builds combo stacks with Hotori's katana attacks, increasing damage per hit. Deals Finisher DMG when combo stacks reach <dn>10</>. Ends time stop when the pointer rewinds completely or when Finisher DMG is dealt.",
+						"Has no cooldown or Ultimate Energy cost for World's Tide.\nAllows Hotori to unleash World's Tide when <kw>Non-Closed Timepiece</> energy is fully charged, dealing <dn>10</> instances of <el>Cosmos DMG</> to an area. Draws a katana from the umbrella handle and changes attack mode. Slows surrounding time to near standstill for a period, disabling character switching. Cleanses any received time control debuffs and grants immunity to time control debuffs during Time Stop. Replays all attacks recorded by Present Replay <dn>1</> time and clears the records if any exist.\nRewinds the <kw>Non-Closed Timepiece</> pointer continuously during Time Stop. Builds combo stacks with Hotori's katana attacks, increasing damage per hit. Deals Finisher DMG when combo stacks reach <dn>10</>. Ends time stop when the pointer rewinds completely or when Finisher DMG is dealt.",
 				},
 			],
 			maxLvl: 10,
@@ -79,7 +79,7 @@ export const hotori: Character = {
 			description: [
 				{
 					description:
-						"Time to teach these rude guests some manners. Throws the umbrella, dealing <dn>1</> instance of Cosmos DMG to an area.",
+						"Time to teach these rude guests some manners. Throws the umbrella, dealing <dn>1</> instance of <el>Cosmos DMG</> to an area.",
 				},
 			],
 			maxLvl: 10,

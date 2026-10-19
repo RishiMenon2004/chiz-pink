@@ -30,17 +30,17 @@ export const edgar: Character = {
 				{
 					section: "Basic Attack: Combat Practice",
 					description:
-						"Applies what he learned in Lamplight Academy's physical education class to perform up to 5 consecutive attacks that deal Cosmos DMG.",
+						"Applies what he learned in Lamplight Academy's physical education class to perform up to 5 consecutive attacks that deal <el>Cosmos DMG</>.",
 				},
 				{
 					section: "Basic Attack: Calculated Landing",
 					description:
-						"Press Basic Attack while airborne to plunge, dealing <dn>1</> instance of Cosmos DMG to an area upon impact. Increases DMG based on fall height, up to 100%.",
+						"Press Basic Attack while airborne to plunge, dealing <dn>1</> instance of <el>Cosmos DMG</> to an area upon impact. Increases DMG based on fall height, up to 100%.",
 				},
 				{
 					section: "Critical Riposte: Crisis is Opportunity",
 					description:
-						"Triggers when using Combat Practice after a Critical Dodge.\nCharges toward the target and uses his backpack to unleash a Flow attack, dealing <dn>1</> instance of Cosmos DMG to an area and reducing Break.",
+						"Triggers when using Combat Practice after a Critical Dodge.\nCharges toward the target and uses his backpack to unleash a Flow attack, dealing <dn>1</> instance of <el>Cosmos DMG</> to an area and reducing Break.",
 				},
 			],
 			maxLvl: 10,
@@ -50,7 +50,7 @@ export const edgar: Character = {
 			description: [
 				{
 					description:
-						"Hold to enter a channeling state, continuously casting Current at the target, dealing Cosmos DMG and continuously healing the teammate with the lowest HP.\nThe CD of Redirect Skill: Wild Current increases based on the duration of use.",
+						"Hold to enter a channeling state, continuously casting Current at the target, dealing <el>Cosmos DMG</> and continuously healing the teammate with the lowest HP.\nThe CD of Redirect Skill: Wild Current increases based on the duration of use.",
 				},
 			],
 			maxLvl: 10,
@@ -60,7 +60,7 @@ export const edgar: Character = {
 			description: [
 				{
 					description:
-						"Immerses in his own thoughts, unleashing a labyrinthine domain for 10s. Deals 1 instance of AoE Cosmos DMG. Heals the current character over the domain's duration.",
+						"Immerses in his own thoughts, unleashing a labyrinthine domain for 10s. Deals 1 instance of AoE <el>Cosmos DMG</>. Heals the current character over the domain's duration.",
 				},
 			],
 			maxLvl: 10,
@@ -70,7 +70,7 @@ export const edgar: Character = {
 			description: [
 				{
 					description:
-						"This bag is really heavy. Edgar charges toward the target and swings his bag with all his might, dealing 1 instance of Cosmos DMG to an area.",
+						"This bag is really heavy. Edgar charges toward the target and swings his bag with all his might, dealing 1 instance of <el>Cosmos DMG</> to an area.",
 				},
 			],
 			maxLvl: 10,

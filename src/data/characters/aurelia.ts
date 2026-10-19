@@ -30,22 +30,22 @@ export const aurelia: Character = {
 				{
 					section: "Basic Attack: Legato",
 					description:
-						"Sing smoothly and naturally! Wields her weapon and performs up to 4 consecutive attacks, dealing Psyche DMG.",
+						"Sing smoothly and naturally! Wields her weapon and performs up to 4 consecutive attacks, dealing <el>Psyche DMG</>.",
 				},
 				{
 					section: "Basic Attack: Staccato",
 					description:
-						'Sing loudly and fully! Hold Dodge while moving to ride a jellyfish, sprinting at high speed for the duration. Generates a jellyfish blast at intervals when targets are nearby, dealing Psyche DMG.\nPerforms a special Dodge in this state, and "Critical Dodge Riposte: Syncopation" automatically fires four jellyfish blasts.\nEnds automatically when stamina drops below a certain amount.',
+						'Sing loudly and fully! Hold Dodge while moving to ride a jellyfish, sprinting at high speed for the duration. Generates a jellyfish blast at intervals when targets are nearby, dealing <el>Psyche DMG</>.\nPerforms a special Dodge in this state, and "Critical Dodge Riposte: Syncopation" automatically fires four jellyfish blasts.\nEnds automatically when stamina drops below a certain amount.',
 				},
 				{
 					section: "Basic Attack: Portamento",
 					description:
-						"Sing clearly and beautifully! Wields the weapon mid-air and plunges, dealing <dn>1</> instance of Psyche DMG to an area upon impact. Increases DMG based on fall height, up to 100%.",
+						"Sing clearly and beautifully! Wields the weapon mid-air and plunges, dealing <dn>1</> instance of <el>Psyche DMG</> to an area upon impact. Increases DMG based on fall height, up to 100%.",
 				},
 				{
 					section: "Critical Riposte: Syncopation",
 					description:
-						"Triggers when casting Legato after a Critical Dodge.\nThink you can handle my rhythm? Wields her weapon to deal <dn>1</> instance of Psyche DMG to an area and reduces Break.",
+						"Triggers when casting Legato after a Critical Dodge.\nThink you can handle my rhythm? Wields her weapon to deal <dn>1</> instance of <el>Psyche DMG</> to an area and reduces Break.",
 				},
 			],
 			maxLvl: 10,
@@ -55,7 +55,7 @@ export const aurelia: Character = {
 			description: [
 				{
 					description:
-						"Transform the everyday into a rainbow melody and let it roar across the skyline. Deals <dn>1</> instance of AoE Psyche DMG and enters the <kw>Cadenza</> state for <dn>12</>s.",
+						"Transform the everyday into a rainbow melody and let it roar across the skyline. Deals <dn>1</> instance of AoE <el>Psyche DMG</> and enters the <kw>Cadenza</> state for <dn>12</>s.",
 				},
 			],
 			maxLvl: 10,
@@ -65,7 +65,7 @@ export const aurelia: Character = {
 			description: [
 				{
 					description:
-						"Let's play the next verse together. Gathers nearby jellyfish, dealing 6 instances of AoE Psyche DMG and slightly pulling targets together.",
+						"Let's play the next verse together. Gathers nearby jellyfish, dealing 6 instances of AoE <el>Psyche DMG</> and slightly pulling targets together.",
 				},
 			],
 			maxLvl: 10,
@@ -75,7 +75,7 @@ export const aurelia: Character = {
 			description: [
 				{
 					description:
-						"True command means never mistaking the timing. Commands the jellyfish to strike, dealing 1 instance of AoE Psyche DMG on hit.",
+						"True command means never mistaking the timing. Commands the jellyfish to strike, dealing 1 instance of AoE <el>Psyche DMG</> on hit.",
 				},
 			],
 			maxLvl: 10,
@@ -85,7 +85,7 @@ export const aurelia: Character = {
 			description: [
 				{
 					description:
-						"<sh>Nova Enhancement:</> Deals 3 instances of Psyche DMG to the target after their Nova status ends, each equal to 50% of ATK.",
+						"<sh>Nova Enhancement:</> Deals 3 instances of <el>Psyche DMG</> to the target after their Nova status ends, each equal to 50% of ATK.",
 				},
 			],
 			maxLvl: 1,

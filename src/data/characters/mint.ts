@@ -30,22 +30,22 @@ export const mint: Character = {
 				{
 					section: "Basic Attack: Perfect Containment",
 					description:
-						"Wields her weapon and performs up to <dn>5</> consecutive attacks, dealing Anima DMG.",
+						"Wields her weapon and performs up to <dn>5</> consecutive attacks, dealing <el>Anima DMG</>.",
 				},
 				{
 					section: "Basic Attack: Justice from Above",
 					description:
-						"Wields her weapon in the air and plunges, dealing <dn>1</> instance of Anima DMG to an area upon impact. Increases DMG based on fall height, up to 100%.",
+						"Wields her weapon in the air and plunges, dealing <dn>1</> instance of <el>Anima DMG</> to an area upon impact. Increases DMG based on fall height, up to 100%.",
 				},
 				{
 					section: "Critical Riposte: Caramel Crisp",
 					description:
-						"Triggers when using Perfect Containment after a Critical Dodge. Leaps up to dodge an attack, seizes the enemy's opening, and swiftly swings her weapon, dealing <dn>1</> instance of Anima DMG to an area and reducing Break.",
+						"Triggers when using Perfect Containment after a Critical Dodge. Leaps up to dodge an attack, seizes the enemy's opening, and swiftly swings her weapon, dealing <dn>1</> instance of <el>Anima DMG</> to an area and reducing Break.",
 				},
 				{
 					section: "Basic Attack: Justice from Above",
 					description:
-						"Hold Basic Attack to make Mint dance and spin, forming a tornado that continuously drains Stamina and deals continuous Anima DMG to surrounding enemies.",
+						"Hold Basic Attack to make Mint dance and spin, forming a tornado that continuously drains Stamina and deals continuous <el>Anima DMG</> to surrounding enemies.",
 				},
 			],
 			maxLvl: 10,
@@ -55,7 +55,7 @@ export const mint: Character = {
 			description: [
 				{
 					description:
-						"Time to cool things down! Dashes forward, then returns to her original position, dealing <dn>2</> instances of AoE Anima DMG to enemies along the path.",
+						"Time to cool things down! Dashes forward, then returns to her original position, dealing <dn>2</> instances of AoE <el>Anima DMG</> to enemies along the path.",
 				},
 			],
 			maxLvl: 10,
@@ -65,7 +65,7 @@ export const mint: Character = {
 			description: [
 				{
 					description:
-						"Are you ready! Channels the surrounding wind into her dual blades, transforming them into wind blades that deal multiple instances of Anima DMG to an area. Lands with a final hit that deals massive Anima DMG to an area.",
+						"Are you ready! Channels the surrounding wind into her dual blades, transforming them into wind blades that deal multiple instances of <el>Anima DMG</> to an area. Lands with a final hit that deals massive <el>Anima DMG</> to an area.",
 				},
 			],
 			maxLvl: 10,
@@ -75,7 +75,7 @@ export const mint: Character = {
 			description: [
 				{
 					description:
-						"Perfect finishing work from an elite member! Charges and leaps into the air, performing a penetrating attack on enemies, dealing <dn>1</> instance of Anima DMG to an area.",
+						"Perfect finishing work from an elite member! Charges and leaps into the air, performing a penetrating attack on enemies, dealing <dn>1</> instance of <el>Anima DMG</> to an area.",
 				},
 			],
 			maxLvl: 10,

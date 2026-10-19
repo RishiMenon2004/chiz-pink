@@ -8,6 +8,15 @@
 	--warmer-pink: #ff707c;
 	--danger-color: #ff4747;
 
+	/* Character elements, sampled from /icons/elements/*.png. Cosmos's
+	   icon is an iridescent pastel; it takes a pale pink-lavender. */
+	--element-anima: #49dbb9;
+	--element-incantation: #fe4566;
+	--element-chaos: #938ff1;
+	--element-psyche: #2da5e3;
+	--element-lakshana: #fae948;
+	--element-cosmos: #f4e4fa;
+
 	--button-background: #d0d0d0;
 	--button-border: #707070;
 	--button-shadow: hsl(0, 0%, 22%);

@@ -29,32 +29,32 @@ export const zankou: Character = {
 				{
 					section: "Basic Attack: Wildfire",
 					description:
-						"Wields her blade and performs up to <dn>5</> consecutive attacks while in Reality Form, dealing Incantation DMG. Pulls in targets within range on the 5th instance of Basic Attack. Gains the <kw>Hunt</> buff for the attack's duration.",
+						"Wields her blade and performs up to <dn>5</> consecutive attacks while in Reality Form, dealing <el>Incantation DMG</>. Pulls in targets within range on the 5th instance of Basic Attack. Gains the <kw>Hunt</> buff for the attack's duration.",
 				},
 				{
 					section: "Basic Attack: Nightmare Waltz",
 					description:
-						"Wields her blade to pull the silk and performs up to 4 consecutive attacks while in Illusion form, dealing Incantation DMG and inflicting 1 stack of Heartwrench on hit. Pulls in targets within range on the 3rd instance of Basic Attack. Each Nightmare Waltz attack spreads up to 4 DoT effects from the target to all enemies in the area, including the original target. Gains the Delusion buff for the attack's duration. The DMG dealt by Nightmare Waltz counts as Follow-up Attack DMG.",
+						"Wields her blade to pull the silk and performs up to 4 consecutive attacks while in Illusion form, dealing <el>Incantation DMG</> and inflicting 1 stack of Heartwrench on hit. Pulls in targets within range on the 3rd instance of Basic Attack. Each Nightmare Waltz attack spreads up to 4 DoT effects from the target to all enemies in the area, including the original target. Gains the Delusion buff for the attack's duration. The DMG dealt by Nightmare Waltz counts as Follow-up Attack DMG.",
 				},
 				{
 					section: "Basic Attack: Flickering Shadow",
 					description:
-						"Hold Basic Attack during the <dn>1st</> or <dn>2nd</> stage of Wildfire while in Reality Form to trigger Flickering Shadow, dealing Incantation DMG.",
+						"Hold Basic Attack during the <dn>1st</> or <dn>2nd</> stage of Wildfire while in Reality Form to trigger Flickering Shadow, dealing <el>Incantation DMG</>.",
 				},
 				{
 					section: "Basic Attack: Moonfall",
 					description:
-						"Hold Basic Attack during the <dn>1st</> or <dn>2nd</> stage of Nightmare Waltz while in Illusion Form to trigger Moonfall, dealing Incantation DMG. Inflicts <dn>1</> stack of <kw>Heartwrench</> on hit. The DMG dealt by Moonfall counts as Follow-up Attack DMG.",
+						"Hold Basic Attack during the <dn>1st</> or <dn>2nd</> stage of Nightmare Waltz while in Illusion Form to trigger Moonfall, dealing <el>Incantation DMG</>. Inflicts <dn>1</> stack of <kw>Heartwrench</> on hit. The DMG dealt by Moonfall counts as Follow-up Attack DMG.",
 				},
 				{
 					section: "Basic Attack: Broken Twigs",
 					description:
-						"Press Basic Attack while airborne to plunge, dealing <dn>1</> instance of Incantation DMG in an area upon impact. Increases DMG based on fall height by up to 100%.",
+						"Press Basic Attack while airborne to plunge, dealing <dn>1</> instance of <el>Incantation DMG</> in an area upon impact. Increases DMG based on fall height by up to 100%.",
 				},
 				{
 					section: "Critical Riposte: Voidstep",
 					description:
-						"Press Basic Attack after a Critical Dodge to deal Incantation DMG and reduce Break.",
+						"Press Basic Attack after a Critical Dodge to deal <el>Incantation DMG</> and reduce Break.",
 				},
 			],
 			maxLvl: 10,
@@ -90,7 +90,7 @@ export const zankou: Character = {
 			description: [
 				{
 					description:
-						"Wields her blade to attack, dealing <dn>1</> instance of Incantation DMG.",
+						"Wields her blade to attack, dealing <dn>1</> instance of <el>Incantation DMG</>.",
 				},
 			],
 			maxLvl: 10,

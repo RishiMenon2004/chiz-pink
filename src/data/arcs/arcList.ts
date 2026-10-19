@@ -35,7 +35,7 @@ const allArcs: Record<string, Arc> = {
 		effect: {
 			name: "Gravitide",
 			description:
-				"Increases Cycle Rate by <dn>{0}</>.\nIncreases Redirect Skill DMG by <dn>{1}</> for 5s after the wearer's Basic Attack deals DMG. Stacks up to 4 times and can gain at most 1 stack every 0.3s. Increases Basic Attack DMG by <dn>{2}</> for <dn>15</>s after the wearer casts a Redirect Skill. Increases the wearer's Lakshana DMG by <dn>{3}</> while both effects are active.",
+				"Increases Cycle Rate by <dn>{0}</>.\nIncreases Redirect Skill DMG by <dn>{1}</> for 5s after the wearer's Basic Attack deals DMG. Stacks up to 4 times and can gain at most 1 stack every 0.3s. Increases Basic Attack DMG by <dn>{2}</> for <dn>15</>s after the wearer casts a Redirect Skill. Increases the wearer's <el>Lakshana DMG</> by <dn>{3}</> while both effects are active.",
 			values: {
 				"1": [
 					{ type: "Percent", value: 0.16 },
@@ -88,7 +88,7 @@ const allArcs: Record<string, Arc> = {
 		effect: {
 			name: "Twinflight",
 			description:
-				"Increases Cycle Intensity by <dn>{0}</>.\nIncreases the wearer's Psyche DMG by <dn>{1}</>. Increases the team's Crit DMG by <dn>{2}</> and the wearer's by an additional <dn>{3}</>, for <dn>15</>s after the wearer casts Ultimate. Resets the duration when triggered again.",
+				"Increases Cycle Intensity by <dn>{0}</>.\nIncreases the wearer's <el>Psyche DMG</> by <dn>{1}</>. Increases the team's Crit DMG by <dn>{2}</> and the wearer's by an additional <dn>{3}</>, for <dn>15</>s after the wearer casts Ultimate. Resets the duration when triggered again.",
 			values: {
 				"1": [
 					{ type: "Percent", value: 0.72 },
@@ -190,7 +190,7 @@ const allArcs: Record<string, Arc> = {
 		effect: {
 			name: "Cursed Blade - Soulbound",
 			description:
-				"Increases Crit Rate by <dn>{0}</>.\nGrants the wearer a <dn>{1}</> Crit DMG bonus for <dn>15</>s when they deal Incantation DMG. Stacks up to <dn>7</> times, with no more than 1 stack gained every <dn>0.3</>s. Resets the duration when triggered again.",
+				"Increases Crit Rate by <dn>{0}</>.\nGrants the wearer a <dn>{1}</> Crit DMG bonus for <dn>15</>s when they deal <el>Incantation DMG</>. Stacks up to <dn>7</> times, with no more than 1 stack gained every <dn>0.3</>s. Resets the duration when triggered again.",
 			values: {
 				"1": [
 					{ type: "Percent", value: 0.16 },
@@ -234,7 +234,7 @@ const allArcs: Record<string, Arc> = {
 		effect: {
 			name: "Reverie Gate",
 			description:
-				"Increases ATK by <dn>{0}</>.\nWhen the wearer performs healing, increases the wearer's Anima DMG dealt by <dn>{2}</> and all  allies' DMG dealt by <dn>{1}</> for <dn>20</>s. Resets the duration when triggered again. Effects with the same name do not stack.",
+				"Increases ATK by <dn>{0}</>.\nWhen the wearer performs healing, increases the wearer's <el>Anima DMG</> dealt by <dn>{2}</> and all  allies' DMG dealt by <dn>{1}</> for <dn>20</>s. Resets the duration when triggered again. Effects with the same name do not stack.",
 			values: {
 				"1": [
 					{ type: "Percent", value: 0.16 },
@@ -283,7 +283,7 @@ const allArcs: Record<string, Arc> = {
 		effect: {
 			name: "Moonphase Shift",
 			description:
-				"Increases ATK by <dn>{0}</>. \nAfter casting Ultimate, increases the wearer's Cosmos DMG dealt by <dn>{1}</> and allows the wearer to ignore <dn>{2}</> of enemy DEF for <dn>20</>s. Resets the duration when triggered again.",
+				"Increases ATK by <dn>{0}</>. \nAfter casting Ultimate, increases the wearer's <el>Cosmos DMG</> dealt by <dn>{1}</> and allows the wearer to ignore <dn>{2}</> of enemy DEF for <dn>20</>s. Resets the duration when triggered again.",
 			values: {
 				"1": [
 					{ type: "Percent", value: 0.2 },
@@ -332,7 +332,7 @@ const allArcs: Record<string, Arc> = {
 		effect: {
 			name: "Golden Fleece",
 			description:
-				"Increases the wearer's Lakshana DMG by <dn>{0}</>. Increases the wearer's CRIT DMG by <dn>{1}</> for <dn>20</>s when they cast a Redirect Skill or Ultimate. Resets the duration when triggered again.",
+				"Increases the wearer's <el>Lakshana DMG</> by <dn>{0}</>. Increases the wearer's CRIT DMG by <dn>{1}</> for <dn>20</>s when they cast a Redirect Skill or Ultimate. Resets the duration when triggered again.",
 			values: {
 				"1": [
 					{ type: "Percent", value: 0.2 },
@@ -375,7 +375,7 @@ const allArcs: Record<string, Arc> = {
 		effect: {
 			name: "Aqua Astra",
 			description:
-				"Increases the wearer's Psyche DMG by <dn>{0}</>. Increases Crit DMG dealt by <dn>{1}</> for <dn>5</>s when dealing Psyche DMG, up to <dn>10</> stacks. Triggers at most once every <dn>0.1</>s.",
+				"Increases the wearer's <el>Psyche DMG</> by <dn>{0}</>. Increases Crit DMG dealt by <dn>{1}</> for <dn>5</>s when dealing <el>Psyche DMG</>, up to <dn>10</> stacks. Triggers at most once every <dn>0.1</>s.",
 			values: {
 				"1": [
 					{ type: "Percent", value: 0.12 },
@@ -419,7 +419,7 @@ const allArcs: Record<string, Arc> = {
 		effect: {
 			name: "Hypervortex",
 			description:
-				"Deals <dn>{0}</> increased Cosmos DMG with the wearer's Redirect Skill and Ultimate.\nIncreases the wearer's Cycle Intensity by <dn>{1}</> for <dn>15</>s after casting a Redirect Skill. Resets the duration when triggered again.",
+				"Deals <dn>{0}</> increased <el>Cosmos DMG</> with the wearer's Redirect Skill and Ultimate.\nIncreases the wearer's Cycle Intensity by <dn>{1}</> for <dn>15</>s after casting a Redirect Skill. Resets the duration when triggered again.",
 			values: {
 				"1": [
 					{ type: "Percent", value: 0.3 },
@@ -659,7 +659,7 @@ const allArcs: Record<string, Arc> = {
 		effect: {
 			name: "Swallowtail",
 			description:
-				"Increases Anima DMG by <dn>{0}</>.\nIncreases the wearer's Attachment DMG by <dn>{1}</>. Increases the Attachment DMG bonus to <dn>{2}</> for <dn>6</>s when the wearer casts an Ultimate. Effect does not stack.",
+				"Increases <el>Anima DMG</> by <dn>{0}</>.\nIncreases the wearer's Attachment DMG by <dn>{1}</>. Increases the Attachment DMG bonus to <dn>{2}</> for <dn>6</>s when the wearer casts an Ultimate. Effect does not stack.",
 			values: {
 				"1": [
 					{ type: "Percent", value: 0.15 },
@@ -954,7 +954,7 @@ const allArcs: Record<string, Arc> = {
 		effect: {
 			name: "Headless Rider",
 			description:
-				"Increases the wearer's Lakshana DMG by <dn>{0}</>. Increases the wearer's Redirect Skill and Ultimate DMG by <dn>{1}</> for <dn>10</>s after casting Ultimate. Increases the wearer's Redirect Skill DMG by <dn>{2}</> per cast while still active, up to 2 stacks.",
+				"Increases the wearer's <el>Lakshana DMG</> by <dn>{0}</>. Increases the wearer's Redirect Skill and Ultimate DMG by <dn>{1}</> for <dn>10</>s after casting Ultimate. Increases the wearer's Redirect Skill DMG by <dn>{2}</> per cast while still active, up to 2 stacks.",
 			values: {
 				"1": [
 					{ type: "Percent", value: 0.15 },
@@ -1052,7 +1052,7 @@ const allArcs: Record<string, Arc> = {
 		effect: {
 			name: "Mammon",
 			description:
-				"Increases Cosmos DMG by <dn>{1}</> for every <dn>100000</> Fons the wearer holds, up to <dn>10</> stacks.",
+				"Increases <el>Cosmos DMG</> by <dn>{1}</> for every <dn>100000</> Fons the wearer holds, up to <dn>10</> stacks.",
 			values: {
 				"1": [{ type: "Percent", value: 0.025 }],
 				"2": [{ type: "Percent", value: 0.03 }],
@@ -1081,7 +1081,7 @@ const allArcs: Record<string, Arc> = {
 		effect: {
 			name: '"Black Tome"',
 			description:
-				"Increases Break Intensity by <dn>{0}</>.\nSeals Arc: Black Tome with two chains by default. Unleashes 1 chain each time any character on the team casts a Support Skill. Makes Arc: Black Tome available when all two chains are unleashed.\nArc: Black Tome — Summons the Black Tome for <dn>20</>s. Designates an enemy every <dn>5</>s. Increases the wearer's Chaos DMG dealt to designated enemies enemies by <dn>{1}</>. Deals Chaos DMG equal to <dn>{2}</> of the wearer's ATK to designated enemies when they take Break Damage.",
+				"Increases Break Intensity by <dn>{0}</>.\nSeals Arc: Black Tome with two chains by default. Unleashes 1 chain each time any character on the team casts a Support Skill. Makes Arc: Black Tome available when all two chains are unleashed.\nArc: Black Tome — Summons the Black Tome for <dn>20</>s. Designates an enemy every <dn>5</>s. Increases the wearer's <el>Chaos DMG</> dealt to designated enemies enemies by <dn>{1}</>. Deals <el>Chaos DMG</> equal to <dn>{2}</> of the wearer's ATK to designated enemies when they take Break Damage.",
 			values: {
 				"1": [
 					{ type: "Integer", value: 60 },
@@ -1129,7 +1129,7 @@ const allArcs: Record<string, Arc> = {
 		effect: {
 			name: "Beat King",
 			description:
-				"Increases the active character's ATK by <dn>{0}</> while the wearer is off-field, and increases the active character's ATK by <dn>{1}</> when the wearer deals damage, up to <dn>4</> stacks and triggering at most <dn>once</> every <dn>2</>s. Resets the effect when the wearer becomes the active character.\nIncreases Psyche DMG by <dn>{2}</> while the wearer is the active character, and increases Psyche DMG by <dn>{3}</> when dealing Psyche DMG with a Basic Attack, up to <dn>10</> stacks. Triggers at most once every <dn>0.3</>s. Resets the effect when switching characters.",
+				"Increases the active character's ATK by <dn>{0}</> while the wearer is off-field, and increases the active character's ATK by <dn>{1}</> when the wearer deals damage, up to <dn>4</> stacks and triggering at most <dn>once</> every <dn>2</>s. Resets the effect when the wearer becomes the active character.\nIncreases <el>Psyche DMG</> by <dn>{2}</> while the wearer is the active character, and increases <el>Psyche DMG</> by <dn>{3}</> when dealing <el>Psyche DMG</> with a Basic Attack, up to <dn>10</> stacks. Triggers at most once every <dn>0.3</>s. Resets the effect when switching characters.",
 			values: {
 				"1": [
 					{ type: "Percent", value: 0.1 },
@@ -1227,7 +1227,7 @@ const allArcs: Record<string, Arc> = {
 		effect: {
 			name: "Silent Garden",
 			description:
-				"Increases the wearer's CRIT DMG by <dn>{0}</> for <dn>5</>s when the wearer's HP is reduced without taking damage, up to <dn>4</> stacks.\nUnlocks Arc: Silent Garden.\nConsumes <dn>5.00%</> of current HP and randomly performs one of the following attacks (CD <dn>25</>s) in Arc: Silent Garden:\nHarsh Rebuke: Rains merciless rebukes like leaves in a storm, dealing <dn>5</> instances of Incantation DMG of <dn>{1}</> ATK.\nIncessant Nagging: Pierces targets with sharp, cutting words like thorns, dealing <dn>6</> instances of Incantation DMG of <dn>{3}</> ATK; the final instance deals double damage.",
+				"Increases the wearer's CRIT DMG by <dn>{0}</> for <dn>5</>s when the wearer's HP is reduced without taking damage, up to <dn>4</> stacks.\nUnlocks Arc: Silent Garden.\nConsumes <dn>5.00%</> of current HP and randomly performs one of the following attacks (CD <dn>25</>s) in Arc: Silent Garden:\nHarsh Rebuke: Rains merciless rebukes like leaves in a storm, dealing <dn>5</> instances of <el>Incantation DMG</> of <dn>{1}</> ATK.\nIncessant Nagging: Pierces targets with sharp, cutting words like thorns, dealing <dn>6</> instances of <el>Incantation DMG</> of <dn>{3}</> ATK; the final instance deals double damage.",
 			values: {
 				"1": [
 					{ type: "Percent", value: 0.12 },
@@ -1440,7 +1440,7 @@ const allArcs: Record<string, Arc> = {
 		effect: {
 			name: "Crimson Hexblade",
 			description:
-				"Deals additional Incantation DMG equal to <dn>{0}</> of ATK when the wearer triggers a Parry Attack.",
+				"Deals additional <el>Incantation DMG</> equal to <dn>{0}</> of ATK when the wearer triggers a Parry Attack.",
 			values: {
 				"1": [{ type: "Percent", value: 2 }],
 				"2": [{ type: "Percent", value: 2.3 }],
@@ -1512,7 +1512,7 @@ const allArcs: Record<string, Arc> = {
 		effect: {
 			name: "Paper Squadron",
 			description:
-				"Increases Anima DMG dealt by the wearer's Redirect Skill and Ultimate by <dn>{1}</>.",
+				"Increases <el>Anima DMG</> dealt by the wearer's Redirect Skill and Ultimate by <dn>{1}</>.",
 			values: {
 				"1": [{ type: "Percent", value: 0.2 }],
 				"2": [{ type: "Percent", value: 0.2375 }],
@@ -1540,7 +1540,7 @@ const allArcs: Record<string, Arc> = {
 		effect: {
 			name: "Ghostly Kite",
 			description:
-				"Increases ATK by <dn>{0}</> and Lakshana DMG to targets affected by Remora and Stain <dn>{0}</> for <dn>15</>s after the wearer casts a Redirect Skill. Effect does not stack.",
+				"Increases ATK by <dn>{0}</> and <el>Lakshana DMG</> to targets affected by Remora and Stain <dn>{0}</> for <dn>15</>s after the wearer casts a Redirect Skill. Effect does not stack.",
 			values: {
 				"1": [{ type: "Percent", value: 0.1 }],
 				"2": [{ type: "Percent", value: 0.12 }],

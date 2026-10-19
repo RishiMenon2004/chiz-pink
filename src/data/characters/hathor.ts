@@ -30,21 +30,21 @@ export const hathor: Character = {
 				{
 					section: "Basic Attack: Rapid Delivery",
 					description:
-						"Displays superior martial arts, performing up to <dn>5</> consecutive attacks, dealing Lakshana DMG.",
+						"Displays superior martial arts, performing up to <dn>5</> consecutive attacks, dealing <el>Lakshana DMG</>.",
 				},
 				{
 					section: "Basic Attack: Final Dispatch",
 					description:
-						"Plunges from the air, dealing <dn>1</> instance of Lakshana DMG to an area upon impact. Increases DMG based on fall height, up to 100%.",
+						"Plunges from the air, dealing <dn>1</> instance of <el>Lakshana DMG</> to an area upon impact. Increases DMG based on fall height, up to 100%.",
 				},
 				{
 					section: "Basic Attack: To The Skies",
 					description:
-						"Hold Basic Attack to trigger. Sweeps around the target at high speed to knock them up, then restrains and plunges, dealing <dn>1</> instance of Lakshana DMG to an area on impact. Performs Final Dispatch if the target cannot be knocked up.",
+						"Hold Basic Attack to trigger. Sweeps around the target at high speed to knock them up, then restrains and plunges, dealing <dn>1</> instance of <el>Lakshana DMG</> to an area on impact. Performs Final Dispatch if the target cannot be knocked up.",
 				},
 				{
 					section: "Critical Riposte: Zero-Error Operation",
-					description: "Triggers when using Rapid Delivery after a Critical Dodge. Launches a lightning-fast counterattack, dealing <dn>1</> instance of Lakshana DMG to an area, reducing Break, and gaining <kw>Express Delivery Power</> on hit (up to <dn>1</> stack every <dn>5s</>)."
+					description: "Triggers when using Rapid Delivery after a Critical Dodge. Launches a lightning-fast counterattack, dealing <dn>1</> instance of <el>Lakshana DMG</> to an area, reducing Break, and gaining <kw>Express Delivery Power</> on hit (up to <dn>1</> stack every <dn>5s</>)."
 				}
 			],
 			maxLvl: 10,
@@ -55,7 +55,7 @@ export const hathor: Character = {
 				{
 					section: "Redirect Skill: Aerial Command",
 					description:
-						"Target locked, time to wrap this up quickly. Leaps into the air and slashes the target in front with wings, gaining <dn>2</> stacks of <kw>Express Delivery Power</>.\nHold to enter charge status, increasing the power of Aerial Command and inflicting targets in range with <kw>Five-Star Tracking</> effect. The charge lasts up to 5s, during which Hathor constantly deals AoE Lakshana DMG while the skill range gradually expands. The effect ends when the skill button is released, concluding the charging phase.\n<sh>Five-Star Tracking</>\nLasts for 5s. Grants 3 stacks of <kw>Express Delivery Power</> when the target attacks or hits Hathor or an ally during this time.",
+						"Target locked, time to wrap this up quickly. Leaps into the air and slashes the target in front with wings, gaining <dn>2</> stacks of <kw>Express Delivery Power</>.\nHold to enter charge status, increasing the power of Aerial Command and inflicting targets in range with <kw>Five-Star Tracking</> effect. The charge lasts up to 5s, during which Hathor constantly deals AoE <el>Lakshana DMG</> while the skill range gradually expands. The effect ends when the skill button is released, concluding the charging phase.\n<sh>Five-Star Tracking</>\nLasts for 5s. Grants 3 stacks of <kw>Express Delivery Power</> when the target attacks or hits Hathor or an ally during this time.",
 				},
 				{
 					section: "Redirect Skill: Cyclone Strike",
@@ -70,7 +70,7 @@ export const hathor: Character = {
 			description: [
 				{
 					description:
-						"Get out of the way. Summons a motorcycle made of thorns and circles around targets, charging at enemies ahead with increased speed. Launches into the air and dive-bombs the ground, dealing <dn>1</> instance of Lakshana DMG to an area.\nEnters <sh>Emergency Delivery</> state for a period after skill activation and stops gaining <kw>Express Delivery Power</>. Upgrades Aerial Command to Cyclone Strike in this state. Increases Movement Speed and grants ATK bonus based on <kw>Express Delivery Power</> stacks. Ends <sh>Emergency Delivery</> state immediately when switching characters during this period.",
+						"Get out of the way. Summons a motorcycle made of thorns and circles around targets, charging at enemies ahead with increased speed. Launches into the air and dive-bombs the ground, dealing <dn>1</> instance of <el>Lakshana DMG</> to an area.\nEnters <sh>Emergency Delivery</> state for a period after skill activation and stops gaining <kw>Express Delivery Power</>. Upgrades Aerial Command to Cyclone Strike in this state. Increases Movement Speed and grants ATK bonus based on <kw>Express Delivery Power</> stacks. Ends <sh>Emergency Delivery</> state immediately when switching characters during this period.",
 				},
 			],
 			maxLvl: 10,
@@ -80,7 +80,7 @@ export const hathor: Character = {
 			description: [
 				{
 					description:
-						"The time has come. Strikes from the air, kicking the target to trigger an impact, dealing <dn>2</> instances of Lakshana DMG to an area.",
+						"The time has come. Strikes from the air, kicking the target to trigger an impact, dealing <dn>2</> instances of <el>Lakshana DMG</> to an area.",
 				},
 			],
 			maxLvl: 10,

@@ -42,6 +42,12 @@
 	margin-left: 0.25ch;
 }
 
+/* "<el>Cosmos DMG</>" - element damage, in that element's colour. */
+.element {
+	color: var(--element-color, var(--foreground));
+	font-weight: 650;
+}
+
 .smallHeading {
 	color: var(--pink);
 	font-family: var(--font-syne);

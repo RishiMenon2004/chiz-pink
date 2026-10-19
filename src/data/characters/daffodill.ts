@@ -30,7 +30,7 @@ export const daffodill: Character = {
 				{
 					section: "Basic Attack: Still Waters",
 					description:
-						"Her heart is as calm as still waters, long accustomed to battle. Wields her twin blades to perform up to 5 consecutive attacks, dealing Chaos DMG.",
+						"Her heart is as calm as still waters, long accustomed to battle. Wields her twin blades to perform up to 5 consecutive attacks, dealing <el>Chaos DMG</>.",
 				},
 				{
 					section: "Basic Attack: Light Prism",
@@ -40,7 +40,7 @@ export const daffodill: Character = {
 				{
 					section: "Basic Attack: Mirror on Water",
 					description:
-						"I am here. Hold Basic Attack to trigger. Dashes forward, performing a whirlwind slash and leaving behind marks, dealing Chaos DMG.",
+						"I am here. Hold Basic Attack to trigger. Dashes forward, performing a whirlwind slash and leaving behind marks, dealing <el>Chaos DMG</>.",
 				},
 				{
 					section: "Basic Attack: Displaced Edge",
@@ -50,12 +50,12 @@ export const daffodill: Character = {
 				{
 					section: "Basic Attack: Crosshair Lock",
 					description:
-						"Wields her weapon while airborne and plunges, dealing 1 instance of Chaos DMG to an area upon impact. Increases DMG based on fall height, up to 100%.",
+						"Wields her weapon while airborne and plunges, dealing 1 instance of <el>Chaos DMG</> to an area upon impact. Increases DMG based on fall height, up to 100%.",
 				},
 				{
 					section: "Critical Riposte: Close Call",
 					description:
-						"Triggers when using Still Waters after performing a Critical Dodge. Instantly lifts her foot, pulling the rope to swing her blade toward the target, dealing 1 instance of Chaos DMG and reducing Break.",
+						"Triggers when using Still Waters after performing a Critical Dodge. Instantly lifts her foot, pulling the rope to swing her blade toward the target, dealing 1 instance of <el>Chaos DMG</> and reducing Break.",
 				},
 			],
 			maxLvl: 10,
@@ -71,7 +71,7 @@ export const daffodill: Character = {
 				{
 					section: "Redirect Skill: Echoes",
 					description:
-						"Resonance carries sound, echo responds in kind. Swiftly shifts her stance, swinging her blade with the rope to deal Chaos DMG to the target.",
+						"Resonance carries sound, echo responds in kind. Swiftly shifts her stance, swinging her blade with the rope to deal <el>Chaos DMG</> to the target.",
 				},
 			],
 			maxLvl: 10,
@@ -81,7 +81,7 @@ export const daffodill: Character = {
 			description: [
 				{
 					description:
-						"Casts Finale, dealing Chaos DMG to enemies in an area. Unseals her left eye, increasing damage and inflicting <kw>Insight</> on nearby enemies for the duration. Unlocks the skill <kw>Phantom Step</>, which can be used up to 2 times. Casting Finale resets Phantom Step charges.",
+						"Casts Finale, dealing <el>Chaos DMG</> to enemies in an area. Unseals her left eye, increasing damage and inflicting <kw>Insight</> on nearby enemies for the duration. Unlocks the skill <kw>Phantom Step</>, which can be used up to 2 times. Casting Finale resets Phantom Step charges.",
 				},
 			],
 			maxLvl: 10,
@@ -91,7 +91,7 @@ export const daffodill: Character = {
 			description: [
 				{
 					description:
-						"Leave the rest to me. Swings her blade in a slashing motion, dealing 1 instance of Chaos DMG to the target.",
+						"Leave the rest to me. Swings her blade in a slashing motion, dealing 1 instance of <el>Chaos DMG</> to the target.",
 				},
 			],
 			maxLvl: 10,

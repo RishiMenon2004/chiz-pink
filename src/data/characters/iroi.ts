@@ -29,27 +29,27 @@ export const iroi: Character = {
 				{
 					section: "Basic Attack: Collaboration",
 					description:
-						"Summons lambs to perform up to 5 consecutive attacks, dealing Anima DMG. Builds up <kw>Imagination</> when attacks hit.",
+						"Summons lambs to perform up to 5 consecutive attacks, dealing <el>Anima DMG</>. Builds up <kw>Imagination</> when attacks hit.",
 				},
 				{
 					section: "Basic Attack: Daydream",
 					description:
-						"Hold Basic Attack again after Iroi uses Daydream to consume Imagination and summon Morpheus, unleashing sustained fire that deals Anima DMG.",
+						"Hold Basic Attack again after Iroi uses Daydream to consume Imagination and summon Morpheus, unleashing sustained fire that deals <el>Anima DMG</>.",
 				},
 				{
 					section: "Basic Attack: Lucid Dream",
 					description:
-						"Press Basic Attack while airborne to plunge, dealing 1 instance of Anima DMG to an area upon impact. Increases DMG based on fall height, up to 100%. Builds up Imagination when attacks hit.",
+						"Press Basic Attack while airborne to plunge, dealing 1 instance of <el>Anima DMG</> to an area upon impact. Increases DMG based on fall height, up to 100%. Builds up Imagination when attacks hit.",
 				},
 				{
 					section: "Basic Attack: Wakey-Wakey",
 					description:
-						"Triggers when casting Deliverance after a Critical Dodge. Dodges an attack with a quick dash, seizes the enemy's opening and swiftly swings his weapon, dealing 1 instance of Incantation DMG to an area, reducing their Break.",
+						"Triggers when casting Deliverance after a Critical Dodge. Dodges an attack with a quick dash, seizes the enemy's opening and swiftly swings his weapon, dealing 1 instance of <el>Incantation DMG</> to an area, reducing their Break.",
 				},
 				{
 					section: "Critical Riposte: Reflexive Response",
 					description:
-						"Triggers when using Collaboration after performing a Critical Dodge. Swings Phantasos at the target, dealing 1 instance of Anima DMG and reducing Break. Builds up Imagination when attacks hit.",
+						"Triggers when using Collaboration after performing a Critical Dodge. Swings Phantasos at the target, dealing 1 instance of <el>Anima DMG</> and reducing Break. Builds up Imagination when attacks hit.",
 				},
 			],
 			maxLvl: 10,
@@ -89,7 +89,7 @@ export const iroi: Character = {
 			description: [
 				{
 					description:
-						"Just in time! Picks up Morpheus and attacks forward, dealing 1 instance of Anima DMG, healing all allies, and building up Imagination.",
+						"Just in time! Picks up Morpheus and attacks forward, dealing 1 instance of <el>Anima DMG</>, healing all allies, and building up Imagination.",
 				},
 			],
 			maxLvl: 10,

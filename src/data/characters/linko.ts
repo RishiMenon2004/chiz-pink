@@ -29,17 +29,17 @@ export const linko: Character = {
 				{
 					section: "Basic Attack: Poltergeist CQC",
 					description:
-						"Casts Poltergeist CQC to perform up to <dn>5</> consecutive attacks, dealing Anima DMG. Builds up Modulation points with each hit.\nCasts Full-Frequency Pulse to consume Modulation points and enhance the triggered <kw>Synced Strike</>.",
+						"Casts Poltergeist CQC to perform up to <dn>5</> consecutive attacks, dealing <el>Anima DMG</>. Builds up Modulation points with each hit.\nCasts Full-Frequency Pulse to consume Modulation points and enhance the triggered <kw>Synced Strike</>.",
 				},
 				{
 					section: "Basic Attack: Spectral Smack",
 					description:
-						"Hold Basic Attack during Poltergeist CQC to make Linko strike the current target with both palms, dealing Anima DMG.",
+						"Hold Basic Attack during Poltergeist CQC to make Linko strike the current target with both palms, dealing <el>Anima DMG</>.",
 				},
 				{
 					section: "Basic Attack: Spectral Entrance",
 					description:
-						"Press Basic Attack while airborne to plunge, dealing <dn>1</> instance of Anima DMG in an area upon impact. Increases DMG based on fall height by up to 100%.",
+						"Press Basic Attack while airborne to plunge, dealing <dn>1</> instance of <el>Anima DMG</> in an area upon impact. Increases DMG based on fall height by up to 100%.",
 				},
 				{
 					section: "Basic Attack: Spectral Rush",
@@ -49,7 +49,7 @@ export const linko: Character = {
 				{
 					section: "Critical Riposte: Ghosthand Counter",
 					description:
-						"Triggers when using Poltergeist CQC after a Critical Dodge. Charges toward the target, dealing <dn>4</> instances of Anima DMG in an area and building up Modulation.",
+						"Triggers when using Poltergeist CQC after a Critical Dodge. Charges toward the target, dealing <dn>4</> instances of <el>Anima DMG</> in an area and building up Modulation.",
 				},
 			],
 			maxLvl: 10,
@@ -59,7 +59,7 @@ export const linko: Character = {
 			description: [
 				{
 					description:
-						"Channels Esper Ability upon casting Full-Frequency Pulse, bombarding the target with ghost energy to deal up to <dn>4</> instances of Anima DMG and calling Xiaozhen or an ally to perform a <kw>Synced Strike</>. Opens a selection wheel to choose Xiaozhen or an ally, then performs the selected character's <kw>Synced Strike</>, dealing DMG of the corresponding attribute. Grants this <kw>Synced Strike</> a DMG Bonus and consumes all accumulated Modulation, converting it into an additional DMG Bonus.\nBriefly pauses the battle timer while selecting the attacker and initiating the <kw>Synced Strike</>.\nReplaces an ally's position on the wheel with Xiaozhen if the ally is unable to act or is not on the team. Grants Xiaozhen's <kw>Synced Strike</> an additional DMG Bonus for each additional Xiaozhen on the wheel.\nEnable Auto-Cast Skills under \"Settings > System Features\" to have the first ally in the team perform <kw>Synced Strike</> by default.",
+						"Channels Esper Ability upon casting Full-Frequency Pulse, bombarding the target with ghost energy to deal up to <dn>4</> instances of <el>Anima DMG</> and calling Xiaozhen or an ally to perform a <kw>Synced Strike</>. Opens a selection wheel to choose Xiaozhen or an ally, then performs the selected character's <kw>Synced Strike</>, dealing DMG of the corresponding attribute. Grants this <kw>Synced Strike</> a DMG Bonus and consumes all accumulated Modulation, converting it into an additional DMG Bonus.\nBriefly pauses the battle timer while selecting the attacker and initiating the <kw>Synced Strike</>.\nReplaces an ally's position on the wheel with Xiaozhen if the ally is unable to act or is not on the team. Grants Xiaozhen's <kw>Synced Strike</> an additional DMG Bonus for each additional Xiaozhen on the wheel.\nEnable Auto-Cast Skills under \"Settings > System Features\" to have the first ally in the team perform <kw>Synced Strike</> by default.",
 				},
 			],
 			maxLvl: 10,
@@ -79,7 +79,7 @@ export const linko: Character = {
 			description: [
 				{
 					description:
-						"Strikes the target together with Xiaozhen, dealing <dn>1</> instance of Anima DMG in an area.\nSummons an ally to perform a <kw>Synced Strike</> by breaking a <kw>Hit 'Em Here!</> mark, casting Full-Frequency Pulse, or casting Oversync. Scales <kw>Synced Strike</>'s DMG Ratio with Spectral Cross's skill level.",
+						"Strikes the target together with Xiaozhen, dealing <dn>1</> instance of <el>Anima DMG</> in an area.\nSummons an ally to perform a <kw>Synced Strike</> by breaking a <kw>Hit 'Em Here!</> mark, casting Full-Frequency Pulse, or casting Oversync. Scales <kw>Synced Strike</>'s DMG Ratio with Spectral Cross's skill level.",
 				},
 			],
 			maxLvl: 10,

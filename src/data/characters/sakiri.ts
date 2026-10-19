@@ -29,7 +29,7 @@ export const sakiri: Character = {
 				{
 					section: "Basic Attack: Ram",
 					description:
-						"Sakiri swings Kiroumaru and performs up to <dn>5</> consecutive attacks, dealing Incantation DMG.",
+						"Sakiri swings Kiroumaru and performs up to <dn>5</> consecutive attacks, dealing <el>Incantation DMG</>.",
 				},
 				{
 					section: "Basic Attack: Eating Mode",
@@ -39,12 +39,12 @@ export const sakiri: Character = {
 				{
 					section: "Basic Attack: Swallow",
 					description:
-						"Wields Kiroumaru in the air and plunges, dealing <dn>1</> instance of Incantation DMG to an area upon impact. Increases DMG based on fall height, up to 100%.",
+						"Wields Kiroumaru in the air and plunges, dealing <dn>1</> instance of <el>Incantation DMG</> to an area upon impact. Increases DMG based on fall height, up to 100%.",
 				},
 				{
 					section: "Critical Riposte: Mischief",
 					description:
-						"Triggers when using Ram after a Critical Dodge. Leaps high into the air and strikes down hard with Kiroumaru against enemies left vulnerable by their missed attacks. Deals <dn>1</> instance of Incantation DMG to an area and reduces Break.",
+						"Triggers when using Ram after a Critical Dodge. Leaps high into the air and strikes down hard with Kiroumaru against enemies left vulnerable by their missed attacks. Deals <dn>1</> instance of <el>Incantation DMG</> to an area and reduces Break.",
 				},
 			],
 			maxLvl: 10,
@@ -70,7 +70,7 @@ export const sakiri: Character = {
 			description: [
 				{
 					description:
-						"No escaping this time! Kiroumaru spits out a large amount of Gravity Slurry from above, dealing <dn>6</> instances of Incantation DMG to an area. Applies strong gravity to hit enemies, pressing them heavily to the ground (not effective against Bosses). Prevents <sh>Suppressed</> enemies from moving for a period. Increases Team ATK (excluding Sakiri) based on Sakiri's Base ATK.",
+						"No escaping this time! Kiroumaru spits out a large amount of Gravity Slurry from above, dealing <dn>6</> instances of <el>Incantation DMG</> to an area. Applies strong gravity to hit enemies, pressing them heavily to the ground (not effective against Bosses). Prevents <sh>Suppressed</> enemies from moving for a period. Increases Team ATK (excluding Sakiri) based on Sakiri's Base ATK.",
 				},
 			],
 			maxLvl: 10,
@@ -80,7 +80,7 @@ export const sakiri: Character = {
 			description: [
 				{
 					description:
-						"Let's see which unlucky soul is about to get squashed? Sakiri slams the enlarged Kiroumaru heavily onto the target, dealing <dn>1</> instance of Incantation DMG to an area.",
+						"Let's see which unlucky soul is about to get squashed? Sakiri slams the enlarged Kiroumaru heavily onto the target, dealing <dn>1</> instance of <el>Incantation DMG</> to an area.",
 				},
 			],
 			maxLvl: 10,

@@ -30,27 +30,27 @@ export const nanally: Character = {
 				{
 					section: "Basic Attack: Colucci Secret Skill",
 					description:
-						"Bares her fangs and brandishes her claws, performing up to <dn>5</> consecutive attacks, dealing Anima DMG. Dodging does not interrupt the combo.",
+						"Bares her fangs and brandishes her claws, performing up to <dn>5</> consecutive attacks, dealing <el>Anima DMG</>. Dodging does not interrupt the combo.",
 				},
 				{
 					section: "Basic Attack: Heavy Hitter!",
 					description:
-						"Triggers by holding Basic Attack. Performs up to 3 powerful attacks, dealing Anima DMG. Chains after Critical Riposte and the 1st, 2nd, 3rd, and 5th attacks of Colucci Secret Skill. Dodging does not interrupt the combo.",
+						"Triggers by holding Basic Attack. Performs up to 3 powerful attacks, dealing <el>Anima DMG</>. Chains after Critical Riposte and the 1st, 2nd, 3rd, and 5th attacks of Colucci Secret Skill. Dodging does not interrupt the combo.",
 				},
 				{
 					section: "Basic Attack: Colucci Secret Gundo",
 					description:
-						"Enters aim mode, dealing <dn>1</> instance of single-target Anima DMG to the enemy in the crosshair.",
+						"Enters aim mode, dealing <dn>1</> instance of single-target <el>Anima DMG</> to the enemy in the crosshair.",
 				},
 				{
 					section: "Basic Attack: Grand Entrance!",
 					description:
-						"Swings her claws in the air and plunges, dealing <dn>1</> instance of Anima DMG to an area upon impact. Increases DMG based on fall height, up to 100%.",
+						"Swings her claws in the air and plunges, dealing <dn>1</> instance of <el>Anima DMG</> to an area upon impact. Increases DMG based on fall height, up to 100%.",
 				},
 				{
 					section: "Critical Riposte: Can't Touch This!",
 					description:
-						"Triggers when using Colucci Secret Skill after a Critical Dodge. Charges toward the target at full speed, planting one hand on the ground, delivering a roundhouse kick that deals <dn>1</> instance of Anima DMG to an area, and reducing Break.",
+						"Triggers when using Colucci Secret Skill after a Critical Dodge. Charges toward the target at full speed, planting one hand on the ground, delivering a roundhouse kick that deals <dn>1</> instance of <el>Anima DMG</> to an area, and reducing Break.",
 				},
 			],
 			maxLvl: 10,
@@ -60,7 +60,7 @@ export const nanally: Character = {
 			description: [
 				{
 					description:
-						"Hehe, surprise time! Deals <dn>5</> instances of Anima DMG to surrounding enemies and wraps herself in Anima Esper Ability, gaining the <kw>Ichi-daime's Authority</> effect.\nLasts <dn>12s</> or until Nanally is switched out.\nEnds <kw>Ichi-daime's Authority</> early when recast.",
+						"Hehe, surprise time! Deals <dn>5</> instances of <el>Anima DMG</> to surrounding enemies and wraps herself in Anima Esper Ability, gaining the <kw>Ichi-daime's Authority</> effect.\nLasts <dn>12s</> or until Nanally is switched out.\nEnds <kw>Ichi-daime's Authority</> early when recast.",
 				},
 			],
 			maxLvl: 10,
@@ -70,7 +70,7 @@ export const nanally: Character = {
 			description: [
 				{
 					description:
-						"I'm way stronger than them! Deals <dn>7</> instances of Anima DMG immediately to surrounding enemies and summons Underboss to fight alongside her.\nCreates a small pull effect on surrounding enemies with Nanally's attacks while Underboss is active, and coordinates with all of Nanally's attacks to launch strikes, dealing Anima DMG that also counts as <sh>follow-up attack</> damage.",
+						"I'm way stronger than them! Deals <dn>7</> instances of <el>Anima DMG</> immediately to surrounding enemies and summons Underboss to fight alongside her.\nCreates a small pull effect on surrounding enemies with Nanally's attacks while Underboss is active, and coordinates with all of Nanally's attacks to launch strikes, dealing <el>Anima DMG</> that also counts as <sh>follow-up attack</> damage.",
 				},
 			],
 			maxLvl: 10,
@@ -80,7 +80,7 @@ export const nanally: Character = {
 			description: [
 				{
 					description:
-						"Time to get serious! Charges with a spinning motion, delivering a kick and dealing <dn>1</> instance of Anima DMG to an area.",
+						"Time to get serious! Charges with a spinning motion, delivering a kick and dealing <dn>1</> instance of <el>Anima DMG</> to an area.",
 				},
 			],
 			maxLvl: 10,
@@ -100,7 +100,7 @@ export const nanally: Character = {
 			description: [
 				{
 					description:
-						"Applies <dn>1</> <sh>follow-up attack</> to a single enemy, dealing Anima DMG of <dn>60%</> ATK whenever any ally deals <dn>1</> instance of Esper Cycle DMG while Nanally is in <kw>Ichi-daime's Authority</> state. DMG Ratio scales with Basic Attack skill level, reaching <dn>129.5%</> at Lvl 11.\nTriggers <dn>once</> every <dn>2s</>.",
+						"Applies <dn>1</> <sh>follow-up attack</> to a single enemy, dealing <el>Anima DMG</> of <dn>60%</> ATK whenever any ally deals <dn>1</> instance of Esper Cycle DMG while Nanally is in <kw>Ichi-daime's Authority</> state. DMG Ratio scales with Basic Attack skill level, reaching <dn>129.5%</> at Lvl 11.\nTriggers <dn>once</> every <dn>2s</>.",
 				},
 			],
 			maxLvl: 1,

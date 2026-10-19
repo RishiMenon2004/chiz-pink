@@ -30,7 +30,7 @@ export const chaos: Character = {
 				{
 					section: "Basic Attack: Pursuit",
 					description:
-						"Wields his weapon and performs up to <dn>5</> consecutive attacks, dealing Lakshana DMG and building up <kw>Crime</>.",
+						"Wields his weapon and performs up to <dn>5</> consecutive attacks, dealing <el>Lakshana DMG</> and building up <kw>Crime</>.",
 				},
 				{
 					section: "Basic Attack: Final Verdict",
@@ -40,12 +40,12 @@ export const chaos: Character = {
 				{
 					section: "Basic Attack: Overturn",
 					description:
-						"Press Basic Attack while airborne to plunge, dealing <dn>1</> instance of Lakshana DMG to an area upon impact. Increases DMG based on fall height, up to <dn>1×</>. Focuses his mind and awakens a hunter's perception, sensing nearby enemies for a short time. Sensed targets are highlighted with a special outline.",
+						"Press Basic Attack while airborne to plunge, dealing <dn>1</> instance of <el>Lakshana DMG</> to an area upon impact. Increases DMG based on fall height, up to <dn>1×</>. Focuses his mind and awakens a hunter's perception, sensing nearby enemies for a short time. Sensed targets are highlighted with a special outline.",
 				},
 				{
 					section: "Critical Riposte: Intuition / Instinct",
 					description:
-						"Triggers when using Pursuit after performing a Critical Dodge. Swings his hatchet at the target, dealing <dn>1</> instance of Lakshana DMG and reducing break.",
+						"Triggers when using Pursuit after performing a Critical Dodge. Swings his hatchet at the target, dealing <dn>1</> instance of <el>Lakshana DMG</> and reducing break.",
 				},
 			],
 			maxLvl: 10,
@@ -80,7 +80,7 @@ export const chaos: Character = {
 			description: [
 				{
 					description:
-						"Don't even think about running! Swings his scythe upward, dealing <dn>1</> instance of Lakshana DMG.",
+						"Don't even think about running! Swings his scythe upward, dealing <dn>1</> instance of <el>Lakshana DMG</>.",
 				},
 			],
 			maxLvl: 10,
@@ -90,7 +90,7 @@ export const chaos: Character = {
 			description: [
 				{
 					description:
-						"<sh>Remora Enhancement:</> Deals Lakshana DMG equal to 800% of ATK to the target when Remora ends, based on Remora's duration. Each second beyond the base 5s duration increases total DMG by 45%, up to 300%. Resets Remora's duration when reapplied.",
+						"<sh>Remora Enhancement:</> Deals <el>Lakshana DMG</> equal to 800% of ATK to the target when Remora ends, based on Remora's duration. Each second beyond the base 5s duration increases total DMG by 45%, up to 300%. Resets Remora's duration when reapplied.",
 				},
 			],
 			maxLvl: 1,

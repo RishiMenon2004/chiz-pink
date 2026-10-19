@@ -29,47 +29,47 @@ export const blackbird: Character = {
 				{
 					section: "Basic Attack: Fleeting Shadow",
 					description:
-						"Uses Chain Cage to perform up to 5 consecutive attacks, dealing Psyche DMG. Gains <kw>Malice</> after hitting an enemy.",
+						"Uses Chain Cage to perform up to 5 consecutive attacks, dealing <el>Psyche DMG</>. Gains <kw>Malice</> after hitting an enemy.",
 				},
 				{
 					section: "Basic Attack: Roostcall",
 					description:
-						"Hold Basic Attack during the 1st, 2nd, or 3rd hit of Fleeting Shadow to trigger Roostcall, imprisoning the target with Chain Cage, dealing Psyche DMG, and greatly reducing their Movement Speed for a set duration. Gains <kw>Malice</> after hitting an enemy.",
+						"Hold Basic Attack during the 1st, 2nd, or 3rd hit of Fleeting Shadow to trigger Roostcall, imprisoning the target with Chain Cage, dealing <el>Psyche DMG</>, and greatly reducing their Movement Speed for a set duration. Gains <kw>Malice</> after hitting an enemy.",
 				},
 				{
 					section: "Basic Attack: Lingering Affliction",
 					description:
-						"Press Basic Attack while airborne to plunge, dealing 1 instance of Psyche DMG to an area upon impact. Increases DMG based on fall height by up to 100%. Gains <kw>Malice</> after hitting an enemy.",
+						"Press Basic Attack while airborne to plunge, dealing 1 instance of <el>Psyche DMG</> to an area upon impact. Increases DMG based on fall height by up to 100%. Gains <kw>Malice</> after hitting an enemy.",
 				},
 				{
 					section: "Critical Riposte: Avian Instinct",
 					description:
-						"Triggers when Blackbird uses Fleeting Shadow after a Critical Dodge, attacking the target to deal Psyche DMG. Gains <kw>Malice</> after hitting an enemy.",
+						"Triggers when Blackbird uses Fleeting Shadow after a Critical Dodge, attacking the target to deal <el>Psyche DMG</>. Gains <kw>Malice</> after hitting an enemy.",
 				},
 				{
 					section: "Basic Attack: Pyreflame",
 					description:
-						"Blackbird is engulfed in flames, and the <kw>Witch of Deliverance</> emerges from the blaze, unleashing up to 5 consecutive attacks that deal Psyche DMG. Consumes <kw>Malice</> after hitting an enemy.",
+						"Blackbird is engulfed in flames, and the <kw>Witch of Deliverance</> emerges from the blaze, unleashing up to 5 consecutive attacks that deal <el>Psyche DMG</>. Consumes <kw>Malice</> after hitting an enemy.",
 				},
 				{
 					section: "Basic Attack: Bestowed Grace",
 					description:
-						"Hold Basic Attack during the 2nd hit of Pyreflame to trigger Bestowed Grace. The <kw>Witch of Deliverance</> rises into the air, briefly charges up, then deals Psyche DMG over a large area. Consumes <kw>Malice</> after hitting an enemy.",
+						"Hold Basic Attack during the 2nd hit of Pyreflame to trigger Bestowed Grace. The <kw>Witch of Deliverance</> rises into the air, briefly charges up, then deals <el>Psyche DMG</> over a large area. Consumes <kw>Malice</> after hitting an enemy.",
 				},
 				{
 					section: "Basic Attack: Tidings Unto All",
 					description:
-						"Hold Basic Attack during Bestowed Grace or Flames of Deliverance to trigger Tidings Unto All, dealing multiple instances of Psyche DMG to the target. Consumes <kw>Malice</> after hitting an enemy.",
+						"Hold Basic Attack during Bestowed Grace or Flames of Deliverance to trigger Tidings Unto All, dealing multiple instances of <el>Psyche DMG</> to the target. Consumes <kw>Malice</> after hitting an enemy.",
 				},
 				{
 					section: "Basic Attack: Searing Scar",
 					description:
-						"Press Basic Attack while the <kw>Witch of Deliverance</> is airborne to plunge, dealing 1 instance of Psyche DMG to an area upon impact. Increases DMG based on fall height, by up to 100%. Consumes <kw>Malice</> after hitting an enemy.",
+						"Press Basic Attack while the <kw>Witch of Deliverance</> is airborne to plunge, dealing 1 instance of <el>Psyche DMG</> to an area upon impact. Increases DMG based on fall height, by up to 100%. Consumes <kw>Malice</> after hitting an enemy.",
 				},
 				{
 					section: "Critical Riposte: Born of Calamity",
 					description:
-						"Triggers when the <kw>Witch of Deliverance</> uses Pyreflame after a Critical Dodge, attacking the target to deal Psyche DMG. Consumes <kw>Malice</> after hitting an enemy.",
+						"Triggers when the <kw>Witch of Deliverance</> uses Pyreflame after a Critical Dodge, attacking the target to deal <el>Psyche DMG</>. Consumes <kw>Malice</> after hitting an enemy.",
 				},
 				{
 					section: "Invocation",
@@ -84,12 +84,12 @@ export const blackbird: Character = {
 			description: [
 				{
 					description:
-						"Uses Chain Cage to deal Psyche DMG to the target and inflict a <kw>Forsaken Feather</> mark on targets hit for a set duration. Casts to gain <kw>Malice</>.\nWhile <kw>Forsaken Feather</> is active, triggers <kw>Forsaken Bird</> to perform a coordinated attack when another active ally deals DMG to the marked target. <kw>Forsaken Bird</> deals Psyche DMG in an area around the target. Triggers no more than once every 2s, up to 5 times in total.",
+						"Uses Chain Cage to deal <el>Psyche DMG</> to the target and inflict a <kw>Forsaken Feather</> mark on targets hit for a set duration. Casts to gain <kw>Malice</>.\nWhile <kw>Forsaken Feather</> is active, triggers <kw>Forsaken Bird</> to perform a coordinated attack when another active ally deals DMG to the marked target. <kw>Forsaken Bird</> deals <el>Psyche DMG</> in an area around the target. Triggers no more than once every 2s, up to 5 times in total.",
 				},
 				{
 					section: "Flames of Deliverance",
 					description:
-						"Charges toward the target at high speed while Blackbird is in the <kw>Witch of Deliverance</> state, dealing Psyche DMG. Consumes <kw>Malice</> after hitting an enemy.\nActivation: Activates after <kw>Witch of Deliverance</> performs the 5th hit of Pyreflame or casts No Quarter. This skill is inactive by default.",
+						"Charges toward the target at high speed while Blackbird is in the <kw>Witch of Deliverance</> state, dealing <el>Psyche DMG</>. Consumes <kw>Malice</> after hitting an enemy.\nActivation: Activates after <kw>Witch of Deliverance</> performs the 5th hit of Pyreflame or casts No Quarter. This skill is inactive by default.",
 				},
 			],
 			maxLvl: 10,
@@ -99,12 +99,12 @@ export const blackbird: Character = {
 			description: [
 				{
 					description:
-						"Transforms into the Witch of Deliverance and launches multiple attacks, dealing massive Psyche DMG to the target.\nGains Hitstun Immunity and increases Movement Speed while in the Witch of Deliverance state, which lasts for a set duration. Reverts to Blackbird when the duration ends. The duration does not decrease while she is off-field.\nIncreases the entire team's ATK after casting Requies Animarum.",
+						"Transforms into the Witch of Deliverance and launches multiple attacks, dealing massive <el>Psyche DMG</> to the target.\nGains Hitstun Immunity and increases Movement Speed while in the Witch of Deliverance state, which lasts for a set duration. Reverts to Blackbird when the duration ends. The duration does not decrease while she is off-field.\nIncreases the entire team's ATK after casting Requies Animarum.",
 				},
 				{
 					section: "Flammae in Unum",
 					description:
-						"Exits the <kw>Witch of Deliverance</> state and launches multiple attacks against the target, dealing massive Psyche DMG.",
+						"Exits the <kw>Witch of Deliverance</> state and launches multiple attacks against the target, dealing massive <el>Psyche DMG</>.",
 				},
 			],
 			maxLvl: 10,
@@ -114,12 +114,12 @@ export const blackbird: Character = {
 			description: [
 				{
 					description:
-						"The bird will deliver everything it finds to me. Transforms into Lonesome Bird and deals Psyche DMG to the target. Gains <kw>Malice</> after hitting an enemy.",
+						"The bird will deliver everything it finds to me. Transforms into Lonesome Bird and deals <el>Psyche DMG</> to the target. Gains <kw>Malice</> after hitting an enemy.",
 				},
 				{
 					section: "Naught but Mercy",
 					description:
-						"Accept the Witch's blessing. Deals Psyche DMG while in the <kw>Witch of Deliverance</> state. Consumes <kw>Malice</> after hitting an enemy.",
+						"Accept the Witch's blessing. Deals <el>Psyche DMG</> while in the <kw>Witch of Deliverance</> state. Consumes <kw>Malice</> after hitting an enemy.",
 				},
 			],
 			maxLvl: 10,

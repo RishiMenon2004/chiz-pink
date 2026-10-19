@@ -30,12 +30,12 @@ export const zero: Character = {
 				{
 					section: "Basic Attack: Appraisal - Severance",
 					description:
-						"Channels energy through the weapon, performing up to <dn>5</> consecutive attacks that deal Cosmos DMG.",
+						"Channels energy through the weapon, performing up to <dn>5</> consecutive attacks that deal <el>Cosmos DMG</>.",
 				},
 				{
 					section: "Basic Attack: Appraisal - Break",
 					description:
-						"Wields the weapon mid-air and plunges, dealing <dn>1</> instance of Cosmos DMG to an area upon impact. Increases DMG based on fall height, up to 100%.",
+						"Wields the weapon mid-air and plunges, dealing <dn>1</> instance of <el>Cosmos DMG</> to an area upon impact. Increases DMG based on fall height, up to 100%.",
 				},
 			],
 			maxLvl: 10,
@@ -45,7 +45,7 @@ export const zero: Character = {
 			description: [
 				{
 					description:
-						"Opening, exposed! Performs <dn>3</> consecutive weapon strikes. Leaps into the air to charge. Fires an Esper Cannon that deals <dn>1</> instance of Cosmos DMG to an area. Deals an additional <dn>1</> instance of Cosmos DMG to the first enemy hit whose level is below Zero's own level.",
+						"Opening, exposed! Performs <dn>3</> consecutive weapon strikes. Leaps into the air to charge. Fires an Esper Cannon that deals <dn>1</> instance of <el>Cosmos DMG</> to an area. Deals an additional <dn>1</> instance of <el>Cosmos DMG</> to the first enemy hit whose level is below Zero's own level.",
 				},
 			],
 			maxLvl: 10,
@@ -55,7 +55,7 @@ export const zero: Character = {
 			description: [
 				{
 					description:
-						"Sweeps away the unseen lines that connect the Nexus in a dance of blades. Deals multiple instances of Cosmos DMG to an area.",
+						"Sweeps away the unseen lines that connect the Nexus in a dance of blades. Deals multiple instances of <el>Cosmos DMG</> to an area.",
 				},
 			],
 			maxLvl: 10,
@@ -65,7 +65,7 @@ export const zero: Character = {
 			description: [
 				{
 					description:
-						"Slashes through space and detonates a rift, dealing <dn>2</> instances of Cosmos DMG to an area.",
+						"Slashes through space and detonates a rift, dealing <dn>2</> instances of <el>Cosmos DMG</> to an area.",
 				},
 			],
 			maxLvl: 10,

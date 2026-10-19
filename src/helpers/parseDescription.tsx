@@ -1,4 +1,4 @@
-import { Fragment, ReactNode } from "react"
+import { CSSProperties, Fragment, ReactNode } from "react"
 
 import { DescriptionValueType } from "@/types"
 import { DescriptionValuesRecord } from "@/types/item"
@@ -100,6 +100,21 @@ export function parseDescription(
 								{children}
 							</span>
 						)
+					// "<el>Cosmos DMG</>": coloured by the element it names.
+					case "el": {
+						const element = String(children).split(" ")[0].toLowerCase()
+						return (
+							<span
+								className={styles.element}
+								style={
+									{
+										"--element-color": `var(--element-${element})`,
+									} as CSSProperties
+								}>
+								{children}
+							</span>
+						)
+					}
 					case "kw":
 					default:
 						return <>{children}</>

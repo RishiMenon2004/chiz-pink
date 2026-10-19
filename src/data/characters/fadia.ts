@@ -30,7 +30,7 @@ export const fadia: Character = {
 				{
 					section: "Wordless Rejection",
 					description:
-						"Swings her cross shield and performs up to <dn>5</> consecutive attacks, dealing Psyche DMG.",
+						"Swings her cross shield and performs up to <dn>5</> consecutive attacks, dealing <el>Psyche DMG</>.",
 				},
 				{
 					section: "All Eyes on Me",
@@ -40,12 +40,12 @@ export const fadia: Character = {
 				{
 					section: "Falling Contempt",
 					description:
-						"Swings her cross shield in the air and plunges, dealing <dn>1</> instance of Psyche DMG to an area upon impact. Increases DMG based on fall height, up to 100%.",
+						"Swings her cross shield in the air and plunges, dealing <dn>1</> instance of <el>Psyche DMG</> to an area upon impact. Increases DMG based on fall height, up to 100%.",
 				},
 				{
 					section: "Critical Riposte: Evasion Trigger",
 					description:
-						"Triggers when casting Wordless Rejection after a Critical Dodge. Charges toward the target at high speed and deals <dn>1</> instance of Psyche DMG to an area, reducing Break.",
+						"Triggers when casting Wordless Rejection after a Critical Dodge. Charges toward the target at high speed and deals <dn>1</> instance of <el>Psyche DMG</> to an area, reducing Break.",
 				},
 			],
 			maxLvl: 10,
@@ -55,7 +55,7 @@ export const fadia: Character = {
 			description: [
 				{
 					description:
-						"Come, have a taste of this. Deals <dn>1</> instance of Psyche DMG to an area and inflicts <kw>Destructive Experience</> on the enemy with the highest Max HP in the area for a period.\nDuring the duration, when Fadia takes damage, the target shares a percentage of the damage taken.\n<kw>Destructive Experience</> ends when the duration expires, when the Redirection DMG taken by the target reaches its cap, or when the target and Fadia leave combat.",
+						"Come, have a taste of this. Deals <dn>1</> instance of <el>Psyche DMG</> to an area and inflicts <kw>Destructive Experience</> on the enemy with the highest Max HP in the area for a period.\nDuring the duration, when Fadia takes damage, the target shares a percentage of the damage taken.\n<kw>Destructive Experience</> ends when the duration expires, when the Redirection DMG taken by the target reaches its cap, or when the target and Fadia leave combat.",
 				},
 			],
 			maxLvl: 10,
@@ -75,7 +75,7 @@ export const fadia: Character = {
 			description: [
 				{
 					description:
-						"Swings her cross shield, dealing <dn>1</> instance of Psyche DMG to an area.",
+						"Swings her cross shield, dealing <dn>1</> instance of <el>Psyche DMG</> to an area.",
 				},
 			],
 			maxLvl: 10,

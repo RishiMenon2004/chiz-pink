@@ -30,7 +30,7 @@ export const haniel: Character = {
 				{
 					section: "Basic Attack: Genesse Technique",
 					description:
-						"Fires magic projectiles and performs up to <dn>5</> consecutive attacks, dealing Psyche DMG.",
+						"Fires magic projectiles and performs up to <dn>5</> consecutive attacks, dealing <el>Psyche DMG</>.",
 				},
 				{
 					section: "Basic Attack: Paranormal Cannon",
@@ -40,12 +40,12 @@ export const haniel: Character = {
 				{
 					section: "Basic Attack: Paranormal Entrance",
 					description:
-						"Press Basic Attack while airborne to plunge, dealing <dn>1</> instance of Psyche DMG to an area upon impact. Increases DMG based on fall height, up to 100%.",
+						"Press Basic Attack while airborne to plunge, dealing <dn>1</> instance of <el>Psyche DMG</> to an area upon impact. Increases DMG based on fall height, up to 100%.",
 				},
 				{
 					section: "Critical Riposte: Ace Sweep",
 					description:
-						"Triggers when using Genesse Technique after a Critical Dodge. Being this slow will get us customer complaints, you know? Dodges the attack and fires a missile, dealing <dn>1</> instance of Psyche DMG, and reducing Break.",
+						"Triggers when using Genesse Technique after a Critical Dodge. Being this slow will get us customer complaints, you know? Dodges the attack and fires a missile, dealing <dn>1</> instance of <el>Psyche DMG</>, and reducing Break.",
 				},
 			],
 			maxLvl: 10,
@@ -55,7 +55,7 @@ export const haniel: Character = {
 			description: [
 				{
 					description:
-						"\"O owl of the quiet, moonlit forest depths, answer my call!\" Throws her portable speaker Hootie, dealing Psyche DMG to an area.\nGrants the Team an ATK bonus based on Haniel's Base ATK while Hootie is active.\nGrants Hootie <dn>1</> stack of Four-Part Harmony when the current character attacks, up to <dn>1</> stack every <dn>0.5</>s. Accumulating <dn>4</> stacks of Four-Part Harmony triggers Ensemble, dealing Psyche DMG to enemies in an area around Hootie.\nOnly <dn>1</> Hootie can exist at a time. Casting again refreshes Hootie's duration. Hootie remains when switching characters.",
+						"\"O owl of the quiet, moonlit forest depths, answer my call!\" Throws her portable speaker Hootie, dealing <el>Psyche DMG</> to an area.\nGrants the Team an ATK bonus based on Haniel's Base ATK while Hootie is active.\nGrants Hootie <dn>1</> stack of Four-Part Harmony when the current character attacks, up to <dn>1</> stack every <dn>0.5</>s. Accumulating <dn>4</> stacks of Four-Part Harmony triggers Ensemble, dealing <el>Psyche DMG</> to enemies in an area around Hootie.\nOnly <dn>1</> Hootie can exist at a time. Casting again refreshes Hootie's duration. Hootie remains when switching characters.",
 				},
 			],
 			maxLvl: 10,
@@ -75,7 +75,7 @@ export const haniel: Character = {
 			description: [
 				{
 					description:
-						"Don't be so boring! How about a little easter egg? Fires <dn>1</> magic projectile at the enemy, dealing <dn>1</> instance of Psyche DMG.",
+						"Don't be so boring! How about a little easter egg? Fires <dn>1</> magic projectile at the enemy, dealing <dn>1</> instance of <el>Psyche DMG</>.",
 				},
 			],
 			maxLvl: 10,
