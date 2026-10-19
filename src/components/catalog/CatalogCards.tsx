@@ -18,6 +18,7 @@ import { getRarityName } from "@/helpers/getRarityName"
 
 import {
 	getArcBannerThemeColor,
+	getCharacterBannerThemeColor,
 	getItemStatus,
 	isItemRevealed,
 	sortByStatus,
@@ -63,10 +64,20 @@ function CharacterCard({
 	character: Character
 	status: ItemStatus
 }) {
+	const themeColor = getCharacterBannerThemeColor(character.id)
+
 	return (
 		<Link
 			href={`/characters/${character.id}`}
-			className={`${styles.card} ${getItemRarityStyle(character)}`}>
+			className={`${styles.card} ${getItemRarityStyle(character)}`}
+			style={
+				themeColor
+					? ({
+							"--rarity-color": themeColor,
+							"--rarity-color-highlight": `color-mix(in srgb, ${themeColor}, white 45%)`,
+						} as CSSProperties)
+					: undefined
+			}>
 			<FeatureTag status={status} />
 			<div className={styles.avatarContainer}>
 				<div className={styles.avatarFrame}>
