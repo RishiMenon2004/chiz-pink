@@ -10,7 +10,6 @@ import {
 } from "../items/materials"
 
 export const akane: Character = {
-	isPreview: true,
 	id: "akane",
 	imageSrc: "akane.webp",
 	name: "Akane Rin",

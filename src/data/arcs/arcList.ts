@@ -17,7 +17,6 @@ import { EnumArcType } from "./arc"
 
 const allArcs: Record<string, Arc> = {
 	far_side_of_the_moon: {
-		isPreview: true,
 		id: "far_side_of_the_moon",
 		imageSrc: "far_side_of_the_moon.webp",
 		name: "Far Side of the Moon",
