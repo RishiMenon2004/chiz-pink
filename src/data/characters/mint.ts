@@ -5,7 +5,7 @@ import {
 	aPageFromDelusionsShore,
 	ascSilhouetteSet,
 	goodBoyStamp,
-	talentHeartSet,
+	talentRoseSet,
 } from "@/data/items/materials"
 import { EnumArcType } from "@/data/arcs"
 import { EnumCharacterElement } from "./character"
@@ -21,7 +21,7 @@ export const mint: Character = {
 	arcType: EnumArcType.Liquid,
 	ascensionMaterialSet: ascSilhouetteSet,
 	ascensionBossMaterial: aPageFromDelusionsShore,
-	talentMaterialSet: talentHeartSet,
+	talentMaterialSet: talentRoseSet,
 	talentBossMaterial: goodBoyStamp,
 	abilities: {
 		basicAttack: {
@@ -51,7 +51,7 @@ export const mint: Character = {
 			maxLvl: 10,
 		},
 		skill: {
-			name: "Ultimate: Super Claws",
+			name: "Super Claws",
 			description: [
 				{
 					description:
@@ -61,7 +61,7 @@ export const mint: Character = {
 			maxLvl: 10,
 		},
 		ultimate: {
-			name: "Ultimate: Thunderous Whirlwind Slash",
+			name: "Thunderous Whirlwind Slash",
 			description: [
 				{
 					description:
@@ -71,7 +71,7 @@ export const mint: Character = {
 			maxLvl: 10,
 		},
 		support: {
-			name: "Ultimate: Invincible Tornado Slash",
+			name: "Invincible Tornado Slash",
 			description: [
 				{
 					description:

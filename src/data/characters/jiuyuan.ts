@@ -17,7 +17,7 @@ export const jiuyuan: Character = {
 	description: "A smooth-talking and enigmatic Elite Courier of Sterry who also serves as Acting Manager.",
 	rarity: EnumRarity.Epic,
 	element: EnumCharacterElement.ANIMA,
-	arcType: EnumArcType.Plasma,
+	arcType: EnumArcType.Solid,
 	ascensionMaterialSet: ascSilhouetteSet,
 	ascensionBossMaterial: tearOfTheSea,
 	talentMaterialSet: talentRoseSet,

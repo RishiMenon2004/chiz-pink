@@ -76,7 +76,7 @@ export const zankou: Character = {
 			maxLvl: 10,
 		},
 		ultimate: {
-			name: "Bloodfeast Reverie",
+			name: "Inferno Flamenco",
 			description: [
 				{
 					description:

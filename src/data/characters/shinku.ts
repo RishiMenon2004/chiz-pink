@@ -87,7 +87,7 @@ export const shinku: Character = {
 			maxLvl: 10,
 		},
 		ultimate: {
-			name: "Special Combat Arts",
+			name: "Crimson Fury",
 			description: [
 				{
 					section: "Ultimate: Crimson Fury",

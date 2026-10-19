@@ -2,7 +2,7 @@ import { Character } from "@/types/character"
 
 import { EnumRarity } from "@/data/items"
 import {
-	ascSilhouetteSet,
+	ascWhispersSet,
 	confessionalFLowerSeed,
 	dressSleevesOfVanity,
 	talentTarotSet,
@@ -19,7 +19,7 @@ export const lacrimosa: Character = {
 	rarity: EnumRarity.Epic,
 	element: EnumCharacterElement.CHAOS,
 	arcType: EnumArcType.Liquid,
-	ascensionMaterialSet: ascSilhouetteSet,
+	ascensionMaterialSet: ascWhispersSet,
 	ascensionBossMaterial: confessionalFLowerSeed,
 	talentMaterialSet: talentTarotSet,
 	talentBossMaterial: dressSleevesOfVanity,

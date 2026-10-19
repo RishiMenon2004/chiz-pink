@@ -17,7 +17,7 @@ export const sakiri: Character = {
 	description: "Unrivaled at Eibon and as scary as she looks.",
 	rarity: EnumRarity.Epic,
 	element: EnumCharacterElement.INCANTATION,
-	arcType: EnumArcType.Condensate,
+	arcType: EnumArcType.Gas,
 	ascensionMaterialSet: ascNumeralSet,
 	ascensionBossMaterial: chargingKnightSparkPlug,
 	talentMaterialSet: talentMagicSet,

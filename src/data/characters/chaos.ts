@@ -2,7 +2,7 @@ import { Character } from "@/types/character"
 
 import { EnumRarity } from "@/data/items"
 import {
-	ascWhispersSet,
+	ascDelusionsSet,
 	eternalMemory,
 	talentHeartSet,
 	tearOfTheSea,
@@ -19,7 +19,7 @@ export const chaos: Character = {
 	rarity: EnumRarity.Epic,
 	element: EnumCharacterElement.LAKSHANA,
 	arcType: EnumArcType.Condensate,
-	ascensionMaterialSet: ascWhispersSet,
+	ascensionMaterialSet: ascDelusionsSet,
 	ascensionBossMaterial: tearOfTheSea,
 	talentMaterialSet: talentHeartSet,
 	talentBossMaterial: eternalMemory,
