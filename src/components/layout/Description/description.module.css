@@ -34,7 +34,10 @@
 }
 
 .number {
-	color: var(--pink);
+	/* Lime green: a hue none of the element colours (or the pink
+	   headings) use, so numbers stay distinct from damage types in the
+	   same text. */
+	color: #9be36b;
 	font-family: var(--font-barlow-condensed);
 	font-style: italic;
 	font-weight: 700;
