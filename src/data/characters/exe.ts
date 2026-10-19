@@ -3,10 +3,10 @@ import { EnumRarity } from "../items"
 import { EnumCharacterElement } from "./character"
 import { EnumArcType } from "../arcs"
 import {
-	ascDelusionsSet,
-	chargingKnightSparkPlug,
+	ascWhispersSet,
 	goodBoyStamp,
-	talentHeartSet,
+	talentBirdSet,
+	waterMoonPick,
 } from "../items/materials"
 import { placeholderAbilities } from "./placeholder"
 
@@ -19,9 +19,9 @@ export const exe: Character = {
 	rarity: EnumRarity.Epic,
 	element: EnumCharacterElement.CHAOS,
 	arcType: EnumArcType.Solid,
-	ascensionMaterialSet: ascDelusionsSet,
-	ascensionBossMaterial: chargingKnightSparkPlug,
-	talentMaterialSet: talentHeartSet,
+	ascensionMaterialSet: ascWhispersSet,
+	ascensionBossMaterial: waterMoonPick,
+	talentMaterialSet: talentBirdSet,
 	talentBossMaterial: goodBoyStamp,
 	abilities: placeholderAbilities,
 }

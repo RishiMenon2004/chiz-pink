@@ -1,0 +1,42 @@
+{
+	"version": "1.5",
+	"patch": {
+		"name": "Version 1.5",
+		"phase1Start": "2026-11-11",
+		"phase2Start": "2026-12-02",
+		"end": "2026-12-22",
+		"themeColor": "#6a7fe0",
+		"yOffset": "39%"
+	},
+	"characters": [
+		{
+			"id": "elyms",
+			"name": "Elyms",
+			"rarity": "S",
+			"element": "cosmos",
+			"arcType": "Solid"
+		},
+		{
+			"id": "exe",
+			"name": "Exe",
+			"rarity": "S",
+			"element": "chaos",
+			"arcType": "Solid"
+		}
+	],
+	"banners": [
+		{
+			"character": "elyms",
+			"phase": 1,
+			"themeColor": "#6a7fe0",
+			"yOffset": "21%"
+		},
+		{
+			"character": "exe",
+			"phase": 2,
+			"themeColor": "#3d4fa8",
+			"yOffset": "20%"
+		}
+	],
+	"btr": ["Glinting Circle"]
+}
