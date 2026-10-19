@@ -1051,7 +1051,7 @@ const allArcs: Record<string, Arc> = {
 		effect: {
 			name: "Mammon",
 			description:
-				"Increases <el>Cosmos DMG</> by <dn>{1}</> for every <dn>100000</> Fons the wearer holds, up to <dn>10</> stacks.",
+				"Increases <el>Cosmos DMG</> by <dn>{0}</> for every <dn>100000</> Fons the wearer holds, up to <dn>10</> stacks.",
 			values: {
 				"1": [{ type: "Percent", value: 0.025 }],
 				"2": [{ type: "Percent", value: 0.03 }],
@@ -1226,7 +1226,7 @@ const allArcs: Record<string, Arc> = {
 		effect: {
 			name: "Silent Garden",
 			description:
-				"Increases the wearer's CRIT DMG by <dn>{0}</> for <dn>5</>s when the wearer's HP is reduced without taking damage, up to <dn>4</> stacks.\nUnlocks Arc: Silent Garden.\nConsumes <dn>5.00%</> of current HP and randomly performs one of the following attacks (CD <dn>25</>s) in Arc: Silent Garden:\nHarsh Rebuke: Rains merciless rebukes like leaves in a storm, dealing <dn>5</> instances of <el>Incantation DMG</> of <dn>{1}</> ATK.\nIncessant Nagging: Pierces targets with sharp, cutting words like thorns, dealing <dn>6</> instances of <el>Incantation DMG</> of <dn>{3}</> ATK; the final instance deals double damage.",
+				"Increases the wearer's CRIT DMG by <dn>{0}</> for <dn>5</>s when the wearer's HP is reduced without taking damage, up to <dn>4</> stacks.\nUnlocks Arc: Silent Garden.\nConsumes <dn>5.00%</> of current HP and randomly performs one of the following attacks (CD <dn>25</>s) in Arc: Silent Garden:\nHarsh Rebuke: Rains merciless rebukes like leaves in a storm, dealing <dn>5</> instances of <el>Incantation DMG</> of <dn>{1}</> ATK.\nIncessant Nagging: Pierces targets with sharp, cutting words like thorns, dealing <dn>6</> instances of <el>Incantation DMG</> of <dn>{2}</> ATK; the final instance deals double damage.",
 			values: {
 				"1": [
 					{ type: "Percent", value: 0.12 },
@@ -1511,7 +1511,7 @@ const allArcs: Record<string, Arc> = {
 		effect: {
 			name: "Paper Squadron",
 			description:
-				"Increases <el>Anima DMG</> dealt by the wearer's Redirect Skill and Ultimate by <dn>{1}</>.",
+				"Increases <el>Anima DMG</> dealt by the wearer's Redirect Skill and Ultimate by <dn>{0}</>.",
 			values: {
 				"1": [{ type: "Percent", value: 0.2 }],
 				"2": [{ type: "Percent", value: 0.2375 }],
