@@ -47,3 +47,7 @@ public/fonts/fonts.conf
 
 docs/audits/
 .design
+
+# content pipeline: intake screenshots stay local, content.json is kept
+/content-intake/**/*.webp
+/content-intake/**/*.png
