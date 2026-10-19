@@ -36,11 +36,11 @@ function BannerTiming({ character }: { character: Character }) {
 
 	return banner.start <= now ? (
 		<span>
-			Ends in <strong>{formatBannerCountdown(banner.end - now)}</strong>
+			Banner ends in <strong>{formatBannerCountdown(banner.end - now)}</strong>
 		</span>
 	) : (
 		<span>
-			Starts in <strong>{formatBannerCountdown(banner.start - now)}</strong>
+			Banner starts in <strong>{formatBannerCountdown(banner.start - now)}</strong>
 		</span>
 	)
 }
