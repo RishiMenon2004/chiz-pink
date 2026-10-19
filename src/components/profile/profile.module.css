@@ -359,7 +359,7 @@ a.backLink:not(:disabled):is(:hover, :focus, :focus-visible) {
 .abilitySectionTitle {
 	color: var(--pink);
 	font-family: var(--font-syne);
-	font-size: 0.95rem;
+	font-size: 1.1rem;
 	font-weight: 650;
 	letter-spacing: 2.5%;
 }
