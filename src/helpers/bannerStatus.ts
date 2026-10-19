@@ -14,34 +14,93 @@ type BannerWindow = {
 // server argument their date getters accept doesn't change the result.
 const ANY_SERVER = "Asia"
 
-let windowsByItem: Map<string, BannerWindow[]> | null = null
+export type CharacterBanner = BannerWindow & { event: EventData }
 
-// Every character and arc banner window, keyed by rate-up item id. Built
-// once on first use - banner data is static for the life of the bundle.
+// Everything below is built once on first use and kept: banner data is
+// static for the life of the bundle, so lookups stay cheap however many
+// events pile up.
+let gachaBanners: CharacterBanner[] | null = null
+let windowsByItem: Map<string, BannerWindow[]> | null = null
+let charactersBanners: Map<string, CharacterBanner[]> | null = null
+let themeColors: Map<string, string> | null = null
+
+// Every gacha event with its dates resolved, in data order.
+function getGachaBanners() {
+	gachaBanners ??= Events.filter((event) => event.type === "Gacha").map(
+		(event) => ({
+			event,
+			start: event.getStartDate(ANY_SERVER),
+			end: event.getEndDate(ANY_SERVER),
+		})
+	)
+	return gachaBanners
+}
+
+function pushTo<T>(map: Map<string, T[]>, id: string, value: T) {
+	const list = map.get(id) ?? []
+	list.push(value)
+	map.set(id, list)
+}
+
+// Every character and arc banner window, keyed by rate-up item id.
 function getBannerWindows() {
 	if (windowsByItem) return windowsByItem
 
 	windowsByItem = new Map()
-	const add = (id: string, start: number, end: number) => {
-		const list = windowsByItem!.get(id) ?? []
-		list.push({ start, end })
-		windowsByItem!.set(id, list)
+	for (const { event, start, end } of getGachaBanners()) {
+		if (event.rateupItem) pushTo(windowsByItem, event.rateupItem, { start, end })
 	}
-
-	for (const event of Events) {
-		if (event.type !== "Gacha" || !event.rateupItem) continue
-		add(
-			event.rateupItem,
-			event.getStartDate(ANY_SERVER),
-			event.getEndDate(ANY_SERVER)
-		)
-	}
-
 	for (const banner of arcBanners) {
-		add(banner.rateupItem, banner.getStartDate(), banner.getEndDate())
+		pushTo(windowsByItem, banner.rateupItem, {
+			start: banner.getStartDate(),
+			end: banner.getEndDate(),
+		})
 	}
 
 	return windowsByItem
+}
+
+function getCharactersBanners() {
+	if (charactersBanners) return charactersBanners
+
+	charactersBanners = new Map()
+	for (const banner of getGachaBanners()) {
+		if (banner.event.rateupItem) {
+			pushTo(charactersBanners, banner.event.rateupItem, banner)
+		}
+	}
+
+	return charactersBanners
+}
+
+// A character takes the theme colour of their first rate-up banner. Arc
+// banners carry no colour of their own; each runs alongside a character
+// banner, so an arc takes the colour of the character banner live when its
+// first arc banner starts (the same fallback the pulls list uses). Items
+// that never had a banner get no entry.
+function getThemeColors() {
+	if (themeColors) return themeColors
+
+	themeColors = new Map()
+	const coloured = getGachaBanners().filter(({ event }) => event.themeColor)
+
+	for (const { event } of coloured) {
+		if (event.rateupItem && !themeColors.has(event.rateupItem)) {
+			themeColors.set(event.rateupItem, event.themeColor!)
+		}
+	}
+
+	const seenArcs = new Set<string>()
+	for (const arcBanner of arcBanners) {
+		if (seenArcs.has(arcBanner.rateupItem)) continue
+		seenArcs.add(arcBanner.rateupItem)
+
+		const start = arcBanner.getStartDate()
+		const companion = coloured.find((b) => b.start <= start && start < b.end)
+		if (companion) themeColors.set(arcBanner.rateupItem, companion.event.themeColor!)
+	}
+
+	return themeColors
 }
 
 const patches = Object.values(patchTimings)
@@ -120,34 +179,16 @@ export function sortByStatus<T extends Item>(items: T[], now: number | null) {
 	return items.toSorted((a, b) => rank(a) - rank(b))
 }
 
-// Arc banners carry no colour of their own; each runs alongside a character
-// banner, so an arc takes the theme colour of the character banner live when
-// its first arc banner starts (the same fallback the pulls list uses).
-// Returns null for arcs that never had a banner.
+// Theme colour of an arc's first banner (see getThemeColors), or null if it
+// never had one.
 export function getArcBannerThemeColor(arcId: string): string | null {
-	const arcBanner = arcBanners.find((b) => b.rateupItem === arcId)
-	if (!arcBanner) return null
-
-	const start = arcBanner.getStartDate()
-	const companion = Events.find(
-		(event) =>
-			event.type === "Gacha" &&
-			event.themeColor &&
-			event.getStartDate(ANY_SERVER) <= start &&
-			start < event.getEndDate(ANY_SERVER)
-	)
-
-	return companion?.themeColor ?? null
+	return getThemeColors().get(arcId) ?? null
 }
 
 // Theme colour of a character's first rate-up banner, or null if they've
 // never had one.
 export function getCharacterBannerThemeColor(characterId: string): string | null {
-	const banner = Events.find(
-		(event) =>
-			event.type === "Gacha" && event.rateupItem === characterId && event.themeColor
-	)
-	return banner?.themeColor ?? null
+	return getThemeColors().get(characterId) ?? null
 }
 
 // An item's running banner window (character or arc), else its next
@@ -164,21 +205,13 @@ export function getActiveBannerWindow(itemId: string, now: number) {
 	)
 }
 
-export type CharacterBanner = BannerWindow & { event: EventData }
-
 // A character's running rate-up banner, else their next scheduled one.
 // Null for hand-flagged previews whose banner dates aren't known yet.
 export function getCharacterActiveBanner(
 	characterId: string,
 	now: number
 ): CharacterBanner | null {
-	const banners = Events.filter(
-		(event) => event.type === "Gacha" && event.rateupItem === characterId
-	).map((event) => ({
-		event,
-		start: event.getStartDate(ANY_SERVER),
-		end: event.getEndDate(ANY_SERVER),
-	}))
+	const banners = getCharactersBanners().get(characterId) ?? []
 
 	return (
 		banners.find(({ start, end }) => start <= now && now < end) ??
