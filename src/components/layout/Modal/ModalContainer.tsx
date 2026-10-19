@@ -68,17 +68,19 @@ export function ModalContainer({ onClickOut, children }: ModalContainerType) {
 	}
 
 	return (
-		<div
-			className="modal-container no-body-scroll"
-			onPointerDown={onClickOut ? handlePointerDown : undefined}
-			onClick={onClickOut ? handleClick : undefined}>
-			{children}
+		<>
+			<div
+				className="modal-container no-body-scroll"
+				onPointerDown={onClickOut ? handlePointerDown : undefined}
+				onClick={onClickOut ? handleClick : undefined}>
+				{children}
+			</div>
 
 			{onClickOut && (
 				<p className="modal-dismiss-hint">
 					Click the empty space to exit
 				</p>
 			)}
-		</div>
+		</>
 	)
 }

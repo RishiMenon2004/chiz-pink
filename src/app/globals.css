@@ -392,7 +392,12 @@ button {
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-	justify-content: center;
+	/* safe: content taller than the screen starts at the top and scrolls,
+	   instead of overflowing past both ends. */
+	justify-content: safe center;
+	overflow-y: auto;
+	/* Reserve the scrollbar's space on both sides so content stays centred. */
+	scrollbar-gutter: stable both-edges;
 	padding-inline: 1rem;
 	backdrop-filter: blur(4px);
 
@@ -409,12 +414,22 @@ button {
 	}
 }
 
+/* A sibling of .modal-container, not a child: the container's
+   backdrop-filter would make it the hint's containing block, so the hint
+   would scroll with the content. */
 .modal-dismiss-hint {
 	position: fixed;
 	bottom: 5%;
-	color: white;
-	opacity: 0.5;
+	left: 50%;
+	translate: -50% 0;
+	z-index: 5;
+	white-space: nowrap;
+	padding: 0.25rem 0.75rem;
+	border-radius: 100vh;
+	color: color-mix(in srgb, white 60%, transparent);
 	font-weight: 700;
+	background-color: hsla(340, 100%, 2%, 0.6);
+	pointer-events: none;
 }
 
 .tooltip {

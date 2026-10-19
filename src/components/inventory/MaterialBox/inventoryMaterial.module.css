@@ -276,3 +276,39 @@ span.amount {
 		height: 1.5rem;
 	}
 }
+
+@media (max-width: 550px) {
+	.materialBox.editorBox {
+		gap: 0.35rem;
+		border-radius: 0.85rem 0.85rem 1.1rem 1.1rem;
+
+		.iconContainer {
+			border-radius: 0.6rem;
+
+			img {
+				height: 4rem;
+			}
+		}
+
+		.label {
+			font-size: 0.65rem;
+		}
+
+		span.amount,
+		span.amount input {
+			font-size: 1rem;
+		}
+
+		span.amount input {
+			min-width: 0;
+			font-size: 0.95rem;
+			letter-spacing: 0;
+		}
+
+		.countBtn {
+			flex-shrink: 0;
+			height: 1.15rem;
+			margin: 0.2rem;
+		}
+	}
+}
