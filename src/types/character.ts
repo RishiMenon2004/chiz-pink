@@ -28,6 +28,9 @@ export type CharacterAbilitySet = {
 }
 
 export interface Character extends Item {
+	// Announced but kit unknown: abilities, arc type and materials are
+	// stand-ins. Hidden from the planner; the profile shows a TBD notice.
+	isPlaceholder?: boolean
 	description: string
 	rarity: EnumRarity.Rare | EnumRarity.Epic
 	element: EnumCharacterElement

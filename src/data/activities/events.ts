@@ -665,6 +665,7 @@ export const Events: EventData[] = [
 	{
 		name: "Phase 1: Elyms",
 		type: "Gacha",
+		rateupItem: "elyms",
 		getStartDate: getPhase1Start("version1_5"),
 		getEndDate: getPhase1End("version1_5"),
 		eventImage: "version1.5/gacha_elyms.webp",
@@ -674,6 +675,7 @@ export const Events: EventData[] = [
 	{
 		name: "Phase 2: Exe",
 		type: "Gacha",
+		rateupItem: "exe",
 		getStartDate: getPhase2Start("version1_5"),
 		getEndDate: getPhase2End("version1_5"),
 		eventImage: "version1.5/gacha_exe.webp",

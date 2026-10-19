@@ -10,6 +10,7 @@ import type { Character } from "@/types/character"
 import { getCharacterBannerThemeColor } from "@/helpers/bannerStatus"
 
 import { CharacterElement } from "@/components/layout/CharacterAvatar"
+import { InfoBox } from "@/components/layout/InfoBox"
 
 import { ProfileAbilityGroup } from "../ProfileAbilityGroup"
 import { ProfileBanner } from "../ProfileBanner"
@@ -136,7 +137,10 @@ export async function CharacterProfile({ character }: { character: Character }) 
 								label: "Element",
 								value: <span className={styles.capitalize}>{character.element}</span>,
 							},
-							{ label: "Arc Type", value: character.arcType },
+							{
+								label: "Arc Type",
+								value: character.isPlaceholder ? "TBD" : character.arcType,
+							},
 						]}
 						description={character.description}
 					/>
@@ -144,31 +148,39 @@ export async function CharacterProfile({ character }: { character: Character }) 
 				</div>
 
 				<div className={styles.content}>
-					<ProfileAbilityGroup
-						title="ESPER ABILITIES"
-						entries={[
-							["Basic Attack", abilities.basicAttack],
-							["Skill", abilities.skill],
-							["Ultimate", abilities.ultimate],
-							["Support", abilities.support],
-						]}
-					/>
-					<ProfileAbilityGroup
-						title="Passive Skills"
-						entries={[
-							["Passive I", abilities.passive1],
-							["Passive II", abilities.passive2],
-							["Passive III", abilities.passive3],
-						]}
-					/>
-					<ProfileAbilityGroup
-						title="Life Skills"
-						entries={[
-							["Life Skill I", abilities.lifeSkill1],
-							["Life Skill II", abilities.lifeSkill2],
-						]}
-					/>
-					<ProfileMaterials kind="character" id={character.id} />
+					{character.isPlaceholder ? (
+						<InfoBox sticker="peek">
+							{`U-um... I don't have ${character.name}'s abilities or materials on file yet. I'll a-add them as soon as they're announced, I promise!`}
+						</InfoBox>
+					) : (
+						<>
+							<ProfileAbilityGroup
+								title="ESPER ABILITIES"
+								entries={[
+									["Basic Attack", abilities.basicAttack],
+									["Skill", abilities.skill],
+									["Ultimate", abilities.ultimate],
+									["Support", abilities.support],
+								]}
+							/>
+							<ProfileAbilityGroup
+								title="Passive Skills"
+								entries={[
+									["Passive I", abilities.passive1],
+									["Passive II", abilities.passive2],
+									["Passive III", abilities.passive3],
+								]}
+							/>
+							<ProfileAbilityGroup
+								title="Life Skills"
+								entries={[
+									["Life Skill I", abilities.lifeSkill1],
+									["Life Skill II", abilities.lifeSkill2],
+								]}
+							/>
+							<ProfileMaterials kind="character" id={character.id} />
+						</>
+					)}
 				</div>
 			</div>
 		</main>

@@ -9,6 +9,8 @@ import { chaos } from "./chaos"
 import { chiz } from "./chiz"
 import { daffodill } from "./daffodill"
 import { edgar } from "./edgar"
+import { elyms } from "./elyms"
+import { exe } from "./exe"
 import { fadia } from "./fadia"
 import { haniel } from "./haniel"
 import { hathor } from "./hathor"
@@ -50,6 +52,8 @@ const allCharacters: Record<string, Character> = {
 	haniel,
 	mint,
 	skia,
+	elyms,
+	exe,
 }
 
 export function getAllCharacters() {

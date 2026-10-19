@@ -95,6 +95,7 @@ export function PlannerAddCharacterBox({
 		const matchesSearch = searchTarget.includes(cleanSearchQuery)
 
 		return (
+			!char.isPlaceholder &&
 			isItemRevealed(char, now) &&
 			!doesPlannerHaveChar &&
 			matchesElement &&
