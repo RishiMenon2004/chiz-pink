@@ -1,4 +1,4 @@
-const CACHE_VERSION = "v8"
+const CACHE_VERSION = "v9"
 const SHELL_CACHE = `chiz-pink-shell-${CACHE_VERSION}`
 const RUNTIME_CACHE = `chiz-pink-runtime-${CACHE_VERSION}`
 const CURRENT_CACHES = [SHELL_CACHE, RUNTIME_CACHE]
@@ -25,17 +25,6 @@ const APP_SHELL_URLS = [
 	"/materials/placeholder.png",
 	"/arcs/placeholder.webp",
 	"/characters/avatar/placeholder.webp",
-
-	//material borders
-	"/materials/borders/epic.png",
-	"/materials/borders/rare.png",
-	"/materials/borders/uncommon.png",
-	"/materials/borders/common.png",
-
-	//character borders
-	"/characters/avatar/borders/planner_border.png",
-	"/characters/avatar/borders/planner_border_alt.png",
-	"/characters/avatar/borders/planner_border_list.png",
 
 	//icons
 	"/icons/arc.png",

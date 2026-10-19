@@ -128,7 +128,6 @@ export function CurrencyBox({ currency }: { currency: Material }) {
 			onPointerLeave={hideTooltip}
 			style={
 				{
-					"--bg-image": `url('/materials/borders/${currency.id}.png')`,
 					"--input-width": inputWidth,
 				} as CSSProperties
 			}>
