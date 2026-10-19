@@ -21,7 +21,7 @@ import styles from "@/app/inventory/page.module.css"
 
 export function EmptyFilterNotice({ onReset }: { onReset: () => void }) {
 	return (
-		<InfoBox className={styles.emptyFilter}>
+		<InfoBox className={styles.emptyFilter} sticker="cry">
 			<div>
 				{
 					"I-I can't seem to find anything with those filters. Would you like to "
@@ -97,7 +97,7 @@ export function OwnedGroup({
 				isEmpty={ownedMats.length <= 0}
 				isOpen={ownedMats.length > 0}
 				emptyFallback={
-					<InfoBox className={`inset-control ${styles.emptyFilter}`}>
+					<InfoBox className={`inset-control ${styles.emptyFilter}`} sticker="cry">
 						<div>S-sorry... You don&apos;t seem to own anything.</div>
 					</InfoBox>
 				}
@@ -146,7 +146,7 @@ export function RequiredGroup({
 				title="Required"
 				isEmpty={requiredMaterials.length <= 0}
 				emptyFallback={
-					<InfoBox className={`inset-control ${styles.emptyFilter}`}>
+					<InfoBox className={`inset-control ${styles.emptyFilter}`} sticker="rich">
 						<div>
 							{
 								"Hmm, looks like... you don't n-need anything right now."
@@ -219,10 +219,12 @@ export function AcquiredGroup({
 				isEmpty={acquiredMaterials.length <= 0}
 				isOpen={acquiredMaterials.length > 0}
 				emptyFallback={
-					<InfoBox className={`inset-control ${styles.emptyFilter}`}>
+					<InfoBox
+						className={`inset-control ${styles.emptyFilter}`}
+						sticker={notAcquiredMaterials.length <= 0 ? undefined : "faint"}>
 						<div>
 							{notAcquiredMaterials.length <= 0
-								? ""
+								? "N-nothing to collect yet... Plan something, and I'll k-keep track of what you've gathered here!"
 								: "Y-you haven't finished collecting... a-anything."}
 						</div>
 					</InfoBox>
@@ -234,7 +236,9 @@ export function AcquiredGroup({
 				title="Required"
 				isEmpty={notAcquiredMaterials.length <= 0}
 				emptyFallback={
-					<InfoBox className={`inset-control ${styles.emptyFilter}`}>
+					<InfoBox
+						className={`inset-control ${styles.emptyFilter}`}
+						sticker={acquiredMaterials.length > 0 ? "rich" : "peek"}>
 						<div>
 							{acquiredMaterials.length > 0
 								? "Oh wow! You've collected e-everything you needed!"

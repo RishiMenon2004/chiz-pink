@@ -49,7 +49,7 @@ export default function RenderInventory() {
 			<InventoryFilterToolbar />
 
 			{!doesInventoryExist && (
-				<InfoBox className={styles.emptyFilter}>
+				<InfoBox className={styles.emptyFilter} sticker="peek">
 					<div>
 						{
 							"Seems like you're new here. W-would you like to open an account with us? "

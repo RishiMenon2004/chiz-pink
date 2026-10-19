@@ -159,7 +159,7 @@ function ArcCards({ entries }: { entries: WithStatus<Arc>[] }) {
 
 function EmptyFilterNotice({ onReset }: { onReset: () => void }) {
 	return (
-		<InfoBox>
+		<InfoBox sticker="cry">
 			<div>
 				{"I-I can't seem to find anything with those filters. Would you like to "}
 				<a onClick={onReset} className="btn-anchor">

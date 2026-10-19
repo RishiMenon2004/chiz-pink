@@ -49,6 +49,13 @@
 	color: var(--foreground);
 }
 
+.errorSticker {
+	width: 4.5rem;
+	height: auto;
+	rotate: -6deg;
+	filter: drop-shadow(var(--shadow-dark-40) 0 2px 3px);
+}
+
 .errorButton {
 	align-self: start;
 	box-shadow: var(--shadow-button);

@@ -3,7 +3,12 @@
 	font-weight: 600;
 	margin-top: 4rem;
 	margin-inline: 6rem;
-	background-color: color-mix(in srgb, var(--pink) 30%, transparent);
+	background:
+		linear-gradient(
+			color-mix(in srgb, var(--pink) 30%, transparent),
+			color-mix(in srgb, var(--pink) 30%, transparent)
+		),
+		var(--interactive-bg);
 	padding: 1rem;
 	border-radius: 12px;
 	color: white;
@@ -13,6 +18,35 @@
 	gap: 0.5rem;
 
 	outline: 2px solid color-mix(in srgb, var(--pink) 50%, transparent);
+}
+
+.body {
+	display: flex;
+	flex-direction: column;
+	gap: 0.5rem;
+	min-width: 0;
+}
+
+.infoBox[data-sticker] {
+	flex-direction: row;
+	align-items: center;
+	gap: 1rem;
+	padding-block: 0.75rem;
+}
+
+.sticker {
+	flex-shrink: 0;
+	width: 4.5rem;
+	height: auto;
+	margin-block: -1rem;
+
+	filter: drop-shadow(var(--shadow-dark-40) 0 0 3px);
+}
+
+@media (max-width: 550px) {
+	.sticker {
+		width: 3.5rem;
+	}
 }
 
 @media (max-width: 1135px) {
