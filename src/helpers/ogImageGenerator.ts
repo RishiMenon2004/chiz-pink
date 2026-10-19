@@ -277,7 +277,11 @@ export async function generateCharacterOgImage(
 	)
 	if (fs.existsSync(splashPath)) {
 		const splashBuf = await sharp(splashPath)
-			.resize(741, 741, { fit: "contain", position: "bottom" })
+			.resize(741, 741, {
+				fit: "contain",
+				position: "bottom",
+				background: { r: 0, g: 0, b: 0, alpha: 0 },
+			})
 			.png()
 			.toBuffer()
 		const splashPngDataUrl = `data:image/png;base64,${splashBuf.toString("base64")}`
@@ -372,7 +376,10 @@ export async function generateArcOgImage(arc: Arc): Promise<Response> {
 	const arcImagePath = path.join(process.cwd(), "public", "arcs", arc.imageSrc)
 	if (fs.existsSync(arcImagePath)) {
 		const arcBuf = await sharp(arcImagePath)
-			.resize(630, 630, { fit: "contain" })
+			.resize(630, 630, {
+				fit: "contain",
+				background: { r: 0, g: 0, b: 0, alpha: 0 },
+			})
 			.png()
 			.toBuffer()
 		const arcDataUrl = `data:image/png;base64,${arcBuf.toString("base64")}`
