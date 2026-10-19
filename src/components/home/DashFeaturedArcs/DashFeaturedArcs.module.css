@@ -14,14 +14,14 @@
 	--theme: var(--theme-color, var(--rarity-color));
 	/* Fixed art column, small enough to fit the row's min height - left to
 	   size itself, the image's intrinsic 512px blows the row apart. */
-	--art-size: clamp(5.5rem, 20cqi, 7rem);
+	--art-size: clamp(5rem, 18cqi, 6rem);
 
 	position: relative;
 	overflow: clip;
 	isolation: isolate;
 
 	flex: 1 1 0;
-	min-height: 7rem;
+	min-height: 6rem;
 	max-height: 11rem;
 
 	display: grid;
@@ -123,7 +123,7 @@
 
 	font-family: var(--font-syne);
 	font-size: clamp(0.9rem, 3.4cqi, 1.3rem);
-	font-weight: 800;
+	font-weight: 750;
 	line-height: 1.1;
 	text-transform: uppercase;
 	text-wrap: balance;
@@ -174,5 +174,49 @@
 
 	.meta {
 		font-size: 0.875rem;
+	}
+}
+
+@media (max-width: 800px) {
+	.name {
+		font-weight: 780;
+	}
+}
+
+@media (min-width: 801px) {
+	.row {
+		min-height: 0;
+	}
+
+	@container (width < 560px) {
+		.list {
+			gap: 0.35rem;
+			padding: 0.35rem;
+		}
+
+		.row {
+			--art-size: 3.25rem;
+
+			gap: 0.5rem;
+			padding: 0 0.75rem 0 0.25rem;
+		}
+
+		.info {
+			gap: 0.2rem;
+		}
+
+		.tag {
+			display: none;
+		}
+
+		.name {
+			-webkit-line-clamp: 1;
+			line-clamp: 1;
+			font-size: 1rem;
+		}
+
+		.meta {
+			font-size: 0.875rem;
+		}
 	}
 }
