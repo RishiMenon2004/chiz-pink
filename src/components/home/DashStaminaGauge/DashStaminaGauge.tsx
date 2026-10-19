@@ -17,6 +17,68 @@ import { MaterialIcon } from "@/components/layout"
 import pageStyles from "@/app/page.module.css"
 import styles from "./DashStaminaGauge.module.css"
 
+// Highest value the pixel input accepts (overcap is allowed past max).
+const PIXEL_INPUT_CAP = 999
+
+const PIXEL_STEPS = [-80, -60, -40, 1, 60]
+const STAMINA_STEPS = [100]
+
+// Row of keys under a gauge: EMPTY, the fixed steps, FULL. `cap` is the
+// highest value the gauge accepts (pixels may overcap past `max`); `side`
+// mirrors the tray's rounded corner to match its gauge.
+function QuickAdjust({
+	label,
+	current,
+	max,
+	cap,
+	steps,
+	side,
+	onChange,
+}: {
+	label: string
+	current: number
+	max: number
+	cap: number
+	steps: number[]
+	side: "left" | "right"
+	onChange: (value: number) => void
+}) {
+	return (
+		<div
+			className={`inset-control ${styles.quickAdjust}`}
+			data-side={side}
+			role="group"
+			aria-label={`Adjust ${label}`}>
+			<button
+				type="button"
+				className={styles.quickButton}
+				disabled={current === 0}
+				onClick={() => onChange(0)}>
+				EMPTY
+			</button>
+			{steps.map((step) => (
+				<button
+					key={step}
+					type="button"
+					className={styles.quickButton}
+					// Spending more than you have isn't possible in game.
+					disabled={step < 0 ? current < -step : current >= cap}
+					aria-label={`${step < 0 ? "Spend" : "Add"} ${Math.abs(step)} ${label}`}
+					onClick={() => onChange(Math.min(Math.max(current + step, 0), cap))}>
+					{step < 0 ? `−${-step}` : `+${step}`}
+				</button>
+			))}
+			<button
+				type="button"
+				className={styles.quickButton}
+				disabled={current >= max}
+				onClick={() => onChange(max)}>
+				FULL
+			</button>
+		</div>
+	)
+}
+
 function GaugeValueInput({
 	name,
 	value,
@@ -60,6 +122,17 @@ export function DashStaminaGauge() {
 		settings.userdata
 
 	const pixelRef = useRef<HTMLInputElement>(null!)
+
+	const setStamina = (value: number) => {
+		actions.setConfig("userdata", { "current-stamina": value })
+	}
+
+	const setPixels = (value: number) => {
+		actions.setConfig("userdata", {
+			"current-pixels": value,
+			"pixels-last-edited": Date.now(),
+		})
+	}
 	const staminaRef = useRef<HTMLInputElement>(null!)
 
 	return (
@@ -86,14 +159,9 @@ export function DashStaminaGauge() {
 							<GaugeValueInput
 								name="Current Pixels"
 								value={currentPixels}
-								max={999}
+								max={PIXEL_INPUT_CAP}
 								ref={pixelRef}
-								onChange={(value) => {
-									actions.setConfig("userdata", {
-										"current-pixels": value,
-										"pixels-last-edited": Date.now(),
-									})
-								}}
+								onChange={setPixels}
 							/>
 							<span
 								className={
@@ -101,6 +169,15 @@ export function DashStaminaGauge() {
 								}>{` / ${maxPixels}`}</span>
 						</p>
 					</div>
+					<QuickAdjust
+						label="Pixels"
+						current={currentPixels}
+						max={maxPixels}
+						cap={PIXEL_INPUT_CAP}
+						steps={PIXEL_STEPS}
+						side="left"
+						onChange={setPixels}
+					/>
 					<div className={styles.countdownText}>
 						<PixelRefillCountdown
 							current={currentPixels}
@@ -121,11 +198,7 @@ export function DashStaminaGauge() {
 								value={currentStamina}
 								max={maxStamina}
 								ref={staminaRef}
-								onChange={(value) => {
-									actions.setConfig("userdata", {
-										"current-stamina": value,
-									})
-								}}
+								onChange={setStamina}
 							/>
 							<span
 								className={
@@ -141,6 +214,15 @@ export function DashStaminaGauge() {
 							loading="eager"
 						/>
 					</div>
+					<QuickAdjust
+						label="City Stamina"
+						current={currentStamina}
+						max={maxStamina}
+						cap={maxStamina}
+						steps={STAMINA_STEPS}
+						side="right"
+						onChange={setStamina}
+					/>
 					<div className={styles.countdownText}>
 						<StaminaResetCountdown
 							server={settings.userdata.server}
