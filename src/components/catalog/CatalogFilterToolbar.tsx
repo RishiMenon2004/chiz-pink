@@ -212,8 +212,12 @@ export function CatalogFilterToolbar({
 					placeholder="Search..."
 					aria-label="Search by name"
 					autoComplete="off"
+					enterKeyHint="done"
 					value={filters.search}
 					onChange={(e) => onChange({ ...filters, search: e.currentTarget.value })}
+					onKeyDown={(e) => {
+						if (e.key === "Enter") e.currentTarget.blur()
+					}}
 					className={catalogStyles.searchInput}
 				/>
 
