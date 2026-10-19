@@ -57,9 +57,11 @@ a.backLink:not(:disabled):is(:hover, :focus, :focus-visible) {
 /* ---------- Hero ---------- */
 
 .heroColumn {
-	/* Stick below the fixed currency bar, not the top of the viewport. */
+	/* Stick where it first sits - below the fixed currency bar plus the
+	   page's 4rem block padding (.page in globals.css) - so it never
+	   shifts up on scroll. */
 	position: sticky;
-	top: calc(var(--titlebar-height) + env(safe-area-inset-top, 0px) + 2rem);
+	top: calc(var(--titlebar-height) + env(safe-area-inset-top, 0px) + 4rem);
 
 	display: flex;
 	flex-direction: column;
