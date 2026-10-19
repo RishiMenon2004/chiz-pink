@@ -16,6 +16,13 @@ export enum EnumArcTiers {
 	Tier5 = 5,
 }
 
+// One entry per planner level step (1, 20, 20+, ... 80), in EnumItemLvls
+// order.
+export type ArcLevelStats = {
+	atk: number[]
+	mainStat: number[]
+}
+
 export interface Arc extends Item {
 	// Announced but stats unknown: base ATK, main stat and materials are
 	// stand-ins until the global release. Hidden from the planner; the

@@ -9,7 +9,8 @@
 		"start": "next start",
 		"lint": "eslint",
 		"content:check": "node --import ./scripts/ts-loader.mjs scripts/content-check.ts",
-		"content:add": "node --import ./scripts/ts-loader.mjs scripts/content-add.ts"
+		"content:add": "node --import ./scripts/ts-loader.mjs scripts/content-add.ts",
+		"content:import": "node --import ./scripts/ts-loader.mjs scripts/content-import.ts"
 	},
 	"dependencies": {
 		"@dnd-kit/dom": "^0.5.0",

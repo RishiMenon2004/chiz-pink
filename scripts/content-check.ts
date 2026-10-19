@@ -15,6 +15,7 @@ import type { Arc } from "@/types/weapon"
 import type { Character } from "@/types/character"
 
 import { BTRTimeline, Events, patchTimings } from "@/data/activities/events"
+import { arcLevelStats } from "@/data/arcs/arcLevelStats"
 import { getAllArcsList } from "@/data/arcs/arcList"
 import { EnumCharacterElement } from "@/data/characters/character"
 import { getAllCharactersList } from "@/data/characters/characterList"
@@ -173,6 +174,11 @@ section(
 	unfinished,
 	"Placeholder arcs (stats not out yet)",
 	arcs.filter((a) => a.isPlaceholder).map(label)
+)
+section(
+	unfinished,
+	"Arcs without level stats (run npm run content:import -- --write)",
+	arcs.filter((a) => !a.isPlaceholder && !arcLevelStats[a.id]).map(label)
 )
 section(unfinished, "Placeholder images", placeholderImages)
 section(unfinished, "Characters without a profile background", missingBackgrounds)
