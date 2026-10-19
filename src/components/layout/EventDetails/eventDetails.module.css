@@ -1,0 +1,123 @@
+@property --gradient-opening {
+	syntax: "<percentage>";
+	inherits: true;
+	initial-value: 100%;
+}
+
+.box {
+	/* Reused Colours - event theme colours reference these by name; keep in
+	   sync with the calendar's copy. */
+	--fons-rush: #ed9e37;
+	--pixel-surge: #ff72f8;
+	--stamina-recharge: #2d5de1;
+	--gold-clash: #d8af47;
+
+	position: absolute;
+	transform: translateX(-50%);
+	border-radius: calc(0.5rem + 2px);
+	clip-path: inset(
+		2px round var(--radius-left, 0.5rem) var(--radius-right, 0.5rem)
+			var(--radius-right, 0.5rem) var(--radius-left, 0.5rem)
+	);
+
+	background-color: color-mix(in srgb, var(--theme-color), black);
+
+	transition:
+		all 500ms 100ms,
+		--gradient-opening 1000ms 300ms,
+		opacity 300ms ease-out;
+
+	overflow: hidden;
+	z-index: 2;
+
+	.image {
+		display: flex;
+		width: 100%;
+		height: auto;
+		position: relative;
+		left: 0;
+
+		transition: transform 500ms 100ms;
+		border-radius: inherit;
+	}
+
+	&,
+	.image {
+		outline: 1px solid rgba(255, 255, 255, 0.25);
+		outline-offset: -1px;
+	}
+
+	&::after {
+		content: "";
+		position: absolute;
+		inset: 0;
+		border-radius: inherit;
+		background-image: linear-gradient(
+			to right,
+			var(--theme-color, var(--pink)),
+			transparent,
+			var(--theme-color, var(--pink))
+		);
+		background-size: var(--gradient-opening);
+		background-position: center;
+		z-index: 1;
+	}
+
+	/* Untinted source art: no theme-colour sweep or tinted backdrop. */
+	&[data-theme-overlay="false"] {
+		background-color: var(--interactive-bg);
+
+		&::after {
+			display: none;
+		}
+	}
+
+	.dates {
+		position: absolute;
+		left: 0.75rem;
+		bottom: 0.5rem;
+
+		padding-inline: 0.75rem;
+		border-radius: 100vh;
+		font-family: var(--font-barlow-condensed);
+		font-size: 0.8em;
+		font-style: italic;
+		font-weight: 500;
+		letter-spacing: 15%;
+		text-transform: uppercase;
+
+		paint-order: stroke fill;
+		-webkit-text-stroke: 3px black;
+
+		text-wrap-mode: nowrap;
+		text-overflow: clip;
+
+		opacity: 1;
+		background-color: rgba(0, 0, 0, 0.75);
+		z-index: 10;
+	}
+
+	/* Rate-up character banners: link to the character's profile. */
+	.profileLink {
+		position: absolute;
+		right: 0.75rem;
+		bottom: 0.5rem;
+		z-index: 10;
+
+		font-size: 0.65em;
+		text-decoration: none;
+		white-space: nowrap;
+	}
+}
+
+@media (max-width: 800px) {
+	.box .dates {
+		font-size: 0.6em;
+	}
+}
+
+@media (max-width: 550px) {
+	.box .dates {
+		font-size: 0.4em;
+	}
+}
