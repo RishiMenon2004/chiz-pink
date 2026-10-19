@@ -82,8 +82,6 @@ function ArcRow({
 	)
 }
 
-// Dashboard list of featured / preview arcs: one banner-tinted row per arc,
-// sized to share the panel's height with the character carousel beside it.
 export function DashFeaturedArcs({ entries }: { entries: Entry[] }) {
 	const { Tooltip, showTooltip, hideTooltip } = useTooltip()
 

@@ -1,4 +1,3 @@
-/* Autoplay dwell per slide - the progress bar's duration. */
 .carousel {
 	--slide-duration: 6s;
 
@@ -13,13 +12,9 @@
 
 .stage {
 	position: relative;
-	/* 16:9 at every width (no min-height) - the narrow rules below shrink
-	   the text and pager to fit a phone-sized frame. */
 	height: 100%;
 	aspect-ratio: 16 / 9;
 }
-
-/* ---------- Slide ---------- */
 
 .slide {
 	--theme: var(--theme-color, var(--rarity-color));
@@ -31,8 +26,6 @@
 	text-decoration: none;
 	cursor: var(--navigate-cursor);
 
-	/* Theme colour as the base; the greyscale background card is blended
-	   over it below, so every character's card picks up their banner hue. */
 	background-color: oklch(from var(--theme) 0.32 calc(c * 0.8) h);
 
 	opacity: 0;
@@ -43,7 +36,6 @@
 		z-index: 1;
 	}
 
-	/* Darken behind the text (left/bottom) so it reads over any art. */
 	&::after {
 		content: "";
 		position: absolute;
@@ -81,7 +73,6 @@
 		transition: transform var(--slide-duration) linear;
 	}
 
-	/* Slow push-in while a slide is up. */
 	.slide[data-active="true"] & img {
 		transform: scale(1);
 	}
@@ -112,7 +103,6 @@
 		object-position: 50% 8%;
 		filter: drop-shadow(var(--shadow-dark-50) -0.5rem 0.5rem 1rem);
 
-		/* Fade the art's left edge into the background. */
 		mask-image: linear-gradient(to right, transparent 0%, black 25%);
 
 		transform-origin: 50% 20%;
@@ -147,7 +137,6 @@
 	}
 }
 
-/* Same treatment as the catalog cards' Featured / Preview tag. */
 .tag {
 	align-self: flex-start;
 
@@ -205,8 +194,6 @@
 	background-color: currentColor;
 	opacity: 0.5;
 }
-
-/* ---------- Pager ---------- */
 
 .pager {
 	position: absolute;
@@ -303,7 +290,6 @@
 		animation: slide-progress var(--slide-duration) linear forwards;
 	}
 
-	/* Hold while the reader is looking at or tabbing through it. */
 	.carousel:hover &,
 	.carousel:focus-within & {
 		animation-play-state: paused;
@@ -328,8 +314,6 @@
 		transition: none;
 	}
 }
-
-/* ---------- Narrow ---------- */
 
 @container (width < 480px) {
 	.art {

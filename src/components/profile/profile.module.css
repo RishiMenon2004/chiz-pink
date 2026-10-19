@@ -299,7 +299,6 @@ a.backLink:not(:disabled):is(:hover, :focus, :focus-visible) {
 
 /* ---------- Content panels ---------- */
 
-/* Rate-up banner art with its timing overlaid along the bottom. */
 .bannerFrame {
 	position: relative;
 	overflow: clip;

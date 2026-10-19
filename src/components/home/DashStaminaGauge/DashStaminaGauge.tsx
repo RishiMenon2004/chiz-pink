@@ -17,15 +17,11 @@ import { MaterialIcon } from "@/components/layout"
 import pageStyles from "@/app/page.module.css"
 import styles from "./DashStaminaGauge.module.css"
 
-// Highest value the pixel input accepts (overcap is allowed past max).
 const PIXEL_INPUT_CAP = 999
 
 const PIXEL_STEPS = [-80, -60, -40, 1, 60]
 const STAMINA_STEPS = [100]
 
-// Row of keys under a gauge: EMPTY, the fixed steps, FULL. `cap` is the
-// highest value the gauge accepts (pixels may overcap past `max`); `side`
-// mirrors the tray's rounded corner to match its gauge.
 function QuickAdjust({
 	label,
 	current,
@@ -61,7 +57,6 @@ function QuickAdjust({
 					key={step}
 					type="button"
 					className={styles.quickButton}
-					// Spending more than you have isn't possible in game.
 					disabled={step < 0 ? current < -step : current >= cap}
 					aria-label={`${step < 0 ? "Spend" : "Add"} ${Math.abs(step)} ${label}`}
 					onClick={() => onChange(Math.min(Math.max(current + step, 0), cap))}>

@@ -24,7 +24,6 @@ import styles from "./DashFeaturedCarousel.module.css"
 
 type Entry = { item: Character; status: ItemStatus }
 
-// Horizontal travel (px) a touch has to cover to count as a swipe.
 const SWIPE_THRESHOLD = 40
 
 function BannerTiming({ character }: { character: Character }) {
@@ -109,10 +108,6 @@ function Slide({
 	)
 }
 
-// Hero carousel for the dashboard's featured / preview characters. Autoplay
-// is driven by the active thumbnail's CSS progress bar: its animation's end
-// advances the slide, so hovering/focusing (which pauses the animation in
-// CSS) and reduced motion (which drops it) need no extra JS timers.
 export function DashFeaturedCarousel({ entries }: { entries: Entry[] }) {
 	const [index, setIndex] = useState(0)
 	const touchStartX = useRef<number | null>(null)
@@ -171,7 +166,6 @@ export function DashFeaturedCarousel({ entries }: { entries: Entry[] }) {
 							/>
 							{i === active && (
 								<span
-									// Remount per slide so a manual pick restarts the timer.
 									key={active}
 									className={styles.progress}
 									onAnimationEnd={() => go(active + 1)}

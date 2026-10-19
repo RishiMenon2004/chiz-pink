@@ -5,8 +5,7 @@
 }
 
 .box {
-	/* Reused Colours - event theme colours reference these by name; keep in
-	   sync with the calendar's copy. */
+	/* Reused Colours - keep in sync with EventCalendar's copy */
 	--fons-rush: #ed9e37;
 	--pixel-surge: #ff72f8;
 	--stamina-recharge: #2d5de1;
@@ -63,7 +62,6 @@
 		z-index: 1;
 	}
 
-	/* Untinted source art: no theme-colour sweep or tinted backdrop. */
 	&[data-theme-overlay="false"] {
 		background-color: var(--interactive-bg);
 

@@ -2,7 +2,6 @@
 	grid-area: stamina;
 }
 
-
 .gaugeRow {
 	display: grid;
 	place-items: start stretch;
@@ -29,9 +28,6 @@
 	}
 }
 
-/* Tray of keys tucked under a gauge: same inset control, with the two
-   sharing corner radii so they read as one split piece. The rounder
-   corner sits on the gauge's icon side. */
 .quickAdjust {
 	--tray-pad: 3px;
 
@@ -39,7 +35,6 @@
 	gap: var(--tray-pad);
 	padding: var(--tray-pad);
 
-	/* Sit almost flush with the gauge (the column's gap is 0.25rem). */
 	margin-top: calc(3px - 0.25rem);
 	border-radius: 0.4rem 0.4rem 0.4rem 0.9rem;
 
@@ -48,7 +43,6 @@
 	}
 }
 
-/* Raised keys inside the tray. */
 .quickButton {
 	flex: 1 1 0;
 	min-width: 0;
@@ -63,7 +57,6 @@
 	font-weight: 600;
 	font-variant-numeric: tabular-nums;
 
-	/* Pill-button colour and bevel, plus a small drop onto the tray. */
 	background-color: var(--button-background);
 	box-shadow:
 		var(--shadow-button),
@@ -74,7 +67,6 @@
 		background-color 0.15s ease,
 		opacity 0.15s ease;
 
-	/* Follow the tray's rounder outer corner. */
 	[data-side="left"] > &:first-child {
 		border-bottom-left-radius: calc(0.9rem - var(--tray-pad));
 	}
@@ -83,7 +75,6 @@
 		border-bottom-right-radius: calc(0.9rem - var(--tray-pad));
 	}
 
-	/* EMPTY / FULL get a little more room than the steps. */
 	&:first-child,
 	&:last-child {
 		flex-grow: 1.4;
@@ -130,7 +121,6 @@
 }
 
 .pixelsGauge {
-	/* Bottom-left squared off to meet the quick-adjust tray below. */
 	border-radius: 1.5rem 2.25rem 0.5rem 0.5rem;
 	padding-right: 3rem;
 	justify-content: flex-start;
@@ -138,8 +128,6 @@
 
 .staminaGauge {
 	justify-content: flex-end;
-	/* Mirrors the pixels gauge; bottom corners squared off to meet the
-	   quick-adjust tray below. */
 	border-radius: 2.25rem 1.5rem 0.5rem 0.5rem;
 	padding-left: 3rem;
 }
@@ -189,8 +177,6 @@
 }
 
 @container (width < 400px) {
-	/* Stacked: each gauge + tray pair is one block with the same radius
-	   on all four outer corners. */
 	.gaugeRow {
 		--group-radius: 1.25rem;
 
@@ -225,7 +211,6 @@
 			border-bottom-right-radius: calc(var(--group-radius) - var(--tray-pad));
 		}
 
-		/* Pixels countdown moves above the gauge on narrow widths. */
 		&[data-side="left"] + .countdownText {
 			grid-row: 1;
 		}

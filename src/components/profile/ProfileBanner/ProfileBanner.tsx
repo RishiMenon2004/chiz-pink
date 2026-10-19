@@ -13,10 +13,6 @@ import { EventDetails, getInitialDetailsStyle } from "@/components/layout/EventD
 
 import styles from "../profile.module.css"
 
-// The character's running (or next scheduled) rate-up banner: its key art
-// and a countdown. Clicking it expands the art the same way the event
-// calendar does. Client-only - it depends on the clock, so it stays hidden
-// through the server render and first paint.
 export function ProfileBanner({ characterId }: { characterId: string }) {
 	const now = useNow()
 	const { settings } = useSettingsStore()

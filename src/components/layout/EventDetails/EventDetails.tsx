@@ -29,14 +29,8 @@ type EventDetailsProps = {
 	initialStyle: CSSProperties
 	server: SettingsRecord["userdata"]["server"]
 	dayBoundaryMode: DayBoundaryMode
-	// Rate-up banners link to their character; off where that's the page
-	// already open.
 	showProfileLink?: boolean
-	// Open in the middle of the viewport rather than level with the source
-	// (the calendar keeps it beside the row that was clicked).
 	centered?: boolean
-	// The theme-colour gradient that sweeps open over the art. Matches the
-	// calendar rows' tint; off where the source art has no tint of its own.
 	themeOverlay?: boolean
 }
 
@@ -251,9 +245,6 @@ function EventDetailsBox({
 	)
 }
 
-// An event's art expanding out of `sourceRef` (the element it was clicked
-// from) into a centred details card over a blurred backdrop. Seed
-// `initialStyle` with getInitialDetailsStyle(source) at click time.
 export function EventDetails({
 	sourceRef,
 	onClose,

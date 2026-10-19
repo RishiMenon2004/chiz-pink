@@ -10,8 +10,6 @@
 	container-type: inline-size;
 }
 
-/* ---------- Row ---------- */
-
 .row {
 	--theme: var(--theme-color, var(--rarity-color));
 	/* Fixed art column, small enough to fit the row's min height - left to
@@ -22,8 +20,6 @@
 	overflow: clip;
 	isolation: isolate;
 
-	/* Share the panel's height (it stretches to the carousel beside it),
-	   within limits so one arc doesn't balloon. */
 	flex: 1 1 0;
 	min-height: 7rem;
 	max-height: 11rem;
@@ -40,9 +36,6 @@
 	text-decoration: none;
 	cursor: var(--navigate-cursor);
 
-	/* Same sweep as the pulls page's banner selector: a lighter, warmer
-	   (hue + 30) start through the banner hue to transparent. Faint
-	   diagonal stripes like the background cards on the carousel. */
 	--start-color: oklch(from var(--theme) calc(l + 0.4) c calc(h + 30));
 	--sweep-opacity: 0.7;
 
@@ -60,7 +53,6 @@
 			transparent 100%
 		);
 
-	/* Translucent hairline, matching the event popup. */
 	&::after {
 		content: "";
 		position: absolute;
@@ -109,7 +101,6 @@
 	min-width: 0;
 }
 
-/* Same treatment as the catalog cards' Featured / Preview tag. */
 .tag {
 	align-self: flex-start;
 
@@ -123,7 +114,6 @@
 	-webkit-text-stroke: 4px black;
 }
 
-/* Up to two lines, so long names show in full instead of truncating. */
 .name {
 	display: -webkit-box;
 	overflow: hidden;
@@ -170,8 +160,6 @@
 		transition: none;
 	}
 }
-
-/* ---------- Narrow ---------- */
 
 @container (width < 420px) {
 	.row {
