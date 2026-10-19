@@ -22,6 +22,16 @@ import { SettingsRecord } from "@/types/settings"
 import { PullsRecord, MiracleBoxPull, ScarboroughFairPull } from "@/types/pulls"
 import { EventData } from "@/data/activities/events"
 
+// The level step picked on a profile's Materials slider, shared with the
+// profile card's stats. Null on pages that don't share it.
+export const ProfileLevelContext = createContext<{
+	index: number
+	setIndex: Dispatch<SetStateAction<number>>
+} | null>(null)
+export function useProfileLevelContext() {
+	return useContext(ProfileLevelContext)
+}
+
 export const PlannerMaterialsContext = createContext<CumulativeInventory[]>([])
 export function usePlannerMaterialsContext() {
 	return useContext(PlannerMaterialsContext)

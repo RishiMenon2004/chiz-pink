@@ -798,6 +798,31 @@ a.backLink:not(:disabled):is(:hover, :focus, :focus-visible) {
 	}
 }
 
+/* The card's level stats, repeated by the slider on stacked layouts
+   (see the max-width: 1000px block), where the card is off screen. */
+.levelStatsReadout {
+	display: none;
+	flex-wrap: wrap;
+	gap: 0.25rem 1rem;
+
+	margin: 0;
+	padding-top: 0.5rem;
+
+	color: color-mix(in srgb, var(--foreground), transparent 40%);
+	font-family: var(--font-barlow-condensed);
+	font-style: italic;
+	font-size: 1.05rem;
+
+	strong {
+		margin-inline-start: 0.25rem;
+
+		color: var(--foreground);
+		font-family: var(--font-syne);
+		font-style: normal;
+		font-weight: 650;
+	}
+}
+
 .materialsEmpty {
 	padding-block: 1rem;
 
@@ -890,6 +915,10 @@ a.backLink:not(:disabled):is(:hover, :focus, :focus-visible) {
 
 	.content {
 		margin-top: 0;
+	}
+
+	.levelStatsReadout {
+		display: flex;
 	}
 
 	/* Full-width banner: the landscape background fits as-is and the

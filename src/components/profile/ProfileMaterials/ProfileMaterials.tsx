@@ -10,20 +10,14 @@ import {
 	getWeaponRequiredMaterials,
 } from "@/helpers/getRequiredMaterials"
 
+import { useProfileLevelContext } from "@/contexts"
+
 import { MaterialIcon } from "@/components/layout/MaterialIcon"
+
+import { LEVELS, MAX_LEVEL_INDEX } from "../ProfileLevel"
 
 import pageStyles from "@/app/page.module.css"
 import styles from "../profile.module.css"
-
-// Every level step the planner offers (1, 20, 20+, 30, ... 80); ascended
-// steps ("20+") are the notches between the labelled levels.
-const LEVELS = Object.keys(EnumItemLvls)
-	.filter((key) => isNaN(Number(key)))
-	.map((key) => ({
-		value: EnumItemLvls[key as keyof typeof EnumItemLvls],
-		label: key.replace("Lvl", "").replace("A", "+"),
-		isAscension: key.endsWith("A"),
-	}))
 
 // Fixed locale: the server and the browser must format identically, or the
 // first render won't match (e.g. en-IN groups 21,49,000 vs en-US 2,149,000).
@@ -55,14 +49,26 @@ function getLevelMaterials(
 	return getCharRequiredMaterials({ ...base, targetLvl: target, abilitySet })
 }
 
+// A stat the profile card shows for the selected level, one value per
+// LEVELS step. Repeated here on stacked layouts, where the card is
+// scrolled away while the slider is in use.
+export type LevelStat = { label: string; values: string[] }
+
 export function ProfileMaterials({
 	kind,
 	id,
+	levelStats,
 }: {
 	kind: "character" | "arc"
 	id: string
+	levelStats?: LevelStat[]
 }) {
-	const [index, setIndex] = useState(LEVELS.length - 1)
+	// Inside a ProfileLevelProvider the level is shared with the profile
+	// card; otherwise the slider keeps its own.
+	const shared = useProfileLevelContext()
+	const [localIndex, setLocalIndex] = useState(MAX_LEVEL_INDEX)
+	const index = shared?.index ?? localIndex
+	const setIndex = shared?.setIndex ?? setLocalIndex
 	const level = LEVELS[index]
 
 	const materials = useMemo(
@@ -92,6 +98,15 @@ export function ProfileMaterials({
 				</span>
 			</div>
 			<div className={`inset-control ${styles.panelBody}`}>
+				{levelStats && levelStats.length > 0 && (
+					<p className={styles.levelStatsReadout} aria-live="polite">
+						{levelStats.map(({ label, values }) => (
+							<span key={label}>
+								{label} <strong>{values[index]}</strong>
+							</span>
+						))}
+					</p>
+				)}
 				<div className={styles.levelSlider}>
 					<div
 						className={styles.levelTrack}
