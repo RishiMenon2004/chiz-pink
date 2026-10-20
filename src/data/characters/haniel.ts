@@ -65,7 +65,7 @@ export const haniel: Character = {
 			description: [
 				{
 					description:
-						"Genesse Girls' Academy Paranormal Department! Assuming control! Releases an enhancement field centered on herself and gaining the Paranormal Ace effect for a period of time.\nGrants the Team an ATK bonus based on Haniel's Base ATK.\nTriggering <kw>Ensemble</> simultaneously triggers <dn>1</> additional Ensemble - Symphony effect around the character with increased DMG and range. Ensemble - Symphony does not grant <kw>Plot Armor</> for Haniel. When triggering <kw>Ensemble</>, the current active character's next attack deals additional damage for <dn>3s</>. Effect does not stack.\nWhile Paranormal Ace is active, Hootie's duration timer is paused until the end of the effect.",
+						"Genesse Girls' Academy Paranormal Department! Assuming control! Releases an enhancement field centered on herself and gaining the Paranormal Ace effect for a period of time.\nGrants the Team an ATK bonus based on Haniel's Base ATK.\nTriggering Ensemble simultaneously triggers <dn>1</> additional Ensemble - Symphony effect around the character with increased DMG and range. Ensemble - Symphony does not grant Plot Armor for Haniel. When triggering Ensemble, the current active character's next attack deals additional damage for <dn>3</>s. Effect does not stack.\nWhile Paranormal Ace is active, Hootie's duration timer is paused until the end of the effect.",
 				},
 			],
 			maxLvl: 10,
@@ -95,7 +95,7 @@ export const haniel: Character = {
 			description: [
 				{
 					description:
-						"Grants Haniel <dn>1</> stack of <kw>Plot Armor</> when the current character triggers <kw>Ensemble</>, increasing the ricochet cap of Paranormal Cannon. Grants <dn>1</> stack of <kw>Plot Armor</> <dn>per</> <kw>Ensemble</> trigger.\nGrants <dn>2</> stacks of <kw>Plot Armor</> <dn>per</> <kw>Ensemble</> trigger while Haniel is in Paranormal Ace state.\nCan accumulate up to <dn>4</> stacks of <kw>Plot Armor</>.",
+						"Grants Haniel <dn>1</> stack of Plot Armor when the current character triggers Ensemble, increasing the ricochet cap of Paranormal Cannon. Grants <dn>1</> stack of Plot Armor <dn>per</> Ensemble trigger.\nGrants <dn>2</> stacks of Plot Armor <dn>per</> Ensemble trigger while Haniel is in Paranormal Ace state.\nCan accumulate up to <dn>4</> stacks of Plot Armor.",
 				},
 			],
 			maxLvl: 1,

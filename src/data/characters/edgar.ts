@@ -30,7 +30,7 @@ export const edgar: Character = {
 				{
 					section: "Basic Attack: Combat Practice",
 					description:
-						"Applies what he learned in Lamplight Academy's physical education class to perform up to <dn>5</> consecutive attacks that deal <el>Cosmos DMG</>.",
+						"Applies what he learned in Twinkle School of Espers' physical education class to perform up to <dn>5</> consecutive attacks that deal <el>Cosmos DMG</>.",
 				},
 				{
 					section: "Basic Attack: Calculated Landing",

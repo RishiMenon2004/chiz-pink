@@ -29,12 +29,12 @@ export const zankou: Character = {
 				{
 					section: "Basic Attack: Wildfire",
 					description:
-						"Wields her blade and performs up to <dn>5</> consecutive attacks while in Reality Form, dealing <el>Incantation DMG</>. Pulls in targets within range on the <dn>5th</> instance of Basic Attack. Gains the <kw>Hunt</> buff for the attack's duration.",
+						"Wields her blade and performs up to <dn>5</> consecutive attacks while in Reality Form, dealing <el>Incantation DMG</>. Pulls in targets within range on the <dn>5th</> instance of Basic Attack. Gains the Hunt buff for the attack's duration.",
 				},
 				{
 					section: "Basic Attack: Nightmare Waltz",
 					description:
-						"Wields her blade to pull the silk and performs up to <dn>4</> consecutive attacks while in Illusion form, dealing <el>Incantation DMG</> and inflicting <dn>1</> stack of Heartwrench on hit. Pulls in targets within range on the <dn>3rd</> instance of Basic Attack. Each Nightmare Waltz attack spreads up to <dn>4</> DoT effects from the target to all enemies in the area, including the original target. Gains the Delusion buff for the attack's duration. The DMG dealt by Nightmare Waltz counts as Follow-up Attack DMG.",
+						"Wields her blade to pull the silk and performs up to <dn>4</> consecutive attacks while in Illusion Form, dealing <el>Incantation DMG</> and inflicting <dn>1</> stack of Heartwrench on hit. Pulls in targets within range on the <dn>3rd</> instance of Basic Attack. Each Nightmare Waltz attack spreads up to <dn>4</> DoT effects from the target to all enemies in the area, including the original target. Gains the Delusion buff for the attack's duration. The DMG dealt by Nightmare Waltz counts as Follow-up Attack DMG.",
 				},
 				{
 					section: "Basic Attack: Flickering Shadow",
@@ -44,7 +44,7 @@ export const zankou: Character = {
 				{
 					section: "Basic Attack: Moonfall",
 					description:
-						"Hold Basic Attack during the <dn>1st</> or <dn>2nd</> stage of Nightmare Waltz while in Illusion Form to trigger Moonfall, dealing <el>Incantation DMG</>. Inflicts <dn>1</> stack of <kw>Heartwrench</> on hit. The DMG dealt by Moonfall counts as Follow-up Attack DMG.",
+						"Hold Basic Attack during the <dn>1st</> or <dn>2nd</> stage of Nightmare Waltz while in Illusion Form to trigger Moonfall, dealing <el>Incantation DMG</>. Inflicts <dn>1</> stack of Heartwrench on hit. The DMG dealt by Moonfall counts as Follow-up Attack DMG.",
 				},
 				{
 					section: "Basic Attack: Broken Twigs",
@@ -63,14 +63,14 @@ export const zankou: Character = {
 			name: "Sanguine Dash / Soulcross",
 			description: [
 				{
-					section: "Sanguine Dash",
+					section: "Redirect Skill: Sanguine Dash",
 					description:
-						"Switches to Illusion Form after successfully casting Sanguine Dash while in Reality Form. Enables an enhanced Sanguine Dash for a set time after the <dn>4th</> or <dn>5th</> stage of Wildfire, Flickering Shadow or Voidstep. Inflicts Heartwrench on targets hit and triggers Disarray, reducing massive Break of enemies in a large area. Delays removal of the Reality Form Hunt effect when switching to Illusion Form with Sanguine Dash. Prevents the form switch if the skill is interrupted before it is complete.",
+						"Switches to Illusion Form after successfully casting Sanguine Dash while in Reality Form. Enables an enhanced Sanguine Dash for a set time after the <dn>4th</> or <dn>5th</> stage of Wildfire, Flickering Shadow, or Voidstep. Inflicts Heartwrench on targets hit and triggers <sh>Disarray</>, reducing massive Break of enemies in a large area. Delays the removal of the Reality Form Hunt effect when switching to Illusion Form with Sanguine Dash. Prevents the form switch if the skill is interrupted before it is complete.",
 				},
 				{
-					section: "Soulcross",
+					section: "Redirect Skill: Soulcross",
 					description:
-						"Switches to Reality Form after successfully casting Soulcross while in Illusion Form. Enables an enhanced Soulcross shortly before Illusion Form ends. Deals massive DMG to enemies in a large area, inflicts Heartwrench on targets hit, and triggers Oblivion, activating Bloodfeast Reverie.\nGrants Illusion Form and returns Zankou to Reality Form when Soulcross or Bloodfeast Reverie is successfully cast, when its duration expires, or when Zankou leaves the field. Delays the removal of the Illusion Form Delusion effect when switching to Reality Form with Soulcross. Counts all DMG dealt by Soulcross and its enhanced version as Follow-up Attack DMG. Prevents Form switch if the skill is interrupted before it is complete.",
+						"Switches to Reality Form after successfully casting Soulcross while in Illusion Form. Enables an enhanced Soulcross shortly before Illusion Form ends. Deals massive DMG to enemies in a large area, inflicts Heartwrench on targets hit, and triggers <sh>Oblivion</>, activating Bloodfeast Reverie.\nGrants Illusion Form for a set duration. Ends Illusion Form and returns Zankou to Reality Form when Soulcross or Bloodfeast Reverie is successfully cast, when its duration expires, or when Zankou leaves the field. Delays the removal of the Illusion Form Delusion effect when switching to Reality Form with Soulcross. Counts all DMG dealt by Soulcross and its enhanced version as Follow-up Attack DMG. Prevents the form switch if the skill is interrupted before it is complete.",
 				},
 			],
 			maxLvl: 10,
@@ -80,7 +80,7 @@ export const zankou: Character = {
 			description: [
 				{
 					description:
-						"Press to cast the Ultimate when Ultimate Energy is full. Has <dn>2</> Ultimates: Inferno Flamenco and Bloodfeast Reverie.\nCasts Inferno Flamenco if Bloodfeast Reverie is inactive\nPrioritizes Bloodfeast Reverie if it is active. Counts DMG dealt by Bloodfeast Reverie as Follow-up Attack DMG and inflicts Vile Ash on enemies in a large area. Enables one enhanced Inferno Flamenco to be cast without consuming Ultimate Energy within a limited time after successfully casting Bloodfeast Reverie. Removes this cast opportunity when the time limit expires.",
+						"Press to cast the Ultimate when Ultimate Energy is full. Has <dn>2</> Ultimates: Inferno Flamenco and Bloodfeast Reverie.\nCasts Inferno Flamenco if Bloodfeast Reverie is inactive.\nPrioritizes Bloodfeast Reverie if it is active. Counts DMG dealt by Bloodfeast Reverie as Follow-up Attack DMG and inflicts Vile Ash on enemies in a large area. Enables one enhanced Inferno Flamenco to be cast without consuming Ultimate Energy within a limited time after successfully casting Bloodfeast Reverie. Removes this cast opportunity when the time limit expires.",
 				},
 			],
 			maxLvl: 10,
@@ -100,7 +100,7 @@ export const zankou: Character = {
 			description: [
 				{
 					description:
-						"<sh>Scorch Enhancement:</> Scorch can be stacked up to <dn>3</> times. For each DoT effect allies inflict on target afflicted with Scorch, Zankou inflicts <dn>1</> stack of Scorch on them, replacing the DMG, type, and duration of Existing Scorch on the target with those of the newly inflicted effect. Scorch inflicted by this effect cannot trigger it again.",
+						"<sh>Scorch Enhancement:</> Scorch can be stacked up to <dn>3</> times. For <dn>each</> DoT effect allies inflict on a target afflicted with Scorch, Zankou inflicts <dn>1</> stack of Scorch on them, replacing the DMG, type, and duration of existing Scorch on the target with those of the newly inflicted effect. Scorch inflicted by this effect cannot trigger it again.",
 				},
 			],
 			maxLvl: 1,
@@ -120,7 +120,7 @@ export const zankou: Character = {
 			description: [
 				{
 					description:
-						"<sh>Level 1:</> Increases all Volley Star Characters' Serve by <dn>10</>.",
+						"<sh>Level 1:</> Increases all Volley Star characters' Serve by <dn>10</>.",
 				},
 				{
 					description:
@@ -128,7 +128,7 @@ export const zankou: Character = {
 				},
 				{
 					description:
-						"<sh>Level 3:</> Increases all Volley Star Characters' Spike by <dn>10</>.",
+						"<sh>Level 3:</> Increases all Volley Star characters' Spike by <dn>10</>.",
 				},
 				{
 					description:
@@ -136,7 +136,7 @@ export const zankou: Character = {
 				},
 				{
 					description:
-						"<sh>Level 5:</> Increases all Volley Star Characters' Recieve by <dn>10</>.",
+						"<sh>Level 5:</> Increases all Volley Star characters' Receive by <dn>10</>.",
 				},
 			],
 			maxLvl: 5,

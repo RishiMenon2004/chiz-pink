@@ -29,7 +29,7 @@ export const linko: Character = {
 				{
 					section: "Basic Attack: Poltergeist CQC",
 					description:
-						"Casts Poltergeist CQC to perform up to <dn>5</> consecutive attacks, dealing <el>Anima DMG</>. Builds up Modulation points with each hit.\nCasts Full-Frequency Pulse to consume Modulation points and enhance the triggered <kw>Synced Strike</>.",
+						"Casts Poltergeist CQC to perform up to <dn>5</> consecutive attacks, dealing <el>Anima DMG</>. Builds up Modulation points with each hit.\nCasts Full-Frequency Pulse to consume Modulation points and enhance the triggered Synced Strike.",
 				},
 				{
 					section: "Basic Attack: Spectral Smack",
@@ -44,7 +44,7 @@ export const linko: Character = {
 				{
 					section: "Basic Attack: Spectral Rush",
 					description:
-						"Sends Xiaozhen to ambush the target every <dn>8</>s while Linko is off-field, causing Xiaozhen to attack once and inflict a <kw>Hit 'Em Here!</> mark.",
+						"Sends Xiaozhen to ambush the target every <dn>8</>s while Linko is off-field, causing Xiaozhen to attack once and inflict a Hit 'Em Here! mark.",
 				},
 				{
 					section: "Critical Riposte: Ghosthand Counter",
@@ -59,7 +59,7 @@ export const linko: Character = {
 			description: [
 				{
 					description:
-						"Channels Esper Ability upon casting Full-Frequency Pulse, bombarding the target with ghost energy to deal up to <dn>4</> instances of <el>Anima DMG</> and calling Xiaozhen or an ally to perform a <kw>Synced Strike</>. Opens a selection wheel to choose Xiaozhen or an ally, then performs the selected character's <kw>Synced Strike</>, dealing DMG of the corresponding attribute. Grants this <kw>Synced Strike</> a DMG Bonus and consumes all accumulated Modulation, converting it into an additional DMG Bonus.\nBriefly pauses the battle timer while selecting the attacker and initiating the <kw>Synced Strike</>.\nReplaces an ally's position on the wheel with Xiaozhen if the ally is unable to act or is not on the team. Grants Xiaozhen's <kw>Synced Strike</> an additional DMG Bonus for each additional Xiaozhen on the wheel.\nEnable Auto-Cast Skills under \"Settings > System Features\" to have the first ally in the team perform <kw>Synced Strike</> by default.",
+						"Channels Esper Ability upon casting Full-Frequency Pulse, bombarding the target with ghost energy to deal up to <dn>4</> instances of <el>Anima DMG</> and calling Xiaozhen or an ally to perform a Synced Strike. Opens a selection wheel to choose Xiaozhen or an ally, then performs the selected character's Synced Strike, dealing DMG of the corresponding attribute. Grants this Synced Strike a DMG Bonus and consumes all accumulated Modulation, converting it into an additional DMG Bonus.\nBriefly pauses the battle timer while selecting the attacker and initiating the Synced Strike.\nReplaces an ally's position on the wheel with Xiaozhen if the ally is unable to act or is not on the team. Grants Xiaozhen's Synced Strike an additional DMG Bonus for each additional Xiaozhen on the wheel.\nEnable Auto-Cast Skills under \"Settings > System Features\" to have the first ally in the team perform Synced Strike by default.",
 				},
 			],
 			maxLvl: 10,
@@ -69,7 +69,7 @@ export const linko: Character = {
 			description: [
 				{
 					description:
-						'Enters Overdrive upon casting Oversync, deploying a Resonance Field for a set duration and Syncing with up to <dn>3</> allies. Allows Redirect Skill to be pressed to call on Synced allies in sequence to perform <kw>Synced Strikes</>, up to <dn>3</> times. Deals <dn>1</> additional instance of Anima Area DMG when a <kw>Synced Strike</> is performed within Resonance Field.\nEnds Overdrive when its duration expires or when Oversync is pressed again, releasing an overloaded noise burst that deals multiple instances of Anima Area DMG and <dn>1</> instance of Anima Burst DMG to all enemies within Resonance Field. Increases this Anima Burst DMG based on the number of different debuffs on each target.\nExtends Resonance Field for a set duration after Overdrive ends. Counts Support Skills triggered by allies within Resonance Field as <kw>Synced Strikes</>, treats their DMG as Follow-up Attack DMG, and grants them the bonuses from Precision Tuning, Starlit Whispers, and The World Answers.\nEnable Auto-Cast Skills under "Settings > System Features" to have allies perform <kw>Synced Strikes</> in sequence by default.',
+						'Enters Overdrive upon casting Oversync, deploying a Resonance Field for a set duration and Syncing with up to <dn>3</> allies. Allows Redirect Skill to be pressed to call on Synced allies in sequence to perform Synced Strikes, up to <dn>3</> times. Deals <dn>1</> additional instance of <el>Anima Area DMG</> when a Synced Strike is performed within Resonance Field.\nEnds Overdrive when its duration expires or when Oversync is pressed again, releasing an overloaded noise burst that deals multiple instances of <el>Anima Area DMG</> and <dn>1</> instance of <el>Anima Burst DMG</> to all enemies within Resonance Field. Increases this <el>Anima Burst DMG</> based on the number of different debuffs on each target.\nExtends Resonance Field for a set duration after Overdrive ends. Counts Support Skills triggered by allies within Resonance Field as Synced Strikes, treats their DMG as Follow-up Attack DMG, and grants them the bonuses from Precision Tuning, Starlit Whispers, and The World Answers.\nEnable Auto-Cast Skills under "Settings > System Features" to have allies perform Synced Strikes in sequence by default.',
 				},
 			],
 			maxLvl: 10,
@@ -79,7 +79,7 @@ export const linko: Character = {
 			description: [
 				{
 					description:
-						"Strikes the target together with Xiaozhen, dealing <dn>1</> instance of <el>Anima DMG</> in an area.\nSummons an ally to perform a <kw>Synced Strike</> by breaking a <kw>Hit 'Em Here!</> mark, casting Full-Frequency Pulse, or casting Oversync. Scales <kw>Synced Strike</>'s DMG Ratio with Spectral Cross's skill level.",
+						"Strikes the target together with Xiaozhen, dealing <dn>1</> instance of <el>Anima DMG</> in an area.\nSummons an ally to perform a Synced Strike by breaking a Hit 'Em Here! mark, casting Full-Frequency Pulse, or casting Oversync. Scales Synced Strike's DMG Ratio with Spectral Cross's skill level.",
 				},
 			],
 			maxLvl: 10,
@@ -99,7 +99,7 @@ export const linko: Character = {
 			description: [
 				{
 					description:
-						"Reduces the target's Esper Ability Resistance corresponding to the attribute of the character who triggers <kw>Synced Strike</> by <dn>8%</> for <dn>12</>s. Resistance Reduction effects for different attributes can coexist on the same target. Effects of the same attribute inflicted by <kw>Synced Strike</> do not stack. Resets the duration when triggered again.",
+						"Reduces the target's Esper Ability Resistance corresponding to the attribute of the character who triggers Synced Strike by <dn>8%</> for <dn>12</>s. Resistance Reduction effects for different attributes can coexist on the same target. Effects of the same attribute inflicted by Synced Strike do not stack. Resets the duration when triggered again.",
 				},
 			],
 			maxLvl: 1,

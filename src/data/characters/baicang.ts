@@ -49,12 +49,12 @@ export const baicang: Character = {
 				{
 					section: "Critical Riposte: Truth Exposed",
 					description:
-						"Triggers when casting Walk the Talk after a Critical Dodge. Performs a knee strike on the target, dealing <dn>1</> instance of <el>Incantation DMG</> to an area, reducing their Break. Generates <dn>1</> Power Word <kw>Bless</> on the target when hit.",
+						"Triggers when casting Walk the Talk after a Critical Dodge. Performs a knee strike on the target, dealing <dn>1</> instance of <el>Incantation DMG</> to an area, reducing their Break. Generates <dn>1</> Power Word Bless on the target when hit.",
 				},
 				{
 					section: "Basic Attack: Shadow Follows",
 					description:
-						"Generates a Power Word <kw>Bless</> on the enemy for every <dn>3</> Walk the Talk hits. This word lasts for <dn>15s</>, and a maximum of <dn>3</> can be generated.\nConsumes <dn>3%</> of Baicang's current HP whenever any Power Word is summoned. When Baicang's HP is below <dn>50%</>, the amount consumed is halved.",
+						"Generates a Power Word Bless on the enemy for every <dn>3</> Walk the Talk hits. This word lasts for <dn>15</>s, and a maximum of <dn>3</> can be generated.\nConsumes <dn>3%</> of Baicang's current HP whenever any Power Word is summoned. When Baicang's HP is below <dn>50%</>, the amount consumed is halved.",
 				},
 			],
 			maxLvl: 10,
@@ -70,12 +70,12 @@ export const baicang: Character = {
 				{
 					section: "Silenced Thought",
 					description:
-						"Press Redirect Skill after triggering a dodge.\nAttacks a single target, dealing <el>Incantation DMG</> to them on hit. Generates <dn>1</> Power Word <kw>Silence</> on the target when attacks hit.",
+						"Press Redirect Skill after triggering a dodge.\nAttacks a single target, dealing <el>Incantation DMG</> to them on hit. Generates <dn>1</> Power Word Silence on the target when attacks hit.",
 				},
 				{
 					section: "Such Crime",
 					description:
-						"Press Redirect Skill after triggering Formless Words or Unrestrained Words.\nExpanded the damage range, dealing AoE <el>Incantation DMG</> on hit. Generates <dn>1</> Power Word <kw>Objurgate</> on the ground near the target when attacks hit.",
+						"Press Redirect Skill after triggering Formless Words or Unrestrained Words.\nExpanded the damage range, dealing AoE <el>Incantation DMG</> on hit. Generates <dn>1</> Power Word Objurgate on the ground near the target when attacks hit.",
 				},
 			],
 			maxLvl: 10,
@@ -85,7 +85,7 @@ export const baicang: Character = {
 			description: [
 				{
 					description:
-						"Look up, and fall into the polar abyss. Releases a domain and enters Power Word state, dealing <el>Incantation DMG</> over time to targets.\nExecutes the target when their HP is below <dn>10%</> (Boss HP below <dn>5%</>).\nBecomes immune to one fatal hit temporarily during Judgment of Autumn and records its value. Ends the domain automatically <dn>3</>s after triggering the immunity effect and takes the recorded damage slowly over <dn>10</>s after ending.\nDeals high single-target damage within the domain when <kw>Silence</> is triggered; Deals AoE DMG when <kw>Objurgate</> is triggered; Deals damage to a single target and restores <dn>5%</> of Baicang's Max HP when <kw>Bless</> is triggered.",
+						"Look up, and fall into the polar abyss. Releases a domain and enters Power Word state, dealing <el>Incantation DMG</> over time to targets.\nExecutes the target when their HP is below <dn>10%</> (Boss HP below <dn>5%</>).\nBecomes immune to one fatal hit temporarily during Judgment of Autumn and records its value. Ends the domain automatically <dn>3</>s after triggering the immunity effect and takes the recorded damage slowly over <dn>10</>s after ending.\nDeals high single-target damage within the domain when Silence is triggered; Deals AoE DMG when Objurgate is triggered; Deals damage to a single target and restores <dn>5%</> of Baicang's Max HP when Bless is triggered.",
 				},
 			],
 			maxLvl: 10,
@@ -95,7 +95,7 @@ export const baicang: Character = {
 			description: [
 				{
 					description:
-						"Witness the power that words bestow. Charges briefly and writes incantation commands, targeting enemies and dealing <dn>1</> instance of <el>Incantation DMG</> to an area. Generates <dn>1</> Power Word <kw>Silence</> on target when attacks hit.",
+						"Witness the power that words bestow. Charges briefly and writes incantation commands, targeting enemies and dealing <dn>1</> instance of <el>Incantation DMG</> to an area. Generates <dn>1</> Power Word Silence on target when attacks hit.",
 				},
 			],
 			maxLvl: 10,
@@ -115,7 +115,7 @@ export const baicang: Character = {
 			description: [
 				{
 					description:
-						"Increases Baicang's ATK by <dn>20%</>.\nLaunches coordinate attacks with the allies when there are ETD-4 members in the Team.\nIn combat, switching to Baicang while Skia is in stealth to immediately attack with Baicang and generate <dn>1</> Power Word <kw>Silence</> on target. Cooldown: <dn>30s</>.\nIn combat, when Fadia's HP drops below <dn>20%</>, Baicang attacks the enemy <dn>1</> time, heals Fadia <dn>1</> time, and generates <dn>1</> Power Word <kw>Silence</> on target. Cooldown: <dn>30s</>.\nSwitching to Baicang while Lacrimosa is in bat form can trigger <dn>1</> super jump for Baicang.",
+						"Increases Baicang's ATK by <dn>20%</>.\nLaunches coordinate attacks with the allies when there are ETD-4 members in the Team.\nIn combat, switching to Baicang while Skia is in stealth to immediately attack with Baicang and generate <dn>1</> Power Word Silence on target. Cooldown: <dn>30</>s.\nIn combat, when Fadia's HP drops below <dn>20%</>, Baicang attacks the enemy <dn>1</> time, heals Fadia <dn>1</> time, and generates <dn>1</> Power Word Silence on target. Cooldown: <dn>30</>s.\nSwitching to Baicang while Lacrimosa is in bat form can trigger <dn>1</> super jump for Baicang.",
 				},
 			],
 			maxLvl: 1,

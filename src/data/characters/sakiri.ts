@@ -27,17 +27,17 @@ export const sakiri: Character = {
 			name: "Kiroumaru Headbutt",
 			description: [
 				{
-					section: "Basic Attack: Ram",
+					section: "Ram",
 					description:
 						"Sakiri swings Kiroumaru and performs up to <dn>5</> consecutive attacks, dealing <el>Incantation DMG</>.",
 				},
 				{
-					section: "Basic Attack: Eating Mode",
+					section: "Eating Mode",
 					description:
-						"Hold to activate <kw>Eating Mode</> with Kiroumaru. Mounts Sakiri onto Kiroumaru, allowing movement.\nOpens its mouth to continuously pull nearby targets within a cone while Hungry. Destroys movable objects in the scene and devours weak enemies.\nTakes <dn>180s</> to digest <dn>each</> devoured enemy, with only <dn>1</> target digested at a time.\nBecomes Full when the number of enemies being digested reaches the limit, remaining movable but unable to pull or devour enemies.\nRelease to exit the mode.",
+						"Hold to activate Eating Mode with Kiroumaru. Mounts Sakiri onto Kiroumaru, allowing movement.\nOpens its mouth to continuously pull nearby targets within a cone while Hungry. Destroys movable objects in the scene and devours weak enemies.\nTakes <dn>180</>s to digest <dn>each</> devoured enemy, with only <dn>1</> target digested at a time.\nBecomes Full when the number of enemies being digested reaches the limit, remaining movable but unable to pull or devour enemies.\nRelease to exit the mode.",
 				},
 				{
-					section: "Basic Attack: Swallow",
+					section: "Swallow",
 					description:
 						"Wields Kiroumaru in the air and plunges, dealing <dn>1</> instance of <el>Incantation DMG</> to an area upon impact. Increases DMG based on fall height, up to <dn>100%</>.",
 				},
@@ -53,14 +53,14 @@ export const sakiri: Character = {
 			name: "Devour Whole",
 			description: [
 				{
-					section: "Redirect Skill: Burp",
+					section: "Burp",
 					description:
 						"Press to activate. Kiroumaru opens its mouth, pulling in nearby enemies. Kiroumaru then inflates and knocks down the enemy.",
 				},
 				{
-					section: "Redirect Skill: Gravity Eater",
+					section: "Gravity Eater",
 					description:
-						"Hold to activate. Kiroumaru opens its mouth, pulling in nearby enemies. Kiroumaru then bites through the ground, devouring the gravity in that area, levitating enemies there (not effective against Boss).",
+						"Hold to activate. Kiroumaru opens its mouth, pulling in nearby enemies. Kiroumaru then bites through the ground, devouring the gravity in that area, levitating enemies there (not effective against powerful enemies).",
 				},
 			],
 			maxLvl: 10,

@@ -37,6 +37,11 @@ export const zero: Character = {
 					description:
 						"Wields the weapon mid-air and plunges, dealing <dn>1</> instance of <el>Cosmos DMG</> to an area upon impact. Increases DMG based on fall height, up to <dn>100%</>.",
 				},
+				{
+					section: "Critical Riposte: Flash of Inspiration",
+					description:
+						"Triggers when using Appraisal - Severance after a Critical Dodge. Seizes the opening from the enemy's missed attack and swings the weapon to counter, dealing <dn>1</> instance of <el>Cosmos DMG</> to an area and reducing Break.",
+				},
 			],
 			maxLvl: 10,
 		},

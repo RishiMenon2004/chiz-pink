@@ -29,27 +29,27 @@ export const iroi: Character = {
 				{
 					section: "Basic Attack: Collaboration",
 					description:
-						"Summons lambs to perform up to <dn>5</> consecutive attacks, dealing <el>Anima DMG</>. Builds up <kw>Imagination</> when attacks hit.",
+						"Summons lambs to perform up to <dn>5</> consecutive attacks, dealing <el>Anima DMG</>. Builds up Imagination when attacks hit.",
 				},
 				{
 					section: "Basic Attack: Daydream",
 					description:
-						"Hold Basic Attack to consume Imagination and charge up. Unleashes up to <dn>3</> stages of Daydream depending on the charge level.",
+						"Hold Basic Attack to charge up, consuming Imagination based on the charge duration to unleash up to <dn>3</> instances of Daydream, dealing <el>Anima DMG</>.\nHold Basic Attack during Reflexive Response, Bang!, Future Self Continuity, and 3.8-Billion-Year Mirage, consuming Imagination to unleash the <dn>3rd</> instance of Daydream, dealing <el>Anima DMG</>.",
 				},
 				{
 					section: "Basic Attack: Lucid Dream",
 					description:
-						"Hold Basic Attack again after Iroi uses Daydream to consume Imagination and summon Morpheus, unleashing sustained fire that deals <el>Anima DMG</>.",
+						"Hold Basic Attack again after Iroi uses Basic Attack: Daydream to consume Imagination, summoning Morpheus to unleash sustained fire that deals <el>Anima DMG</>.",
 				},
 				{
 					section: "Basic Attack: Wakey-Wakey",
 					description:
-						"Press Basic Attack while airborne to plunge, dealing <dn>1</> instance of <el>Anima DMG</> to an area upon impact. Increases DMG based on fall height, up to <dn>100%</>. Builds up Imagination when attacks hit.",
+						"Press Basic Attack while airborne to plunge, dealing <dn>1</> instance of <el>Anima DMG</> to an area upon impact. Increases DMG based on fall height by up to <dn>100%</>. Builds up Imagination on hit.",
 				},
 				{
-					section: "Critical Riposte: Reflexive Response",
+					section: "Reflexive Response",
 					description:
-						"Triggers when using Collaboration after performing a Critical Dodge. Swings Phantasos at the target, dealing <dn>1</> instance of <el>Anima DMG</> and reducing Break. Builds up Imagination when attacks hit.",
+						"Triggers when using Basic Attack: Collaboration after a Critical Dodge. Throws Morpheus at the target, dealing <dn>1</> instance of <el>Anima DMG</> and reducing Break. Builds up Imagination on hit.",
 				},
 			],
 			maxLvl: 10,
@@ -58,18 +58,19 @@ export const iroi: Character = {
 			name: "Future Self Continuity",
 			description: [
 				{
-					section: "Redirect Skill: Self-Identity Extension",
+					section: "Self-Identity Extension",
 					description:
-						"Press to activate. Summons lambs to heal the team once and grant Bonus ATK based on her ATK.\nSummons lambs to attack independently and pull in targets within range. Each ally in the Regression state deals additional DMG based on her Base ATK.\nUsing this skill builds up Imagination.",
+						"Press to activate. Summons lambs to heal all team members once and grant them an ATK bonus based on Iroi's Base ATK.\nSummons three lambs to attack respectively, dealing <el>Anima DMG</> and pulling in nearby enemies.\nUsing this skill builds up Imagination.",
 				},
 				{
-					section: "Redirect Skill: Future Self Continuity",
+					section: "Future Self Continuity",
 					description:
-						"Hold to activate. Creates dreamlike illusions while in combat, causing <dn>3</> allies to enter the Regression state and assist in battle. Regression is automatically removed after leaving combat.",
+						"Hold to activate. Creates dreamlike illusions during battle, causing <dn>3</> allies to enter the Regression state and assist in battle. Regression is automatically removed after leaving combat.",
 				},
 				{
+					section: "Passive",
 					description:
-						"<sh>Passive:</> Fallen allies enter the Regression state while Iroi is active and in combat.\nBuilds up Imagination when any fallen allies enter the Regression state.",
+						"While Iroi is on the team and in combat, any ally who falls enters the Regression state.\nBuilds up Imagination when any fallen ally enters the Regression state.",
 				},
 			],
 			maxLvl: 10,
@@ -79,7 +80,7 @@ export const iroi: Character = {
 			description: [
 				{
 					description:
-						"Return to the first dream. Opens the gate to a dream and triggers different effects based on the amount of Imagination built up.\nIf Imagination has not reached the required threshold: Iroi opens the Dream of the Horned Gate, continuously healing all allies.\nIf Imagination has reached the required threshold: Iroi opens the Dream of the Ivory Gate, continuously dealing DMG to enemies inside the dream. During this time, press and hold the avatar icon of a character in the Regression state to revive them and restore some HP. This effect can revive up to <dn>1</> character during each dream.\nThe dream continuously consumes Imagination. When Imagination is depleted, the dream ends, and revived characters return to the Regression state.\nWhile the Ultimate's effect is active, Imagination cannot be built up, but Daydream and Lucid Dream do not consume Imagination.",
+						"Return to the first dream. Opens the gate to a dream and triggers different effects based on the amount of Imagination built up.\nIf Imagination has not reached the required threshold: Iroi opens the Dream of the Horned Gate, continuously healing all allies.\nIf Imagination has reached the required threshold: Iroi opens the Dream of the Ivory Gate, continuously healing all allies and dealing <el>Anima DMG</> to enemies inside the dream. During this time, press and hold the avatar of a team member in the Regression state to temporarily revive them and restore a portion of their HP. This effect can revive up to <dn>1</> character during each dream.\nThe dream continuously consumes Imagination. When Imagination is depleted, the dream ends, and the revived character returns to the Regression state.\nWhile the dream is active, Imagination cannot be built up, but casting Daydream and Lucid Dream do not consume Imagination.",
 				},
 			],
 			maxLvl: 10,
@@ -89,7 +90,7 @@ export const iroi: Character = {
 			description: [
 				{
 					description:
-						"Just in time! Picks up Morpheus and attacks forward, dealing <dn>1</> instance of <el>Anima DMG</>, healing all allies, and building up Imagination.",
+						"Just in time! Picks up Morpheus and strikes forward, dealing <dn>1</> instance of <el>Anima DMG</>, healing all team members, and building up Imagination.",
 				},
 			],
 			maxLvl: 10,
@@ -99,7 +100,7 @@ export const iroi: Character = {
 			description: [
 				{
 					description:
-						"<sh>Blossom Enhancement:</> Generates a Vita Bud copy when the current Vita Bud has existed for <dn>3</>s. This copy cannot generate another copy.",
+						"<sh>Blossom Enhancement:</> Generates a Vita Bud Copy when the current Vita Bud has existed for <dn>3</>s. This copy cannot duplicate and does not count toward the Vita Bud limit. The copy produces <dn>20</> Copied Vita Pistils. Every <dn>0.5</>s, one Copied Vita Pistil flies toward a target within range and explodes, dealing <dn>37.5%</> of the original Vita Pistil's DMG.",
 				},
 			],
 			maxLvl: 1,
@@ -109,7 +110,7 @@ export const iroi: Character = {
 			description: [
 				{
 					description:
-						"Grants the team an additional DEF Ignore for a short duration when healing an ally.",
+						"Grants all team members an additional <dn>5%</> DEF Ignore for <dn>20</>s when performing healing.",
 				},
 			],
 			maxLvl: 1,
@@ -145,11 +146,11 @@ export const iroi: Character = {
 			description: [
 				{
 					description:
-						"<sh>Level 1:</> Grants an additional <dn>1000</> Fons in Base Fare for each order in Swift Travel.",
+						"<sh>Level 1:</> Grants an additional <dn>1000</> Fons in Base Fare for each order in Swift Cab.",
 				},
 				{
 					description:
-						"<sh>Level 2:</> Increases each customer's satisfaction limit in Swift Travel by <dn>25</> points.",
+						"<sh>Level 2:</> Increases each customer's satisfaction limit in Swift Cab by <dn>25</> points.",
 				},
 			],
 			maxLvl: 2,

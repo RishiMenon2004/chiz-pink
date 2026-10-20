@@ -28,7 +28,7 @@ export const akane: Character = {
 				{
 					section: "Basic Attack: Stringblade",
 					description:
-						"Performs <dn>4</> consecutive attacks using an electric guitar and Feathered Sound Blade, dealing <el>Lakshana DMG</>. Generates <kw>String Energy</> whenever Akane Rin deals DMG to a target. <kw>String Energy</> has a cap of <dn>30</>.",
+						"Performs <dn>4</> consecutive attacks using an electric guitar and Feathered Sound Blade, dealing <el>Lakshana DMG</>. Generates String Energy whenever Akane Rin deals DMG to a target. String Energy has a cap of <dn>30</>.",
 				},
 				{
 					section: "Basic Attack: Stage Dive",
@@ -58,7 +58,7 @@ export const akane: Character = {
 			description: [
 				{
 					description:
-						"Casts the first stage of Sonic Boom, dealing <dn>1</> instance of massive <el>Lakshana DMG</> to enemies within the target area and entering Solo Cadenza for <dn>X</>s. Allows the second stage to be cast at any time during the latter half of Solo Cadenza by pressing the Ultimate again, dealing <dn>1</> instance of massive <el>Lakshana DMG</> to enemies within the target area. Requires the second stage to be cast manually. Does not automatically cast the second stage when Solo Cadenza ends. Solo Cadenza functions independently of Overtone and Reverb Field and does not remove or replace either effect.",
+						"Casts the first stage of Sonic Boom, dealing <dn>1</> instance of massive <el>Lakshana DMG</> to enemies within the target area and entering Solo Cadenza for <dn>X</>s.\nAllows the second stage to be cast at any time during the latter half of Solo Cadenza by pressing the Ultimate again, dealing <dn>1</> instance of massive <el>Lakshana DMG</> to enemies within the target area. Requires the second stage to be cast manually. Does not automatically cast the second stage when Solo Cadenza ends.\nSolo Cadenza functions independently of Overtone and Reverb Field and does not remove or replace either effect.",
 				},
 			],
 			maxLvl: 10,
@@ -68,7 +68,7 @@ export const akane: Character = {
 			description: [
 				{
 					description:
-						"Strikes the strings with a powerful strum, dealing <dn>1</> instance of <el>Lakshana DMG</> and triggering a Reaction.",
+						"Strikes the strings with a powerful strum, dealing <dn>1</> instance of <el>Lakshana DMG</>.",
 				},
 			],
 			maxLvl: 10,
@@ -78,7 +78,7 @@ export const akane: Character = {
 			description: [
 				{
 					description:
-						"<sh>Remora  Enhancement:</> Grants Akane Rin an enhancement that lasts until she leaves combat after the team triggers Remora for the first time. Applies Remora to the target affected by Overtone and to all enemies within Reverb Field every <dn>X</>s.\nDeals <el>Lakshana DMG</> equal to <dn>X%</> of Akane Rin's ATK whenever the team reapplies Remora to an affected target. Increases this DMG by <dn>X%</> for each <dn>1</>s of Remora duration remaining on the target, up to X%.\nCalculates each target's remaining Remora duration independently. Triggers this DMG no more than <dn>once</> per target every <dn>X</>s.",
+						"<sh>Remora Enhancement:</> Grants Akane Rin an enhancement that lasts until she leaves combat after the team triggers Remora for the first time. Applies Remora to the target affected by Overtone and to all enemies within Reverb Field every <dn>X</>s.\nDeals <el>Lakshana DMG</> equal to <dn>X%</> of Akane Rin's ATK whenever the team reapplies Remora to an affected target. Increases this DMG by <dn>X%</> for each <dn>1</>s of Remora duration remaining on the target, up to <dn>X%</>.\nCalculates each target's remaining Remora duration independently. Triggers this DMG no more than <dn>once</> per target every <dn>X</>s.",
 				},
 			],
 			maxLvl: 1,
@@ -102,7 +102,7 @@ export const akane: Character = {
 				},
 				{
 					description:
-						"<sh>Level 2:</> Akane reduces ingredient consumption rate by <dn>1%</>",
+						"<sh>Level 2:</> Akane reduces ingredient consumption rate by <dn>1%</>.",
 				},
 				{
 					description:

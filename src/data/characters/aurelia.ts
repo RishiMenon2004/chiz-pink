@@ -55,7 +55,7 @@ export const aurelia: Character = {
 			description: [
 				{
 					description:
-						"Transform the everyday into a rainbow melody and let it roar across the skyline. Deals <dn>1</> instance of AoE <el>Psyche DMG</> and enters the <kw>Cadenza</> state for <dn>12</>s.",
+						"Transform the everyday into a rainbow melody and let it roar across the skyline. Deals <dn>1</> instance of AoE <el>Psyche DMG</> and enters the Cadenza state for <dn>12</>s.",
 				},
 			],
 			maxLvl: 10,
@@ -113,7 +113,7 @@ export const aurelia: Character = {
 				},
 				{
 					description:
-						"<sh>Level 3:</> In Owner's Selection, customers leave additional tips upon departure..",
+						"<sh>Level 3:</> In Owner's Selection, customers leave additional tips upon departure.",
 				},
 				{
 					description:

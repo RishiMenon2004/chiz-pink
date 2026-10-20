@@ -29,52 +29,52 @@ export const blackbird: Character = {
 				{
 					section: "Basic Attack: Fleeting Shadow",
 					description:
-						"Uses Chain Cage to perform up to <dn>5</> consecutive attacks, dealing <el>Psyche DMG</>. Gains <kw>Malice</> after hitting an enemy.",
+						"Uses Chain Cage to perform up to <dn>5</> consecutive attacks, dealing <el>Psyche DMG</>. Gains Malice after hitting an enemy.",
 				},
 				{
 					section: "Basic Attack: Roostcall",
 					description:
-						"Hold Basic Attack during the <dn>1st</>, <dn>2nd</>, or <dn>3rd</> hit of Fleeting Shadow to trigger Roostcall, imprisoning the target with Chain Cage, dealing <el>Psyche DMG</>, and greatly reducing their Movement Speed for a set duration. Gains <kw>Malice</> after hitting an enemy.",
+						"Hold Basic Attack during the <dn>1st</>, <dn>2nd</>, or <dn>3rd</> hit of Fleeting Shadow to trigger Roostcall, imprisoning the target with Chain Cage, dealing <el>Psyche DMG</>, and greatly reducing their Movement Speed for a set duration. Gains Malice after hitting an enemy.",
 				},
 				{
 					section: "Basic Attack: Lingering Affliction",
 					description:
-						"Press Basic Attack while airborne to plunge, dealing <dn>1</> instance of <el>Psyche DMG</> to an area upon impact. Increases DMG based on fall height by up to <dn>100%</>. Gains <kw>Malice</> after hitting an enemy.",
+						"Press Basic Attack while airborne to plunge, dealing <dn>1</> instance of <el>Psyche DMG</> to an area upon impact. Increases DMG based on fall height by up to <dn>100%</>. Gains Malice after hitting an enemy.",
 				},
 				{
 					section: "Critical Riposte: Avian Instinct",
 					description:
-						"Triggers when Blackbird uses Fleeting Shadow after a Critical Dodge, attacking the target to deal <el>Psyche DMG</>. Gains <kw>Malice</> after hitting an enemy.",
+						"Triggers when Blackbird uses Fleeting Shadow after a Critical Dodge, attacking the target to deal <el>Psyche DMG</>. Gains Malice after hitting an enemy.",
 				},
 				{
 					section: "Basic Attack: Pyreflame",
 					description:
-						"Blackbird is engulfed in flames, and the <kw>Witch of Deliverance</> emerges from the blaze, unleashing up to <dn>5</> consecutive attacks that deal <el>Psyche DMG</>. Consumes <kw>Malice</> after hitting an enemy.",
+						"Blackbird is engulfed in flames, and the Witch of Deliverance emerges from the blaze, unleashing up to <dn>5</> consecutive attacks that deal <el>Psyche DMG</>. Consumes Malice after hitting an enemy.",
 				},
 				{
 					section: "Basic Attack: Bestowed Grace",
 					description:
-						"Hold Basic Attack during the <dn>2nd</> hit of Pyreflame to trigger Bestowed Grace. The <kw>Witch of Deliverance</> rises into the air, briefly charges up, then deals <el>Psyche DMG</> over a large area. Consumes <kw>Malice</> after hitting an enemy.",
+						"Hold Basic Attack during the <dn>2nd</> hit of Pyreflame to trigger Bestowed Grace. The Witch of Deliverance rises into the air, briefly charges up, then deals <el>Psyche DMG</> over a large area. Consumes Malice after hitting an enemy.",
 				},
 				{
 					section: "Basic Attack: Tidings Unto All",
 					description:
-						"Hold Basic Attack during Bestowed Grace or Flames of Deliverance to trigger Tidings Unto All, dealing multiple instances of <el>Psyche DMG</> to the target. Consumes <kw>Malice</> after hitting an enemy.",
+						"Hold Basic Attack during Bestowed Grace or Flames of Deliverance to trigger Tidings Unto All, dealing multiple instances of <el>Psyche DMG</> to the target. Consumes Malice after hitting an enemy.",
 				},
 				{
 					section: "Basic Attack: Searing Scar",
 					description:
-						"Press Basic Attack while the <kw>Witch of Deliverance</> is airborne to plunge, dealing <dn>1</> instance of <el>Psyche DMG</> to an area upon impact. Increases DMG based on fall height, by up to <dn>100%</>. Consumes <kw>Malice</> after hitting an enemy.",
+						"Press Basic Attack while the Witch of Deliverance is airborne to plunge, dealing <dn>1</> instance of <el>Psyche DMG</> to an area upon impact. Increases DMG based on fall height, by up to <dn>100%</>. Consumes Malice after hitting an enemy.",
 				},
 				{
 					section: "Critical Riposte: Born of Calamity",
 					description:
-						"Triggers when the <kw>Witch of Deliverance</> uses Pyreflame after a Critical Dodge, attacking the target to deal <el>Psyche DMG</>. Consumes <kw>Malice</> after hitting an enemy.",
+						"Triggers when the Witch of Deliverance uses Pyreflame after a Critical Dodge, attacking the target to deal <el>Psyche DMG</>. Consumes Malice after hitting an enemy.",
 				},
 				{
 					section: "Invocation",
 					description:
-						"Generates varying amounts of <kw>Malice</> upon casting Fleeting Shadow, Roostcall, Lingering Affliction, Avian Instinct, Last Word, or Netherplume Rite.\nGrants <kw>Malice</> immediately upon entering battle.\nPrevents <kw>Malice</> from being gained while in the <kw>Witch of Deliverance</> state. Allows <kw>Malice</> to be consumed after casting Pyreflame, Searing Scar, Bestowed Grace, Tidings Unto All, Born of Calamity, Flames of Deliverance, or Naught but Mercy to deal additional <kw>Malice</> DMG.",
+						"Generates varying amounts of Malice upon casting Fleeting Shadow, Roostcall, Lingering Affliction, Avian Instinct, Last Word, or Netherplume Rite.\nGrants Malice immediately upon entering battle.\nPrevents Malice from being gained while in the Witch of Deliverance state. Allows Malice to be consumed after casting Pyreflame, Searing Scar, Bestowed Grace, Tidings Unto All, Born of Calamity, Flames of Deliverance, or Naught but Mercy to deal additional Malice DMG.",
 				},
 			],
 			maxLvl: 10,
@@ -83,13 +83,14 @@ export const blackbird: Character = {
 			name: "Netherplume Rite",
 			description: [
 				{
+					section: "Netherplume Rite",
 					description:
-						"Uses Chain Cage to deal <el>Psyche DMG</> to the target and inflict a <kw>Forsaken Feather</> mark on targets hit for a set duration. Casts to gain <kw>Malice</>.\nWhile <kw>Forsaken Feather</> is active, triggers <kw>Forsaken Bird</> to perform a coordinated attack when another active ally deals DMG to the marked target. <kw>Forsaken Bird</> deals <el>Psyche DMG</> in an area around the target. Triggers no more than once every <dn>2</>s, up to <dn>5</> times in total.",
+						"Uses Chain Cage to deal <el>Psyche DMG</> to the target and inflict a Forsaken Feather mark on targets hit for a set duration. Casts to gain Malice.\nWhile Forsaken Feather is active, triggers Forsaken Bird to perform a coordinated attack when another active ally deals DMG to the marked target. Forsaken Bird deals <el>Psyche DMG</> in an area around the target. Triggers no more than once every <dn>2</>s, up to <dn>5</> times in total.",
 				},
 				{
 					section: "Flames of Deliverance",
 					description:
-						"Charges toward the target at high speed while Blackbird is in the <kw>Witch of Deliverance</> state, dealing <el>Psyche DMG</>. Consumes <kw>Malice</> after hitting an enemy.\nActivation: Activates after <kw>Witch of Deliverance</> performs the <dn>5th</> hit of Pyreflame or casts No Quarter. This skill is inactive by default.",
+						"Charges toward the target at high speed while Blackbird is in the Witch of Deliverance state, dealing <el>Psyche DMG</>. Consumes Malice after hitting an enemy.\nActivation: Activates after Witch of Deliverance performs the <dn>5th</> hit of Pyreflame or casts No Quarter. This skill is inactive by default.",
 				},
 			],
 			maxLvl: 10,
@@ -98,13 +99,14 @@ export const blackbird: Character = {
 			name: "Requies Animarum",
 			description: [
 				{
+					section: "Requies Animarum",
 					description:
 						"Transforms into the Witch of Deliverance and launches multiple attacks, dealing massive <el>Psyche DMG</> to the target.\nGains Hitstun Immunity and increases Movement Speed while in the Witch of Deliverance state, which lasts for a set duration. Reverts to Blackbird when the duration ends. The duration does not decrease while she is off-field.\nIncreases the entire team's ATK after casting Requies Animarum.",
 				},
 				{
 					section: "Flammae in Unum",
 					description:
-						"Exits the <kw>Witch of Deliverance</> state and launches multiple attacks against the target, dealing massive <el>Psyche DMG</>.",
+						"Exits the Witch of Deliverance state and launches multiple attacks against the target, dealing massive <el>Psyche DMG</>.",
 				},
 			],
 			maxLvl: 10,
@@ -113,13 +115,14 @@ export const blackbird: Character = {
 			name: "Judgment Upon Me",
 			description: [
 				{
+					section: "Judgment Upon Me",
 					description:
-						"The bird will deliver everything it finds to me. Transforms into Lonesome Bird and deals <el>Psyche DMG</> to the target. Gains <kw>Malice</> after hitting an enemy.",
+						"The bird will deliver everything it finds to me. Transforms into Lonesome Bird and deals <el>Psyche DMG</> to the target. Gains Malice after hitting an enemy.",
 				},
 				{
 					section: "Naught but Mercy",
 					description:
-						"Accept the Witch's blessing. Deals <el>Psyche DMG</> while in the <kw>Witch of Deliverance</> state. Consumes <kw>Malice</> after hitting an enemy.",
+						"Accept the Witch's blessing. Deals <el>Psyche DMG</> while in the Witch of Deliverance state. Consumes Malice after hitting an enemy.",
 				},
 			],
 			maxLvl: 10,
@@ -129,11 +132,7 @@ export const blackbird: Character = {
 			description: [
 				{
 					description:
-						"<sh>Stain Enhancement:</> Increases Stain's base DMG Bonus to <dn>30%</> and extends its duration to <dn>20</>s.",
-				},
-				{
-					description:
-						"<sh>Nova  Enhancement:</>  When Nova ends, deals additional Mental DMG equal to <dn>20%</> of the actual total DMG taken by the target while Nova was active (excluding DMG dealt by the Support Skill that triggered Nova and by Nova itself), up to <dn>1,000×</> Blackbird's Base ATK. This additional DMG is not affected by any other DMG Buffs or Debuffs. Inflicts Nova on the target once afterward.\nPrevents Nova inflicted by this effect from triggering the Nova reapplication effect again.",
+						"<sh>Stain Enhancement:</> Increases Stain's base DMG Bonus to <dn>30%</> and extends its duration to <dn>20</>s.\n\n<sh>Nova Enhancement:</> When Nova ends, deals additional Mental DMG equal to <dn>20%</> of the actual total DMG taken by the target while Nova was active (excluding DMG dealt by the Support Skill that triggered Nova and by Nova itself), up to <dn>1,000×</> Blackbird's Base ATK. This additional DMG is not affected by any other DMG Buffs or Debuffs. Inflicts Nova on the target once afterward.\nPrevents Nova inflicted by this effect from triggering the Nova reapplication effect again.",
 				},
 			],
 			maxLvl: 1,
@@ -143,7 +142,7 @@ export const blackbird: Character = {
 			description: [
 				{
 					description:
-						"Grants <dn>20</> <kw>Malice</> when Blackbird casts Judgment Upon Me.",
+						"Grants <dn>20</> Malice when Blackbird casts Judgment Upon Me.",
 				},
 			],
 			maxLvl: 1,
@@ -152,21 +151,24 @@ export const blackbird: Character = {
 			name: "Lucky Encore",
 			description: [
 				{
-					description: "<sh>Level 1:</> Increases daily Bless attempts in The Witch's House Divination by <dn>1</>.\nA new Bless effect replaces the existing one.",
+					description:
+						"<sh>Level 1:</> Increases daily Bless attempts in The Witch's House Divination by <dn>1</>.\nA new Bless effect replaces the existing one.",
 				},
 				{
 					description:
-						"<sh>Level 2:</> Increases daily Lost Tales attempts in The Witch's House Divination by <dn>1</>",
+						"<sh>Level 2:</> Increases daily Lost Tales attempts in The Witch's House Divination by <dn>1</>.",
 				},
 				{
-					description: "<sh>Level 3:</> Increases daily Bless attempts in The Witch's House Divination by <dn>1</>.\nA new Bless effect replaces the existing one.",
+					description:
+						"<sh>Level 3:</> Increases daily Bless attempts in The Witch's House Divination by <dn>1</>.\nA new Bless effect replaces the existing one.",
 				},
 				{
 					description:
 						"<sh>Level 4:</> Increases daily Treasure Hunt attempts in The Witch's House Divination by <dn>1</>.",
 				},
 				{
-					description: "<sh>Level 5:</> Increases daily Bless attempts in The Witch's House Divination by <dn>1</>.\nA new Bless effect replaces the existing one.",
+					description:
+						"<sh>Level 5:</> Increases daily Bless attempts in The Witch's House Divination by <dn>1</>.\nA new Bless effect replaces the existing one.",
 				},
 			],
 			maxLvl: 5,

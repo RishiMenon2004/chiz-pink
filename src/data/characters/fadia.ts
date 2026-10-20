@@ -55,7 +55,7 @@ export const fadia: Character = {
 			description: [
 				{
 					description:
-						"Come, have a taste of this. Deals <dn>1</> instance of <el>Psyche DMG</> to an area and inflicts <kw>Destructive Experience</> on the enemy with the highest Max HP in the area for a period.\nDuring the duration, when Fadia takes damage, the target shares a percentage of the damage taken.\n<kw>Destructive Experience</> ends when the duration expires, when the Redirection DMG taken by the target reaches its cap, or when the target and Fadia leave combat.",
+						"Come, have a taste of this. Deals <dn>1</> instance of <el>Psyche DMG</> to an area and inflicts Destructive Experience on the enemy with the highest Max HP in the area for a period.\nDuring the duration, when Fadia takes damage, the target shares a percentage of the damage taken.\nDestructive Experience ends when the duration expires, when the Redirection DMG taken by the target reaches its cap, or when the target and Fadia leave combat.",
 				},
 			],
 			maxLvl: 10,
@@ -65,7 +65,7 @@ export const fadia: Character = {
 			description: [
 				{
 					description:
-						"Without pain, life closes in on itself. Enters <kw>Lilith</> state, dealing <dn>6</> instances of Mental DMG and restoring HP. Recasts Wordless Rejection while in <kw>Lilith</> state to perform up to <dn>5</> follow-up attacks, each dealing Mental DMG.\nFully restores the energy of Agony to Euphoria when lost HP reaches the <sh>Destructive Threshold</>. Increases the damage and HP restored by Agony to Euphoria when it is cast with lost HP greater than or equal to the <sh>Destructive Threshold</>.\nExits <kw>Lilith</> state when the duration ends, all <dn>5</> follow-up attacks are performed, characters are switched, or other skills of Fadia are used.",
+						"Without pain, life closes in on itself. Enters Lilith state, dealing <dn>6</> instances of Mental DMG and restoring HP. Recasts Wordless Rejection while in Lilith state to perform up to <dn>5</> follow-up attacks, each dealing Mental DMG.\nFully restores the energy of Agony to Euphoria when lost HP reaches the <sh>Destructive Threshold</>. Increases the damage and HP restored by Agony to Euphoria when it is cast with lost HP greater than or equal to the <sh>Destructive Threshold</>.\nExits Lilith state when the duration ends, all <dn>5</> follow-up attacks are performed, characters are switched, or other skills of Fadia are used.",
 				},
 			],
 			maxLvl: 10,
@@ -105,23 +105,23 @@ export const fadia: Character = {
 			description: [
 				{
 					description:
-						"<sh>Level 1:</> Grants an additional <dn>1000</> Fons in tips for each order in Swift Travel.",
+						"<sh>Level 1:</> Grants an additional <dn>1000</> Fons in tips for each order in Swift Cab.",
 				},
 				{
 					description:
-						"<sh>Level 2:</> In Swift Travel, final satisfaction for orders is increased by an additional <dn>25</> points.",
+						"<sh>Level 2:</> In Swift Cab, final satisfaction for orders is increased by an additional <dn>25</> points.",
 				},
 				{
 					description:
-						"<sh>Level 3:</> Grants an additional <dn>1000</> Fons in tips for each order in Swift Travel.",
+						"<sh>Level 3:</> Grants an additional <dn>1000</> Fons in tips for each order in Swift Cab.",
 				},
 				{
 					description:
-						"<sh>Level 4:</> In Swift Travel, final satisfaction for orders is increased by an additional <dn>25</> points.",
+						"<sh>Level 4:</> In Swift Cab, final satisfaction for orders is increased by an additional <dn>25</> points.",
 				},
 				{
 					description:
-						"<sh>Level 5:</> In Swift Travel, the satisfaction cap for each customer is increased by <dn>50</> points.",
+						"<sh>Level 5:</> In Swift Cab, the satisfaction cap for each customer is increased by <dn>50</> points.",
 				},
 			],
 			maxLvl: 5,

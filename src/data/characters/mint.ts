@@ -43,7 +43,7 @@ export const mint: Character = {
 						"Triggers when using Perfect Containment after a Critical Dodge. Leaps up to dodge an attack, seizes the enemy's opening, and swiftly swings her weapon, dealing <dn>1</> instance of <el>Anima DMG</> to an area and reducing Break.",
 				},
 				{
-					section: "Basic Attack: Justice from Above",
+					section: "Basic Attack: Minty Whirlwind",
 					description:
 						"Hold Basic Attack to make Mint dance and spin, forming a tornado that continuously drains Stamina and deals continuous <el>Anima DMG</> to surrounding enemies.",
 				},
