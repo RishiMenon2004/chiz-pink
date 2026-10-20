@@ -30,7 +30,7 @@ const PURGE_AFTER_MS = 2 * 365 * 24 * 60 * 60 * 1000
 
 // Tags parseDescription understands, and the shape it matches:
 // <name attr="…">text</>, with no nesting.
-const KNOWN_TAGS = new Set(["dn", "sh", "link", "tag", "ntetag", "itag", "el", "kw"])
+const KNOWN_TAGS = new Set(["dn", "sh", "link", "tag", "ntetag", "itag", "el"])
 const TAG_CHUNK = /<([a-z]+)((?:\s+[a-z]+=(?:"[^"]*"|'[^']*'))*)>([^<]+)<\/>/g
 const ELEMENTS = new Set<string>(Object.values(EnumCharacterElement))
 

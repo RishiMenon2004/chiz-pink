@@ -115,7 +115,6 @@ export function parseDescription(
 							</span>
 						)
 					}
-					case "kw":
 					default:
 						return <>{children}</>
 				}
