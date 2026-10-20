@@ -289,11 +289,14 @@ export const str = (value: string) => {
 		? `'${json.slice(1, -1).replaceAll('\\"', '"')}'`
 		: json
 }
-export const fits = (line: string) => line.replace(/^\t+/, (tabs) => "  ".repeat(tabs.length)).length <= 80
-export const prop = (tabs: number, key: string, value: string) => {
+// arcList.ts counts a tab as 2 columns; the character files were formatted
+// with 4.
+export const fits = (line: string, tabWidth = 2) =>
+	line.replace(/^\t+/, (tabs) => " ".repeat(tabs.length * tabWidth)).length <= 80
+export const prop = (tabs: number, key: string, value: string, tabWidth = 2) => {
 	const indent = "\t".repeat(tabs)
 	const line = `${indent}${key}: ${value},`
-	return fits(line) ? line : `${indent}${key}:\n${indent}\t${value},`
+	return fits(line, tabWidth) ? line : `${indent}${key}:\n${indent}\t${value},`
 }
 
 // Rewrites a fully generated data file when its data changed (the header

@@ -1,6 +1,6 @@
 // npm run content:import -- [--only arcs|characters] [--ref <commit>]
 //                            [--from <export dir>] [--write]
-//                            [--update <arc id>,<arc id>]
+//                            [--update <id>,<id>]
 // npm run content:import -- --images content-intake/<version>
 //
 // Reads arc and character data straight from the game's tables and compares
@@ -11,10 +11,11 @@
 // Localization/, i.e. Exports/HT/Content).
 //
 // Without --write it only reports. With --write it regenerates the level
-// stats files, fills in placeholder arcs and adds arcs the site doesn't have
-// yet. Arcs that already have real data are only rewritten when named with
-// --update (which implies --write); character files are never rewritten.
-// Differences are listed to fix by hand.
+// stats files, fills in placeholder arcs and characters, and adds arcs the
+// site doesn't have yet. Arcs and characters that already have real data are
+// only rewritten when named with --update (which implies --write): an arc's
+// whole entry, a character's abilities. Other differences are listed to fix
+// by hand.
 //
 // --images instead fetches the art for the characters and arcs in an intake
 // folder's content.json into that folder (see content-import/images.ts);
@@ -31,5 +32,5 @@ if (imagesFolder) {
 	if (!only || only === "arcs") await importArcs()
 	if (!only || only === "characters") await importCharacters()
 
-	for (const id of updateIds) console.log(`\n--update: no arc "${id}" in the game data`)
+	for (const id of updateIds) console.log(`\n--update: no arc or character "${id}" in the game data`)
 }

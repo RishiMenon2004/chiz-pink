@@ -1,21 +1,38 @@
-// Characters: reads each playable character's stats, element, arc type and
-// materials from the character tables, compares them with the character
-// files, and regenerates characterLevelStats.ts.
+// Characters: reads each playable character's stats, element, arc type,
+// materials and abilities from the character tables, compares them with the
+// character files, and regenerates characterLevelStats.ts.
 //
-// Ability names are compared too. Ability descriptions aren't: nothing in
-// the tables links an ability to its text, and each character has several
-// versions of every text.
+// With --write it fills placeholder characters (abilities, materials,
+// rarity, element, arc type) and drops their placeholder flag; their
+// one-line description stays hand-written. --update <id> rewrites an
+// existing character's abilities. Abilities come from content-import/abilities.ts.
 
-import type { Character, CharacterAbilitySet } from "@/types/character"
+import { existsSync } from "node:fs"
 
+import type { Character } from "@/types/character"
+
+import { EnumArcType } from "@/data/arcs/arc"
 import { EnumCharacterElement } from "@/data/characters/character"
 import { getAllCharactersList } from "@/data/characters/characterList"
 import { EnumRarity } from "@/data/items/item"
 
 import {
+	abilitiesBlock,
+	type AbilityConfig,
+	abilityReader,
+	type CityGroupRow,
+	type ImportedAbilities,
+	SLOTS,
+	type TipsRow,
+	withSiteNames,
+} from "./abilities"
+import {
 	ARC_TYPES,
 	differenceList,
+	editFile,
 	exportNameOf,
+	fits,
+	fromRoot,
 	LEVEL_STEPS,
 	type LocalizedText,
 	type Localization,
@@ -30,6 +47,7 @@ import {
 	sourceLabel,
 	TEXT_FILE,
 	textLookup,
+	updateIds,
 	write,
 	writeGenerated,
 } from "./source"
@@ -47,18 +65,6 @@ type CharacterRow = {
 }
 type BreakthroughRow = { NeedItems: string; ModifyPackID: string }
 type BaseStats = { HPMaxBase: number; AtkBase: number; DefBase: number }
-type Ability = {
-	Key: string
-	Value: {
-		AbilityIndex: number
-		LevelsCostItems: { CostItems: { ID: string }[] }[]
-	}
-}
-type AbilityConfig = {
-	CharacterAbilityList: Ability[]
-	PassiveAbilityList: Ability[]
-	CityList: Ability[]
-}
 
 const ELEMENTS: Record<string, EnumCharacterElement> = {
 	"ECharacterElementType::CHARACTER_ELEMENT_TYPE_COSMOS": EnumCharacterElement.COSMOS,
@@ -74,80 +80,39 @@ export const SITE_IDS: Record<string, string> = {
 	Zero: "zero",
 }
 
-// The proactive abilities by AbilityIndex.
-const PROACTIVE: Record<number, keyof CharacterAbilitySet> = {
-	1: "basicAttack",
-	2: "skill",
-	3: "ultimate",
-	4: "support",
-}
-
-// Ability text keys don't always match the ability's key: "UltraSkill" is
-// sometimes spelled "UtraSkill", "Passive_1" sometimes "Passive1", and some
-// keys carry the character's number ("GA_Mint019_Melee" -> "GA_Mint_Melee").
-function nameKeys(key: string) {
-	const variants = new Set([key])
-	for (const variant of [...variants]) variants.add(variant.replace(/^(GA_[A-Za-z]+)\d+_/, "$1_"))
-	for (const variant of [...variants]) {
-		variants.add(variant.replace("UltraSkill", "UtraSkill"))
-		variants.add(variant.replace(/Passive_?(\d)/, "Passive$1"))
-		variants.add(variant.replace(/Passive_?(\d)/, "Passive_$1"))
-	}
-	return [...variants].map((variant) => `${variant}_name`)
-}
+const MATERIAL_FIELDS = [
+	"ascensionMaterialSet",
+	"ascensionBossMaterial",
+	"talentMaterialSet",
+	"talentBossMaterial",
+] as const
 
 type ImportedCharacter = {
 	code: string
 	name: string
 	rarity: EnumRarity
 	element: EnumCharacterElement
-	arcType: string
-	materials: {
-		ascensionMaterialSet?: string
-		ascensionBossMaterial?: string
-		talentMaterialSet?: string
-		talentBossMaterial?: string
-	}
-	abilityNames: Partial<Record<keyof CharacterAbilitySet, string>>
+	arcType: EnumArcType
+	materials: Partial<Record<(typeof MATERIAL_FIELDS)[number], string>>
+	abilities: ImportedAbilities
+	problems: string[]
 	levelStats: { hp: number[]; atk: number[]; def: number[] }
 }
 
 export async function importCharacters() {
-	const [characters, abilities, breakthrough, baseStats, modify, localization] = await Promise.all([
-		readTable<CharacterRow>(["DataTable/Character/DT_Character.json"]),
-		readTable<AbilityConfig>(["DataTable/Character/DT_CharacterAbilityConfig.json"]),
-		readTable<BreakthroughRow>(["DataTable/Character/DT_CharacterBreakthroughDataTable.json"]),
-		readTable<BaseStats>(["DataTable/PackData/DT_PlayerPackData.json"]),
-		readTable<ModifyRow>(["DataTable/PackData/ModifyData/DT_PlayerModifyPackData.json"]),
-		readSource(TEXT_FILE) as Promise<Localization>,
-	])
-	const text = textLookup(localization)
-
-	// Ability text lives in "<Name>_SkillDes" tables, and some keys appear in
-	// more than one (Zero's two versions), so the table named after the key's
-	// prefix is tried first. Keys and table names vary in case.
-	const tables = new Map(
-		Object.entries(localization).map(([table, entries]) => [
-			table.toLowerCase(),
-			new Map(Object.entries(entries).map(([k, v]) => [k.toLowerCase(), v])),
+	const [characters, abilities, breakthrough, baseStats, modify, tips, cityGroups, localization] =
+		await Promise.all([
+			readTable<CharacterRow>(["DataTable/Character/DT_Character.json"]),
+			readTable<AbilityConfig>(["DataTable/Character/DT_CharacterAbilityConfig.json"]),
+			readTable<BreakthroughRow>(["DataTable/Character/DT_CharacterBreakthroughDataTable.json"]),
+			readTable<BaseStats>(["DataTable/PackData/DT_PlayerPackData.json"]),
+			readTable<ModifyRow>(["DataTable/PackData/ModifyData/DT_PlayerModifyPackData.json"]),
+			readTable<TipsRow>(["DataTable/Skill/DT_GameplayAbilityTipsData.json"]),
+			readTable<CityGroupRow>(["DataTable/Character/DT_CharacterAbilityCityGroupConfig.json"]),
+			readSource(TEXT_FILE) as Promise<Localization>,
 		])
-	)
-	const anyTable = textLookup(Object.fromEntries([...tables].map(([t, m]) => [t, Object.fromEntries(m)])))
-	const abilityName = (key: string) => {
-		const prefix = key.match(/^GA_([A-Za-z]+)(\d*)_/)
-		const preferred = prefix
-			? [`${prefix[1]}${prefix[2]}_skilldes`, `${prefix[1]}_skilldes`].map((t) => tables.get(t.toLowerCase()))
-			: []
-		const keys = nameKeys(key).map((k) => k.toLowerCase())
-		const name =
-			preferred.flatMap((table) => keys.map((k) => table?.get(k))).find(Boolean) ??
-			keys.map((k) => anyTable(k)).find(Boolean)
-		// Some names carry their tag and kind: "<Title>Ultimate: Crimson Fury</>".
-		return name
-			?.replace(/<[^>]*>/g, "")
-			.replace(/^(Basic Attack|Redirect Skill|Ultimate|Critical Riposte|Support Skill): /, "")
-			.replaceAll("’", "'")
-	}
+	const text = textLookup(localization)
+	const readAbilities = abilityReader(tips, cityGroups, localization)
 
 	function importCharacter(code: string, row: CharacterRow): ImportedCharacter | string {
 		const data = row.ElementData
@@ -183,25 +148,14 @@ export async function importCharacters() {
 				(stage(n)?.NeedItems ?? "").split(",").filter(Boolean).map((item) => materialFamily(item.split(":")[0]))
 			)
 			const config = abilities(code)
-			const skillCosts = [...(config?.CharacterAbilityList ?? []), ...(config?.PassiveAbilityList ?? [])].flatMap(
-				(ability) => ability.Value.LevelsCostItems.flatMap((level) => level.CostItems.map((item) => materialFamily(item.ID)))
+			const skillCosts = [...(config?.CharacterAbilityList ?? []), ...(config?.PassiveAbilityList ?? [])].flatMap((ability) =>
+				ability.Value.LevelsCostItems.flatMap((level) => level.CostItems.map((item) => materialFamily(item.ID)))
 			)
 			const first = (families: string[], pattern: RegExp) => {
 				const family = families.find((f) => pattern.test(f))
 				return family && (materialExport(family) ?? `unknown ${family}`)
 			}
-
-			const abilityNames: ImportedCharacter["abilityNames"] = {}
-			for (const ability of config?.CharacterAbilityList ?? []) {
-				const slot = PROACTIVE[ability.Value.AbilityIndex]
-				if (slot) abilityNames[slot] = abilityName(ability.Key)
-			}
-			for (const ability of config?.PassiveAbilityList ?? []) {
-				abilityNames[`passive${ability.Value.AbilityIndex}` as keyof CharacterAbilitySet] = abilityName(ability.Key)
-			}
-			for (const ability of config?.CityList ?? []) {
-				abilityNames[`lifeSkill${ability.Value.AbilityIndex}` as keyof CharacterAbilitySet] = abilityName(ability.Key)
-			}
+			const problems: string[] = config ? [] : ["no ability config"]
 
 			return {
 				code,
@@ -215,7 +169,8 @@ export async function importCharacters() {
 					talentMaterialSet: first(skillCosts, /^SkillUpMaterial/),
 					talentBossMaterial: first(skillCosts, /^weeklycloneboss/),
 				},
-				abilityNames,
+				abilities: config ? readAbilities(config, problems) : {},
+				problems,
 				levelStats: {
 					hp: steps.map((s) => s.hp),
 					atk: steps.map((s) => s.atk),
@@ -234,50 +189,122 @@ export async function importCharacters() {
 	const matching: string[] = []
 	const changed: [Character, string[]][] = []
 	const placeholders: [Character, ImportedCharacter][] = []
+	const updates: [Character, ImportedCharacter][] = []
 	const added: ImportedCharacter[] = []
 	const skipped: string[] = []
 	const levelStats = new Map<string, ImportedCharacter["levelStats"]>()
 	const seen = new Set<string>()
 
 	for (const [code, row] of characters.rows) {
-		const game = importCharacter(code, row)
-		if (typeof game === "string") {
-			skipped.push(game)
+		const imported = importCharacter(code, row)
+		if (typeof imported === "string") {
+			skipped.push(imported)
 			continue
 		}
 		// Alternate rows of one character (Zero's other gender, story
 		// versions) share its name; the first row is the playable one.
-		if (seen.has(game.name)) continue
-		seen.add(game.name)
+		if (seen.has(imported.name)) continue
+		seen.add(imported.name)
 
-		const character = siteById.get(SITE_IDS[game.name]) ?? siteCharacters.get(matchKey(game.name))
+		const character = siteById.get(SITE_IDS[imported.name]) ?? siteCharacters.get(matchKey(imported.name))
 		if (!character) {
-			added.push(game)
+			added.push(imported)
 			continue
 		}
+		const game = { ...imported, abilities: withSiteNames(character.id, imported.abilities) }
 		siteCharacters.delete(matchKey(character.name))
 		levelStats.set(character.id, game.levelStats)
 		if (character.isPlaceholder) {
 			placeholders.push([character, game])
 			continue
 		}
+		if (updateIds.delete(character.id)) updates.push([character, game])
 
 		const { diffs, check } = differenceList()
 		check("rarity", EnumRarity[character.rarity], EnumRarity[game.rarity])
 		check("element", character.element, game.element)
 		check("arcType", character.arcType, game.arcType)
-		for (const [field, value] of Object.entries(game.materials)) {
-			check(field, exportNameOf(character[field as keyof typeof game.materials]), value)
+		for (const field of MATERIAL_FIELDS) check(field, exportNameOf(character[field]), game.materials[field])
+
+		// Abilities, section by section.
+		for (const slot of SLOTS) {
+			const site = character.abilities[slot]
+			const fromGame = game.abilities[slot]
+			if (!site && !fromGame) continue
+			check(`${slot} name`, site?.name, fromGame?.name)
+			check(`${slot} maxLvl`, site?.maxLvl, fromGame?.maxLvl)
+			const sections = Math.max(site?.description.length ?? 0, fromGame?.description.length ?? 0)
+			for (let i = 0; i < sections; i++) {
+				const a = site?.description[i]
+				const b = fromGame?.description[i]
+				check(`${slot} ${i + 1} title`, a?.section, b?.section)
+				check(`${slot} ${i + 1}`, a?.description, b?.description)
+			}
 		}
-		for (const [slot, name] of Object.entries(game.abilityNames)) {
-			const ability = character.abilities[slot as keyof CharacterAbilitySet]
-			if (name) check(`${slot} name`, ability?.name, name)
-		}
+		for (const problem of game.problems) diffs.push(problem)
 		if (diffs.length === 0) matching.push(character.id)
 		else changed.push([character, diffs])
 	}
 
 	// ---------- Write ----------
+
+	const written: string[] = []
+	const unwritten: string[] = []
+	const characterFile = (id: string) => `src/data/characters/${id}.ts`
+
+	// The abilities are the last property of every character file.
+	const replaceAbilities = (text: string, abilities: ImportedAbilities) => {
+		const start = text.indexOf("\n\tabilities:")
+		const end = text.lastIndexOf("\n}")
+		if (start === -1 || end < start) throw new Error("couldn't find the abilities")
+		return `${text.slice(0, start + 1)}${abilitiesBlock(abilities)}${text.slice(end)}`
+	}
+
+	const edit = (character: Character, what: string, change: (text: string) => string) => {
+		const file = characterFile(character.id)
+		if (!existsSync(fromRoot(file))) return unwritten.push(`${character.name}: no ${file}`)
+		try {
+			editFile(file, change)
+			written.push(`${file}: ${what}`)
+		} catch (error) {
+			unwritten.push(`${character.name}: ${(error as Error).message}`)
+		}
+	}
+
+	if (write) {
+		for (const [character, game] of updates) {
+			edit(character, "abilities", (text) => replaceAbilities(text, game.abilities))
+		}
+
+		for (const [character, game] of placeholders) {
+			const materials = MATERIAL_FIELDS.map((field) => game.materials[field])
+			if (materials.some((m) => !m || m.startsWith("unknown"))) {
+				unwritten.push(`${character.name}: a material isn't on the site yet (${materials.join(", ")})`)
+				continue
+			}
+			const enumKey = (values: object, value: unknown) => Object.entries(values).find(([, v]) => v === value)?.[0]
+			edit(character, "filled from the game (write its description by hand)", (text) => {
+				let file = replaceAbilities(text, game.abilities)
+					.replace("\tisPlaceholder: true,\n", "")
+					.replace(/import \{ placeholderAbilities \} from "\.\/placeholder"\n/, "")
+					.replace(/\trarity: EnumRarity\.\w+,/, `\trarity: EnumRarity.${EnumRarity[game.rarity]},`)
+					.replace(
+						/\telement: EnumCharacterElement\.\w+,/,
+						`\telement: EnumCharacterElement.${enumKey(EnumCharacterElement, game.element)},`
+					)
+					.replace(/\tarcType: EnumArcType\.\w+,/, `\tarcType: EnumArcType.${enumKey(EnumArcType, game.arcType)},`)
+				MATERIAL_FIELDS.forEach((field, i) => {
+					file = file.replace(new RegExp(`\\t${field}: \\w+,`), `\t${field}: ${materials[i]},`)
+				})
+				// The materials import lists exactly the four the file uses.
+				return file.replace(/import \{[^}]*\} from ("[^"]*items\/materials")/, (_, from: string) => {
+					const names = [...new Set(materials as string[])].sort((a, b) => a.localeCompare(b))
+					const line = `import { ${names.join(", ")} } from ${from}`
+					return fits(line, 4) ? line : `import {\n${names.map((n) => `\t${n},`).join("\n")}\n} from ${from}`
+				})
+			})
+		}
+	}
 
 	const statsFile = "src/data/characters/characterLevelStats.ts"
 	const statsOutdated = writeGenerated(
@@ -296,6 +323,7 @@ ${[...levelStats]
 }
 `
 	)
+	if (write && statsOutdated) written.push(`${statsFile} (${levelStats.size} characters)`)
 
 	// ---------- Report ----------
 
@@ -303,7 +331,7 @@ ${[...levelStats]
 	console.log(`Read ${characters.rows.length} character rows from ${sourceLabel}.`)
 	console.log(`\nMatch the site: ${matching.length}`)
 
-	console.log(`\nDiffer from the site (not changed, fix by hand if the game is right): ${changed.length}`)
+	console.log(`\nDiffer from the site (fix by hand, or --update <id> to take the game's abilities): ${changed.length}`)
 	for (const [character, diffs] of changed) {
 		console.log(`\n  ${character.name} (${character.id})`)
 		for (const diff of diffs) console.log(`    ${diff}`)
@@ -314,9 +342,9 @@ ${[...levelStats]
 	printList("On the site but not in the game", [...siteCharacters.values()], (c) => `${c.name} (${c.id})`)
 	if (skipped.length > 0) printList("Couldn't read", skipped, (reason) => reason)
 
-	if (write && statsOutdated) {
-		printList("Wrote", [`${statsFile} (${levelStats.size} characters)`], (line) => line)
-	} else if (!write && statsOutdated) {
-		console.log(`\nRun again with --write to update ${statsFile}.`)
+	if (written.length > 0) printList("Wrote", written, (line) => line)
+	if (unwritten.length > 0) printList("Couldn't write", unwritten, (line) => line)
+	if (!write && (placeholders.length > 0 || statsOutdated)) {
+		console.log(`\nRun again with --write to fill placeholders and update ${statsFile}.`)
 	}
 }
