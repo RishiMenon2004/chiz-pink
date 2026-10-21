@@ -59,7 +59,9 @@ function QuickAdjust({
 					className={styles.quickButton}
 					disabled={step < 0 ? current < -step : current >= cap}
 					aria-label={`${step < 0 ? "Spend" : "Add"} ${Math.abs(step)} ${label}`}
-					onClick={() => onChange(Math.min(Math.max(current + step, 0), cap))}>
+					onClick={() =>
+						onChange(Math.min(Math.max(current + step, 0), cap))
+					}>
 					{step < 0 ? `−${-step}` : `+${step}`}
 				</button>
 			))}
@@ -169,6 +171,13 @@ export function DashStaminaGauge() {
 								}>{` / ${maxPixels}`}</span>
 						</p>
 					</div>
+					<div className={styles.countdownText}>
+						<PixelRefillCountdown
+							current={currentPixels}
+							max={maxPixels}
+							lastEdited={settings.userdata["pixels-last-edited"]}
+						/>
+					</div>
 					<QuickAdjust
 						label="Pixels"
 						current={currentPixels}
@@ -178,13 +187,6 @@ export function DashStaminaGauge() {
 						side="left"
 						onChange={setPixels}
 					/>
-					<div className={styles.countdownText}>
-						<PixelRefillCountdown
-							current={currentPixels}
-							max={maxPixels}
-							lastEdited={settings.userdata["pixels-last-edited"]}
-						/>
-					</div>
 				</div>
 				<div className={styles.gaugeColumn}>
 					<div
@@ -214,6 +216,11 @@ export function DashStaminaGauge() {
 							loading="eager"
 						/>
 					</div>
+					<div className={styles.countdownText}>
+						<StaminaResetCountdown
+							server={settings.userdata.server}
+						/>
+					</div>
 					<QuickAdjust
 						label="City Stamina"
 						current={currentStamina}
@@ -223,11 +230,6 @@ export function DashStaminaGauge() {
 						side="right"
 						onChange={setStamina}
 					/>
-					<div className={styles.countdownText}>
-						<StaminaResetCountdown
-							server={settings.userdata.server}
-						/>
-					</div>
 				</div>
 			</div>
 		</div>

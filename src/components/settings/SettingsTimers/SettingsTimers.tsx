@@ -40,7 +40,7 @@ export function StaminaResetCountdown({
 			? "Reset in: -"
 			: (() => {
 					const { nextReset } = getWeeklyResetBoundaries(server, now)
-					return `Reset in: ${formatTimeRemaining(nextReset - now)} at ${formatResetDayTime(nextReset)}`
+					return `Reset in: ${formatTimeRemaining(nextReset - now)}`
 				})()
 
 	return (

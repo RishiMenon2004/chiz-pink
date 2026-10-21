@@ -5,7 +5,7 @@ export function formatTimeRemaining(ms: number): string {
 	const minutes = Math.floor((totalSeconds % 3600) / 60)
 	const seconds = totalSeconds % 60
 
-	return `${days}d ${hours}h ${minutes}m ${seconds}s`
+	return `${days}d ${hours}h ${minutes}m`
 }
 
 export const PIXEL_REFILL_INTERVAL_MS = 6 * 60 * 1000

@@ -7,13 +7,13 @@
 	place-items: start stretch;
 	grid-template-columns: 1fr 1fr;
 	gap: 0.5rem;
-	padding-inline: 0.5rem;
-	margin-bottom: 1rem;
+	margin-top: auto;
 }
 
 .gaugeColumn {
 	display: flex;
 	flex-direction: column;
+	justify-content: space-between;
 	gap: 0.25rem;
 	width: 100%;
 }
@@ -21,25 +21,24 @@
 .countdownText {
 	color: black;
 	font-size: 0.9rem;
-	padding-inline: 0.5rem;
-
-	.quickAdjust[data-side="right"] + & {
-		padding-left: 1.5rem;
-	}
 }
 
 .quickAdjust {
 	--tray-pad: 3px;
+	--small-corner: 0.4rem;
+	--big-corner: 1.25rem;
 
 	display: flex;
 	gap: var(--tray-pad);
 	padding: var(--tray-pad);
 
 	margin-top: calc(3px - 0.25rem);
-	border-radius: 0.4rem 0.4rem 0.4rem 0.9rem;
+	border-radius: var(--small-corner);
+	border-bottom-left-radius: var(--big-corner);
 
 	&[data-side="right"] {
-		border-radius: 0.4rem 0.4rem 0.9rem 0.4rem;
+		border-radius: var(--small-corner);
+		border-bottom-right-radius: var(--big-corner);
 	}
 }
 
@@ -49,7 +48,7 @@
 	height: 1.8rem;
 	padding: 0;
 	border: none;
-	border-radius: calc(0.4rem - var(--tray-pad));
+	border-radius: calc(var(--small-corner) - var(--tray-pad));
 
 	color: black;
 	font-family: var(--font-barlow-condensed);
@@ -68,11 +67,11 @@
 		opacity 0.15s ease;
 
 	[data-side="left"] > &:first-child {
-		border-bottom-left-radius: calc(0.9rem - var(--tray-pad));
+		border-bottom-left-radius: calc(var(--big-corner) - var(--tray-pad));
 	}
 
 	[data-side="right"] > &:last-child {
-		border-bottom-right-radius: calc(0.9rem - var(--tray-pad));
+		border-bottom-right-radius: calc(var(--big-corner) - var(--tray-pad));
 	}
 
 	&:first-child,
@@ -169,6 +168,35 @@
 	}
 }
 
+/* Too narrow for the pixel tray's 7 buttons on one line: split it into
+   4 + 3 over a 12-column grid, moving the big corner to the second row */
+@container (400px <= width < 600px) {
+	.quickAdjust[data-side="left"] {
+		display: grid;
+		grid-template-columns: repeat(12, 1fr);
+
+		.quickButton {
+			grid-column: span 3;
+
+			&:nth-child(n + 5) {
+				grid-column: span 4;
+			}
+
+			&:first-child {
+				border-bottom-left-radius: calc(
+					var(--small-corner) - var(--tray-pad)
+				);
+			}
+
+			&:nth-child(5) {
+				border-bottom-left-radius: calc(
+					var(--big-corner) - var(--tray-pad)
+				);
+			}
+		}
+	}
+}
+
 @container (width < 400px) {
 	.gaugeRow {
 		--group-radius: 1.25rem;
@@ -197,11 +225,15 @@
 		}
 
 		.quickButton:first-child {
-			border-bottom-left-radius: calc(var(--group-radius) - var(--tray-pad));
+			border-bottom-left-radius: calc(
+				var(--group-radius) - var(--tray-pad)
+			);
 		}
 
 		.quickButton:last-child {
-			border-bottom-right-radius: calc(var(--group-radius) - var(--tray-pad));
+			border-bottom-right-radius: calc(
+				var(--group-radius) - var(--tray-pad)
+			);
 		}
 
 		&[data-side="left"] + .countdownText {
@@ -209,7 +241,6 @@
 		}
 
 		&[data-side="right"] + .countdownText {
-			margin-left: auto;
 			padding-inline: 0.5rem;
 		}
 	}
