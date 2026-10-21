@@ -1,5 +1,3 @@
-import { hikariTide } from "@/data/items/materials"
-
 import { getUtcTimestamp } from "@/helpers/serverTime"
 
 import type { EventData } from "./event"
@@ -29,7 +27,6 @@ export const events: EventData[] = [
 				hour: 9,
 			}),
 		getEndDate: timings.phase2End,
-		rewards: [hikariTide],
 		eventImage: "version1.3/mystery_tide.webp",
 		themeColor: "#db061e",
 	},

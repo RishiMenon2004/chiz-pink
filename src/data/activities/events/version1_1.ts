@@ -1,5 +1,3 @@
-import { annulith, porsche918Spyder } from "@/data/items/materials"
-
 import type { EventData } from "./event"
 import { serverEOD, serverSOD } from "./event"
 import { patchTimings } from "./patches"
@@ -21,7 +19,6 @@ export const events: EventData[] = [
 		type: "Mystery Box",
 		getStartDate: timings.phase1Start,
 		getEndDate: timings.phase2End,
-		rewards: [porsche918Spyder, annulith],
 		eventImage: "version1.1/mystery_porsche.webp",
 		themeColor: "#6f3fcc",
 	},

@@ -47,42 +47,6 @@ export const warpPiece: Material = {
 	sources: ["Scarborough Fair"],
 }
 
-export const floeCinemeTicket: Material = {
-	id: "floe_cineme_ticket",
-	name: "Floe Cinema Ticket",
-	rarity: EnumRarity.Rare,
-	materialType: EnumMaterialType.Reward,
-	imageSrc: "rewards/floe_cinema_ticket.png",
-	sources: [],
-}
-
-export const porsche918Spyder: Material = {
-	id: "porsche_918_spyder",
-	name: "Porsche 918 Spyder",
-	materialType: EnumMaterialType.Reward,
-	rarity: EnumRarity.Epic,
-	imageSrc: "rewards/mystery_box/porche_918_spyder.png",
-	sources: ["Everdriving Mystery Box Event"],
-}
-
-export const regaliaDraco: Material = {
-	id: "regalia_draco",
-	name: "Regalia Draco",
-	materialType: EnumMaterialType.Reward,
-	rarity: EnumRarity.Epic,
-	imageSrc: "rewards/mystery_box/regalia_draco.png",
-	sources: ["Everdriving Mystery Box Event"],
-}
-
-export const hikariTide: Material = {
-	id: "hikari_tide",
-	name: "Hikari's Tide",
-	materialType: EnumMaterialType.Reward,
-	rarity: EnumRarity.Epic,
-	imageSrc: "rewards/mystery_box/hikari_tider.png",
-	sources: ["Lucent Tides Mystery Box Event"],
-}
-
 /* Cosmetics - Outfits */
 export const phoenixKick: Material = {
 	id: "phoenix_kick",

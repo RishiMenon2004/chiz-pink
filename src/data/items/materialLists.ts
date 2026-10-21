@@ -69,10 +69,6 @@ import {
 	diceStandard,
 	lostPiece,
 	warpPiece,
-	floeCinemeTicket,
-	porsche918Spyder,
-	regaliaDraco,
-	hikariTide,
 	phoenixKick,
 	pricelessOrchid,
 	newMoonLullaby,
@@ -225,12 +221,6 @@ const allRewards: Record<string, Material> = {
 
 	lost_piece: lostPiece,
 	warp_piece: warpPiece,
-
-	floe_cineme_ticket: floeCinemeTicket,
-
-	porsche_918_spyder: porsche918Spyder,
-	regalia_draco: regaliaDraco,
-	hikari_tide: hikariTide,
 
 	//cosmetics - outfits
 	phoenix_kick: phoenixKick,
