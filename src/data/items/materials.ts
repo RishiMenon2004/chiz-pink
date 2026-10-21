@@ -156,6 +156,24 @@ export const surfingAmongStars: Material = {
 	sources: [],
 }
 
+export const rougeEtNoir: Material = {
+	id: "rouge_et_noir",
+	name: "Rouge et Noir",
+	materialType: EnumMaterialType.Reward,
+	rarity: EnumRarity.Epic,
+	imageSrc: "rewards/cosmetics/outfits/rouge_et_noir.webp",
+	sources: [],
+}
+
+export const shiningIdol: Material = {
+	id: "shining_idol",
+	name: "Shining Idol",
+	materialType: EnumMaterialType.Reward,
+	rarity: EnumRarity.Epic,
+	imageSrc: "rewards/cosmetics/outfits/shining_idol.webp",
+	sources: [],
+}
+
 /* Cosmetics - Gliders */
 export const underboss: Material = {
 	id: "underboss",
@@ -226,6 +244,24 @@ export const superSpecter: Material = {
 	materialType: EnumMaterialType.Reward,
 	rarity: EnumRarity.Epic,
 	imageSrc: "rewards/cosmetics/gliders/super_specter.webp",
+	sources: [],
+}
+
+export const theHarbinger: Material = {
+	id: "the_harbinger",
+	name: "The Harbinger",
+	materialType: EnumMaterialType.Reward,
+	rarity: EnumRarity.Epic,
+	imageSrc: "rewards/cosmetics/gliders/the_harbinger.webp",
+	sources: [],
+}
+
+export const dayAdrift: Material = {
+	id: "day_adrift",
+	name: "Day Adrift",
+	materialType: EnumMaterialType.Reward,
+	rarity: EnumRarity.Epic,
+	imageSrc: "rewards/cosmetics/gliders/day_adrift.webp",
 	sources: [],
 }
 

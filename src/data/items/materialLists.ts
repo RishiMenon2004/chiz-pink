@@ -89,6 +89,10 @@ import {
 	sheepcopter,
 	scarletSash,
 	superSpecter,
+	theHarbinger,
+	dayAdrift,
+	rougeEtNoir,
+	shiningIdol,
 } from "./materials"
 
 const allMaterials: Record<string, Material> = {
@@ -237,6 +241,8 @@ const allRewards: Record<string, Material> = {
 	archmage: archmage,
 	autumn_vignette: autumnVignette,
 	surfing_among_stars: surfingAmongStars,
+	rouge_et_noir: rougeEtNoir,
+	shining_idol: shiningIdol,
 
 	//cosmetics - gliders
 	underboss: underboss,
@@ -247,6 +253,8 @@ const allRewards: Record<string, Material> = {
 	sheepcopter: sheepcopter,
 	scarlet_sash: scarletSash,
 	super_specter: superSpecter,
+	the_harbinger: theHarbinger,
+	day_adrift: dayAdrift,
 }
 
 export function getAllRewards() {
