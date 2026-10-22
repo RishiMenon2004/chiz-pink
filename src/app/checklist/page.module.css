@@ -170,6 +170,7 @@
 div.dailyActivity {
 	grid-area: unset !important;
 	grid-column: span 2 !important;
+	grid-row: span 2 !important;
 }
 
 @media (max-width: 810px) {
@@ -213,6 +214,7 @@ div.dailyActivity {
 
 	div.dailyActivity {
 		grid-column: 1 / -1 !important;
+		grid-row: auto !important;
 		border-radius: 1rem;
 	}
 }
