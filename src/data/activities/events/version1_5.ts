@@ -8,11 +8,12 @@ const timings = patchTimings.version1_5
 
 export const events: EventData[] = [
 	{
-		name: "Version 1.5",
+		name: "Version 1.5 (\"Once Upon a Glitched Call\")",
 		type: "Patch",
 		getStartDate: timings.phase1Start,
 		getEndDate: timings.phase2End,
-		themeColor: "#6a7fe0",
-		yOffset: "39%",
+		eventImage: "version1.5/version_1.5.webp",
+		themeColor: "#ab9dec",
+		yOffset: "13%",
 	},
 ]

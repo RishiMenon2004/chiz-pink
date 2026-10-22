@@ -1,12 +1,12 @@
 {
 	"version": "1.5",
 	"patch": {
-		"name": "Version 1.5",
+		"name": "Version 1.5 (\"Once Upon a Glitched Call\")",
 		"phase1Start": "2026-11-11",
 		"phase2Start": "2026-12-02",
 		"end": "2026-12-22",
-		"themeColor": "#6a7fe0",
-		"yOffset": "39%"
+		"themeColor": "#ab9dec",
+		"yOffset": "13%"
 	},
 	"characters": [
 		{

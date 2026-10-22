@@ -14,7 +14,7 @@ export const events: EventData[] = [
 		getEndDate: timings.phase2End,
 		eventImage: "version1.3/version_1.3.webp",
 		themeColor: "#d22730",
-		yOffset: "15%",
+		yOffset: "51%",
 	},
 	{
 		name: "Lucent Tides Mystery Box: Tide",
