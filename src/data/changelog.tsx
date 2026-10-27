@@ -5,7 +5,7 @@ export const ChangeLogs = {
 		timeStamp: new Date("2026-09-05").getTime(),
 		logs: [
 			"Chiz.Pink Release - Your pinkest NTE companion!",
-			"Optimized for all screens, use Chiz.Pink right on your browser with end-to-end encrypted cloud sync. (Read <link url='/privacy'>Privacy Policy</> for more info)",
+			"Optimized for all screens, use Chiz.Pink right on your browser with end-to-end encrypted cloud sync. (Read <link href='/privacy'>Privacy Policy</> for more info)",
 			<>
 				{"Also available as a PWA: "}
 				<InstallPWAButton key={"PWA Button"} type="link">
