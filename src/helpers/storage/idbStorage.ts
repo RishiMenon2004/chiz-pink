@@ -96,6 +96,24 @@ function runRequest<T>(
 	)
 }
 
+// Resolves once every write already issued to any store has finished.
+// IndexedDB runs readwrite transactions with overlapping scopes in creation
+// order, so an empty one spanning every store completes only after them.
+export function waitForPendingWrites(): Promise<void> {
+	return openDB().then(
+		(db) =>
+			new Promise<void>((resolve, reject) => {
+				const tx = db.transaction(
+					[RECORDS_STORE, PULLS_STORE, INVENTORY_STORE, PLANNER_STORE],
+					"readwrite"
+				)
+				tx.oncomplete = () => resolve()
+				tx.onerror = () => reject(tx.error)
+				tx.onabort = () => reject(tx.error)
+			})
+	)
+}
+
 export async function get<T>(key: string): Promise<T | null> {
 	const value = await runRequest<T | undefined>(
 		RECORDS_STORE,

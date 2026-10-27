@@ -219,6 +219,32 @@ export function setItem<T>(key: string, value: T): void {
 	scheduleWrite(key)
 }
 
+// Resolves once everything written so far is on disk: skips the debounce
+// on pending keys, then waits out every in-flight IndexedDB write
+// (including the pulls/inventory/planner stores' own). For callers about to
+// navigate away or close the window, where pending writes would be lost.
+export async function flushPendingWrites(): Promise<void> {
+	if (fallbackMode || typeof window === "undefined") return
+
+	// A key changed mid-write re-flushes itself once that write settles
+	// (see flushWrite), possibly after the barrier - so repeat until idle.
+	for (let attempt = 0; attempt < 5; attempt++) {
+		const flushes: Promise<void>[] = []
+		for (const [key, state] of writeState) {
+			if (!state.timer) continue
+			clearTimeout(state.timer)
+			flushes.push(flushWrite(key))
+		}
+		await Promise.all(flushes)
+		await idbStorage.waitForPendingWrites()
+
+		const idle = [...writeState.values()].every(
+			(state) => !state.timer && !state.writing && !state.dirty
+		)
+		if (idle) return
+	}
+}
+
 export function removeItem(key: string): void {
 	if (typeof window === "undefined") return
 

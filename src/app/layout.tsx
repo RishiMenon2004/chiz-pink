@@ -8,6 +8,7 @@ import "./globals.css"
 import { AuthProvider } from "@/components/layout/AuthProvider"
 import { ConvexClientProvider } from "@/components/layout/ConvexClientProvider"
 import { CurrencyBar } from "@/components/layout/CurrencyBar/CurrencyBar"
+import { DomainMoveGate } from "@/components/layout/DomainMoveGate"
 import { Footer } from "@/components/layout/Footer"
 import { Sidebar } from "@/components/layout/Sidebar"
 import { SplashScreen } from "@/components/layout/SplashScreen"
@@ -97,6 +98,7 @@ export default function RootLayout({
 							<SyncErrorBoundary>
 								<ServiceWorkerRegister />
 								<SplashScreen />
+								<DomainMoveGate />
 								<Sidebar />
 								<CurrencyBar />
 								{children}

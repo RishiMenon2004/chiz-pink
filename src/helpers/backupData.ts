@@ -149,6 +149,26 @@ function isCurrentBackup(data: unknown): data is BackupData {
 	)
 }
 
+// Whether this browser has saved any main data (pull history is checked
+// separately - see hasLocalPulls()).
+export function hasLocalData() {
+	const cachedPlanner = getCachedPlanner()
+	return (
+		memoryStorage.hasItem("checklist") ||
+		memoryStorage.hasItem("settings") ||
+		Object.keys(getCachedInventory()).length > 0 ||
+		Object.keys(cachedPlanner.characters).length > 0 ||
+		Object.keys(cachedPlanner.arcs).length > 0
+	)
+}
+
+export function hasLocalPulls() {
+	// Every banner key always exists; look for an actual pull in any.
+	return Object.values(getCachedPulls()).some(
+		(banner) => Object.keys(banner ?? {}).length > 0
+	)
+}
+
 export function backupImport(json: string) {
 	let data: BackupData | null = null
 
@@ -171,13 +191,6 @@ export function backupImport(json: string) {
 	}
 
 	const lastUpdated = memoryStorage.getItem<number>("lastUpdated", 0)
-	const cachedPlanner = getCachedPlanner()
-	const hasLocalData =
-		memoryStorage.hasItem("checklist") ||
-		memoryStorage.hasItem("settings") ||
-		Object.keys(getCachedInventory()).length > 0 ||
-		Object.keys(cachedPlanner.characters).length > 0 ||
-		Object.keys(cachedPlanner.arcs).length > 0
 	const remoteLastUpdated = Number(data.lastUpdated)
 	const hasSyncedBefore = Boolean(
 		memoryStorage.getItem<number | null>("lastSynced", null)
@@ -196,7 +209,7 @@ export function backupImport(json: string) {
 
 	// The one remaining conflict: first-ever sync on this device, with
 	// pre-existing local data that would otherwise be silently discarded.
-	if (!hasSyncedBefore && hasLocalData) {
+	if (!hasSyncedBefore && hasLocalData()) {
 		return { status: "overwrite", data }
 	}
 
