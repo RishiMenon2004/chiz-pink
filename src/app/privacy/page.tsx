@@ -14,7 +14,7 @@ export default function PrivacyPolicy() {
 		<main className={`page ${styles.page}`} role="main">
 			<div className={styles.intro}>
 				<span className={styles.lastUpdated}>
-					Last updated: 23 July 2026
+					Last updated: 28 October 2026
 				</span>
 				<p className={styles.lead}>
 					<b>Chiz.Pink</b>
@@ -161,7 +161,7 @@ export default function PrivacyPolicy() {
 						<li>
 							<b>Vercel:</b>
 							{
-								" hosts the application and serves static assets. Standard web server access logs (IP addresses, request paths) may be collected by Vercel for operational and security purposes, governed by "
+								" hosts the application and serves static assets, and counts page visits through Vercel Web Analytics. Standard web server access logs (IP addresses, request paths) may be collected by Vercel for operational and security purposes, governed by "
 							}
 							<Link
 								className="btn-anchor"
@@ -175,7 +175,7 @@ export default function PrivacyPolicy() {
 					</ul>
 					<p>
 						{
-							"There are no advertising trackers, analytics SDKs, or behavioral monitoring scripts on Chiz.Pink."
+							"There are no advertising trackers or behavioral monitoring scripts on Chiz.Pink. The only analytics is Vercel Web Analytics, which counts page visits without cookies and doesn't identify you."
 						}
 					</p>
 				</div>
