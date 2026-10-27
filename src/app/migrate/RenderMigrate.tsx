@@ -55,17 +55,21 @@ const STATUS_TEXT: Record<Exclude<Status, "conflict">, string> = {
  * opened as a popup by the old domain, which sends its saved data here.
  */
 export function RenderMigrate() {
-	// Opened directly (not as the old domain's popup): nothing to receive.
-	const hasOpener = useSyncExternalStore(
+	// false: opened directly (not as the old domain's popup), so there's
+	// nothing to receive. null until hydrated - useInitialSyncPending() also
+	// reports the server's "not pending" during hydration, so starting then
+	// would run before local storage has loaded.
+	const hasOpener = useSyncExternalStore<boolean | null>(
 		noopSubscribe,
 		() => window.opener !== null,
-		() => true
+		() => null
 	)
 	const syncPending = useInitialSyncPending()
 
 	const [status, setStatus] = useState<Status>("connecting")
 	const [incoming, setIncoming] = useState<BackupData | null>(null)
-	const startedRef = useRef(false)
+	// The old domain answers every "ready" with the data; only act on it once.
+	const receivedRef = useRef(false)
 
 	const finish = async (data: BackupData | null) => {
 		setStatus("saving")
@@ -78,12 +82,13 @@ export function RenderMigrate() {
 	}
 
 	useEffect(() => {
-		if (!hasOpener || syncPending || startedRef.current) return
-		startedRef.current = true
+		if (hasOpener !== true || syncPending) return
 
 		const handleMessage = (e: MessageEvent) => {
 			if (e.origin !== OLD_ORIGIN || e.source !== window.opener) return
 			if (!isMigrationMessage(e.data) || e.data.type !== "data") return
+			if (receivedRef.current) return
+			receivedRef.current = true
 
 			// Same validation as a manual backup file import.
 			const { status: importStatus, data } = backupImport(
@@ -121,7 +126,7 @@ export function RenderMigrate() {
 			<span className={styles.migrateCard}>
 				<p className={styles.migrateTitle}>Moving to chiz.pink</p>
 				<p className={styles.migrateDescription}>
-					{!hasOpener ? (
+					{hasOpener === false ? (
 						<>
 							{"There's nothing to move here. "}
 							<Link className="btn-anchor" href="/">
