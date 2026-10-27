@@ -10,14 +10,14 @@ type RoutesRecord = Record<string, Route>
 export const RoutesData: RoutesRecord = {
 	"/": {
 		title: "DASHBOARD",
-		head: "Chiz.Pink | NTE Planner and Daily/Weekly Checklist",
+		head: "Chiz.Pink | NTE Planner and Pull Tracker",
 		tooltip: "Dashboard",
 		id: "home",
 	},
 
 	"/checklist": {
 		title: "CHECKLIST",
-		head: "Daily/Weekly Checklist",
+		head: "Checklist",
 		tooltip: "Checklist",
 		id: "checklist",
 	},
