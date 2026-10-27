@@ -17,12 +17,6 @@ That frustration is what made **Chiz.Pink**.
 
 > I'm not affiliated with or endorsed by the Hotta Studio, it's just a fan project.
 
-# !!WARNING!!
-
-As of now, I'm still working out the kinks, and [chiz-pink.vercel.app](http://chiz-pink.vercel.app) should not be used as a working release!
-
-Changes that I make might break existing data. This section will be removed once it is stable and released.
-
 ## What it does
 
 - :calendar: **Character & Arc Planners** - Plan and track levelling and ascension progress.
@@ -36,7 +30,7 @@ Changes that I make might break existing data. This section will be removed once
   lives in your browser's IndexedDB.
 - :cloud: **Cloud Sync** (Optional) - Sign-in with Google if you want to sync across devices - your data
   gets encrypted on your own device before it ever touches the database, so
-   I couldn't read it even if I wanted to. Full breakdown here: [`Privacy Policy`](https://chiz-pink.vercel.app/privacy)
+   I couldn't read it even if I wanted to. Full breakdown here: [`Privacy Policy`](https://chiz.pink/privacy)
   if you're curious how that works.
 - :iphone: **Native App** - Install Chiz.Pink as a PWA. If you don't know what that is, it installs the webapp on
   your device like any other app you find on the Play Store, App Store or Microsoft Store.
