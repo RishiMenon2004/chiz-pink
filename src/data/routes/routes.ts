@@ -99,6 +99,13 @@ export const RoutesData: RoutesRecord = {
 		id: "privacy_policy",
 	},
 
+	"/migrate": {
+		title: "MOVING",
+		head: "Moving to chiz.pink",
+		tooltip: "Moving to chiz.pink",
+		id: "migrate",
+	},
+
 	"/auth/popup-callback": {
 		title: "Account Linked",
 		head: "",

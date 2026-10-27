@@ -1,9 +1,11 @@
 import type { Metadata } from "next"
 
+import { RoutesData } from "@/data/routes"
+
 import { RenderMigrate } from "./RenderMigrate"
 
 export const metadata: Metadata = {
-	title: "Moving to chiz.pink",
+	title: RoutesData["/migrate"].head,
 	robots: { index: false },
 }
 
