@@ -2,6 +2,7 @@
 
 import Image from "next/image"
 import Link from "next/link"
+import { usePathname } from "next/navigation"
 import { useEffect, useRef, useState } from "react"
 
 import { ChangeLogs } from "@/data/changelog"
@@ -215,7 +216,17 @@ function UpdateSplashScreen({ closeSplash }: { closeSplash: () => void }) {
 	)
 }
 
+const NO_SPLASH_PATHS = new Set(["/migrate"])
+
 export function SplashScreen() {
+	const pathname = usePathname()
+
+	if (NO_SPLASH_PATHS.has(pathname)) return null
+
+	return <SplashScreens />
+}
+
+function SplashScreens() {
 	const isFirstVisit = useFirstVisit()
 
 	const latestChangeDate = Object.values(ChangeLogs).at(-1)?.timeStamp || 0
