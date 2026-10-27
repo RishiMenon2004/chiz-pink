@@ -1,0 +1,92 @@
+.card {
+	width: min(26rem, 100%);
+	padding: 1.5rem 1.25rem 1.25rem;
+	border-radius: 1.5rem;
+
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 0.75rem;
+
+	text-align: center;
+}
+
+.icon {
+	width: 4.5rem;
+	height: 4.5rem;
+	border-radius: 1.25rem;
+	box-shadow: var(--shadow-dark-40) 0 2px 6px;
+}
+
+.title {
+	margin: 0;
+
+	color: var(--interactive-bg);
+	font-family: var(--font-syne);
+	font-size: 1.5rem;
+	font-weight: 700;
+}
+
+.addresses {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: center;
+	gap: 0.5rem;
+
+	font-family: var(--font-barlow-condensed);
+	font-size: 1.1rem;
+}
+
+.oldAddress,
+.newAddress {
+	padding: 0.125rem 0.75rem;
+	border-radius: 100vh;
+	color: white;
+}
+
+.oldAddress {
+	opacity: 0.6;
+	text-decoration: line-through;
+}
+
+.newAddress {
+	background-color: var(--pink);
+	font-weight: 700;
+
+	paint-order: stroke fill;
+	-webkit-text-stroke: 2px black;
+}
+
+/* Same long arrow the planner and profile use between levels. */
+.arrow {
+	width: 1.5em;
+	height: 1em;
+
+	background-image: url("/icons/upgrade.png");
+	background-size: cover;
+	background-position: center;
+}
+
+.body {
+	margin: 0;
+	max-width: 22rem;
+
+	color: black;
+	font-family: var(--font-barlow-condensed);
+	font-size: 1.15rem;
+	font-weight: 500;
+	text-wrap: balance;
+}
+
+.actions {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	gap: 0.75rem;
+	margin-top: 0.5rem;
+
+	button {
+		padding-inline: 1.5rem;
+	}
+}

@@ -1,6 +1,7 @@
 "use client"
 
 import { useEffect, useRef, useState, useSyncExternalStore } from "react"
+import Image from "next/image"
 
 import {
 	backupExport,
@@ -12,6 +13,7 @@ import {
 	MIGRATE_PATH,
 	MIGRATED_KEY,
 	NEW_ORIGIN,
+	OLD_ORIGIN,
 	isMigrationMessage,
 	isOldDomain,
 	type MigrationMessage,
@@ -19,8 +21,9 @@ import {
 import { useInitialSyncPending } from "@/helpers/syncGate"
 import * as memoryStorage from "@/helpers/storage/memoryStorage"
 
-import { AlertContainer } from "../Alert"
 import { ModalContainer } from "../Modal/ModalContainer"
+
+import styles from "./domainMoveGate.module.css"
 
 // No popup handshake within this long means the opener link didn't survive
 // (e.g. an installed PWA opening the popup in a separate browser).
@@ -130,40 +133,63 @@ export function DomainMoveGate() {
 		setStatus("waiting")
 	}
 
+	const body = {
+		prompt: "Your data is still saved at the old address. Bring it along to pick up right where you left off.",
+		waiting: "Finish up in the chiz.pink window that just opened.",
+		failed: "Couldn't move your data automatically. Try again (allow pop-ups if asked), or download a backup and import it from Settings on chiz.pink.",
+	}[status]
+
 	return (
 		<ModalContainer>
-			{status === "prompt" && (
-				<AlertContainer
-					type="acknowledge"
-					onConfirm={openPopup}
-					confirmLabel="Move my data">
-					{"Chiz.Pink has moved to chiz.pink! "}
-					{
-						"Your data is saved on this old address, so move it over to pick up right where you left off."
-					}
-				</AlertContainer>
-			)}
-			{status === "waiting" && (
-				<AlertContainer
-					type="acknowledge"
-					onConfirm={openPopup}
-					confirmLabel="Reopen window">
-					{"Finish up in the chiz.pink window that just opened."}
-				</AlertContainer>
-			)}
-			{status === "failed" && (
-				<AlertContainer
-					type="choices"
-					onConfirm={openPopup}
-					confirmLabel="Try again"
-					onCancel={backupExport}
-					cancelLabel="Download backup">
-					{"Couldn't move your data automatically. "}
-					{
-						"Try again (allow pop-ups if asked), or download a backup and import it from Settings on chiz.pink."
-					}
-				</AlertContainer>
-			)}
+			<div
+				className={`metallic-panel ${styles.card}`}
+				role="dialog"
+				aria-modal="true"
+				aria-labelledby="domain-move-title">
+				<Image
+					className={styles.icon}
+					src="/app_icon.png"
+					alt=""
+					width={72}
+					height={72}
+				/>
+				<h2 id="domain-move-title" className={styles.title}>
+					{"We've moved!"}
+				</h2>
+				<div className={styles.addresses} aria-hidden="true">
+					<span className={`inset-control ${styles.oldAddress}`}>
+						{OLD_ORIGIN.replace("https://", "")}
+					</span>
+					<span className={styles.arrow} />
+					<span className={`inset-control ${styles.newAddress}`}>
+						{NEW_ORIGIN.replace("https://", "")}
+					</span>
+				</div>
+				<p className={styles.body}>{body}</p>
+				<div className={styles.actions}>
+					{status === "failed" && (
+						<button
+							type="button"
+							className="pill-button"
+							onClick={backupExport}>
+							DOWNLOAD BACKUP
+						</button>
+					)}
+					<button
+						type="button"
+						className="pill-button"
+						autoFocus
+						onClick={openPopup}>
+						{
+							{
+								prompt: "MOVE MY DATA",
+								waiting: "REOPEN WINDOW",
+								failed: "TRY AGAIN",
+							}[status]
+						}
+					</button>
+				</div>
+			</div>
 		</ModalContainer>
 	)
 }
