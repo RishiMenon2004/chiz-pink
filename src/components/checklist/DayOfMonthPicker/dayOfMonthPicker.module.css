@@ -1,0 +1,135 @@
+.picker {
+	position: relative;
+	min-width: 0;
+}
+
+/* Matches settings' configSelect closed state. */
+.trigger {
+	position: relative;
+
+	width: 100%;
+	padding: 0.125rem 2.5rem 0.125rem 2rem;
+	border: none;
+	border-radius: 100vh;
+
+	color: white;
+	font-family: var(--font-barlow-condensed);
+	font-size: 1.125rem;
+	font-style: italic;
+	text-align: center;
+
+	cursor: var(--dropdown-cursor);
+
+	&::after {
+		content: "";
+		position: absolute;
+		top: 50%;
+		right: 0.25rem;
+		translate: 0 -50%;
+
+		width: 2.5ch;
+		aspect-ratio: 1;
+		background-image: url("/icons/less.png");
+		background-size: contain;
+		background-position: center;
+		background-repeat: no-repeat;
+		font-size: 0.75rem;
+	}
+
+	&:focus-visible,
+	&[data-open="true"] {
+		outline: none;
+		background-color: var(--darker-pink);
+	}
+
+	&[data-open="true"]::after {
+		rotate: 180deg;
+	}
+}
+
+/* Mirrors globals.css's ::picker(select) panel, centred under the trigger. */
+.grid {
+	position: absolute;
+	top: calc(100% + 0.25rem);
+	left: 50%;
+	translate: -50% 0;
+	z-index: 3;
+
+	--panel-radius: 1rem;
+	--panel-padding: 0.25rem;
+	--panel-border: 1px;
+
+	display: grid;
+	grid-template-columns: repeat(7, 2.25rem);
+	gap: 0.25rem;
+
+	padding: var(--panel-padding);
+	border: color-mix(in srgb, var(--interactive-bg) 100%, white 10%)
+		var(--panel-border) solid;
+	border-radius: var(--panel-radius);
+
+	background-color: var(--interactive-bg);
+	box-shadow: var(--shadow-dark-50) 0 0 10px 2px;
+}
+
+/* Mirrors globals.css's option styling. */
+.day {
+	display: grid;
+	place-items: center;
+	aspect-ratio: 1;
+	border-radius: 0.5rem;
+
+	color: white;
+	font-family: var(--font-barlow-condensed);
+	font-size: 1.125rem;
+
+	background-color: color-mix(in srgb, var(--pink) 30%, transparent);
+	opacity: 0.75;
+	outline-offset: -2px;
+
+	cursor: var(--pointer-cursor);
+	user-select: none;
+
+	&[data-clamped] {
+		font-style: italic;
+	}
+
+	/* Cells in the panel's corners follow its curve: inner radius = outer
+	   radius - border - padding. The bottom-right corner is empty (31 ends the
+	   last row early). */
+	--corner-radius: calc(
+		var(--panel-radius) - var(--panel-border) - var(--panel-padding)
+	);
+
+	&[data-day="1"] {
+		border-start-start-radius: var(--corner-radius);
+	}
+	&[data-day="7"] {
+		border-start-end-radius: var(--corner-radius);
+	}
+	&[data-day="29"] {
+		border-end-start-radius: var(--corner-radius);
+	}
+
+	&[aria-selected="true"] {
+		background-color: color-mix(in srgb, var(--pink) 75%, transparent);
+		outline: var(--pink) 2px solid;
+	}
+
+	&:hover,
+	&:focus,
+	&[aria-selected="true"] {
+		opacity: 1;
+		paint-order: stroke fill;
+		-webkit-text-stroke: black 3px;
+	}
+
+	&:hover,
+	&:focus {
+		background-color: var(--pink);
+	}
+
+	&:focus-visible {
+		outline: white 2px solid;
+	}
+}

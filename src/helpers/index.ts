@@ -32,6 +32,8 @@ export {
 	getBiWeeklyMondayResetBoundaries,
 	getBiWeeklyWednesdayResetBoundaries,
 	getSeasonalResetBoundaries,
+	getCustomTaskResetBoundaries,
+	getUpcomingResetDates,
 } from "./resetBoundaries"
 
 export {
