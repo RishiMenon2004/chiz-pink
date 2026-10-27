@@ -1,0 +1,146 @@
+/* The preview card floats above the settings panel as its own element. */
+.wrapper {
+	width: min(32rem, 100%);
+
+	/* Pin the top instead of letting ModalContainer centre us, so the
+	   dialog grows downward rather than jumping when options appear.
+	   Auto margins take priority over the container's justify-content. */
+	margin-block: min(15dvh, 8rem) auto;
+	padding-bottom: 1rem;
+
+	display: flex;
+	flex-direction: column;
+	gap: 1rem;
+}
+
+.box {
+	padding: 1rem 0.25rem 0.25rem;
+	border-radius: 1.5rem;
+
+	display: flex;
+	flex-direction: column;
+
+	/* Lets .fieldHalf react to the dialog's width, not the viewport's. */
+	container-type: inline-size;
+}
+
+/* A 4-column grid. Each field is a subgrid row: label in the first
+   column, dropdown across the other three. Half-width fields (bi-weekly)
+   take one column each, so two fit on a row. */
+.body {
+	padding: 0 0.75rem;
+
+	display: grid;
+	/* Label columns (1 and 3) narrower than the dropdown columns, but never
+	   narrower than their longest label. */
+	grid-template-columns: repeat(2, minmax(min-content, 0.7fr) 1.3fr);
+	gap: 0.75rem 1rem;
+
+	> :not(.field) {
+		grid-column: 1 / -1;
+	}
+}
+
+.field {
+	grid-column: 1 / -1;
+	display: grid;
+	grid-template-columns: subgrid;
+	align-items: center;
+
+	color: black;
+	font-family: var(--font-barlow-condensed);
+
+	b {
+		margin-inline-start: 0.5rem;
+		font-weight: 500;
+		white-space: nowrap;
+	}
+
+	/* The control: a <select> or a custom picker. */
+	> :not(b) {
+		grid-column: 2 / -1;
+		min-width: 0;
+	}
+}
+
+.fieldHalf {
+	grid-column: span 2;
+
+	> :not(b) {
+		grid-column: auto;
+	}
+
+	/* Too narrow for two dropdowns a row (phones): stack them as normal
+	   full-width rows. */
+	@container (width < 28rem) {
+		grid-column: 1 / -1;
+
+		> :not(b) {
+			grid-column: 2 / -1;
+		}
+	}
+}
+
+/* The checklist card is clickable on the checklist page; here only its
+   title and description are interactive. */
+.preview {
+	cursor: default;
+}
+
+/* Text fields that look like the card's own title/description text until
+   hovered or focused. */
+.inlineInput {
+	display: block;
+	min-width: 0;
+	padding: 0.125rem 0.375rem;
+	border: none;
+	border-radius: 0.5rem;
+
+	font: inherit;
+	background-color: transparent;
+
+	cursor: var(--edit-cursor);
+
+	&::placeholder {
+		color: inherit;
+		opacity: 0.5;
+	}
+
+	&:hover,
+	&:focus-visible {
+		outline: none;
+		background-color: color-mix(in srgb, var(--interactive-bg) 10%, transparent);
+	}
+}
+
+input.inlineInput {
+	flex: 1;
+}
+
+textarea.inlineInput {
+	align-self: stretch;
+	/* Grows with its content where supported. */
+	field-sizing: content;
+	min-height: 1lh;
+	resize: none;
+}
+
+.hint {
+	margin: 0 0.5rem;
+
+	color: black;
+	font-family: var(--font-barlow-condensed);
+	font-style: italic;
+	opacity: 0.65;
+}
+
+.actions {
+	display: flex;
+	justify-content: flex-end;
+	gap: 0.75rem;
+	padding: 0.75rem 0.5rem 0.5rem;
+
+	[data-variant="danger"] {
+		margin-inline-end: auto;
+	}
+}

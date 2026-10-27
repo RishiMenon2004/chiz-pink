@@ -86,6 +86,27 @@
 		}
 	}
 
+	/* Centred against the 1.75rem checkbox, the button's top gap is the
+	   card's 0.75rem top padding plus half the height difference. The
+	   right margin tops up the card's right padding to the same gap, so
+	   both stay equal whatever --edit-height is. */
+	.itemEditButton {
+		--edit-height: 1.25rem;
+		--card-padding-right: 1rem;
+
+		height: var(--edit-height);
+		margin-left: auto;
+		margin-right: calc(
+			0.75rem + (1.75rem - var(--edit-height)) / 2 -
+				var(--card-padding-right)
+		);
+		align-self: center;
+		flex-shrink: 0;
+		padding: 0 0.75rem;
+		font-size: 1rem;
+		line-height: 1;
+	}
+
 	&:hover .itemCheckbox {
 		background-color: color-mix(in srgb, var(--pink), var(--interactive-bg));
 	}
@@ -196,6 +217,31 @@ div.dailyActivity {
 		gap: 0.25rem;
 		overflow: hidden;
 
+		/* Scaled down with the title. */
+		.itemEditButton {
+			--edit-height: 1.25rem;
+			--card-padding-right: 0.75rem;
+
+			padding: 0 0.6rem;
+			font-size: 0.85rem;
+
+			/* globals.css's --shadow-button-inset with a thinner slot ring
+			   (0.175rem there), scaled to the smaller button. */
+			--slot: 0.14rem;
+			--slot-ring:
+				var(--interactive-bg) 0 0 0 var(--slot),
+				var(--shadow-dark-60) 0 -1px 2px var(--slot),
+				var(--shadow-glow-white-80) 0 1px 1px var(--slot);
+
+			box-shadow: var(--slot-ring), var(--shadow-button);
+
+			&:not(:disabled):hover,
+			&:not(:disabled):focus,
+			&:not(:disabled):focus-visible {
+				box-shadow: var(--slot-ring), var(--shadow-button-hover);
+			}
+		}
+
 		.itemTitle {
 			font-size: 0.9rem;
 			text-wrap-mode: wrap;
@@ -227,6 +273,12 @@ div.dailyActivity {
 	.checklistItem {
 		.itemTitle {
 			font-size: 0.8rem;
+		}
+
+		.itemEditButton {
+			--edit-height: 1.15rem;
+
+			font-size: 0.75rem;
 		}
 	}
 }

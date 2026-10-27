@@ -7,11 +7,17 @@ import { ActivityData, getAllActivitiesList } from "@/data/activities/activities
 
 import { useChecklistStore, useNow, useSettingsStore } from "@/hooks"
 
-import type { ChecklistEntry, ChecklistRecord } from "@/types/checklist"
+import type {
+	ChecklistEntry,
+	ChecklistRecord,
+	CustomTask,
+	CustomTaskSchedule,
+} from "@/types/checklist"
 
 import {
 	formatTimeRemaining,
 	getBiWeeklyMondayResetBoundaries,
+	getCustomTaskResetBoundaries,
 	getBiWeeklyWednesdayResetBoundaries,
 	getDailyResetBoundaries,
 	getMonthlyResetBoundaries,
@@ -22,6 +28,7 @@ import {
 
 import { ModalContainer, PullOutToolbar } from "@/components/layout"
 import { DashDailyActivity } from "@/components/home"
+import { CustomTaskBox } from "@/components/checklist"
 
 import { styles as toolbarStyles } from "@/components/layout/PullOutToolbar"
 import checklistStyles from "@/components/home/DashDailyChecklist/DashDailyChecklist.module.css"
@@ -100,6 +107,86 @@ function RenderActivityList({
 					{type === "Bi-Weekly" && (
 						<div className={styles.itemTime}>
 							{`Resets in: ${formattedTime}`}
+						</div>
+					)}
+				</div>
+			)
+		})
+}
+
+function RenderCustomTaskList({
+	type,
+	onEdit,
+}: {
+	type: CustomTaskSchedule["type"]
+	onEdit: (task: CustomTask) => void
+}) {
+	const { settings } = useSettingsStore()
+	const { checklist, actions } = useChecklistStore()
+
+	const now = useNow()
+
+	return Object.values(checklist.customTasks ?? {})
+		.filter((task) => task.schedule.type === type)
+		.toSorted((a, b) => a.createdAt - b.createdAt)
+		.map((task) => {
+			const boundaries =
+				now === null
+					? null
+					: getCustomTaskResetBoundaries(
+							task.schedule,
+							settings.userdata.server,
+							now
+						)
+			const checked =
+				boundaries !== null &&
+				task.checkedAt !== null &&
+				task.checkedAt >= boundaries.previousReset
+
+			// Only schedules that don't share their section's timer get their own.
+			const showTime =
+				task.schedule.type === "biWeekly" ||
+				(task.schedule.type === "monthly" && task.schedule.day !== 1)
+
+			return (
+				<div
+					className={`metallic-panel ${styles.checklistItem}`}
+					key={task.id}
+					onClick={(e) => {
+						e.stopPropagation()
+						actions.setCustomTaskChecked(task.id, !checked)
+					}}>
+					<div className={styles.itemTitleRow}>
+						<input
+							className={`inset-control ${styles.itemCheckbox}`}
+							type="checkbox"
+							checked={checked}
+							readOnly
+						/>
+						<div className={styles.itemTitle}>{task.title}</div>
+						<button
+							type="button"
+							className={`pill-button ${styles.itemEditButton}`}
+							aria-label={`Edit ${task.title}`}
+							onClick={(e) => {
+								e.stopPropagation()
+								onEdit(task)
+							}}>
+							EDIT
+						</button>
+					</div>
+					{task.description && (
+						<div className={styles.itemDescription}>
+							{task.description}
+						</div>
+					)}
+					{showTime && (
+						<div className={styles.itemTime}>
+							{`Resets in: ${
+								boundaries === null || now === null
+									? "-"
+									: formatTimeRemaining(boundaries.nextReset - now)
+							}`}
 						</div>
 					)}
 				</div>
@@ -225,6 +312,10 @@ export default function RenderChecklist() {
 	const seasonal = checklist.activities.seasonal ?? {}
 
 	const [showEditTasksModal, setShowEditTasksModal] = useState<boolean>(false)
+	// "new" opens an empty form; a task opens it for editing.
+	const [customTaskModal, setCustomTaskModal] = useState<
+		CustomTask | "new" | null
+	>(null)
 
 	return (
 		<>
@@ -239,6 +330,31 @@ export default function RenderChecklist() {
 						<ModalContainer
 							onClickOut={() => setShowEditTasksModal(false)}>
 							<EditTasksBox />
+						</ModalContainer>,
+						document.body
+					)}
+				<button
+					className={`pill-button ${toolbarStyles.toolbarButton}`}
+					onClick={() => setCustomTaskModal("new")}>
+					ADD TASK
+				</button>
+				{customTaskModal !== null &&
+					createPortal(
+						<ModalContainer onClickOut={() => setCustomTaskModal(null)}>
+							<CustomTaskBox
+								// Remount per task so the form state starts fresh.
+								key={
+									customTaskModal === "new"
+										? "new"
+										: customTaskModal.id
+								}
+								task={
+									customTaskModal === "new"
+										? undefined
+										: customTaskModal
+								}
+								onClose={() => setCustomTaskModal(null)}
+							/>
 						</ModalContainer>,
 						document.body
 					)}
@@ -270,6 +386,10 @@ export default function RenderChecklist() {
 							recordType="daily"
 							entries={daily}
 						/>
+						<RenderCustomTaskList
+							type="daily"
+							onEdit={setCustomTaskModal}
+						/>
 					</div>
 				</div>
 
@@ -295,6 +415,10 @@ export default function RenderChecklist() {
 							recordType="weekly"
 							entries={weekly}
 						/>
+						<RenderCustomTaskList
+							type="weekly"
+							onEdit={setCustomTaskModal}
+						/>
 					</div>
 				</div>
 
@@ -307,6 +431,10 @@ export default function RenderChecklist() {
 							type="Bi-Weekly"
 							recordType="biWeekly"
 							entries={biWeekly}
+						/>
+						<RenderCustomTaskList
+							type="biWeekly"
+							onEdit={setCustomTaskModal}
 						/>
 					</div>
 				</div>
@@ -333,6 +461,10 @@ export default function RenderChecklist() {
 							recordType="monthly"
 							entries={monthly}
 						/>
+						<RenderCustomTaskList
+							type="monthly"
+							onEdit={setCustomTaskModal}
+						/>
 					</div>
 				</div>
 
@@ -355,6 +487,10 @@ export default function RenderChecklist() {
 							type="Seasonal"
 							recordType="seasonal"
 							entries={seasonal}
+						/>
+						<RenderCustomTaskList
+							type="seasonal"
+							onEdit={setCustomTaskModal}
 						/>
 					</div>
 				</div>

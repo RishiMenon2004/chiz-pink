@@ -1,3 +1,4 @@
+import type { CustomTaskSchedule } from "@/types/checklist"
 import { SettingsRecord } from "@/types/settings"
 import { SERVER_UTC_OFFSET_HOURS, getServerTimestamp } from "@/helpers/serverTime"
 import { BTRTimeline, patchTimings } from "@/data/activities/events"
@@ -144,4 +145,101 @@ export function getSeasonalResetBoundaries(now: number) {
 	}
 
 	return { previousReset, nextReset }
+}
+
+const DAY_MS = 24 * 60 * 60 * 1000
+
+// Server-time "YYYY-MM-DD" for the reset day `now` falls in, i.e. a time
+// before 5:00 AM still counts as the previous day.
+export function getServerResetDate(
+	server: SettingsRecord["userdata"]["server"],
+	now: number
+) {
+	const { previousReset } = getDailyResetBoundaries(server, now)
+	const offsetMs = SERVER_UTC_OFFSET_HOURS[server] * 60 * 60 * 1000
+	return new Date(previousReset + offsetMs).toISOString().slice(0, 10)
+}
+
+// Every 14 days at 5:00 AM server time, on the same weekday as anchorDate.
+function getBiWeeklyAnchoredResetBoundaries(
+	server: SettingsRecord["userdata"]["server"],
+	anchorDate: string,
+	now: number
+) {
+	const [year, month, day] = anchorDate.split("-").map(Number)
+	const anchor = getServerTimestamp(server, { year, month, day, hour: 5 })
+	const elapsedPeriods = Math.floor((now - anchor) / BIWEEKLY_PERIOD_MS)
+
+	const previousReset = anchor + elapsedPeriods * BIWEEKLY_PERIOD_MS
+	const nextReset = previousReset + BIWEEKLY_PERIOD_MS
+
+	return { previousReset, nextReset }
+}
+
+// Monthly reset on `day` at 5:00 AM server time, clamped to the month's
+// last day (e.g. the 31st resets on Feb 28/29).
+function getMonthlyOnDayResetBoundaries(
+	server: SettingsRecord["userdata"]["server"],
+	day: number,
+	now: number
+) {
+	const offsetMs = SERVER_UTC_OFFSET_HOURS[server] * 60 * 60 * 1000
+	const shifted = new Date(now + offsetMs)
+
+	const resetIn = (year: number, month: number) => {
+		const daysInMonth = new Date(Date.UTC(year, month + 1, 0)).getUTCDate()
+		return (
+			Date.UTC(year, month, Math.min(day, daysInMonth), 5) - offsetMs
+		)
+	}
+
+	const year = shifted.getUTCFullYear()
+	const month = shifted.getUTCMonth()
+
+	let previousReset = resetIn(year, month)
+	let nextReset = resetIn(year, month + 1)
+
+	if (previousReset > now) {
+		nextReset = previousReset
+		previousReset = resetIn(year, month - 1)
+	}
+
+	return { previousReset, nextReset }
+}
+
+export function getCustomTaskResetBoundaries(
+	schedule: CustomTaskSchedule,
+	server: SettingsRecord["userdata"]["server"],
+	now: number
+) {
+	switch (schedule.type) {
+		case "daily":
+			return getDailyResetBoundaries(server, now)
+		case "weekly":
+			return getWeeklyResetBoundaries(server, now)
+		case "biWeekly":
+			return getBiWeeklyAnchoredResetBoundaries(
+				server,
+				schedule.anchorDate,
+				now
+			)
+		case "monthly":
+			return getMonthlyOnDayResetBoundaries(server, schedule.day, now)
+		case "seasonal":
+			return getSeasonalResetBoundaries(now)
+	}
+}
+
+// The next `count` server-time dates (as "YYYY-MM-DD"), starting the day
+// after the current reset day.
+export function getUpcomingResetDates(
+	server: SettingsRecord["userdata"]["server"],
+	now: number,
+	count: number
+) {
+	const today = new Date(getServerResetDate(server, now))
+
+	return Array.from({ length: count }, (_, i) =>
+		new Date(today.getTime() + (i + 1) * DAY_MS).toISOString().slice(0, 10)
+	)
 }

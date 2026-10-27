@@ -3,11 +3,13 @@
 import { ReactNode, useState } from "react"
 import { createPortal } from "react-dom"
 
+import type { CustomTask } from "@/types/checklist"
+
 import { ActivityData, getAllActivitiesList } from "@/data/activities/activities"
 
-import { useChecklistStore } from "@/hooks"
+import { useChecklistStore, useNow, useSettingsStore } from "@/hooks"
 
-import { stopPropagation } from "@/helpers"
+import { getDailyResetBoundaries, stopPropagation } from "@/helpers"
 
 import { ModalContainer } from "@/components/layout"
 
@@ -61,6 +63,36 @@ function ChecklistItem({
 						: checked
 							? "Completed"
 							: item.description}
+				</div>
+			</span>
+		</label>
+	)
+}
+
+function CustomChecklistItem({ task }: { task: CustomTask }) {
+	const { settings } = useSettingsStore()
+	const { actions } = useChecklistStore()
+	const now = useNow()
+
+	const checked =
+		now !== null &&
+		task.checkedAt !== null &&
+		task.checkedAt >=
+			getDailyResetBoundaries(settings.userdata.server, now).previousReset
+
+	return (
+		<label
+			className={styles.checklistItem}
+			onClick={(e) => {
+				e.preventDefault()
+				e.stopPropagation()
+				actions.setCustomTaskChecked(task.id, !checked)
+			}}>
+			<input type="checkbox" checked={checked} readOnly />
+			<span className={styles.checklistItemLabel}>
+				<div className={styles.checklistItemName}>{task.title}</div>
+				<div className={styles.checklistItemDesc}>
+					{checked ? "Completed" : task.description || "Custom task"}
 				</div>
 			</span>
 		</label>
@@ -137,6 +169,12 @@ export function DashDailyChecklist() {
 						.map((item) => {
 							return <ChecklistItem item={item} key={item.id} />
 						})}
+					{Object.values(checklist.customTasks ?? {})
+						.filter((task) => task.schedule.type === "daily")
+						.toSorted((a, b) => a.createdAt - b.createdAt)
+						.map((task) => (
+							<CustomChecklistItem task={task} key={task.id} />
+						))}
 				</div>
 			</div>
 		</div>

@@ -2,7 +2,11 @@
 
 import { useSyncExternalStore } from "react"
 
-import type { ChecklistRecord, ChecklistEntry } from "@/types/checklist"
+import type {
+	ChecklistRecord,
+	ChecklistEntry,
+	CustomTask,
+} from "@/types/checklist"
 
 import { getAllActivitiesList } from "@/data/activities/activities"
 
@@ -201,6 +205,45 @@ export const checklistActions = {
 		// updateSettings options param doc comment).
 		store.write(updated, { silent: true })
 	},
+
+	// Custom tasks get their own actions because setChecklist shallow-merges
+	// and so can't delete a key.
+	updateCustomTasks(
+		updater: (current: Record<string, CustomTask>) => Record<string, CustomTask>
+	) {
+		if (typeof window === "undefined") return
+		if (isInitialSyncPending()) return
+
+		const current = readChecklist()
+		store.write({
+			...current,
+			customTasks: updater({ ...current.customTasks }),
+		})
+	},
+
+	saveCustomTask(task: CustomTask) {
+		checklistActions.updateCustomTasks((tasks) => ({
+			...tasks,
+			[task.id]: task,
+		}))
+	},
+
+	removeCustomTask(id: string) {
+		checklistActions.updateCustomTasks((tasks) => {
+			delete tasks[id]
+			return tasks
+		})
+	},
+
+	setCustomTaskChecked(id: string, checked: boolean) {
+		checklistActions.updateCustomTasks((tasks) => {
+			if (!tasks[id]) return tasks
+			return {
+				...tasks,
+				[id]: { ...tasks[id], checkedAt: checked ? Date.now() : null },
+			}
+		})
+	},
 }
 
 function getSnapshot(): ChecklistRecord {
@@ -267,6 +310,9 @@ export function useChecklistStore() {
 		actions: {
 			setChecklist: checklistActions.setChecklist,
 			resetChecklist: checklistActions.resetChecklist,
+			saveCustomTask: checklistActions.saveCustomTask,
+			removeCustomTask: checklistActions.removeCustomTask,
+			setCustomTaskChecked: checklistActions.setCustomTaskChecked,
 		},
 	}
 }
