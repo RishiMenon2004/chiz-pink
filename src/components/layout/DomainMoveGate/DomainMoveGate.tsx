@@ -12,8 +12,8 @@ import {
 import {
 	MIGRATE_PATH,
 	MIGRATED_KEY,
+	NEW_DOMAIN_LABEL,
 	NEW_ORIGIN,
-	OLD_ORIGIN,
 	isMigrationMessage,
 	isOldDomain,
 	type MigrationMessage,
@@ -158,11 +158,11 @@ export function DomainMoveGate() {
 				</h2>
 				<div className={styles.addresses} aria-hidden="true">
 					<span className={`inset-control ${styles.oldAddress}`}>
-						{OLD_ORIGIN.replace("https://", "")}
+						{window.location.host}
 					</span>
 					<span className={styles.arrow} />
 					<span className={`inset-control ${styles.newAddress}`}>
-						{NEW_ORIGIN.replace("https://", "")}
+						{NEW_DOMAIN_LABEL}
 					</span>
 				</div>
 				<p className={styles.body}>{body}</p>

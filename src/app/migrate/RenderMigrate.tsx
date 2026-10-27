@@ -12,7 +12,8 @@ import {
 	hasLocalPulls,
 } from "@/helpers/backupData"
 import {
-	OLD_ORIGIN,
+	getOldOrigins,
+	isOldOrigin,
 	isMigrationMessage,
 	type MigrationMessage,
 } from "@/helpers/domainMigration"
@@ -39,8 +40,8 @@ function formatTimestamp(value: number | null) {
 	})
 }
 
-function send(message: MigrationMessage) {
-	window.opener?.postMessage(message, OLD_ORIGIN)
+function send(message: MigrationMessage, origin: string) {
+	window.opener?.postMessage(message, origin)
 }
 
 const STATUS_TEXT: Record<Exclude<Status, "conflict">, string> = {
@@ -70,13 +71,17 @@ export function RenderMigrate() {
 	const [incoming, setIncoming] = useState<BackupData | null>(null)
 	// The old domain answers every "ready" with the data; only act on it once.
 	const receivedRef = useRef(false)
+	// Which old address sent the data - replies go only there.
+	const openerOriginRef = useRef<string | null>(null)
 
 	const finish = async (data: BackupData | null) => {
 		setStatus("saving")
 		if (data) backupSetImport(data)
 		// The window closes next - unsaved writes would be lost with it.
 		await memoryStorage.flushPendingWrites()
-		send({ type: "done" })
+		if (openerOriginRef.current) {
+			send({ type: "done" }, openerOriginRef.current)
+		}
 		setStatus("done")
 		window.close()
 	}
@@ -85,10 +90,11 @@ export function RenderMigrate() {
 		if (hasOpener !== true || syncPending) return
 
 		const handleMessage = (e: MessageEvent) => {
-			if (e.origin !== OLD_ORIGIN || e.source !== window.opener) return
+			if (!isOldOrigin(e.origin) || e.source !== window.opener) return
 			if (!isMigrationMessage(e.data) || e.data.type !== "data") return
 			if (receivedRef.current) return
 			receivedRef.current = true
+			openerOriginRef.current = e.origin
 
 			// Same validation as a manual backup file import.
 			const { status: importStatus, data } = backupImport(
@@ -96,7 +102,7 @@ export function RenderMigrate() {
 			)
 
 			if (importStatus === "error") {
-				send({ type: "error" })
+				send({ type: "error" }, e.origin)
 				setStatus("error")
 			} else if (importStatus === "synced") {
 				void finish(null)
@@ -110,7 +116,9 @@ export function RenderMigrate() {
 		}
 
 		window.addEventListener("message", handleMessage)
-		send({ type: "ready" })
+		// The opener's address isn't readable cross-origin, so offer "ready"
+		// to each old address; the browser only delivers the one that matches.
+		for (const origin of getOldOrigins()) send({ type: "ready" }, origin)
 		return () => window.removeEventListener("message", handleMessage)
 	}, [hasOpener, syncPending])
 
