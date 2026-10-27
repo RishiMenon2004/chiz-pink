@@ -28,4 +28,11 @@ export const ChangeLogs = {
 			"<tag>NEW</> Third-party data import",
 		],
 	},
+	"1.1.0": {
+		timeStamp: new Date("2026-10-28").getTime(),
+		logs: [
+			"Chiz.Pink has moved to its own home: <link href='https://chiz.pink'>chiz.pink</>! Open the old address once and your data comes along with you.",
+			"<tag>NEW</> Custom checklist tasks - add your own daily, weekly, bi-weekly, monthly or seasonal tasks with a title and description",
+		],
+	},
 }
