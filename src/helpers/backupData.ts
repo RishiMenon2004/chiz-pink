@@ -150,12 +150,14 @@ function isCurrentBackup(data: unknown): data is BackupData {
 }
 
 // Whether this browser has saved any main data (pull history is checked
-// separately - see hasLocalPulls()).
+// separately - see hasLocalPulls()). Keyed on lastUpdated, not on the
+// checklist/settings keys existing: the checklist reset loop and settings
+// backfills write those silently on a first visit, so a browser that never
+// saved anything would otherwise count as having data.
 export function hasLocalData() {
 	const cachedPlanner = getCachedPlanner()
 	return (
-		memoryStorage.hasItem("checklist") ||
-		memoryStorage.hasItem("settings") ||
+		memoryStorage.getItem<number | null>("lastUpdated", null) !== null ||
 		Object.keys(getCachedInventory()).length > 0 ||
 		Object.keys(cachedPlanner.characters).length > 0 ||
 		Object.keys(cachedPlanner.arcs).length > 0
