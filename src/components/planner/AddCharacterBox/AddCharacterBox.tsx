@@ -108,7 +108,7 @@ export function PlannerAddCharacterBox({
 		const matchesRarity = !filterQuery[1] || char.rarity === filterQuery[1]
 
 		return (
-			!char.isPlaceholder &&
+			!char.hasPlaceholderMaterials &&
 			isItemRevealed(char, now) &&
 			!doesPlannerHaveChar &&
 			matchesElement &&

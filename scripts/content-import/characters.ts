@@ -286,6 +286,8 @@ export async function importCharacters() {
 			edit(character, "filled from the game (write its description by hand)", (text) => {
 				let file = replaceAbilities(text, game.abilities)
 					.replace("\tisPlaceholder: true,\n", "")
+					.replace("\thasPlaceholderArcType: true,\n", "")
+					.replace("\thasPlaceholderMaterials: true,\n", "")
 					.replace(/import \{ placeholderAbilities \} from "\.\/placeholder"\n/, "")
 					.replace(/\trarity: EnumRarity\.\w+,/, `\trarity: EnumRarity.${EnumRarity[game.rarity]},`)
 					.replace(

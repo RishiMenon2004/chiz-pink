@@ -36,9 +36,14 @@ export type CharacterLevelStats = {
 }
 
 export interface Character extends Item {
-	// Announced but kit unknown: abilities, arc type and materials are
-	// stand-ins. Hidden from the planner; the profile shows a TBD notice.
+	// Announced but kit unknown: abilities are stand-ins (or only partly
+	// typed in), and the profile shows a TBD notice above them.
 	isPlaceholder?: boolean
+	// The arc type is a stand-in; the profile shows TBD.
+	hasPlaceholderArcType?: boolean
+	// Materials are stand-ins too, so the profile hides them and the planner
+	// leaves the character out. Placeholders without it can be pre-farmed.
+	hasPlaceholderMaterials?: boolean
 	description: string
 	rarity: EnumRarity.Rare | EnumRarity.Epic
 	element: EnumCharacterElement

@@ -5,9 +5,10 @@ import Image from "next/image"
 import sharp from "sharp"
 import Link from "next/link"
 
-import type { Character } from "@/types/character"
+import type { Ability, Character } from "@/types/character"
 
 import { characterLevelStats } from "@/data/characters"
+import { placeholderAbilities } from "@/data/characters/placeholder"
 
 import { getCharacterBannerThemeColor } from "@/helpers/bannerStatus"
 
@@ -74,6 +75,9 @@ export async function CharacterProfile({ character }: { character: Character }) 
 	const backgroundSrc = getBackgroundSrc(character)
 	const quoteColor = await getQuoteColor(character, backgroundSrc)
 	const pairedArt = getArtSrcs(character)
+	// A placeholder's abilities may be part announced: the stand-ins are hidden.
+	const known = (ability: Ability | undefined) =>
+		ability && Object.values(placeholderAbilities).includes(ability) ? undefined : ability
 
 	// Base stats follow the Materials slider's level; characters the game
 	// data doesn't cover yet show none.
@@ -155,7 +159,7 @@ export async function CharacterProfile({ character }: { character: Character }) 
 								},
 								{
 									label: "Arc Type",
-									value: character.isPlaceholder ? "TBD" : character.arcType,
+									value: character.hasPlaceholderArcType ? "TBD" : character.arcType,
 								},
 								...(levelStats ?? []).map(({ label, values }) => ({
 									label,
@@ -168,42 +172,43 @@ export async function CharacterProfile({ character }: { character: Character }) 
 					</div>
 
 					<div className={styles.content}>
-						{character.isPlaceholder ? (
+						{character.isPlaceholder && (
 							<InfoBox sticker="peek">
-								{`U-um... I don't have ${character.name}'s abilities or materials on file yet. I'll a-add them as soon as they're announced, I promise!`}
+								{character.hasPlaceholderMaterials
+									? `U-um... I don't have ${character.name}'s abilities or materials on file yet. I'll a-add them as soon as they're announced, I promise!`
+									: `U-um... I only have part of ${character.name}'s kit on file so far, but the materials are confirmed, so you can start pre-farming!`}
 							</InfoBox>
-						) : (
-							<>
-								<ProfileAbilityGroup
-									title="ESPER ABILITIES"
-									entries={[
-										["Basic Attack", abilities.basicAttack],
-										["Skill", abilities.skill],
-										["Ultimate", abilities.ultimate],
-										["Support", abilities.support],
-									]}
-								/>
-								<ProfileAbilityGroup
-									title="Passive Skills"
-									entries={[
-										["Passive I", abilities.passive1],
-										["Passive II", abilities.passive2],
-										["Passive III", abilities.passive3],
-									]}
-								/>
-								<ProfileAbilityGroup
-									title="Life Skills"
-									entries={[
-										["Life Skill I", abilities.lifeSkill1],
-										["Life Skill II", abilities.lifeSkill2],
-									]}
-								/>
-								<ProfileMaterials
-									kind="character"
-									id={character.id}
-									levelStats={levelStats}
-								/>
-							</>
+						)}
+						<ProfileAbilityGroup
+							title="ESPER ABILITIES"
+							entries={[
+								["Basic Attack", known(abilities.basicAttack)],
+								["Skill", known(abilities.skill)],
+								["Ultimate", known(abilities.ultimate)],
+								["Support", known(abilities.support)],
+							]}
+						/>
+						<ProfileAbilityGroup
+							title="Passive Skills"
+							entries={[
+								["Passive I", known(abilities.passive1)],
+								["Passive II", known(abilities.passive2)],
+								["Passive III", known(abilities.passive3)],
+							]}
+						/>
+						<ProfileAbilityGroup
+							title="Life Skills"
+							entries={[
+								["Life Skill I", known(abilities.lifeSkill1)],
+								["Life Skill II", known(abilities.lifeSkill2)],
+							]}
+						/>
+						{!character.hasPlaceholderMaterials && (
+							<ProfileMaterials
+								kind="character"
+								id={character.id}
+								levelStats={levelStats}
+							/>
 						)}
 					</div>
 				</div>

@@ -173,6 +173,11 @@ section(
 )
 section(
 	unfinished,
+	"Characters with stand-in materials (hidden from the planner)",
+	characters.filter((c) => c.hasPlaceholderMaterials).map(label)
+)
+section(
+	unfinished,
 	"Placeholder arcs (stats not out yet)",
 	arcs.filter((a) => a.isPlaceholder).map(label)
 )
