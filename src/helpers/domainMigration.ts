@@ -33,8 +33,9 @@ export const NEW_DOMAIN_LABEL = "chiz.pink"
 
 export const MIGRATE_PATH = "/migrate"
 
-// Set on an old address once its data has been handed over, so later
-// visits redirect straight away instead of offering the move again.
+// Set on an old address (to the time) once its data has been handed over,
+// so later visits offer to go to chiz.pink instead of moving again - unless
+// the data was edited here after that time.
 export const MIGRATED_KEY = "migratedToNewDomain"
 
 export type MigrationMessage =

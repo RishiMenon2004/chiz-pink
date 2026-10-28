@@ -29,18 +29,55 @@ import styles from "./domainMoveGate.module.css"
 // (e.g. an installed PWA opening the popup in a separate browser).
 const HANDSHAKE_TIMEOUT_MS = 15_000
 
+// Set for the rest of the browser session once they choose to stay, so
+// the prompt doesn't come back on every page load.
+const STAY_KEY = "chiz-pink-stay-on-old-domain"
+
 const noopSubscribe = () => () => {}
+
+function hasChosenToStay() {
+	try {
+		return window.sessionStorage.getItem(STAY_KEY) !== null
+	} catch {
+		return false
+	}
+}
+
+function chooseToStay() {
+	try {
+		window.sessionStorage.setItem(STAY_KEY, "1")
+	} catch {
+		// Storage blocked: they'll just be asked again next load.
+	}
+}
 
 function redirectToNewDomain() {
 	const { pathname, search, hash } = window.location
 	window.location.replace(`${NEW_ORIGIN}${pathname}${search}${hash}`)
 }
 
+// "redirect": nothing saved here, so nothing to lose by leaving.
+// "move": saved data that chiz.pink doesn't have yet - never moved, or
+// edited here since the last move (a plain redirect would strand it).
+// "return": already moved with nothing new since; offer to go over.
+function getMode(): "redirect" | "move" | "return" {
+	const migratedAt = memoryStorage.getItem<number | null>(MIGRATED_KEY, null)
+	if (migratedAt === null) {
+		return hasLocalData() || hasLocalPulls() ? "move" : "redirect"
+	}
+
+	const lastEdited = Math.max(
+		memoryStorage.getItem<number>("lastUpdated", 0),
+		memoryStorage.getItem<number>("gachaLastUpdated", 0)
+	)
+	return lastEdited > migratedAt ? "move" : "return"
+}
+
 /**
  * Runs only on the old Vercel domain (see helpers/domainMigration.ts):
- * redirects to chiz.pink straight away when there's nothing to move (or it
- * was already moved), otherwise blocks the app with a prompt to hand the
- * saved data over first.
+ * redirects to chiz.pink straight away when there's nothing saved here.
+ * Otherwise it asks first - move the data (or, if it was already moved,
+ * just go to chiz.pink) or keep using this address.
  */
 export function DomainMoveGate() {
 	// Server snapshot is false, so hydration matches the server render and
@@ -55,17 +92,15 @@ export function DomainMoveGate() {
 	const [status, setStatus] = useState<"prompt" | "waiting" | "failed">(
 		"prompt"
 	)
+	const [stayed, setStayed] = useState(false)
 	const popupRef = useRef<Window | null>(null)
 
 	const ready = onOldDomain && !syncPending
-	const needsMove =
-		ready &&
-		!memoryStorage.hasItem(MIGRATED_KEY) &&
-		(hasLocalData() || hasLocalPulls())
+	const mode = ready && !stayed && !hasChosenToStay() ? getMode() : null
 
 	useEffect(() => {
-		if (ready && !needsMove) redirectToNewDomain()
-	}, [ready, needsMove])
+		if (mode === "redirect") redirectToNewDomain()
+	}, [mode])
 
 	useEffect(() => {
 		if (status !== "waiting") return
@@ -116,7 +151,12 @@ export function DomainMoveGate() {
 		}
 	}, [status])
 
-	if (!needsMove) return null
+	if (mode !== "move" && mode !== "return") return null
+
+	const stay = () => {
+		chooseToStay()
+		setStayed(true)
+	}
 
 	// Opened from a click, so pop-up blockers allow it.
 	const openPopup = () => {
@@ -134,7 +174,12 @@ export function DomainMoveGate() {
 	}
 
 	const body = {
-		prompt: "Your data is still saved at the old address. Bring it along to pick up right where you left off.",
+		prompt:
+			mode === "return"
+				? "Your data has already moved to chiz.pink. Head over there, or keep using this address."
+				: memoryStorage.hasItem(MIGRATED_KEY)
+					? "You've made changes here since moving. Bring them along to chiz.pink, or keep using this address."
+					: "Your data is still saved at the old address. Bring it along to pick up right where you left off, or keep using this address.",
 		waiting: "Finish up in the chiz.pink window that just opened.",
 		failed: "Couldn't move your data automatically. Try again (allow pop-ups if asked), or download a backup and import it from Settings on chiz.pink.",
 	}[status]
@@ -167,6 +212,14 @@ export function DomainMoveGate() {
 				</div>
 				<p className={styles.body}>{body}</p>
 				<div className={styles.actions}>
+					{status !== "waiting" && (
+						<button
+							type="button"
+							className="pill-button"
+							onClick={stay}>
+							STAY HERE
+						</button>
+					)}
 					{status === "failed" && (
 						<button
 							type="button"
@@ -179,14 +232,14 @@ export function DomainMoveGate() {
 						type="button"
 						className="pill-button"
 						autoFocus
-						onClick={openPopup}>
-						{
-							{
-								prompt: "MOVE MY DATA",
-								waiting: "REOPEN WINDOW",
-								failed: "TRY AGAIN",
-							}[status]
-						}
+						onClick={mode === "return" ? redirectToNewDomain : openPopup}>
+						{mode === "return"
+							? `GO TO ${NEW_DOMAIN_LABEL.toUpperCase()}`
+							: {
+									prompt: "MOVE MY DATA",
+									waiting: "REOPEN WINDOW",
+									failed: "TRY AGAIN",
+								}[status]}
 					</button>
 				</div>
 			</div>
