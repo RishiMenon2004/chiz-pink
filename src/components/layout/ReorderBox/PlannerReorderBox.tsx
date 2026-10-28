@@ -64,7 +64,7 @@ export function PlannerReorderBox({
 		<div
 			className={`metallic-panel ${styles.panel}`}
 			onClick={stopPropagation}>
-			Adjust Priority
+			<div className={styles.title}>Adjust Priority</div>
 			<div
 				className={`inset-control ${styles.itemList}`}
 				style={{
