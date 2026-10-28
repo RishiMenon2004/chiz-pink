@@ -71,5 +71,6 @@ export function buildMetadata({
 
 /** Metadata for a static route, from its `RoutesData` entry. */
 export function buildRouteMetadata(path: keyof typeof RoutesData): Metadata {
-	return buildMetadata({ title: RoutesData[path].head, path })
+	const { head, description } = RoutesData[path]
+	return buildMetadata({ title: head, description, path })
 }

@@ -1,6 +1,9 @@
 type Route = {
 	title: string
+	// Page <title>, before the " | Chiz.Pink" suffix (the home page has none).
 	head: string
+	// Meta description: what search results show under the title.
+	description?: string
 	tooltip: string
 	id: string
 }
@@ -10,21 +13,27 @@ type RoutesRecord = Record<string, Route>
 export const RoutesData: RoutesRecord = {
 	"/": {
 		title: "DASHBOARD",
-		head: "Chiz.Pink | NTE Planner and Pull Tracker",
+		head: "Chiz.Pink: Neverness to Everness (NTE) Planner & Pull Tracker",
+		description:
+			"Plan Esper and arc ascensions, track your pulls and pity, and keep up with dailies, stamina and events in Neverness to Everness. Free, no account needed.",
 		tooltip: "Dashboard",
 		id: "home",
 	},
 
 	"/checklist": {
 		title: "CHECKLIST",
-		head: "Checklist",
+		head: "NTE Daily & Weekly Checklist",
+		description:
+			"A Neverness to Everness checklist for daily and weekly tasks that resets on your server's schedule, plus your own custom tasks.",
 		tooltip: "Checklist",
 		id: "checklist",
 	},
 
 	"/characters": {
 		title: "CHARACTERS",
-		head: "Characters",
+		head: "Neverness to Everness Characters",
+		description:
+			"Every Neverness to Everness Esper with their element, arc type, abilities, passive skills and ascension materials.",
 		tooltip: "Characters",
 		id: "character_list",
 	},
@@ -38,7 +47,9 @@ export const RoutesData: RoutesRecord = {
 
 	"/arcs": {
 		title: "ARCS",
-		head: "Arcs",
+		head: "Neverness to Everness Arcs",
+		description:
+			"Every Neverness to Everness arc with its effects, stats and ascension materials.",
 		tooltip: "Arcs",
 		id: "arc_list",
 	},
@@ -52,35 +63,45 @@ export const RoutesData: RoutesRecord = {
 
 	"/planner": {
 		title: "PLANNER",
-		head: "Ascension Planner",
+		head: "NTE Ascension Planner",
+		description:
+			"Work out every material you need to level and ascend your Espers and arcs in Neverness to Everness, checked against your inventory.",
 		tooltip: "Ascension Planner",
 		id: "planner",
 	},
 
 	"/planner/arcs": {
 		title: "ARC PLANNER",
-		head: "Arc Planner",
+		head: "NTE Arc Ascension Planner",
+		description:
+			"Plan arc levels and ascensions in Neverness to Everness and see exactly which materials you still need to farm.",
 		tooltip: "Arc Planner",
 		id: "arcs",
 	},
 
 	"/planner/characters": {
 		title: "CHARACTER PLANNER",
-		head: "Character Planner",
+		head: "NTE Character Ascension Planner",
+		description:
+			"Plan Esper levels, ascensions and talents in Neverness to Everness and see exactly which materials you still need to farm.",
 		tooltip: "Character Planner",
 		id: "characters",
 	},
 
 	"/pulls": {
 		title: "PULL TRACKER",
-		head: "Pull Tracker",
+		head: "NTE Pull & Pity Tracker",
+		description:
+			"Track your Neverness to Everness pulls and pity on every banner, or import your pull history to see your rate-up wins and losses.",
 		tooltip: "Pull Tracker",
 		id: "pulls",
 	},
 
 	"/inventory": {
 		title: "INVENTORY",
-		head: "Inventory",
+		head: "NTE Material Inventory",
+		description:
+			"Keep count of your Neverness to Everness materials so the ascension planner knows what you still need to farm.",
 		tooltip: "Inventory",
 		id: "inventory",
 	},
@@ -95,6 +116,8 @@ export const RoutesData: RoutesRecord = {
 	"/privacy": {
 		title: "PRIVACY POLICY",
 		head: "Privacy Policy",
+		description:
+			"What Chiz.Pink stores and where: everything stays in your browser unless you turn on Google sync, which is end-to-end encrypted.",
 		tooltip: "Privacy Policy",
 		id: "privacy_policy",
 	},
