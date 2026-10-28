@@ -19,6 +19,7 @@ import {
 import { SERVER_FALLBACK as SETTINGS_FALLBACK } from "@/hooks/useSettingsStore"
 import {
 	getCachedPulls,
+	mergePullsRecord,
 	replaceAllPulls,
 	clearAllPulls,
 } from "@/hooks/useGachaStore"
@@ -164,11 +165,30 @@ export function hasLocalData() {
 	)
 }
 
-export function hasLocalPulls() {
-	// Every banner key always exists; look for an actual pull in any.
-	return Object.values(getCachedPulls()).some(
-		(banner) => Object.keys(banner ?? {}).length > 0
+function countLocalPulls() {
+	// Every banner key always exists; count the actual pulls in each.
+	return Object.values(getCachedPulls()).reduce(
+		(total, banner) => total + Object.keys(banner ?? {}).length,
+		0
 	)
+}
+
+export function hasLocalPulls() {
+	return countLocalPulls() > 0
+}
+
+// Adds imported pull history to the local one instead of replacing it, for
+// imports where each side may hold pulls the other lacks (the domain move).
+// Bumps gachaLastUpdated only if the merge added anything, so cloud sync
+// pushes the combined history up.
+export function mergeImportedPulls(data: BackupData) {
+	if (!data.gachaPulls) return
+
+	const before = countLocalPulls()
+	mergePullsRecord(data.gachaPulls)
+	if (countLocalPulls() > before) {
+		memoryStorage.setItem("gachaLastUpdated", Date.now())
+	}
 }
 
 export function backupImport(json: string) {

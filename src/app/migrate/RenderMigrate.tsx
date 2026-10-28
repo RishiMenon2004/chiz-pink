@@ -7,9 +7,9 @@ import type { BackupData } from "@/types/settings"
 
 import {
 	backupImport,
-	backupSetImport,
+	backupSetMainImport,
 	hasLocalData,
-	hasLocalPulls,
+	mergeImportedPulls,
 } from "@/helpers/backupData"
 import {
 	getOldOrigins,
@@ -74,9 +74,12 @@ export function RenderMigrate() {
 	// Which old address sent the data - replies go only there.
 	const openerOriginRef = useRef<string | null>(null)
 
-	const finish = async (data: BackupData | null) => {
+	// Pull history is always merged, whichever main data is kept - unlike
+	// main data, both sides' pulls can be combined without losing any.
+	const finish = async (data: BackupData, useIncomingMain: boolean) => {
 		setStatus("saving")
-		if (data) backupSetImport(data)
+		if (useIncomingMain) backupSetMainImport(data)
+		mergeImportedPulls(data)
 		// The window closes next - unsaved writes would be lost with it.
 		await memoryStorage.flushPendingWrites()
 		if (openerOriginRef.current) {
@@ -105,11 +108,11 @@ export function RenderMigrate() {
 				send({ type: "error" }, e.origin)
 				setStatus("error")
 			} else if (importStatus === "synced") {
-				void finish(null)
-			} else if (!hasLocalData() && !hasLocalPulls()) {
-				void finish(data)
+				void finish(data, false)
+			} else if (!hasLocalData()) {
+				void finish(data, true)
 			} else {
-				// chiz.pink already has its own data: let them choose.
+				// chiz.pink already has its own main data: let them choose.
 				setIncoming(data)
 				setStatus("conflict")
 			}
@@ -153,12 +156,12 @@ export function RenderMigrate() {
 				<ModalContainer>
 					<AlertContainer
 						type="choices"
-						onConfirm={() => void finish(incoming)}
+						onConfirm={() => void finish(incoming, true)}
 						confirmLabel="Use old data"
-						onCancel={() => void finish(null)}
+						onCancel={() => void finish(incoming, false)}
 						cancelLabel="Keep chiz.pink data">
 						{
-							"chiz.pink already has saved data. Which version would you like to keep?"
+							"chiz.pink already has saved data. Which version would you like to keep? Pull history from both is kept either way."
 						}
 						<div className={alertTextColumns}>
 							<div className={`inset-control ${alertTextBox}`}>
