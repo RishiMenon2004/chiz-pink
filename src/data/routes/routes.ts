@@ -129,6 +129,13 @@ export const RoutesData: RoutesRecord = {
 		id: "migrate",
 	},
 
+	"/content-tool": {
+		title: "CONTENT TOOL",
+		head: "Content tool",
+		tooltip: "Content tool",
+		id: "content_tool",
+	},
+
 	"/auth/popup-callback": {
 		title: "Account Linked",
 		head: "",

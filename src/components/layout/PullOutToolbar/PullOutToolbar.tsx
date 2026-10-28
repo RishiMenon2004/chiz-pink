@@ -5,7 +5,7 @@ import { ReactNode, useState } from "react"
 
 import styles from "./pullOutToolbar.module.css"
 
-export function PullOutToolbar({ children }: { children: ReactNode }) {
+export function PullOutToolbar({ children, className }: { children: ReactNode; className?: string }) {
 	const [isToolbarOpen, setIsToolbarOpen] = useState<boolean>(false)
 	const pathname = usePathname()
 
@@ -13,7 +13,7 @@ export function PullOutToolbar({ children }: { children: ReactNode }) {
 
 	return (
 		<div
-			className={`${styles.plannerToolbar} ${isInventory ? styles.inventory : ""} ${isToolbarOpen ? styles.toolbarOpen : ""}`}>
+			className={`${styles.plannerToolbar} ${isInventory ? styles.inventory : ""} ${isToolbarOpen ? styles.toolbarOpen : ""} ${className ?? ""}`}>
 			{children}
 			<div
 				className={styles.pullOutTab}

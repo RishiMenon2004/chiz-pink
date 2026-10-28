@@ -10,73 +10,16 @@
 // later. Characters and arcs that already have real data are never touched,
 // and a hand-written version file is only replaced with --force.
 //
-// The content.json fields are described in the content pipeline guide.
+// The content.json fields are described in the content pipeline guide and
+// typed in src/types/content.ts. The /content-tool dev page writes them.
 
 import { copyFileSync, existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs"
 import path from "node:path"
 import { fileURLToPath } from "node:url"
 
-// ---------- content.json ----------
+import type { ContentDateRef as DateRef, ContentFile } from "@/types/content"
 
-type DateRef = "phase1" | "phase2" | "end" | string
-
-type ContentFile = {
-	version: string
-	patch?: {
-		name?: string
-		phase1Start: string
-		phase2Start: string
-		end: string
-		themeColor?: string
-		yOffset?: string
-	}
-	characters?: {
-		id: string
-		name: string
-		rarity?: "S" | "A"
-		element?: string
-		arcType?: string
-		description?: string
-		// Material ids. The two sets also take the set's name ("Whispers").
-		materials?: {
-			ascension?: string
-			ascensionBoss?: string
-			talent?: string
-			talentBoss?: string
-		}
-	}[]
-	arcs?: {
-		id: string
-		name: string
-		rarity?: "S" | "A" | "B"
-		type?: string
-		description?: string
-		effect?: {
-			name: string
-			description: string
-			values?: Record<string, (string | number)[]>
-		}
-	}[]
-	banners?: {
-		character: string
-		phase: 1 | 2
-		name?: string
-		themeColor?: string
-		yOffset?: string
-		arcBanner?: { arc: string; name: string }
-	}[]
-	events?: {
-		name: string
-		type: "Event" | "Mystery Box" | "Circle Gift"
-		start: DateRef
-		end: DateRef
-		rewards?: string[]
-		themeColor?: string
-		yOffset?: string
-		image?: string
-	}[]
-	btr?: string[]
-}
+import { snakeCase } from "@/helpers/contentJson"
 
 // ---------- Setup ----------
 
@@ -193,12 +136,6 @@ function placeImage(name: string, destination: string, extension = "webp") {
 
 	return existsSync(target)
 }
-
-const snakeCase = (value: string) =>
-	value
-		.toLowerCase()
-		.replace(/[^a-z0-9]+/g, "_")
-		.replace(/^_|_$/g, "")
 
 const identifier = (id: string) => id.replace(/_([a-z0-9])/g, (_, c: string) => c.toUpperCase())
 

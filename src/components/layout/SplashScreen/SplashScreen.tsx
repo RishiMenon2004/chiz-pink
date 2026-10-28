@@ -220,7 +220,7 @@ function UpdateSplashScreen({ closeSplash }: { closeSplash: () => void }) {
 	)
 }
 
-const NO_SPLASH_PATHS = new Set(["/migrate"])
+const NO_SPLASH_PATHS = new Set(["/migrate", "/content-tool"])
 
 export function SplashScreen() {
 	const pathname = usePathname()
