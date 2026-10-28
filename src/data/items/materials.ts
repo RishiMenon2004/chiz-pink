@@ -307,6 +307,15 @@ export const eternalMemory: Material = {
 	sources: ['Anomaly Pilgrimage: "Debt Collector"'],
 }
 
+export const hollowflowerSeed: Material = {
+	id: "hollowflower_seed",
+	name: "Hollowflower Seed",
+	rarity: EnumRarity.Epic,
+	materialType: EnumMaterialType.WeeklyBossDrop,
+	imageSrc: "weekly_hollowflower_seed.png",
+	sources: ['Anomaly Pilgrimage: "Amber Broodmother"'],
+}
+
 /* Character Experience */
 export const eliteHunterGuide: Material = {
 	id: "elite_hunter_guide",

@@ -8,6 +8,7 @@ import {
 	goodBoyStamp,
 	dressSleevesOfVanity,
 	eternalMemory,
+	hollowflowerSeed,
 	eliteHunterGuide,
 	seniorHunterGuide,
 	risingHunterGuide,
@@ -101,6 +102,7 @@ const allMaterials: Record<string, Material> = {
 	good_boy_stamp: goodBoyStamp,
 	dress_sleeves_of_vanity: dressSleevesOfVanity,
 	eternal_memory: eternalMemory,
+	hollowflower_seed: hollowflowerSeed,
 
 	/* rare */
 	elite_hunter_guide: eliteHunterGuide,
