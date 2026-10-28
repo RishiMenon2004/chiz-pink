@@ -90,16 +90,14 @@
 			"type": "Event",
 			"start": "phase1",
 			"end": "end",
-			"themeColor": "#f7fbf8",
-			"yOffset": "28%"
+			"themeColor": "#f7fbf8"
 		},
 		{
 			"name": "Full Tank Ahead",
 			"type": "Event",
 			"start": "phase1",
 			"end": "end",
-			"themeColor": "#d9e18d",
-			"yOffset": "28%"
+			"themeColor": "#d9e18d"
 		},
 		{
 			"name": "Hunter's Crucible",
@@ -107,7 +105,6 @@
 			"start": "phase1",
 			"end": "end",
 			"themeColor": "#ea285d",
-			"yOffset": "28%",
 			"image": "event_hunters_crucible"
 		},
 		{
@@ -115,32 +112,28 @@
 			"type": "Event",
 			"start": "2026-11-16",
 			"end": "2026-11-23",
-			"themeColor": "var(--pixel-surge)",
-			"yOffset": "28%"
+			"themeColor": "var(--pixel-surge)"
 		},
 		{
 			"name": "Gold Clash",
 			"type": "Event",
 			"start": "2026-11-23",
 			"end": "2026-12-07",
-			"themeColor": "var(--gold-clash)",
-			"yOffset": "28%"
+			"themeColor": "var(--gold-clash)"
 		},
 		{
 			"name": "Fons Rush",
 			"type": "Event",
 			"start": "2026-12-07",
 			"end": "2026-12-14",
-			"themeColor": "var(--fons-rush)",
-			"yOffset": "28%"
+			"themeColor": "var(--fons-rush)"
 		},
 		{
 			"name": "Fishing Frenzy",
 			"type": "Event",
 			"start": "2026-11-23",
 			"end": "end",
-			"themeColor": "#309f96",
-			"yOffset": "28%"
+			"themeColor": "#309f96"
 		},
 		{
 			"name": "Tycoon's Deck",
@@ -148,7 +141,6 @@
 			"start": "phase2",
 			"end": "end",
 			"themeColor": "#e0383e",
-			"yOffset": "28%",
 			"image": "event_tycoons_deck"
 		},
 		{
@@ -156,8 +148,7 @@
 			"type": "Event",
 			"start": "2026-12-10",
 			"end": "end",
-			"themeColor": "#6cd8cf",
-			"yOffset": "28%"
+			"themeColor": "#6cd8cf"
 		}
 	],
 	"btr": ["Glinting Circle", "Frozen Circle"]

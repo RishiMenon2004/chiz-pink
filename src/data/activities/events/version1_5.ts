@@ -24,7 +24,6 @@ export const events: EventData[] = [
 		getEndDate: timings.phase2End,
 		eventImage: "version1.5/event_city_logistics.webp",
 		themeColor: "#f7fbf8",
-		yOffset: "28%",
 	},
 	{
 		name: "Full Tank Ahead",
@@ -33,7 +32,6 @@ export const events: EventData[] = [
 		getEndDate: timings.phase2End,
 		eventImage: "version1.5/event_full_tank_ahead.webp",
 		themeColor: "#d9e18d",
-		yOffset: "28%",
 	},
 	{
 		name: "Hunter's Crucible",
@@ -42,7 +40,6 @@ export const events: EventData[] = [
 		getEndDate: timings.phase2End,
 		eventImage: "version1.5/event_hunters_crucible.webp",
 		themeColor: "#ea285d",
-		yOffset: "28%",
 	},
 	{
 		name: "Pixel Surge",
@@ -51,7 +48,6 @@ export const events: EventData[] = [
 		getEndDate: (server) => serverEOD(server, 23, 11, 2026),
 		eventImage: "version1.5/event_pixel_surge.webp",
 		themeColor: "var(--pixel-surge)",
-		yOffset: "28%",
 	},
 	{
 		name: "Gold Clash",
@@ -60,7 +56,6 @@ export const events: EventData[] = [
 		getEndDate: (server) => serverEOD(server, 7, 12, 2026),
 		eventImage: "version1.5/event_gold_clash.webp",
 		themeColor: "var(--gold-clash)",
-		yOffset: "28%",
 	},
 	{
 		name: "Fons Rush",
@@ -69,7 +64,6 @@ export const events: EventData[] = [
 		getEndDate: (server) => serverEOD(server, 14, 12, 2026),
 		eventImage: "version1.5/event_fons_rush.webp",
 		themeColor: "var(--fons-rush)",
-		yOffset: "28%",
 	},
 	{
 		name: "Fishing Frenzy",
@@ -78,7 +72,6 @@ export const events: EventData[] = [
 		getEndDate: timings.phase2End,
 		eventImage: "version1.5/event_fishing_frenzy.webp",
 		themeColor: "#309f96",
-		yOffset: "28%",
 	},
 	{
 		name: "Tycoon's Deck",
@@ -87,7 +80,6 @@ export const events: EventData[] = [
 		getEndDate: timings.phase2End,
 		eventImage: "version1.5/event_tycoons_deck.webp",
 		themeColor: "#e0383e",
-		yOffset: "28%",
 	},
 	{
 		name: "Magic Lucky Flip",
@@ -96,6 +88,5 @@ export const events: EventData[] = [
 		getEndDate: timings.phase2End,
 		eventImage: "version1.5/event_magic_lucky_flip.webp",
 		themeColor: "#6cd8cf",
-		yOffset: "28%",
 	},
 ]
