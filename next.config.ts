@@ -75,6 +75,15 @@ const nextConfig: NextConfig = {
         source: "/:path*",
         headers: securityHeaders,
       },
+      // The old address keeps serving the app for the domain move (see
+      // helpers/domainMigration.ts), so keep it out of search results
+      // instead of redirecting. robots.txt must still allow crawling there,
+      // or crawlers never see this header.
+      {
+        source: "/:path*",
+        has: [{ type: "host", value: "chiz-pink.vercel.app" }],
+        headers: [{ key: "X-Robots-Tag", value: "noindex" }],
+      },
     ];
   },
 };
