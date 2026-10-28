@@ -1,12 +1,10 @@
 import { Metadata } from "next"
 
-import { RoutesData } from "@/data/routes"
+import { buildRouteMetadata } from "@/helpers/metadata"
 
 import { RenderPlanner } from "@/components/planner"
 
-export const metadata: Metadata = {
-	title: RoutesData["/planner"].head,
-}
+export const metadata: Metadata = buildRouteMetadata("/planner")
 
 export default function Planner() {
 	return <RenderPlanner plannerType="both" />

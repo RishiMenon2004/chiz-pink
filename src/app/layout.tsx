@@ -3,6 +3,8 @@ import { Barlow_Condensed, Syne } from "next/font/google"
 
 import { RoutesData } from "@/data/routes"
 
+import { SITE_DESCRIPTION, SITE_NAME, SITE_URL } from "@/helpers/metadata"
+
 import "./globals.css"
 
 import { AuthProvider } from "@/components/layout/AuthProvider"
@@ -32,42 +34,36 @@ const syne = Syne({
 	subsets: ["latin"],
 })
 
-const SITE_URL =
-	process.env.NEXT_PUBLIC_SITE_URL ||
-	(process.env.VERCEL_PROJECT_PRODUCTION_URL
-		? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
-		: process.env.VERCEL_URL
-			? `https://${process.env.VERCEL_URL}`
-			: "https://chiz.pink")
-
 export const metadata: Metadata = {
 	metadataBase: new URL(SITE_URL),
 	title: {
-		template: "%s | Chiz.Pink",
+		template: `%s | ${SITE_NAME}`,
 		default: RoutesData["/"].head,
 	},
-	description: "Your favourite daily planner and inventory tracker :3",
+	description: SITE_DESCRIPTION,
 	icons: {
 		icon: "/favicon.png",
 		apple: "/app_icon.png",
 	},
 	appleWebApp: {
 		capable: true,
-		title: "Chiz.Pink",
+		title: SITE_NAME,
 		statusBarStyle: "default",
 	},
+	// Fallback for pages without their own (404s, offline). Pages build
+	// their own with buildMetadata(), since a page's openGraph replaces this
+	// one entirely. No url here: it would mark every page as the home page.
 	openGraph: {
 		type: "website",
 		locale: "en_US",
-		url: SITE_URL,
-		siteName: "Chiz.Pink",
-		title: "Chiz.Pink",
-		description: "Your favourite daily planner and inventory tracker :3",
+		siteName: SITE_NAME,
+		title: SITE_NAME,
+		description: SITE_DESCRIPTION,
 	},
 	twitter: {
 		card: "summary_large_image",
-		title: "Chiz.Pink",
-		description: "Your favourite daily planner and inventory tracker :3",
+		title: SITE_NAME,
+		description: SITE_DESCRIPTION,
 	},
 }
 

@@ -3,6 +3,8 @@ import { notFound } from "next/navigation"
 
 import { findArc, getAllArcsList } from "@/data/arcs"
 
+import { buildMetadata } from "@/helpers/metadata"
+
 import { ArcProfile } from "@/components/profile"
 
 type Props = {
@@ -26,24 +28,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 		}
 	}
 
-	const title = `${arc.name} | Arc Index`
-	const description =
-		arc.description ||
-		`${arc.name} arc effects, stats, and ascension materials on Chiz.Pink`
-
-	return {
-		title,
-		description,
-		openGraph: {
-			title: `${arc.name} - Arc Index`,
-			description,
-		},
-		twitter: {
-			card: "summary_large_image",
-			title: `${arc.name} - Arc Index`,
-			description,
-		},
-	}
+	return buildMetadata({
+		title: `${arc.name} | Arc Index`,
+		description:
+			arc.description ||
+			`${arc.name} arc effects, stats, and ascension materials on Chiz.Pink`,
+		path: `/arcs/${id}`,
+	})
 }
 
 export default async function ArcInfoPage({ params }: Props) {

@@ -1,12 +1,10 @@
 import { Metadata } from "next"
 
-import { RoutesData } from "@/data/routes"
+import { buildRouteMetadata } from "@/helpers/metadata"
 
 import { ArcCatalog } from "@/components/catalog"
 
-export const metadata: Metadata = {
-	title: RoutesData["/arcs"].head,
-}
+export const metadata: Metadata = buildRouteMetadata("/arcs")
 
 export default function Arcs() {
 	return <ArcCatalog />

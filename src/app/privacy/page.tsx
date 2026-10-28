@@ -1,13 +1,11 @@
 import { Metadata } from "next"
 import Link from "next/link"
 
-import { RoutesData } from "@/data/routes"
+import { buildRouteMetadata } from "@/helpers/metadata"
 
 import styles from "./privacy.module.css"
 
-export const metadata: Metadata = {
-	title: RoutesData["/privacy"].head,
-}
+export const metadata: Metadata = buildRouteMetadata("/privacy")
 
 export default function PrivacyPolicy() {
 	return (

@@ -1,8 +1,8 @@
 import type { MetadataRoute } from "next"
 
-export default function robots(): MetadataRoute.Robots {
-	const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://chiz.pink"
+import { SITE_URL } from "@/helpers/metadata"
 
+export default function robots(): MetadataRoute.Robots {
 	return {
 		rules: [
 			{
@@ -11,6 +11,6 @@ export default function robots(): MetadataRoute.Robots {
 				disallow: ["/api/", "/auth/"],
 			},
 		],
-		sitemap: `${baseUrl}/sitemap.xml`,
+		sitemap: `${SITE_URL}/sitemap.xml`,
 	}
 }

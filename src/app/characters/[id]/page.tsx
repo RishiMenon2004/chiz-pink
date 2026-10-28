@@ -3,6 +3,8 @@ import { notFound } from "next/navigation"
 
 import { findCharacter, getAllCharactersList } from "@/data/characters"
 
+import { buildMetadata } from "@/helpers/metadata"
+
 import { CharacterProfile } from "@/components/profile"
 
 type Props = {
@@ -26,24 +28,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 		}
 	}
 
-	const title = `${char.name} | Character Profile`
-	const description =
-		char.description ||
-		`${char.name} character profile, skills, and ascension details on Chiz.Pink`
-
-	return {
-		title,
-		description,
-		openGraph: {
-			title: `${char.name} - Character Profile`,
-			description,
-		},
-		twitter: {
-			card: "summary_large_image",
-			title: `${char.name} - Character Profile`,
-			description,
-		},
-	}
+	return buildMetadata({
+		title: `${char.name} | Character Profile`,
+		description:
+			char.description ||
+			`${char.name} character profile, skills, and ascension details on Chiz.Pink`,
+		path: `/characters/${id}`,
+	})
 }
 
 export default async function CharacterInfoPage({ params }: Props) {

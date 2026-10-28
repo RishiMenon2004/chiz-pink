@@ -1,16 +1,15 @@
 import { Metadata } from "next"
 import { notFound } from "next/navigation"
 
-import { RoutesData } from "@/data/routes"
+import { buildRouteMetadata } from "@/helpers/metadata"
 
 import { RenderSplitPlanner } from "./RenderSplitPlanner"
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
 	const { section } = await params
+	if (!["arcs", "characters"].includes(section)) return {}
 
-	return {
-		title: RoutesData[`/planner/${section}`].head,
-	}
+	return buildRouteMetadata(`/planner/${section}`)
 }
 
 type Props = {

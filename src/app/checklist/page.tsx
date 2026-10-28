@@ -1,11 +1,9 @@
 import { Metadata } from "next"
 
-import { RoutesData } from "@/data/routes"
+import { buildRouteMetadata } from "@/helpers/metadata"
 import RenderChecklist from "./RenderChecklist"
 
-export const metadata: Metadata = {
-	title: RoutesData["/checklist"].head,
-}
+export const metadata: Metadata = buildRouteMetadata("/checklist")
 
 export default function Checklist() {
 	return <RenderChecklist/>

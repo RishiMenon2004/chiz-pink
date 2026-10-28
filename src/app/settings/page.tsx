@@ -1,11 +1,9 @@
 import { Metadata } from "next"
 
-import { RoutesData } from "@/data/routes"
+import { buildRouteMetadata } from "@/helpers/metadata"
 import { RenderSettings } from "./RenderSettings"
 
-export const metadata: Metadata = {
-	title: RoutesData["/settings"].head,
-}
+export const metadata: Metadata = buildRouteMetadata("/settings")
 
 export default function Settings() {
 	return <RenderSettings />

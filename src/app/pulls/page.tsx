@@ -1,11 +1,9 @@
 import { Metadata } from "next"
 
-import { RoutesData } from "@/data/routes"
+import { buildRouteMetadata } from "@/helpers/metadata"
 import { RenderPulls } from "./RenderPulls"
 
-export const metadata: Metadata = {
-	title: RoutesData["/pulls"].head,
-}
+export const metadata: Metadata = buildRouteMetadata("/pulls")
 
 export default function Pulls() {
 	return <RenderPulls />

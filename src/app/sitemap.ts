@@ -3,8 +3,10 @@ import type { MetadataRoute } from "next"
 import { getAllCharactersList } from "@/data/characters"
 import { getAllArcsList } from "@/data/arcs"
 
+import { SITE_URL } from "@/helpers/metadata"
+
 export default function sitemap(): MetadataRoute.Sitemap {
-	const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://chiz.pink"
+	const baseUrl = SITE_URL
 	const now = new Date()
 
 	const staticRoutes: MetadataRoute.Sitemap = [
