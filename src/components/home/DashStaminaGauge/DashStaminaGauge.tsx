@@ -135,7 +135,7 @@ export function DashStaminaGauge() {
 	return (
 		<div className={`metallic-panel ${pageStyles.section} ${styles.section}`}>
 			<div className={pageStyles.sectionTitleRow}>
-				<div className={pageStyles.sectionTitle}>Stamina</div>
+				<h2 className={pageStyles.sectionTitle}>Stamina</h2>
 				<Link
 					href="/settings"
 					className={`pill-button ${pageStyles.sectionButton}`}>
