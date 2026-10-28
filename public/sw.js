@@ -1,4 +1,4 @@
-const CACHE_VERSION = "v10"
+const CACHE_VERSION = "v11"
 const SHELL_CACHE = `chiz-pink-shell-${CACHE_VERSION}`
 const RUNTIME_CACHE = `chiz-pink-runtime-${CACHE_VERSION}`
 const CURRENT_CACHES = [SHELL_CACHE, RUNTIME_CACHE]
