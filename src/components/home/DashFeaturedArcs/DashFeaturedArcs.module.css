@@ -7,7 +7,7 @@
 	padding: 0.5rem;
 	border-radius: 1.25rem;
 
-	container-type: inline-size;
+	container: arc-list / inline-size;
 }
 
 .row {
@@ -74,8 +74,8 @@
 }
 
 .art {
-	width: var(--art-size);
-	height: var(--art-size);
+	width: 100%;
+	aspect-ratio: 1;
 
 	img {
 		display: block;
@@ -161,7 +161,7 @@
 	}
 }
 
-@container (width < 420px) {
+@container arc-list (width < 420px) {
 	.row {
 		min-height: 6rem;
 		gap: 0.5rem;
@@ -184,11 +184,36 @@
 }
 
 @media (min-width: 801px) {
+	/* Beside the characters carousel, the list takes the carousel's height
+	   and the rows split it, however short that leaves them. Each row is a
+	   size container so its text can drop down to fit: one-line names, then
+	   no tag. The min height still fits that, for when the list sets its own
+	   height (no characters to sit beside). */
 	.row {
-		min-height: 0;
+		container: arc-row / size;
+		min-height: 3.75rem;
+		grid-template-columns: auto minmax(0, 1fr);
 	}
 
-	@container (width < 560px) {
+	/* The art shrinks with the row too, short of its scaled-up overhang. */
+	.art {
+		width: min(var(--art-size), 100cqb - 0.75rem);
+	}
+
+	@container arc-row (height < 7rem) {
+		.name {
+			-webkit-line-clamp: 1;
+			line-clamp: 1;
+		}
+	}
+
+	@container arc-row (height < 5.5rem) {
+		.tag {
+			display: none;
+		}
+	}
+
+	@container arc-list (width < 560px) {
 		.list {
 			gap: 0.35rem;
 			padding: 0.35rem;
