@@ -59,7 +59,7 @@ function WelcomeSplashScreen({ closeSplash }: { closeSplash: () => void }) {
 
 				<div className={styles.welcomeSubTitle}>
 					{
-						"Your favourite Ascension Planner, Checklist, and Inventory Tracker!"
+						"Your pinkest companion, Ascension Planner and Pull Tracker for NTE :3"
 					}
 				</div>
 
@@ -101,7 +101,7 @@ function WelcomeSplashScreen({ closeSplash }: { closeSplash: () => void }) {
 								href={"/pulls"}>
 								Pulls
 							</Link>
-							{" — Import and track your wish history."}
+							{" — Import and track your pull history."}
 						</li>
 						<li>
 							<Link
