@@ -5,12 +5,6 @@
 }
 
 .box {
-	/* Reused Colours - keep in sync with EventCalendar's copy */
-	--fons-rush: #ed9e37;
-	--pixel-surge: #ff72f8;
-	--stamina-recharge: #2d5de1;
-	--gold-clash: #d8af47;
-
 	position: absolute;
 	transform: translateX(-50%);
 	border-radius: calc(0.5rem + 2px);

@@ -36,14 +36,6 @@
 }
 
 .calendarEvent {
-	/* Reused Colours - keep in sync with EventDetails' copy */
-	--fons-rush: #ed9e37;
-	--pixel-surge: #ff72f8;
-	--stamina-recharge: #2d5de1;
-	--gold-clash: #d8af47;
-}
-
-.calendarEvent {
 	position: relative;
 	padding-block: 0.5rem;
 	padding-inline: 0.75rem;
