@@ -37,6 +37,13 @@ type ContentFile = {
 		element?: string
 		arcType?: string
 		description?: string
+		// Material ids. The two sets also take the set's name ("Whispers").
+		materials?: {
+			ascension?: string
+			ascensionBoss?: string
+			talent?: string
+			talentBoss?: string
+		}
 	}[]
 	arcs?: {
 		id: string
@@ -204,6 +211,30 @@ const materialExports = new Map(
 	[...materialsText.matchAll(/export const (\w+): Material = \{\n\tid: "([^"]+)"/g)].map(
 		([, name, id]) => [id, name]
 	)
+)
+
+const materialSets = [...materialsText.matchAll(/export const (\w+): MaterialSet = \[([^\]]*)\]/g)]
+
+// Material export name → the set it belongs to.
+const setOfMaterial = new Map(
+	materialSets.flatMap(([, set, members]) =>
+		members
+			.split(",")
+			.map((member) => member.trim())
+			.filter(Boolean)
+			.map((member) => [member, set] as const)
+	)
+)
+
+const setKey = (value: string) => value.toLowerCase().replace(/[^a-z0-9]/g, "")
+
+// "asc" or "talent" + set name → the set's export ("ascWhispersSet" is
+// found by "Whispers", "whispers" or "ascWhispersSet").
+const setsByName = new Map(
+	materialSets.flatMap(([, set]) => {
+		const match = set.match(/^(asc|talent|exp)(\w+)Set$/)
+		return match ? [[`${match[1]}:${setKey(match[2])}`, set] as const] : []
+	})
 )
 
 function firstExport(pattern: RegExp, what: string) {
@@ -442,7 +473,46 @@ for (const [index, character] of (content.characters ?? []).entries()) {
 	if (element === undefined) warnings.push(`${where}: no element, using cosmos`)
 
 	const name = identifier(character.id)
-	const materials = Object.values(placeholderMaterials).toSorted()
+
+	// A set slot takes the set's name ("Whispers") or any material id in it.
+	const materialCode = (slot: keyof typeof placeholderMaterials, id: string | undefined, setPrefix?: string) => {
+		if (id === undefined) return placeholderMaterials[slot]
+		if (setPrefix) {
+			const named =
+				setsByName.get(`${setPrefix}:${setKey(id)}`) ??
+				setsByName.get(`${setPrefix}:${setKey(id.replace(new RegExp(`^${setPrefix}|set$`, "gi"), ""))}`)
+			if (named) return named
+		}
+		const material = materialExports.get(id)
+		if (!material) {
+			fail(
+				setPrefix
+					? `${where}: "${id}" isn't a ${setPrefix} set name or a material id in materials.ts`
+					: `${where}: unknown material "${id}" (add it to materials.ts first)`
+			)
+		}
+		if (!setPrefix) return material
+		const set = setOfMaterial.get(material)
+		if (!set) fail(`${where}: "${id}" isn't in any MaterialSet in materials.ts`)
+		return set
+	}
+	const slots = {
+		ascensionMaterialSet: materialCode("ascensionMaterialSet", character.materials?.ascension, "asc"),
+		ascensionBossMaterial: materialCode("ascensionBossMaterial", character.materials?.ascensionBoss),
+		talentMaterialSet: materialCode("talentMaterialSet", character.materials?.talent, "talent"),
+		talentBossMaterial: materialCode("talentBossMaterial", character.materials?.talentBoss),
+	}
+	// Any stand-in keeps the character out of the planner.
+	const { ascension, ascensionBoss, talent, talentBoss } = character.materials ?? {}
+	const hasStandIns = [ascension, ascensionBoss, talent, talentBoss].includes(undefined)
+	if (hasStandIns) warnings.push(`${where}: materials incomplete, using stand-ins (hidden from the planner)`)
+	const materials = Object.values(slots).toSorted()
+
+	// Abilities typed in by hand (from a livestream) survive a rerun; the
+	// importer replaces them with the game's text later.
+	const abilities =
+		(existsSync(fromRoot(file)) && read(file).match(/\n(\tabilities: [\s\S]*,)\n\}\n?$/)?.[1]) ||
+		"\tabilities: placeholderAbilities,"
 
 	write(
 		file,
@@ -453,22 +523,21 @@ import { EnumArcType } from "../arcs"
 import {
 ${materials.map((material) => `\t${material},`).join("\n")}
 } from "../items/materials"
-import { placeholderAbilities } from "./placeholder"
-
+${abilities.includes("placeholderAbilities") ? `import { placeholderAbilities } from "./placeholder"\n` : ""}
 export const ${name}: Character = {
 	isPlaceholder: true,
-	id: ${str(character.id)},
+${character.arcType === undefined ? "\thasPlaceholderArcType: true,\n" : ""}${hasStandIns ? "\thasPlaceholderMaterials: true,\n" : ""}	id: ${str(character.id)},
 	imageSrc: ${str(hasAvatar || hasFull ? `${character.id}.webp` : "placeholder.webp")},
 	name: ${str(character.name)},
 	description: ${str(character.description ?? "Details to be announced.")},
 	rarity: ${rarityCode(character.rarity, where)},
 	element: EnumCharacterElement.${(element ?? "cosmos").toUpperCase()},
 	arcType: ${arcTypeCode(character.arcType, where)},
-	ascensionMaterialSet: ${placeholderMaterials.ascensionMaterialSet},
-	ascensionBossMaterial: ${placeholderMaterials.ascensionBossMaterial},
-	talentMaterialSet: ${placeholderMaterials.talentMaterialSet},
-	talentBossMaterial: ${placeholderMaterials.talentBossMaterial},
-	abilities: placeholderAbilities,
+	ascensionMaterialSet: ${slots.ascensionMaterialSet},
+	ascensionBossMaterial: ${slots.ascensionBossMaterial},
+	talentMaterialSet: ${slots.talentMaterialSet},
+	talentBossMaterial: ${slots.talentBossMaterial},
+${abilities}
 }
 `
 	)
@@ -625,15 +694,34 @@ if (content.banners?.length) {
 
 // ---------- BTR circles (btr.ts) ----------
 
-if (content.btr?.length) {
+// Circles run back to back, two weeks each, on their own cycle. Names from
+// "btr" fill the TBA circles in order, then go on new circles. With phase
+// dates, TBA circles are added until two start after the version ends.
+const AFTER_VERSION = 2
+
+if (content.btr?.length || content.patch) {
 	let btr = read("src/data/activities/events/btr.ts")
 	const circle = /\t\{\n\t\tname: "([^"]*)",\n\t\ttype: "BTR",\n[\s\S]*?getEndDate: \(server\) => serverEOD\(server, (\d+), (\d+), (\d+)\),\n\t\},\n/g
+	const circles = () => [...btr.matchAll(circle)]
+	const endOf = (match: RegExpMatchArray) => ({ day: Number(match[2]), month: Number(match[3]), year: Number(match[4]) })
+	const dateKey = ({ year, month, day }: ParsedDate) => Date.UTC(year, month - 1, day)
 
-	for (const name of content.btr) {
-		const circles = [...btr.matchAll(circle)]
-		if (circles.some(([, existing]) => existing === name)) continue
+	// Each circle starts the day the one before it ends.
+	const addCircle = (name: string) => {
+		const last = circles().at(-1)!
+		const start = endOf(last)
+		const end = shiftDays(start, 14)
+		const entry = `\t{\n\t\tname: ${str(name)},\n\t\ttype: "BTR",\n\t\tgetStartDate: (server) => serverSOD(server, ${dayArgs(start)}),\n\t\tgetEndDate: (server) => serverEOD(server, ${dayArgs(end)}),\n\t},\n`
+		const at = last.index! + last[0].length
+		btr = btr.slice(0, at) + entry + btr.slice(at)
+		report.push(`BTR: added "${name}" (${dayArgs(start)} to ${dayArgs(end)})`)
+	}
 
-		const unnamed = circles.find(([, existing]) => existing === "TBA")
+	for (const name of content.btr ?? []) {
+		const all = circles()
+		if (all.some(([, existing]) => existing === name)) continue
+
+		const unnamed = all.find(([, existing]) => existing === "TBA")
 		if (unnamed) {
 			btr =
 				btr.slice(0, unnamed.index) +
@@ -643,13 +731,13 @@ if (content.btr?.length) {
 			continue
 		}
 
-		const last = circles.at(-1)!
-		const start = { day: Number(last[2]), month: Number(last[3]), year: Number(last[4]) }
-		const end = shiftDays(start, 14)
-		const entry = `\t{\n\t\tname: ${str(name)},\n\t\ttype: "BTR",\n\t\tgetStartDate: (server) => serverSOD(server, ${dayArgs(start)}),\n\t\tgetEndDate: (server) => serverEOD(server, ${dayArgs(end)}),\n\t},\n`
-		const at = last.index + last[0].length
-		btr = btr.slice(0, at) + entry + btr.slice(at)
-		report.push(`BTR: added "${name}" (${dayArgs(start)} to ${dayArgs(end)})`)
+		addCircle(name)
+	}
+
+	if (content.patch) {
+		const versionEnd = dateKey(parseDate(content.patch.end, "patch.end"))
+		const startingAfter = () => circles().filter((_, i, all) => i > 0 && dateKey(endOf(all[i - 1])) > versionEnd).length
+		while (startingAfter() < AFTER_VERSION) addCircle("TBA")
 	}
 
 	write("src/data/activities/events/btr.ts", btr)
