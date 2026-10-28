@@ -4,6 +4,8 @@ import styles from "./offline.module.css"
 
 export const metadata: Metadata = {
 	title: "You're Offline",
+	// Service worker fallback, not a real page.
+	robots: { index: false },
 }
 
 export default function OfflinePage() {
