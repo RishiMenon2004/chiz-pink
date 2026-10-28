@@ -1,5 +1,7 @@
 import Link from "next/link"
 
+import { FooterAbout } from "./FooterAbout"
+
 import styles from "./footer.module.css"
 
 export function Footer() {
@@ -37,7 +39,23 @@ export function Footer() {
 					<b className={styles.pink}>HOTTA STUDIO&trade;</b>
 				</div>
 				<div className={styles.small}>
-					<b className={styles.pink}>CHIZ.PINK</b> is an unofficial
+					<FooterAbout className={styles.about}>
+						<summary aria-label="About Chiz.Pink">
+							<b className={styles.pink}>CHIZ.PINK</b>
+							<sup className={styles.aboutHint}>?</sup>
+						</summary>
+						<div className={`metallic-panel ${styles.aboutPanel}`}>
+							<p className={`inset-control ${styles.aboutText}`}>
+								<b className={styles.pink}>Chiz.Pink</b> is a daily
+								companion app for Neverness to Everness (NTE). Plan your
+								Esper and arc ascensions, track your pulls and pity on
+								every banner, check off your dailies and weeklies, and
+								keep count of your materials. Everything is saved in
+								your browser locally without an account.
+							</p>
+						</div>
+					</FooterAbout>{" "}
+					is an unofficial
 					project and is not affiliated with{" "}
 					<b className={styles.pink}>HOTTA STUDIO&trade;</b>
 				</div>

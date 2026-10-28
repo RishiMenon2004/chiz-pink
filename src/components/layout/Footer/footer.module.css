@@ -14,7 +14,9 @@
 		display: flex;
 		flex-direction: column;
 		gap: 0.5rem;
-		opacity: 0.9;
+		/* Faded colour, not opacity: opacity would also make the about
+		panel inside see-through. */
+		color: color-mix(in srgb, currentColor 90%, transparent);
 	}
 
 	.left {
@@ -22,6 +24,9 @@
 	}
 
 	.right {
+		/* The about panel sits above this whole column, so it clears both
+		lines. FooterAbout centres it on CHIZ.PINK horizontally. */
+		position: relative;
 		text-align: right;
 	}
 
@@ -30,7 +35,56 @@
 	}
 
 	.pink {
+		color: color-mix(in srgb, var(--pink) 90%, transparent);
+	}
+
+	.about {
+		/* Not inline: browsers ignore that on <details>, and it falls onto
+		its own line. */
+		display: inline-block;
+
+		summary {
+			display: inline;
+			cursor: var(--pointer-cursor);
+			list-style: none;
+			user-select: none;
+
+			&::-webkit-details-marker {
+				display: none;
+			}
+		}
+	}
+
+	.aboutHint {
+		margin-inline-start: 0.1em;
 		color: var(--pink);
+		font-size: 0.8em;
+		/* Keeps the superscript from making the line taller. */
+		line-height: 0;
+	}
+
+	/* Opens upwards, over the page, so the footer doesn't change size.
+	Centred on the column until FooterAbout places it. */
+	.aboutPanel {
+		position: absolute;
+		bottom: calc(100% + 0.75rem);
+		left: 50%;
+		translate: -50% 0;
+		z-index: 2;
+		width: min(26rem, 80vw);
+		padding: 0.25rem;
+		border-radius: 1rem;
+	}
+
+	.aboutText {
+		padding: 0.75rem 1rem;
+		border-radius: 0.75rem;
+		color: var(--white);
+		font-size: 1rem;
+		font-weight: 600;
+		line-height: 1.4;
+		text-align: left;
+		text-wrap-style: pretty;
 	}
 }
 
