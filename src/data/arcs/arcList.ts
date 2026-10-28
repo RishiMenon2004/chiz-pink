@@ -3,7 +3,7 @@ import type { Arc } from "@/types/weapon"
 import { EnumRarity, EnumStatAttribute } from "@/data/items"
 import {
 	ascAppleSeedSet,
-	ascMuiscSet,
+	ascMusicSet,
 	ascLiquidDreamSet,
 	ascColdDessertSet,
 	ascDramaCoreSet,
@@ -179,7 +179,7 @@ const allArcs: Record<string, Arc> = {
 			attribute: EnumStatAttribute.CritRate,
 			baseValue: 0.096,
 		},
-		ascensionMaterialSet1: ascMuiscSet,
+		ascensionMaterialSet1: ascMusicSet,
 		ascensionMaterialSet2: ascNumeralSet,
 		effect: {
 			name: "Cursed Blade - Soulbound",
@@ -408,7 +408,7 @@ const allArcs: Record<string, Arc> = {
 			attribute: EnumStatAttribute.CritRate,
 			baseValue: 0.088,
 		},
-		ascensionMaterialSet1: ascMuiscSet,
+		ascensionMaterialSet1: ascMusicSet,
 		ascensionMaterialSet2: ascWhispersSet,
 		effect: {
 			name: "Hypervortex",
@@ -549,7 +549,7 @@ const allArcs: Record<string, Arc> = {
 			attribute: EnumStatAttribute.CritRate,
 			baseValue: 0.096,
 		},
-		ascensionMaterialSet1: ascMuiscSet,
+		ascensionMaterialSet1: ascMusicSet,
 		ascensionMaterialSet2: ascWhispersSet,
 		effect: {
 			name: "Commander Tiger Talisman",
@@ -766,7 +766,7 @@ const allArcs: Record<string, Arc> = {
 			attribute: EnumStatAttribute.ATKBonus,
 			baseValue: 0.11,
 		},
-		ascensionMaterialSet1: ascMuiscSet,
+		ascensionMaterialSet1: ascMusicSet,
 		ascensionMaterialSet2: ascDelusionsSet,
 		effect: {
 			name: "Thief's Candy",
@@ -1130,7 +1130,7 @@ const allArcs: Record<string, Arc> = {
 			attribute: EnumStatAttribute.ATKBonus,
 			baseValue: 0.11,
 		},
-		ascensionMaterialSet1: ascMuiscSet,
+		ascensionMaterialSet1: ascMusicSet,
 		ascensionMaterialSet2: ascNumeralSet,
 		effect: {
 			name: "Beat King",
@@ -1184,7 +1184,7 @@ const allArcs: Record<string, Arc> = {
 			attribute: EnumStatAttribute.ChargeEffeciency,
 			baseValue: 0.132,
 		},
-		ascensionMaterialSet1: ascMuiscSet,
+		ascensionMaterialSet1: ascMusicSet,
 		ascensionMaterialSet2: ascWhispersSet,
 		effect: {
 			name: "Eclipse",
@@ -1589,7 +1589,7 @@ const allArcs: Record<string, Arc> = {
 			attribute: EnumStatAttribute.HPBonus,
 			baseValue: 0.1,
 		},
-		ascensionMaterialSet1: ascMuiscSet,
+		ascensionMaterialSet1: ascMusicSet,
 		ascensionMaterialSet2: ascNumeralSet,
 		effect: {
 			name: '"Bittercake"',
@@ -1618,7 +1618,7 @@ const allArcs: Record<string, Arc> = {
 			attribute: EnumStatAttribute.BreakIntensity,
 			baseValue: 24,
 		},
-		ascensionMaterialSet1: ascMuiscSet,
+		ascensionMaterialSet1: ascMusicSet,
 		ascensionMaterialSet2: ascSilhouetteSet,
 		effect: {
 			name: "Inspiration Terminator",
@@ -1647,7 +1647,7 @@ const allArcs: Record<string, Arc> = {
 			attribute: EnumStatAttribute.ATKBonus,
 			baseValue: 0.15,
 		},
-		ascensionMaterialSet1: ascMuiscSet,
+		ascensionMaterialSet1: ascMusicSet,
 		ascensionMaterialSet2: ascSilhouetteSet,
 		effect: {
 			name: "Ora Puncher",
@@ -1876,7 +1876,7 @@ const allArcs: Record<string, Arc> = {
 			attribute: EnumStatAttribute.ATKBonus,
 			baseValue: 0.08,
 		},
-		ascensionMaterialSet1: ascMuiscSet,
+		ascensionMaterialSet1: ascMusicSet,
 		ascensionMaterialSet2: ascSilhouetteSet,
 		effect: {
 			name: "Noros",

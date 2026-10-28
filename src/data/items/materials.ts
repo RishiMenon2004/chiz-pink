@@ -818,7 +818,7 @@ export const beaty: Material = {
 	linkedMaterials: ["harmony", "versey"],
 }
 
-export const ascMuiscSet: MaterialSet = [beaty, versey, harmony]
+export const ascMusicSet: MaterialSet = [beaty, versey, harmony]
 
 export const liquidDreamCan: Material = {
 	id: "liquid_dream_can",
