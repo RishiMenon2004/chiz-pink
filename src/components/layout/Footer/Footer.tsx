@@ -37,8 +37,8 @@ export function Footer() {
 					<b className={styles.pink}>HOTTA STUDIO&trade;</b>
 				</div>
 				<div className={styles.small}>
-					<b className={styles.pink}>CHIZ.PINK</b> is an unoffical
-					project and is not affilitated with{" "}
+					<b className={styles.pink}>CHIZ.PINK</b> is an unofficial
+					project and is not affiliated with{" "}
 					<b className={styles.pink}>HOTTA STUDIO&trade;</b>
 				</div>
 			</span>
