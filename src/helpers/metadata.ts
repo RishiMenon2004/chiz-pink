@@ -8,7 +8,7 @@ import { RoutesData } from "@/data/routes"
 export const SITE_URL = "https://chiz.pink"
 export const SITE_NAME = "Chiz.Pink"
 export const SITE_DESCRIPTION =
-	"Your favourite daily planner and inventory tracker :3"
+	"Your pinkest companion, ascension planner and pull tracker for NTE :3"
 
 // Share preview for pages without their own opengraph-image.
 export const SITE_OG_IMAGE = {

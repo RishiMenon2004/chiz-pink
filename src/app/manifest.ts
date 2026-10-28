@@ -1,10 +1,12 @@
 import type { MetadataRoute } from "next"
 
+import { SITE_DESCRIPTION } from "@/helpers/metadata"
+
 export default function manifest(): MetadataRoute.Manifest {
 	return {
 		name: "Chiz.Pink",
 		short_name: "Chiz.Pink",
-		description: "Your favourite daily planner and inventory tracker :3",
+		description: SITE_DESCRIPTION,
 		start_url: "/",
 		display: "standalone",
 		orientation: "portrait-primary",

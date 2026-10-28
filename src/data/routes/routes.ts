@@ -14,8 +14,7 @@ export const RoutesData: RoutesRecord = {
 	"/": {
 		title: "DASHBOARD",
 		head: "Chiz.Pink: Neverness to Everness (NTE) Planner & Pull Tracker",
-		description:
-			"Plan Esper and arc ascensions, track your pulls and pity, and keep up with dailies, stamina and events in Neverness to Everness. Free, no account needed.",
+		// No description: uses the site tagline (SITE_DESCRIPTION).
 		tooltip: "Dashboard",
 		id: "home",
 	},
