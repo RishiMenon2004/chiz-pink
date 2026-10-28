@@ -168,6 +168,9 @@ function WelcomeSplashScreen({ closeSplash }: { closeSplash: () => void }) {
 	)
 }
 
+// The update splash lists only the newest changelog entries.
+const RECENT_CHANGELOGS = 5
+
 function UpdateSplashScreen({ closeSplash }: { closeSplash: () => void }) {
 	return (
 		<div className={styles.updateSplashContainer}>
@@ -180,7 +183,8 @@ function UpdateSplashScreen({ closeSplash }: { closeSplash: () => void }) {
 				<div className={`inset-control ${styles.infoBox}`}>
 					{Object.entries(ChangeLogs)
 						.toReversed()
-						.map(([version, { logs }]) => (
+						.slice(0, RECENT_CHANGELOGS)
+						.map(([version, logs]) => (
 							<div key={version} className={styles.versionSection}>
 								<h3
 									id={`changelog-v${version}`}
@@ -229,8 +233,8 @@ export function SplashScreen() {
 function SplashScreens() {
 	const isFirstVisit = useFirstVisit()
 
-	const latestChangeDate = Object.values(ChangeLogs).at(-1)?.timeStamp || 0
-	const isLastSeenOld = useLastSeen(latestChangeDate)
+	const latestVersion = Object.keys(ChangeLogs).at(-1) ?? "0.0.0"
+	const isLastSeenOld = useLastSeen(latestVersion)
 
 	const [showWelcomeSplash, setShowWelcomeSplash] = useState(isFirstVisit)
 	const closeWelcomeSplashScreen = () => {

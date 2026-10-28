@@ -11,7 +11,18 @@ let isLastSeenOld = false
 
 const getServerSnapshot = (): boolean => false
 
-export function useLastSeen(time?: number) {
+// "1.10.0" is newer than "1.9.0", so compare part by part, not as text.
+function compareVersions(a: string, b: string) {
+	const aParts = a.split(".").map(Number)
+	const bParts = b.split(".").map(Number)
+	for (let i = 0; i < Math.max(aParts.length, bParts.length); i++) {
+		const diff = (aParts[i] ?? 0) - (bParts[i] ?? 0)
+		if (diff !== 0) return diff
+	}
+	return 0
+}
+
+export function useLastSeen(version: string) {
 	const getSnapshot = (): boolean => {
 		if (typeof window === "undefined") return false
 		if (resolved) return isLastSeenOld
@@ -25,11 +36,13 @@ export function useLastSeen(time?: number) {
 
 		resolved = true
 
-		const currentTime = time ?? Date.now()
-		const lastSeen = memoryStorage.getItem<number | null>(key, null)
-		isLastSeenOld = !lastSeen || currentTime > lastSeen
+		// Before 1.1.1 this held a changelog timestamp, which always means an
+		// older version than any that stores a version string.
+		const lastSeen = memoryStorage.getItem<string | number | null>(key, null)
+		isLastSeenOld =
+			typeof lastSeen !== "string" || compareVersions(version, lastSeen) > 0
 
-		memoryStorage.setItem(key, currentTime)
+		memoryStorage.setItem(key, version)
 		return isLastSeenOld
 	}
 
