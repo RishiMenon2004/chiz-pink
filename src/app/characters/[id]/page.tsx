@@ -34,6 +34,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 			char.description ||
 			`${char.name} character profile, skills, and ascension details on Chiz.Pink`,
 		path: `/characters/${id}`,
+		hasOwnImage: true,
 	})
 }
 

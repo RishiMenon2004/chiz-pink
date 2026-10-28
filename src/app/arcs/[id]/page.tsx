@@ -34,6 +34,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 			arc.description ||
 			`${arc.name} arc effects, stats, and ascension materials on Chiz.Pink`,
 		path: `/arcs/${id}`,
+		hasOwnImage: true,
 	})
 }
 

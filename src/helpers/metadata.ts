@@ -10,11 +10,22 @@ export const SITE_NAME = "Chiz.Pink"
 export const SITE_DESCRIPTION =
 	"Your favourite daily planner and inventory tracker :3"
 
+// Share preview for pages without their own opengraph-image.
+export const SITE_OG_IMAGE = {
+	url: "/layout/site-og.png",
+	width: 1200,
+	height: 630,
+	alt: "Chiz.Pink: Neverness to Everness ascension planner and pull tracker",
+}
+
 type PageMetadataOptions = {
 	title: string
 	description?: string
 	// Path from the site root, e.g. "/characters/akane".
 	path: string
+	// The route has an opengraph-image file. Setting images here would
+	// override it, so they're left out and Next fills in the file's.
+	hasOwnImage?: boolean
 }
 
 /**
@@ -26,7 +37,12 @@ export function buildMetadata({
 	title,
 	description = SITE_DESCRIPTION,
 	path,
+	hasOwnImage = false,
 }: PageMetadataOptions): Metadata {
+	// Spread in, not set to undefined: Next treats a present-but-undefined
+	// `images` as "no image" and drops the file's too.
+	const images = hasOwnImage ? {} : { images: [SITE_OG_IMAGE] }
+
 	// Pages under the root get the "| Chiz.Pink" template; the home page
 	// doesn't, so its title is already the full one.
 	const fullTitle = path === "/" ? title : `${title} | ${SITE_NAME}`
@@ -42,11 +58,13 @@ export function buildMetadata({
 			url: path,
 			title: fullTitle,
 			description,
+			...images,
 		},
 		twitter: {
 			card: "summary_large_image",
 			title: fullTitle,
 			description,
+			...images,
 		},
 	}
 }
