@@ -1,12 +1,22 @@
 "use client"
 
+import { useEffect } from "react"
+
+import { isChunkLoadError, reloadAfterChunkError } from "@/helpers/chunkLoadError"
+
 export default function GlobalError({
 	error,
-	reset,
+	unstable_retry,
 }: {
 	error: Error & { digest?: string }
-	reset: () => void
+	unstable_retry: () => void
 }) {
+	const chunkError = isChunkLoadError(error)
+
+	useEffect(() => {
+		if (chunkError) reloadAfterChunkError()
+	}, [chunkError])
+
 	return (
 		<html lang="en">
 			<body
@@ -28,7 +38,9 @@ export default function GlobalError({
 				</h2>
 				<p style={{ opacity: 0.7, maxWidth: "500px" }}>{error.message}</p>
 				<button
-					onClick={() => reset()}
+					onClick={() =>
+						chunkError ? window.location.reload() : unstable_retry()
+					}
 					style={{
 						padding: "0.35rem 1.5rem",
 						border: "none",
