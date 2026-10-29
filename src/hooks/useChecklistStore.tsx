@@ -11,6 +11,7 @@ import type {
 import { getAllActivitiesList } from "@/data/activities/activities"
 
 import { isInitialSyncPending } from "@/helpers/syncGate"
+import { dismissToolIntro } from "@/helpers/toolIntro"
 import { createRecordStore } from "@/helpers/storage/recordStore"
 import * as memoryStorage from "@/helpers/storage/memoryStorage"
 
@@ -146,6 +147,7 @@ export const checklistActions = {
 		}
 
 		store.write(updated)
+		dismissToolIntro("checklist")
 	},
 
 	// Clears activities when their reset boundaries triggers it, keeping their
@@ -219,6 +221,7 @@ export const checklistActions = {
 			...current,
 			customTasks: updater({ ...current.customTasks }),
 		})
+		dismissToolIntro("checklist")
 	},
 
 	saveCustomTask(task: CustomTask) {

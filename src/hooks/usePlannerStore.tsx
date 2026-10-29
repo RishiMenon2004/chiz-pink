@@ -4,6 +4,7 @@ import { useSyncExternalStore } from "react"
 import { v4 as uuidv4 } from "uuid"
 
 import { isInitialSyncPending } from "@/helpers/syncGate"
+import { dismissToolIntro } from "@/helpers/toolIntro"
 import { safeParse } from "@/helpers/dataCorruption"
 import * as idbStorage from "@/helpers/storage/idbStorage"
 import * as memoryStorage from "@/helpers/storage/memoryStorage"
@@ -194,6 +195,7 @@ export const plannerActions = {
 			},
 		}))
 		plannerOrderActions.prependToOrder("characters", char.id)
+		dismissToolIntro("planner")
 	},
 
 	updateCharacter(char: CharacterRecord) {
@@ -233,6 +235,7 @@ export const plannerActions = {
 			},
 		}))
 		plannerOrderActions.prependToOrder("arcs", newUID)
+		dismissToolIntro("planner")
 	},
 
 	updateWeapon(weapon: WeaponRecord) {

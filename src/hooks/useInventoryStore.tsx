@@ -3,6 +3,7 @@
 import { useSyncExternalStore } from "react"
 
 import { isInitialSyncPending } from "@/helpers/syncGate"
+import { dismissToolIntro } from "@/helpers/toolIntro"
 import { safeParse } from "@/helpers/dataCorruption"
 import * as idbStorage from "@/helpers/storage/idbStorage"
 import * as memoryStorage from "@/helpers/storage/memoryStorage"
@@ -70,6 +71,7 @@ export async function hydrateInventoryCache(): Promise<void> {
 export function updateInventory(data: Inventory) {
 	if (typeof window === "undefined") return
 	if (isInitialSyncPending()) return
+	dismissToolIntro("inventory")
 
 	cachedInventory = { ...cachedInventory, ...data }
 

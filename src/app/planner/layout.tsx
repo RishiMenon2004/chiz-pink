@@ -1,5 +1,6 @@
 "use client"
 
+import { ToolIntro } from "@/components/layout"
 import { PlannerSwitch } from "@/components/planner/PlannerSwitch"
 import { PlannerToolbar } from "@/components/planner/PlannerToolbar"
 import { PlannerSection, PlannerSectionContext } from "@/contexts"
@@ -41,6 +42,11 @@ export default function PlannerLayout({ children }: { children: ReactNode }) {
 		<PlannerSectionContext.Provider value={{ section, setSection }}>
 			<PlannerToolbar />
 			<PlannerSwitch />
+			<ToolIntro id="planner">
+				<div>
+					Plan your Espers and arcs and see which materials you still need.
+				</div>
+			</ToolIntro>
 			{children}
 		</PlannerSectionContext.Provider>
 	)

@@ -7,6 +7,7 @@ import * as memoryStorage from "@/helpers/storage/memoryStorage"
 import { hydratePullsCache } from "./useGachaStore"
 import { hydrateInventoryCache } from "./useInventoryStore"
 import { hydratePlannerCache } from "./usePlannerStore"
+import { decideToolIntros } from "./useToolIntro"
 
 // Boots the IndexedDB-backed storage layer once per page load (see
 // docs/plans/localstorage-to-indexeddb-migration.md Phase 4):
@@ -35,6 +36,7 @@ export function useStorageInitializer() {
 					hydrateInventoryCache(),
 					hydratePlannerCache(),
 				])
+				decideToolIntros()
 			} catch (error) {
 				console.error("Storage hydration failed", error)
 			} finally {

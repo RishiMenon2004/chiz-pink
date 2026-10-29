@@ -2,6 +2,7 @@
 
 import { useSyncExternalStore } from "react"
 import { isInitialSyncPending } from "@/helpers/syncGate"
+import { dismissToolIntro } from "@/helpers/toolIntro"
 
 import { safeParse } from "@/helpers/dataCorruption"
 import * as idbStorage from "@/helpers/storage/idbStorage"
@@ -281,6 +282,7 @@ export async function hydratePullsCache(): Promise<void> {
 // newest-first within each banner.
 export function importParsedPulls(rowsByBanner: StoredPull[][]) {
 	if (typeof window === "undefined" || isInitialSyncPending()) return
+	dismissToolIntro("pulls")
 
 	if (memoryStorage.isFallbackMode()) {
 		applyPulls(rowsByBanner.flat())
@@ -356,6 +358,7 @@ export const gachaPullsActions = {
 
 		if (typeof window === "undefined" || isInitialSyncPending())
 			return response
+		dismissToolIntro("pulls")
 
 		if (memoryStorage.isFallbackMode()) {
 			const pullsData = readLegacyBlob()

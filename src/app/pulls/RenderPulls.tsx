@@ -26,6 +26,7 @@ import {
 	useSettingsConfigContext,
 } from "@/contexts"
 
+import { ToolIntro } from "@/components/layout"
 import {
 	BannerSelector,
 	PullsListSection,
@@ -178,23 +179,31 @@ export function RenderPulls() {
 	}, [pullsRecord, selectedBanner, pityMap])
 
 	return (
-		<main className={`page ${styles.page}`} role="main">
-			<PullTrackerContext.Provider
-				value={{
-					selectedBanner,
-					setSelectedBanner,
-					gachaBanners: staticGachaBanners,
-					pulls: pullsRecord[selectedBanner],
-					pityMap,
-					pullNumberMap,
-					currentPity,
-					rateUpPulls,
-				}}>
-				<BannerSelector />
-				<PullsListSection />
-				<ImportSection />
-				<RateUpSection />
-			</PullTrackerContext.Provider>
-		</main>
+		<>
+			<ToolIntro id="pulls">
+				<div>
+					Import your pulls to track pity on every banner.
+				</div>
+			</ToolIntro>
+
+			<main className={`page ${styles.page}`} role="main">
+				<PullTrackerContext.Provider
+					value={{
+						selectedBanner,
+						setSelectedBanner,
+						gachaBanners: staticGachaBanners,
+						pulls: pullsRecord[selectedBanner],
+						pityMap,
+						pullNumberMap,
+						currentPity,
+						rateUpPulls,
+					}}>
+					<BannerSelector />
+					<PullsListSection />
+					<ImportSection />
+					<RateUpSection />
+				</PullTrackerContext.Provider>
+			</main>
+		</>
 	)
 }

@@ -11,7 +11,7 @@ import type {
 
 import { useInventoryStore } from "@/hooks"
 import { InventoryFilterContext } from "@/contexts"
-import { InfoBox } from "@/components/layout"
+import { InfoBox, ToolIntro } from "@/components/layout"
 import { InventoryFilterToolbar, GroupedInventory } from "@/components/inventory"
 
 import styles from "./page.module.css"
@@ -47,6 +47,12 @@ export default function RenderInventory() {
 				setSortReverse,
 			}}>
 			<InventoryFilterToolbar />
+
+			<ToolIntro id="inventory">
+				<div>
+					Track your materials so the planner knows what you have.
+				</div>
+			</ToolIntro>
 
 			{!doesInventoryExist && (
 				<InfoBox className={styles.emptyFilter} sticker="peek">

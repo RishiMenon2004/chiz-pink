@@ -26,7 +26,7 @@ import {
 	stopPropagation,
 } from "@/helpers"
 
-import { ModalContainer, PullOutToolbar } from "@/components/layout"
+import { ModalContainer, PullOutToolbar, ToolIntro } from "@/components/layout"
 import { DashDailyActivity } from "@/components/home"
 import { CustomTaskBox } from "@/components/checklist"
 
@@ -359,6 +359,12 @@ export default function RenderChecklist() {
 						document.body
 					)}
 			</PullOutToolbar>
+
+			<ToolIntro id="checklist">
+				<div>
+					Your dailies and weeklies, reset on your server&apos;s time.
+				</div>
+			</ToolIntro>
 
 			<main className={`page ${styles.page}`}>
 				<div className={styles.activitySection}>
