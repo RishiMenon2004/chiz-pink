@@ -80,7 +80,7 @@ function Slide({
 			<div className={styles.art}>
 				<Image
 					src={`/characters/full/${character.imageSrc}`}
-					alt=""
+					alt={`${character.name} full art`}
 					width={1080}
 					height={1280}
 					sizes="(max-width: 800px) 70vw, 30vw"

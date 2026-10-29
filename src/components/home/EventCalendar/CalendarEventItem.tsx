@@ -133,7 +133,7 @@ export function CalendarEventItem({
 				<Image
 					className={styles.eventImage}
 					src={eventImageSrc}
-					alt=""
+					alt={`${eventData.name} event banner`}
 					width={1920}
 					height={1080}
 				/>

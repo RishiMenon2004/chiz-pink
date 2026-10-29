@@ -61,7 +61,7 @@ function ArcRow({
 			<div className={styles.art}>
 				<Image
 					src={`/arcs/${arc.imageSrc}`}
-					alt=""
+					alt={`${arc.name} arc art`}
 					width={512}
 					height={512}
 					sizes="10rem"
