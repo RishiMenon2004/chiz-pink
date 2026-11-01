@@ -3,7 +3,6 @@ import { notFound } from "next/navigation"
 import { findArc, getAllArcsList } from "@/data/arcs"
 import { generateArcOgImage } from "@/helpers/ogImageGenerator"
 
-export const alt = "Arc Weapon"
 export const size = {
 	width: 1200,
 	height: 630,

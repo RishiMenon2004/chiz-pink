@@ -14,7 +14,7 @@ export const zankou: Character = {
 	imageSrc: "zankou.webp",
 	name: "Zankou",
 	description:
-		'A former member of the secret organization "The SCarlet Letter," code-named "Red Nightshade," now a prisoner on Ghroth Island.',
+		'A former member of the secret organization "The Scarlet Letter," code-named "Red Nightshade," now a prisoner on Ghroth Island.',
 	rarity: EnumRarity.Epic,
 	element: EnumCharacterElement.INCANTATION,
 	arcType: EnumArcType.Gas,

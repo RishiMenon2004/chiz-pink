@@ -3,7 +3,7 @@ import { notFound } from "next/navigation"
 
 import { findCharacter, getAllCharactersList } from "@/data/characters"
 
-import { buildMetadata } from "@/helpers/metadata"
+import { buildMetadata, rankWithArticle } from "@/helpers/metadata"
 
 import { CharacterProfile } from "@/components/profile"
 
@@ -28,13 +28,19 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 		}
 	}
 
+	const element = char.element[0].toUpperCase() + char.element.slice(1)
+	const intro = `${char.name} is ${rankWithArticle(char.rarity)} ${element} Esper in Neverness to Everness.`
+
 	return buildMetadata({
-		title: `${char.name} | Character Profile`,
-		description:
-			char.description ||
-			`${char.name} character profile, skills, and ascension details on Chiz.Pink`,
+		title: `${char.name}: NTE Character Profile`,
+		description: char.isPlaceholder
+			? `${intro} Details will be announced soon.`
+			: `${intro} View their Abilities, materials and banners.`,
 		path: `/characters/${id}`,
-		hasOwnImage: true,
+		image: {
+			url: `/characters/${id}/opengraph-image`,
+			alt: `${char.name} character card`,
+		},
 	})
 }
 

@@ -3,7 +3,7 @@ import { notFound } from "next/navigation"
 
 import { findArc, getAllArcsList } from "@/data/arcs"
 
-import { buildMetadata } from "@/helpers/metadata"
+import { buildMetadata, rankWithArticle } from "@/helpers/metadata"
 
 import { ArcProfile } from "@/components/profile"
 
@@ -28,13 +28,18 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 		}
 	}
 
+	const intro = `${arc.name} is ${rankWithArticle(arc.rarity)} ${arc.type} arc in Neverness to Everness.`
+
 	return buildMetadata({
-		title: `${arc.name} | Arc Index`,
-		description:
-			arc.description ||
-			`${arc.name} arc effects, stats, and ascension materials on Chiz.Pink`,
+		title: `${arc.name}: NTE Arc Index`,
+		description: arc.isPlaceholder
+			? `${intro} Details will be announced soon.`
+			: `${intro} View it's Stats, passive and materials.`,
 		path: `/arcs/${id}`,
-		hasOwnImage: true,
+		image: {
+			url: `/arcs/${id}/opengraph-image`,
+			alt: `${arc.name} arc card`,
+		},
 	})
 }
 
