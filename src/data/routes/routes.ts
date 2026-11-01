@@ -13,7 +13,7 @@ type RoutesRecord = Record<string, Route>
 export const RoutesData: RoutesRecord = {
 	"/": {
 		title: "DASHBOARD",
-		head: "Chiz.Pink: Neverness to Everness (NTE) Planner & Pull Tracker",
+		head: "Chiz.Pink: Neverness to Everness Planner & Pull Tracker",
 		// No description: uses the site tagline (SITE_DESCRIPTION).
 		tooltip: "Dashboard",
 		id: "home",
