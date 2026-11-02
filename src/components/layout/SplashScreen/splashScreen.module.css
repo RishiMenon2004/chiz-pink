@@ -154,10 +154,12 @@
 		justify-content: flex-start;
 		gap: 2rem;
 
-		& > button {
+		& > :is(button, a) {
 			display: grid;
 			place-items: center;
 			width: 50%;
+
+			text-decoration: none;
 
 			padding: 0.25rem 1rem;
 			margin-block: 0.5rem;
@@ -247,7 +249,7 @@
 		.btnContainer {
 			margin-right: 20vw;
 
-			& > button {
+			& > :is(button, a) {
 				width: 25%;
 			}
 		}
@@ -318,7 +320,7 @@
 			.btnContainer {
 				margin-right: unset;
 
-				& > button {
+				& > :is(button, a) {
 					width: 50%;
 				}
 			}

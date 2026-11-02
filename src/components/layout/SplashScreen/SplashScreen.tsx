@@ -14,6 +14,21 @@ import styles from "./splashScreen.module.css"
 import { parseDescription } from "@/helpers/parseDescription"
 import { InstallPWAButton } from "../InstallPWAButton"
 
+const DISCORD_INVITE_URL = "https://discord.gg/rSeMKWMy69"
+
+function DiscordButton() {
+	return (
+		<a
+			className="pill-button"
+			data-variant="normal"
+			href={DISCORD_INVITE_URL}
+			target="_blank"
+			rel="noopener noreferrer">
+			JOIN THE DISCORD
+		</a>
+	)
+}
+
 function WelcomeSplashScreen({ closeSplash }: { closeSplash: () => void }) {
 	const [imageClipPath, setImageClipPath] = useState("M 0 0 Z")
 
@@ -139,6 +154,7 @@ function WelcomeSplashScreen({ closeSplash }: { closeSplash: () => void }) {
 				</div>
 				<div className={styles.btnContainer}>
 					<InstallPWAButton type="button" />
+					<DiscordButton />
 					<button className="pill-button" onClick={closeSplash}>
 						{"CONTINUE >>"}
 					</button>
@@ -211,6 +227,7 @@ function UpdateSplashScreen({ closeSplash }: { closeSplash: () => void }) {
 				</div>
 				<div className={styles.btnContainer}>
 					<InstallPWAButton type="button" />
+					<DiscordButton />
 					<button className="pill-button" onClick={closeSplash}>
 						{"CONTINUE >>"}
 					</button>

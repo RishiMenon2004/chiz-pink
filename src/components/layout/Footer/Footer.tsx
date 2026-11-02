@@ -15,13 +15,13 @@ export function Footer() {
 					<Link href="/privacy" className="btn-anchor">
 						<b>PRIVACY POLICY</b>
 					</Link>
-					{" | Found a "}
+					{" | Bugs or ideas? Join the "}
 					<Link
 						target="_blank"
 						rel="noopener noreferrer"
 						href="https://discord.gg/rSeMKWMy69"
 						className="btn-anchor">
-						<b>BUG?</b>
+						<b>DISCORD</b>
 					</Link>
 					{" | Made with "}
 					<Link
