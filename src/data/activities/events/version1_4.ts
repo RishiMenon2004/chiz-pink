@@ -12,7 +12,7 @@ export const events: EventData[] = [
 		getEndDate: timings.phase2End,
 		eventImage: "version1.4/version_1.4.webp",
 		themeColor: "#72abea",
-		yOffset: "39%",
+		yOffset: "48%",
 	},
 	{
 		name: '"Born to Race" Mystery Box: NTE × PORSCHE Pt.2',
