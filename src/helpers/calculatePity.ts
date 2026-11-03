@@ -43,7 +43,7 @@ export function getResolvedGachaBanners(
 export const permanentRateupSet = new Set<string>(permanentBanner.rateupItems)
 
 // Servers can reopen before the official 03:00 UTC start, so a banner's pulls
-// start right after the previous phase ends (21:59 UTC).
+// start right after the previous phase ends (21:59:59 UTC).
 const PULL_START_GRACE_MS = 5 * 60 * 60 * 1000
 
 export function isPullInBannerWindow(
@@ -51,8 +51,8 @@ export function isPullInBannerWindow(
 	pull: MiracleBoxPull | ScarboroughFairPull
 ): boolean {
 	return (
-		banner.startDate - PULL_START_GRACE_MS < pull.timestamp &&
-		banner.endDate > pull.timestamp
+		banner.startDate - PULL_START_GRACE_MS <= pull.timestamp &&
+		banner.endDate >= pull.timestamp
 	)
 }
 

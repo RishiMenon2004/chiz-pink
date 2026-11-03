@@ -75,4 +75,5 @@ export const globalPatchEnd = (day: number, month: number, year: number) =>
 		day,
 		hour: 21,
 		minute: 59,
+		second: 59,
 	})

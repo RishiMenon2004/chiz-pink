@@ -16,7 +16,7 @@ export const patchTimings = {
 	version1_2: {
 		phase1Start: () => globalPatchStart(8, 7, 2026),
 		phase1End: () => globalPatchEnd(28, 7, 2026),
-		phase2Start: () => globalPatchStart(29, 7, 2026, -2),
+		phase2Start: () => globalPatchStart(29, 7, 2026),
 		phase2End: () => globalPatchEnd(18, 8, 2026),
 	},
 	version1_3: {
