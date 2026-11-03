@@ -15,7 +15,7 @@ import { useSortable } from "@dnd-kit/react/sortable"
 import { KeyMouseEventType } from "@/types"
 import { CharacterRecord, SkillLvlRecord } from "@/types/planner"
 
-import { EnumItemLvls, findMaterial, getItemRarityStyle } from "@/data/items"
+import { EnumItemLvls, getItemRarityStyle } from "@/data/items"
 import { findCharacter } from "@/data/characters"
 
 import {
@@ -26,6 +26,7 @@ import {
 } from "@/hooks"
 
 import { getCharacterBannerThemeColor } from "@/helpers/bannerStatus"
+import { getCraftAdjustmentMaterials } from "@/helpers/crafting"
 
 import { PlannerBoxContext, usePlannerMaterialsContext } from "@/contexts"
 
@@ -73,17 +74,12 @@ export function PlannerCharacterBox({
 			matList.push(...expHunterGuideSet)
 		}
 
-		charRecord.requiredMaterials.forEach((material) => {
-			const { craftedAmount } =
-				cumulativeInventory[index]?.[material.id] ?? {}
-			if ((craftedAmount ?? 0) > 0) {
-				const craftingMaterial = findMaterial(material.id)
-				craftingMaterial.linkedMaterials?.forEach((mat) => {
-					matList.push(findMaterial(mat))
-				})
-				matList.push(craftingMaterial)
-			}
-		})
+		matList.push(
+			...getCraftAdjustmentMaterials(
+				charRecord.requiredMaterials,
+				cumulativeInventory[index]
+			)
+		)
 
 		// Crafted materials in the same tier family share linked materials, so
 		// the list repeats them; keep each material's first position.

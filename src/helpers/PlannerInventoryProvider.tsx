@@ -3,26 +3,13 @@ import { useMemo } from "react"
 import type { CharacterRecord, WeaponRecord } from "@/types/planner"
 import type { CumulativeInventory } from "@/types/inventory"
 
-import { EnumMaterialType, EnumRarity, findMaterial } from "@/data/items"
+import { findMaterial } from "@/data/items"
 
 import { useInventoryStore } from "@/hooks"
 
 import { PlannerMaterialsContext } from "@/contexts"
 
-import { weaponExpAmount } from "./calculateWeaponCosts"
-import { characterExpAmount } from "./calculateCharacterCosts"
-
-const weaponExpAmountByRarity: Partial<Record<EnumRarity, number>> = {
-	[EnumRarity.Common]: weaponExpAmount.common,
-	[EnumRarity.Uncommon]: weaponExpAmount.uncommon,
-	[EnumRarity.Rare]: weaponExpAmount.rare,
-}
-
-const characterExpAmountByRarity: Partial<Record<EnumRarity, number>> = {
-	[EnumRarity.Common]: characterExpAmount.common,
-	[EnumRarity.Uncommon]: characterExpAmount.uncommon,
-	[EnumRarity.Rare]: characterExpAmount.rare,
-}
+import { getCraftRatio, getCraftSources } from "./crafting"
 
 export function PlannerInventoryProvider({
 	itemRecords,
@@ -72,40 +59,16 @@ export function PlannerInventoryProvider({
 
 				const matData = findMaterial(material.id)
 
-				const linkedMaterials =
-					matData.linkedMaterials?.map((linkedMaterialId) =>
-						findMaterial(linkedMaterialId)
-					) ?? []
-
-				const lowerMaterials = linkedMaterials
-					.filter((linkedMat) => linkedMat.rarity < matData.rarity)
-					.sort((a, b) => b.rarity - a.rarity)
-
 				const stillNeededAmount = Math.max(
 					0,
 					material.amount - inventoryAmount
 				)
 
-				const isWeaponExp =
-					matData.materialType === EnumMaterialType.WeaponExp
-				const isCharacterExp =
-					matData.materialType === EnumMaterialType.CharacterExp
-
-				const expAmountByRarity = isWeaponExp
-					? weaponExpAmountByRarity
-					: characterExpAmountByRarity
-
-				const getCraftRatio = (lowerRarity: EnumRarity) =>
-					isWeaponExp || isCharacterExp
-						? (expAmountByRarity[matData.rarity] ?? 0) /
-							(expAmountByRarity[lowerRarity] || 1)
-						: 3 ** (matData.rarity - lowerRarity)
-
 				let remainingDeficiency = stillNeededAmount
 				let totalCraftedAmount = 0
 				const craftedFrom: { id: string; amount: number }[] = []
 
-				for (const lowerMaterial of lowerMaterials) {
+				for (const lowerMaterial of getCraftSources(matData)) {
 					if (remainingDeficiency <= 0) break
 
 					const lowerMaterialRemaining =
@@ -113,7 +76,7 @@ export function PlannerInventoryProvider({
 
 					if (lowerMaterialRemaining <= 0) continue
 
-					const craftRatio = getCraftRatio(lowerMaterial.rarity)
+					const craftRatio = getCraftRatio(matData, lowerMaterial)
 
 					const craftableAmount = Math.floor(
 						lowerMaterialRemaining / craftRatio

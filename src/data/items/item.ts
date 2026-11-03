@@ -6,6 +6,7 @@ export enum EnumMaterialType {
 	Talent = "Esper Talent",
 	WeaponAscension = "Arc Ascension",
 	WeaponExp = "Arc XP",
+	Substitute = "Substitutes",
 	Currency = "Currency",
 	Reward = "Reward",
 }

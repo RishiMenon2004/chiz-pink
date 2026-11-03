@@ -24,6 +24,7 @@ import {
 	transcendentDelusions,
 	yearningDelusions,
 	suspendedDelusions,
+	heterogeneousUnit,
 	waterMoonPick,
 	chargingKnightSparkPlug,
 	confessionalFLowerSeed,
@@ -46,6 +47,7 @@ import {
 	theSecondSelf,
 	suspendedWhispers,
 	hesitationOfTheWaves,
+	expansionCore,
 	dreamlessSeed,
 	goldenAppleSeed,
 	silverAppleSeed,
@@ -119,6 +121,10 @@ const allMaterials: Record<string, Material> = {
 	nest_guard_fragment: nestGuardFragment,
 	colorful_ticket_stub: colorfulTicketStub,
 	tear_of_the_sea: tearOfTheSea,
+
+	/* conversion */
+	expansion_core: expansionCore,
+	heterogeneous_unit: heterogeneousUnit,
 
 	the_olive_branch: theOliveBranch,
 	white_rose: whiteRose,

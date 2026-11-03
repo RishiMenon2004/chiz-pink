@@ -5,6 +5,7 @@ export {
 } from "./calculateCharacterCosts"
 
 export { getLinkedMaterials } from "./getLinkedMaterials"
+export { getCraftRatio } from "./crafting"
 export { getPhases } from "./getPhases"
 export { getRarityName } from "./getRarityName"
 export { getCostAmount } from "./getCostAmountWithRarity"

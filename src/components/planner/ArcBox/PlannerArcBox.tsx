@@ -15,7 +15,7 @@ import { useSortable } from "@dnd-kit/react/sortable"
 import type { KeyMouseEventType } from "@/types"
 import type { WeaponRecord } from "@/types/planner"
 
-import { EnumItemLvls, findMaterial, getItemRarityStyle } from "@/data/items"
+import { EnumItemLvls, getItemRarityStyle } from "@/data/items"
 import { findArc } from "@/data/arcs"
 
 import {
@@ -26,6 +26,7 @@ import {
 } from "@/hooks"
 
 import { getArcBannerThemeColor } from "@/helpers/bannerStatus"
+import { getCraftAdjustmentMaterials } from "@/helpers/crafting"
 
 import { PlannerBoxContext, usePlannerMaterialsContext } from "@/contexts"
 
@@ -59,17 +60,12 @@ export function PlannerArcBox({
 	const buildAdjustmentMaterials = (): Material[] => {
 		const matList: Material[] = [beetleCoin, ...expDyeSet]
 
-		arcRecord.requiredMaterials.forEach((material) => {
-			const { craftedAmount } =
-				cumulativeInventory[index]?.[material.id] ?? {}
-			if ((craftedAmount ?? 0) > 0) {
-				const craftingMaterial = findMaterial(material.id)
-				craftingMaterial.linkedMaterials?.forEach((mat) => {
-					matList.push(findMaterial(mat))
-				})
-				matList.push(craftingMaterial)
-			}
-		})
+		matList.push(
+			...getCraftAdjustmentMaterials(
+				arcRecord.requiredMaterials,
+				cumulativeInventory[index]
+			)
+		)
 
 		// Crafted materials in the same tier family share linked materials, so
 		// the list repeats them; keep each material's first position.

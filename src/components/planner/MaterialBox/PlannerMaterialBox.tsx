@@ -8,7 +8,7 @@ import { EnumMaterialType, findMaterial, getItemRarityStyle } from "@/data/items
 
 import { useTooltip, useMaterialEditorModal, useInventoryStore } from "@/hooks"
 
-import { getLinkedMaterials } from "@/helpers"
+import { getCraftRatio, getLinkedMaterials } from "@/helpers"
 
 import { usePlannerBoxContext, usePlannerMaterialsContext } from "@/contexts"
 
@@ -146,13 +146,10 @@ export function PlannerMaterialBox({
 							<div className="tooltip-using-list">
 								{craftedFrom.map(({ id, amount }) => {
 									const craftingMaterial = findMaterial(id)
-									const divisor = isExpMaterial
-										? 15 * material.rarity -
-											16 * craftingMaterial.rarity -
-											8
-										: 3 **
-											(material.rarity -
-												craftingMaterial.rarity)
+									const divisor = getCraftRatio(
+										material,
+										craftingMaterial
+									)
 									return (
 										<div key={id}>
 											{`${craftingMaterial.name}: `}

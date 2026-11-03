@@ -574,6 +574,25 @@ export const colorfulTicketStub: Material = {
 	sources: ['Anomaly Hunt: "Swallowtail"', "Material Selection Box"],
 }
 
+/* Substitutes */
+export const expansionCore: Material = {
+	id: "expansion_core",
+	name: "Expansion Core",
+	rarity: EnumRarity.Rare,
+	materialType: EnumMaterialType.Substitute,
+	imageSrc: "convert_expansion_core.png",
+	sources: ["Hunter Exchange"],
+}
+
+export const heterogeneousUnit: Material = {
+	id: "heterogeneous_unit",
+	name: "Heterogeneous Unit",
+	rarity: EnumRarity.Rare,
+	materialType: EnumMaterialType.Substitute,
+	imageSrc: "convert_heterogeneous_unit.png",
+	sources: ["999 Nights", "Events"],
+}
+
 /* Talent */
 export const theOliveBranch: Material = {
 	id: "the_olive_branch",
