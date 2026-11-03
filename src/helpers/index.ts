@@ -56,6 +56,7 @@ export {
 	isArcRateUp,
 	isRateUp,
 	findRateUpBanner,
+	isPullInBannerWindow,
 	staticArcBanners,
 	getResolvedGachaBanners,
 	permanentRateupSet,

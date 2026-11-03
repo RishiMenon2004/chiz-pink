@@ -14,6 +14,7 @@ import {
 	findPullItem,
 	staticArcBanners,
 	getResolvedGachaBanners,
+	isPullInBannerWindow,
 	getOptimizedImageUrl,
 } from "@/helpers"
 
@@ -157,19 +158,11 @@ export function PullsListSection() {
 			let bannerNames: string[]
 			if (selectedBanner === "arcsBanner") {
 				bannerNames = staticArcBanners
-					.filter(
-						(b) =>
-							b.startDate < pull.timestamp &&
-							b.endDate > pull.timestamp
-					)
+					.filter((b) => isPullInBannerWindow(b, pull))
 					.map((b) => b.name)
 			} else if (selectedBanner === "limitedBanner") {
 				bannerNames = limitedBanners
-					.filter(
-						(b) =>
-							b.startDate < pull.timestamp &&
-							b.endDate > pull.timestamp
-					)
+					.filter((b) => isPullInBannerWindow(b, pull))
 					.map((b) => b.name)
 			} else {
 				bannerNames = [permanentBanner.name]

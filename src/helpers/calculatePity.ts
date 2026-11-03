@@ -42,15 +42,40 @@ export function getResolvedGachaBanners(
 
 export const permanentRateupSet = new Set<string>(permanentBanner.rateupItems)
 
+// Servers can reopen before the official 03:00 UTC start, so a banner's pulls
+// start right after the previous phase ends (21:59 UTC).
+const PULL_START_GRACE_MS = 5 * 60 * 60 * 1000
+
+export function isPullInBannerWindow(
+	banner: { startDate: number; endDate: number },
+	pull: MiracleBoxPull | ScarboroughFairPull
+): boolean {
+	return (
+		banner.startDate - PULL_START_GRACE_MS < pull.timestamp &&
+		banner.endDate > pull.timestamp
+	)
+}
+
+// Rate-ups only drop from their own banner, so any match counts. Prefers the
+// banner live at the pull, then the nearest one (for reruns).
 export function findRateUpBanner<
 	T extends { rateupItem?: string; startDate: number; endDate: number },
 >(banners: T[], pull: MiracleBoxPull | ScarboroughFairPull): T | undefined {
-	return banners.find(
-		(b) =>
-			b.rateupItem === pull.rewardId &&
-			b.startDate < pull.timestamp &&
-			b.endDate > pull.timestamp
-	)
+	let closest: T | undefined
+	let closestDistance = Infinity
+
+	for (const b of banners) {
+		if (b.rateupItem !== pull.rewardId) continue
+		if (isPullInBannerWindow(b, pull)) return b
+
+		const distance = Math.abs(b.startDate - pull.timestamp)
+		if (distance < closestDistance) {
+			closest = b
+			closestDistance = distance
+		}
+	}
+
+	return closest
 }
 
 export function isScarboroughPull(
