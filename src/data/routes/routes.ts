@@ -128,6 +128,13 @@ export const RoutesData: RoutesRecord = {
 		id: "migrate",
 	},
 
+	"/pulls/import-external": {
+		title: "IMPORT PULLS",
+		head: "Import Pulls",
+		tooltip: "Import Pulls",
+		id: "import_external",
+	},
+
 	"/content-tool": {
 		title: "CONTENT TOOL",
 		head: "Content tool",

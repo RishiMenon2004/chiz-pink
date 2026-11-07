@@ -12,7 +12,7 @@ export default function PrivacyPolicy() {
 		<main className={`page ${styles.page}`} role="main">
 			<div className={styles.intro}>
 				<span className={styles.lastUpdated}>
-					Last updated: 28 October 2026
+					Last updated: 7 November 2026
 				</span>
 				<p className={styles.lead}>
 					<b>Chiz.Pink</b>
@@ -115,6 +115,19 @@ export default function PrivacyPolicy() {
 								}
 							</li>
 						</ul>
+					</div>
+				</div>
+
+				<div className={`metallic-panel ${styles.section}`}>
+					<span className={styles.sectionTitle}>
+						{"Sending Pulls From the NTE History Exporter"}
+					</span>
+					<div className={`inset-control ${styles.sectionContent}`}>
+						<p>
+							{
+								'If you use the exporter\'s "Import in Chiz.Pink" button, your export is encrypted on your computer and held by Convex for up to 10 minutes until your browser collects it, then deleted. The key stays in the link on your device, so neither Chiz.Pink nor Convex can read it. This isn\'t linked to your account, and it works without signing in.'
+							}
+						</p>
 					</div>
 				</div>
 
