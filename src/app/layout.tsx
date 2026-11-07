@@ -18,13 +18,13 @@ import { CurrencyBar } from "@/components/layout/CurrencyBar/CurrencyBar"
 import { DomainMoveGate } from "@/components/layout/DomainMoveGate"
 import { Footer } from "@/components/layout/Footer"
 import { Sidebar } from "@/components/layout/Sidebar"
+import { SiteAnalytics } from "@/components/layout/SiteAnalytics"
 import { SplashScreen } from "@/components/layout/SplashScreen"
 
 import { ServiceWorkerRegister } from "@/helpers/ServiceWorkerRegister"
 import { SyncErrorBoundary } from "@/helpers/SyncErrorBoundary"
 import { AppStorageInitializer } from "@/helpers/AppStorageInitializer"
 
-import { Analytics } from "@vercel/analytics/next"
 import { SettingsProvider } from "@/hooks/useSettingsStore"
 
 const barlowCondensed = Barlow_Condensed({
@@ -110,7 +110,7 @@ export default function RootLayout({
 					</SettingsProvider>
 				</AuthProvider>
 				<Footer />
-				<Analytics />
+				<SiteAnalytics />
 			</body>
 		</html>
 	)
