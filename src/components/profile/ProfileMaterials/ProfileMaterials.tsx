@@ -16,7 +16,7 @@ import { MaterialIcon } from "@/components/layout/MaterialIcon"
 
 import { LEVELS, MAX_LEVEL_INDEX } from "../ProfileLevel"
 
-import pageStyles from "@/app/page.module.css"
+import pageStyles from "@/app/[lang]/page.module.css"
 import styles from "../profile.module.css"
 
 // Fixed locale: the server and the browser must format identically, or the

@@ -28,7 +28,7 @@ import { getLinkedMaterials } from "@/helpers"
 import { MaterialIcon, QuantityInput } from "@/components/layout"
 
 import styles from "./inventoryMaterial.module.css"
-import pageStyles from "@/app/inventory/page.module.css"
+import pageStyles from "@/app/[lang]/inventory/page.module.css"
 
 export function MaterialItemBox({
 	material,

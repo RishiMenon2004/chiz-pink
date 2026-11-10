@@ -1,7 +1,6 @@
 "use client"
 
 import { CSSProperties, ReactNode, useMemo, useState } from "react"
-import Link from "next/link"
 
 import type { Character } from "@/types/character"
 import type { Arc } from "@/types/weapon"
@@ -40,8 +39,10 @@ import {
 	type CatalogSort,
 } from "./CatalogFilterToolbar"
 import { CatalogSwitch } from "./CatalogSwitch"
+import { LocaleLink } from "@/components/layout"
+
 import styles from "./catalog.module.css"
-import pageStyles from "@/app/page.module.css"
+import pageStyles from "@/app/[lang]/page.module.css"
 
 const MINUTE_MS = 60_000
 
@@ -67,7 +68,7 @@ function CharacterCard({
 	const themeColor = getCharacterBannerThemeColor(character.id)
 
 	return (
-		<Link
+		<LocaleLink
 			href={`/characters/${character.id}`}
 			className={`${styles.card} ${getItemRarityStyle(character)}`}
 			style={
@@ -96,7 +97,7 @@ function CharacterCard({
 				/>
 			</div>
 			<div className={styles.name}>{character.name}</div>
-		</Link>
+		</LocaleLink>
 	)
 }
 
@@ -110,7 +111,7 @@ function ArcCard({ arc, status }: { arc: Arc; status: ItemStatus }) {
 	const themeColor = arcThemeColors.get(arc.id)
 
 	return (
-		<Link
+		<LocaleLink
 			href={`/arcs/${arc.id}`}
 			className={`${styles.card} ${styles.arcCard} ${getItemRarityStyle(arc)}`}
 			style={
@@ -128,7 +129,7 @@ function ArcCard({ arc, status }: { arc: Arc; status: ItemStatus }) {
 				</div>
 			</div>
 			<div className={styles.name}>{arc.name}</div>
-		</Link>
+		</LocaleLink>
 	)
 }
 

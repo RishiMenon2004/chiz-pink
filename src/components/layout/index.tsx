@@ -1,6 +1,7 @@
 export { CurrencyBar, CurrencyBox, PageTitle } from "./CurrencyBar"
 export { Sidebar } from "./Sidebar"
 export { SiteAnalytics } from "./SiteAnalytics"
+export { LocaleLink } from "./LocaleLink"
 export { NavButton } from "./NavButton"
 export { Footer } from "./Footer"
 export { SplashScreen } from "./SplashScreen"

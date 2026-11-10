@@ -1,5 +1,4 @@
 import Image from "next/image"
-import Link from "next/link"
 
 import type { Arc } from "@/types/weapon"
 
@@ -11,12 +10,14 @@ import { parseDescription } from "@/helpers/parseDescription"
 
 import { InfoBox } from "@/components/layout/InfoBox"
 
+import { LocaleLink } from "@/components/layout"
+
 import { ArcEffect } from "../ArcEffect"
 import { ProfileHero } from "../ProfileHero"
 import { LevelStatValue, ProfileLevelProvider } from "../ProfileLevel"
 import { ProfileMaterials } from "../ProfileMaterials"
 
-import pageStyles from "@/app/page.module.css"
+import pageStyles from "@/app/[lang]/page.module.css"
 import styles from "../profile.module.css"
 
 export function ArcProfile({ arc }: { arc: Arc }) {
@@ -39,9 +40,9 @@ export function ArcProfile({ arc }: { arc: Arc }) {
 			<main role="main" className={`page ${pageStyles.page}`}>
 				<div className={styles.layout}>
 					<div className={styles.heroColumn}>
-						<Link href="/arcs" className={`pill-button ${styles.backLink}`}>
+						<LocaleLink href="/arcs" className={`pill-button ${styles.backLink}`}>
 							ALL ARCS
-						</Link>
+						</LocaleLink>
 						<ProfileHero
 							name={arc.name}
 							rarity={arc.rarity}

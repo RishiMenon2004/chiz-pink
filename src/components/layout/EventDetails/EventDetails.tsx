@@ -11,7 +11,6 @@ import {
 } from "react"
 import { createPortal } from "react-dom"
 import Image from "next/image"
-import Link from "next/link"
 
 import type { DayBoundaryMode } from "@/types/calendar"
 import type { SettingsRecord } from "@/types/settings"
@@ -21,6 +20,8 @@ import { findCharacter } from "@/data/characters"
 
 import { stopPropagation } from "@/helpers"
 import { formatEventDateTime } from "@/helpers/serverTime"
+
+import { LocaleLink } from "../LocaleLink"
 
 import styles from "./eventDetails.module.css"
 
@@ -235,11 +236,11 @@ function EventDetailsBox({
 				</span>
 			</div>
 			{rateUpCharacter && (
-				<Link
+				<LocaleLink
 					href={`/characters/${rateUpCharacter.id}`}
 					className={`pill-button ${styles.profileLink}`}>
 					{`VIEW ${rateUpCharacter.name.toUpperCase()}`}
-				</Link>
+				</LocaleLink>
 			)}
 		</div>
 	)

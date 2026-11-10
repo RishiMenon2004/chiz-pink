@@ -1,14 +1,16 @@
 "use client"
 
 import Image from "next/image"
-import Link from "next/link"
-import { usePathname } from "next/navigation"
 import { useEffect, useRef, useState } from "react"
 
 import { ChangeLogs } from "@/data/changelog"
 
 import { useFirstVisit } from "@/hooks/useFirstVisit"
 import { useLastSeen } from "@/hooks/useLastSeen"
+
+import { useLocalePathname } from "@/hooks/useLocalePathname"
+
+import { LocaleLink } from "../LocaleLink"
 
 import styles from "./splashScreen.module.css"
 import { parseDescription } from "@/helpers/parseDescription"
@@ -81,73 +83,73 @@ function WelcomeSplashScreen({ closeSplash }: { closeSplash: () => void }) {
 				<div className={`inset-control ${styles.infoBox}`}>
 					<ul>
 						<li>
-							<Link
+							<LocaleLink
 								onClick={closeSplash}
 								className="btn-anchor"
 								href={"/"}>
 								Dashboard
-							</Link>
+							</LocaleLink>
 							{
 								" — Track your stamina, current events, and featured boards."
 							}
 						</li>
 						<li>
-							<Link
+							<LocaleLink
 								onClick={closeSplash}
 								className="btn-anchor"
 								href={"/checklist"}>
 								Checklist
-							</Link>
+							</LocaleLink>
 							{" — Your handy To-Do list for dailies and weeklies."}
 						</li>
 						<li>
-							<Link
+							<LocaleLink
 								onClick={closeSplash}
 								className="btn-anchor"
 								href={"/planner"}>
 								Planner
-							</Link>
+							</LocaleLink>
 							{" — Ascension planner for your characters and arcs."}
 						</li>
 						<li>
-							<Link
+							<LocaleLink
 								onClick={closeSplash}
 								className="btn-anchor"
 								href={"/pulls"}>
 								Pulls
-							</Link>
+							</LocaleLink>
 							{" — Import and track your pull history."}
 						</li>
 						<li>
-							<Link
+							<LocaleLink
 								onClick={closeSplash}
 								className="btn-anchor"
 								href={"/inventory"}>
 								Inventory
-							</Link>
+							</LocaleLink>
 							{" — Tracker for your in-game items."}
 						</li>
 						<li>
-							<Link
+							<LocaleLink
 								onClick={closeSplash}
 								className="btn-anchor"
 								href={"/settings"}>
 								Settings
-							</Link>
+							</LocaleLink>
 							{" — Switching from "}
-							<Link
+							<LocaleLink
 								className="btn-anchor"
 								href="https://nteplanner.app/"
 								target="_blank">
 								NTE Planner
-							</Link>
+							</LocaleLink>
 							{" or "}
-							<Link
+							<LocaleLink
 								className="btn-anchor"
 								href="https://www.ntewiz.xyz/"
 								target="_blank">
 								NTEWiz
-							</Link>
+							</LocaleLink>
 							{"? Import your data with ease."}
 						</li>
 					</ul>
@@ -244,7 +246,7 @@ const NO_SPLASH_PATHS = new Set([
 ])
 
 export function SplashScreen() {
-	const pathname = usePathname()
+	const pathname = useLocalePathname()
 
 	if (NO_SPLASH_PATHS.has(pathname)) return null
 

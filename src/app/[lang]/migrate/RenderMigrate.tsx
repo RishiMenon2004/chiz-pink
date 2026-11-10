@@ -1,7 +1,6 @@
 "use client"
 
 import { useEffect, useRef, useState, useSyncExternalStore } from "react"
-import Link from "next/link"
 
 import type { BackupData } from "@/types/settings"
 
@@ -20,7 +19,7 @@ import {
 import { useInitialSyncPending } from "@/helpers/syncGate"
 import * as memoryStorage from "@/helpers/storage/memoryStorage"
 
-import { AlertContainer, ModalContainer } from "@/components/layout"
+import { AlertContainer, LocaleLink, ModalContainer } from "@/components/layout"
 import {
 	alertTextBox,
 	alertTextColumns,
@@ -140,9 +139,9 @@ export function RenderMigrate() {
 					{hasOpener === false ? (
 						<>
 							{"There's nothing to move here. "}
-							<Link className="btn-anchor" href="/">
+							<LocaleLink className="btn-anchor" href="/">
 								Go home
-							</Link>
+							</LocaleLink>
 						</>
 					) : status === "conflict" ? (
 						STATUS_TEXT.connecting

@@ -7,7 +7,7 @@ import { PullOutToolbar } from "@/components/layout"
 import { styles as toolbarStyles } from "@/components/layout/PullOutToolbar"
 import { CALENDAR_DAY_REM } from "@/helpers/contentJson"
 
-import pageStyles from "@/app/page.module.css"
+import pageStyles from "@/app/[lang]/page.module.css"
 import styles from "./page.module.css"
 
 // wide: the whole row. span: two columns, for a field holding two inputs.

@@ -8,7 +8,6 @@ import {
 	useState,
 } from "react"
 import { createPortal } from "react-dom"
-import Link from "next/link"
 
 import { useSortable } from "@dnd-kit/react/sortable"
 
@@ -33,6 +32,7 @@ import { PlannerBoxContext, usePlannerMaterialsContext } from "@/contexts"
 import {
 	AlertContainer,
 	CharacterAvatar,
+	LocaleLink,
 	ModalContainer,
 } from "@/components/layout"
 import { CharacterSkillGroup } from "../CharacterSkillGroup"
@@ -388,7 +388,7 @@ export function PlannerCharacterBox({
 					<div
 						className={`metallic-panel ${plannerBoxStyles.infoContainer} ${topStyles.infoContainer}`}>
 						<div className={topStyles.arcInfoTop}>
-							<Link
+							<LocaleLink
 								href={`/characters/${char.id}`}
 								className={`${topStyles.arcImageContainer} ${styles.avatarTile}`}
 								style={
@@ -408,15 +408,15 @@ export function PlannerCharacterBox({
 									height={256}
 									loading="eager"
 								/>
-							</Link>
+							</LocaleLink>
 							<div className={topStyles.arcStatsSection}>
-								<Link
+								<LocaleLink
 									href={`/characters/${char.id}`}
 									className={topStyles.arcStatsName}
 									onPointerEnter={showProfileTooltip}
 									onPointerLeave={hideProfileTooltip}>
 									{char.name}
-								</Link>
+								</LocaleLink>
 								<ProfileTooltip offset={{ x: 6, y: 0 }}>View Profile</ProfileTooltip>
 								<span
 									className={`${topStyles.arcStatsLvlContainer} ${topStyles.currentLvl}`}>

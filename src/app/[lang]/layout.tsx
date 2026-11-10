@@ -1,8 +1,10 @@
 import type { Metadata, Viewport } from "next"
 import { Barlow_Condensed, Syne } from "next/font/google"
+import { notFound } from "next/navigation"
 
 import { RoutesData } from "@/data/routes"
 
+import { isLocale, LOCALES } from "@/helpers/locale"
 import {
 	SITE_DESCRIPTION,
 	SITE_NAME,
@@ -10,7 +12,7 @@ import {
 	SITE_URL,
 } from "@/helpers/metadata"
 
-import "./globals.css"
+import "../globals.css"
 
 import { AuthProvider } from "@/components/layout/AuthProvider"
 import { ConvexClientProvider } from "@/components/layout/ConvexClientProvider"
@@ -26,6 +28,8 @@ import { SyncErrorBoundary } from "@/helpers/SyncErrorBoundary"
 import { AppStorageInitializer } from "@/helpers/AppStorageInitializer"
 
 import { SettingsProvider } from "@/hooks/useSettingsStore"
+
+import { LocaleProvider } from "@/contexts"
 
 const barlowCondensed = Barlow_Condensed({
 	variable: "--font-barlow-condensed",
@@ -83,34 +87,45 @@ export const viewport: Viewport = {
 	viewportFit: "cover",
 }
 
-export default function RootLayout({
+export function generateStaticParams() {
+	return LOCALES.map((lang) => ({ lang }))
+}
+
+export default async function RootLayout({
 	children,
+	params,
 }: Readonly<{
 	children: React.ReactNode
+	params: Promise<{ lang: string }>
 }>) {
+	const { lang } = await params
+	if (!isLocale(lang)) notFound()
+
 	return (
 		<html
-			lang="en"
+			lang={lang}
 			className={`${barlowCondensed.variable} ${syne.variable}`}
 		>
 			<body>
-				<AppStorageInitializer />
-				<AuthProvider>
-					<SettingsProvider>
-						<ConvexClientProvider>
-							<SyncErrorBoundary>
-								<ServiceWorkerRegister />
-								<SplashScreen />
-								<DomainMoveGate />
-								<Sidebar />
-								<CurrencyBar />
-								{children}
-							</SyncErrorBoundary>
-						</ConvexClientProvider>
-					</SettingsProvider>
-				</AuthProvider>
-				<Footer />
-				<SiteAnalytics />
+				<LocaleProvider locale={lang}>
+					<AppStorageInitializer />
+					<AuthProvider>
+						<SettingsProvider>
+							<ConvexClientProvider>
+								<SyncErrorBoundary>
+									<ServiceWorkerRegister />
+									<SplashScreen />
+									<DomainMoveGate />
+									<Sidebar />
+									<CurrencyBar />
+									{children}
+								</SyncErrorBoundary>
+							</ConvexClientProvider>
+						</SettingsProvider>
+					</AuthProvider>
+					<Footer />
+					<SiteAnalytics />
+				</LocaleProvider>
 			</body>
 		</html>
 	)

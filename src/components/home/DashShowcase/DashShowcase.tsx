@@ -1,12 +1,13 @@
 import { ReactNode } from "react"
-import Link from "next/link"
 
 import { useArcCatalog, useCharacterCatalog } from "@/components/catalog"
+
+import { LocaleLink } from "@/components/layout"
 
 import { DashFeaturedArcs } from "../DashFeaturedArcs"
 import { DashFeaturedCarousel } from "../DashFeaturedCarousel"
 
-import pageStyles from "@/app/page.module.css"
+import pageStyles from "@/app/[lang]/page.module.css"
 
 export function DashShowcase() {
 	const characters = useCharacterCatalog(true)
@@ -43,11 +44,11 @@ function ShowcaseSection({
 		<section className={`metallic-panel ${pageStyles.section}`}>
 			<div className={pageStyles.sectionTitleRow}>
 				<h2 className={pageStyles.sectionTitle}>{title}</h2>
-				<Link
+				<LocaleLink
 					href={href}
 					className={`pill-button ${pageStyles.sectionButton}`}>
 					VIEW ALL
-				</Link>
+				</LocaleLink>
 			</div>
 			{children}
 		</section>

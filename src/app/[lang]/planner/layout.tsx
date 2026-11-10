@@ -3,12 +3,14 @@
 import { ToolIntro } from "@/components/layout"
 import { PlannerSwitch } from "@/components/planner/PlannerSwitch"
 import { PlannerToolbar } from "@/components/planner/PlannerToolbar"
-import { PlannerSection, PlannerSectionContext } from "@/contexts"
+import { localizePath } from "@/helpers/locale"
+import { PlannerSection, PlannerSectionContext, useLocale } from "@/contexts"
 import { useSelectedLayoutSegment } from "next/navigation"
 import { ReactNode, useEffect, useState } from "react"
 
 export default function PlannerLayout({ children }: { children: ReactNode }) {
 	const segment = useSelectedLayoutSegment()
+	const locale = useLocale()
 	const [section, setSectionState] = useState<PlannerSection>(
 		segment === "arcs" ? "arcs" : "characters"
 	)
@@ -35,7 +37,11 @@ export default function PlannerLayout({ children }: { children: ReactNode }) {
 
 	const setSection = (nextSection: PlannerSection) => {
 		setSectionState(nextSection)
-		window.history.replaceState(null, "", `/planner/${nextSection}`)
+		window.history.replaceState(
+			null,
+			"",
+			localizePath(`/planner/${nextSection}`, locale)
+		)
 	}
 
 	return (

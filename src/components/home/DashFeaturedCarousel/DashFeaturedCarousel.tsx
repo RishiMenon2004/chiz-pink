@@ -2,7 +2,6 @@
 
 import { CSSProperties, PointerEventHandler, useRef, useState } from "react"
 import Image from "next/image"
-import Link from "next/link"
 
 import type { Character } from "@/types/character"
 
@@ -19,6 +18,8 @@ import {
 } from "@/helpers/bannerStatus"
 
 import { CharacterAvatar, CharacterElement } from "@/components/layout/CharacterAvatar"
+
+import { LocaleLink } from "@/components/layout"
 
 import styles from "./DashFeaturedCarousel.module.css"
 
@@ -58,7 +59,7 @@ function Slide({
 	const themeColor = getCharacterBannerThemeColor(character.id)
 
 	return (
-		<Link
+		<LocaleLink
 			href={`/characters/${character.id}`}
 			className={`${styles.slide} ${getItemRarityStyle(character)}`}
 			data-active={active}
@@ -104,7 +105,7 @@ function Slide({
 					<BannerTiming character={character} />
 				</div>
 			</div>
-		</Link>
+		</LocaleLink>
 	)
 }
 

@@ -1,6 +1,5 @@
 "use client"
 
-import Link from "next/link"
 import {
 	Dispatch,
 	SetStateAction,
@@ -24,7 +23,9 @@ import { usePlannerMaterialsContext } from "@/contexts"
 import { InfoBox } from "@/components/layout/InfoBox"
 import { PlannerMaterialBox } from "@/components/planner/MaterialBox"
 
-import pageStyles from "@/app/page.module.css"
+import { LocaleLink } from "@/components/layout"
+
+import pageStyles from "@/app/[lang]/page.module.css"
 import styles from "./DashFarmingList.module.css"
 
 export function DashFarmingList() {
@@ -164,9 +165,9 @@ function FarmingMaterialsList({
 			<InfoBox sticker="peek" className={styles.emptyNotice}>
 				<div>
 					{"Y-you haven't planned anything yet... "}
-					<Link href="/planner" className="btn-anchor">
+					<LocaleLink href="/planner" className="btn-anchor">
 						Start planning
-					</Link>
+					</LocaleLink>
 					{" and I'll l-list what to farm right here!"}
 				</div>
 			</InfoBox>

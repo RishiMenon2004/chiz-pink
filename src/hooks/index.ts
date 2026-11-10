@@ -2,6 +2,7 @@ export { useFirstVisit } from "./useFirstVisit"
 export { useLastSeen } from "./useLastSeen"
 export { useToolIntro } from "./useToolIntro"
 export { useNow } from "./useNow"
+export { useLocalePathname } from "./useLocalePathname"
 export { useInventoryFilters } from "./useInventoryFilters"
 export {
 	useInventoryStore,

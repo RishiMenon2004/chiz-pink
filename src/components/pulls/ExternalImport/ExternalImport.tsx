@@ -1,7 +1,6 @@
 "use client"
 
 import { useEffect, useRef, useState } from "react"
-import Link from "next/link"
 import { useMutation } from "convex/react"
 
 import { api } from "@convex/_generated/api"
@@ -15,7 +14,9 @@ import {
 	parseNteExporterImport,
 } from "@/helpers/importNteExporterPulls"
 
-import pageStyles from "@/app/pulls/page.module.css"
+import { LocaleLink } from "@/components/layout"
+
+import pageStyles from "@/app/[lang]/pulls/page.module.css"
 import styles from "./externalImport.module.css"
 
 type Status = "loading" | "ready" | "imported" | "failed"
@@ -86,9 +87,9 @@ export function ExternalImport() {
 				{status === "failed" && (
 					<p>
 						{"This import link has expired or was already used. Export again, or "}
-						<Link className="btn-anchor" href="/pulls">
+						<LocaleLink className="btn-anchor" href="/pulls">
 							import the file instead
-						</Link>
+						</LocaleLink>
 						{"."}
 					</p>
 				)}
@@ -127,9 +128,9 @@ export function ExternalImport() {
 			)}
 
 			{status === "imported" && (
-				<Link className={`pill-button ${styles.action}`} href="/pulls">
+				<LocaleLink className={`pill-button ${styles.action}`} href="/pulls">
 					View pulls
-				</Link>
+				</LocaleLink>
 			)}
 		</div>
 	)

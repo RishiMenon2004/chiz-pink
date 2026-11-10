@@ -20,7 +20,7 @@ import {
 	PatchSection,
 } from "./ContentToolSections"
 
-import pageStyles from "@/app/page.module.css"
+import pageStyles from "@/app/[lang]/page.module.css"
 import styles from "./page.module.css"
 
 const NEW_VERSION = "__new__"

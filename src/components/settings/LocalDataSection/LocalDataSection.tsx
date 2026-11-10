@@ -1,7 +1,5 @@
 "use client"
 
-import Link from "next/link"
-
 import { backupExport } from "@/helpers"
 
 import {
@@ -13,7 +11,9 @@ import {
 	TitleBar,
 } from "../SettingsShared"
 
-import styles from "@/app/settings/settings.module.css"
+import { LocaleLink } from "@/components/layout"
+
+import styles from "@/app/[lang]/settings/settings.module.css"
 
 interface LocalDataSectionProps {
 	importData: () => void
@@ -40,20 +40,20 @@ export function LocalDataSection({
 								"Migrating from another app? Import compatible data from: "
 							}
 							<span>
-								<Link
+								<LocaleLink
 									className="btn-anchor"
 									href="https://nteplanner.app/"
 									target="_blank">
 									NTE Planner
-								</Link>
+								</LocaleLink>
 								{", "}
 							</span>
-							<Link
+							<LocaleLink
 								className="btn-anchor"
 								href="https://www.ntewiz.xyz/"
 								target="_blank">
 								NTEWiz
-							</Link>
+							</LocaleLink>
 						</span>
 					</Blockquote>
 				</ContentColumn>

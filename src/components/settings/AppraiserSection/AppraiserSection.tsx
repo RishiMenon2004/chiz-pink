@@ -15,7 +15,7 @@ import {
 } from "../SettingsShared"
 import { PixelRefillCountdown, StaminaResetCountdown } from "../SettingsTimers"
 
-import styles from "@/app/settings/settings.module.css"
+import styles from "@/app/[lang]/settings/settings.module.css"
 
 export function AppraiserSection() {
 	const { settings, actions } = useSettingsStore()

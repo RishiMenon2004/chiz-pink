@@ -7,7 +7,7 @@ import type { DragEndEvent } from "@dnd-kit/dom"
 import { DragDropProvider } from "@dnd-kit/react"
 import { isSortable, useSortable } from "@dnd-kit/react/sortable"
 
-import pageStyles from "@/app/page.module.css"
+import pageStyles from "@/app/[lang]/page.module.css"
 import reorderStyles from "@/components/layout/ReorderBox/plannerReorderBox.module.css"
 import styles from "./page.module.css"
 

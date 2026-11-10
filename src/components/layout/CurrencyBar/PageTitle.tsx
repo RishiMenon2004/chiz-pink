@@ -1,8 +1,9 @@
 "use client"
 
-import { usePathname } from "next/navigation"
 
 import { RoutesData } from "@/data/routes"
+
+import { useLocalePathname } from "@/hooks/useLocalePathname"
 
 import styles from "./currencyBar.module.css"
 
@@ -18,7 +19,7 @@ function getRouteLookupKey(pathname: string): string {
 }
 
 export function PageTitle() {
-	const pathname = usePathname()
+	const pathname = useLocalePathname()
 
 	const lookupKey = getRouteLookupKey(pathname)
 

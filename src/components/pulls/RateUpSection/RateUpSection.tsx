@@ -13,7 +13,7 @@ import { RateUpPull, usePullTrackerContext } from "@/contexts"
 
 import { ArcIcon, CharacterAvatar } from "@/components/layout"
 
-import pageStyles from "@/app/pulls/page.module.css"
+import pageStyles from "@/app/[lang]/pulls/page.module.css"
 import styles from "./rateUpSection.module.css"
 import { ConfigCheckbox } from "@/components/settings"
 

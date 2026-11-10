@@ -1,6 +1,5 @@
 "use client"
 
-import Link from "next/link"
 import { Ref, useRef } from "react"
 
 import { characterPixel, cityStamina } from "@/data/items/materials"
@@ -12,9 +11,9 @@ import {
 	StaminaResetCountdown,
 } from "@/components/settings"
 
-import { MaterialIcon } from "@/components/layout"
+import { LocaleLink, MaterialIcon } from "@/components/layout"
 
-import pageStyles from "@/app/page.module.css"
+import pageStyles from "@/app/[lang]/page.module.css"
 import styles from "./DashStaminaGauge.module.css"
 
 const PIXEL_INPUT_CAP = 999
@@ -136,11 +135,11 @@ export function DashStaminaGauge() {
 		<div className={`metallic-panel ${pageStyles.section} ${styles.section}`}>
 			<div className={pageStyles.sectionTitleRow}>
 				<h2 className={pageStyles.sectionTitle}>Stamina</h2>
-				<Link
+				<LocaleLink
 					href="/settings"
 					className={`pill-button ${pageStyles.sectionButton}`}>
 					EDIT MAX STAMINA
-				</Link>
+				</LocaleLink>
 			</div>
 			<div className={styles.gaugeRow}>
 				<div className={styles.gaugeColumn}>

@@ -15,7 +15,7 @@ import {
 	syncStatusLabel,
 } from "../SettingsShared"
 
-import styles from "@/app/settings/settings.module.css"
+import styles from "@/app/[lang]/settings/settings.module.css"
 
 interface CloudBackupSectionProps {
 	setSignoutWarning: (value: boolean) => void

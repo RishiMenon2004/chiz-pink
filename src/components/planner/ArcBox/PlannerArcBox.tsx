@@ -8,7 +8,6 @@ import {
 	useState,
 } from "react"
 import { createPortal } from "react-dom"
-import Link from "next/link"
 
 import { useSortable } from "@dnd-kit/react/sortable"
 
@@ -30,7 +29,7 @@ import { getCraftAdjustmentMaterials } from "@/helpers/crafting"
 
 import { PlannerBoxContext, usePlannerMaterialsContext } from "@/contexts"
 
-import { AlertContainer, ArcIcon, ModalContainer } from "@/components/layout"
+import { AlertContainer, ArcIcon, LocaleLink, ModalContainer } from "@/components/layout"
 import { ItemPhases } from "../ItemPhases"
 import { PlannerMaterialsList } from "../MaterialsList"
 import { PlannerBoxButtonsContainer } from "@/components/planner/PlannerBoxButtonsContainer"
@@ -242,7 +241,7 @@ export function PlannerArcBox({
 					<div
 						className={`metallic-panel ${plannerBoxStyles.infoContainer} ${styles.infoContainer}`}>
 						<div className={styles.arcInfoTop}>
-							<Link
+							<LocaleLink
 								href={`/arcs/${arc.id}`}
 								className={styles.arcImageContainer}
 								style={
@@ -262,15 +261,15 @@ export function PlannerArcBox({
 									height={256}
 									loading="eager"
 								/>
-							</Link>
+							</LocaleLink>
 							<div className={styles.arcStatsSection}>
-								<Link
+								<LocaleLink
 									href={`/arcs/${arc.id}`}
 									className={styles.arcStatsName}
 									onPointerEnter={showProfileTooltip}
 									onPointerLeave={hideProfileTooltip}>
 									{arc.name}
-								</Link>
+								</LocaleLink>
 								<ProfileTooltip offset={{ x: 6, y: 0 }}>View Index</ProfileTooltip>
 								<span
 									className={`${styles.arcStatsLvlContainer} ${styles.currentLvl}`}>

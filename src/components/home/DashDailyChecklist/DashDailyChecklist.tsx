@@ -13,7 +13,7 @@ import { getDailyResetBoundaries, stopPropagation } from "@/helpers"
 
 import { ModalContainer } from "@/components/layout"
 
-import pageStyles from "@/app/page.module.css"
+import pageStyles from "@/app/[lang]/page.module.css"
 import styles from "./DashDailyChecklist.module.css"
 
 function ChecklistItem({

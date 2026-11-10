@@ -20,7 +20,7 @@ import {
 
 import { usePullTrackerContext, useSettingsConfigContext } from "@/contexts"
 
-import pageStyles from "@/app/pulls/page.module.css"
+import pageStyles from "@/app/[lang]/pulls/page.module.css"
 import styles from "./pullsListSection.module.css"
 
 function DiceRoll({ pull }: { pull: MiracleBoxPull | ScarboroughFairPull }) {

@@ -10,8 +10,8 @@ import { getUpcomingResetDates, stopPropagation } from "@/helpers"
 
 import { DayOfMonthPicker } from "../DayOfMonthPicker"
 
-import checklistStyles from "@/app/checklist/page.module.css"
-import settingsStyles from "@/app/settings/settings.module.css"
+import checklistStyles from "@/app/[lang]/checklist/page.module.css"
+import settingsStyles from "@/app/[lang]/settings/settings.module.css"
 import styles from "./customTaskBox.module.css"
 
 const SCHEDULE_TYPES: { type: CustomTaskSchedule["type"]; label: string }[] = [

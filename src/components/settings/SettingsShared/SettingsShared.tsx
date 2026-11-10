@@ -10,7 +10,7 @@ import {
 import { getCachedInventory } from "@/hooks/useInventoryStore"
 import { getCachedPlanner } from "@/hooks/usePlannerStore"
 
-import styles from "@/app/settings/settings.module.css"
+import styles from "@/app/[lang]/settings/settings.module.css"
 
 /* ------------------------------------------------------------------ */
 /*  Layout primitives                                                 */

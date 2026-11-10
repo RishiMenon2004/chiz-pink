@@ -1,11 +1,13 @@
 "use client"
 
-import Link from "next/link"
-import { usePathname } from "next/navigation"
 
 import { RoutesData } from "@/data/routes"
 
 import { useTooltip } from "@/hooks/useTooltip"
+
+import { useLocalePathname } from "@/hooks/useLocalePathname"
+
+import { LocaleLink } from "../LocaleLink"
 
 import styles from "./navButton.module.css"
 
@@ -24,13 +26,13 @@ export function NavButton({
 	tooltip?: string
 	className?: string
 }) {
-	const pathname = usePathname()
+	const pathname = useLocalePathname()
 	const active = activeFor.includes(pathname.split("/")[1])
 
 	const { Tooltip, showTooltip, hideTooltip } = useTooltip()
 
 	return (
-		<Link
+		<LocaleLink
 			tabIndex={1}
 			href={`/${href}`}
 			className={`inset-control ${styles.navBtn} ${active ? styles.active : ""} ${className}`}
@@ -45,6 +47,6 @@ export function NavButton({
 			<Tooltip offset={{ x: 6, y: 0 }}>
 				{tooltip ?? RoutesData[`/${href}`].tooltip}
 			</Tooltip>
-		</Link>
+		</LocaleLink>
 	)
 }

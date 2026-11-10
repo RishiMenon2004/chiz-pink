@@ -1,4 +1,4 @@
-import Link from "next/link"
+import { LocaleLink } from "../LocaleLink"
 
 import { FooterAbout } from "./FooterAbout"
 
@@ -12,25 +12,25 @@ export function Footer() {
 					&copy; <b className={styles.pink}>Rishi Menon</b> 2026
 				</div>
 				<div className={styles.small}>
-					<Link href="/privacy" className="btn-anchor">
+					<LocaleLink href="/privacy" className="btn-anchor">
 						<b>PRIVACY POLICY</b>
-					</Link>
+					</LocaleLink>
 					{" | Bugs or ideas? Join the "}
-					<Link
+					<LocaleLink
 						target="_blank"
 						rel="noopener noreferrer"
 						href="https://discord.gg/rSeMKWMy69"
 						className="btn-anchor">
 						<b>DISCORD</b>
-					</Link>
+					</LocaleLink>
 					{" | Made with "}
-					<Link
+					<LocaleLink
 						target="_blank"
 						rel="noopener noreferrer"
 						href="https://nextjs.org/"
 						className="btn-anchor">
 						<b>NextJS</b>
-					</Link>
+					</LocaleLink>
 				</div>
 			</span>
 			<span className={styles.right}>

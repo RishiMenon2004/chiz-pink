@@ -12,6 +12,10 @@ import { getAllMaterialsList } from "@/data/items"
 
 import { usePlannerStore, useSettingsStore } from "@/hooks"
 import { usePlannerItems } from "@/hooks/usePlannerItems"
+
+import { localizePath } from "@/helpers/locale"
+
+import { useLocale } from "@/contexts"
 import { getAggregatedMaterials } from "@/hooks/usePlannerStore"
 
 import { PlannerInventoryProvider } from "@/helpers/PlannerInventoryProvider"
@@ -45,6 +49,7 @@ export function RenderPlanner({
 }) {
 	const { settings } = useSettingsStore()
 	const router = useRouter()
+	const locale = useLocale()
 
 	const combinedEnabled = settings.appearance?.["use-hybrid-planner"] ?? false
 
@@ -52,7 +57,10 @@ export function RenderPlanner({
 	//vice versa, redirect to /planner if accessing /characters or /arcs and enabled combined planner
 	const shouldRedirect =
 		plannerType === "both" ? !combinedEnabled : combinedEnabled
-	const redirectTo = plannerType === "both" ? "/planner/characters" : "/planner"
+	const redirectTo = localizePath(
+		plannerType === "both" ? "/planner/characters" : "/planner",
+		locale
+	)
 
 	useEffect(() => {
 		if (shouldRedirect) router.replace(redirectTo)

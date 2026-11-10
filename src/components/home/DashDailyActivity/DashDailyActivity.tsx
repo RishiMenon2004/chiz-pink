@@ -12,7 +12,7 @@ import { useChecklistStore, useInventoryStore, useSettingsStore } from "@/hooks"
 import { MaterialIcon } from "@/components/layout/MaterialIcon"
 import { ConfigCheckbox } from "@/components/settings"
 
-import pageStyles from "@/app/page.module.css"
+import pageStyles from "@/app/[lang]/page.module.css"
 import styles from "./DashDailyActivity.module.css"
 
 const formatRewardAmount = (amount: number) =>

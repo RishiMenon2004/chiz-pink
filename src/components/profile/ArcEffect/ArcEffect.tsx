@@ -6,7 +6,7 @@ import type { Arc } from "@/types/weapon"
 
 import { parseDescription } from "@/helpers/parseDescription"
 
-import pageStyles from "@/app/page.module.css"
+import pageStyles from "@/app/[lang]/page.module.css"
 import styles from "../profile.module.css"
 
 export function ArcEffect({ effect }: { effect: Arc["effect"] }) {

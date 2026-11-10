@@ -2,8 +2,10 @@
 
 import {
 	createContext,
+	createElement,
 	Dispatch,
 	MouseEvent,
+	ReactNode,
 	SetStateAction,
 	useContext,
 } from "react"
@@ -21,6 +23,8 @@ import type { CharacterRecord, WeaponRecord } from "@/types/planner"
 import { SettingsRecord } from "@/types/settings"
 import { PullsRecord, MiracleBoxPull, ScarboroughFairPull } from "@/types/pulls"
 import { EventData } from "@/data/activities/events"
+
+import { DEFAULT_LOCALE, type Locale } from "@/helpers/locale"
 
 // The level step picked on a profile's Materials slider, shared with the
 // profile card's stats. Null on pages that don't share it.
@@ -163,4 +167,22 @@ export const CalendarContext = createContext<{
 
 export function useCalendarContext() {
 	return useContext(CalendarContext)
+}
+
+// The language of the current [lang] route, set by its root layout.
+export const LocaleContext = createContext<Locale>(DEFAULT_LOCALE)
+
+export function LocaleProvider({
+	locale,
+	children,
+}: {
+	locale: Locale
+	children: ReactNode
+}) {
+	// createElement rather than JSX: this file is .ts.
+	return createElement(LocaleContext, { value: locale }, children)
+}
+
+export function useLocale() {
+	return useContext(LocaleContext)
 }

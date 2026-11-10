@@ -1,6 +1,6 @@
 import { ReactNode } from "react"
 
-import NextLink from "next/link"
+import { LocaleLink } from "../../LocaleLink"
 
 export function DescriptionLink({
 	url,
@@ -12,8 +12,8 @@ export function DescriptionLink({
 	onClick?: () => void
 }) {
 	return (
-		<NextLink className="btn-anchor" href={url} onClick={onClick}>
+		<LocaleLink className="btn-anchor" href={url} onClick={onClick}>
 			{children}
-		</NextLink>
+		</LocaleLink>
 	)
 }

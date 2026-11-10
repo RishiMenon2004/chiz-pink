@@ -3,7 +3,6 @@ import path from "node:path"
 
 import Image from "next/image"
 import sharp from "sharp"
-import Link from "next/link"
 
 import type { Ability, Character } from "@/types/character"
 
@@ -15,13 +14,15 @@ import { getCharacterBannerThemeColor } from "@/helpers/bannerStatus"
 import { CharacterElement } from "@/components/layout/CharacterAvatar"
 import { InfoBox } from "@/components/layout/InfoBox"
 
+import { LocaleLink } from "@/components/layout"
+
 import { ProfileAbilityGroup } from "../ProfileAbilityGroup"
 import { ProfileBanner } from "../ProfileBanner"
 import { ProfileHero } from "../ProfileHero"
 import { LevelStatValue, ProfileLevelProvider } from "../ProfileLevel"
 import { ProfileMaterials } from "../ProfileMaterials"
 
-import pageStyles from "@/app/page.module.css"
+import pageStyles from "@/app/[lang]/page.module.css"
 import styles from "../profile.module.css"
 
 function getBackgroundSrc(character: Character) {
@@ -93,9 +94,9 @@ export async function CharacterProfile({ character }: { character: Character }) 
 			<main role="main" className={`page ${pageStyles.page}`}>
 				<div className={styles.layout}>
 					<div className={styles.heroColumn}>
-						<Link href="/characters" className={`pill-button ${styles.backLink}`}>
+						<LocaleLink href="/characters" className={`pill-button ${styles.backLink}`}>
 							ALL CHARACTERS
-						</Link>
+						</LocaleLink>
 						<ProfileHero
 							name={character.name}
 							rarity={character.rarity}

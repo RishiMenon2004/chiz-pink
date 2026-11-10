@@ -1,7 +1,6 @@
 "use client"
 
 import Image from "next/image"
-import { usePathname } from "next/navigation"
 import {
 	ChangeEvent,
 	CSSProperties,
@@ -18,6 +17,7 @@ import type { Material } from "@/types/item"
 import { findItem } from "@/data/items/findItem"
 
 import { useInventoryStore } from "@/hooks/useInventoryStore"
+import { useLocalePathname } from "@/hooks/useLocalePathname"
 import { usePlannerStore } from "@/hooks/usePlannerStore"
 import { useTooltip } from "@/hooks/useTooltip"
 import { getAggregatedMaterial } from "@/hooks/usePlannerStore"
@@ -113,7 +113,7 @@ export function CurrencyBox({ currency }: { currency: Material }) {
 		e.currentTarget.setSelectionRange(999, 999)
 	}
 
-	const pathname = usePathname()
+	const pathname = useLocalePathname()
 
 	const isInventory = pathname === "/inventory"
 	const showRequirementIndicator = isInventory && hasRequired && !hasAcquired

@@ -10,7 +10,7 @@ import {
 	parseNteExporterImport,
 } from "@/helpers/importNteExporterPulls"
 
-import pageStyles from "@/app/pulls/page.module.css"
+import pageStyles from "@/app/[lang]/pulls/page.module.css"
 import styles from "./importSection.module.css"
 
 export function ImportSection() {

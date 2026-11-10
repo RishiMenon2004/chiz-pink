@@ -17,7 +17,7 @@ import { InfoBox } from "@/components/layout"
 import { MaterialGroup } from "../MaterialGroup"
 import { MaterialList } from "../MaterialList"
 
-import styles from "@/app/inventory/page.module.css"
+import styles from "@/app/[lang]/inventory/page.module.css"
 
 export function EmptyFilterNotice({ onReset }: { onReset: () => void }) {
 	return (

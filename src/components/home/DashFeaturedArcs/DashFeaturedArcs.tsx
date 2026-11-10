@@ -2,7 +2,6 @@
 
 import { CSSProperties, PointerEventHandler } from "react"
 import Image from "next/image"
-import Link from "next/link"
 
 import type { Arc } from "@/types/weapon"
 
@@ -17,6 +16,8 @@ import {
 	getArcBannerThemeColor,
 	type ItemStatus,
 } from "@/helpers/bannerStatus"
+
+import { LocaleLink } from "@/components/layout"
 
 import styles from "./DashFeaturedArcs.module.css"
 
@@ -52,7 +53,7 @@ function ArcRow({
 	const themeColor = getArcBannerThemeColor(arc.id)
 
 	return (
-		<Link
+		<LocaleLink
 			href={`/arcs/${arc.id}`}
 			className={`${styles.row} ${getItemRarityStyle(arc)}`}
 			style={themeColor ? ({ "--theme-color": themeColor } as CSSProperties) : undefined}
@@ -78,7 +79,7 @@ function ArcRow({
 					<BannerTiming arc={arc} />
 				</div>
 			</div>
-		</Link>
+		</LocaleLink>
 	)
 }
 

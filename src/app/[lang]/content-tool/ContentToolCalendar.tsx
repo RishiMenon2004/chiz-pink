@@ -10,7 +10,7 @@ import type { ContentFile } from "@/types/content"
 
 import { calendarRange, snakeCase } from "@/helpers/contentJson"
 
-import pageStyles from "@/app/page.module.css"
+import pageStyles from "@/app/[lang]/page.module.css"
 import styles from "./page.module.css"
 
 type CalendarItem = {
