@@ -10,13 +10,14 @@ import type {
 } from "@/types/inventory"
 
 import { useInventoryStore } from "@/hooks"
-import { InventoryFilterContext } from "@/contexts"
+import { InventoryFilterContext, useT } from "@/contexts"
 import { InfoBox, ToolIntro } from "@/components/layout"
 import { InventoryFilterToolbar, GroupedInventory } from "@/components/inventory"
 
 import styles from "./page.module.css"
 
 export default function RenderInventory() {
+	const t = useT()
 	const { inventory } = useInventoryStore()
 
 	const doesInventoryExist = Object.entries(inventory).length > 0
@@ -49,20 +50,19 @@ export default function RenderInventory() {
 			<InventoryFilterToolbar />
 
 			<ToolIntro id="inventory">
-				<div>
-					Track your materials so the planner knows what you have.
-				</div>
+				<div>{t("inventory.intro")}</div>
 			</ToolIntro>
 
 			{!doesInventoryExist && (
 				<InfoBox className={styles.emptyFilter} sticker="peek">
 					<div>
-						{
-							"Seems like you're new here. W-would you like to open an account with us? "
-						}
-						<a className={`btn-anchor ${styles.editCursor}`}>
-							Edit any item to get started.
-						</a>
+						{t.rich("inventory.newUser", {
+							start: (text) => (
+								<a className={`btn-anchor ${styles.editCursor}`}>
+									{text}
+								</a>
+							),
+						})}
 					</div>
 				</InfoBox>
 			)}

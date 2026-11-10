@@ -3,7 +3,13 @@ import { Metadata } from "next"
 import { buildRouteMetadata } from "@/helpers/metadata"
 import { RenderPulls } from "./RenderPulls"
 
-export const metadata: Metadata = buildRouteMetadata("/pulls")
+type Props = {
+	params: Promise<{ lang: string }>
+}
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+	return buildRouteMetadata("/pulls", (await params).lang)
+}
 
 export default function Pulls() {
 	return <RenderPulls />

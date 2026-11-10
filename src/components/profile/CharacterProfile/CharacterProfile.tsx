@@ -10,17 +10,19 @@ import { characterLevelStats } from "@/data/characters"
 import { placeholderAbilities } from "@/data/characters/placeholder"
 
 import { getCharacterBannerThemeColor } from "@/helpers/bannerStatus"
+import type { Locale } from "@/helpers/locale"
+import { getTranslator } from "@/helpers/messages"
 
 import { CharacterElement } from "@/components/layout/CharacterAvatar"
 import { InfoBox } from "@/components/layout/InfoBox"
-
-import { LocaleLink } from "@/components/layout"
 
 import { ProfileAbilityGroup } from "../ProfileAbilityGroup"
 import { ProfileBanner } from "../ProfileBanner"
 import { ProfileHero } from "../ProfileHero"
 import { LevelStatValue, ProfileLevelProvider } from "../ProfileLevel"
 import { ProfileMaterials } from "../ProfileMaterials"
+
+import { LocaleLink } from "@/components/layout"
 
 import pageStyles from "@/app/[lang]/page.module.css"
 import styles from "../profile.module.css"
@@ -71,7 +73,14 @@ async function getQuoteColor(character: Character, backgroundSrc: string | null)
 	}
 }
 
-export async function CharacterProfile({ character }: { character: Character }) {
+export async function CharacterProfile({
+	character,
+	locale,
+}: {
+	character: Character
+	locale: Locale
+}) {
+	const t = await getTranslator(locale)
 	const { abilities } = character
 	const backgroundSrc = getBackgroundSrc(character)
 	const quoteColor = await getQuoteColor(character, backgroundSrc)
@@ -84,9 +93,9 @@ export async function CharacterProfile({ character }: { character: Character }) 
 	// data doesn't cover yet show none.
 	const stats = character.isPlaceholder ? undefined : characterLevelStats[character.id]
 	const levelStats = stats && [
-		{ label: "HP", values: stats.hp.map(statFormat.format) },
-		{ label: "ATK", values: stats.atk.map(statFormat.format) },
-		{ label: "DEF", values: stats.def.map(statFormat.format) },
+		{ label: t("profile.stats.hp"), values: stats.hp.map(statFormat.format) },
+		{ label: t("profile.stats.atk"), values: stats.atk.map(statFormat.format) },
+		{ label: t("profile.stats.def"), values: stats.def.map(statFormat.format) },
 	]
 
 	return (
@@ -95,7 +104,7 @@ export async function CharacterProfile({ character }: { character: Character }) 
 				<div className={styles.layout}>
 					<div className={styles.heroColumn}>
 						<LocaleLink href="/characters" className={`pill-button ${styles.backLink}`}>
-							ALL CHARACTERS
+							{t("profile.character.allCharacters")}
 						</LocaleLink>
 						<ProfileHero
 							name={character.name}
@@ -108,7 +117,7 @@ export async function CharacterProfile({ character }: { character: Character }) 
 										<Image
 											className={styles.artMale}
 											src={pairedArt.male}
-											alt={`${character.name} (male)`}
+											alt={t("profile.character.artMale", { name: character.name })}
 											width={1080}
 											height={1280}
 											sizes="(max-width: 1000px) 100vw, 26rem"
@@ -118,7 +127,7 @@ export async function CharacterProfile({ character }: { character: Character }) 
 										<Image
 											className={styles.artFemale}
 											src={pairedArt.female}
-											alt={`${character.name} (female)`}
+											alt={t("profile.character.artFemale", { name: character.name })}
 											width={1080}
 											height={1280}
 											sizes="(max-width: 1000px) 100vw, 26rem"
@@ -155,12 +164,12 @@ export async function CharacterProfile({ character }: { character: Character }) 
 							}
 							stats={[
 								{
-									label: "Element",
+									label: t("profile.stats.element"),
 									value: <span className={styles.capitalize}>{character.element}</span>,
 								},
 								{
-									label: "Arc Type",
-									value: character.hasPlaceholderArcType ? "TBD" : character.arcType,
+									label: t("profile.stats.arcType"),
+									value: character.hasPlaceholderArcType ? t("profile.stats.tbd") : character.arcType,
 								},
 								...(levelStats ?? []).map(({ label, values }) => ({
 									label,
@@ -176,32 +185,32 @@ export async function CharacterProfile({ character }: { character: Character }) 
 						{character.isPlaceholder && (
 							<InfoBox sticker="peek">
 								{character.hasPlaceholderMaterials
-									? `U-um... I don't have ${character.name}'s abilities or materials on file yet. I'll a-add them as soon as they're announced, I promise!`
-									: `U-um... I only have part of ${character.name}'s kit on file so far, but the materials are confirmed, so you can start pre-farming!`}
+									? t("profile.character.placeholderNoMaterials", { name: character.name })
+									: t("profile.character.placeholderPartial", { name: character.name })}
 							</InfoBox>
 						)}
 						<ProfileAbilityGroup
-							title="ESPER ABILITIES"
+							title={t("profile.abilities.esper")}
 							entries={[
-								["Basic Attack", known(abilities.basicAttack)],
-								["Skill", known(abilities.skill)],
-								["Ultimate", known(abilities.ultimate)],
-								["Support", known(abilities.support)],
+								[t("profile.abilities.basicAttack"), known(abilities.basicAttack)],
+								[t("profile.abilities.skill"), known(abilities.skill)],
+								[t("profile.abilities.ultimate"), known(abilities.ultimate)],
+								[t("profile.abilities.support"), known(abilities.support)],
 							]}
 						/>
 						<ProfileAbilityGroup
-							title="Passive Skills"
+							title={t("profile.abilities.passiveSkills")}
 							entries={[
-								["Passive I", known(abilities.passive1)],
-								["Passive II", known(abilities.passive2)],
-								["Passive III", known(abilities.passive3)],
+								[t("profile.abilities.passive1"), known(abilities.passive1)],
+								[t("profile.abilities.passive2"), known(abilities.passive2)],
+								[t("profile.abilities.passive3"), known(abilities.passive3)],
 							]}
 						/>
 						<ProfileAbilityGroup
-							title="Life Skills"
+							title={t("profile.abilities.lifeSkills")}
 							entries={[
-								["Life Skill I", known(abilities.lifeSkill1)],
-								["Life Skill II", known(abilities.lifeSkill2)],
+								[t("profile.abilities.lifeSkill1"), known(abilities.lifeSkill1)],
+								[t("profile.abilities.lifeSkill2"), known(abilities.lifeSkill2)],
 							]}
 						/>
 						{!character.hasPlaceholderMaterials && (

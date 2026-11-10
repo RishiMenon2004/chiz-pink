@@ -16,6 +16,48 @@ import {
 import { EnumArcType } from "./arc"
 
 const allArcs: Record<string, Arc> = {
+	dotted_horizon: {
+		isPlaceholder: true,
+		id: "dotted_horizon",
+		imageSrc: "dotted_horizon.webp",
+		name: "Dotted Horizon",
+		rarity: EnumRarity.Epic,
+		type: EnumArcType.Plasma,
+		baseAtk: 0,
+		mainAttribute: {
+			attribute: EnumStatAttribute.ATK,
+			baseValue: 0,
+		},
+		ascensionMaterialSet1: ascAppleSeedSet,
+		ascensionMaterialSet2: ascAppleSeedSet,
+		effect: {
+			name: "Details to be announced.",
+			description: "Details to be announced.",
+			values: {},
+		},
+	},
+	
+	echoes_on_hold: {
+		isPlaceholder: true,
+		id: "echoes_on_hold",
+		imageSrc: "echoes_on_hold.webp",
+		name: "Echoes on Hold",
+		rarity: EnumRarity.Epic,
+		type: EnumArcType.Solid,
+		baseAtk: 0,
+		mainAttribute: {
+			attribute: EnumStatAttribute.ATK,
+			baseValue: 0,
+		},
+		ascensionMaterialSet1: ascAppleSeedSet,
+		ascensionMaterialSet2: ascAppleSeedSet,
+		effect: {
+			name: "Details to be announced.",
+			description: "Details to be announced.",
+			values: {},
+		},
+	},
+
 	far_side_of_the_moon: {
 		id: "far_side_of_the_moon",
 		imageSrc: "far_side_of_the_moon.webp",
@@ -1917,46 +1959,6 @@ const allArcs: Record<string, Arc> = {
 				"4": [{ type: "Integer", value: 78 }],
 				"5": [{ type: "Integer", value: 84 }],
 			},
-		},
-	},
-	echoes_on_hold: {
-		isPlaceholder: true,
-		id: "echoes_on_hold",
-		imageSrc: "echoes_on_hold.webp",
-		name: "Echoes on Hold",
-		rarity: EnumRarity.Epic,
-		type: EnumArcType.Solid,
-		baseAtk: 0,
-		mainAttribute: {
-			attribute: EnumStatAttribute.ATK,
-			baseValue: 0,
-		},
-		ascensionMaterialSet1: ascAppleSeedSet,
-		ascensionMaterialSet2: ascAppleSeedSet,
-		effect: {
-			name: "Details to be announced.",
-			description: "Details to be announced.",
-			values: {},
-		},
-	},
-	dotted_horizon: {
-		isPlaceholder: true,
-		id: "dotted_horizon",
-		imageSrc: "dotted_horizon.webp",
-		name: "Dotted Horizon",
-		rarity: EnumRarity.Epic,
-		type: EnumArcType.Plasma,
-		baseAtk: 0,
-		mainAttribute: {
-			attribute: EnumStatAttribute.ATK,
-			baseValue: 0,
-		},
-		ascensionMaterialSet1: ascAppleSeedSet,
-		ascensionMaterialSet2: ascAppleSeedSet,
-		effect: {
-			name: "Details to be announced.",
-			description: "Details to be announced.",
-			values: {},
 		},
 	},
 }

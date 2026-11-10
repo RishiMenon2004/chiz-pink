@@ -14,6 +14,8 @@ import {
 	parseNteExporterImport,
 } from "@/helpers/importNteExporterPulls"
 
+import { useT } from "@/contexts"
+
 import { LocaleLink } from "@/components/layout"
 
 import pageStyles from "@/app/[lang]/pulls/page.module.css"
@@ -22,6 +24,7 @@ import styles from "./externalImport.module.css"
 type Status = "loading" | "ready" | "imported" | "failed"
 
 export function ExternalImport() {
+	const t = useT()
 	const claimDrop = useMutation(api.importDrops.claim)
 	const [status, setStatus] = useState<Status>("loading")
 	const [results, setResults] = useState<ImportedPullsResult[]>([])
@@ -77,20 +80,22 @@ export function ExternalImport() {
 		<div
 			className={`metallic-panel ${pageStyles.section} ${styles.externalImport}`}>
 			<div className={pageStyles.sectionTitleRow}>
-				<div className={pageStyles.sectionTitle}>Import Pulls</div>
-				<div>From NTE History Exporter</div>
+				<div className={pageStyles.sectionTitle}>{t("pulls.external.title")}</div>
+				<div>{t("pulls.external.source")}</div>
 			</div>
 
 			<div className={`inset-control ${styles.content}`}>
-				{status === "loading" && <p>Fetching your pulls...</p>}
+				{status === "loading" && <p>{t("pulls.external.loading")}</p>}
 
 				{status === "failed" && (
 					<p>
-						{"This import link has expired or was already used. Export again, or "}
-						<LocaleLink className="btn-anchor" href="/pulls">
-							import the file instead
-						</LocaleLink>
-						{"."}
+						{t.rich("pulls.external.failed", {
+							link: (text) => (
+								<LocaleLink className="btn-anchor" href="/pulls">
+									{text}
+								</LocaleLink>
+							),
+						})}
 					</p>
 				)}
 
@@ -98,7 +103,11 @@ export function ExternalImport() {
 					<ul className={styles.bannerList}>
 						{results.map((row, index) => (
 							<li key={index}>
-								{row.bannerName}: {row.pulls.length} pulls ({row.server})
+								{t("pulls.external.bannerRow", {
+									bannerName: row.bannerName,
+									count: row.pulls.length,
+									server: row.server,
+								})}
 							</li>
 						))}
 					</ul>
@@ -111,7 +120,7 @@ export function ExternalImport() {
 								key={index}
 								data-type={row.status}
 								className={styles.message}>
-								{row.message}
+								{t(row.message, row.params)}
 							</p>
 						))}
 					</div>
@@ -123,13 +132,13 @@ export function ExternalImport() {
 					className={`pill-button ${styles.action}`}
 					disabled={hasErrors || pullCount === 0}
 					onClick={importAll}>
-					Import {pullCount} Pulls
+					{t("pulls.import.importButton", { count: pullCount })}
 				</button>
 			)}
 
 			{status === "imported" && (
 				<LocaleLink className={`pill-button ${styles.action}`} href="/pulls">
-					View pulls
+					{t("pulls.external.viewPulls")}
 				</LocaleLink>
 			)}
 		</div>

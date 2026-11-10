@@ -334,13 +334,15 @@ function importSummary(
 	const updated = written.filter((pull) => pull.uid in existing).length
 	const added = written.length - updated
 	const skipped = total - written.length
-	return {
-		message:
-			`Imported ${added} pulls.` +
-			(updated > 0 ? ` (Updated ${updated} existing pulls.)` : "") +
-			(skipped > 0 ? ` (Skipped ${skipped} existing pulls.)` : ""),
-		status: "info",
-	}
+	const message =
+		updated > 0 && skipped > 0
+			? "pulls.import.messages.summaryUpdatedSkipped"
+			: updated > 0
+				? "pulls.import.messages.summaryUpdated"
+				: skipped > 0
+					? "pulls.import.messages.summarySkipped"
+					: "pulls.import.messages.summary"
+	return { message, params: { added, updated, skipped }, status: "info" }
 }
 
 // Adds imported pulls. Pulls already stored under the same uid are replaced

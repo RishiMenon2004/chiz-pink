@@ -1,1 +1,1 @@
-export { RoutesData } from "./routes"
+export { RoutesData, type RoutePath } from "./routes"

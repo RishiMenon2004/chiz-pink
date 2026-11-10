@@ -12,13 +12,12 @@ import { getAllMaterialsList } from "@/data/items"
 
 import { usePlannerStore, useSettingsStore } from "@/hooks"
 import { usePlannerItems } from "@/hooks/usePlannerItems"
-
-import { localizePath } from "@/helpers/locale"
-
-import { useLocale } from "@/contexts"
 import { getAggregatedMaterials } from "@/hooks/usePlannerStore"
 
 import { PlannerInventoryProvider } from "@/helpers/PlannerInventoryProvider"
+import { localizePath } from "@/helpers/locale"
+
+import { useLocale, useT } from "@/contexts"
 
 import { MaterialGroup } from "@/components/inventory/"
 import { InfoBox } from "@/components/layout/InfoBox"
@@ -47,6 +46,7 @@ export function RenderPlanner({
 }: {
 	plannerType: keyof PlannerRecord | "both"
 }) {
+	const t = useT()
 	const { settings } = useSettingsStore()
 	const router = useRouter()
 	const locale = useLocale()
@@ -101,7 +101,7 @@ export function RenderPlanner({
 		<PlannerInventoryProvider itemRecords={itemsList}>
 			<main className={`page ${styles.page}`} role="main">
 				{allRequiredMaterials.length > 0 && (
-					<MaterialGroup title="Required Materials">
+					<MaterialGroup title={t("planner.requiredMaterials")}>
 						<div
 							className={`${plannerBoxStyles.plannerRequiredMaterialsBox} ${styles.plannerRequiredMaterialsBox}`}>
 							<PlannerMaterialsList
@@ -119,13 +119,11 @@ export function RenderPlanner({
 				{isLoaded && itemsList.length === 0 && (
 					<InfoBox sticker="peek" className={styles.emptyNotice}>
 						<div>
-							{`Th-there's nothing planned yet... Press ${
-								plannerType === "arcs"
-									? "ADD ARC"
-									: plannerType === "characters"
-										? "ADD CHARACTER"
-										: "ADD CHARACTER or ADD ARC"
-							} up top, and I'll w-work out what you need!`}
+							{plannerType === "arcs"
+								? t("planner.empty.arcs")
+								: plannerType === "characters"
+									? t("planner.empty.characters")
+									: t("planner.empty.both")}
 						</div>
 					</InfoBox>
 				)}

@@ -1,11 +1,11 @@
 "use client"
 
-
-import { RoutesData } from "@/data/routes"
+import { RoutesData, type RoutePath } from "@/data/routes"
 
 import { useTooltip } from "@/hooks/useTooltip"
-
 import { useLocalePathname } from "@/hooks/useLocalePathname"
+
+import { useT } from "@/contexts"
 
 import { LocaleLink } from "../LocaleLink"
 
@@ -27,6 +27,7 @@ export function NavButton({
 	className?: string
 }) {
 	const pathname = useLocalePathname()
+	const t = useT()
 	const active = activeFor.includes(pathname.split("/")[1])
 
 	const { Tooltip, showTooltip, hideTooltip } = useTooltip()
@@ -45,7 +46,7 @@ export function NavButton({
 			/>
 
 			<Tooltip offset={{ x: 6, y: 0 }}>
-				{tooltip ?? RoutesData[`/${href}`].tooltip}
+				{tooltip ?? t(`routes.${RoutesData[`/${href}` as RoutePath].id}.tooltip`)}
 			</Tooltip>
 		</LocaleLink>
 	)

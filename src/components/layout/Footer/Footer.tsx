@@ -1,63 +1,72 @@
-import { LocaleLink } from "../LocaleLink"
+import type { ReactNode } from "react"
+
+import type { Locale } from "@/helpers/locale"
+
+import { getTranslator } from "@/helpers/messages"
 
 import { FooterAbout } from "./FooterAbout"
 
+import { LocaleLink } from "../LocaleLink"
+
 import styles from "./footer.module.css"
 
-export function Footer() {
+export async function Footer({ locale }: { locale: Locale }) {
+	const t = await getTranslator(locale)
+	const pink = (text: ReactNode) => <b className={styles.pink}>{text}</b>
+
 	return (
 		<footer className={styles.footer} role="contentinfo">
 			<span className={styles.left}>
-				<div>
-					&copy; <b className={styles.pink}>Rishi Menon</b> 2026
-				</div>
+				<div>{t.rich("layout.footer.copyright", { name: pink })}</div>
 				<div className={styles.small}>
-					<LocaleLink href="/privacy" className="btn-anchor">
-						<b>PRIVACY POLICY</b>
-					</LocaleLink>
-					{" | Bugs or ideas? Join the "}
-					<LocaleLink
-						target="_blank"
-						rel="noopener noreferrer"
-						href="https://discord.gg/rSeMKWMy69"
-						className="btn-anchor">
-						<b>DISCORD</b>
-					</LocaleLink>
-					{" | Made with "}
-					<LocaleLink
-						target="_blank"
-						rel="noopener noreferrer"
-						href="https://nextjs.org/"
-						className="btn-anchor">
-						<b>NextJS</b>
-					</LocaleLink>
+					{t.rich("layout.footer.links", {
+						privacy: (text) => (
+							<LocaleLink href="/privacy" className="btn-anchor">
+								<b>{text}</b>
+							</LocaleLink>
+						),
+						discord: (text) => (
+							<LocaleLink
+								target="_blank"
+								rel="noopener noreferrer"
+								href="https://discord.gg/rSeMKWMy69"
+								className="btn-anchor">
+								<b>{text}</b>
+							</LocaleLink>
+						),
+						nextjs: (text) => (
+							<LocaleLink
+								target="_blank"
+								rel="noopener noreferrer"
+								href="https://nextjs.org/"
+								className="btn-anchor">
+								<b>{text}</b>
+							</LocaleLink>
+						),
+					})}
 				</div>
 			</span>
 			<span className={styles.right}>
-				<div>
-					Game contents belong to{" "}
-					<b className={styles.pink}>HOTTA STUDIO&trade;</b>
-				</div>
+				<div>{t.rich("layout.footer.gameContents", { studio: pink })}</div>
 				<div className={styles.small}>
-					<FooterAbout className={styles.about}>
-						<summary aria-label="About Chiz.Pink">
-							<b className={styles.pink}>CHIZ.PINK</b>
-							<sup className={styles.aboutHint}>?</sup>
-						</summary>
-						<div className={`metallic-panel ${styles.aboutPanel}`}>
-							<p className={`inset-control ${styles.aboutText}`}>
-								<b className={styles.pink}>Chiz.Pink</b> is a daily
-								companion app for Neverness to Everness (NTE). Plan your
-								Esper and arc ascensions, track your pulls and pity on
-								every banner, check off your dailies and weeklies, and
-								keep count of your materials. Everything is saved in
-								your browser locally without an account.
-							</p>
-						</div>
-					</FooterAbout>{" "}
-					is an unofficial
-					project and is not affiliated with{" "}
-					<b className={styles.pink}>HOTTA STUDIO&trade;</b>
+					{/* One sentence, with the about toggle as a tag in it, so
+					    translators can move it to where their grammar wants. */}
+					{t.rich("layout.footer.disclaimer", {
+						studio: pink,
+						about: (text) => (
+							<FooterAbout className={styles.about}>
+								<summary aria-label={t("layout.footer.aboutLabel")}>
+									<b className={styles.pink}>{text}</b>
+									<sup className={styles.aboutHint}>?</sup>
+								</summary>
+								<div className={`metallic-panel ${styles.aboutPanel}`}>
+									<p className={`inset-control ${styles.aboutText}`}>
+										{t.rich("layout.footer.aboutText", { name: pink })}
+									</p>
+								</div>
+							</FooterAbout>
+						),
+					})}
 				</div>
 			</span>
 		</footer>

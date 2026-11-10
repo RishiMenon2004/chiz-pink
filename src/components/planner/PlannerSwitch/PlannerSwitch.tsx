@@ -3,7 +3,7 @@
 import { CSSProperties, ReactNode } from "react"
 import { useSelectedLayoutSegment } from "next/navigation"
 import styles from "./plannerSwitch.module.css"
-import { PlannerSection, usePlannerSectionContext } from "@/contexts"
+import { PlannerSection, usePlannerSectionContext, useT } from "@/contexts"
 
 function SwitchButton({
 	id,
@@ -28,6 +28,7 @@ function SwitchButton({
 }
 
 export function PlannerSwitch() {
+	const t = useT()
 	const segment = useSelectedLayoutSegment()
 	const { section } = usePlannerSectionContext()
 
@@ -37,8 +38,8 @@ export function PlannerSwitch() {
 			style={{
 				display: segment ? "grid" : "none",
 			}}>
-			<SwitchButton id="characters">Characters</SwitchButton>
-			<SwitchButton id="arcs">Arcs</SwitchButton>
+			<SwitchButton id="characters">{t("planner.switch.characters")}</SwitchButton>
+			<SwitchButton id="arcs">{t("planner.switch.arcs")}</SwitchButton>
 		</div>
 	)
 }

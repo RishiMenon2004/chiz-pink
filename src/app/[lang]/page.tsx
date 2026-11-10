@@ -4,7 +4,13 @@ import { buildRouteMetadata, SITE_NAME, SITE_URL } from "@/helpers/metadata"
 
 import { RenderHome } from "./RenderHome"
 
-export const metadata: Metadata = buildRouteMetadata("/")
+type Props = {
+	params: Promise<{ lang: string }>
+}
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+	return buildRouteMetadata("/", (await params).lang)
+}
 
 // Google takes the site name shown above search results from this, and
 // falls back to the bare domain ("chiz.pink") without it. Only read on the

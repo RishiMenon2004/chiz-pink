@@ -1,2 +1,2 @@
-export type { KeyMouseEventType } from "@/components/layout/Modal/ModalContainer"
+export type { KeyMouseEventType } from "./events"
 export type { DescriptionValuesRecord, DescriptionValueType } from "./item"

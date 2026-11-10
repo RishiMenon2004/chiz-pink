@@ -2,7 +2,7 @@
 
 import { useSession } from "next-auth/react"
 
-import { useCloudSyncContext } from "@/contexts"
+import { useCloudSyncContext, useT } from "@/contexts"
 
 import { signInWithGooglePopup } from "@/helpers"
 
@@ -26,20 +26,21 @@ export function CloudBackupSection({
 	setSignoutWarning,
 	setUnlinkWarning,
 }: CloudBackupSectionProps) {
+	const t = useT()
 	const { data: session, status } = useSession()
 	const cloudSync = useCloudSyncContext()
 
-	let email: string | null | undefined = "Not Linked"
+	let email: string | null | undefined = t("settings.cloud.notLinked")
 	if (status === "authenticated") email = session?.user?.email
 
 	return (
 		<Section>
-			<TitleBar title="CLOUD BACKUP">
+			<TitleBar title={t("settings.cloud.title")}>
 				{status === "authenticated" && (
 					<span className={styles.settingsCloudStatus}>
 						<span
 							className={`${styles.settingsCloudStatusLabel} ${styles[cloudSync.status]}`}>
-							{syncStatusLabel[cloudSync.status].toUpperCase()}
+							{t(syncStatusLabel[cloudSync.status]).toUpperCase()}
 						</span>
 						<button
 							className={`pill-button ${styles.settingsCloudSyncBtn}`}
@@ -53,7 +54,7 @@ export function CloudBackupSection({
 			{status === "authenticated" ? (
 				<Content>
 					<ContentRow>
-						<b>Account:</b>
+						<b>{t("settings.cloud.account")}</b>
 						<span
 							className={`inset-control ${styles.settingsSecret}`}>
 							{email}
@@ -61,11 +62,11 @@ export function CloudBackupSection({
 					</ContentRow>
 
 					<ContentRow>
-						<b>Last Backup:</b>
+						<b>{t("settings.cloud.lastBackup")}</b>
 						<span className={styles.backupTimestamp}>
 							{cloudSync.latestBackupUpdatedAt
 								? formatDate(cloudSync.latestBackupUpdatedAt)
-								: "NO BACKUP"}
+								: t("settings.cloud.noBackup")}
 						</span>
 					</ContentRow>
 
@@ -74,22 +75,20 @@ export function CloudBackupSection({
 							className="pill-button"
 							data-variant="normal"
 							onClick={() => setSignoutWarning(true)}>
-							Sign Out
+							{t("settings.cloud.signOut")}
 						</button>
 						<button
 							className="pill-button"
 							data-variant="danger"
 							onClick={() => setUnlinkWarning(true)}>
-							Unlink & Delete Cloud Data
+							{t("settings.cloud.unlink")}
 						</button>
 					</ContentRow>
 				</Content>
 			) : (
 				<Content>
 					<ContentRow>
-						{
-							"Sync your data across devices, end-to-end encrypted. Chiz.Pink never has access to your unencrypted data - only you can decrypt it."
-						}
+						{t("settings.cloud.description")}
 					</ContentRow>
 
 					<ContentRow buttonRow>
@@ -97,7 +96,7 @@ export function CloudBackupSection({
 							className="pill-button"
 							data-variant="normal"
 							onClick={() => signInWithGooglePopup()}>
-							Sign In
+							{t("settings.cloud.signIn")}
 						</button>
 					</ContentRow>
 				</Content>

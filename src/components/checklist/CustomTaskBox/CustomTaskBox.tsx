@@ -3,10 +3,14 @@
 import { useId, useState } from "react"
 
 import type { CustomTask, CustomTaskSchedule } from "@/types/checklist"
+import type { MessageKey } from "@/types/messages"
 
 import { useChecklistStore, useSettingsStore } from "@/hooks"
 
 import { getUpcomingResetDates, stopPropagation } from "@/helpers"
+import type { Locale } from "@/helpers/locale"
+
+import { useLocale, useT } from "@/contexts"
 
 import { DayOfMonthPicker } from "../DayOfMonthPicker"
 
@@ -14,28 +18,28 @@ import checklistStyles from "@/app/[lang]/checklist/page.module.css"
 import settingsStyles from "@/app/[lang]/settings/settings.module.css"
 import styles from "./customTaskBox.module.css"
 
-const SCHEDULE_TYPES: { type: CustomTaskSchedule["type"]; label: string }[] = [
-	{ type: "daily", label: "Daily" },
-	{ type: "weekly", label: "Weekly" },
-	{ type: "biWeekly", label: "Bi-Weekly" },
-	{ type: "monthly", label: "Monthly" },
-	{ type: "seasonal", label: "Seasonal" },
+const SCHEDULE_TYPES: {
+	type: CustomTaskSchedule["type"]
+	label: MessageKey
+}[] = [
+	{ type: "daily", label: "checklist.sections.daily" },
+	{ type: "weekly", label: "checklist.sections.weekly" },
+	{ type: "biWeekly", label: "checklist.sections.biWeekly" },
+	{ type: "monthly", label: "checklist.sections.monthly" },
+	{ type: "seasonal", label: "checklist.sections.seasonal" },
 ]
 
 // Monday-first, valued by Date.getUTCDay().
-const WEEKDAYS = [
-	{ value: 1, label: "Monday" },
-	{ value: 2, label: "Tuesday" },
-	{ value: 3, label: "Wednesday" },
-	{ value: 4, label: "Thursday" },
-	{ value: 5, label: "Friday" },
-	{ value: 6, label: "Saturday" },
-	{ value: 0, label: "Sunday" },
-]
+const WEEKDAYS = [1, 2, 3, 4, 5, 6, 0]
+
+// "Monday"... in the page's language, from the browser's own day names.
+// 2023-01-01 was a Sunday, so day N of that week is weekday N.
+function weekdayName(day: number, locale: Locale) {
+	return new Intl.DateTimeFormat(locale, { weekday: "long", timeZone: "UTC" })
+		.format(Date.UTC(2023, 0, 1 + day))
+}
 
 const DAY_MS = 24 * 60 * 60 * 1000
-
-const DEFAULT_TITLE = "New Title"
 
 function weekdayOf(date: string) {
 	return new Date(date).getUTCDay()
@@ -66,15 +70,18 @@ function createTaskId() {
 	return Array.from(bytes, (b) => b.toString(16).padStart(2, "0")).join("")
 }
 
-function ordinalSuffix(n: number) {
-	return n % 100 >= 11 && n % 100 <= 13
-		? "th"
-		: ({ 1: "st", 2: "nd", 3: "rd" }[n % 10] ?? "th")
-}
+const ORDINAL_KEYS = {
+	1: "checklist.customTask.ordinal.st",
+	2: "checklist.customTask.ordinal.nd",
+	3: "checklist.customTask.ordinal.rd",
+} as const satisfies Record<number, MessageKey>
 
-// e.g. "1st", "29th (or last day)" - the 29th-31st clamp in short months.
-function formatMonthDay(day: number) {
-	return `${day}${ordinalSuffix(day)}${day > 28 ? " (or last day)" : ""}`
+function ordinalKey(n: number): MessageKey {
+	if (n % 100 >= 11 && n % 100 <= 13) return "checklist.customTask.ordinal.th"
+	return (
+		ORDINAL_KEYS[(n % 10) as keyof typeof ORDINAL_KEYS] ??
+		"checklist.customTask.ordinal.th"
+	)
 }
 
 export function CustomTaskBox({
@@ -84,15 +91,26 @@ export function CustomTaskBox({
 	task?: CustomTask
 	onClose: () => void
 }) {
+	const t = useT()
+	const locale = useLocale()
 	const { settings } = useSettingsStore()
 	const { actions } = useChecklistStore()
+
+	// e.g. "1st", "29th (or last day)" - the 29th-31st clamp in short months.
+	const formatMonthDay = (day: number) => {
+		const ordinal = t(ordinalKey(day), { day })
+		return day > 28
+			? t("checklist.customTask.orLastDay", { day: ordinal })
+			: ordinal
+	}
 	const server = settings.userdata.server
 
 	// Fixed when the modal opens so the date options don't shift mid-edit.
 	const [openedAt] = useState(() => Date.now())
 
 	const initial = task?.schedule
-	const [title, setTitle] = useState(task?.title ?? DEFAULT_TITLE)
+	const defaultTitle = t("checklist.customTask.defaultTitle")
+	const [title, setTitle] = useState(task?.title ?? defaultTitle)
 	const [description, setDescription] = useState(task?.description ?? "")
 	const [type, setType] = useState<CustomTaskSchedule["type"]>(
 		initial?.type ?? "daily"
@@ -162,7 +180,11 @@ export function CustomTaskBox({
 	return (
 		<form
 			className={styles.wrapper}
-			aria-label={task ? "Edit task" : "Add task"}
+			aria-label={
+				task
+					? t("checklist.customTask.editForm")
+					: t("checklist.customTask.addForm")
+			}
 			onClick={stopPropagation}
 			onSubmit={(e) => {
 				e.preventDefault()
@@ -178,15 +200,15 @@ export function CustomTaskBox({
 					<input
 						className={`${checklistStyles.itemTitle} ${styles.inlineInput}`}
 						type="text"
-						aria-label="Title"
+						aria-label={t("checklist.customTask.titleLabel")}
 						value={title}
 						maxLength={60}
-						placeholder="Task title"
+						placeholder={t("checklist.customTask.titlePlaceholder")}
 						autoFocus
 						required
 						// Typing replaces the default title instead of appending.
 						onFocus={(e) => {
-							if (title === DEFAULT_TITLE)
+							if (title === defaultTitle)
 								e.currentTarget.select()
 						}}
 						onChange={(e) => setTitle(e.currentTarget.value)}
@@ -194,11 +216,11 @@ export function CustomTaskBox({
 				</div>
 				<textarea
 					className={`${checklistStyles.itemDescription} ${styles.inlineInput}`}
-					aria-label="Description"
+					aria-label={t("checklist.customTask.descriptionLabel")}
 					value={description}
 					maxLength={200}
 					rows={1}
-					placeholder="Add a description (optional)"
+					placeholder={t("checklist.customTask.descriptionPlaceholder")}
 					onChange={(e) => setDescription(e.currentTarget.value)}
 				/>
 			</div>
@@ -206,7 +228,7 @@ export function CustomTaskBox({
 			<div className={`metallic-panel ${styles.box}`}>
 				<div className={styles.body}>
 					<label className={styles.field}>
-						<b>Type</b>
+						<b>{t("checklist.customTask.type")}</b>
 						<select
 							className={`inset-control ${settingsStyles.configSelect}`}
 							value={type}
@@ -218,7 +240,7 @@ export function CustomTaskBox({
 							}>
 							{SCHEDULE_TYPES.map((option) => (
 								<option key={option.type} value={option.type}>
-									{option.label}
+									{t(option.label)}
 								</option>
 							))}
 						</select>
@@ -228,7 +250,7 @@ export function CustomTaskBox({
 						<>
 							<label
 								className={`${styles.field} ${styles.fieldHalf}`}>
-								<b>On every</b>
+								<b>{t("checklist.customTask.onEvery")}</b>
 								<select
 									className={`inset-control ${settingsStyles.configSelect}`}
 									value={weekday}
@@ -244,17 +266,15 @@ export function CustomTaskBox({
 										)
 									}}>
 									{WEEKDAYS.map((day) => (
-										<option
-											key={day.value}
-											value={day.value}>
-											{day.label}
+										<option key={day} value={day}>
+											{weekdayName(day, locale)}
 										</option>
 									))}
 								</select>
 							</label>
 							<label
 								className={`${styles.field} ${styles.fieldHalf}`}>
-								<b>Next reset</b>
+								<b>{t("checklist.customTask.nextReset")}</b>
 								<select
 									className={`inset-control ${settingsStyles.configSelect}`}
 									value={nextResetDate}
@@ -278,7 +298,7 @@ export function CustomTaskBox({
 
 					{type === "monthly" && (
 						<div className={styles.field}>
-							<b id={monthDayLabelId}>Resets on</b>
+							<b id={monthDayLabelId}>{t("checklist.customTask.resetsOn")}</b>
 							<DayOfMonthPicker
 								value={monthDay}
 								onChange={setMonthDay}
@@ -290,8 +310,8 @@ export function CustomTaskBox({
 
 					<p className={styles.hint}>
 						{type === "seasonal"
-							? "Resets when a new game version goes live."
-							: "Resets at 5:00 AM server time."}
+							? t("checklist.customTask.hintSeasonal")
+							: t("checklist.customTask.hintServerTime")}
 					</p>
 				</div>
 
@@ -305,20 +325,20 @@ export function CustomTaskBox({
 								actions.removeCustomTask(task.id)
 								onClose()
 							}}>
-							DELETE
+							{t("checklist.customTask.delete")}
 						</button>
 					)}
 					<button
 						type="button"
 						className="pill-button"
 						onClick={onClose}>
-						CANCEL
+						{t("checklist.customTask.cancel")}
 					</button>
 					<button
 						type="submit"
 						className="pill-button"
 						disabled={!trimmedTitle}>
-						SAVE
+						{t("checklist.customTask.save")}
 					</button>
 				</div>
 			</div>

@@ -27,7 +27,7 @@ import {
 import { getCharacterBannerThemeColor } from "@/helpers/bannerStatus"
 import { getCraftAdjustmentMaterials } from "@/helpers/crafting"
 
-import { PlannerBoxContext, usePlannerMaterialsContext } from "@/contexts"
+import { PlannerBoxContext, usePlannerMaterialsContext, useT } from "@/contexts"
 
 import {
 	AlertContainer,
@@ -61,6 +61,7 @@ export function PlannerCharacterBox({
 	const { inventory, updateInventory } = useInventoryStore()
 	const cumulativeInventory = usePlannerMaterialsContext()
 
+	const t = useT()
 	const { actions } = usePlannerStore()
 
 	const [CharacterState, setCharacterState] = useState<CharacterRecord>({
@@ -399,7 +400,7 @@ export function PlannerCharacterBox({
 											} as CSSProperties)
 										: undefined
 								}
-								aria-label={`View ${char.name}'s profile`}
+								aria-label={t("planner.characterBox.view", { name: char.name })}
 								onPointerEnter={showProfileTooltip}
 								onPointerLeave={hideProfileTooltip}>
 								<CharacterAvatar
@@ -417,14 +418,14 @@ export function PlannerCharacterBox({
 									onPointerLeave={hideProfileTooltip}>
 									{char.name}
 								</LocaleLink>
-								<ProfileTooltip offset={{ x: 6, y: 0 }}>View Profile</ProfileTooltip>
+								<ProfileTooltip offset={{ x: 6, y: 0 }}>{t("planner.characterBox.viewProfile")}</ProfileTooltip>
 								<span
 									className={`${topStyles.arcStatsLvlContainer} ${topStyles.currentLvl}`}>
 									<div className={topStyles.arcPhases}>
 										<ItemPhases lvl={CharacterState.currentLvl} />
 									</div>
 									<span className={topStyles.arcLevelSectionLabel}>
-										Current Level
+										{t("planner.currentLevel")}
 									</span>
 									<select
 										className="inset-control"
@@ -447,7 +448,7 @@ export function PlannerCharacterBox({
 										<ItemPhases lvl={CharacterState.targetLvl} />
 									</div>
 									<span className={topStyles.arcLevelSectionLabel}>
-										Target Level
+										{t("planner.targetLevel")}
 									</span>
 									<select
 										className="inset-control"
@@ -471,7 +472,7 @@ export function PlannerCharacterBox({
 									className={
 										plannerBoxStyles.plannerSectionLabel
 									}>
-									Esper Abilities <br />
+									{t("planner.characterBox.esperAbilities")} <br />
 									<div
 										className={styles.charStatPreview}
 										onClick={(e) => {
@@ -514,32 +515,32 @@ export function PlannerCharacterBox({
 								<div className={styles.charStatsGrid}>
 									<CharacterSkillGroup
 										skill="basicAttack"
-										label="Basic Attack"
+										label={t("planner.characterBox.basicAttack")}
 									/>
 									<CharacterSkillGroup
 										skill="skill"
-										label="Redirect Skill"
+										label={t("planner.characterBox.redirectSkill")}
 									/>
 									<CharacterSkillGroup
 										skill="ultimate"
-										label="Ultimate"
+										label={t("planner.characterBox.ultimate")}
 									/>
 									<CharacterSkillGroup
 										skill="support"
-										label="Support Skill"
+										label={t("planner.characterBox.supportSkill")}
 									/>
 									<CharacterSkillGroup
 										skill="passive1"
-										label="Passive 1"
+										label={t("planner.characterBox.passive1")}
 									/>
 									<CharacterSkillGroup
 										skill="passive2"
-										label="Passive 2"
+										label={t("planner.characterBox.passive2")}
 									/>
 									{abilitySet.passive3 && (
 										<CharacterSkillGroup
 											skill="passive3"
-											label="Passive 3"
+											label={t("planner.characterBox.passive3")}
 										/>
 									)}
 								</div>
@@ -549,7 +550,7 @@ export function PlannerCharacterBox({
 									className={
 										plannerBoxStyles.plannerSectionLabel
 									}>
-									Life Skills
+									{t("planner.characterBox.lifeSkills")}
 									<br />
 									<div
 										className={styles.charStatPreview}
@@ -574,19 +575,19 @@ export function PlannerCharacterBox({
 								<div className={styles.charStatsGrid}>
 									<CharacterSkillGroup
 										skill="lifeSkill1"
-										label="Life Skill 1"
+										label={t("planner.characterBox.lifeSkill1")}
 									/>
 									{abilitySet.lifeSkill2 && (
 										<CharacterSkillGroup
 											skill="lifeSkill2"
-											label="Life Skill 2"
+											label={t("planner.characterBox.lifeSkill2")}
 										/>
 									)}
 								</div>
 							</details>
 						</div>
 						<span className={plannerBoxStyles.plannerSectionLabel}>
-							Required Materials
+							{t("planner.requiredMaterials")}
 						</span>
 						<div
 							className={
@@ -605,9 +606,9 @@ export function PlannerCharacterBox({
 						<AlertContainer
 							type="confirm"
 							onConfirm={confirmDelete}
-							cancelLabel="CANCEL"
+							cancelLabel={t("planner.cancel")}
 							onCancel={cancelDelete}>
-							{"A-are you sure you want to delete this Character?"}
+							{t("planner.characterBox.confirmDelete")}
 						</AlertContainer>
 					</ModalContainer>,
 					document.body

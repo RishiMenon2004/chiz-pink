@@ -2,6 +2,8 @@
 
 import { SettingsRecord } from "@/types/settings"
 
+import { useT } from "@/contexts"
+
 import { useSettingsStore } from "@/hooks"
 
 import {
@@ -18,18 +20,19 @@ import { PixelRefillCountdown, StaminaResetCountdown } from "../SettingsTimers"
 import styles from "@/app/[lang]/settings/settings.module.css"
 
 export function AppraiserSection() {
+	const t = useT()
 	const { settings, actions } = useSettingsStore()
 
 	return (
 		<Section>
-			<TitleBar title="APPRAISER" />
+			<TitleBar title={t("settings.appraiser.title")} />
 
 			<Content>
 				<ContentRow equalColumns>
 					<ConfigInputbox
-						name="Nickname"
+						name={t("settings.appraiser.nickname")}
 						value={settings.userdata.nickname}
-						placeholder="Appraiser"
+						placeholder={t("settings.appraiser.nicknamePlaceholder")}
 						type="text"
 						onChange={(e) => {
 							actions.setConfig("userdata", {
@@ -38,7 +41,7 @@ export function AppraiserSection() {
 						}}
 					/>
 					<ConfigSelect
-						name="Server"
+						name={t("settings.appraiser.server")}
 						value={settings.userdata.server}
 						onChange={(e) => {
 							actions.setConfig("userdata", {
@@ -46,16 +49,16 @@ export function AppraiserSection() {
 									.value as SettingsRecord["userdata"]["server"],
 							})
 						}}>
-						<option value="America">America</option>
-						<option value="Europe">Europe</option>
-						<option value="Asia">Asia</option>
-						<option value="SEA">SEA</option>
+						<option value="America">{t("settings.appraiser.servers.america")}</option>
+						<option value="Europe">{t("settings.appraiser.servers.europe")}</option>
+						<option value="Asia">{t("settings.appraiser.servers.asia")}</option>
+						<option value="SEA">{t("settings.appraiser.servers.sea")}</option>
 					</ConfigSelect>
 				</ContentRow>
 
 				<div className={styles.pixelStaminaGrid}>
 					<ConfigNumberBox
-						name="Character Pixels"
+						name={t("settings.appraiser.characterPixels")}
 						min={0}
 						max={999}
 						value={settings.userdata["current-pixels"]}
@@ -72,7 +75,7 @@ export function AppraiserSection() {
 						/>
 					</ConfigNumberBox>
 					<ConfigNumberBox
-						name="Max Pixels"
+						name={t("settings.appraiser.maxPixels")}
 						min={0}
 						value={settings.userdata["max-pixels"]}
 						onChange={(value) => {
@@ -82,7 +85,7 @@ export function AppraiserSection() {
 						}}
 					/>
 					<ConfigNumberBox
-						name="City Stamina"
+						name={t("settings.appraiser.cityStamina")}
 						min={0}
 						max={settings.userdata["max-stamina"]}
 						value={settings.userdata["current-stamina"]}
@@ -96,7 +99,7 @@ export function AppraiserSection() {
 						/>
 					</ConfigNumberBox>
 					<ConfigNumberBox
-						name="Max Stamina"
+						name={t("settings.appraiser.maxStamina")}
 						min={0}
 						value={settings.userdata["max-stamina"]}
 						onChange={(value) => {

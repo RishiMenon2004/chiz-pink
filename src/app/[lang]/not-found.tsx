@@ -1,10 +1,16 @@
+"use client"
+
 import Image from "next/image"
+
+import { useT } from "@/contexts"
 
 import { LocaleLink } from "@/components/layout"
 
 import styles from "./page.module.css"
 
 export default function NotFound() {
+	const t = useT()
+
 	return (
 		<div className={`page ${styles.page}`}>
 			<div className={`${styles.section} ${styles.errorSection}`}>
@@ -17,11 +23,11 @@ export default function NotFound() {
 						height={256}
 					/>
 					<div className={`${styles.sectionTitle} ${styles.errorTitle}`}>
-						This page could not be found
+						{t("notFound.title")}
 					</div>
 				</div>
 				<LocaleLink className={`pill-button ${styles.errorButton}`} href="/">
-					GO HOME
+					{t("notFound.goHome")}
 				</LocaleLink>
 			</div>
 		</div>

@@ -2,14 +2,13 @@ import type { Metadata, Viewport } from "next"
 import { Barlow_Condensed, Syne } from "next/font/google"
 import { notFound } from "next/navigation"
 
-import { RoutesData } from "@/data/routes"
-
 import { isLocale, LOCALES } from "@/helpers/locale"
+import { getMessages } from "@/helpers/messages"
 import {
-	SITE_DESCRIPTION,
+	getMetadataTranslator,
 	SITE_NAME,
-	SITE_OG_IMAGE,
 	SITE_URL,
+	siteOgImage,
 } from "@/helpers/metadata"
 
 import "../globals.css"
@@ -43,39 +42,49 @@ const syne = Syne({
 	subsets: ["latin"],
 })
 
-export const metadata: Metadata = {
-	metadataBase: new URL(SITE_URL),
-	title: {
-		template: `%s | ${SITE_NAME}`,
-		default: RoutesData["/"].head,
-	},
-	description: SITE_DESCRIPTION,
-	icons: {
-		icon: "/favicon.png",
-		apple: "/app_icon.png",
-	},
-	appleWebApp: {
-		capable: true,
-		title: SITE_NAME,
-		statusBarStyle: "default",
-	},
-	// Fallback for pages without their own (404s, offline). Pages build
-	// their own with buildMetadata(), since a page's openGraph replaces this
-	// one entirely. No url here: it would mark every page as the home page.
-	openGraph: {
-		type: "website",
-		locale: "en_US",
-		siteName: SITE_NAME,
-		title: SITE_NAME,
-		description: SITE_DESCRIPTION,
-		images: [SITE_OG_IMAGE],
-	},
-	twitter: {
-		card: "summary_large_image",
-		title: SITE_NAME,
-		description: SITE_DESCRIPTION,
-		images: [SITE_OG_IMAGE],
-	},
+export async function generateMetadata({
+	params,
+}: {
+	params: Promise<{ lang: string }>
+}): Promise<Metadata> {
+	const t = await getMetadataTranslator((await params).lang)
+	const description = t("site.description")
+	const image = siteOgImage(t)
+
+	return {
+		metadataBase: new URL(SITE_URL),
+		title: {
+			template: `%s | ${SITE_NAME}`,
+			default: t("routes.home.head"),
+		},
+		description,
+		icons: {
+			icon: "/favicon.png",
+			apple: "/app_icon.png",
+		},
+		appleWebApp: {
+			capable: true,
+			title: SITE_NAME,
+			statusBarStyle: "default",
+		},
+		// Fallback for pages without their own (404s, offline). Pages build
+		// their own with buildMetadata(), since a page's openGraph replaces this
+		// one entirely. No url here: it would mark every page as the home page.
+		openGraph: {
+			type: "website",
+			locale: "en_US",
+			siteName: SITE_NAME,
+			title: SITE_NAME,
+			description,
+			images: [image],
+		},
+		twitter: {
+			card: "summary_large_image",
+			title: SITE_NAME,
+			description,
+			images: [image],
+		},
+	}
 }
 
 export const viewport: Viewport = {
@@ -100,6 +109,7 @@ export default async function RootLayout({
 }>) {
 	const { lang } = await params
 	if (!isLocale(lang)) notFound()
+	const messages = await getMessages(lang)
 
 	return (
 		<html
@@ -107,7 +117,7 @@ export default async function RootLayout({
 			className={`${barlowCondensed.variable} ${syne.variable}`}
 		>
 			<body>
-				<LocaleProvider locale={lang}>
+				<LocaleProvider locale={lang} messages={messages}>
 					<AppStorageInitializer />
 					<AuthProvider>
 						<SettingsProvider>
@@ -123,7 +133,7 @@ export default async function RootLayout({
 							</ConvexClientProvider>
 						</SettingsProvider>
 					</AuthProvider>
-					<Footer />
+					<Footer locale={lang} />
 					<SiteAnalytics />
 				</LocaleProvider>
 			</body>

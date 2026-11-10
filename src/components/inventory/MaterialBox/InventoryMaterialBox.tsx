@@ -25,6 +25,8 @@ import { getAggregatedMaterial } from "@/hooks/usePlannerStore"
 
 import { getLinkedMaterials } from "@/helpers"
 
+import { useT } from "@/contexts"
+
 import { MaterialIcon, QuantityInput } from "@/components/layout"
 
 import styles from "./inventoryMaterial.module.css"
@@ -37,6 +39,7 @@ export function MaterialItemBox({
 	material: Material
 	canHaveMultiMat?: boolean
 }) {
+	const t = useT()
 	const {
 		Tooltip,
 		showTooltip,
@@ -166,7 +169,7 @@ export function MaterialItemBox({
 					<>
 						<div className="tooltip-details">
 							<span>
-								{"Need: "}
+								{t("inventory.material.need")}{" "}
 								<span className="font-barlow">
 									{requiredQuantity}
 								</span>
@@ -179,7 +182,7 @@ export function MaterialItemBox({
 							)}
 						</div>
 						<div className="tooltip-source-list">
-							Needed For:
+							{t("inventory.material.neededFor")}
 							{requiredSorcesList
 								.slice(0, 3)
 								.map(([id, amount]) => {
@@ -195,7 +198,9 @@ export function MaterialItemBox({
 												}
 												width={16}
 												height={16}
-												alt={`${material.name} Source`}
+												alt={t("inventory.material.sourceAlt", {
+													name: material.name,
+												})}
 											/>
 											{`${item.name} ${amount > 1 ? `\u00d7${amount}` : ""}`}
 										</div>
@@ -203,7 +208,9 @@ export function MaterialItemBox({
 								})}
 							{requiredSorcesList.length > 3 && (
 								<div className="tooltip-source">
-									{`+${requiredSorcesList.length - 3} More`}
+									{t("inventory.material.more", {
+										count: requiredSorcesList.length - 3,
+									})}
 								</div>
 							)}
 						</div>
@@ -211,7 +218,7 @@ export function MaterialItemBox({
 				)}
 				<hr className="tooltip-hr" />
 				<div className="tooltip-source-list">
-					Sources:
+					{t("inventory.material.sources")}
 					{material.sources.map((source) => (
 						<div className="tooltip-source" key={source}>
 							{source}

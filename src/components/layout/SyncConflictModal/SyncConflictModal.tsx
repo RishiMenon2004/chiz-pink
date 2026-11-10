@@ -1,5 +1,7 @@
 "use client"
 
+import { useT } from "@/contexts"
+
 import { AlertContainer } from "@/components/layout/Alert"
 import {
 	alertTextBox,
@@ -7,8 +9,8 @@ import {
 } from "@/components/layout/Alert/AlertContainer"
 import { ModalContainer } from "@/components/layout/Modal/ModalContainer"
 
-function formatTimestamp(value: number | null) {
-	if (value == null) return "Unknown"
+function formatTimestamp(value: number | null, unknown: string) {
+	if (value == null) return unknown
 	return new Date(value).toLocaleString(undefined, {
 		dateStyle: "medium",
 		timeStyle: "short",
@@ -30,24 +32,25 @@ export function SyncConflictModal({
 	onKeepLocal: () => void
 	onUseCloud: () => void
 }) {
+	const t = useT()
+
 	return (
 		<ModalContainer>
 			<AlertContainer
 				type="choices"
 				onConfirm={onUseCloud}
-				confirmLabel="Use Cloud Version"
+				confirmLabel={t("layout.syncConflict.useCloud")}
 				onCancel={onKeepLocal}
-				cancelLabel="Keep This Device">
-				We found existing data in your cloud account. Which version
-				would you like to keep?
+				cancelLabel={t("layout.syncConflict.keepLocal")}>
+				{t("layout.syncConflict.message")}
 				<div className={alertTextColumns}>
 					<div className={`inset-control ${alertTextBox}`}>
-						<b>This Device</b>
-						<p>{formatTimestamp(localLastUpdated)}</p>
+						<b>{t("layout.syncConflict.thisDevice")}</b>
+						<p>{formatTimestamp(localLastUpdated, t("layout.syncConflict.unknown"))}</p>
 					</div>
 					<div className={`inset-control ${alertTextBox}`}>
-						<b>Cloud</b>
-						<p>{formatTimestamp(cloudLastUpdated)}</p>
+						<b>{t("layout.syncConflict.cloud")}</b>
+						<p>{formatTimestamp(cloudLastUpdated, t("layout.syncConflict.unknown"))}</p>
 					</div>
 				</div>
 			</AlertContainer>

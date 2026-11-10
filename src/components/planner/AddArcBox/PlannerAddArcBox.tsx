@@ -25,7 +25,7 @@ import { fuzzyFilter } from "@/helpers/fuzzyMatch"
 
 import { useNow } from "@/hooks"
 
-import { useAddArcContext } from "@/contexts"
+import { useAddArcContext, useT } from "@/contexts"
 
 import { ArcIcon } from "@/components/layout"
 
@@ -110,6 +110,7 @@ function ArcTile({ arc, className }: { arc: Arc; className: string }) {
 }
 
 const PlannerArcsSelect = () => {
+	const t = useT()
 	const { newArcRecord, setNewArcRecord } = useAddArcContext()
 	const [selected, setSelected] = useState<Arc>(() =>
 		findArc(
@@ -191,7 +192,10 @@ const PlannerArcsSelect = () => {
 				<span className={styles.arcSelectInfo}>
 					<span className={styles.arcSelectName}>{selected.name}</span>
 					<span className={styles.arcSelectMeta}>
-						{`${getRarityName(selected.rarity)} ${selected.type} Arc`}
+						{t("planner.addArc.meta", {
+							rank: getRarityName(selected.rarity),
+							type: selected.type,
+						})}
 					</span>
 				</span>
 			</button>
@@ -202,7 +206,7 @@ const PlannerArcsSelect = () => {
 						ref={searchRef}
 						className={`inset-control ${styles.arcSelectOptionSearchBox}`}
 						type="text"
-						placeholder="Search"
+						placeholder={t("planner.addArc.search")}
 						value={searchQuery}
 						enterKeyHint="done"
 						onChange={handleSearch}
@@ -211,7 +215,7 @@ const PlannerArcsSelect = () => {
 						}}
 					/>
 					<div className={styles.arcFilters}>
-						<span className={styles.arcFilterLabel}>Type</span>
+						<span className={styles.arcFilterLabel}>{t("planner.addArc.filterType")}</span>
 						<div className={styles.arcFilterRow}>
 							{Object.values(EnumArcType).map((arcType) => {
 								const isActive = filterQuery[0] === arcType
@@ -233,7 +237,7 @@ const PlannerArcsSelect = () => {
 								)
 							})}
 						</div>
-						<span className={styles.arcFilterLabel}>Rank</span>
+						<span className={styles.arcFilterLabel}>{t("planner.addArc.filterRank")}</span>
 						<div className={styles.arcFilterRow}>
 							{rarityFilters.map((arcRank) => {
 								const isActive = filterQuery[1] === arcRank
@@ -279,7 +283,10 @@ const PlannerArcsSelect = () => {
 										<span className={styles.arcSelectInfo}>
 											<span className={styles.arcSelectName}>{arc.name}</span>
 											<span className={styles.arcSelectMeta}>
-												{`${getRarityName(arc.rarity)} ${arc.type} Arc`}
+												{t("planner.addArc.meta", {
+													rank: getRarityName(arc.rarity),
+													type: arc.type,
+												})}
 											</span>
 										</span>
 									</button>
@@ -300,16 +307,17 @@ export function PlannerAddArcBox({
 	onCancel: (e: KeyMouseEventType) => void
 	onConfirm: (e: KeyMouseEventType) => void
 }) {
+	const t = useT()
 	const { newArcRecord, setNewArcRecord } = useAddArcContext()
 	if (!newArcRecord) return null
 	return (
 		<div
 			className={`metallic-panel ${styles.plannerAddArcBox}`}
 			onClick={stopPropagation}>
-			<div className={styles.addArcBoxTitle}>Add Arc</div>
+			<div className={styles.addArcBoxTitle}>{t("planner.addArc.title")}</div>
 			<PlannerArcsSelect />
 			<div className={styles.addArcLvlSection}>
-				<span className={styles.addArcLvlLabel}>Current Level</span>
+				<span className={styles.addArcLvlLabel}>{t("planner.currentLevel")}</span>
 				<LvlSelectGrid
 					selectedLvl={newArcRecord.currentLvl}
 					onChange={(value: EnumItemLvls) => {
@@ -325,7 +333,7 @@ export function PlannerAddArcBox({
 				/>
 			</div>
 			<div className={styles.addArcLvlSection}>
-				<span className={styles.addArcLvlLabel}>Target Level</span>
+				<span className={styles.addArcLvlLabel}>{t("planner.targetLevel")}</span>
 				<LvlSelectGrid
 					selectedLvl={newArcRecord.targetLvl}
 					onChange={(value: EnumItemLvls) => {
@@ -345,12 +353,12 @@ export function PlannerAddArcBox({
 				<div
 					className={`pill-button always-hover ${styles.addArcCancelButton}`}
 					onClick={onCancel}>
-					CANCEL
+					{t("planner.addArc.cancel")}
 				</div>
 				<div
 					className={`pill-button always-hover ${styles.addArcConfirmButton}`}
 					onClick={onConfirm}>
-					ADD
+					{t("planner.addArc.add")}
 				</div>
 			</span>
 		</div>

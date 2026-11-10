@@ -10,10 +10,13 @@ import {
 	parseNteExporterImport,
 } from "@/helpers/importNteExporterPulls"
 
+import { useT } from "@/contexts"
+
 import pageStyles from "@/app/[lang]/pulls/page.module.css"
 import styles from "./importSection.module.css"
 
 export function ImportSection() {
+	const t = useT()
 	const [importMessages, setImportMessages] = useState<ImportMessage[]>([])
 	const [parsedData, setParsedData] = useState<ImportedPullsResult>(null!)
 	const [fileName, setFileName] = useState<string>(null!)
@@ -32,7 +35,8 @@ export function ImportSection() {
 					console.error(error)
 					setImportMessages([
 						{
-							message: `Couldn't read the file - ${error}`,
+							message: "pulls.import.messages.readFailed",
+							params: { error: String(error) },
 							status: "error",
 						},
 					])
@@ -47,8 +51,7 @@ export function ImportSection() {
 				} else {
 					setImportMessages([
 						{
-							message:
-								"File is either unrecognised or does not contain pull history.",
+							message: "pulls.import.messages.unrecognisedFile",
 							status: "warn",
 						},
 					])
@@ -66,7 +69,7 @@ export function ImportSection() {
 			importResult = [...parsedData.messages, ...importResult]
 		} else {
 			importResult = [
-				{ message: "Error while parsing file", status: "error" },
+				{ message: "pulls.import.messages.parseFailed", status: "error" },
 			]
 		}
 
@@ -106,15 +109,17 @@ export function ImportSection() {
 		<div
 			className={`metallic-panel ${pageStyles.section} ${styles.importSection}`}>
 			<div className={pageStyles.sectionTitleRow}>
-				<div className={pageStyles.sectionTitle}>Import</div>
+				<div className={pageStyles.sectionTitle}>{t("pulls.import.title")}</div>
 				<div>
-					{"Export your pull history using: "}
-					<a
-						href="https://github.com/RishiMenon2004/nte-exporter/releases/latest"
-						target="_blank">
-						NTE History Exporter
-					</a>
-					{". Then import them here to see your pull history and pity."}
+					{t.rich("pulls.import.description", {
+						link: (text) => (
+							<a
+								href="https://github.com/RishiMenon2004/nte-exporter/releases/latest"
+								target="_blank">
+								{text}
+							</a>
+						),
+					})}
 				</div>
 			</div>
 			<div
@@ -128,12 +133,12 @@ export function ImportSection() {
 				onDrop={handleDrop}
 				className={`inset-control ${styles.importFileBox} ${(fileDragHover && styles.fileDropActive) || ""}`}>
 				<div className={styles.importFileDrop} onClick={openFileSelect}>
-					<p>Drop JSON here</p>
+					<p>{t("pulls.import.dropHere")}</p>
 				</div>
 				<div className={`${styles.importFileSelect}`}>
 					<code>
 						<span className={styles.fileName}>
-							{fileName || "no file selected (.json)"}
+							{fileName || t("pulls.import.noFile")}
 						</span>
 					</code>
 					{parsedData && (
@@ -146,7 +151,7 @@ export function ImportSection() {
 					<button
 						className={`pill-button ${styles.fileButton}`}
 						onClick={openFileSelect}>
-						{parsedData ? "CHANGE FILE" : "SELECT FILE"}
+						{parsedData ? t("pulls.import.changeFile") : t("pulls.import.selectFile")}
 					</button>
 				</div>
 
@@ -158,7 +163,7 @@ export function ImportSection() {
 									key={index}
 									data-type={row.status}
 									className={styles.importMessage}>
-									{row.message}
+									{t(row.message, row.params)}
 								</p>
 							)
 						})}
@@ -177,12 +182,14 @@ export function ImportSection() {
 					e.preventDefault()
 					importData()
 				}}>
-				Import {parsedData?.pulls.length ?? 0} Pulls
+				{t("pulls.import.importButton", {
+					count: parsedData?.pulls.length ?? 0,
+				})}
 			</button>
 			<hr />
 			<div className={pageStyles.sectionTitleRow}>
-				<div className={pageStyles.sectionTitle}>Manual</div>
-				Coming soon!
+				<div className={pageStyles.sectionTitle}>{t("pulls.import.manual")}</div>
+				{t("pulls.import.comingSoon")}
 			</div>
 		</div>
 	)

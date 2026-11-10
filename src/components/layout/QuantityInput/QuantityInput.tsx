@@ -8,6 +8,8 @@ import {
 	RefObject,
 } from "react"
 
+import { useT } from "@/contexts"
+
 export function QuantityInput({
 	name,
 	value,
@@ -33,10 +35,12 @@ export function QuantityInput({
 	onIncrement: (e: MouseEvent<HTMLSpanElement>) => void
 	onDecrement: (e: MouseEvent<HTMLSpanElement>) => void
 }) {
+	const t = useT()
+
 	return (
 		<span className={`inset-control ${styles.amount}`}>
 			<span
-				aria-label={`${name} minus one button`}
+				aria-label={t("layout.quantityInput.minusOne", { name })}
 				className={`${styles.countBtn} ${styles.minus}`}
 				onClick={onDecrement}
 			/>
@@ -58,7 +62,7 @@ export function QuantityInput({
 				/>
 			</span>
 			<span
-				aria-label={`${name} plus one button`}
+				aria-label={t("layout.quantityInput.plusOne", { name })}
 				className={`${styles.countBtn} ${styles.plus}`}
 				onClick={onIncrement}
 			/>

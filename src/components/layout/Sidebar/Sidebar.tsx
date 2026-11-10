@@ -1,10 +1,14 @@
 "use client"
 
+import { useT } from "@/contexts"
+
 import { NavButton } from "../NavButton"
 
 import styles from "./sidebar.module.css"
 
 export function Sidebar() {
+	const t = useT()
+
 	return (
 		<div className={styles.sidebar}>
 			<nav role="navigation">
@@ -18,7 +22,7 @@ export function Sidebar() {
 					href="characters"
 					icon="catalog"
 					activeFor={["characters", "arcs"]}
-					tooltip="Catalog"
+					tooltip={t("layout.sidebar.catalog")}
 					className={styles.desktopOnly}
 				/>
 				<NavButton href="settings" className={styles.settings} />

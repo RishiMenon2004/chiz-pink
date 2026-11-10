@@ -1,24 +1,36 @@
 import type { Metadata } from "next"
 
+import type { MessageKey, Translate } from "@/types/messages"
 import type { EnumRarity } from "@/data/items/item"
-import { RoutesData } from "@/data/routes"
+import { RoutesData, type RoutePath } from "@/data/routes"
 
 import { getRarityName } from "./getRarityName"
+import { toLocale } from "./locale"
+import { getTranslator } from "./messages"
 
 // Hardcoded rather than read from Vercel's env, so canonicals point here
 // from every deployment - including the old vercel.app address, which
 // still serves the app (see helpers/domainMigration.ts).
 export const SITE_URL = "https://chiz.pink"
 export const SITE_NAME = "Chiz.Pink"
-export const SITE_DESCRIPTION =
-	"Your pinkest companion, ascension planner and pull tracker for NTE :3"
 
-// Share preview for pages without their own image.
-export const SITE_OG_IMAGE = {
-	url: "/layout/site-og.png",
-	width: 1200,
-	height: 630,
-	alt: "Chiz.Pink: Neverness to Everness ascension planner and pull tracker",
+// Share preview for pages without their own image. Its alt text is the
+// site.ogImageAlt message.
+export const SITE_OG_IMAGE_URL = "/layout/site-og.png"
+
+/** t() for metadata functions, from the page's [lang] param. */
+export function getMetadataTranslator(lang: string) {
+	return getTranslator(toLocale(lang))
+}
+
+/** The site-wide share image, with its alt text in the page's language. */
+export function siteOgImage(t: Translate) {
+	return {
+		url: SITE_OG_IMAGE_URL,
+		width: 1200,
+		height: 630,
+		alt: t("site.ogImageAlt"),
+	}
 }
 
 type PageMetadataOptions = {
@@ -37,12 +49,16 @@ type PageMetadataOptions = {
  * the layout's whole object), so every page builds the full set here rather
  * than relying on the root layout's.
  */
-export function buildMetadata({
-	title,
-	description = SITE_DESCRIPTION,
-	path,
-	image = SITE_OG_IMAGE,
-}: PageMetadataOptions): Metadata {
+export function buildMetadata(
+	options: PageMetadataOptions,
+	t: Translate,
+): Metadata {
+	const {
+		title,
+		description = t("site.description"),
+		path,
+		image = siteOgImage(t),
+	} = options
 	const images = [{ width: 1200, height: 630, ...image }]
 
 	// Pages under the root get the "| Chiz.Pink" template; the home page
@@ -71,14 +87,32 @@ export function buildMetadata({
 	}
 }
 
-/** "an S-Rank", "a B-Rank": for descriptions. */
-export function rankWithArticle(rarity: EnumRarity) {
+/**
+ * The rank name and whether English needs "an" before it ("an S-Rank",
+ * "a B-Rank"). Descriptions have an introA and an introAn message for this;
+ * other languages can translate both the same way.
+ */
+export function rankForIntro(rarity: EnumRarity) {
 	const rank = getRarityName(rarity)
-	return `${/^[AS]/.test(rank) ? "an" : "a"} ${rank}`
+	return { rank, takesAn: /^[AS]/.test(rank) }
 }
 
-/** Metadata for a static route, from its `RoutesData` entry. */
-export function buildRouteMetadata(path: keyof typeof RoutesData): Metadata {
-	const { head, description } = RoutesData[path]
-	return buildMetadata({ title: head, description, path })
+/** Metadata for a static route, with its text from routes.<id>. */
+export async function buildRouteMetadata(
+	path: RoutePath,
+	lang: string,
+): Promise<Metadata> {
+	const t = await getMetadataTranslator(lang)
+	const route: { id: string; hasDescription?: boolean } = RoutesData[path]
+
+	return buildMetadata(
+		{
+			title: t(`routes.${RoutesData[path].id}.head`),
+			description: route.hasDescription
+				? t(`routes.${route.id}.description` as MessageKey)
+				: undefined,
+			path,
+		},
+		t,
+	)
 }

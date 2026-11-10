@@ -24,6 +24,7 @@ import {
 	PullTrackerContext,
 	RateUpPull,
 	useSettingsConfigContext,
+	useT,
 } from "@/contexts"
 
 import { ToolIntro } from "@/components/layout"
@@ -96,6 +97,7 @@ function extractBannerRateUps(
 }
 
 export function RenderPulls() {
+	const t = useT()
 	const { gachaPulls } = useGachaStore()
 	const {
 		userdata: { server },
@@ -181,9 +183,7 @@ export function RenderPulls() {
 	return (
 		<>
 			<ToolIntro id="pulls">
-				<div>
-					Import your pulls to track pity on every banner.
-				</div>
+				<div>{t("pulls.intro")}</div>
 			</ToolIntro>
 
 			<main className={`page ${styles.page}`} role="main">

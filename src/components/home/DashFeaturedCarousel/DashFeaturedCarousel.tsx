@@ -19,6 +19,8 @@ import {
 
 import { CharacterAvatar, CharacterElement } from "@/components/layout/CharacterAvatar"
 
+import { useT } from "@/contexts"
+
 import { LocaleLink } from "@/components/layout"
 
 import styles from "./DashFeaturedCarousel.module.css"
@@ -28,19 +30,26 @@ type Entry = { item: Character; status: ItemStatus }
 const SWIPE_THRESHOLD = 40
 
 function BannerTiming({ character }: { character: Character }) {
+	const t = useT()
 	const now = useNow()
 	if (now === null) return null
 
 	const banner = getCharacterActiveBanner(character.id, now)
-	if (!banner) return <span>Banner dates TBA</span>
+	if (!banner) return <span>{t("home.featured.bannerTba")}</span>
 
 	return banner.start <= now ? (
 		<span>
-			Banner ends in <strong>{formatBannerCountdown(banner.end - now)}</strong>
+			{t.rich("home.featured.bannerEnds", {
+				b: (text) => <strong>{text}</strong>,
+				time: formatBannerCountdown(banner.end - now),
+			})}
 		</span>
 	) : (
 		<span>
-			Banner starts in <strong>{formatBannerCountdown(banner.start - now)}</strong>
+			{t.rich("home.featured.bannerStarts", {
+				b: (text) => <strong>{text}</strong>,
+				time: formatBannerCountdown(banner.start - now),
+			})}
 		</span>
 	)
 }
@@ -56,6 +65,7 @@ function Slide({
 	onPointerEnter: PointerEventHandler<HTMLElement>
 	onPointerLeave: () => void
 }) {
+	const t = useT()
 	const themeColor = getCharacterBannerThemeColor(character.id)
 
 	return (
@@ -64,7 +74,12 @@ function Slide({
 			className={`${styles.slide} ${getItemRarityStyle(character)}`}
 			data-active={active}
 			inert={!active}
-			aria-label={`${character.name} - ${status === "preview" ? "preview" : "featured"}`}
+			aria-label={t(
+				status === "preview"
+					? "home.featuredCarousel.slidePreview"
+					: "home.featuredCarousel.slideFeatured",
+				{ name: character.name }
+			)}
 			style={themeColor ? ({ "--theme-color": themeColor } as CSSProperties) : undefined}
 			onPointerEnter={onPointerEnter}
 			onPointerLeave={onPointerLeave}>
@@ -81,7 +96,7 @@ function Slide({
 			<div className={styles.art}>
 				<Image
 					src={`/characters/full/${character.imageSrc}`}
-					alt={`${character.name} full art`}
+					alt={t("home.featuredCarousel.artAlt", { name: character.name })}
 					width={1080}
 					height={1280}
 					sizes="(max-width: 800px) 70vw, 30vw"
@@ -90,7 +105,9 @@ function Slide({
 			</div>
 			<div className={styles.info}>
 				<div className={styles.tag}>
-					{status === "preview" ? "Preview" : "Featured"}
+					{status === "preview"
+						? t("home.featured.preview")
+						: t("home.featured.featured")}
 				</div>
 				<h3 className={styles.name}>{character.name}</h3>
 				<div className={styles.meta}>
@@ -110,6 +127,7 @@ function Slide({
 }
 
 export function DashFeaturedCarousel({ entries }: { entries: Entry[] }) {
+	const t = useT()
 	const [index, setIndex] = useState(0)
 	const touchStartX = useRef<number | null>(null)
 	const { Tooltip, showTooltip, hideTooltip } = useTooltip()
@@ -123,7 +141,7 @@ export function DashFeaturedCarousel({ entries }: { entries: Entry[] }) {
 			className={`inset-control ${styles.carousel}`}
 			role="region"
 			aria-roledescription="carousel"
-			aria-label="Featured characters"
+			aria-label={t("home.featuredCarousel.label")}
 			data-autoplay={count > 1}
 			onTouchStart={(e) => (touchStartX.current = e.touches[0].clientX)}
 			onTouchEnd={(e) => {
@@ -155,7 +173,7 @@ export function DashFeaturedCarousel({ entries }: { entries: Entry[] }) {
 							key={item.id}
 							type="button"
 							className={`${styles.thumb} ${getItemRarityStyle(item)}`}
-							aria-label={`Show ${item.name}`}
+							aria-label={t("home.featuredCarousel.show", { name: item.name })}
 							aria-current={i === active}
 							onClick={() => go(i)}>
 							<CharacterAvatar
@@ -177,7 +195,7 @@ export function DashFeaturedCarousel({ entries }: { entries: Entry[] }) {
 				</div>
 			)}
 
-			<Tooltip offset={{ x: 6, y: 0 }}>View Profile</Tooltip>
+			<Tooltip offset={{ x: 6, y: 0 }}>{t("home.featuredCarousel.viewProfile")}</Tooltip>
 		</div>
 	)
 }

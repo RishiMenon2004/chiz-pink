@@ -17,6 +17,11 @@ export function isLocale(value: string): value is Locale {
 	return (LOCALES as readonly string[]).includes(value)
 }
 
+/** A [lang] route param as a Locale, or the default for anything unknown. */
+export function toLocale(value: string): Locale {
+	return isLocale(value) ? value : DEFAULT_LOCALE
+}
+
 /** Splits "/pt-BR/planner" into `pt-BR` and "/planner". Unprefixed paths get a null locale. */
 export function splitLocalePath(pathname: string): {
 	locale: Locale | null

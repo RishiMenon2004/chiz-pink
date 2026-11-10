@@ -27,7 +27,7 @@ import {
 import { getArcBannerThemeColor } from "@/helpers/bannerStatus"
 import { getCraftAdjustmentMaterials } from "@/helpers/crafting"
 
-import { PlannerBoxContext, usePlannerMaterialsContext } from "@/contexts"
+import { PlannerBoxContext, usePlannerMaterialsContext, useT } from "@/contexts"
 
 import { AlertContainer, ArcIcon, LocaleLink, ModalContainer } from "@/components/layout"
 import { ItemPhases } from "../ItemPhases"
@@ -51,6 +51,7 @@ export function PlannerArcBox({
 		index,
 	})
 
+	const t = useT()
 	const { inventory, updateInventory } = useInventoryStore()
 	const cumulativeInventory = usePlannerMaterialsContext()
 
@@ -252,7 +253,7 @@ export function PlannerArcBox({
 											} as CSSProperties)
 										: undefined
 								}
-								aria-label={`View ${arc.name}`}
+								aria-label={t("planner.arcBox.view", { name: arc.name })}
 								onPointerEnter={showProfileTooltip}
 								onPointerLeave={hideProfileTooltip}>
 								<ArcIcon
@@ -270,14 +271,14 @@ export function PlannerArcBox({
 									onPointerLeave={hideProfileTooltip}>
 									{arc.name}
 								</LocaleLink>
-								<ProfileTooltip offset={{ x: 6, y: 0 }}>View Index</ProfileTooltip>
+								<ProfileTooltip offset={{ x: 6, y: 0 }}>{t("planner.arcBox.viewIndex")}</ProfileTooltip>
 								<span
 									className={`${styles.arcStatsLvlContainer} ${styles.currentLvl}`}>
 									<div className={styles.arcPhases}>
 										<ItemPhases lvl={currentLvl} />
 									</div>
 									<span className={styles.arcLevelSectionLabel}>
-										Current Level
+										{t("planner.currentLevel")}
 									</span>
 									<select
 										className="inset-control"
@@ -299,7 +300,7 @@ export function PlannerArcBox({
 										<ItemPhases lvl={targetLvl} />
 									</div>
 									<span className={styles.arcLevelSectionLabel}>
-										Target Level
+										{t("planner.targetLevel")}
 									</span>
 									<select
 										className="inset-control"
@@ -318,7 +319,7 @@ export function PlannerArcBox({
 							</div>
 						</div>
 						<span className={plannerBoxStyles.plannerSectionLabel}>
-							Required Materials
+							{t("planner.requiredMaterials")}
 						</span>
 						<div
 							className={
@@ -337,9 +338,9 @@ export function PlannerArcBox({
 						<AlertContainer
 							type="confirm"
 							onConfirm={onDeleteConfim}
-							cancelLabel="CANCEL"
+							cancelLabel={t("planner.cancel")}
 							onCancel={onDeleteCancel}>
-							{"A-are you sure you want to delete this Arc?"}
+							{t("planner.arcBox.confirmDelete")}
 						</AlertContainer>
 					</ModalContainer>,
 					document.body

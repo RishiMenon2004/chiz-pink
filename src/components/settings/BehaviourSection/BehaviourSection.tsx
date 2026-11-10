@@ -1,5 +1,7 @@
 "use client"
 
+import { useT } from "@/contexts"
+
 import { useSettingsStore } from "@/hooks"
 
 import {
@@ -11,11 +13,12 @@ import {
 } from "../SettingsShared"
 
 export function BehaviourSection() {
+	const t = useT()
 	const { settings, actions } = useSettingsStore()
 
 	return (
 		<>
-			<TitleBar title="BEHAVIOUR" />
+			<TitleBar title={t("settings.behaviour.title")} />
 			<Content>
 				<ContentRow equalColumns>
 					<ContentColumn>
@@ -26,17 +29,17 @@ export function BehaviourSection() {
 									"auto-claim": e.currentTarget.checked,
 								})
 							}
-							name="Daily Tasks: Add to Inventory"
+							name={t("settings.behaviour.autoClaim")}
 						/>
 					</ContentColumn>
 					<ContentColumn>
 						<ConfigCheckbox
-							name={`Calendar: ${
+							name={
 								settings.behaviour["calendar-day-boundary"] ===
 								"server"
-									? "Server Time"
-									: "Local Time"
-							}`}
+									? t("settings.behaviour.calendarServerTime")
+									: t("settings.behaviour.calendarLocalTime")
+							}
 							checked={
 								(settings.behaviour["calendar-day-boundary"] ??
 									"server") === "local"

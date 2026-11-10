@@ -5,6 +5,8 @@ import type { EnumArcType } from "@/data/arcs/arc"
 
 import { getRarityName } from "@/helpers/getRarityName"
 
+import { useT } from "@/contexts"
+
 import { PullOutToolbar } from "@/components/layout/PullOutToolbar"
 
 import styles from "@/components/inventory/FilterToolbar/filterToolbar.module.css"
@@ -90,6 +92,7 @@ function GroupSelect({
 	options: { value: Exclude<CatalogGroupBy, null>; label: string }[]
 	onChange: (value: CatalogGroupBy) => void
 }) {
+	const t = useT()
 	return (
 		<div className={`inset-control ${styles.filterSelection}`}>
 			<span className={`${styles.filterIcon} ${styles.iconGroup}`} />
@@ -103,7 +106,7 @@ function GroupSelect({
 				}}
 				className={styles.groupSelect}>
 				<option value={"default"} hidden>
-					Group By
+					{t("catalog.toolbar.groupBy")}
 				</option>
 				{options.map((option) => (
 					<option value={option.value} key={option.value}>
@@ -194,6 +197,7 @@ export function CatalogFilterToolbar({
 	arcTypes: EnumArcType[]
 	elements?: EnumCharacterElement[]
 }) {
+	const t = useT()
 	const hasFilters =
 		filters.search !== "" ||
 		filters.rarity !== null ||
@@ -209,8 +213,8 @@ export function CatalogFilterToolbar({
 				<input
 					type="search"
 					name="search"
-					placeholder="Search..."
-					aria-label="Search by name"
+					placeholder={t("catalog.toolbar.searchPlaceholder")}
+					aria-label={t("catalog.toolbar.searchLabel")}
 					autoComplete="off"
 					enterKeyHint="done"
 					value={filters.search}
@@ -235,7 +239,7 @@ export function CatalogFilterToolbar({
 
 			<FilterSelect
 				name="filter by rank"
-				allLabel="All Ranks"
+				allLabel={t("catalog.toolbar.allRanks")}
 				value={filters.rarity}
 				options={rarities.map((rarity) => ({
 					value: rarity,
@@ -247,7 +251,7 @@ export function CatalogFilterToolbar({
 			{elements && (
 				<FilterSelect
 					name="filter by element"
-					allLabel="All Elements"
+					allLabel={t("catalog.toolbar.allElements")}
 					value={filters.element}
 					options={elements.map((element) => ({
 						value: element,
@@ -259,7 +263,7 @@ export function CatalogFilterToolbar({
 
 			<FilterSelect
 				name="filter by arc type"
-				allLabel="All Arc Types"
+				allLabel={t("catalog.toolbar.allArcTypes")}
 				value={filters.arcType}
 				options={arcTypes.map((arcType) => ({
 					value: arcType,
@@ -271,11 +275,20 @@ export function CatalogFilterToolbar({
 			<GroupSelect
 				value={groupBy}
 				options={[
-					{ value: "rarity", label: "By Rank" },
-					...(elements ? [{ value: "element" as const, label: "By Element" }] : []),
+					{ value: "rarity", label: t("catalog.toolbar.byRank") },
+					...(elements
+						? [
+								{
+									value: "element" as const,
+									label: t("catalog.toolbar.byElement"),
+								},
+							]
+						: []),
 					{
 						value: "arcType",
-						label: elements ? "By Arc Type" : "By Type",
+						label: elements
+							? t("catalog.toolbar.byArcType")
+							: t("catalog.toolbar.byType"),
 					},
 				]}
 				onChange={onGroupByChange}
@@ -284,10 +297,17 @@ export function CatalogFilterToolbar({
 			<SortSelect
 				value={sort}
 				options={[
-					{ value: "default", label: "By Featured" },
-					{ value: "rarity", label: "By Rank" },
-					{ value: "name", label: "By Name" },
-					...(elements ? [{ value: "element" as const, label: "By Element" }] : []),
+					{ value: "default", label: t("catalog.toolbar.byFeatured") },
+					{ value: "rarity", label: t("catalog.toolbar.byRank") },
+					{ value: "name", label: t("catalog.toolbar.byName") },
+					...(elements
+						? [
+								{
+									value: "element" as const,
+									label: t("catalog.toolbar.byElement"),
+								},
+							]
+						: []),
 				]}
 				onChange={onSortChange}
 			/>

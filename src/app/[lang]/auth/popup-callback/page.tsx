@@ -3,9 +3,13 @@
 import { useEffect } from "react"
 import { getSession } from "next-auth/react"
 
+import { useT } from "@/contexts"
+
 import styles from "./popupCallback.module.css"
 
 export default function PopupCallbackPage() {
+	const t = useT()
+
 	useEffect(() => {
 		// getSession() broadcasts a "session" event (via localStorage + the
 		// storage event) that the opener's SessionProvider is listening for.
@@ -20,9 +24,9 @@ export default function PopupCallbackPage() {
 			role="main">
 			<div className={styles.popupBanner}>
 				<h2 className={styles.popupHeading}>
-					{"Signed in with Google"}
+					{t("auth.signedIn")}
 				</h2>
-				<p>{"You may now close this window."}</p>
+				<p>{t("auth.closeWindow")}</p>
 			</div>
 		</main>
 	)

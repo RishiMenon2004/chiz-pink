@@ -1,5 +1,7 @@
 "use client"
 
+import { useT } from "@/contexts"
+
 import { useSettingsStore } from "@/hooks"
 
 import {
@@ -11,16 +13,17 @@ import {
 } from "../SettingsShared"
 
 export function AppearanceSection() {
+	const t = useT()
 	const { settings, actions } = useSettingsStore()
 
 	return (
 		<>
-			<TitleBar title="APPEARANCE" />
+			<TitleBar title={t("settings.appearance.title")} />
 			<Content>
 				<ContentRow equalColumns>
 					<ContentColumn>
 						<ConfigCheckbox
-							name="Custom Cursors"
+							name={t("settings.appearance.customCursors")}
 							checked={settings.appearance["use-cursors"]}
 							onChange={(e) =>
 								actions.setConfig("appearance", {
@@ -32,7 +35,7 @@ export function AppearanceSection() {
 
 					<ContentColumn>
 						<ConfigCheckbox
-							name="Hybrid Planner"
+							name={t("settings.appearance.hybridPlanner")}
 							checked={
 								settings.appearance["use-hybrid-planner"] ?? false
 							}

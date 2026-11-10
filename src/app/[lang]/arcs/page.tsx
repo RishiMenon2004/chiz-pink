@@ -4,7 +4,13 @@ import { buildRouteMetadata } from "@/helpers/metadata"
 
 import { ArcCatalog } from "@/components/catalog"
 
-export const metadata: Metadata = buildRouteMetadata("/arcs")
+type Props = {
+	params: Promise<{ lang: string }>
+}
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+	return buildRouteMetadata("/arcs", (await params).lang)
+}
 
 export default function Arcs() {
 	return <ArcCatalog />

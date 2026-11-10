@@ -5,6 +5,8 @@ import { useEffect } from "react"
 
 import { isChunkLoadError, reloadAfterChunkError } from "@/helpers/chunkLoadError"
 
+import { useT } from "@/contexts"
+
 import styles from "./page.module.css"
 
 export default function Error({
@@ -14,6 +16,7 @@ export default function Error({
 	error: Error & { digest?: string }
 	unstable_retry: () => void
 }) {
+	const t = useT()
 	const chunkError = isChunkLoadError(error)
 
 	useEffect(() => {
@@ -32,7 +35,7 @@ export default function Error({
 						height={256}
 					/>
 					<div className={`${styles.sectionTitle} ${styles.errorTitle}`}>
-						Something has gone wrong!
+						{t("error.title")}
 					</div>
 				</div>
 				<code className="inset-control">{error.message}</code>
@@ -43,7 +46,7 @@ export default function Error({
 					onClick={() =>
 						chunkError ? window.location.reload() : unstable_retry()
 					}>
-					TRY AGAIN
+					{t("error.tryAgain")}
 				</button>
 			</div>
 		</div>

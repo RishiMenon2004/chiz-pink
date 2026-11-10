@@ -3,12 +3,17 @@ import { notFound } from "next/navigation"
 
 import { findArc, getAllArcsList } from "@/data/arcs"
 
-import { buildMetadata, rankWithArticle } from "@/helpers/metadata"
+import { toLocale } from "@/helpers/locale"
+import {
+	buildMetadata,
+	getMetadataTranslator,
+	rankForIntro,
+} from "@/helpers/metadata"
 
 import { ArcProfile } from "@/components/profile"
 
 type Props = {
-	params: Promise<{ id: string }>
+	params: Promise<{ lang: string; id: string }>
 }
 
 export async function generateStaticParams() {
@@ -19,37 +24,44 @@ export async function generateStaticParams() {
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-	const { id } = await params
+	const { lang, id } = await params
+	const t = await getMetadataTranslator(lang)
 	const arc = findArc(id)
 
 	if (!arc) {
 		return {
-			title: "Arc Not Found",
+			title: t("meta.arc.notFound"),
 		}
 	}
 
-	const intro = `${arc.name} is ${rankWithArticle(arc.rarity)} ${arc.type} arc in Neverness to Everness.`
+	const { rank, takesAn } = rankForIntro(arc.rarity)
+	const intro = t(takesAn ? "meta.arc.introAn" : "meta.arc.introA", {
+		name: arc.name,
+		rank,
+		type: arc.type,
+	})
 
 	return buildMetadata({
-		title: `${arc.name}: NTE Arc Index`,
-		description: arc.isPlaceholder
-			? `${intro} Details will be announced soon.`
-			: `${intro} View it's Stats, passive and materials.`,
+		title: t("meta.arc.title", { name: arc.name }),
+		description: t(
+			arc.isPlaceholder ? "meta.arc.comingSoon" : "meta.arc.released",
+			{ intro },
+		),
 		path: `/arcs/${id}`,
 		image: {
 			url: `/arcs/${id}/opengraph-image`,
-			alt: `${arc.name} arc card`,
+			alt: t("meta.arc.imageAlt", { name: arc.name }),
 		},
-	})
+	}, t)
 }
 
 export default async function ArcInfoPage({ params }: Props) {
-	const { id } = await params
+	const { lang, id } = await params
 	const arc = findArc(id)
 
 	if (!arc) {
 		notFound()
 	}
 
-	return <ArcProfile arc={arc} />
+	return <ArcProfile arc={arc} locale={toLocale(lang)} />
 }

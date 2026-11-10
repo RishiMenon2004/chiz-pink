@@ -6,6 +6,8 @@ import { KeyMouseEventType } from "@/types"
 
 import { stopPropagation } from "@/helpers/stopPropagation"
 
+import { useT } from "@/contexts"
+
 import styles from "./alertContainer.module.css"
 export const alertTextBox = styles.alertTextBox
 export const alertMessage = styles.alertMessage
@@ -15,8 +17,8 @@ export function AlertContainer({
 	type,
 	onConfirm,
 	onCancel,
-	confirmLabel = "YES",
-	cancelLabel = "NO",
+	confirmLabel,
+	cancelLabel,
 	children,
 }: {
 	type:
@@ -32,6 +34,7 @@ export function AlertContainer({
 	isConfirmDanger?: boolean
 	children: ReactNode
 }) {
+	const t = useT()
 	const containerRef = useRef<HTMLDivElement>(null)
 
 	let buttonTypes: ("normal" | "danger")[] = ["normal", "normal"]
@@ -89,7 +92,7 @@ export function AlertContainer({
 						id="cancel"
 						onClick={onCancel}
 						data-variant={buttonTypes[0]}>
-						{cancelLabel.toUpperCase()}
+						{(cancelLabel ?? t("layout.alert.no")).toUpperCase()}
 					</button>
 				)}
 				<button
@@ -97,7 +100,7 @@ export function AlertContainer({
 					id="confirm"
 					onClick={onConfirm}
 					data-variant={buttonTypes[1]}>
-					{confirmLabel.toUpperCase()}
+					{(confirmLabel ?? t("layout.alert.yes")).toUpperCase()}
 				</button>
 			</div>
 		</div>

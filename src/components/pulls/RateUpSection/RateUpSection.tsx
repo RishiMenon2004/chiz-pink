@@ -9,7 +9,7 @@ import { PullsRecord } from "@/types/pulls"
 
 import { findPullItem, isArcRateUp, isScarboroughPull } from "@/helpers"
 
-import { RateUpPull, usePullTrackerContext } from "@/contexts"
+import { RateUpPull, usePullTrackerContext, useT } from "@/contexts"
 
 import { ArcIcon, CharacterAvatar } from "@/components/layout"
 
@@ -58,23 +58,24 @@ function ItemImage({ item }: { item: Arc | Character }) {
 export function RateUpSection() {
 	const { rateUpPulls } = usePullTrackerContext()
 	const [onlyRateUp, setOnlyRateUp] = useState<boolean>(false)
+	const t = useT()
 
 	const bannerNames = {
-		limitedBanner: "Limited Character Board",
-		arcsBanner: "Arc Miracle Box",
-		permanentBanner: "Strange Encounters",
+		limitedBanner: t("pulls.banners.limited"),
+		arcsBanner: t("pulls.banners.arc"),
+		permanentBanner: t("pulls.banners.permanent"),
 	}
 
 	return (
 		<div
 			className={`metallic-panel ${pageStyles.section} ${styles.rateupSection}`}>
 			<div className={pageStyles.sectionTitleRow}>
-				<span className={pageStyles.sectionTitle}>RECENT S-RANKS</span>
+				<span className={pageStyles.sectionTitle}>{t("pulls.rateUp.title")}</span>
 				<label className={pageStyles.sectionConfig}>
 					<ConfigCheckbox
 						checked={onlyRateUp}
 						onChange={(e) => setOnlyRateUp(e.target.checked)}
-						name="Only show Rate-Up Arcs"
+						name={t("pulls.rateUp.onlyRateUpArcs")}
 					/>
 				</label>
 			</div>

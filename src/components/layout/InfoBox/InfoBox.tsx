@@ -1,5 +1,9 @@
+"use client"
+
 import { ReactNode } from "react"
 import Image from "next/image"
+
+import { useT } from "@/contexts"
 
 import styles from "./infoBox.module.css"
 
@@ -19,6 +23,8 @@ export function InfoBox({
 	onDismiss?: () => void
 	children: ReactNode
 }) {
+	const t = useT()
+
 	return (
 		<div
 			className={`${styles.infoBox} ${className}`}
@@ -39,7 +45,7 @@ export function InfoBox({
 				<button
 					className={styles.dismiss}
 					onClick={onDismiss}
-					aria-label="Dismiss">
+					aria-label={t("layout.infoBox.dismiss")}>
 					<svg viewBox="0 0 16 16" aria-hidden="true">
 						<path d="M4 4l8 8M12 4l-8 8" />
 					</svg>

@@ -1,12 +1,19 @@
 import { Metadata } from "next"
 
-import { RoutesData } from "@/data/routes"
+import { getMetadataTranslator } from "@/helpers/metadata"
 
 import { ExternalImport } from "@/components/pulls"
 
-export const metadata: Metadata = {
-	title: RoutesData["/pulls/import-external"].head,
-	robots: { index: false, follow: false },
+type Props = {
+	params: Promise<{ lang: string }>
+}
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+	const t = await getMetadataTranslator((await params).lang)
+	return {
+		title: t("routes.import_external.head"),
+		robots: { index: false, follow: false },
+	}
 }
 
 export default function ImportExternal() {

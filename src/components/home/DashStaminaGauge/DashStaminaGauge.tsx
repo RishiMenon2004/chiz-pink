@@ -11,6 +11,8 @@ import {
 	StaminaResetCountdown,
 } from "@/components/settings"
 
+import { useT } from "@/contexts"
+
 import { LocaleLink, MaterialIcon } from "@/components/layout"
 
 import pageStyles from "@/app/[lang]/page.module.css"
@@ -38,18 +40,19 @@ function QuickAdjust({
 	side: "left" | "right"
 	onChange: (value: number) => void
 }) {
+	const t = useT()
 	return (
 		<div
 			className={`inset-control ${styles.quickAdjust}`}
 			data-side={side}
 			role="group"
-			aria-label={`Adjust ${label}`}>
+			aria-label={t("home.stamina.adjust", { label })}>
 			<button
 				type="button"
 				className={styles.quickButton}
 				disabled={current === 0}
 				onClick={() => onChange(0)}>
-				EMPTY
+				{t("home.stamina.empty")}
 			</button>
 			{steps.map((step) => (
 				<button
@@ -57,7 +60,10 @@ function QuickAdjust({
 					type="button"
 					className={styles.quickButton}
 					disabled={step < 0 ? current < -step : current >= cap}
-					aria-label={`${step < 0 ? "Spend" : "Add"} ${Math.abs(step)} ${label}`}
+					aria-label={t(
+						step < 0 ? "home.stamina.spend" : "home.stamina.add",
+						{ amount: Math.abs(step), label }
+					)}
 					onClick={() =>
 						onChange(Math.min(Math.max(current + step, 0), cap))
 					}>
@@ -69,7 +75,7 @@ function QuickAdjust({
 				className={styles.quickButton}
 				disabled={current >= max}
 				onClick={() => onChange(max)}>
-				FULL
+				{t("home.stamina.full")}
 			</button>
 		</div>
 	)
@@ -111,6 +117,7 @@ function GaugeValueInput({
 }
 
 export function DashStaminaGauge() {
+	const t = useT()
 	const { settings, actions } = useSettingsStore()
 	const { "current-pixels": currentPixels, "max-pixels": maxPixels } =
 		settings.userdata
@@ -134,11 +141,11 @@ export function DashStaminaGauge() {
 	return (
 		<div className={`metallic-panel ${pageStyles.section} ${styles.section}`}>
 			<div className={pageStyles.sectionTitleRow}>
-				<h2 className={pageStyles.sectionTitle}>Stamina</h2>
+				<h2 className={pageStyles.sectionTitle}>{t("home.stamina.title")}</h2>
 				<LocaleLink
 					href="/settings"
 					className={`pill-button ${pageStyles.sectionButton}`}>
-					EDIT MAX STAMINA
+					{t("home.stamina.editMax")}
 				</LocaleLink>
 			</div>
 			<div className={styles.gaugeRow}>
@@ -158,7 +165,7 @@ export function DashStaminaGauge() {
 						/>
 						<p className={styles.gaugeText}>
 							<GaugeValueInput
-								name="Current Pixels"
+								name={t("home.stamina.currentPixels")}
 								value={currentPixels}
 								max={PIXEL_INPUT_CAP}
 								ref={pixelRef}
@@ -178,7 +185,7 @@ export function DashStaminaGauge() {
 						/>
 					</div>
 					<QuickAdjust
-						label="Pixels"
+						label={t("home.stamina.pixels")}
 						current={currentPixels}
 						max={maxPixels}
 						cap={PIXEL_INPUT_CAP}
@@ -195,7 +202,7 @@ export function DashStaminaGauge() {
 						className={`inset-control ${styles.gauge} ${styles.staminaGauge}`}>
 						<p className={styles.gaugeText}>
 							<GaugeValueInput
-								name="Current City Stamina"
+								name={t("home.stamina.currentCityStamina")}
 								value={currentStamina}
 								max={maxStamina}
 								ref={staminaRef}
@@ -221,7 +228,7 @@ export function DashStaminaGauge() {
 						/>
 					</div>
 					<QuickAdjust
-						label="City Stamina"
+						label={t("home.stamina.cityStamina")}
 						current={currentStamina}
 						max={maxStamina}
 						cap={maxStamina}

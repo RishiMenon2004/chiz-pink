@@ -1,5 +1,7 @@
 "use client"
 
+import { useT } from "@/contexts"
+
 import { backupExport } from "@/helpers"
 
 import {
@@ -26,19 +28,19 @@ export function LocalDataSection({
 	setEraseWarning,
 	setErasePullsWarning,
 }: LocalDataSectionProps) {
+	const t = useT()
+
 	return (
 		<Section>
-			<TitleBar title="LOCAL DATA" />
+			<TitleBar title={t("settings.local.title")} />
 
 			<Content>
 				<ContentColumn>
-					{"Manage the data stored in your browser's IndexedDB."}
+					{t("settings.local.description")}
 					<Blockquote>
 						<BETATag />
 						<span className={styles.migrationLinks}>
-							{
-								"Migrating from another app? Import compatible data from: "
-							}
+							{t("settings.local.migrating")}
 							<span>
 								<LocaleLink
 									className="btn-anchor"
@@ -59,7 +61,7 @@ export function LocalDataSection({
 				</ContentColumn>
 				<div className={styles.buttonGroups}>
 					<div className={styles.buttonGroup}>
-						<b>Backup</b>
+						<b>{t("settings.local.backup")}</b>
 						<button
 							className="pill-button"
 							data-variant="normal"
@@ -67,7 +69,7 @@ export function LocalDataSection({
 								e.preventDefault()
 								importData()
 							}}>
-							Import Data
+							{t("settings.local.import")}
 						</button>
 						<button
 							className="pill-button"
@@ -76,22 +78,22 @@ export function LocalDataSection({
 								e.preventDefault()
 								backupExport()
 							}}>
-							Export Data
+							{t("settings.local.export")}
 						</button>
 					</div>
 					<div className={styles.buttonGroup}>
-						<b>Erase</b>
+						<b>{t("settings.local.erase")}</b>
 						<button
 							className="pill-button"
 							data-variant="danger"
 							onClick={() => setErasePullsWarning(true)}>
-							Pull History
+							{t("settings.local.erasePulls")}
 						</button>
 						<button
 							className="pill-button"
 							data-variant="danger"
 							onClick={() => setEraseWarning(true)}>
-							All Data
+							{t("settings.local.eraseAll")}
 						</button>
 					</div>
 				</div>

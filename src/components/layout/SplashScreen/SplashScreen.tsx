@@ -3,12 +3,15 @@
 import Image from "next/image"
 import { useEffect, useRef, useState } from "react"
 
+import type { MessageKey } from "@/types/messages"
+
 import { ChangeLogs } from "@/data/changelog"
 
 import { useFirstVisit } from "@/hooks/useFirstVisit"
+import { useLocalePathname } from "@/hooks/useLocalePathname"
 import { useLastSeen } from "@/hooks/useLastSeen"
 
-import { useLocalePathname } from "@/hooks/useLocalePathname"
+import { useT } from "@/contexts"
 
 import { LocaleLink } from "../LocaleLink"
 
@@ -19,6 +22,8 @@ import { InstallPWAButton } from "../InstallPWAButton"
 const DISCORD_INVITE_URL = "https://discord.gg/rSeMKWMy69"
 
 function DiscordButton() {
+	const t = useT()
+
 	return (
 		<a
 			className="pill-button"
@@ -26,12 +31,21 @@ function DiscordButton() {
 			href={DISCORD_INVITE_URL}
 			target="_blank"
 			rel="noopener noreferrer">
-			JOIN THE DISCORD
+			{t("layout.splash.joinDiscord")}
 		</a>
 	)
 }
 
+const SPLASH_LINKS = [
+	{ href: "/", key: "layout.splash.links.dashboard" },
+	{ href: "/checklist", key: "layout.splash.links.checklist" },
+	{ href: "/planner", key: "layout.splash.links.planner" },
+	{ href: "/pulls", key: "layout.splash.links.pulls" },
+	{ href: "/inventory", key: "layout.splash.links.inventory" },
+] as const satisfies { href: string; key: MessageKey }[]
+
 function WelcomeSplashScreen({ closeSplash }: { closeSplash: () => void }) {
+	const t = useT()
 	const [imageClipPath, setImageClipPath] = useState("M 0 0 Z")
 
 	const resizeObserverRef = useRef<ResizeObserver>(null!)
@@ -70,87 +84,58 @@ function WelcomeSplashScreen({ closeSplash }: { closeSplash: () => void }) {
 		<div className={styles.welcomeSplashContainer}>
 			<div className={styles.infoSection}>
 				<div className={styles.welcomeText}>
-					{"WELCOME TO "}
-					<span className={styles.title}>CHIZ.PINK!</span>
+					{t.rich("layout.splash.welcome", {
+						title: (text) => <span className={styles.title}>{text}</span>,
+					})}
 				</div>
 
 				<div className={styles.welcomeSubTitle}>
-					{
-						"Your pinkest companion, Ascension Planner and Pull Tracker for NTE :3"
-					}
+					{t("layout.splash.subtitle")}
 				</div>
 
 				<div className={`inset-control ${styles.infoBox}`}>
 					<ul>
+						{SPLASH_LINKS.map(({ href, key }) => (
+							<li key={href}>
+								{t.rich(key, {
+									link: (text) => (
+										<LocaleLink
+											onClick={closeSplash}
+											className="btn-anchor"
+											href={href}>
+											{text}
+										</LocaleLink>
+									),
+								})}
+							</li>
+						))}
 						<li>
-							<LocaleLink
-								onClick={closeSplash}
-								className="btn-anchor"
-								href={"/"}>
-								Dashboard
-							</LocaleLink>
-							{
-								" — Track your stamina, current events, and featured boards."
-							}
-						</li>
-						<li>
-							<LocaleLink
-								onClick={closeSplash}
-								className="btn-anchor"
-								href={"/checklist"}>
-								Checklist
-							</LocaleLink>
-							{" — Your handy To-Do list for dailies and weeklies."}
-						</li>
-						<li>
-							<LocaleLink
-								onClick={closeSplash}
-								className="btn-anchor"
-								href={"/planner"}>
-								Planner
-							</LocaleLink>
-							{" — Ascension planner for your characters and arcs."}
-						</li>
-						<li>
-							<LocaleLink
-								onClick={closeSplash}
-								className="btn-anchor"
-								href={"/pulls"}>
-								Pulls
-							</LocaleLink>
-							{" — Import and track your pull history."}
-						</li>
-						<li>
-							<LocaleLink
-								onClick={closeSplash}
-								className="btn-anchor"
-								href={"/inventory"}>
-								Inventory
-							</LocaleLink>
-							{" — Tracker for your in-game items."}
-						</li>
-						<li>
-							<LocaleLink
-								onClick={closeSplash}
-								className="btn-anchor"
-								href={"/settings"}>
-								Settings
-							</LocaleLink>
-							{" — Switching from "}
-							<LocaleLink
-								className="btn-anchor"
-								href="https://nteplanner.app/"
-								target="_blank">
-								NTE Planner
-							</LocaleLink>
-							{" or "}
-							<LocaleLink
-								className="btn-anchor"
-								href="https://www.ntewiz.xyz/"
-								target="_blank">
-								NTEWiz
-							</LocaleLink>
-							{"? Import your data with ease."}
+							{t.rich("layout.splash.links.settings", {
+								link: (text) => (
+									<LocaleLink
+										onClick={closeSplash}
+										className="btn-anchor"
+										href="/settings">
+										{text}
+									</LocaleLink>
+								),
+								ntePlanner: (text) => (
+									<LocaleLink
+										className="btn-anchor"
+										href="https://nteplanner.app/"
+										target="_blank">
+										{text}
+									</LocaleLink>
+								),
+								nteWiz: (text) => (
+									<LocaleLink
+										className="btn-anchor"
+										href="https://www.ntewiz.xyz/"
+										target="_blank">
+										{text}
+									</LocaleLink>
+								),
+							})}
 						</li>
 					</ul>
 				</div>
@@ -158,7 +143,7 @@ function WelcomeSplashScreen({ closeSplash }: { closeSplash: () => void }) {
 					<InstallPWAButton type="button" />
 					<DiscordButton />
 					<button className="pill-button" onClick={closeSplash}>
-						{"CONTINUE >>"}
+						{t("layout.splash.continue")}
 					</button>
 				</div>
 			</div>
@@ -169,7 +154,7 @@ function WelcomeSplashScreen({ closeSplash }: { closeSplash: () => void }) {
 					<Image
 						className={styles.chiz}
 						src="/layout/chiz_splash.png"
-						alt="Chiz Art - Full"
+						alt={t("layout.splash.chizAlt")}
 						width={512}
 						height={512}
 						quality={100}
@@ -190,13 +175,17 @@ function WelcomeSplashScreen({ closeSplash }: { closeSplash: () => void }) {
 const RECENT_CHANGELOGS = 5
 
 function UpdateSplashScreen({ closeSplash }: { closeSplash: () => void }) {
+	const t = useT()
+
 	return (
 		<div className={styles.updateSplashContainer}>
 			<div className={styles.infoSection}>
-				<div className={styles.welcomeText}>{"RECENT UPDATES"}</div>
+				<div className={styles.welcomeText}>{t("layout.splash.recentUpdates")}</div>
 
 				<div className={styles.welcomeSubTitle}>
-					Latest Version: {Object.entries(ChangeLogs).at(-1)?.[0]}
+					{t("layout.splash.latestVersion", {
+						version: Object.entries(ChangeLogs).at(-1)?.[0] ?? "",
+					})}
 				</div>
 				<div className={`inset-control ${styles.infoBox}`}>
 					{Object.entries(ChangeLogs)
@@ -231,7 +220,7 @@ function UpdateSplashScreen({ closeSplash }: { closeSplash: () => void }) {
 					<InstallPWAButton type="button" />
 					<DiscordButton />
 					<button className="pill-button" onClick={closeSplash}>
-						{"CONTINUE >>"}
+						{t("layout.splash.continue")}
 					</button>
 				</div>
 			</div>

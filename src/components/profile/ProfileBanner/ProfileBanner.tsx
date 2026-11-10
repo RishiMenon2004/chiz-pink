@@ -9,11 +9,14 @@ import { useNow, useSettingsStore } from "@/hooks"
 
 import { formatBannerCountdown, getCharacterActiveBanner } from "@/helpers/bannerStatus"
 
+import { useT } from "@/contexts"
+
 import { EventDetails, getInitialDetailsStyle } from "@/components/layout/EventDetails"
 
 import styles from "../profile.module.css"
 
 export function ProfileBanner({ characterId }: { characterId: string }) {
+	const t = useT()
 	const now = useNow()
 	const { settings } = useSettingsStore()
 	const frameRef = useRef<HTMLDivElement>(null!)
@@ -43,7 +46,7 @@ export function ProfileBanner({ characterId }: { characterId: string }) {
 				}
 				role="button"
 				tabIndex={0}
-				aria-label={`Expand ${event.name} banner`}
+				aria-label={t("profile.banner.expand", { name: event.name })}
 				onClick={openDetails}
 				onKeyDown={(e) => {
 					if (e.key !== "Enter" && e.key !== " ") return
@@ -62,8 +65,10 @@ export function ProfileBanner({ characterId }: { characterId: string }) {
 				<div className={styles.bannerInfo}>
 					<div className={styles.bannerName}>{event.name}</div>
 					<div className={styles.bannerCountdown}>
-						{live ? "Ends in " : "Starts in "}
-						<strong>{formatBannerCountdown((live ? end : start) - now)}</strong>
+						{t.rich(live ? "profile.banner.endsIn" : "profile.banner.startsIn", {
+							b: (text) => <strong>{text}</strong>,
+							time: formatBannerCountdown((live ? end : start) - now),
+						})}
 					</div>
 				</div>
 			</div>

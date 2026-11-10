@@ -7,6 +7,7 @@ import { ActivityData, getAllActivitiesList } from "@/data/activities/activities
 
 import { useChecklistStore, useNow, useSettingsStore } from "@/hooks"
 
+import type { MessageKey } from "@/types/messages"
 import type {
 	ChecklistEntry,
 	ChecklistRecord,
@@ -26,6 +27,8 @@ import {
 	stopPropagation,
 } from "@/helpers"
 
+import { useT } from "@/contexts"
+
 import { ModalContainer, PullOutToolbar, ToolIntro } from "@/components/layout"
 import { DashDailyActivity } from "@/components/home"
 import { CustomTaskBox } from "@/components/checklist"
@@ -33,6 +36,14 @@ import { CustomTaskBox } from "@/components/checklist"
 import { styles as toolbarStyles } from "@/components/layout/PullOutToolbar"
 import checklistStyles from "@/components/home/DashDailyChecklist/DashDailyChecklist.module.css"
 import styles from "./page.module.css"
+
+const SECTION_LABELS = {
+	daily: "checklist.sections.daily",
+	weekly: "checklist.sections.weekly",
+	biWeekly: "checklist.sections.biWeekly",
+	monthly: "checklist.sections.monthly",
+	seasonal: "checklist.sections.seasonal",
+} as const satisfies Record<CustomTaskSchedule["type"], MessageKey>
 
 function RenderActivityList({
 	type,
@@ -43,6 +54,7 @@ function RenderActivityList({
 	recordType: keyof ChecklistRecord["activities"]
 	entries: Record<string, ChecklistEntry>
 }) {
+	const t = useT()
 	const { settings } = useSettingsStore()
 	const { checklist, actions } = useChecklistStore()
 	const tasks = checklist.activities[recordType] ?? {}
@@ -106,7 +118,7 @@ function RenderActivityList({
 					</div>
 					{type === "Bi-Weekly" && (
 						<div className={styles.itemTime}>
-							{`Resets in: ${formattedTime}`}
+							{t("checklist.resetsIn", { time: formattedTime })}
 						</div>
 					)}
 				</div>
@@ -121,6 +133,7 @@ function RenderCustomTaskList({
 	type: CustomTaskSchedule["type"]
 	onEdit: (task: CustomTask) => void
 }) {
+	const t = useT()
 	const { settings } = useSettingsStore()
 	const { checklist, actions } = useChecklistStore()
 
@@ -167,12 +180,12 @@ function RenderCustomTaskList({
 						<button
 							type="button"
 							className={`pill-button ${styles.itemEditButton}`}
-							aria-label={`Edit ${task.title}`}
+							aria-label={t("checklist.editTask", { title: task.title })}
 							onClick={(e) => {
 								e.stopPropagation()
 								onEdit(task)
 							}}>
-							EDIT
+							{t("checklist.edit")}
 						</button>
 					</div>
 					{task.description && (
@@ -182,11 +195,14 @@ function RenderCustomTaskList({
 					)}
 					{showTime && (
 						<div className={styles.itemTime}>
-							{`Resets in: ${
-								boundaries === null || now === null
-									? "-"
-									: formatTimeRemaining(boundaries.nextReset - now)
-							}`}
+							{t("checklist.resetsIn", {
+								time:
+									boundaries === null || now === null
+										? "-"
+										: formatTimeRemaining(
+												boundaries.nextReset - now
+											),
+							})}
 						</div>
 					)}
 				</div>
@@ -201,6 +217,7 @@ function ChecklistItem({
 	item: ActivityData
 	type: keyof ChecklistRecord["activities"]
 }) {
+	const t = useT()
 	const { checklist, actions } = useChecklistStore()
 	const tasks = checklist.activities[type] ?? {}
 	const task = tasks[item.id] ?? {}
@@ -232,7 +249,9 @@ function ChecklistItem({
 					{item.name}
 				</div>
 				<div className={checklistStyles.checklistItemDesc}>
-					{checked ? "Visible" : "Hidden"}
+					{checked
+						? t("checklist.visible")
+						: t("checklist.hidden")}
 				</div>
 			</span>
 		</label>
@@ -255,38 +274,40 @@ function RenderChecklistItems({
 }
 
 export function EditTasksBox() {
+	const t = useT()
+
 	return (
 		<div
 			className={`metallic-panel ${checklistStyles.editTasksBox}`}
 			onClick={stopPropagation}>
-			<div className={checklistStyles.editTasksTitle}>Edit Tasks</div>
+			<div className={checklistStyles.editTasksTitle}>{t("checklist.editTasks.title")}</div>
 			<div
 				className={`inset-control ${checklistStyles.checklistGrid} ${checklistStyles.editTasksList} ${styles.editTasksList}`}>
 				<div
 					className={`${checklistStyles.checklistScroll} ${styles.checklistScroll}`}>
-					<span className={styles.listTitle}>Daily</span>
+					<span className={styles.listTitle}>{t(SECTION_LABELS.daily)}</span>
 					<div className={styles.checklistItems}>
 						<RenderChecklistItems type="Daily" recordType="daily" />
 					</div>
-					<span className={styles.listTitle}>Weekly</span>
+					<span className={styles.listTitle}>{t(SECTION_LABELS.weekly)}</span>
 					<div className={styles.checklistItems}>
 						<RenderChecklistItems type="Weekly" recordType="weekly" />
 					</div>
-					<span className={styles.listTitle}>Bi-Weekly</span>
+					<span className={styles.listTitle}>{t(SECTION_LABELS.biWeekly)}</span>
 					<div className={styles.checklistItems}>
 						<RenderChecklistItems
 							type="Bi-Weekly"
 							recordType="biWeekly"
 						/>
 					</div>
-					<span className={styles.listTitle}>Monthly</span>
+					<span className={styles.listTitle}>{t(SECTION_LABELS.monthly)}</span>
 					<div className={styles.checklistItems}>
 						<RenderChecklistItems
 							type="Monthly"
 							recordType="monthly"
 						/>
 					</div>
-					<span className={styles.listTitle}>Seasonal</span>
+					<span className={styles.listTitle}>{t(SECTION_LABELS.seasonal)}</span>
 					<div className={styles.checklistItems}>
 						<RenderChecklistItems
 							type="Seasonal"
@@ -300,6 +321,7 @@ export function EditTasksBox() {
 }
 
 export default function RenderChecklist() {
+	const t = useT()
 	const { settings } = useSettingsStore()
 	const { checklist } = useChecklistStore()
 
@@ -323,7 +345,7 @@ export default function RenderChecklist() {
 				<button
 					className={`pill-button ${toolbarStyles.toolbarButton}`}
 					onClick={() => setShowEditTasksModal(true)}>
-					EDIT TASKS
+					{t("checklist.editTasks.button")}
 				</button>
 				{showEditTasksModal &&
 					createPortal(
@@ -336,7 +358,7 @@ export default function RenderChecklist() {
 				<button
 					className={`pill-button ${toolbarStyles.toolbarButton}`}
 					onClick={() => setCustomTaskModal("new")}>
-					ADD TASK
+					{t("checklist.addTask")}
 				</button>
 				{customTaskModal !== null &&
 					createPortal(
@@ -361,17 +383,16 @@ export default function RenderChecklist() {
 			</PullOutToolbar>
 
 			<ToolIntro id="checklist">
-				<div>
-					Your dailies and weeklies, reset on your server&apos;s time.
-				</div>
+				<div>{t("checklist.intro")}</div>
 			</ToolIntro>
 
 			<main className={`page ${styles.page}`}>
 				<div className={styles.activitySection}>
 					<div className={styles.activityTitleRow}>
-						<h2>Daily</h2>
+						<h2>{t(SECTION_LABELS.daily)}</h2>
 						<span className={styles.activityTimer}>
-							{`Resets in: ${
+							{t("checklist.resetsIn", {
+							time:
 								now === null
 									? "-"
 									: formatTimeRemaining(
@@ -379,8 +400,8 @@ export default function RenderChecklist() {
 												settings.userdata.server,
 												now
 											).nextReset - now
-										)
-							}`}
+										),
+							})}
 						</span>
 					</div>
 					<div className={styles.checklistGrid}>
@@ -401,9 +422,10 @@ export default function RenderChecklist() {
 
 				<div className={styles.activitySection}>
 					<div className={styles.activityTitleRow}>
-						<h2>Weekly</h2>
+						<h2>{t(SECTION_LABELS.weekly)}</h2>
 						<span className={styles.activityTimer}>
-							{`Resets in: ${
+							{t("checklist.resetsIn", {
+							time:
 								now === null
 									? "-"
 									: formatTimeRemaining(
@@ -411,8 +433,8 @@ export default function RenderChecklist() {
 												settings.userdata.server,
 												now
 											).nextReset - now
-										)
-							}`}
+										),
+							})}
 						</span>
 					</div>
 					<div className={styles.checklistGrid}>
@@ -430,7 +452,7 @@ export default function RenderChecklist() {
 
 				<div className={styles.activitySection}>
 					<div className={styles.activityTitleRow}>
-						<h2>Bi-Weekly</h2>
+						<h2>{t(SECTION_LABELS.biWeekly)}</h2>
 					</div>
 					<div className={styles.checklistGrid}>
 						<RenderActivityList
@@ -447,9 +469,10 @@ export default function RenderChecklist() {
 
 				<div className={styles.activitySection}>
 					<div className={styles.activityTitleRow}>
-						<h2>Monthly</h2>
+						<h2>{t(SECTION_LABELS.monthly)}</h2>
 						<span className={styles.activityTimer}>
-							{`Resets in: ${
+							{t("checklist.resetsIn", {
+							time:
 								now === null
 									? "-"
 									: formatTimeRemaining(
@@ -457,8 +480,8 @@ export default function RenderChecklist() {
 												settings.userdata.server,
 												now
 											).nextReset - now
-										)
-							}`}
+										),
+							})}
 						</span>
 					</div>
 					<div className={styles.checklistGrid}>
@@ -476,16 +499,17 @@ export default function RenderChecklist() {
 
 				<div className={styles.activitySection}>
 					<div className={styles.activityTitleRow}>
-						<h2>Seasonal</h2>
+						<h2>{t(SECTION_LABELS.seasonal)}</h2>
 						<span className={styles.activityTimer}>
-							{`Resets in: ${
+							{t("checklist.resetsIn", {
+							time:
 								now === null
 									? "-"
 									: formatTimeRemaining(
 											getSeasonalResetBoundaries(now)
 												.nextReset - now
-										)
-							}`}
+										),
+							})}
 						</span>
 					</div>
 					<div className={styles.checklistGrid}>

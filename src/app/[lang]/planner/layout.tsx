@@ -4,13 +4,14 @@ import { ToolIntro } from "@/components/layout"
 import { PlannerSwitch } from "@/components/planner/PlannerSwitch"
 import { PlannerToolbar } from "@/components/planner/PlannerToolbar"
 import { localizePath } from "@/helpers/locale"
-import { PlannerSection, PlannerSectionContext, useLocale } from "@/contexts"
+import { PlannerSection, PlannerSectionContext, useLocale, useT } from "@/contexts"
 import { useSelectedLayoutSegment } from "next/navigation"
 import { ReactNode, useEffect, useState } from "react"
 
 export default function PlannerLayout({ children }: { children: ReactNode }) {
 	const segment = useSelectedLayoutSegment()
 	const locale = useLocale()
+	const t = useT()
 	const [section, setSectionState] = useState<PlannerSection>(
 		segment === "arcs" ? "arcs" : "characters"
 	)
@@ -49,9 +50,7 @@ export default function PlannerLayout({ children }: { children: ReactNode }) {
 			<PlannerToolbar />
 			<PlannerSwitch />
 			<ToolIntro id="planner">
-				<div>
-					Plan your Espers and arcs and see which materials you still need.
-				</div>
+				<div>{t("planner.intro")}</div>
 			</ToolIntro>
 			{children}
 		</PlannerSectionContext.Provider>

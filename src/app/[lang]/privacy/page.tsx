@@ -6,7 +6,13 @@ import { LocaleLink } from "@/components/layout"
 
 import styles from "./privacy.module.css"
 
-export const metadata: Metadata = buildRouteMetadata("/privacy")
+type Props = {
+	params: Promise<{ lang: string }>
+}
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+	return buildRouteMetadata("/privacy", (await params).lang)
+}
 
 export default function PrivacyPolicy() {
 	return (

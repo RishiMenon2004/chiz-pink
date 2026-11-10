@@ -7,6 +7,10 @@ import {
 	ReactNode,
 } from "react"
 
+import type { MessageKey } from "@/types/messages"
+
+import { useT } from "@/contexts"
+
 import { getCachedInventory } from "@/hooks/useInventoryStore"
 import { getCachedPlanner } from "@/hooks/usePlannerStore"
 
@@ -81,9 +85,11 @@ export function Blockquote({ children }: { children: ReactNode }) {
 }
 
 export function BETATag() {
+	const t = useT()
+
 	return (
 		<span className={styles.betaTag}>
-			BETA
+			{t("settings.shared.beta")}
 		</span>
 	)
 }
@@ -153,6 +159,7 @@ export function ConfigNumberBox({
 	max?: number
 	step?: number
 }) {
+	const t = useT()
 	const clamp = (next: number) => {
 		let result = next
 		if (min !== undefined) result = Math.max(result, min)
@@ -171,7 +178,7 @@ export function ConfigNumberBox({
 				<span
 					role="button"
 					tabIndex={-1}
-					aria-label={`Decrease ${name}`}
+					aria-label={t("settings.shared.decrease", { name })}
 					className={`${styles.stepperBtn} ${styles.minus}`}
 					onClick={() => step_(-step)}
 				/>
@@ -190,7 +197,7 @@ export function ConfigNumberBox({
 				<span
 					role="button"
 					tabIndex={-1}
-					aria-label={`Increase ${name}`}
+					aria-label={t("settings.shared.increase", { name })}
 					className={`${styles.stepperBtn} ${styles.plus}`}
 					onClick={() => step_(step)}
 				/>
@@ -229,12 +236,12 @@ export function ConfigSelect({
 /*  Shared utilities                                                  */
 /* ------------------------------------------------------------------ */
 
-export const syncStatusLabel: Record<string, string> = {
-	idle: "Not Synced",
-	syncing: "Syncing...",
-	synced: "Synced",
-	error: "Sync Failed",
-}
+export const syncStatusLabel = {
+	idle: "settings.shared.syncStatus.idle",
+	syncing: "settings.shared.syncStatus.syncing",
+	synced: "settings.shared.syncStatus.synced",
+	error: "settings.shared.syncStatus.error",
+} as const satisfies Record<string, MessageKey>
 
 export const dateDisplayConfig: Intl.DateTimeFormatOptions = {
 	year: "numeric",

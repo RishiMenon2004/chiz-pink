@@ -24,6 +24,8 @@ import {
 	type ItemStatus,
 } from "@/helpers/bannerStatus"
 
+import { useT } from "@/contexts"
+
 import { ArcIcon } from "@/components/layout/ArcIcon"
 import { CharacterAvatar, CharacterElement } from "@/components/layout/CharacterAvatar"
 
@@ -49,11 +51,14 @@ const MINUTE_MS = 60_000
 type WithStatus<T> = { item: T; status: ItemStatus }
 
 function FeatureTag({ status }: { status: ItemStatus }) {
+	const t = useT()
 	if (!status) return null
 
 	return (
 		<div className={styles.featureTag}>
-			{status === "preview" ? "Preview" : "Featured"}
+			{status === "preview"
+				? t("catalog.preview")
+				: t("catalog.featured")}
 		</div>
 	)
 }
@@ -172,13 +177,17 @@ function ArcCards({ entries }: { entries: WithStatus<Arc>[] }) {
 }
 
 function EmptyFilterNotice({ onReset }: { onReset: () => void }) {
+	const t = useT()
 	return (
 		<InfoBox sticker="cry">
 			<div>
-				{"I-I can't seem to find anything with those filters. Would you like to "}
-				<a onClick={onReset} className="btn-anchor">
-					try again?
-				</a>
+				{t.rich("catalog.emptyFilters", {
+					link: (text) => (
+						<a onClick={onReset} className="btn-anchor">
+							{text}
+						</a>
+					),
+				})}
 			</div>
 		</InfoBox>
 	)

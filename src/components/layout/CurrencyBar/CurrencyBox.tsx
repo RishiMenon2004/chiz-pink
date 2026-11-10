@@ -22,12 +22,15 @@ import { usePlannerStore } from "@/hooks/usePlannerStore"
 import { useTooltip } from "@/hooks/useTooltip"
 import { getAggregatedMaterial } from "@/hooks/usePlannerStore"
 
+import { useT } from "@/contexts"
+
 import styles from "./currencyBar.module.css"
 import { MaterialIcon } from "../MaterialIcon"
 
 const localeUS = (x: number) => x.toLocaleString("en-US")
 
 export function CurrencyBox({ currency }: { currency: Material }) {
+	const t = useT()
 	const { Tooltip, showTooltip, hideTooltip } = useTooltip()
 
 	const [isEdit, setIsEdit] = useState<boolean>(false)
@@ -137,7 +140,7 @@ export function CurrencyBox({ currency }: { currency: Material }) {
 				data-currency-id={currency.id}
 				width={64}
 				height={64}
-				alt={`${currency.name} icon`}
+				alt={t("layout.currencyBox.icon", { name: currency.name })}
 				loading="eager"
 			/>
 
@@ -179,7 +182,7 @@ export function CurrencyBox({ currency }: { currency: Material }) {
 					<>
 						<div className="tooltip-details">
 							<span>
-								{"Need: "}
+								{t("layout.currencyBox.need")}{" "}
 								<span className="font-barlow">
 									{requiredQuantity}
 								</span>
@@ -195,7 +198,7 @@ export function CurrencyBox({ currency }: { currency: Material }) {
 						</div>
 						<hr className="tooltip-hr" />
 						<div className="tooltip-source-list">
-							Needed For:
+							{t("layout.currencyBox.neededFor")}
 							{Object.entries(requiredSources).map(
 								([id, amount]) => {
 									const item = findItem(id) ?? undefined
@@ -210,9 +213,14 @@ export function CurrencyBox({ currency }: { currency: Material }) {
 												}
 												width={16}
 												height={16}
-												alt={`${currency.name} Source`}
+												alt={t("layout.currencyBox.source", { name: currency.name })}
 											/>
-											{`${item.name} ${amount > 1 ? `\u00d7${amount}` : ""}`}
+											{amount > 1
+												? t("layout.currencyBox.sourceItem", {
+														name: item.name,
+														amount,
+													})
+												: item.name}
 										</div>
 									)
 								}
@@ -223,23 +231,25 @@ export function CurrencyBox({ currency }: { currency: Material }) {
 				<hr className="tooltip-hr" />
 				{currency.id === "annulith" && (
 					<div className="tooltip-source-list">
-						Annulith Processing:
+						{t("layout.currencyBox.annulithProcessing")}
 						<div className="tooltip-source">
 							<Image
 								className={styles.dice}
 								src={"/materials/rewards/dice_limited.png"}
 								width={24}
 								height={24}
-								alt={`${currency.name} Source`}
+								alt={t("layout.currencyBox.source", { name: currency.name })}
 							/>
-							{`Solid Dice \u00d7${Math.floor(currencyValue / 160)}`}
+							{t("layout.currencyBox.solidDice", {
+								amount: Math.floor(currencyValue / 160),
+							})}
 						</div>
 					</div>
 				)}
 				{currency.sources.length > 0 && (
 					<>
 						<div className="tooltip-source-list">
-							Sources:
+							{t("layout.currencyBox.sources")}
 							{currency.sources.map((source) => (
 								<div className="tooltip-source" key={source}>
 									{source}

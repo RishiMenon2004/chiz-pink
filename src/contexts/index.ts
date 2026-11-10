@@ -8,6 +8,7 @@ import {
 	ReactNode,
 	SetStateAction,
 	useContext,
+	useMemo,
 } from "react"
 
 import type { KeyMouseEventType } from "@/types"
@@ -22,9 +23,11 @@ import type {
 import type { CharacterRecord, WeaponRecord } from "@/types/planner"
 import { SettingsRecord } from "@/types/settings"
 import { PullsRecord, MiracleBoxPull, ScarboroughFairPull } from "@/types/pulls"
+import type { Messages, Translate } from "@/types/messages"
 import { EventData } from "@/data/activities/events"
 
-import { DEFAULT_LOCALE, type Locale } from "@/helpers/locale"
+import type { Locale } from "@/helpers/locale"
+import { createTranslator } from "@/helpers/translate"
 
 // The level step picked on a profile's Materials slider, shared with the
 // profile card's stats. Null on pages that don't share it.
@@ -169,20 +172,36 @@ export function useCalendarContext() {
 	return useContext(CalendarContext)
 }
 
-// The language of the current [lang] route, set by its root layout.
-export const LocaleContext = createContext<Locale>(DEFAULT_LOCALE)
+// The page's language and its messages (already merged with the English
+// fallback by getMessages() in the layout).
+export const LocaleContext = createContext<{
+	locale: Locale
+	t: Translate
+}>(null!)
 
 export function LocaleProvider({
 	locale,
+	messages,
 	children,
 }: {
 	locale: Locale
+	messages: Messages
 	children: ReactNode
 }) {
+	const value = useMemo(
+		() => ({ locale, t: createTranslator(messages, locale) }),
+		[locale, messages],
+	)
+
 	// createElement rather than JSX: this file is .ts.
-	return createElement(LocaleContext, { value: locale }, children)
+	return createElement(LocaleContext, { value }, children)
 }
 
 export function useLocale() {
-	return useContext(LocaleContext)
+	return useContext(LocaleContext).locale
+}
+
+/** t() for client components: `const t = useT()`. */
+export function useT() {
+	return useContext(LocaleContext).t
 }

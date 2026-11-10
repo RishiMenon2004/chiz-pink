@@ -21,6 +21,8 @@ import { findCharacter } from "@/data/characters"
 import { stopPropagation } from "@/helpers"
 import { formatEventDateTime } from "@/helpers/serverTime"
 
+import { useT } from "@/contexts"
+
 import { LocaleLink } from "../LocaleLink"
 
 import styles from "./eventDetails.module.css"
@@ -124,6 +126,7 @@ function EventDetailsBox({
 	centered,
 	themeOverlay = true,
 }: EventDetailsProps & { eventBoxRef: RefObject<HTMLElement> }) {
+	const t = useT()
 	const [finalSize, setFinalSize] = useState<CSSProperties>(initialStyle)
 
 	useEffect(() => {
@@ -230,16 +233,19 @@ function EventDetailsBox({
 					style={{
 						textTransform: "capitalize",
 					}}>
+					{" "}
 					{dayBoundaryMode === "local"
-						? " (Local Time)"
-						: " (Server Time)"}
+						? t("layout.eventDetails.localTime")
+						: t("layout.eventDetails.serverTime")}
 				</span>
 			</div>
 			{rateUpCharacter && (
 				<LocaleLink
 					href={`/characters/${rateUpCharacter.id}`}
 					className={`pill-button ${styles.profileLink}`}>
-					{`VIEW ${rateUpCharacter.name.toUpperCase()}`}
+					{t("layout.eventDetails.viewCharacter", {
+						name: rateUpCharacter.name.toUpperCase(),
+					})}
 				</LocaleLink>
 			)}
 		</div>

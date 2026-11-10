@@ -48,18 +48,18 @@ function formatUtcOffset(offsetHours: number): string {
 	return `UTC${sign}${hours}${minutes ? `:${String(minutes).padStart(2, "0")}` : ""}`
 }
 
-// Describes the current calendar day-boundary mode for display in UI labels,
-// e.g. "Server Time (UTC+8)" or "Local Time (UTC+5:30)".
-export function getDayBoundaryLabel(
+// The UTC offset of the calendar's current day boundary, e.g. "UTC+8" for
+// server time or "UTC+5:30" for local time. Shown in the "Server Time
+// ({offset})" / "Local Time ({offset})" label.
+export function getDayBoundaryOffset(
 	mode: SettingsRecord["behaviour"]["calendar-day-boundary"],
 	server: SettingsRecord["userdata"]["server"]
 ): string {
 	if (mode === "local") {
-		const localOffsetHours = -new Date().getTimezoneOffset() / 60
-		return `Local Time (${formatUtcOffset(localOffsetHours)})`
+		return formatUtcOffset(-new Date().getTimezoneOffset() / 60)
 	}
 
-	return `Server Time (${formatUtcOffset(SERVER_UTC_OFFSET_HOURS[server])})`
+	return formatUtcOffset(SERVER_UTC_OFFSET_HOURS[server])
 }
 
 // Formats a UTC instant as a date/time string in either the server's fixed

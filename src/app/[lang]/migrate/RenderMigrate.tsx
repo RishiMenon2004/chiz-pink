@@ -2,7 +2,10 @@
 
 import { useEffect, useRef, useState, useSyncExternalStore } from "react"
 
+import type { MessageKey } from "@/types/messages"
 import type { BackupData } from "@/types/settings"
+
+import { useT } from "@/contexts"
 
 import {
 	backupImport,
@@ -31,8 +34,8 @@ type Status = "connecting" | "conflict" | "saving" | "done" | "error"
 
 const noopSubscribe = () => () => {}
 
-function formatTimestamp(value: number | null) {
-	if (value == null) return "Unknown"
+function formatTimestamp(value: number | null, unknown: string) {
+	if (value == null) return unknown
 	return new Date(value).toLocaleString(undefined, {
 		dateStyle: "medium",
 		timeStyle: "short",
@@ -43,18 +46,19 @@ function send(message: MigrationMessage, origin: string) {
 	window.opener?.postMessage(message, origin)
 }
 
-const STATUS_TEXT: Record<Exclude<Status, "conflict">, string> = {
-	connecting: "Bringing your data over...",
-	saving: "Saving...",
-	done: "All moved! You can close this window.",
-	error: "Something went wrong moving your data. Close this window and try again.",
-}
+const STATUS_TEXT = {
+	connecting: "migrate.status.connecting",
+	saving: "migrate.status.saving",
+	done: "migrate.status.done",
+	error: "migrate.status.error",
+} as const satisfies Record<Exclude<Status, "conflict">, MessageKey>
 
 /**
  * The chiz.pink side of the domain move (see helpers/domainMigration.ts):
  * opened as a popup by the old domain, which sends its saved data here.
  */
 export function RenderMigrate() {
+	const t = useT()
 	// false: opened directly (not as the old domain's popup), so there's
 	// nothing to receive. null until hydrated - useInitialSyncPending() also
 	// reports the server's "not pending" during hydration, so starting then
@@ -134,19 +138,22 @@ export function RenderMigrate() {
 	return (
 		<main className={`page ${styles.migrateMain}`} role="main">
 			<span className={styles.migrateCard}>
-				<p className={styles.migrateTitle}>Moving to chiz.pink</p>
+				<p className={styles.migrateTitle}>{t("migrate.title")}</p>
 				<p className={styles.migrateDescription}>
 					{hasOpener === false ? (
 						<>
-							{"There's nothing to move here. "}
-							<LocaleLink className="btn-anchor" href="/">
-								Go home
-							</LocaleLink>
+							{t.rich("migrate.nothingToMove", {
+								link: (text) => (
+									<LocaleLink className="btn-anchor" href="/">
+										{text}
+									</LocaleLink>
+								),
+							})}
 						</>
 					) : status === "conflict" ? (
-						STATUS_TEXT.connecting
+						t(STATUS_TEXT.connecting)
 					) : (
-						STATUS_TEXT[status]
+						t(STATUS_TEXT[status])
 					)}
 				</p>
 			</span>
@@ -156,24 +163,36 @@ export function RenderMigrate() {
 					<AlertContainer
 						type="choices"
 						onConfirm={() => void finish(incoming, true)}
-						confirmLabel="Use old data"
+						confirmLabel={t("migrate.conflict.useOld")}
 						onCancel={() => void finish(incoming, false)}
-						cancelLabel="Keep chiz.pink data">
-						{
-							"chiz.pink already has saved data. Which version would you like to keep? Pull history from both is kept either way."
-						}
+						cancelLabel={t("migrate.conflict.keepCurrent")}>
+						{t("migrate.conflict.message")}
 						<div className={alertTextColumns}>
 							<div className={`inset-control ${alertTextBox}`}>
 								<b>
-									{`chiz.pink${incomingIsNewer ? "" : " (newer)"}`}
+									{incomingIsNewer
+										? t("migrate.conflict.current")
+										: t("migrate.conflict.currentNewer")}
 								</b>
-								<p>{formatTimestamp(localLastUpdated)}</p>
+								<p>
+									{formatTimestamp(
+										localLastUpdated,
+										t("migrate.conflict.unknown"),
+									)}
+								</p>
 							</div>
 							<div className={`inset-control ${alertTextBox}`}>
 								<b>
-									{`Old address${incomingIsNewer ? " (newer)" : ""}`}
+									{incomingIsNewer
+										? t("migrate.conflict.oldNewer")
+										: t("migrate.conflict.old")}
 								</b>
-								<p>{formatTimestamp(incoming.lastUpdated)}</p>
+								<p>
+									{formatTimestamp(
+										incoming.lastUpdated,
+										t("migrate.conflict.unknown"),
+									)}
+								</p>
 							</div>
 						</div>
 					</AlertContainer>
