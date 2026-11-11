@@ -37,4 +37,17 @@ export const ChangeLogs = {
 		"<ntetag>NTE</> Added Weekly Boss material: Hollowflower Seed",
 		"<tag>NEW</> Elyms & Exe can now be added in the planner",
 	],
+	"1.2.0": [
+		"<ntetag>NTE</> Up to date with <itag color='#ab9dec'>Patch 1.5</>",
+		"<ntetag>NTE</> Characters added: Elyms, with her full kit & Exe, with his partial kit",
+		"<ntetag>NTE</> Arcs added: Echoes on Hold & Dotted Horizon",
+		"<ntetag>NTE</> Gacha cosmetic rewards added: Drifting Petals (Elyms), Joy Buoy (Elyms) & Hand of Y (Exe)",
+		"<ntetag>NTE</> Added names for the next BTR circles: Convergence & Heartforge",
+		"<tag>NEW</> One-click pull import - the Import in Chiz.Pink button in <link href='https://github.com/RishiMenon2004/nte-exporter/releases/latest'>NTE History Exporter</> sends your pulls straight here",
+		"<tag>NEW</> The planner now calculates with Heterogeneous Units & Expansion Cores once your lower tier materials run out",
+		"<tag>NEW</> Short intros on each tool page the first time you open it",
+		"<tag>NEW</> Help translate Chiz.Pink into your language on <link href='https://hosted.weblate.org/engage/chiz-pink/'>Weblate</>, no coding needed (also under Settings > Language)",
+		"<tag color='#ffbd47'>FIX</> Akane Rin & Hathor ability text updated for 1.5",
+		"<tag color='#ffbd47'>FIX</> Fixed rate-up pulls made just before or after a banner's listed times not being recognised as rate-ups",
+	],
 }
