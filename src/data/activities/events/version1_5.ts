@@ -18,6 +18,13 @@ export const events: EventData[] = [
 		yOffset: "13%",
 	},
 	{
+		name: "\"Open Roads Ahead\" Mystery Box",
+		type: "Mystery Box",
+		getStartDate: timings.phase1Start,
+		getEndDate: timings.phase2End,
+		themeColor: "#882332",
+	},
+	{
 		name: "City Logistics",
 		type: "Event",
 		getStartDate: timings.phase1Start,

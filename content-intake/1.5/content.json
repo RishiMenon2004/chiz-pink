@@ -86,6 +86,13 @@
 	],
 	"events": [
 		{
+			"name": "\"Open Roads Ahead\" Mystery Box",
+			"type": "Mystery Box",
+			"start": "phase1",
+			"end": "end",
+			"themeColor": "#882332"
+		},
+		{
 			"name": "City Logistics",
 			"type": "Event",
 			"start": "phase1",
