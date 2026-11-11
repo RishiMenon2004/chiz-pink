@@ -4,9 +4,9 @@
 
 Translations are the one place I'm actively looking for help!
 
-Chiz.Pink's interface text lives in `messages/`, one JSON file per language.
-English (`messages/en.json`) is the source and all other languages are
-translated from it.
+Chiz.Pink's interface text lives in `src/messages/`, one JSON file per
+language. English (`src/messages/en.json`) is the source and all other
+languages are translated from it.
 
 You don't need to touch the code or GitHub to help. Translations are done
 through Weblate, a website where you pick your language and translate
@@ -19,6 +19,14 @@ A few things to keep in mind:
 - **Keep placeholders intact.** Text like `{count}` or `{name}` gets
   replaced with real values, so leave it exactly as is (you can move it
   around in the sentence).
+- **Keep tags around the same words.** In
+  `Read the <link>privacy policy</link>`, the part between the tags
+  becomes a link (or bold text, etc.). Translate the words inside, but
+  keep both tags and their names.
+- **Plurals have one text per form.** Texts that depend on a number come
+  in forms like "1 pull" and "5 pulls". Weblate shows the forms your
+  language needs; fill in each one. In the "one" form you can write the
+  number out instead of using `{count}`.
 - **Use the in-game terms.** If the game is officially available in your
   language, use its official names for things (Arcs, materials, menus) so
   players recognise them.

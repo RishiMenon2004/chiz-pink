@@ -1,7 +1,10 @@
 // Languages the site is available in. English is the default and is served
 // without a prefix (/planner); every other language lives under its own
 // prefix (/pt-BR/planner). src/proxy.ts maps unprefixed URLs onto the
-// app/[lang] routes. Add a locale here once its messages file exists.
+// app/[lang] routes. Adding a locale here (and to the loader map in
+// helpers/messages.ts) puts it live: browsers asking for that language are
+// sent to it, so only add one once src/messages/<locale>.json is mostly
+// translated (npm run messages:check shows how far along it is).
 //
 // No imports: the proxy runs separately from the app and pulls this in.
 export const LOCALES = ["en"] as const
