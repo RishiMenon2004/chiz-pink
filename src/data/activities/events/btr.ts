@@ -94,7 +94,7 @@ export const BTRTimeline: EventData[] = [
 		getEndDate: (server) => serverEOD(server, 17, 12, 2026),
 	},
 	{
-		name: "Heart Circle",
+		name: "Heartforge Circle",
 		type: "BTR",
 		getStartDate: (server) => serverSOD(server, 17, 12, 2026),
 		getEndDate: (server) => serverEOD(server, 31, 12, 2026),
@@ -110,5 +110,23 @@ export const BTRTimeline: EventData[] = [
 		type: "BTR",
 		getStartDate: (server) => serverSOD(server, 14, 1, 2027),
 		getEndDate: (server) => serverEOD(server, 28, 1, 2027),
+	},
+	{
+		name: "TBA",
+		type: "BTR",
+		getStartDate: (server) => serverSOD(server, 28, 1, 2027),
+		getEndDate: (server) => serverEOD(server, 11, 2, 2027),
+	},
+	{
+		name: "TBA",
+		type: "BTR",
+		getStartDate: (server) => serverSOD(server, 11, 2, 2027),
+		getEndDate: (server) => serverEOD(server, 25, 2, 2027),
+	},
+	{
+		name: "TBA",
+		type: "BTR",
+		getStartDate: (server) => serverSOD(server, 25, 2, 2027),
+		getEndDate: (server) => serverEOD(server, 11, 3, 2027),
 	},
 ]

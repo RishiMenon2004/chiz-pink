@@ -56,7 +56,7 @@
 			"phase": 1,
 			"name": "Android Dreams: Elyms",
 			"themeColor": "#6a7fe0",
-			"yOffset": "25%",
+			"yOffset": "20%",
 			"arcBanner": { "arc": "echoes_on_hold", "name": "Echo Special" }
 		},
 		{
@@ -72,7 +72,7 @@
 			"phase": 1,
 			"name": "Before the Dawn: Shinku",
 			"themeColor": "#8162a6",
-			"yOffset": "21%",
+			"yOffset": "19%",
 			"arcBanner": { "arc": "blushing_mirage", "name": "Resolve Special" }
 		},
 		{

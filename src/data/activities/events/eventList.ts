@@ -9,6 +9,7 @@ import { events as version1_2 } from "./version1_2"
 import { events as version1_3 } from "./version1_3"
 import { events as version1_4 } from "./version1_4"
 import { events as version1_5 } from "./version1_5"
+import { events as version1_6 } from "./version1_6"
 
 const versions = [
 	{ timings: patchTimings.version1_0, events: version1_0 },
@@ -17,6 +18,7 @@ const versions = [
 	{ timings: patchTimings.version1_3, events: version1_3 },
 	{ timings: patchTimings.version1_4, events: version1_4 },
 	{ timings: patchTimings.version1_5, events: version1_5 },
+	{ timings: patchTimings.version1_6, events: version1_6 },
 ]
 
 // Gacha banners live in banners.ts but sit in the calendar's list right

@@ -189,7 +189,7 @@ export const characterBanners: CharacterBannerData[] = [
 		getEndDate: getPhase1End("version1_5"),
 		eventImage: "version1.5/gacha_elyms.webp",
 		themeColor: "#6a7fe0",
-		yOffset: "25%",
+		yOffset: "20%",
 	},
 	{
 		name: "Offline Equations: Exe",
@@ -211,7 +211,7 @@ export const characterBanners: CharacterBannerData[] = [
 		getEndDate: getPhase1End("version1_5"),
 		eventImage: "version1.5/gacha_shinku.webp",
 		themeColor: "#8162a6",
-		yOffset: "21%",
+		yOffset: "19%",
 	},
 	{
 		name: "Forsaken Path: Chaos",
