@@ -1,5 +1,7 @@
 import { SettingsRecord } from "@/types/settings"
 
+import { formatLocale, type Locale } from "./locale"
+
 export const SERVER_UTC_OFFSET_HOURS: Record<
 	SettingsRecord["userdata"]["server"],
 	number
@@ -48,18 +50,18 @@ function formatUtcOffset(offsetHours: number): string {
 	return `UTC${sign}${hours}${minutes ? `:${String(minutes).padStart(2, "0")}` : ""}`
 }
 
-// Describes the current calendar day-boundary mode for display in UI labels,
-// e.g. "Server Time (UTC+8)" or "Local Time (UTC+5:30)".
-export function getDayBoundaryLabel(
+// The UTC offset of the calendar's current day boundary, e.g. "UTC+8" for
+// server time or "UTC+5:30" for local time. Shown in the "Server Time
+// ({offset})" / "Local Time ({offset})" label.
+export function getDayBoundaryOffset(
 	mode: SettingsRecord["behaviour"]["calendar-day-boundary"],
 	server: SettingsRecord["userdata"]["server"]
 ): string {
 	if (mode === "local") {
-		const localOffsetHours = -new Date().getTimezoneOffset() / 60
-		return `Local Time (${formatUtcOffset(localOffsetHours)})`
+		return formatUtcOffset(-new Date().getTimezoneOffset() / 60)
 	}
 
-	return `Server Time (${formatUtcOffset(SERVER_UTC_OFFSET_HOURS[server])})`
+	return formatUtcOffset(SERVER_UTC_OFFSET_HOURS[server])
 }
 
 // Formats a UTC instant as a date/time string in either the server's fixed
@@ -69,6 +71,7 @@ export function formatEventDateTime(
 	timestamp: number,
 	mode: SettingsRecord["behaviour"]["calendar-day-boundary"],
 	server: SettingsRecord["userdata"]["server"],
+	locale: Locale,
 	options: Intl.DateTimeFormatOptions = {
 		month: "short",
 		day: "numeric",
@@ -76,12 +79,13 @@ export function formatEventDateTime(
 		minute: "2-digit",
 	}
 ): string {
+	const tag = formatLocale(locale, "en-US")
 	if (mode === "local") {
-		return new Date(timestamp).toLocaleString("en-US", options)
+		return new Date(timestamp).toLocaleString(tag, options)
 	}
 
 	const offsetMs = SERVER_UTC_OFFSET_HOURS[server] * 60 * 60 * 1000
-	return new Date(timestamp + offsetMs).toLocaleString("en-US", {
+	return new Date(timestamp + offsetMs).toLocaleString(tag, {
 		...options,
 		timeZone: "UTC",
 	})

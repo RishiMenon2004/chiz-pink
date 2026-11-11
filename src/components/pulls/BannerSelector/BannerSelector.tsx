@@ -16,6 +16,7 @@ import { formatTimeRemaining } from "@/helpers"
 import {
 	usePullTrackerContext,
 	useSettingsConfigContext,
+	useT,
 } from "@/contexts"
 
 import styles from "./bannerSelector.module.css"
@@ -41,6 +42,7 @@ export function BannerSelector() {
 	const { selectedBanner, setSelectedBanner, gachaBanners } =
 		usePullTrackerContext()
 	const now = useNow()
+	const t = useT()
 	const {
 		userdata: { server },
 	} = useSettingsConfigContext()
@@ -89,7 +91,7 @@ export function BannerSelector() {
 						)) ||
 						"-"}
 				</div>
-				<div className={styles.bannerName}>Limited Character Board</div>
+				<div className={styles.bannerName}>{t("pulls.banners.limited")}</div>
 			</div>
 			<div
 				style={
@@ -111,7 +113,7 @@ export function BannerSelector() {
 						)) ||
 						"-"}
 				</div>
-				<div className={styles.bannerName}>Arc Miracle Box</div>
+				<div className={styles.bannerName}>{t("pulls.banners.arc")}</div>
 			</div>
 			<div
 				style={
@@ -125,7 +127,7 @@ export function BannerSelector() {
 					e.stopPropagation()
 					setSelectedBanner("permanentBanner")
 				}}>
-				<div className={styles.bannerName}>Strange Encounters</div>
+				<div className={styles.bannerName}>{t("pulls.banners.permanent")}</div>
 			</div>
 		</div>
 	)

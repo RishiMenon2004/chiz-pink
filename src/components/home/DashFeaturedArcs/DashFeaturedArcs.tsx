@@ -2,7 +2,6 @@
 
 import { CSSProperties, PointerEventHandler } from "react"
 import Image from "next/image"
-import Link from "next/link"
 
 import type { Arc } from "@/types/weapon"
 
@@ -18,24 +17,35 @@ import {
 	type ItemStatus,
 } from "@/helpers/bannerStatus"
 
+import { useT } from "@/contexts"
+
+import { LocaleLink } from "@/components/layout"
+
 import styles from "./DashFeaturedArcs.module.css"
 
 type Entry = { item: Arc; status: ItemStatus }
 
 function BannerTiming({ arc }: { arc: Arc }) {
+	const t = useT()
 	const now = useNow()
 	if (now === null) return null
 
 	const banner = getActiveBannerWindow(arc.id, now)
-	if (!banner) return <span>Banner dates TBA</span>
+	if (!banner) return <span>{t("home.featured.bannerTba")}</span>
 
 	return banner.start <= now ? (
 		<span>
-			Banner ends in <strong>{formatBannerCountdown(banner.end - now)}</strong>
+			{t.rich("home.featured.bannerEnds", {
+				b: (text) => <strong>{text}</strong>,
+				time: formatBannerCountdown(banner.end - now),
+			})}
 		</span>
 	) : (
 		<span>
-			Banner starts in <strong>{formatBannerCountdown(banner.start - now)}</strong>
+			{t.rich("home.featured.bannerStarts", {
+				b: (text) => <strong>{text}</strong>,
+				time: formatBannerCountdown(banner.start - now),
+			})}
 		</span>
 	)
 }
@@ -49,10 +59,11 @@ function ArcRow({
 	onPointerEnter: PointerEventHandler<HTMLElement>
 	onPointerLeave: () => void
 }) {
+	const t = useT()
 	const themeColor = getArcBannerThemeColor(arc.id)
 
 	return (
-		<Link
+		<LocaleLink
 			href={`/arcs/${arc.id}`}
 			className={`${styles.row} ${getItemRarityStyle(arc)}`}
 			style={themeColor ? ({ "--theme-color": themeColor } as CSSProperties) : undefined}
@@ -61,7 +72,7 @@ function ArcRow({
 			<div className={styles.art}>
 				<Image
 					src={`/arcs/${arc.imageSrc}`}
-					alt={`${arc.name} arc art`}
+					alt={t("home.featuredArcs.artAlt", { name: arc.name })}
 					width={512}
 					height={512}
 					sizes="10rem"
@@ -69,7 +80,9 @@ function ArcRow({
 			</div>
 			<div className={styles.info}>
 				<div className={styles.tag}>
-					{status === "preview" ? "Preview" : "Featured"}
+					{status === "preview"
+						? t("home.featured.preview")
+						: t("home.featured.featured")}
 				</div>
 				<h3 className={styles.name}>{arc.name}</h3>
 				<div className={styles.meta}>
@@ -78,11 +91,12 @@ function ArcRow({
 					<BannerTiming arc={arc} />
 				</div>
 			</div>
-		</Link>
+		</LocaleLink>
 	)
 }
 
 export function DashFeaturedArcs({ entries }: { entries: Entry[] }) {
+	const t = useT()
 	const { Tooltip, showTooltip, hideTooltip } = useTooltip()
 
 	return (
@@ -96,7 +110,7 @@ export function DashFeaturedArcs({ entries }: { entries: Entry[] }) {
 				/>
 			))}
 
-			<Tooltip offset={{ x: 6, y: 0 }}>View Index</Tooltip>
+			<Tooltip offset={{ x: 6, y: 0 }}>{t("home.featuredArcs.viewIndex")}</Tooltip>
 		</div>
 	)
 }

@@ -1,5 +1,4 @@
 import Image from "next/image"
-import Link from "next/link"
 
 import type { Arc } from "@/types/weapon"
 
@@ -7,6 +6,8 @@ import { arcLevelStats } from "@/data/arcs"
 
 import { getArcBannerThemeColor } from "@/helpers/bannerStatus"
 import { formatAttributeValue } from "@/helpers/formatAttributeValue"
+import type { Locale } from "@/helpers/locale"
+import { getTranslator } from "@/helpers/messages"
 import { parseDescription } from "@/helpers/parseDescription"
 
 import { InfoBox } from "@/components/layout/InfoBox"
@@ -16,10 +17,13 @@ import { ProfileHero } from "../ProfileHero"
 import { LevelStatValue, ProfileLevelProvider } from "../ProfileLevel"
 import { ProfileMaterials } from "../ProfileMaterials"
 
-import pageStyles from "@/app/page.module.css"
+import { LocaleLink } from "@/components/layout"
+
+import pageStyles from "@/app/[lang]/page.module.css"
 import styles from "../profile.module.css"
 
-export function ArcProfile({ arc }: { arc: Arc }) {
+export async function ArcProfile({ arc, locale }: { arc: Arc; locale: Locale }) {
+	const t = await getTranslator(locale)
 	// Follow the Materials slider's level when the game data has the
 	// per-level values; otherwise show the level 1 stats.
 	const levelStats = arcLevelStats[arc.id]
@@ -39,9 +43,9 @@ export function ArcProfile({ arc }: { arc: Arc }) {
 			<main role="main" className={`page ${pageStyles.page}`}>
 				<div className={styles.layout}>
 					<div className={styles.heroColumn}>
-						<Link href="/arcs" className={`pill-button ${styles.backLink}`}>
-							ALL ARCS
-						</Link>
+						<LocaleLink href="/arcs" className={`pill-button ${styles.backLink}`}>
+							{t("profile.arc.allArcs")}
+						</LocaleLink>
 						<ProfileHero
 							name={arc.name}
 							rarity={arc.rarity}
@@ -61,13 +65,16 @@ export function ArcProfile({ arc }: { arc: Arc }) {
 							stats={
 								arc.isPlaceholder
 									? [
-											{ label: "Type", value: arc.type },
-											{ label: "Base ATK", value: "TBD" },
-											{ label: "Main Stat", value: "TBD" },
+											{ label: t("profile.stats.type"), value: arc.type },
+											{ label: t("profile.stats.baseAtk"), value: t("profile.stats.tbd") },
+											{ label: t("profile.stats.mainStat"), value: t("profile.stats.tbd") },
 										]
 									: [
-											{ label: "Type", value: arc.type },
-											{ label: levelStats ? "ATK" : "Base ATK", value: atk },
+											{ label: t("profile.stats.type"), value: arc.type },
+											{
+												label: levelStats ? t("profile.stats.atk") : t("profile.stats.baseAtk"),
+												value: atk,
+											},
 											{ label: arc.mainAttribute.attribute, value: mainStat },
 										]
 							}
@@ -81,7 +88,7 @@ export function ArcProfile({ arc }: { arc: Arc }) {
 						<ArcEffect effect={arc.effect} />
 						{arc.isPlaceholder ? (
 							<InfoBox sticker="peek">
-								{`U-um... I don't have ${arc.name}'s stats or materials on file yet. I'll a-add them once it's out, I promise!`}
+								{t("profile.arc.placeholderNote", { name: arc.name })}
 							</InfoBox>
 						) : (
 							<ProfileMaterials
@@ -89,7 +96,7 @@ export function ArcProfile({ arc }: { arc: Arc }) {
 								id={arc.id}
 								levelStats={
 									levelStats && [
-										{ label: "ATK", values: levelStats.atk.map(String) },
+										{ label: t("profile.stats.atk"), values: levelStats.atk.map(String) },
 										{
 											label: arc.mainAttribute.attribute,
 											values: levelStats.mainStat.map(formatAttributeValue),

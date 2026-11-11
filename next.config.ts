@@ -53,8 +53,17 @@ const nextConfig: NextConfig = {
   },
   devIndicators: false,
   outputFileTracingIncludes: {
-    "/arcs/[id]/opengraph-image": ["./public/fonts/**/*"],
-    "/characters/[id]/opengraph-image": ["./public/fonts/**/*"],
+    "/**/opengraph-image": ["./public/fonts/**/*"],
+  },
+  // A stable address for the NTE History Exporter, so it doesn't depend on the
+  // Convex deployment's URL.
+  async rewrites() {
+    return [
+      {
+        source: "/api/import-drop",
+        destination: `${process.env.NEXT_PUBLIC_CONVEX_SITE_URL}/import-drop`,
+      },
+    ];
   },
   async headers() {
     return [

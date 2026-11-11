@@ -14,7 +14,7 @@ import {
 	alertTextColumns,
 } from "@/components/layout/Alert/AlertContainer"
 
-import { useCloudSyncContext } from "@/contexts"
+import { useCloudSyncContext, useT } from "@/contexts"
 
 /* ------------------------------------------------------------------ */
 /*  Import overwrite / older warning                                   */
@@ -31,22 +31,24 @@ export function ImportOverwriteModal({
 	onConfirm: () => void
 	onCancel: () => void
 }) {
+	const t = useT()
+
 	if (!isImportOlder && !askOverwrite) return null
 
 	return (
 		<ModalContainer>
 			<AlertContainer
 				type="dangerous-confirm"
-				confirmLabel="Overwrite"
+				confirmLabel={t("settings.modals.importOverwrite.confirm")}
 				onConfirm={onConfirm}
 				isConfirmDanger={true}
-				cancelLabel="Cancel"
+				cancelLabel={t("settings.modals.importOverwrite.cancel")}
 				onCancel={onCancel}>
 				{isImportOlder
-					? "This file contains older information."
-					: "Existing data will be overwritten."}
+					? t("settings.modals.importOverwrite.older")
+					: t("settings.modals.importOverwrite.overwritten")}
 				<p className={alertMessage}>
-					Are you sure you want to replace your current data?
+					{t("settings.modals.importOverwrite.question")}
 				</p>
 			</AlertContainer>
 		</ModalContainer>
@@ -69,14 +71,16 @@ export function ExternalImportPendingModal({
 		mode: "merge" | "overwrite",
 	) => void
 }) {
+	const t = useT()
+
 	if (!externalImportPending) return null
 
 	return (
 		<ModalContainer onClickOut={() => setExternalImportPending(null)}>
 			<AlertContainer
 				type="dangerous-choices"
-				confirmLabel="Overwrite"
-				cancelLabel="Add to Existing"
+				confirmLabel={t("settings.modals.externalPending.overwrite")}
+				cancelLabel={t("settings.modals.externalPending.merge")}
 				onConfirm={() => {
 					applyExternalPlannerImport(
 						externalImportPending,
@@ -91,19 +95,13 @@ export function ExternalImportPendingModal({
 					)
 					setExternalImportPending(null)
 				}}>
-				{`Import ${externalImportPending.source} Data`}
+				{t("settings.modals.externalPending.title", {
+					source: externalImportPending.source,
+				})}
 				<div
 					className={`inset-control ${alertTextBox} ${alertTextColumns}`}>
-					<p>
-						{
-							"Add to Existing: Replaces your Inventory. Appends Characters and Arcs onto your existing planner."
-						}
-					</p>
-					<p>
-						{
-							"Overwrite. Replaces your Inventory, Characters, and Arcs entirely."
-						}
-					</p>
+					<p>{t("settings.modals.externalPending.mergeInfo")}</p>
+					<p>{t("settings.modals.externalPending.overwriteInfo")}</p>
 				</div>
 			</AlertContainer>
 		</ModalContainer>
@@ -121,45 +119,69 @@ export function ExternalImportSummaryModal({
 	externalImportSummary: ExternalImportResult | null
 	setExternalImportSummary: (v: null) => void
 }) {
+	const t = useT()
+
 	if (!externalImportSummary) return null
 
 	return (
 		<ModalContainer>
 			<AlertContainer
 				type="acknowledge"
-				confirmLabel="Got it"
+				confirmLabel={t("settings.modals.externalSummary.confirm")}
 				onConfirm={() => setExternalImportSummary(null)}>
-				{`${externalImportSummary.source} Data Imported`}
+				{t("settings.modals.externalSummary.title", {
+					source: externalImportSummary.source,
+				})}
 				<div className={`inset-control ${alertTextBox}`}>
 					<div>
-						{`Inventory: ${Object.keys(externalImportSummary.inventory).length} items imported`}
-						{externalImportSummary.unmatchedMaterials.length >
-							0 &&
-							`, ${externalImportSummary.unmatchedMaterials.length} skipped (no match)`}
+						{externalImportSummary.unmatchedMaterials.length > 0
+							? t("settings.modals.externalSummary.inventorySkipped", {
+									imported: Object.keys(
+										externalImportSummary.inventory,
+									).length,
+									skipped:
+										externalImportSummary.unmatchedMaterials
+											.length,
+								})
+							: t("settings.modals.externalSummary.inventory", {
+									imported: Object.keys(
+										externalImportSummary.inventory,
+									).length,
+								})}
 					</div>
 					<div>
-						{`Characters: ${externalImportSummary.characters.length} imported`}
-						{externalImportSummary.skippedCharacterIds
-							.length > 0 &&
-							`, ${externalImportSummary.skippedCharacterIds.length} skipped (unknown character)`}
+						{externalImportSummary.skippedCharacterIds.length > 0
+							? t("settings.modals.externalSummary.charactersSkipped", {
+									imported:
+										externalImportSummary.characters.length,
+									skipped:
+										externalImportSummary.skippedCharacterIds
+											.length,
+								})
+							: t("settings.modals.externalSummary.characters", {
+									imported:
+										externalImportSummary.characters.length,
+								})}
 					</div>
 					<div>
-						{`Arcs: ${externalImportSummary.arcs.length} imported`}
-						{externalImportSummary.skippedArcIds.length > 0 &&
-							`, ${externalImportSummary.skippedArcIds.length} skipped (unknown arc)`}
+						{externalImportSummary.skippedArcIds.length > 0
+							? t("settings.modals.externalSummary.arcsSkipped", {
+									imported: externalImportSummary.arcs.length,
+									skipped:
+										externalImportSummary.skippedArcIds.length,
+								})
+							: t("settings.modals.externalSummary.arcs", {
+									imported: externalImportSummary.arcs.length,
+								})}
 					</div>
 					{externalImportSummary.staminaPatch && (
-						<div>Stamina & Pixels updated</div>
+						<div>{t("settings.modals.externalSummary.staminaUpdated")}</div>
 					)}
 				</div>
 				{(externalImportSummary.hasActivitiesData ||
 					externalImportSummary.hasEventsData) && (
 					<div className={`inset-control ${alertTextBox}`}>
-						<p>
-							{
-								"Importing Activity/Event completion isn't supported yet."
-							}
-						</p>
+						<p>{t("settings.modals.externalSummary.activitiesUnsupported")}</p>
 					</div>
 				)}
 			</AlertContainer>
@@ -180,6 +202,8 @@ export function SignoutWarningModal({
 	onConfirm: () => void
 	setSignoutWarning: (v: boolean) => void
 }) {
+	const t = useT()
+
 	if (!signoutWarning) return null
 
 	return (
@@ -188,12 +212,12 @@ export function SignoutWarningModal({
 				type="dangerous-confirm"
 				onConfirm={onConfirm}
 				onCancel={() => setSignoutWarning(false)}
-				confirmLabel="Sign Out"
-				cancelLabel="Stay Signed In	">
-				Stop Cloud Syncing?
+				confirmLabel={t("settings.modals.signout.confirm")}
+				cancelLabel={t("settings.modals.signout.cancel")}>
+				{t("settings.modals.signout.title")}
 				<br />
 				<p className={alertMessage}>
-					You will need to sign in again to enable syncing.
+					{t("settings.modals.signout.message")}
 				</p>
 			</AlertContainer>
 		</ModalContainer>
@@ -213,6 +237,8 @@ export function EraseDataWarningModal({
 	onConfirm: () => void
 	setEraseWarning: (v: boolean) => void
 }) {
+	const t = useT()
+
 	if (!eraseWarning) return null
 
 	return (
@@ -221,12 +247,12 @@ export function EraseDataWarningModal({
 				type="dangerous-confirm"
 				onConfirm={onConfirm}
 				onCancel={() => setEraseWarning(false)}
-				confirmLabel="Erase"
-				cancelLabel="Cancel">
-				Erase all local data?
+				confirmLabel={t("settings.modals.eraseAll.confirm")}
+				cancelLabel={t("settings.modals.eraseAll.cancel")}>
+				{t("settings.modals.eraseAll.title")}
 				<br />
 				<p className={alertMessage}>
-					This action will erase all data from this device.
+					{t("settings.modals.eraseAll.message")}
 				</p>
 			</AlertContainer>
 		</ModalContainer>
@@ -248,6 +274,8 @@ export function ErasePullsWarningModal({
 	onConfirm: () => void
 	setErasePullsWarning: (v: boolean) => void
 }) {
+	const t = useT()
+
 	if (!erasePullsWarning) return null
 
 	return (
@@ -256,14 +284,14 @@ export function ErasePullsWarningModal({
 				type="dangerous-confirm"
 				onConfirm={onConfirm}
 				onCancel={() => setErasePullsWarning(false)}
-				confirmLabel="Erase"
-				cancelLabel="Cancel">
-				Erase pull history?
+				confirmLabel={t("settings.modals.erasePulls.confirm")}
+				cancelLabel={t("settings.modals.erasePulls.cancel")}>
+				{t("settings.modals.erasePulls.title")}
 				<br />
 				<p className={alertMessage}>
 					{isSignedIn
-						? "This erases your imported pulls from this device and your cloud backup."
-						: "This erases your imported pulls from this device."}
+						? t("settings.modals.erasePulls.messageSignedIn")
+						: t("settings.modals.erasePulls.message")}
 				</p>
 			</AlertContainer>
 		</ModalContainer>
@@ -287,6 +315,7 @@ export function EraseSyncChoiceModal({
 	deleteGachaBackup: (args: Record<string, never>) => Promise<unknown>
 	signOut: () => void
 }) {
+	const t = useT()
 	const cloudSync = useCloudSyncContext()
 
 	if (!eraseSyncChoice) return null
@@ -310,13 +339,12 @@ export function EraseSyncChoiceModal({
 					signOut()
 					setEraseSyncChoice(false)
 				}}
-				confirmLabel="Erase Cloud Backup"
-				cancelLabel="Keep Cloud Backup">
-				Keep your Cloud Backup?
+				confirmLabel={t("settings.modals.eraseSyncChoice.confirm")}
+				cancelLabel={t("settings.modals.eraseSyncChoice.cancel")}>
+				{t("settings.modals.eraseSyncChoice.title")}
 				<br />
 				<p className={alertMessage}>
-					You will be able to use your backup when you sign back
-					in.
+					{t("settings.modals.eraseSyncChoice.message")}
 				</p>
 			</AlertContainer>
 		</ModalContainer>
@@ -344,6 +372,8 @@ export function UnlinkAccountModal({
 	deleteGachaBackup: (args: Record<string, never>) => Promise<unknown>
 	unlinkGoogleAccount: (accessToken?: string) => Promise<void>
 }) {
+	const t = useT()
+
 	if (!unlinkWarning) return null
 
 	return (
@@ -367,12 +397,12 @@ export function UnlinkAccountModal({
 					await unlinkGoogleAccount(session?.accessToken)
 				}}
 				onCancel={() => setUnlinkWarning(false)}
-				confirmLabel="Unlink"
-				cancelLabel="Keep Linked">
-				Unlink your Google account?
+				confirmLabel={t("settings.modals.unlink.confirm")}
+				cancelLabel={t("settings.modals.unlink.cancel")}>
+				{t("settings.modals.unlink.title")}
 				<br />
 				<p className={alertMessage}>
-					This deletes your cloud backup.
+					{t("settings.modals.unlink.message")}
 				</p>
 			</AlertContainer>
 		</ModalContainer>

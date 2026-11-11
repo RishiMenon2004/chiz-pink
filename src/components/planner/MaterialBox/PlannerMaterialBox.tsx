@@ -8,9 +8,15 @@ import { EnumMaterialType, findMaterial, getItemRarityStyle } from "@/data/items
 
 import { useTooltip, useMaterialEditorModal, useInventoryStore } from "@/hooks"
 
-import { getLinkedMaterials } from "@/helpers"
+import { getCraftRatio, getLinkedMaterials } from "@/helpers"
+import { formatLocale } from "@/helpers/locale"
 
-import { usePlannerBoxContext, usePlannerMaterialsContext } from "@/contexts"
+import {
+	useLocale,
+	usePlannerBoxContext,
+	usePlannerMaterialsContext,
+	useT,
+} from "@/contexts"
 
 import { MaterialIcon } from "@/components/layout"
 
@@ -23,6 +29,8 @@ export function PlannerMaterialBox({
 	material: Material
 	requiredAmount: number
 }) {
+	const t = useT()
+	const numberLocale = formatLocale(useLocale(), "en-US")
 	const {
 		Tooltip,
 		showTooltip,
@@ -80,7 +88,7 @@ export function PlannerMaterialBox({
 			return `~${(displayAmount / 1000000).toFixed(2)}m`
 		}
 
-		return `${isExpMaterial ? "~" : ""}${displayAmount.toLocaleString("en-us")}`
+		return `${isExpMaterial ? "~" : ""}${displayAmount.toLocaleString(numberLocale)}`
 	}
 
 	const disabled = () => {}
@@ -110,54 +118,48 @@ export function PlannerMaterialBox({
 
 			<MaterialEditor materials={linkedMaterials} />
 
-			<Tooltip offset={{ x: 36, y: 0 }} subText="Click to Edit">
+			<Tooltip offset={{ x: 36, y: 0 }} subText={t("planner.material.clickToEdit")}>
 				<div>{material.name}</div>
 				<div className="tooltip-details">
-					{"Total Needed: "}
-					<span className="font-barlow">
-						{`${isExpMaterial ? "~" : ""}${requiredAmount.toLocaleString("en-us")}`}
-					</span>
+					{t.rich("planner.material.totalNeeded", {
+						n: (text) => <span className="font-barlow">{text}</span>,
+						amount: `${isExpMaterial ? "~" : ""}${requiredAmount.toLocaleString(numberLocale)}`,
+					})}
 					<br />
-					{"Owned: "}
-					<span className="font-barlow">
-						{ownedAmount.toLocaleString("en-us")}
-					</span>
-					{" | Available: "}
-					<span className="font-barlow">
-						{(availableAmount + craftedAmount).toLocaleString(
-							"en-us"
-						)}
-					</span>
+					{t.rich("planner.material.ownedAvailable", {
+						n: (text) => <span className="font-barlow">{text}</span>,
+						owned: ownedAmount.toLocaleString(numberLocale),
+						available: (availableAmount + craftedAmount).toLocaleString(numberLocale),
+					})}
 					{usingCrafted && (
 						<em>
-							{" ("}
-							<span className="font-barlow">+{craftedAmount}</span>
-							{material.materialType ===
-								EnumMaterialType.WeaponExp ||
-							material.materialType ===
-								EnumMaterialType.CharacterExp
-								? " from lower EXP substitutes)"
-								: " from crafting)"}
+							{" "}
+							{t.rich(
+								isExpMaterial
+									? "planner.material.fromSubstitutes"
+									: "planner.material.fromCrafting",
+								{
+									n: (text) => <span className="font-barlow">{text}</span>,
+									amount: craftedAmount,
+								}
+							)}
 						</em>
 					)}
 					{craftedFrom.length > 0 && (
 						<div className="tooltip-using-header">
-							<div>{"Using:"}</div>
+							<div>{t("planner.material.using")}</div>
 							<div className="tooltip-using-list">
 								{craftedFrom.map(({ id, amount }) => {
 									const craftingMaterial = findMaterial(id)
-									const divisor = isExpMaterial
-										? 15 * material.rarity -
-											16 * craftingMaterial.rarity -
-											8
-										: 3 **
-											(material.rarity -
-												craftingMaterial.rarity)
+									const divisor = getCraftRatio(
+										material,
+										craftingMaterial
+									)
 									return (
 										<div key={id}>
 											{`${craftingMaterial.name}: `}
 											<span className="font-barlow">
-												{`${amount.toLocaleString("en-us")} \u2192 + ${amount / divisor}`}
+												{`${amount.toLocaleString(numberLocale)} \u2192 + ${amount / divisor}`}
 											</span>
 										</div>
 									)
@@ -168,7 +170,7 @@ export function PlannerMaterialBox({
 				</div>
 				<hr className="tooltip-hr" />
 				<div className="tooltip-source-list">
-					Sources:
+					{t("planner.material.sources")}
 					{material.sources.map((source) => (
 						<div className="tooltip-source" key={source}>
 							{source}

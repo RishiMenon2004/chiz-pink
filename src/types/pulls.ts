@@ -1,5 +1,6 @@
 import type { EnumRarity } from "@/data/items/item"
 import type { GameServer } from "./server"
+import type { MessageKey, MessageParams } from "./messages"
 
 type NteBannerType =
 	"Lottery_LimitedCharacter" | "Lottery_Permanent" | "Arc_MiracleBox"
@@ -66,7 +67,8 @@ export type ImportedPull = {
 }
 
 export type ImportMessage = {
-	message: string
+	message: MessageKey
+	params?: MessageParams
 	status: "warn" | "info" | "error"
 }
 

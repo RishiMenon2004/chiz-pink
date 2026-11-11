@@ -91,7 +91,7 @@ export const hathor: Character = {
 			description: [
 				{
 					description:
-						"<sh>Remora Enhancement:</> Extends the target's Remora duration to <dn>12</>s and increases Crit Rate by <dn>10%</> when allies attacking a target affected by Remora.",
+						"<sh>Remora Enhancement:</> Extends the target's Remora duration to <dn>12</>s and increases Crit Rate by <dn>10%</> when the whole team attack a target affected by Remora.",
 				},
 			],
 			maxLvl: 1,

@@ -5,6 +5,38 @@ import nextTs from "eslint-config-next/typescript";
 const eslintConfig = defineConfig([
   ...nextVitals,
   ...nextTs,
+  // Every page lives under app/[lang], so links and path checks have to go
+  // through the language-aware wrappers, or they drop the /pt-BR prefix.
+  {
+    rules: {
+      "no-restricted-imports": [
+        "error",
+        {
+          paths: [
+            {
+              name: "next/link",
+              message:
+                "Use LocaleLink from @/components/layout, which keeps the page's language prefix.",
+            },
+            {
+              name: "next/navigation",
+              importNames: ["usePathname"],
+              message:
+                "Use useLocalePathname from @/hooks/useLocalePathname, which strips the language prefix.",
+            },
+          ],
+        },
+      ],
+    },
+  },
+  {
+    // The wrappers themselves.
+    files: [
+      "src/components/layout/LocaleLink/LocaleLink.tsx",
+      "src/hooks/useLocalePathname.ts",
+    ],
+    rules: { "no-restricted-imports": "off" },
+  },
   // Override default ignores of eslint-config-next.
   globalIgnores([
     // Default ignores of eslint-config-next:

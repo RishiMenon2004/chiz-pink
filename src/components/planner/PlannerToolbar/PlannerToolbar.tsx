@@ -4,6 +4,7 @@ import {
 	AddNewArcContext,
 	AddNewCharContext,
 	usePlannerSectionContext,
+	useT,
 } from "@/contexts"
 
 import { ModalContainer, PullOutToolbar } from "@/components/layout"
@@ -29,6 +30,7 @@ import { PlannerReorderBox } from "@/components/layout/ReorderBox/PlannerReorder
 import { getItemStatus } from "@/helpers/bannerStatus"
 
 export function PlannerToolbar() {
+	const t = useT()
 	const { actions } = usePlannerStore()
 	const { settings, actions: settingsActions } = useSettingsStore()
 
@@ -89,7 +91,7 @@ export function PlannerToolbar() {
 				<button
 					className={`pill-button ${toolbarStyles.toolbarButton} ${toolbarStyles.add}`}
 					onClick={handleStartAddingChar}>
-					ADD CHARACTER
+					{t("planner.toolbar.addCharacter")}
 				</button>
 			)}
 			<AddNewCharContext.Provider value={{ addCharacter }}>
@@ -106,7 +108,7 @@ export function PlannerToolbar() {
 				<button
 					className={`pill-button ${toolbarStyles.toolbarButton} ${toolbarStyles.add}`}
 					onClick={handleStartAddingArc}>
-					ADD ARC
+					{t("planner.toolbar.addArc")}
 				</button>
 			)}
 			<AddNewArcContext.Provider value={{ newArcRecord, setNewArcRecord }}>
@@ -126,7 +128,7 @@ export function PlannerToolbar() {
 				disabled={(itemsList.length ?? 0) <= 1}
 				className={`pill-button ${toolbarStyles.toolbarButton} ${styles.hideOnDesktop}`}
 				onClick={() => setShowReorder(true)}>
-				ADJUST PRIORITY
+				{t("planner.toolbar.adjustPriority")}
 			</button>
 			{showReorder &&
 				createPortal(
@@ -147,7 +149,7 @@ export function PlannerToolbar() {
 
 			<label className={`pill-button ${styles.pageConfig}`}>
 				<ConfigCheckbox
-					name={"Hybrid Planner"}
+					name={t("planner.toolbar.hybridPlanner")}
 					checked={combinedEnabled}
 					onChange={() => {
 						settingsActions.setConfig("appearance", {

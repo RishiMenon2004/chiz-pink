@@ -18,7 +18,7 @@ import { getItemRarityStyle } from "@/data/items"
 import { useInventoryStore } from "@/hooks/useInventoryStore"
 import { useTooltip } from "@/hooks/useTooltip"
 
-import { useMaterialAdjustmentContext } from "@/contexts"
+import { useMaterialAdjustmentContext, useT } from "@/contexts"
 
 import { MaterialIcon } from "../MaterialIcon"
 import { QuantityInput } from "../QuantityInput"
@@ -26,6 +26,7 @@ import { QuantityInput } from "../QuantityInput"
 import styles from "@/components/inventory/MaterialBox/inventoryMaterial.module.css"
 
 export function MaterialEditorBox({ material }: { material: Material }) {
+	const t = useT()
 	const modalContext = useMaterialAdjustmentContext()
 
 	const countRef = useRef<HTMLInputElement>(null)
@@ -124,7 +125,7 @@ export function MaterialEditorBox({ material }: { material: Material }) {
 					material={material}
 					width={128}
 					height={128}
-					alt={`${material.name} icon`}
+					alt={t("layout.materialEditor.icon", { name: material.name })}
 					loading="eager"
 				/>
 			</div>

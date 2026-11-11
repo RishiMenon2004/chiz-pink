@@ -2,7 +2,11 @@
 
 import { ReactNode, useState } from "react"
 
+import type { MessageKey } from "@/types/messages"
+
 import { PWAInstallPlatform, usePWAInstall } from "@/hooks/usePWAInstall"
+
+import { useT } from "@/contexts"
 
 import { ModalContainer } from "@/components/layout/Modal/ModalContainer"
 
@@ -10,59 +14,59 @@ import styles from "./installPWAButton.module.css"
 import { AlertContainer } from "../Alert"
 import { alertTextBox } from "../Alert/AlertContainer"
 
-const MANUAL_INSTRUCTIONS: Record<
-	PWAInstallPlatform,
-	{ title: string; steps: string[] }
-> = {
+const MANUAL_INSTRUCTIONS = {
 	"ios-safari": {
-		title: "Install on iPhone/iPad",
+		title: "layout.installPwa.iosSafari.title",
 		steps: [
-			"Tap the Share icon in Safari's toolbar.",
-			"Scroll down and tap 'Add to Home Screen'.",
-			"Tap 'Add' in the top right corner.",
+			"layout.installPwa.iosSafari.step1",
+			"layout.installPwa.iosSafari.step2",
+			"layout.installPwa.iosSafari.step3",
 		],
 	},
 	"ios-other": {
-		title: "Install on iPhone/iPad",
+		title: "layout.installPwa.iosOther.title",
 		steps: [
-			"Tap the Share or menu icon in your browser's toolbar.",
-			"Tap 'Add to Home Screen'.",
-			"Confirm by tapping 'Add'.",
+			"layout.installPwa.iosOther.step1",
+			"layout.installPwa.iosOther.step2",
+			"layout.installPwa.iosOther.step3",
 		],
 	},
 	"macos-safari": {
-		title: "Install on Mac",
+		title: "layout.installPwa.macosSafari.title",
 		steps: [
-			"Click the Share icon in Safari's toolbar.",
-			"Select 'Add to Dock'.",
-			"Confirm by clicking 'Add'.",
+			"layout.installPwa.macosSafari.step1",
+			"layout.installPwa.macosSafari.step2",
+			"layout.installPwa.macosSafari.step3",
 		],
 	},
 	firefox: {
-		title: "Install on Firefox",
+		title: "layout.installPwa.firefox.title",
 		steps: [
-			"Open the browser menu.",
-			"Tap 'Install' or 'Add to Home screen', if available.",
-			"If it's missing, use Chrome, Edge, or Safari to install Chiz.Pink instead.",
+			"layout.installPwa.firefox.step1",
+			"layout.installPwa.firefox.step2",
+			"layout.installPwa.firefox.step3",
 		],
 	},
 	samsung: {
-		title: "Install on Samsung Internet",
+		title: "layout.installPwa.samsung.title",
 		steps: [
-			"Tap the menu icon in the toolbar.",
-			"Tap 'Add page to'.",
-			"Select 'Home screen' and confirm.",
+			"layout.installPwa.samsung.step1",
+			"layout.installPwa.samsung.step2",
+			"layout.installPwa.samsung.step3",
 		],
 	},
 	other: {
-		title: "Install Chiz.Pink",
+		title: "layout.installPwa.other.title",
 		steps: [
-			"Open your browser's menu.",
-			"Look for 'Add to Home Screen' or 'Install App'.",
-			"Follow the prompts to finish installing.",
+			"layout.installPwa.other.step1",
+			"layout.installPwa.other.step2",
+			"layout.installPwa.other.step3",
 		],
 	},
-}
+} as const satisfies Record<
+	PWAInstallPlatform,
+	{ title: MessageKey; steps: MessageKey[] }
+>
 
 export function InstallPWAButton({
 	type,
@@ -71,6 +75,7 @@ export function InstallPWAButton({
 	type: "button" | "link"
 	children?: ReactNode
 }) {
+	const t = useT()
 	const { isStandalone, platform, canUseNativePrompt, promptInstall } =
 		usePWAInstall()
 	const [showInstructions, setShowInstructions] = useState(false)
@@ -95,7 +100,7 @@ export function InstallPWAButton({
 					className="pill-button"
 					data-variant="normal"
 					onClick={handleClick}>
-					INSTALL APP
+					{t("layout.installPwa.button")}
 				</button>
 			) : (
 				<a className="btn-anchor" onClick={handleClick}>
@@ -107,13 +112,13 @@ export function InstallPWAButton({
 				<ModalContainer>
 					<AlertContainer
 						type="acknowledge"
-						confirmLabel="Got it"
+						confirmLabel={t("layout.installPwa.gotIt")}
 						onConfirm={() => setShowInstructions(false)}>
-						{instructions.title}
+						{t(instructions.title)}
 						<div className={`inset-control ${alertTextBox}`}>
 							<ol className={styles.instructionsSteps}>
 								{instructions.steps.map((step, index) => (
-									<li key={index}>{step}</li>
+									<li key={index}>{t(step)}</li>
 								))}
 							</ol>
 						</div>

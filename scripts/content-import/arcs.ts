@@ -54,9 +54,23 @@ type BreakthroughRow = { NeedItems: string; ModifyPackID: string }
 type UpgradeStarRow = {
 	Title: LocalizedText
 	Description: LocalizedText
-	DataList: { NameID: string; bIsPercent: boolean }[]
+	// The id's field name changed case between game versions.
+	DataList: { NameID?: string; NameId?: string; bIsPercent: boolean }[]
 }
-type Curve = { Keys: { Time: number; Value: number }[] }
+type Curve = { InterpMode?: string; Keys: { Time: number; Value: number }[] }
+
+// A curve's value at a tier. Older versions keep a key per tier and step
+// between them; newer ones are linear and leave out the keys a straight
+// line between its neighbours already gives.
+function curveValue(curve: Curve, tier: number): number {
+	const keys = curve.Keys
+	const index = keys.findLastIndex((key) => key.Time <= tier)
+	if (index === -1) return keys[0].Value
+	const from = keys[index]
+	const to = keys[index + 1]
+	if (!to || !curve.InterpMode?.endsWith("RCIM_Linear")) return from.Value
+	return from.Value + ((to.Value - from.Value) * (tier - from.Time)) / (to.Time - from.Time)
+}
 
 const MAIN_STATS: Record<string, EnumStatAttribute> = {
 	AtkUp: EnumStatAttribute.ATKBonus,
@@ -218,8 +232,11 @@ export async function importArcs() {
 		readSource(TEXT_FILE) as Promise<Localization>,
 	])
 
-	const forkText = localization.ST_Fork ?? fail("game.json has no ST_Fork table")
-	const english = (text: LocalizedText) => (forkText[text.Key] ?? text.SourceString).replaceAll("’", "'")
+	// Newer repo exports leave ST_Fork out of game.json and put the English
+	// text on each table entry instead.
+	const forkText = localization.ST_Fork ?? {}
+	const english = (text: LocalizedText) =>
+		(forkText[text.Key] ?? text.LocalizedString ?? text.SourceString).replaceAll("’", "'")
 
 	function importArc(code: string, row: ItemRow): ImportedArc | string {
 		const data = row.ElementData
@@ -261,11 +278,10 @@ export async function importArcs() {
 			for (let tier = 1; tier <= data.MaxUpgradeStar; tier++) {
 				const tierRow = need(upgradeStar(`${data.UpgradeStarPackID}_${tier}`), `tier ${tier} effect`)
 				effectRow ??= tierRow
-				values[tier] = tierRow.DataList.map(({ NameID, bIsPercent }) => {
-					const curve = need(buffCurves(NameID), `curve ${NameID}`)
-					// The curves are stepped: a tier uses the last key at or before it.
-					const key = curve.Keys.findLast((k) => k.Time <= tier) ?? curve.Keys[0]
-					return { type: bIsPercent ? "Percent" : "Integer", value: round(key.Value) }
+				values[tier] = tierRow.DataList.map(({ NameID, NameId, bIsPercent }) => {
+					const id = need(NameID ?? NameId, `tier ${tier} value id`)
+					const curve = need(buffCurves(id), `curve ${id}`)
+					return { type: bIsPercent ? "Percent" : "Integer", value: round(curveValue(curve, tier)) }
 				})
 			}
 			const effect = need(effectRow, "effect")

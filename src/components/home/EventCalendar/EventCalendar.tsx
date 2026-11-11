@@ -2,6 +2,7 @@
 
 import { CSSProperties, Ref, useEffect, useMemo, useRef, useState } from "react"
 
+import type { MessageKey } from "@/types/messages"
 import type { DayBoundaryMode, MonthChunk } from "@/types/calendar"
 import { SettingsRecord } from "@/types/settings"
 
@@ -9,38 +10,31 @@ import { BTRTimeline, EventData, Events } from "@/data/activities/events"
 
 import { useNow, useSettingsStore } from "@/hooks"
 
+import type { Locale } from "@/helpers/locale"
 import {
-	getDayBoundaryLabel,
+	getDayBoundaryOffset,
 	SERVER_UTC_OFFSET_HOURS,
 } from "@/helpers/serverTime"
 
-import { CalendarContext, useCalendarContext } from "@/contexts"
+import { CalendarContext, useCalendarContext, useLocale, useT } from "@/contexts"
 
 import { ConfigCheckbox } from "@/components/settings"
 
 import { CalendarEventItem } from "./CalendarEventItem"
 
-import pageStyles from "@/app/page.module.css"
+import pageStyles from "@/app/[lang]/page.module.css"
 import styles from "./EventCalendar.module.css"
 
 const MONTHS_BEFORE = 2
 const MONTHS_AFTER = 1
 const BUFFER_DAYS = 3
 
-const monthNames = [
-	"JAN",
-	"FEB",
-	"MAR",
-	"APR",
-	"MAY",
-	"JUN",
-	"JUL",
-	"AUG",
-	"SEP",
-	"OCT",
-	"NOV",
-	"DEC",
-]
+// "JAN", "FEB"... in the page's language, from the browser's own month names.
+function monthName(month: number, locale: Locale) {
+	return new Intl.DateTimeFormat(locale, { month: "short", timeZone: "UTC" })
+		.format(Date.UTC(2000, month, 1))
+		.toUpperCase()
+}
 
 // Reads the (year, month, day) civil-calendar date a UTC instant falls on,
 // as seen from the wall clock of the given day-boundary mode.
@@ -82,21 +76,30 @@ function fromWallDate(
 	return Date.UTC(year, month, day) - offsetMs
 }
 
-const weekdayNames = ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"]
+const weekdayNames = [
+	"home.calendar.weekdays.su",
+	"home.calendar.weekdays.mo",
+	"home.calendar.weekdays.tu",
+	"home.calendar.weekdays.we",
+	"home.calendar.weekdays.th",
+	"home.calendar.weekdays.fr",
+	"home.calendar.weekdays.sa",
+] as const satisfies MessageKey[]
 
 function CalendarDateMarker({
 	date,
 	weekday,
 }: {
 	date: number
-	weekday: string
+	weekday: (typeof weekdayNames)[number]
 }) {
-	const weekend = ["Su", "Sa"].includes(weekday)
+	const t = useT()
+	const weekend = weekday === weekdayNames[0] || weekday === weekdayNames[6]
 	return (
 		<div className={styles.calenderDateMarker}>
 			<div
 				className={`${styles.markerWeekday} ${weekend ? styles.weekend : ""}`}>
-				{weekday}
+				{t(weekday)}
 			</div>
 			<div className={styles.markerNumber}>{date}</div>
 		</div>
@@ -143,12 +146,13 @@ function buildMonthChunks(
 }
 
 function CalendarMonth({ chunk }: { chunk: MonthChunk }) {
+	const locale = useLocale()
 	const { daySize } = useCalendarContext()
 	const dayCount = chunk.lastDay - chunk.firstDay + 1
 
 	return (
 		<div className={styles.calendarMonth}>
-			<div className={styles.monthName}>{monthNames[chunk.month]}</div>
+			<div className={styles.monthName}>{monthName(chunk.month, locale)}</div>
 			<div
 				className={styles.datesContainer}
 				style={{ gridAutoColumns: `${daySize}rem` }}>
@@ -204,6 +208,7 @@ function CalendarNowMarker({ ref }: { ref?: Ref<HTMLDivElement> }) {
 }
 
 export function EventCalendar() {
+	const t = useT()
 	const { settings, actions } = useSettingsStore()
 	const { server } = settings.userdata
 	const dayBoundaryMode: DayBoundaryMode =
@@ -467,7 +472,7 @@ export function EventCalendar() {
 	return (
 		<div className={`metallic-panel ${pageStyles.section}`}>
 			<div className={pageStyles.sectionTitleRow}>
-				<h2 className={pageStyles.sectionTitle}>Event Calendar</h2>
+				<h2 className={pageStyles.sectionTitle}>{t("home.calendar.title")}</h2>
 				<label className={pageStyles.sectionConfig}>
 					<ConfigCheckbox
 						checked={dayBoundaryMode === "local"}
@@ -478,7 +483,12 @@ export function EventCalendar() {
 									: "server",
 							})
 						}
-						name={getDayBoundaryLabel(dayBoundaryMode, server)}
+						name={t(
+							dayBoundaryMode === "local"
+								? "home.calendar.localTime"
+								: "home.calendar.serverTime",
+							{ offset: getDayBoundaryOffset(dayBoundaryMode, server) },
+						)}
 					/>
 				</label>
 				<button
@@ -488,7 +498,7 @@ export function EventCalendar() {
 					}}
 					className={`pill-button ${pageStyles.sectionButton}`}
 					onClick={() => scrollToNow()}>
-					{"TODAY"}
+					{t("home.calendar.today")}
 				</button>
 			</div>
 			<div

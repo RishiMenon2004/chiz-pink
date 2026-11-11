@@ -1,13 +1,14 @@
 "use client"
 
-import { usePathname } from "next/navigation"
 import { ReactNode, useState } from "react"
+
+import { useLocalePathname } from "@/hooks/useLocalePathname"
 
 import styles from "./pullOutToolbar.module.css"
 
 export function PullOutToolbar({ children, className }: { children: ReactNode; className?: string }) {
 	const [isToolbarOpen, setIsToolbarOpen] = useState<boolean>(false)
-	const pathname = usePathname()
+	const pathname = useLocalePathname()
 
 	const isInventory = pathname === "/inventory"
 

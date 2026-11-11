@@ -9,7 +9,9 @@ import {
 	useRef,
 } from "react"
 
-export type KeyMouseEventType = MouseEvent | KeyboardEvent
+import type { KeyMouseEventType } from "@/types/events"
+
+import { useT } from "@/contexts"
 
 type ModalContainerType = {
 	onClickOut?: (e: KeyMouseEventType) => void
@@ -23,6 +25,7 @@ function isTextInputElement(el: Element | null): el is HTMLElement {
 }
 
 export function ModalContainer({ onClickOut, children }: ModalContainerType) {
+	const t = useT()
 	// On touchscreens, the first tap outside should just dismiss the
 	// on-screen keyboard; only a second tap (once no input is focused)
 	// should trigger onClickOut. Real mice never have a keyboard to hide,
@@ -78,7 +81,7 @@ export function ModalContainer({ onClickOut, children }: ModalContainerType) {
 
 			{onClickOut && (
 				<p className="modal-dismiss-hint">
-					Click the empty space to exit
+					{t("layout.modal.dismissHint")}
 				</p>
 			)}
 		</>

@@ -58,5 +58,31 @@ Styling's just plain CSS Modules, nothing fancy.
 
 ## Contribution
 
-I'm not looking for any contributors at the moment. The code was not written with
-contributors in mind. I'm just a guy :standing_person: I just do what works.
+**Translations are welcome!** Chiz.Pink is getting multi-language support, and
+translations are done on [Weblate](https://hosted.weblate.org/engage/chiz-pink/),
+no coding needed. See [`CONTRIBUTING.md`](CONTRIBUTING.md) for details.
+
+[![Translation status](https://hosted.weblate.org/widget/chiz-pink/svg-badge.svg)](https://hosted.weblate.org/engage/chiz-pink/)
+
+As for the code, I'm not looking for any contributors at the moment. The code was not
+written with contributors in mind. I'm just a guy :standing_person: I just do what works.
+
+## License
+
+Copyright (C) 2026 Rishi Menon
+
+The source code is licensed under the [GNU Affero General Public License v3.0](LICENSE).
+In short: you're free to read, learn from, and reuse it, but if you distribute it or run a
+modified version for others to use (including as a website), you must release your full
+source code under the same license and keep the original copyright notices.
+
+**Name and branding are not included.** The AGPL covers the code, not the identity of the
+project. The "Chiz.Pink" name, logo, and app icons (`public/app_icon.png`,
+`public/app_icon_maskable.png`, `public/favicon.png`, `src/app/favicon.ico`) are not
+licensed for reuse. If you fork this project, give it a different name and logo, and don't
+present it as Chiz.Pink or as affiliated with it.
+
+**Game content is not mine to license.** Character art, item icons, names, ability text, and
+other material from Neverness To Everness belong to Hotta Studio and their respective
+owners, and are used here for fan purposes only. Third-party fonts in `public/fonts/` keep
+their own licenses.

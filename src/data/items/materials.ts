@@ -138,6 +138,15 @@ export const shiningIdol: Material = {
 	sources: [],
 }
 
+export const driftingPetals: Material = {
+	id: "drifting_petals",
+	name: "Drifting Petals",
+	materialType: EnumMaterialType.Reward,
+	rarity: EnumRarity.Epic,
+	imageSrc: "rewards/cosmetics/outfits/drifting_petals.webp",
+	sources: [],
+}
+
 /* Cosmetics - Gliders */
 export const underboss: Material = {
 	id: "underboss",
@@ -229,6 +238,24 @@ export const dayAdrift: Material = {
 	sources: [],
 }
 
+export const joyBuoy: Material = {
+	id: "joy_buoy",
+	name: "Joy Buoy",
+	materialType: EnumMaterialType.Reward,
+	rarity: EnumRarity.Epic,
+	imageSrc: "rewards/cosmetics/gliders/joy_buoy.webp",
+	sources: [],
+}
+
+export const handOfY: Material = {
+	id: "hand_of_y",
+	name: "Hand of Y",
+	materialType: EnumMaterialType.Reward,
+	rarity: EnumRarity.Epic,
+	imageSrc: "rewards/cosmetics/gliders/hand_of_y.webp",
+	sources: [],
+}
+
 /* Currencies */
 export const annulith: Material = {
 	id: "annulith",
@@ -309,7 +336,7 @@ export const eternalMemory: Material = {
 
 export const hollowflowerSeed: Material = {
 	id: "hollowflower_seed",
-	name: "Hollowflower Seed",
+	name: "Hollowflower Seeds",
 	rarity: EnumRarity.Epic,
 	materialType: EnumMaterialType.WeeklyBossDrop,
 	imageSrc: "weekly_hollowflower_seed.png",
@@ -572,6 +599,25 @@ export const colorfulTicketStub: Material = {
 	materialType: EnumMaterialType.BossDrop,
 	imageSrc: "boss_colorful_ticket_stub.png",
 	sources: ['Anomaly Hunt: "Swallowtail"', "Material Selection Box"],
+}
+
+/* Substitutes */
+export const expansionCore: Material = {
+	id: "expansion_core",
+	name: "Expansion Core",
+	rarity: EnumRarity.Rare,
+	materialType: EnumMaterialType.Substitute,
+	imageSrc: "convert_expansion_core.png",
+	sources: ["Hunter Exchange"],
+}
+
+export const heterogeneousUnit: Material = {
+	id: "heterogeneous_unit",
+	name: "Heterogeneous Unit",
+	rarity: EnumRarity.Rare,
+	materialType: EnumMaterialType.Substitute,
+	imageSrc: "convert_heterogeneous_unit.png",
+	sources: ["999 Nights", "Events"],
 }
 
 /* Talent */

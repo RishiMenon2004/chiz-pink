@@ -11,6 +11,8 @@ import { findItem } from "@/data/items/findItem"
 
 import { stopPropagation } from "@/helpers"
 
+import { useT } from "@/contexts"
+
 import { CharacterAvatar } from "../CharacterAvatar"
 import { ArcIcon } from "../ArcIcon"
 
@@ -60,11 +62,13 @@ export function PlannerReorderBox({
 }: {
 	items: Record<string, WeaponRecord | CharacterRecord>
 }) {
+	const t = useT()
+
 	return (
 		<div
 			className={`metallic-panel ${styles.panel}`}
 			onClick={stopPropagation}>
-			<div className={styles.title}>Adjust Priority</div>
+			<div className={styles.title}>{t("layout.reorderBox.title")}</div>
 			<div
 				className={`inset-control ${styles.itemList}`}
 				style={{

@@ -9,10 +9,12 @@ import { getAllActivities } from "@/data/activities/activities"
 
 import { useChecklistStore, useInventoryStore, useSettingsStore } from "@/hooks"
 
+import { useT } from "@/contexts"
+
 import { MaterialIcon } from "@/components/layout/MaterialIcon"
 import { ConfigCheckbox } from "@/components/settings"
 
-import pageStyles from "@/app/page.module.css"
+import pageStyles from "@/app/[lang]/page.module.css"
 import styles from "./DashDailyActivity.module.css"
 
 const formatRewardAmount = (amount: number) =>
@@ -30,6 +32,7 @@ export function DashDailyActivity({
 }: {
 	checklistClassname?: string
 }) {
+	const t = useT()
 	const dailyTasksId = getAllActivities().dailyTasks.id
 	const { checklist, actions: checklistActions } = useChecklistStore()
 	const entry = checklist.activities.daily?.[dailyTasksId] ?? EMPTY_ENTRY
@@ -120,7 +123,7 @@ export function DashDailyActivity({
 		<div
 			className={`metallic-panel ${pageStyles.section} ${styles.section} ${checklistClassname ?? ""}`}>
 			<div className={pageStyles.sectionTitleRow}>
-				<h2 className={pageStyles.sectionTitle}>Daily Tasks</h2>
+				<h2 className={pageStyles.sectionTitle}>{t("home.dailyTasks.title")}</h2>
 				<label className={pageStyles.sectionConfig}>
 					<ConfigCheckbox
 						checked={settings.behaviour["auto-claim"]}
@@ -129,14 +132,14 @@ export function DashDailyActivity({
 								"auto-claim": e.currentTarget.checked,
 							})
 						}
-						name="Add to Inventory"
+						name={t("home.dailyTasks.addToInventory")}
 					/>
 				</label>
 				<button
 					type="button"
 					className={`pill-button ${pageStyles.sectionButton}`}
 					onClick={() => setCheckedStep(parts.length)}>
-					{"QUICK CLAIM"}
+					{t("home.dailyTasks.quickClaim")}
 				</button>
 			</div>
 			<div className={styles.partsContainer}>

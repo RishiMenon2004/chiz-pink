@@ -88,13 +88,13 @@ export const BTRTimeline: EventData[] = [
 		getEndDate: (server) => serverEOD(server, 3, 12, 2026),
 	},
 	{
-		name: "TBA",
+		name: "Convergence Circle",
 		type: "BTR",
 		getStartDate: (server) => serverSOD(server, 3, 12, 2026),
 		getEndDate: (server) => serverEOD(server, 17, 12, 2026),
 	},
 	{
-		name: "TBA",
+		name: "Heart Circle",
 		type: "BTR",
 		getStartDate: (server) => serverSOD(server, 17, 12, 2026),
 		getEndDate: (server) => serverEOD(server, 31, 12, 2026),

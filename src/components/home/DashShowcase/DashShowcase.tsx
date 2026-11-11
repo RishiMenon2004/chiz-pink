@@ -1,14 +1,18 @@
 import { ReactNode } from "react"
-import Link from "next/link"
+
+import { useT } from "@/contexts"
 
 import { useArcCatalog, useCharacterCatalog } from "@/components/catalog"
 
 import { DashFeaturedArcs } from "../DashFeaturedArcs"
 import { DashFeaturedCarousel } from "../DashFeaturedCarousel"
 
-import pageStyles from "@/app/page.module.css"
+import { LocaleLink } from "@/components/layout"
+
+import pageStyles from "@/app/[lang]/page.module.css"
 
 export function DashShowcase() {
+	const t = useT()
 	const characters = useCharacterCatalog(true)
 	const arcs = useArcCatalog(true)
 
@@ -17,12 +21,12 @@ export function DashShowcase() {
 	return (
 		<div className={pageStyles.twoColumns}>
 			{characters.length > 0 && (
-				<ShowcaseSection title="Characters" href="/characters">
+				<ShowcaseSection title={t("home.showcase.characters")} href="/characters">
 					<DashFeaturedCarousel entries={characters} />
 				</ShowcaseSection>
 			)}
 			{arcs.length > 0 && (
-				<ShowcaseSection title="Arcs" href="/arcs">
+				<ShowcaseSection title={t("home.showcase.arcs")} href="/arcs">
 					<DashFeaturedArcs entries={arcs} />
 				</ShowcaseSection>
 			)}
@@ -39,15 +43,16 @@ function ShowcaseSection({
 	href: string
 	children: ReactNode
 }) {
+	const t = useT()
 	return (
 		<section className={`metallic-panel ${pageStyles.section}`}>
 			<div className={pageStyles.sectionTitleRow}>
 				<h2 className={pageStyles.sectionTitle}>{title}</h2>
-				<Link
+				<LocaleLink
 					href={href}
 					className={`pill-button ${pageStyles.sectionButton}`}>
-					VIEW ALL
-				</Link>
+					{t("home.showcase.viewAll")}
+				</LocaleLink>
 			</div>
 			{children}
 		</section>

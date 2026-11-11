@@ -2,6 +2,7 @@
 	"name": "chiz-pink",
 	"version": "1.1.1",
 	"private": true,
+	"license": "AGPL-3.0-only",
 	"scripts": {
 		"dev": "next dev",
 		"convex-dev": "convex dev",
@@ -10,7 +11,8 @@
 		"lint": "eslint",
 		"content:check": "node --import ./scripts/ts-loader.mjs scripts/content-check.ts",
 		"content:add": "node --import ./scripts/ts-loader.mjs scripts/content-add.ts",
-		"content:import": "node --import ./scripts/ts-loader.mjs scripts/content-import.ts"
+		"content:import": "node --import ./scripts/ts-loader.mjs scripts/content-import.ts",
+		"messages:check": "node --import ./scripts/ts-loader.mjs scripts/messages-check.ts"
 	},
 	"dependencies": {
 		"@dnd-kit/dom": "^0.5.0",

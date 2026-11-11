@@ -6,7 +6,7 @@ import { useConvexAuth, useMutation, useQuery } from "convex/react"
 
 import { api } from "@convex/_generated/api"
 
-import { CloudSyncContext } from "@/contexts"
+import { CloudSyncContext, useT } from "@/contexts"
 import { AlertContainer } from "@/components/layout/Alert"
 import { ModalContainer } from "@/components/layout/Modal/ModalContainer"
 import { SyncConflictModal } from "@/components/layout/SyncConflictModal"
@@ -45,6 +45,7 @@ type RestorePrompt = {
 }
 
 export function CloudSyncProvider({ children }: { children: React.ReactNode }) {
+	const t = useT()
 	const { data: session, status: sessionStatus } = useSession()
 	const accessToken = session?.accessToken
 	const convexAuth = useConvexAuth()
@@ -591,14 +592,14 @@ export function CloudSyncProvider({ children }: { children: React.ReactNode }) {
 
 	if (bothCorrupt) {
 		corruptionMessage =
-			"Both your local data and your cloud backup couldn't be read. To continue, your data on this device will be erased to start fresh."
-		corruptionConfirmLabel = "Erase & Start Fresh"
+			t("sync.corruption.both.message")
+		corruptionConfirmLabel = t("sync.corruption.eraseAndStartFresh")
 		corruptionConfirmAction = () => eraseAndResync()
 		corruptionCancelAction = undefined
 	} else if (remoteCorrupt) {
 		corruptionMessage =
-			"Your cloud backup couldn't be read and may be corrupted. Overwrite it with this device's data, or erase this device to start fresh."
-		corruptionConfirmLabel = "Overwrite Cloud with Local"
+			t("sync.corruption.cloud.message")
+		corruptionConfirmLabel = t("sync.corruption.cloud.confirm")
 		corruptionConfirmAction = () => overwriteCloudWithLocal()
 		corruptionCancelAction = () => eraseAndResync()
 	} else {
@@ -606,11 +607,11 @@ export function CloudSyncProvider({ children }: { children: React.ReactNode }) {
 		// nothing to resync from - treat it the same as no cloud backup.
 		const hasCloudContent = row != null && row.lastUpdated != null
 		corruptionMessage = hasCloudContent
-			? "Some of your local data couldn't be read and may be corrupted. Restore your last cloud backup, or erase this device's copy and pull it fresh."
-			: "Some of your local data couldn't be read and may be corrupted. No cloud backup is available yet, so erase this device's data to start fresh."
+			? t("sync.corruption.local.messageWithCloud")
+			: t("sync.corruption.local.messageNoCloud")
 		corruptionConfirmLabel = hasCloudContent
-			? "Resync from Cloud"
-			: "Erase Local Data"
+			? t("sync.corruption.local.confirmResync")
+			: t("sync.corruption.local.confirmErase")
 		corruptionConfirmAction = hasCloudContent
 			? () => resyncFromCloud()
 			: () => eraseAndResync()
@@ -640,7 +641,7 @@ export function CloudSyncProvider({ children }: { children: React.ReactNode }) {
 						onConfirm={corruptionConfirmAction}
 						confirmLabel={corruptionConfirmLabel}
 						onCancel={corruptionCancelAction}
-						cancelLabel="Erase & Start Fresh">
+						cancelLabel={t("sync.corruption.eraseAndStartFresh")}>
 						{corruptionMessage}
 					</AlertContainer>
 				</ModalContainer>

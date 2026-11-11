@@ -18,13 +18,18 @@ import {
 	getOptimizedImageUrl,
 } from "@/helpers"
 
-import { usePullTrackerContext, useSettingsConfigContext } from "@/contexts"
+import {
+	usePullTrackerContext,
+	useSettingsConfigContext,
+	useT,
+} from "@/contexts"
 
-import pageStyles from "@/app/pulls/page.module.css"
+import pageStyles from "@/app/[lang]/pulls/page.module.css"
 import styles from "./pullsListSection.module.css"
 
 function DiceRoll({ pull }: { pull: MiracleBoxPull | ScarboroughFairPull }) {
 	const { selectedBanner } = usePullTrackerContext()
+	const t = useT()
 
 	if (selectedBanner === "arcsBanner") return null
 
@@ -38,13 +43,13 @@ function DiceRoll({ pull }: { pull: MiracleBoxPull | ScarboroughFairPull }) {
 							width={84}
 							height={32}
 							src={`/pulls/dice_${pull.diceRoll}.png`}
-							alt={`Dice Roll: ${pull.diceRoll}`}
+							alt={t("pulls.list.diceRollAlt", { roll: pull.diceRoll })}
 						/>
 					)
 				case "pointsGift":
-					return <div className={styles.nonDice}>Points Gift</div>
+					return <div className={styles.nonDice}>{t("pulls.list.pointsGift")}</div>
 				case "slumberland":
-					return <div className={styles.nonDice}>Slumberland</div>
+					return <div className={styles.nonDice}>{t("pulls.list.slumberland")}</div>
 			}
 		}
 		return <div className={styles.pullDice}>{pullDice()}</div>
@@ -135,6 +140,7 @@ export function PullsListSection() {
 	const [inputWidth, setInputWidth] = useState<number>(0)
 	const measureRef = useRef<HTMLSpanElement>(null)
 	const [mounted, setMounted] = useState(false)
+	const t = useT()
 
 	useEffect(() => {
 		// eslint-disable-next-line react-hooks/set-state-in-effect
@@ -167,11 +173,11 @@ export function PullsListSection() {
 			} else {
 				bannerNames = [permanentBanner.name]
 			}
-			map.set(pull.uid, bannerNames.length > 0 ? bannerNames : ["Unknown"])
+			map.set(pull.uid, bannerNames.length > 0 ? bannerNames : [t("pulls.list.unknownBanner")])
 		})
 
 		return map
-	}, [pulls, selectedBanner, gachaBanners, server])
+	}, [pulls, selectedBanner, gachaBanners, server, t])
 
 	const arcPages = useMemo(() => {
 		if (selectedBanner !== "arcsBanner") return []
@@ -311,7 +317,7 @@ export function PullsListSection() {
 		<div
 			className={`metallic-panel ${pageStyles.section} ${styles.pullsSection}`}>
 			<div className={pageStyles.sectionTitleRow}>
-				<span className={pageStyles.sectionTitle}>PULLS</span>
+				<span className={pageStyles.sectionTitle}>{t("pulls.list.title")}</span>
 			</div>
 			<div
 				data-bannertype={selectedBanner}
@@ -324,14 +330,14 @@ export function PullsListSection() {
 					{selectedBanner !== "arcsBanner" && (
 						<div
 							className={`${styles.pullDice} ${styles.showDivider}`}>
-							Dice
+							{t("pulls.list.dice")}
 						</div>
 					)}
 					<div
 						className={`${styles.pullName} ${(selectedBanner === "arcsBanner" && styles.showDivider) || ""}`}>
-						Item
+						{t("pulls.list.item")}
 					</div>
-					<div className={styles.pullPity}>Pity</div>
+					<div className={styles.pullPity}>{t("pulls.list.pity")}</div>
 				</div>
 				{pageRows.map((row) => {
 					if (row.type === "divider" || row.type === "placeholder") {
@@ -340,7 +346,15 @@ export function PullsListSection() {
 								data-type={row.type}
 								key={`divider-${row.banners.join("/")}`}
 								className={styles.bannerDivider}>
-								{`${row.type === "divider" ? "End of " : ""}${row.banners.map((banner) => `"${banner}"`).join(" / ")}`}
+								{row.type === "divider"
+									? t("pulls.list.endOf", {
+											banners: row.banners
+												.map((banner) => `"${banner}"`)
+												.join(" / "),
+										})
+									: row.banners
+											.map((banner) => `"${banner}"`)
+											.join(" / ")}
 							</div>
 						)
 					}
@@ -358,7 +372,7 @@ export function PullsListSection() {
 					)
 				})}
 				{pageRows.length <= 0 && (
-					<div className={styles.bannerDivider}>No Pull History</div>
+					<div className={styles.bannerDivider}>{t("pulls.list.noHistory")}</div>
 				)}
 			</div>
 			{mounted && (
@@ -373,7 +387,7 @@ export function PullsListSection() {
 								return Math.max(current - 1, 0)
 							})
 						}}>
-						PREV
+						{t("pulls.list.prev")}
 					</button>
 					<div className={`inset-control ${styles.pageChangeCounter}`}>
 						<span
@@ -421,7 +435,7 @@ export function PullsListSection() {
 								return Math.min(current + 1, maxPages)
 							})
 						}}>
-						NEXT
+						{t("pulls.list.next")}
 					</button>
 				</div>
 			)}

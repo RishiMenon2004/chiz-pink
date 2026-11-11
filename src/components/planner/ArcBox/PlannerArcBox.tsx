@@ -8,14 +8,13 @@ import {
 	useState,
 } from "react"
 import { createPortal } from "react-dom"
-import Link from "next/link"
 
 import { useSortable } from "@dnd-kit/react/sortable"
 
 import type { KeyMouseEventType } from "@/types"
 import type { WeaponRecord } from "@/types/planner"
 
-import { EnumItemLvls, findMaterial, getItemRarityStyle } from "@/data/items"
+import { EnumItemLvls, getItemRarityStyle } from "@/data/items"
 import { findArc } from "@/data/arcs"
 
 import {
@@ -26,10 +25,11 @@ import {
 } from "@/hooks"
 
 import { getArcBannerThemeColor } from "@/helpers/bannerStatus"
+import { getCraftAdjustmentMaterials } from "@/helpers/crafting"
 
-import { PlannerBoxContext, usePlannerMaterialsContext } from "@/contexts"
+import { PlannerBoxContext, usePlannerMaterialsContext, useT } from "@/contexts"
 
-import { AlertContainer, ArcIcon, ModalContainer } from "@/components/layout"
+import { AlertContainer, ArcIcon, LocaleLink, ModalContainer } from "@/components/layout"
 import { ItemPhases } from "../ItemPhases"
 import { PlannerMaterialsList } from "../MaterialsList"
 import { PlannerBoxButtonsContainer } from "@/components/planner/PlannerBoxButtonsContainer"
@@ -51,6 +51,7 @@ export function PlannerArcBox({
 		index,
 	})
 
+	const t = useT()
 	const { inventory, updateInventory } = useInventoryStore()
 	const cumulativeInventory = usePlannerMaterialsContext()
 
@@ -59,17 +60,12 @@ export function PlannerArcBox({
 	const buildAdjustmentMaterials = (): Material[] => {
 		const matList: Material[] = [beetleCoin, ...expDyeSet]
 
-		arcRecord.requiredMaterials.forEach((material) => {
-			const { craftedAmount } =
-				cumulativeInventory[index]?.[material.id] ?? {}
-			if ((craftedAmount ?? 0) > 0) {
-				const craftingMaterial = findMaterial(material.id)
-				craftingMaterial.linkedMaterials?.forEach((mat) => {
-					matList.push(findMaterial(mat))
-				})
-				matList.push(craftingMaterial)
-			}
-		})
+		matList.push(
+			...getCraftAdjustmentMaterials(
+				arcRecord.requiredMaterials,
+				cumulativeInventory[index]
+			)
+		)
 
 		// Crafted materials in the same tier family share linked materials, so
 		// the list repeats them; keep each material's first position.
@@ -246,7 +242,7 @@ export function PlannerArcBox({
 					<div
 						className={`metallic-panel ${plannerBoxStyles.infoContainer} ${styles.infoContainer}`}>
 						<div className={styles.arcInfoTop}>
-							<Link
+							<LocaleLink
 								href={`/arcs/${arc.id}`}
 								className={styles.arcImageContainer}
 								style={
@@ -257,7 +253,7 @@ export function PlannerArcBox({
 											} as CSSProperties)
 										: undefined
 								}
-								aria-label={`View ${arc.name}`}
+								aria-label={t("planner.arcBox.view", { name: arc.name })}
 								onPointerEnter={showProfileTooltip}
 								onPointerLeave={hideProfileTooltip}>
 								<ArcIcon
@@ -266,23 +262,23 @@ export function PlannerArcBox({
 									height={256}
 									loading="eager"
 								/>
-							</Link>
+							</LocaleLink>
 							<div className={styles.arcStatsSection}>
-								<Link
+								<LocaleLink
 									href={`/arcs/${arc.id}`}
 									className={styles.arcStatsName}
 									onPointerEnter={showProfileTooltip}
 									onPointerLeave={hideProfileTooltip}>
 									{arc.name}
-								</Link>
-								<ProfileTooltip offset={{ x: 6, y: 0 }}>View Index</ProfileTooltip>
+								</LocaleLink>
+								<ProfileTooltip offset={{ x: 6, y: 0 }}>{t("planner.arcBox.viewIndex")}</ProfileTooltip>
 								<span
 									className={`${styles.arcStatsLvlContainer} ${styles.currentLvl}`}>
 									<div className={styles.arcPhases}>
 										<ItemPhases lvl={currentLvl} />
 									</div>
 									<span className={styles.arcLevelSectionLabel}>
-										Current Level
+										{t("planner.currentLevel")}
 									</span>
 									<select
 										className="inset-control"
@@ -304,7 +300,7 @@ export function PlannerArcBox({
 										<ItemPhases lvl={targetLvl} />
 									</div>
 									<span className={styles.arcLevelSectionLabel}>
-										Target Level
+										{t("planner.targetLevel")}
 									</span>
 									<select
 										className="inset-control"
@@ -323,7 +319,7 @@ export function PlannerArcBox({
 							</div>
 						</div>
 						<span className={plannerBoxStyles.plannerSectionLabel}>
-							Required Materials
+							{t("planner.requiredMaterials")}
 						</span>
 						<div
 							className={
@@ -342,9 +338,9 @@ export function PlannerArcBox({
 						<AlertContainer
 							type="confirm"
 							onConfirm={onDeleteConfim}
-							cancelLabel="CANCEL"
+							cancelLabel={t("planner.cancel")}
 							onCancel={onDeleteCancel}>
-							{"A-are you sure you want to delete this Arc?"}
+							{t("planner.arcBox.confirmDelete")}
 						</AlertContainer>
 					</ModalContainer>,
 					document.body

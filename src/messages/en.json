@@ -1,0 +1,835 @@
+{
+	"site": {
+		"description": "Your pinkest companion, ascension planner and pull tracker for NTE :3",
+		"ogImageAlt": "Chiz.Pink: Neverness to Everness ascension planner and pull tracker"
+	},
+	"routes": {
+		"home": {
+			"title": "DASHBOARD",
+			"head": "Chiz.Pink: Neverness to Everness Planner & Pull Tracker",
+			"tooltip": "Dashboard"
+		},
+		"checklist": {
+			"title": "CHECKLIST",
+			"head": "NTE Daily & Weekly Checklist",
+			"tooltip": "Checklist",
+			"description": "A Neverness to Everness checklist for daily and weekly tasks that resets on your server's schedule, plus your own custom tasks."
+		},
+		"character_list": {
+			"title": "CHARACTERS",
+			"head": "Neverness to Everness Characters",
+			"tooltip": "Characters",
+			"description": "Every Neverness to Everness Esper with their element, arc type, abilities, passive skills and ascension materials."
+		},
+		"character_info": {
+			"title": "CHARACTER PROFILE",
+			"head": "Character Profile",
+			"tooltip": "Character Profile"
+		},
+		"arc_list": {
+			"title": "ARCS",
+			"head": "Neverness to Everness Arcs",
+			"tooltip": "Arcs",
+			"description": "Every Neverness to Everness arc with its effects, stats and ascension materials."
+		},
+		"arc_info": {
+			"title": "ARC INDEX",
+			"head": "Arc Index",
+			"tooltip": "Arc Index"
+		},
+		"planner": {
+			"title": "PLANNER",
+			"head": "NTE Ascension Planner",
+			"tooltip": "Ascension Planner",
+			"description": "Work out every material you need to level and ascend your Espers and arcs in Neverness to Everness, checked against your inventory."
+		},
+		"arcs": {
+			"title": "ARC PLANNER",
+			"head": "NTE Arc Ascension Planner",
+			"tooltip": "Arc Planner",
+			"description": "Plan arc levels and ascensions in Neverness to Everness and see exactly which materials you still need to farm."
+		},
+		"characters": {
+			"title": "CHARACTER PLANNER",
+			"head": "NTE Character Ascension Planner",
+			"tooltip": "Character Planner",
+			"description": "Plan Esper levels, ascensions and talents in Neverness to Everness and see exactly which materials you still need to farm."
+		},
+		"pulls": {
+			"title": "PULL TRACKER",
+			"head": "NTE Pull & Pity Tracker",
+			"tooltip": "Pull Tracker",
+			"description": "Track your Neverness to Everness pulls and pity on every banner, or import your pull history to see your rate-up wins and losses."
+		},
+		"inventory": {
+			"title": "INVENTORY",
+			"head": "NTE Material Inventory",
+			"tooltip": "Inventory",
+			"description": "Keep count of your Neverness to Everness materials so the ascension planner knows what you still need to farm."
+		},
+		"settings": {
+			"title": "SETTINGS",
+			"head": "Settings",
+			"tooltip": "Settings"
+		},
+		"privacy_policy": {
+			"title": "PRIVACY POLICY",
+			"head": "Privacy Policy",
+			"tooltip": "Privacy Policy",
+			"description": "What Chiz.Pink stores and where: everything stays in your browser unless you turn on Google sync, which is end-to-end encrypted."
+		},
+		"migrate": {
+			"title": "MOVING",
+			"head": "Moving to chiz.pink",
+			"tooltip": "Moving to chiz.pink"
+		},
+		"import_external": {
+			"title": "IMPORT PULLS",
+			"head": "Import Pulls",
+			"tooltip": "Import Pulls"
+		},
+		"content_tool": {
+			"title": "CONTENT TOOL",
+			"head": "Content tool",
+			"tooltip": "Content tool"
+		},
+		"popup-callback": {
+			"title": "Account Linked",
+			"head": "Account Linked",
+			"tooltip": "Account Linked"
+		}
+	},
+	"meta": {
+		"offline": "You're Offline",
+		"character": {
+			"title": "{name}: NTE Character Profile",
+			"notFound": "Character Not Found",
+			"introA": "{name} is a {rank} {element} Esper in Neverness to Everness.",
+			"introAn": "{name} is an {rank} {element} Esper in Neverness to Everness.",
+			"comingSoon": "{intro} Details will be announced soon.",
+			"released": "{intro} View their Abilities, materials and banners.",
+			"imageAlt": "{name} character card"
+		},
+		"arc": {
+			"title": "{name}: NTE Arc Index",
+			"notFound": "Arc Not Found",
+			"introA": "{name} is a {rank} {type} arc in Neverness to Everness.",
+			"introAn": "{name} is an {rank} {type} arc in Neverness to Everness.",
+			"comingSoon": "{intro} Details will be announced soon.",
+			"released": "{intro} View its Stats, passive and materials.",
+			"imageAlt": "{name} arc card"
+		}
+	},
+	"notFound": {
+		"title": "This page could not be found",
+		"goHome": "GO HOME"
+	},
+	"home": {
+		"showcase": {
+			"characters": "Characters",
+			"arcs": "Arcs",
+			"viewAll": "VIEW ALL"
+		},
+		"stamina": {
+			"title": "Stamina",
+			"editMax": "EDIT MAX STAMINA",
+			"currentPixels": "Current Pixels",
+			"currentCityStamina": "Current City Stamina",
+			"pixels": "Pixels",
+			"cityStamina": "City Stamina",
+			"adjust": "Adjust {label}",
+			"empty": "EMPTY",
+			"full": "FULL",
+			"spend": "Spend {amount} {label}",
+			"add": "Add {amount} {label}"
+		},
+		"dailyTasks": {
+			"title": "Daily Tasks",
+			"addToInventory": "Add to Inventory",
+			"quickClaim": "QUICK CLAIM"
+		},
+		"dailyChecklist": {
+			"title": "Daily Checklist",
+			"editTasks": "EDIT TASKS",
+			"editTitle": "Edit Daily Tasks",
+			"visible": "Visible",
+			"hidden": "Hidden",
+			"completed": "Completed",
+			"customTask": "Custom task"
+		},
+		"farming": {
+			"title": "Farming List",
+			"collapse": "COLLAPSE",
+			"emptyPlanner": "Y-you haven't planned anything yet... <link>Start planning</link> and I'll l-list what to farm right here!",
+			"allDone": "Wow, you already have e-everything your plans need! Nothing to farm right now.",
+			"viewAll": "View All (+{count})"
+		},
+		"featured": {
+			"preview": "Preview",
+			"featured": "Featured",
+			"bannerTba": "Banner dates TBA",
+			"bannerEnds": "Banner ends in <b>{time}</b>",
+			"bannerStarts": "Banner starts in <b>{time}</b>"
+		},
+		"featuredArcs": {
+			"artAlt": "{name} arc art",
+			"viewIndex": "View Index"
+		},
+		"featuredCarousel": {
+			"label": "Featured characters",
+			"slidePreview": "{name} - preview",
+			"slideFeatured": "{name} - featured",
+			"artAlt": "{name} full art",
+			"show": "Show {name}",
+			"viewProfile": "View Profile"
+		},
+		"calendar": {
+			"title": "Event Calendar",
+			"today": "TODAY",
+			"eventBannerAlt": "{name} event banner",
+			"btrName": "Beyond the Rails: {name}",
+			"weekdays": {
+				"su": "Su",
+				"mo": "Mo",
+				"tu": "Tu",
+				"we": "We",
+				"th": "Th",
+				"fr": "Fr",
+				"sa": "Sa"
+			},
+			"localTime": "Local Time ({offset})",
+			"serverTime": "Server Time ({offset})"
+		}
+	},
+	"catalog": {
+		"preview": "Preview",
+		"featured": "Featured",
+		"emptyFilters": "I-I can't seem to find anything with those filters. Would you like to <link>try again?</link>",
+		"switch": {
+			"label": "Catalog",
+			"characters": "Characters",
+			"arcs": "Arcs"
+		},
+		"toolbar": {
+			"groupBy": "Group By",
+			"searchPlaceholder": "Search...",
+			"searchLabel": "Search by name",
+			"allRanks": "All Ranks",
+			"allElements": "All Elements",
+			"allArcTypes": "All Arc Types",
+			"byRank": "By Rank",
+			"byElement": "By Element",
+			"byArcType": "By Arc Type",
+			"byType": "By Type",
+			"byFeatured": "By Featured",
+			"byName": "By Name"
+		}
+	},
+	"inventory": {
+		"intro": "Track your materials so the planner knows what you have.",
+		"newUser": "Seems like you're new here. W-would you like to open an account with us? <start>Edit any item to get started.</start>",
+		"toolbar": {
+			"filterBy": "Filter By",
+			"owned": "Owned",
+			"required": "Required",
+			"acquired": "Acquired",
+			"allRanks": "All Ranks",
+			"groupBy": "Group By",
+			"byOwned": "By Owned",
+			"byRequired": "By Required",
+			"byAcquired": "By Acquired",
+			"byType": "By Type",
+			"byRank": "By Rank",
+			"byName": "By Name"
+		},
+		"groups": {
+			"emptyFilter": "I-I can't seem to find anything with those filters. Would you like to <retry>try again?</retry>",
+			"owned": "Owned",
+			"notOwned": "Not Owned",
+			"required": "Required",
+			"acquired": "Acquired",
+			"noOwned": "S-sorry... You don't seem to own anything.",
+			"noRequired": "Hmm, looks like... you don't n-need anything right now.",
+			"nothingToCollect": "N-nothing to collect yet... Plan something, and I'll k-keep track of what you've gathered here!",
+			"nothingCollected": "Y-you haven't finished collecting... a-anything.",
+			"allCollected": "Oh wow! You've collected e-everything you needed!"
+		},
+		"material": {
+			"need": "Need:",
+			"neededFor": "Needed For:",
+			"sources": "Sources:",
+			"sourceAlt": "{name} Source",
+			"more_one": "+{count} More",
+			"more_other": "+{count} More"
+		}
+	},
+	"checklist": {
+		"intro": "Your dailies and weeklies, reset on your server's time.",
+		"resetsIn": "Resets in: {time}",
+		"edit": "EDIT",
+		"editTask": "Edit {title}",
+		"addTask": "ADD TASK",
+		"visible": "Visible",
+		"hidden": "Hidden",
+		"sections": {
+			"daily": "Daily",
+			"weekly": "Weekly",
+			"biWeekly": "Bi-Weekly",
+			"monthly": "Monthly",
+			"seasonal": "Seasonal"
+		},
+		"editTasks": {
+			"button": "EDIT TASKS",
+			"title": "Edit Tasks"
+		},
+		"customTask": {
+			"defaultTitle": "New Title",
+			"editForm": "Edit task",
+			"addForm": "Add task",
+			"titleLabel": "Title",
+			"titlePlaceholder": "Task title",
+			"descriptionLabel": "Description",
+			"descriptionPlaceholder": "Add a description (optional)",
+			"type": "Type",
+			"onEvery": "On every",
+			"nextReset": "Next reset",
+			"resetsOn": "Resets on",
+			"hintSeasonal": "Resets when a new game version goes live.",
+			"hintServerTime": "Resets at 5:00 AM server time.",
+			"delete": "DELETE",
+			"cancel": "CANCEL",
+			"save": "SAVE",
+			"orLastDay": "{day} (or last day)",
+			"ordinal": {
+				"st": "{day}st",
+				"nd": "{day}nd",
+				"rd": "{day}rd",
+				"th": "{day}th"
+			}
+		}
+	},
+	"layout": {
+		"alert": {
+			"yes": "YES",
+			"no": "NO"
+		},
+		"currencyBox": {
+			"icon": "{name} icon",
+			"source": "{name} Source",
+			"need": "Need:",
+			"neededFor": "Needed For:",
+			"annulithProcessing": "Annulith Processing:",
+			"solidDice": "Solid Dice ×{amount}",
+			"sources": "Sources:",
+			"sourceItem": "{name} ×{amount}"
+		},
+		"domainMove": {
+			"title": "We've moved!",
+			"body": {
+				"returned": "Your data has already moved to chiz.pink. Head over there, or keep using this address.",
+				"changed": "You've made changes here since moving. Bring them along to chiz.pink, or keep using this address.",
+				"stillHere": "Your data is still saved at the old address. Bring it along to pick up right where you left off, or keep using this address.",
+				"waiting": "Finish up in the chiz.pink window that just opened.",
+				"failed": "Couldn't move your data automatically. Try again (allow pop-ups if asked), or download a backup and import it from Settings on chiz.pink."
+			},
+			"stay": "STAY HERE",
+			"downloadBackup": "DOWNLOAD BACKUP",
+			"goTo": "GO TO {domain}",
+			"move": "MOVE MY DATA",
+			"reopen": "REOPEN WINDOW",
+			"tryAgain": "TRY AGAIN"
+		},
+		"eventDetails": {
+			"localTime": "(Local Time)",
+			"serverTime": "(Server Time)",
+			"viewCharacter": "VIEW {name}"
+		},
+		"footer": {
+			"copyright": "© <name>Rishi Menon</name> 2026",
+			"links": "<privacy>PRIVACY POLICY</privacy> | Bugs or ideas? Join the <discord>DISCORD</discord> | Made with <nextjs>NextJS</nextjs>",
+			"gameContents": "Game contents belong to <studio>HOTTA STUDIO™</studio>",
+			"aboutLabel": "About Chiz.Pink",
+			"aboutText": "<name>Chiz.Pink</name> is a daily companion app for Neverness to Everness (NTE). Plan your Esper and arc ascensions, track your pulls and pity on every banner, check off your dailies and weeklies, and keep count of your materials. Everything is saved in your browser locally without an account.",
+			"disclaimer": "<about>CHIZ.PINK</about> is an unofficial project and is not affiliated with <studio>HOTTA STUDIO™</studio>"
+		},
+		"infoBox": {
+			"dismiss": "Dismiss"
+		},
+		"installPwa": {
+			"button": "INSTALL APP",
+			"gotIt": "Got it",
+			"iosSafari": {
+				"title": "Install on iPhone/iPad",
+				"step1": "Tap the Share icon in Safari's toolbar.",
+				"step2": "Scroll down and tap 'Add to Home Screen'.",
+				"step3": "Tap 'Add' in the top right corner."
+			},
+			"iosOther": {
+				"title": "Install on iPhone/iPad",
+				"step1": "Tap the Share or menu icon in your browser's toolbar.",
+				"step2": "Tap 'Add to Home Screen'.",
+				"step3": "Confirm by tapping 'Add'."
+			},
+			"macosSafari": {
+				"title": "Install on Mac",
+				"step1": "Click the Share icon in Safari's toolbar.",
+				"step2": "Select 'Add to Dock'.",
+				"step3": "Confirm by clicking 'Add'."
+			},
+			"firefox": {
+				"title": "Install on Firefox",
+				"step1": "Open the browser menu.",
+				"step2": "Tap 'Install' or 'Add to Home screen', if available.",
+				"step3": "If it's missing, use Chrome, Edge, or Safari to install Chiz.Pink instead."
+			},
+			"samsung": {
+				"title": "Install on Samsung Internet",
+				"step1": "Tap the menu icon in the toolbar.",
+				"step2": "Tap 'Add page to'.",
+				"step3": "Select 'Home screen' and confirm."
+			},
+			"other": {
+				"title": "Install Chiz.Pink",
+				"step1": "Open your browser's menu.",
+				"step2": "Look for 'Add to Home Screen' or 'Install App'.",
+				"step3": "Follow the prompts to finish installing."
+			}
+		},
+		"materialEditor": {
+			"icon": "{name} icon"
+		},
+		"modal": {
+			"dismissHint": "Click the empty space to exit"
+		},
+		"quantityInput": {
+			"minusOne": "{name} minus one button",
+			"plusOne": "{name} plus one button"
+		},
+		"reorderBox": {
+			"title": "Adjust Priority"
+		},
+		"sidebar": {
+			"catalog": "Catalog"
+		},
+		"splash": {
+			"joinDiscord": "JOIN THE DISCORD",
+			"welcome": "WELCOME TO <title>CHIZ.PINK!</title>",
+			"subtitle": "Your pinkest companion, Ascension Planner and Pull Tracker for NTE :3",
+			"links": {
+				"dashboard": "<link>Dashboard</link> — Track your stamina, current events, and featured boards.",
+				"checklist": "<link>Checklist</link> — Your handy To-Do list for dailies and weeklies.",
+				"planner": "<link>Planner</link> — Ascension planner for your characters and arcs.",
+				"pulls": "<link>Pulls</link> — Import and track your pull history.",
+				"inventory": "<link>Inventory</link> — Tracker for your in-game items.",
+				"settings": "<link>Settings</link> — Switching from <ntePlanner>NTE Planner</ntePlanner> or <nteWiz>NTEWiz</nteWiz>? Import your data with ease."
+			},
+			"continue": "CONTINUE >>",
+			"recentUpdates": "RECENT UPDATES",
+			"latestVersion": "Latest Version: {version}",
+			"chizAlt": "Chiz Art - Full"
+		},
+		"syncConflict": {
+			"unknown": "Unknown",
+			"useCloud": "Use Cloud Version",
+			"keepLocal": "Keep This Device",
+			"message": "We found existing data in your cloud account. Which version would you like to keep?",
+			"thisDevice": "This Device",
+			"cloud": "Cloud"
+		}
+	},
+	"error": {
+		"title": "Something has gone wrong!",
+		"tryAgain": "TRY AGAIN"
+	},
+	"planner": {
+		"intro": "Plan your Espers and arcs and see which materials you still need.",
+		"currentLevel": "Current Level",
+		"targetLevel": "Target Level",
+		"requiredMaterials": "Required Materials",
+		"cancel": "CANCEL",
+		"switch": {
+			"characters": "Characters",
+			"arcs": "Arcs"
+		},
+		"toolbar": {
+			"addCharacter": "ADD CHARACTER",
+			"addArc": "ADD ARC",
+			"adjustPriority": "ADJUST PRIORITY",
+			"hybridPlanner": "Hybrid Planner"
+		},
+		"empty": {
+			"arcs": "Th-there's nothing planned yet... Press ADD ARC up top, and I'll w-work out what you need!",
+			"characters": "Th-there's nothing planned yet... Press ADD CHARACTER up top, and I'll w-work out what you need!",
+			"both": "Th-there's nothing planned yet... Press ADD CHARACTER or ADD ARC up top, and I'll w-work out what you need!"
+		},
+		"addArc": {
+			"title": "Add Arc",
+			"meta": "{rank} {type} Arc",
+			"search": "Search",
+			"filterType": "Type",
+			"filterRank": "Rank",
+			"cancel": "CANCEL",
+			"add": "ADD"
+		},
+		"addCharacter": {
+			"title": "Add Character",
+			"search": "Search",
+			"preview": "Preview",
+			"featured": "Featured",
+			"rankIcon": "{rank} icon"
+		},
+		"arcBox": {
+			"view": "View {name}",
+			"viewIndex": "View Index",
+			"confirmDelete": "A-are you sure you want to delete this Arc?"
+		},
+		"characterBox": {
+			"view": "View {name}'s profile",
+			"viewProfile": "View Profile",
+			"esperAbilities": "Esper Abilities",
+			"basicAttack": "Basic Attack",
+			"redirectSkill": "Redirect Skill",
+			"ultimate": "Ultimate",
+			"supportSkill": "Support Skill",
+			"passive1": "Passive 1",
+			"passive2": "Passive 2",
+			"passive3": "Passive 3",
+			"lifeSkills": "Life Skills",
+			"lifeSkill1": "Life Skill 1",
+			"lifeSkill2": "Life Skill 2",
+			"confirmDelete": "A-are you sure you want to delete this Character?"
+		},
+		"material": {
+			"clickToEdit": "Click to Edit",
+			"totalNeeded": "Total Needed: <n>{amount}</n>",
+			"ownedAvailable": "Owned: <n>{owned}</n> | Available: <n>{available}</n>",
+			"fromSubstitutes": "(<n>+{amount}</n> from lower EXP substitutes)",
+			"fromCrafting": "(<n>+{amount}</n> from crafting)",
+			"using": "Using:",
+			"sources": "Sources:"
+		},
+		"buttons": {
+			"dragToReorder": "Drag to reorder",
+			"adjustPriority": "Adjust Priority",
+			"enhancementComplete": "Enhancement Complete",
+			"targetAchieved": "You have already achieved your target!",
+			"completeEnhancement": "Complete Enhancement",
+			"deductNote": "Materials will be deducted from your inventory.",
+			"inadequate": "You have inadequate materials.",
+			"confirmLevellingAria": "Confirm Levelling Button",
+			"disableArc": "Disable Arc",
+			"disableCharacter": "Disable Character",
+			"disableArcAria": "Disable Arc Button",
+			"disableCharacterAria": "Disable Character Button",
+			"deleteArc": "Delete Arc",
+			"deleteCharacter": "Delete Character",
+			"deleteArcAria": "Delete Arc Plan Button",
+			"deleteCharacterAria": "Delete Character Plan Button",
+			"deleteWarning": "Be careful! You can't undo this action."
+		}
+	},
+	"profile": {
+		"stats": {
+			"type": "Type",
+			"baseAtk": "Base ATK",
+			"mainStat": "Main Stat",
+			"atk": "ATK",
+			"hp": "HP",
+			"def": "DEF",
+			"element": "Element",
+			"arcType": "Arc Type",
+			"tbd": "TBD"
+		},
+		"arc": {
+			"allArcs": "ALL ARCS",
+			"effect": "Effect",
+			"tierGroup": "Arc tier",
+			"tier": "TIER",
+			"tierN": "Tier {tier}",
+			"placeholderNote": "U-um... I don't have {name}'s stats or materials on file yet. I'll a-add them once it's out, I promise!"
+		},
+		"character": {
+			"allCharacters": "ALL CHARACTERS",
+			"artMale": "{name} (male)",
+			"artFemale": "{name} (female)",
+			"placeholderNoMaterials": "U-um... I don't have {name}'s abilities or materials on file yet. I'll a-add them as soon as they're announced, I promise!",
+			"placeholderPartial": "U-um... I only have part of {name}'s kit on file so far, but the materials are confirmed, so you can start pre-farming!"
+		},
+		"abilities": {
+			"esper": "ESPER ABILITIES",
+			"basicAttack": "Basic Attack",
+			"skill": "Skill",
+			"ultimate": "Ultimate",
+			"support": "Support",
+			"passiveSkills": "Passive Skills",
+			"passive1": "Passive I",
+			"passive2": "Passive II",
+			"passive3": "Passive III",
+			"lifeSkills": "Life Skills",
+			"lifeSkill1": "Life Skill I",
+			"lifeSkill2": "Life Skill II"
+		},
+		"banner": {
+			"expand": "Expand {name} banner",
+			"endsIn": "Ends in <b>{time}</b>",
+			"startsIn": "Starts in <b>{time}</b>"
+		},
+		"materials": {
+			"title": "Materials",
+			"levelFrom": "LV. 1",
+			"levelTo": "LV. {level}",
+			"to": "to",
+			"targetLevel": "Target level",
+			"levelValue": "Level {level}",
+			"empty": "Nothing needed at level 1."
+		}
+	},
+	"pulls": {
+		"intro": "Import your pulls to track pity on every banner.",
+		"banners": {
+			"limited": "Limited Character Board",
+			"arc": "Arc Miracle Box",
+			"permanent": "Strange Encounters"
+		},
+		"rateUp": {
+			"title": "RECENT S-RANKS",
+			"onlyRateUpArcs": "Only show Rate-Up Arcs"
+		},
+		"list": {
+			"title": "PULLS",
+			"dice": "Dice",
+			"item": "Item",
+			"pity": "Pity",
+			"diceRollAlt": "Dice Roll: {roll}",
+			"pointsGift": "Points Gift",
+			"slumberland": "Slumberland",
+			"unknownBanner": "Unknown",
+			"endOf": "End of {banners}",
+			"noHistory": "No Pull History",
+			"prev": "PREV",
+			"next": "NEXT"
+		},
+		"import": {
+			"title": "Import",
+			"description": "Export your pull history using: <link>NTE History Exporter</link>. Then import them here to see your pull history and pity.",
+			"dropHere": "Drop JSON here",
+			"noFile": "no file selected (.json)",
+			"changeFile": "CHANGE FILE",
+			"selectFile": "SELECT FILE",
+			"importButton_one": "Import {count} Pull",
+			"importButton_other": "Import {count} Pulls",
+			"manual": "Manual",
+			"comingSoon": "Coming soon!",
+			"messages": {
+				"parsedArc": "Parsed Arc Miracle Box History",
+				"parsedLimited": "Parsed Limited Character Banner History",
+				"parsedPermanent": "Parsed Permanent Banner History",
+				"unreadableBanner": "Can't read banner type",
+				"unknownServer": "Unrecognised server detected in file. Using configured server instead.",
+				"unknownBannerType": "Unrecognised Banner Type",
+				"readFailed": "Couldn't read the file - {error}",
+				"unrecognisedFile": "File is either unrecognised or does not contain pull history.",
+				"parseFailed": "Error while parsing file",
+				"summary_one": "Imported {count} pull.",
+				"summary_other": "Imported {count} pulls.",
+				"summaryUpdated_one": "(Updated {count} existing pull.)",
+				"summaryUpdated_other": "(Updated {count} existing pulls.)",
+				"summarySkipped_one": "(Skipped {count} existing pull.)",
+				"summarySkipped_other": "(Skipped {count} existing pulls.)"
+			}
+		},
+		"external": {
+			"title": "Import Pulls",
+			"source": "From NTE History Exporter",
+			"loading": "Fetching your pulls...",
+			"failed": "This import link has expired or was already used. Export again, or <link>import the file instead</link>.",
+			"bannerRow_one": "{bannerName}: {count} pull ({server})",
+			"bannerRow_other": "{bannerName}: {count} pulls ({server})",
+			"viewPulls": "View pulls"
+		}
+	},
+	"settings": {
+		"appearance": {
+			"title": "APPEARANCE",
+			"customCursors": "Custom Cursors",
+			"hybridPlanner": "Hybrid Planner"
+		},
+		"behaviour": {
+			"title": "BEHAVIOUR",
+			"autoClaim": "Daily Tasks: Add to Inventory",
+			"calendarServerTime": "Calendar: Server Time",
+			"calendarLocalTime": "Calendar: Local Time"
+		},
+		"language": {
+			"title": "LANGUAGE",
+			"label": "Language",
+			"helpTranslate": "Want Chiz.Pink in your language? Translations are done by players like you, no coding needed.",
+			"translateButton": "Help Translate"
+		},
+		"appraiser": {
+			"title": "APPRAISER",
+			"nickname": "Nickname",
+			"nicknamePlaceholder": "Appraiser",
+			"server": "Server",
+			"servers": {
+				"america": "America",
+				"europe": "Europe",
+				"asia": "Asia",
+				"sea": "SEA"
+			},
+			"characterPixels": "Character Pixels",
+			"maxPixels": "Max Pixels",
+			"cityStamina": "City Stamina",
+			"maxStamina": "Max Stamina"
+		},
+		"pwa": {
+			"title": "INSTALL AS PWA",
+			"description": "Install Chiz.Pink as a native app on any device with a supported browser.",
+			"offlineNote": "Use it on the go or when you're offline too!"
+		},
+		"timers": {
+			"resetIn": "Reset in: {time}",
+			"resetInUnknown": "Reset in: -",
+			"next": "Next: {time}",
+			"full": "Full: {time}"
+		},
+		"shared": {
+			"beta": "BETA",
+			"decrease": "Decrease {name}",
+			"increase": "Increase {name}",
+			"syncStatus": {
+				"idle": "Not Synced",
+				"syncing": "Syncing...",
+				"synced": "Synced",
+				"error": "Sync Failed"
+			}
+		},
+		"cloud": {
+			"title": "CLOUD BACKUP",
+			"notLinked": "Not Linked",
+			"account": "Account:",
+			"lastBackup": "Last Backup:",
+			"noBackup": "NO BACKUP",
+			"signOut": "Sign Out",
+			"unlink": "Unlink & Delete Cloud Data",
+			"description": "Sync your data across devices, end-to-end encrypted. Chiz.Pink never has access to your unencrypted data - only you can decrypt it.",
+			"signIn": "Sign In"
+		},
+		"local": {
+			"title": "LOCAL DATA",
+			"description": "Manage the data stored in your browser's IndexedDB.",
+			"migrating": "Migrating from another app? Import compatible data from: ",
+			"backup": "Backup",
+			"import": "Import Data",
+			"export": "Export Data",
+			"erase": "Erase",
+			"erasePulls": "Pull History",
+			"eraseAll": "All Data"
+		},
+		"modals": {
+			"importOverwrite": {
+				"confirm": "Overwrite",
+				"cancel": "Cancel",
+				"older": "This file contains older information.",
+				"overwritten": "Existing data will be overwritten.",
+				"question": "Are you sure you want to replace your current data?"
+			},
+			"externalPending": {
+				"title": "Import {source} Data",
+				"overwrite": "Overwrite",
+				"merge": "Add to Existing",
+				"mergeInfo": "Add to Existing: Replaces your Inventory. Appends Characters and Arcs onto your existing planner.",
+				"overwriteInfo": "Overwrite: Replaces your Inventory, Characters, and Arcs entirely."
+			},
+			"externalSummary": {
+				"title": "{source} Data Imported",
+				"confirm": "Got it",
+				"inventory": "Inventory: {imported} items imported",
+				"inventorySkipped": "Inventory: {imported} items imported, {skipped} skipped (no match)",
+				"characters": "Characters: {imported} imported",
+				"charactersSkipped": "Characters: {imported} imported, {skipped} skipped (unknown character)",
+				"arcs": "Arcs: {imported} imported",
+				"arcsSkipped": "Arcs: {imported} imported, {skipped} skipped (unknown arc)",
+				"staminaUpdated": "Stamina & Pixels updated",
+				"activitiesUnsupported": "Importing Activity/Event completion isn't supported yet."
+			},
+			"signout": {
+				"title": "Stop Cloud Syncing?",
+				"message": "You will need to sign in again to enable syncing.",
+				"confirm": "Sign Out",
+				"cancel": "Stay Signed In"
+			},
+			"eraseAll": {
+				"title": "Erase all local data?",
+				"message": "This action will erase all data from this device.",
+				"confirm": "Erase",
+				"cancel": "Cancel"
+			},
+			"erasePulls": {
+				"title": "Erase pull history?",
+				"message": "This erases your imported pulls from this device.",
+				"messageSignedIn": "This erases your imported pulls from this device and your cloud backup.",
+				"confirm": "Erase",
+				"cancel": "Cancel"
+			},
+			"eraseSyncChoice": {
+				"title": "Keep your Cloud Backup?",
+				"message": "You will be able to use your backup when you sign back in.",
+				"confirm": "Erase Cloud Backup",
+				"cancel": "Keep Cloud Backup"
+			},
+			"unlink": {
+				"title": "Unlink your Google account?",
+				"message": "This deletes your cloud backup.",
+				"confirm": "Unlink",
+				"cancel": "Keep Linked"
+			}
+		}
+	},
+	"sync": {
+		"corruption": {
+			"eraseAndStartFresh": "Erase & Start Fresh",
+			"both": {
+				"message": "Both your local data and your cloud backup couldn't be read. To continue, your data on this device will be erased to start fresh."
+			},
+			"cloud": {
+				"message": "Your cloud backup couldn't be read and may be corrupted. Overwrite it with this device's data, or erase this device to start fresh.",
+				"confirm": "Overwrite Cloud with Local"
+			},
+			"local": {
+				"messageWithCloud": "Some of your local data couldn't be read and may be corrupted. Restore your last cloud backup, or erase this device's copy and pull it fresh.",
+				"messageNoCloud": "Some of your local data couldn't be read and may be corrupted. No cloud backup is available yet, so erase this device's data to start fresh.",
+				"confirmResync": "Resync from Cloud",
+				"confirmErase": "Erase Local Data"
+			}
+		}
+	},
+	"migrate": {
+		"title": "Moving to chiz.pink",
+		"nothingToMove": "There's nothing to move here. <link>Go home</link>",
+		"status": {
+			"connecting": "Bringing your data over...",
+			"saving": "Saving...",
+			"done": "All moved! You can close this window.",
+			"error": "Something went wrong moving your data. Close this window and try again."
+		},
+		"conflict": {
+			"message": "chiz.pink already has saved data. Which version would you like to keep? Pull history from both is kept either way.",
+			"useOld": "Use old data",
+			"keepCurrent": "Keep chiz.pink data",
+			"current": "chiz.pink",
+			"currentNewer": "chiz.pink (newer)",
+			"old": "Old address",
+			"oldNewer": "Old address (newer)",
+			"unknown": "Unknown"
+		}
+	},
+	"offline": {
+		"title": "Eek! Y-You're offline!",
+		"description": "You should be able to see p-pages that you've a-already visited."
+	},
+	"auth": {
+		"signedIn": "Signed in with Google",
+		"closeWindow": "You may now close this window."
+	}
+}

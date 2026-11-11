@@ -6,7 +6,7 @@ import { getItemRarityStyle } from "@/data/items/item"
 
 import { getRarityName } from "@/helpers/getRarityName"
 
-import pageStyles from "@/app/page.module.css"
+import pageStyles from "@/app/[lang]/page.module.css"
 import styles from "../profile.module.css"
 
 export type ProfileStat = {

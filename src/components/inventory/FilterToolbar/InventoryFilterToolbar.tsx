@@ -11,13 +11,14 @@ import { EnumRarity, EnumMaterialType } from "@/data/items"
 
 import { getRarityName } from "@/helpers"
 
-import { useInventoryFilterContext } from "@/contexts"
+import { useInventoryFilterContext, useT } from "@/contexts"
 
 import { PullOutToolbar } from "@/components/layout"
 
 import styles from "./filterToolbar.module.css"
 
 export function InventoryFilterToolbar() {
+	const t = useT()
 	const {
 		filter,
 		setFilter,
@@ -69,11 +70,11 @@ export function InventoryFilterToolbar() {
 					onChange={handleFilterChange}
 					className={styles.filterSelect}>
 					<option value={"default"} hidden>
-						Filter By
+						{t("inventory.toolbar.filterBy")}
 					</option>
-					<option value={"owned"}>Owned</option>
-					<option value={"required"}>Required</option>
-					<option value={"acquired"}>Acquired</option>
+					<option value={"owned"}>{t("inventory.toolbar.owned")}</option>
+					<option value={"required"}>{t("inventory.toolbar.required")}</option>
+					<option value={"acquired"}>{t("inventory.toolbar.acquired")}</option>
 					{Object.values(EnumMaterialType).map((type) => {
 						if (type !== EnumMaterialType.Currency)
 							return (
@@ -105,7 +106,7 @@ export function InventoryFilterToolbar() {
 					value={rarityFilter}
 					onChange={handleRarityChange}
 					className={styles.filterSelect}>
-					<option value={"default"}>All Ranks</option>
+					<option value={"default"}>{t("inventory.toolbar.allRanks")}</option>
 
 					{Object.entries(EnumRarity)
 						.filter((v) => typeof v[1] === "number")
@@ -141,13 +142,13 @@ export function InventoryFilterToolbar() {
 					onChange={handleGroupChange}
 					className={styles.groupSelect}>
 					<option value={"default"} hidden>
-						Group By
+						{t("inventory.toolbar.groupBy")}
 					</option>
-					<option value={"owned"}>By Owned</option>
-					<option value={"required"}>By Required</option>
-					<option value={"acquired"}>By Acquired</option>
-					<option value={"type"}>By Type</option>
-					<option value={"rarity"}>By Rank</option>
+					<option value={"owned"}>{t("inventory.toolbar.byOwned")}</option>
+					<option value={"required"}>{t("inventory.toolbar.byRequired")}</option>
+					<option value={"acquired"}>{t("inventory.toolbar.byAcquired")}</option>
+					<option value={"type"}>{t("inventory.toolbar.byType")}</option>
+					<option value={"rarity"}>{t("inventory.toolbar.byRank")}</option>
 				</select>
 
 				<span
@@ -171,11 +172,11 @@ export function InventoryFilterToolbar() {
 					value={sort}
 					onChange={handleSortingChange}
 					className={styles.sortSelect}>
-					<option value={"default"}>By Rank</option>
-					<option value={"owned"}>By Owned</option>
-					<option value={"required"}>By Required</option>
-					<option value={"type"}>By Type</option>
-					<option value={"alphabetical"}>By Name</option>
+					<option value={"default"}>{t("inventory.toolbar.byRank")}</option>
+					<option value={"owned"}>{t("inventory.toolbar.byOwned")}</option>
+					<option value={"required"}>{t("inventory.toolbar.byRequired")}</option>
+					<option value={"type"}>{t("inventory.toolbar.byType")}</option>
+					<option value={"alphabetical"}>{t("inventory.toolbar.byName")}</option>
 				</select>
 
 				<span

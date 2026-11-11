@@ -25,4 +25,22 @@ export default defineSchema({
 		iv: v.string(),
 		lastUpdated: v.number(),
 	}).index("by_user", ["userId"]),
+
+	// Encrypted exports waiting to be collected by the browser. Short-lived and
+	// not linked to any account; the key only ever exists in the URL fragment.
+	// The ciphertext sits in its own table because a drop can be close to 1 MiB
+	// and Convex caps a transaction at 16 MiB read: counting or sweeping drops
+	// has to touch these small rows, not the payloads.
+	importDrops: defineTable({
+		dropId: v.string(),
+		payloadId: v.id("importDropPayloads"),
+		expiresAt: v.number(),
+	})
+		.index("by_drop", ["dropId"])
+		.index("by_expiry", ["expiresAt"]),
+
+	importDropPayloads: defineTable({
+		ciphertext: v.string(),
+		iv: v.string(),
+	}),
 })

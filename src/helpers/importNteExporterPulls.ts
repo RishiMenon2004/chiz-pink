@@ -61,28 +61,28 @@ export function parseNteExporterImport(
 		case "Arc_MiracleBox":
 			bannerType = "arc"
 			messages.push({
-				message: "Parsed Arc Miracle Box History",
+				message: "pulls.import.messages.parsedArc",
 				status: "info",
 			})
 			break
 		case "Lottery_LimitedCharacter":
 			bannerType = "limited"
 			messages.push({
-				message: "Parsed Limited Character Banner History",
+				message: "pulls.import.messages.parsedLimited",
 				status: "info",
 			})
 			break
 		case "Lottery_Permanent":
 			bannerType = "permanent"
 			messages.push({
-				message: "Parsed Permanent Banner History",
+				message: "pulls.import.messages.parsedPermanent",
 				status: "info",
 			})
 			break
 		default:
 			bannerType = "unknown"
 			messages.push({
-				message: "Can't read banner type",
+				message: "pulls.import.messages.unreadableBanner",
 				status: "error"
 			})
 			break
@@ -92,8 +92,7 @@ export function parseNteExporterImport(
 		toServer(data.account_region) ?? "unknown"
 	if (server === "unknown") {
 		messages.push({
-			message:
-				"Unrecognised server detected in file. Using configured server instead.",
+			message: "pulls.import.messages.unknownServer",
 			status: "warn",
 		})
 	}
@@ -202,7 +201,7 @@ export function importParsedPulls(result: ImportedPullsResult): ImportMessage[] 
 			bannerType = "arcsBanner"
 			break
 		case "unknown":
-			return [{ message: "Unrecognised Banner Type", status: "error" }]
+			return [{ message: "pulls.import.messages.unknownBannerType", status: "error" }]
 	}
 
 	const pulls: MiracleBoxPull[] | ScarboroughFairPull[] = result.pulls.map(

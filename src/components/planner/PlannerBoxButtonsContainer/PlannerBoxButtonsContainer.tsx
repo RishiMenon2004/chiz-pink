@@ -2,11 +2,12 @@ import { CSSProperties, MouseEvent, ReactNode, Ref } from "react"
 
 import { useTooltip } from "@/hooks"
 
-import { usePlannerBoxContext } from "@/contexts"
+import { usePlannerBoxContext, useT } from "@/contexts"
 
 import styles from "./plannerBoxButtonsContainer.module.css"
 
 const DragPoint = ({ ref }: { ref?: Ref<HTMLDivElement> }) => {
+	const t = useT()
 	const { Tooltip, showTooltip, hideTooltip } = useTooltip()
 	return (
 		<div
@@ -14,8 +15,8 @@ const DragPoint = ({ ref }: { ref?: Ref<HTMLDivElement> }) => {
 			className={styles.dragPoint}
 			onPointerEnter={showTooltip}
 			onPointerLeave={hideTooltip}>
-			<Tooltip offset={{ x: 32, y: 0 }} subText="Drag to reorder">
-				Adjust Priority
+			<Tooltip offset={{ x: 32, y: 0 }} subText={t("planner.buttons.dragToReorder")}>
+				{t("planner.buttons.adjustPriority")}
 			</Tooltip>
 		</div>
 	)
@@ -59,6 +60,7 @@ const PlannerBoxBtn = ({
 }
 
 export function PlannerBoxButtonsContainer() {
+	const t = useT()
 	const {
 		itemRecord,
 		allMaterialsAcquired,
@@ -77,36 +79,42 @@ export function PlannerBoxButtonsContainer() {
 
 		if (targetAchieved) {
 			return [
-				"Enhancement Complete",
-				"You have already achieved your target!",
+				t("planner.buttons.enhancementComplete"),
+				t("planner.buttons.targetAchieved"),
 			]
 		}
 		if (allMaterialsAcquired()) {
 			return [
-				"Complete Enhancement",
-				"Materials will be deducted from your inventory.",
+				t("planner.buttons.completeEnhancement"),
+				t("planner.buttons.deductNote"),
 			]
 		} else {
 			return [
-				<s key="title">Complete Enhancement</s>,
-				"You have inadequate materials.",
+				<s key="title">{t("planner.buttons.completeEnhancement")}</s>,
+				t("planner.buttons.inadequate"),
 			]
 		}
 	}
 
-	const itemType = "uid" in itemRecord ? "Arc" : "Character"
+	const isArc = "uid" in itemRecord
 
 	return (
 		<div className={styles.buttonsContainer}>
 			<PlannerBoxBtn
 				icon={itemRecord.isDisabled ? "hide" : "show"}
-				ariaLabel={`Disable ${itemType} Button`}
+				ariaLabel={
+					isArc
+						? t("planner.buttons.disableArcAria")
+						: t("planner.buttons.disableCharacterAria")
+				}
 				onClick={toggleDisable}>
-				{`Disable ${itemType}`}
+				{isArc
+					? t("planner.buttons.disableArc")
+					: t("planner.buttons.disableCharacter")}
 			</PlannerBoxBtn>
 			<PlannerBoxBtn
 				icon="confirm_plan"
-				ariaLabel="Confirm Levelling Button"
+				ariaLabel={t("planner.buttons.confirmLevellingAria")}
 				toolTipSubtext={enhancmentTooltip()[1]}
 				disabled={!allMaterialsAcquired()}
 				onClick={handleEnhancement}>
@@ -115,10 +123,16 @@ export function PlannerBoxButtonsContainer() {
 			<DragPoint ref={dragRef} />
 			<PlannerBoxBtn
 				icon="delete"
-				ariaLabel={`Delete ${itemType} Plan Button`}
-				toolTipSubtext="Be careful! You can't undo this action."
+				ariaLabel={
+					isArc
+						? t("planner.buttons.deleteArcAria")
+						: t("planner.buttons.deleteCharacterAria")
+				}
+				toolTipSubtext={t("planner.buttons.deleteWarning")}
 				onClick={handleDelete}>
-				{`Delete ${itemType}`}
+				{isArc
+					? t("planner.buttons.deleteArc")
+					: t("planner.buttons.deleteCharacter")}
 			</PlannerBoxBtn>
 		</div>
 	)

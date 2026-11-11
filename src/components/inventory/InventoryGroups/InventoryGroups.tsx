@@ -11,24 +11,27 @@ import { getAggregatedMaterials, usePlannerStore } from "@/hooks/usePlannerStore
 
 import { getRarityName } from "@/helpers"
 
-import { useInventoryFilterContext } from "@/contexts"
+import { useInventoryFilterContext, useT } from "@/contexts"
 
 import { InfoBox } from "@/components/layout"
 import { MaterialGroup } from "../MaterialGroup"
 import { MaterialList } from "../MaterialList"
 
-import styles from "@/app/inventory/page.module.css"
+import styles from "@/app/[lang]/inventory/page.module.css"
 
 export function EmptyFilterNotice({ onReset }: { onReset: () => void }) {
+	const t = useT()
+
 	return (
 		<InfoBox className={styles.emptyFilter} sticker="cry">
 			<div>
-				{
-					"I-I can't seem to find anything with those filters. Would you like to "
-				}
-				<a onClick={onReset} className="btn-anchor">
-					try again?
-				</a>
+				{t.rich("inventory.groups.emptyFilter", {
+					retry: (text) => (
+						<a onClick={onReset} className="btn-anchor">
+							{text}
+						</a>
+					),
+				})}
 			</div>
 		</InfoBox>
 	)
@@ -87,6 +90,7 @@ export function OwnedGroup({
 	materials: Material[]
 	inventoryStore: Inventory
 }) {
+	const t = useT()
 	const ownedMats = materials.filter((mat) => (inventoryStore[mat.id] || 0) > 0)
 	const unownedMats = materials.filter((mat) => !ownedMats.includes(mat))
 
@@ -98,14 +102,14 @@ export function OwnedGroup({
 				isOpen={ownedMats.length > 0}
 				emptyFallback={
 					<InfoBox className={`inset-control ${styles.emptyFilter}`} sticker="cry">
-						<div>S-sorry... You don&apos;t seem to own anything.</div>
+						<div>{t("inventory.groups.noOwned")}</div>
 					</InfoBox>
 				}
-				title="Owned">
+				title={t("inventory.groups.owned")}>
 				<MaterialList materials={ownedMats} inset />
 			</MaterialGroup>
 			{unownedMats.length > 0 && (
-				<MaterialGroup key="unowned" title="Not Owned">
+				<MaterialGroup key="unowned" title={t("inventory.groups.notOwned")}>
 					<MaterialList materials={unownedMats} inset />
 				</MaterialGroup>
 			)}
@@ -120,6 +124,7 @@ export function RequiredGroup({
 	materials: Material[]
 	aggregatedMaterials: AggregateMaterialsType
 }) {
+	const t = useT()
 	const { requiredMaterials, notRequiredMaterials } = materials.reduce(
 		(
 			result: {
@@ -143,15 +148,11 @@ export function RequiredGroup({
 		<>
 			<MaterialGroup
 				key="required"
-				title="Required"
+				title={t("inventory.groups.required")}
 				isEmpty={requiredMaterials.length <= 0}
 				emptyFallback={
 					<InfoBox className={`inset-control ${styles.emptyFilter}`} sticker="rich">
-						<div>
-							{
-								"Hmm, looks like... you don't n-need anything right now."
-							}
-						</div>
+						<div>{t("inventory.groups.noRequired")}</div>
 					</InfoBox>
 				}>
 				<MaterialList materials={requiredMaterials} inset />
@@ -170,6 +171,7 @@ export function AcquiredGroup({
 	inventoryStore: Inventory
 	aggregatedMaterials: AggregateMaterialsType
 }) {
+	const t = useT()
 	const { requiredMaterials, notRequiredMaterials } = materials.reduce(
 		(
 			result: {
@@ -215,7 +217,7 @@ export function AcquiredGroup({
 		<>
 			<MaterialGroup
 				key="acquired"
-				title="Acquired"
+				title={t("inventory.groups.acquired")}
 				isEmpty={acquiredMaterials.length <= 0}
 				isOpen={acquiredMaterials.length > 0}
 				emptyFallback={
@@ -224,8 +226,8 @@ export function AcquiredGroup({
 						sticker={notAcquiredMaterials.length <= 0 ? undefined : "faint"}>
 						<div>
 							{notAcquiredMaterials.length <= 0
-								? "N-nothing to collect yet... Plan something, and I'll k-keep track of what you've gathered here!"
-								: "Y-you haven't finished collecting... a-anything."}
+								? t("inventory.groups.nothingToCollect")
+								: t("inventory.groups.nothingCollected")}
 						</div>
 					</InfoBox>
 				}>
@@ -233,7 +235,7 @@ export function AcquiredGroup({
 			</MaterialGroup>
 			<MaterialGroup
 				key="required"
-				title="Required"
+				title={t("inventory.groups.required")}
 				isEmpty={notAcquiredMaterials.length <= 0}
 				emptyFallback={
 					<InfoBox
@@ -241,8 +243,8 @@ export function AcquiredGroup({
 						sticker={acquiredMaterials.length > 0 ? "rich" : "peek"}>
 						<div>
 							{acquiredMaterials.length > 0
-								? "Oh wow! You've collected e-everything you needed!"
-								: "Hmm, looks like... you don't n-need anything right now."}
+								? t("inventory.groups.allCollected")
+								: t("inventory.groups.noRequired")}
 						</div>
 					</InfoBox>
 				}>

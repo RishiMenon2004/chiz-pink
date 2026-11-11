@@ -11,9 +11,11 @@ import { useChecklistStore, useNow, useSettingsStore } from "@/hooks"
 
 import { getDailyResetBoundaries, stopPropagation } from "@/helpers"
 
+import { useT } from "@/contexts"
+
 import { ModalContainer } from "@/components/layout"
 
-import pageStyles from "@/app/page.module.css"
+import pageStyles from "@/app/[lang]/page.module.css"
 import styles from "./DashDailyChecklist.module.css"
 
 function ChecklistItem({
@@ -23,6 +25,7 @@ function ChecklistItem({
 	item: ActivityData
 	toggle?: boolean
 }) {
+	const t = useT()
 	const { checklist, actions } = useChecklistStore()
 	const tasks = checklist.activities.daily ?? {}
 	const task = tasks[item.id]
@@ -58,10 +61,10 @@ function ChecklistItem({
 				<div className={styles.checklistItemDesc}>
 					{toggle
 						? checked
-							? "Visible"
-							: "Hidden"
+							? t("home.dailyChecklist.visible")
+							: t("home.dailyChecklist.hidden")
 						: checked
-							? "Completed"
+							? t("home.dailyChecklist.completed")
 							: item.description}
 				</div>
 			</span>
@@ -70,6 +73,7 @@ function ChecklistItem({
 }
 
 function CustomChecklistItem({ task }: { task: CustomTask }) {
+	const t = useT()
 	const { settings } = useSettingsStore()
 	const { actions } = useChecklistStore()
 	const now = useNow()
@@ -92,7 +96,9 @@ function CustomChecklistItem({ task }: { task: CustomTask }) {
 			<span className={styles.checklistItemLabel}>
 				<div className={styles.checklistItemName}>{task.title}</div>
 				<div className={styles.checklistItemDesc}>
-					{checked ? "Completed" : task.description || "Custom task"}
+					{checked
+						? t("home.dailyChecklist.completed")
+						: task.description || t("home.dailyChecklist.customTask")}
 				</div>
 			</span>
 		</label>
@@ -100,11 +106,12 @@ function CustomChecklistItem({ task }: { task: CustomTask }) {
 }
 
 export function EditTasksBox({ children }: { children: ReactNode }) {
+	const t = useT()
 	return (
 		<div
 			className={`metallic-panel ${styles.editTasksBox}`}
 			onClick={stopPropagation}>
-			<div className={styles.editTasksTitle}>Edit Daily Tasks</div>
+			<div className={styles.editTasksTitle}>{t("home.dailyChecklist.editTitle")}</div>
 			<div
 				className={`inset-control ${styles.checklistGrid} ${styles.editTasksList}`}>
 				<div className={styles.checklistScroll}>{children}</div>
@@ -114,6 +121,7 @@ export function EditTasksBox({ children }: { children: ReactNode }) {
 }
 
 export function DashDailyChecklist() {
+	const t = useT()
 	const { checklist } = useChecklistStore()
 	const tasks = checklist.activities.daily ?? {}
 
@@ -122,12 +130,12 @@ export function DashDailyChecklist() {
 	return (
 		<div className={`metallic-panel ${pageStyles.section}`}>
 			<div className={pageStyles.sectionTitleRow}>
-				<h2 className={pageStyles.sectionTitle}>Daily Checklist</h2>
+				<h2 className={pageStyles.sectionTitle}>{t("home.dailyChecklist.title")}</h2>
 				<button
 					type="button"
 					className={`pill-button ${pageStyles.sectionButton}`}
 					onClick={() => setShowEditTasksModal(true)}>
-					{"EDIT TASKS"}
+					{t("home.dailyChecklist.editTasks")}
 				</button>
 				{showEditTasksModal &&
 					createPortal(

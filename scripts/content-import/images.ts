@@ -94,7 +94,7 @@ const range = (from: number, to: number, step: number) => {
 // Finds the square of the art the icon was cut from: a coarse search over
 // every size and position on a small copy, then two finer passes around the
 // best match. Sizes and positions are in full-size art pixels.
-async function findIconSquare(icon: Buffer, art: Buffer) {
+export async function findIconSquare(icon: Buffer, art: Buffer) {
 	const { width = 0, height = 0 } = await sharp(art).metadata()
 
 	type Match = { score: number; size: number; x: number; y: number }
@@ -140,6 +140,13 @@ const AWAKEN_FOLDERS: Record<string, string> = {
 	naniya: "Haniya",
 	nanzhu: "Zero",
 	nvzhu: "Zero",
+}
+
+// From 1.5 the outfit art is named after the character's number
+// ("2560_Fashion_1090_0"), which gives no code name, so the awakening folder
+// is listed here by site id.
+const AWAKEN_FOLDERS_BY_ID: Record<string, string> = {
+	elyms: "Yeermu",
 }
 
 // ---------- Fetching ----------
@@ -225,8 +232,8 @@ export async function importImages(folderArg: string) {
 		// the outfit art is named after ("YH_UI_shizhuang_big_mingyin").
 		await save(`background_${character.id}.png`, async () => {
 			const outfitName = illustration?.match(/shizhuang_big_([a-z0-9]+?)\d*\./i)?.[1].toLowerCase()
-			if (!outfitName) return undefined
-			const codeName = AWAKEN_FOLDERS[outfitName] ?? outfitName
+			const codeName = AWAKEN_FOLDERS_BY_ID[character.id] ?? (outfitName && (AWAKEN_FOLDERS[outfitName] ?? outfitName))
+			if (!codeName) return undefined
 			const awakenFolder = awakenFolders.find((name) => name.toLowerCase() === codeName.toLowerCase())
 			if (!awakenFolder) return undefined
 			const files = await listAssets(`/Game/UI/UI/Awaken/${awakenFolder}`)

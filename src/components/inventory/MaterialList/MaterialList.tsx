@@ -4,7 +4,7 @@ import dynamic from "next/dynamic"
 
 import type { Material } from "@/types/item"
 
-import styles from "@/app/inventory/page.module.css"
+import styles from "@/app/[lang]/inventory/page.module.css"
 
 const InventoryMaterialBox = dynamic(
 	() => import("../MaterialBox").then((mod) => mod.MaterialItemBox),

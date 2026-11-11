@@ -11,7 +11,6 @@ import {
 } from "react"
 import { createPortal } from "react-dom"
 import Image from "next/image"
-import Link from "next/link"
 
 import type { DayBoundaryMode } from "@/types/calendar"
 import type { SettingsRecord } from "@/types/settings"
@@ -21,6 +20,10 @@ import { findCharacter } from "@/data/characters"
 
 import { stopPropagation } from "@/helpers"
 import { formatEventDateTime } from "@/helpers/serverTime"
+
+import { useLocale, useT } from "@/contexts"
+
+import { LocaleLink } from "../LocaleLink"
 
 import styles from "./eventDetails.module.css"
 
@@ -123,6 +126,8 @@ function EventDetailsBox({
 	centered,
 	themeOverlay = true,
 }: EventDetailsProps & { eventBoxRef: RefObject<HTMLElement> }) {
+	const t = useT()
+	const locale = useLocale()
 	const [finalSize, setFinalSize] = useState<CSSProperties>(initialStyle)
 
 	useEffect(() => {
@@ -217,29 +222,34 @@ function EventDetailsBox({
 				{formatEventDateTime(
 					eventData.getStartDate(server),
 					dayBoundaryMode,
-					server
+					server,
+					locale
 				)}
 				{" ▸ "}
 				{formatEventDateTime(
 					eventData.getEndDate(server),
 					dayBoundaryMode,
-					server
+					server,
+					locale
 				)}
 				<span
 					style={{
 						textTransform: "capitalize",
 					}}>
+					{" "}
 					{dayBoundaryMode === "local"
-						? " (Local Time)"
-						: " (Server Time)"}
+						? t("layout.eventDetails.localTime")
+						: t("layout.eventDetails.serverTime")}
 				</span>
 			</div>
 			{rateUpCharacter && (
-				<Link
+				<LocaleLink
 					href={`/characters/${rateUpCharacter.id}`}
 					className={`pill-button ${styles.profileLink}`}>
-					{`VIEW ${rateUpCharacter.name.toUpperCase()}`}
-				</Link>
+					{t("layout.eventDetails.viewCharacter", {
+						name: rateUpCharacter.name.toUpperCase(),
+					})}
+				</LocaleLink>
 			)}
 		</div>
 	)

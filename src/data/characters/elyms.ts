@@ -8,14 +8,13 @@ import {
 	talentBirdSet,
 	tearOfTheSea,
 } from "../items/materials"
-import { placeholderAbilities } from "./placeholder"
 
 export const elyms: Character = {
-	isPlaceholder: true,
 	id: "elyms",
 	imageSrc: "elyms.webp",
 	name: "Elyms",
-	description: "Details to be announced.",
+	description:
+		"Beep-beep~ Remember to stay in touch with your good friends!",
 	rarity: EnumRarity.Epic,
 	element: EnumCharacterElement.COSMOS,
 	arcType: EnumArcType.Solid,
@@ -24,40 +23,59 @@ export const elyms: Character = {
 	talentMaterialSet: talentBirdSet,
 	talentBossMaterial: hollowflowerSeed,
 	abilities: {
-		...placeholderAbilities,
 		basicAttack: {
 			name: "Instant Glitch",
 			description: [
 				{
-					section: "Basic Attack: Instant Glitch",
+					section: "Instant Glitch",
 					description:
-						"Elyms has three levels of Connection Strength. At Weak Connection, she operates the Dreamworn Terminal to perform up to <dn>5</> consecutive attacks, dealing <el>Cosmos DMG</>.",
+						"A longing for an immediate response.\nElyms's connection has varying levels of Connection Strength. Controls the Dreamworn Terminal to perform up to five consecutive attacks when she is at the Weak Connection level, dealing <el>Cosmos DMG</>.\nAllows Elyms to activate Intermittent Existence directly for a short time after performing the final instance of Instant Glitch.",
 				},
 				{
-					section: "Basic Attack: Interference",
+					section: "Crosstalk",
 					description:
-						"At Weak Connection, hold Basic Attack during Basic Attack: Instant Glitch to trigger Basic Attack: Interference, dealing <el>Cosmos DMG</>.",
+						"A regret that time cannot fade.\nControls the Dreamworn Terminal to perform up to three consecutive attacks when she is at the Medium Connection or Strong Connection level, dealing <el>Cosmos DMG</>.\nAllows Goodbye to You to be activated directly for a limited time after Elyms performs the final instance of Crosstalk while in Medium Connection or Strong Connection.",
 				},
 				{
-					section: "Basic Attack: Crosstalk",
+					section: "Interference",
 					description:
-						"At Medium Connection or Strong Connection, Elyms operates the Dreamworn Terminal to perform up to <dn>3</> consecutive attacks, dealing <el>Cosmos DMG</>.",
+						"It's still a little blurry…\nHold Basic Attack during Instant Glitch while she is at Weak Connection level to trigger Interference, dealing <el>Cosmos DMG</>.",
+				},
+				{
+					section: "Memory Anchor",
+					description:
+						"Let's… remember it once more…\nPress Aim at any Connection Strength level to cast Memory Anchor, dealing <el>Cosmos DMG</>.",
+				},
+				{
+					section: "Falling Dream",
+					description:
+						"Falling in a dream once again.\nPress Basic Attack while airborne to plunge, dealing <dn>1</> instance of <el>Cosmos DMG</> to an area upon impact. Increases DMG based on fall height, by up to <dn>100%</>.",
+				},
+				{
+					section: "Okay! Shake on It!",
+					description:
+						"High five! Fist bump! Friends for life!\nTriggers when pressing Basic Attack after performing a Critical Dodge, dealing <el>Cosmos DMG</>.",
 				},
 			],
 			maxLvl: 10,
 		},
 		skill: {
-			name: "Intermittent Existence",
+			name: "Counting Electric Sheep",
 			description: [
 				{
-					section: "Redirect Skill: Intermittent Existence",
+					section: "The Ones Who Left",
 					description:
-						"Elyms deals <el>Cosmos DMG</> to targets in an area and raises her Connection Strength to Medium Connection. She also automatically scans for targets within a set range and switches her Ultimate to single-target or AoE form based on how many targets she finds. When her Connection Strength rises from Weak Connection to Medium Connection, she gains the Optical Illusion buff for a set duration.",
+						"Like the one yet to arrive.\nControls the Dreamworn Terminal, dealing <el>Cosmos DMG</> to targets in an area.\nAllows Elyms to cast Intermittent Existence directly within a limited time after casting this skill while at Weak Connection.",
 				},
 				{
-					section: "Redirect Skill: Goodbye to You",
+					section: "Intermittent Existence",
 					description:
-						"Elyms deals <el>Cosmos DMG</> to targets in an area. On cast, she spends all her current Optical Illusion stacks, increasing this skill's DMG Ratio based on the number of stacks spent.\nAfter casting, if Elyms is at Medium Connection, her Connection Strength rises to Strong Connection. She also automatically scans for targets within a set range and switches her Ultimate to single-target or AoE form based on how many targets she finds.",
+						"Continuity is the past pressing ever forward, slowly eroding the future.\nDeals <el>Cosmos DMG</> to targets in an area. Increases her Connection Strength from Weak Connection to Medium Connection after casting Intermittent Existence at Weak Connection. Automatically switches Do You Get Deja Vu between its AoE and single-target forms based on the number of targets within range.\nGrants Optical Illusion for a limited time when her Connection Strength increases from Weak Connection to Medium Connection.",
+				},
+				{
+					section: "Goodbye to You",
+					description:
+						"The unknown world is a midsummer mirage, and even you are a distant phantom.\nAllows Elyms to activate Goodbye to You directly for a short time after performing the final instance of Crosstalk at Medium Connection or Strong Connection.\nDeals <el>Cosmos DMG</> to targets in an area. Consumes all existing Optical Illusion stacks when cast, increasing this skill's DMG Ratio based on the number consumed.\nAfter casting, advances her Connection Strength to Strong Connection if she is in Medium Connection. Automatically scans nearby targets and switches her Ultimate between its AoE and single-target forms based on the number detected.",
 				},
 			],
 			maxLvl: 10,
@@ -66,14 +84,8 @@ export const elyms: Character = {
 			name: "Do You Get Deja Vu",
 			description: [
 				{
-					section: "Ultimate: Do You Get Deja Vu",
 					description:
-						"Elyms's Ultimate, Do You Get Deja Vu, has two forms: single-target and AoE.\nAt Weak Connection, her Ultimate defaults to AoE form.\nAt Medium Connection or Strong Connection, her Ultimate automatically switches to single-target or AoE form based on the target scans from her Redirect Skill and Support Skill.\nHer Ultimate's DMG Ratio is set by her Connection Strength at the time of casting. After casting, her Connection Strength resets to Weak Connection.\nAfter she casts her Ultimate in either form, all team members except Elyms gain an ATK boost based on her own Base ATK for a set duration. Triggering her Ultimate again refreshes the duration.\nElyms also enters the On the Line state. While it lasts, if Elyms is off-field, she automatically follows up with the coordinated attack Remembrance.",
-				},
-				{
-					section: "Coordinated Attack: Remembrance",
-					description:
-						"The single-target or AoE form of Coordinated Attack: Remembrance matches that of the previously cast Ultimate, and its DMG Ratio is based on the Connection Strength at the time that Ultimate was cast.\nDMG dealt by Remembrance counts as follow-up attack DMG.\nOnce Remembrance has been triggered the maximum number of times, the On the Line state ends.\nIf the Ultimate is cast again before On the Line ends, the On the Line state resets.",
+						"The ordinary moments of our lives may be miracles still unfolding.\nWhose fleeting shadow will you glimpse in a scene from yesterday?\n\nFeatures both single-target and AoE forms.\nDefaults to the AoE form at Weak Connection.\nAt Medium Connection or Strong Connection, automatically switches between the two forms based on the target-scan results of the Intermittent Existence, Goodbye to You, and I'm Here while she is active.\nThe DMG Ratio of Do You Get Deja Vu is determined by her Connection Strength at the time of casting. After casting or leaving combat, her Connection Strength resets to Weak Connection.\n\nGrants the whole team an ATK Bonus based on her Base ATK after casting Do You Get Deja Vu, increasing their Follow-up Attack DMG for a limited time.\nGrants the <sh>On the Line</> buff. While this buff is active, <sh>Remembrance</> automatically triggers as a coordinated attack if Elyms is off-field.\n<sh>Remembrance</> takes the same single-target or AoE form as the preceding Do You Get Deja Vu, with its DMG Ratio determined by her Connection Strength when that skill was cast.\n<sh>DMG dealt by Remembrance</> counts as Follow-up Attack DMG.\n<sh>The On the Line</> buff ends when <sh>Remembrance</> reaches its use limit.",
 				},
 			],
 			maxLvl: 10,
@@ -83,10 +95,69 @@ export const elyms: Character = {
 			description: [
 				{
 					description:
-						"Elyms operates the Dreamworn Terminal to deal <el>Cosmos DMG</>.\nAfter casting her Support Skill, if Elyms is at Weak Connection, her Connection Strength rises to Medium Connection. She also automatically scans for targets within a set range and switches her Ultimate to single-target or AoE form based on how many targets she finds.\nWhen Elyms's Connection Strength rises from Weak Connection to Medium Connection, she gains the Optical Illusion buff for a set duration.",
+						"Online! Controls the Dreamworn Terminal, dealing <el>Cosmos DMG</>.\nUpgrades her Weak Connection state to Medium Connection after casting I'm Here while she is active. Checks the number of targets within a certain range and automatically switches Do You Get Deja Vu between its single-target and AoE forms accordingly.\nGrants the Optical Illusion for a limited time when Weak Connection is upgraded to Medium Connection.",
 				},
 			],
 			maxLvl: 10,
+		},
+		passive1: {
+			name: "Relay Node",
+			description: [
+				{
+					description:
+						"<sh>Charge Enhancement:</> Increases the whole team's <el>Cosmos DMG</> by <dn>3.75%</> for <dn>30</>s whenever the active character gains Ultimate Energy, up to <dn>8</> stacks. Resets the duration when triggered again.\n<sh>Remora Enhancement:</> Causes Elyms to reapply Remora to the same target after <dn>7.5</>s whenever an ally applies Remora. Triggers at most once every <dn>7</>s. Remora applied this way cannot trigger this effect again.",
+				},
+			],
+			maxLvl: 1,
+		},
+		passive2: {
+			name: "Pity System",
+			description: [
+				{
+					description: "Increases her Crit DMG by <dn>10%</>.",
+				},
+			],
+			maxLvl: 1,
+		},
+		lifeSkill1: {
+			name: "Social Network",
+			description: [
+				{
+					description:
+						"<sh>Level 1:</> Increases the satisfaction rating for driver-delivered orders by <dn>5</> while Elyms is assigned as a Logistics Assistant at the Logistics Hub.",
+				},
+				{
+					description:
+						"<sh>Level 2:</> Increases the maximum number of partner drivers by <dn>1</> while Elyms is assigned as a Logistics Assistant at the Logistics Hub.",
+				},
+				{
+					description:
+						"<sh>Level 3:</> Increases the satisfaction rating for driver-delivered orders by <dn>5</> while Elyms is assigned as a Logistics Assistant at the Logistics Hub.",
+				},
+				{
+					description:
+						"<sh>Level 4:</> Increases the maximum number of partner drivers by <dn>1</> while Elyms is assigned as a Logistics Assistant at the Logistics Hub.",
+				},
+				{
+					description:
+						"<sh>Level 5:</> Increases the number of drivers you can dispatch at once by <dn>1</> while Elyms is assigned as a Logistics Assistant at the Logistics Hub.",
+				},
+			],
+			maxLvl: 5,
+		},
+		lifeSkill2: {
+			name: "Social Connections",
+			description: [
+				{
+					description:
+						"<sh>Level 1:</> Going, Going, Gone!: Reduces the collectible cost of the <dn>1</>st furniture exchange at the Collection Showcase by <dn>1</>. (Resets each exchange cycle.)",
+				},
+				{
+					description:
+						"<sh>Level 2:</> Effect Changes - Going, Going, Gone!: Reduces the collectible cost of the first <dn>2</> furniture exchanges at the Collection Showcase by <dn>1</>. (Resets each exchange cycle.)",
+				},
+			],
+			maxLvl: 2,
 		},
 	},
 }

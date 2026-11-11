@@ -21,6 +21,8 @@ import {
 import { useInitialSyncPending } from "@/helpers/syncGate"
 import * as memoryStorage from "@/helpers/storage/memoryStorage"
 
+import { useT } from "@/contexts"
+
 import { ModalContainer } from "../Modal/ModalContainer"
 
 import styles from "./domainMoveGate.module.css"
@@ -80,6 +82,7 @@ function getMode(): "redirect" | "move" | "return" {
  * just go to chiz.pink) or keep using this address.
  */
 export function DomainMoveGate() {
+	const t = useT()
 	// Server snapshot is false, so hydration matches the server render and
 	// the real check happens right after.
 	const onOldDomain = useSyncExternalStore(
@@ -176,12 +179,12 @@ export function DomainMoveGate() {
 	const body = {
 		prompt:
 			mode === "return"
-				? "Your data has already moved to chiz.pink. Head over there, or keep using this address."
+				? t("layout.domainMove.body.returned")
 				: memoryStorage.hasItem(MIGRATED_KEY)
-					? "You've made changes here since moving. Bring them along to chiz.pink, or keep using this address."
-					: "Your data is still saved at the old address. Bring it along to pick up right where you left off, or keep using this address.",
-		waiting: "Finish up in the chiz.pink window that just opened.",
-		failed: "Couldn't move your data automatically. Try again (allow pop-ups if asked), or download a backup and import it from Settings on chiz.pink.",
+					? t("layout.domainMove.body.changed")
+					: t("layout.domainMove.body.stillHere"),
+		waiting: t("layout.domainMove.body.waiting"),
+		failed: t("layout.domainMove.body.failed"),
 	}[status]
 
 	return (
@@ -199,7 +202,7 @@ export function DomainMoveGate() {
 					height={72}
 				/>
 				<h2 id="domain-move-title" className={styles.title}>
-					{"We've moved!"}
+					{t("layout.domainMove.title")}
 				</h2>
 				<div className={styles.addresses} aria-hidden="true">
 					<span className={`inset-control ${styles.oldAddress}`}>
@@ -217,7 +220,7 @@ export function DomainMoveGate() {
 							type="button"
 							className="pill-button"
 							onClick={stay}>
-							STAY HERE
+							{t("layout.domainMove.stay")}
 						</button>
 					)}
 					{status === "failed" && (
@@ -225,7 +228,7 @@ export function DomainMoveGate() {
 							type="button"
 							className="pill-button"
 							onClick={backupExport}>
-							DOWNLOAD BACKUP
+							{t("layout.domainMove.downloadBackup")}
 						</button>
 					)}
 					<button
@@ -234,11 +237,13 @@ export function DomainMoveGate() {
 						autoFocus
 						onClick={mode === "return" ? redirectToNewDomain : openPopup}>
 						{mode === "return"
-							? `GO TO ${NEW_DOMAIN_LABEL.toUpperCase()}`
+							? t("layout.domainMove.goTo", {
+									domain: NEW_DOMAIN_LABEL.toUpperCase(),
+								})
 							: {
-									prompt: "MOVE MY DATA",
-									waiting: "REOPEN WINDOW",
-									failed: "TRY AGAIN",
+									prompt: t("layout.domainMove.move"),
+									waiting: t("layout.domainMove.reopen"),
+									failed: t("layout.domainMove.tryAgain"),
 								}[status]}
 					</button>
 				</div>

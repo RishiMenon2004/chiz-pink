@@ -4,6 +4,8 @@ import { useState } from "react"
 
 import { SettingsRecord } from "@/types/settings"
 
+import { useT } from "@/contexts"
+
 import { useNow } from "@/hooks"
 
 import {
@@ -13,7 +15,7 @@ import {
 	getWeeklyResetBoundaries,
 } from "@/helpers"
 
-import styles from "@/app/settings/settings.module.css"
+import styles from "@/app/[lang]/settings/settings.module.css"
 
 const resetDayTimeConfig: Intl.DateTimeFormatOptions = {
 	weekday: "long",
@@ -33,14 +35,17 @@ export function StaminaResetCountdown({
 }: {
 	server: SettingsRecord["userdata"]["server"]
 }) {
+	const t = useT()
 	const now = useNow()
 
 	const content =
 		now === null
-			? "Reset in: -"
+			? t("settings.timers.resetInUnknown")
 			: (() => {
 					const { nextReset } = getWeeklyResetBoundaries(server, now)
-					return `Reset in: ${formatTimeRemaining(nextReset - now)}`
+					return t("settings.timers.resetIn", {
+						time: formatTimeRemaining(nextReset - now),
+					})
 				})()
 
 	return (
@@ -59,6 +64,7 @@ export function PixelRefillCountdown({
 	max: number
 	lastEdited: number
 }) {
+	const t = useT()
 	const now = useNow()
 	// Lazy initializer (not an effect) so this is captured once on mount,
 	// same value on the server and the first client render.
@@ -93,8 +99,8 @@ export function PixelRefillCountdown({
 
 	return (
 		<div className={styles.timerRow}>
-			<div>{`Next: ${nextText}`}</div>
-			<div>{`Full: ${fullText}`}</div>
+			<div>{t("settings.timers.next", { time: nextText })}</div>
+			<div>{t("settings.timers.full", { time: fullText })}</div>
 		</div>
 	)
 }

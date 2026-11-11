@@ -1,5 +1,7 @@
 "use client"
 
+import { useT } from "@/contexts"
+
 import { usePWAInstall } from "@/hooks"
 
 import { InstallPWAButton } from "@/components/layout"
@@ -14,20 +16,20 @@ import {
 } from "../SettingsShared"
 
 export function PWAInstallSection() {
+	const t = useT()
 	const { isStandalone } = usePWAInstall()
 
 	if (isStandalone) return null
 
 	return (
 		<Section>
-			<TitleBar title="INSTALL AS PWA" />
+			<TitleBar title={t("settings.pwa.title")} />
 
 			<Content>
 				<ContentColumn>
-					Install Chiz.Pink as a native app on any device with a
-					supported browser.
+					{t("settings.pwa.description")}
 					<Blockquote>
-						{"Use it on the go or when you're offline too!"}
+						{t("settings.pwa.offlineNote")}
 					</Blockquote>
 				</ContentColumn>
 

@@ -1,6 +1,5 @@
 "use client"
 
-import Link from "next/link"
 import {
 	Dispatch,
 	SetStateAction,
@@ -19,15 +18,18 @@ import { getAggregatedMaterials, usePlannerStore } from "@/hooks/usePlannerStore
 
 import { PlannerInventoryProvider } from "@/helpers/PlannerInventoryProvider"
 
-import { usePlannerMaterialsContext } from "@/contexts"
+import { useT, usePlannerMaterialsContext } from "@/contexts"
 
 import { InfoBox } from "@/components/layout/InfoBox"
 import { PlannerMaterialBox } from "@/components/planner/MaterialBox"
 
-import pageStyles from "@/app/page.module.css"
+import { LocaleLink } from "@/components/layout"
+
+import pageStyles from "@/app/[lang]/page.module.css"
 import styles from "./DashFarmingList.module.css"
 
 export function DashFarmingList() {
+	const t = useT()
 	const { plannerData, isLoaded } = usePlannerStore()
 	const { plannerOrder } = usePlannerOrderStore()
 
@@ -86,7 +88,7 @@ export function DashFarmingList() {
 	return (
 		<div className={`metallic-panel ${pageStyles.section} ${styles.section}`}>
 			<div className={pageStyles.sectionTitleRow}>
-				<h2 className={pageStyles.sectionTitle}>Farming List</h2>
+				<h2 className={pageStyles.sectionTitle}>{t("home.farming.title")}</h2>
 				<button
 					type="button"
 					style={{
@@ -94,7 +96,7 @@ export function DashFarmingList() {
 					}}
 					className={`pill-button ${pageStyles.sectionButton}`}
 					onClick={() => setShowAll(false)}>
-					{"COLLAPSE"}
+					{t("home.farming.collapse")}
 				</button>
 			</div>
 			<div
@@ -124,6 +126,7 @@ function FarmingMaterialsList({
 	columnCount: number
 	showAllState: [boolean, Dispatch<SetStateAction<boolean>>]
 }) {
+	const t = useT()
 	const cumulativeInventory = usePlannerMaterialsContext()
 	const usableInventory = useMemo(
 		() => cumulativeInventory[cumulativeInventory.length - 1] ?? {},
@@ -163,11 +166,13 @@ function FarmingMaterialsList({
 		return (
 			<InfoBox sticker="peek" className={styles.emptyNotice}>
 				<div>
-					{"Y-you haven't planned anything yet... "}
-					<Link href="/planner" className="btn-anchor">
-						Start planning
-					</Link>
-					{" and I'll l-list what to farm right here!"}
+					{t.rich("home.farming.emptyPlanner", {
+						link: (text) => (
+							<LocaleLink href="/planner" className="btn-anchor">
+								{text}
+							</LocaleLink>
+						),
+					})}
 				</div>
 			</InfoBox>
 		)
@@ -177,7 +182,7 @@ function FarmingMaterialsList({
 		return (
 			<InfoBox sticker="rich" className={styles.emptyNotice}>
 				<div>
-					{"Wow, you already have e-everything your plans need! Nothing to farm right now."}
+					{t("home.farming.allDone")}
 				</div>
 			</InfoBox>
 		)
@@ -201,7 +206,7 @@ function FarmingMaterialsList({
 				<button
 					className={styles.viewMore}
 					onClick={() => setShowAll(true)}>
-					<span>View All (+{overflowMaterials})</span>
+					<span>{t("home.farming.viewAll", { count: overflowMaterials })}</span>
 				</button>
 			)}
 		</>

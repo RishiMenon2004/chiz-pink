@@ -9,7 +9,11 @@
  */
 
 import type * as backups from "../backups.js";
+import type * as crons from "../crons.js";
 import type * as gachaBackups from "../gachaBackups.js";
+import type * as http from "../http.js";
+import type * as importDropRefs from "../importDropRefs.js";
+import type * as importDrops from "../importDrops.js";
 
 import type {
   ApiFromModules,
@@ -19,7 +23,11 @@ import type {
 
 declare const fullApi: ApiFromModules<{
   backups: typeof backups;
+  crons: typeof crons;
   gachaBackups: typeof gachaBackups;
+  http: typeof http;
+  importDropRefs: typeof importDropRefs;
+  importDrops: typeof importDrops;
 }>;
 
 /**

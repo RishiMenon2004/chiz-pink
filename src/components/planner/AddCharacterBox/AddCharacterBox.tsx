@@ -22,7 +22,7 @@ import {
 } from "@/helpers/bannerStatus"
 import { fuzzyFilter } from "@/helpers/fuzzyMatch"
 
-import { useAddCharContext } from "@/contexts"
+import { useAddCharContext, useT } from "@/contexts"
 
 import { CharacterAvatar, CharacterElement } from "@/components/layout"
 
@@ -37,6 +37,7 @@ function CharacterListItem({
 	status: ItemStatus
 	onClick: (e: MouseEvent<HTMLElement>) => void
 }) {
+	const t = useT()
 	const themeColor = getCharacterBannerThemeColor(char.id)
 
 	return (
@@ -54,7 +55,9 @@ function CharacterListItem({
 			onClick={onClick}>
 			{status && (
 				<div className={styles.featureTag}>
-					{status === "preview" ? "Preview" : "Featured"}
+					{status === "preview"
+						? t("planner.addCharacter.preview")
+						: t("planner.addCharacter.featured")}
 				</div>
 			)}
 			<div className={styles.charSelectOptionAvatarContainer}>
@@ -81,6 +84,7 @@ export function PlannerAddCharacterBox({
 }: {
 	onCancel: (e: KeyMouseEventType) => void
 }) {
+	const t = useT()
 	const { addCharacter } = useAddCharContext()
 	const { plannerData } = usePlannerStore()
 	const now = useNow()
@@ -129,13 +133,13 @@ export function PlannerAddCharacterBox({
 		<div
 			className={`metallic-panel ${styles.addCharBox}`}
 			onClick={stopPropagation}>
-			<div className={styles.addCharBoxTitle}>Add Character</div>
+			<div className={styles.addCharBoxTitle}>{t("planner.addCharacter.title")}</div>
 			<button className={`pill-button always-hover ${styles.addCharBoxCancel}`} onClick={onCancel} />
 			<input
 				ref={searchRef}
 				type="text"
 				value={searchQuery}
-				placeholder="Search"
+				placeholder={t("planner.addCharacter.search")}
 				enterKeyHint="done"
 				className={`inset-control ${styles.charFilterSearch}`}
 				onChange={handleSearch}
@@ -224,7 +228,7 @@ export function PlannerAddCharacterBox({
 										src={`/icons/ranks/${rankIcon}.png`}
 										width={64}
 										height={64}
-										alt={`${charRank} icon`}
+										alt={t("planner.addCharacter.rankIcon", { rank: charRank })}
 									/>
 								</span>
 							)

@@ -24,6 +24,7 @@ import {
 	transcendentDelusions,
 	yearningDelusions,
 	suspendedDelusions,
+	heterogeneousUnit,
 	waterMoonPick,
 	chargingKnightSparkPlug,
 	confessionalFLowerSeed,
@@ -46,6 +47,7 @@ import {
 	theSecondSelf,
 	suspendedWhispers,
 	hesitationOfTheWaves,
+	expansionCore,
 	dreamlessSeed,
 	goldenAppleSeed,
 	silverAppleSeed,
@@ -90,6 +92,9 @@ import {
 	dayAdrift,
 	rougeEtNoir,
 	shiningIdol,
+	driftingPetals,
+	joyBuoy,
+	handOfY,
 } from "./materials"
 
 const allMaterials: Record<string, Material> = {
@@ -119,6 +124,10 @@ const allMaterials: Record<string, Material> = {
 	nest_guard_fragment: nestGuardFragment,
 	colorful_ticket_stub: colorfulTicketStub,
 	tear_of_the_sea: tearOfTheSea,
+
+	/* conversion */
+	expansion_core: expansionCore,
+	heterogeneous_unit: heterogeneousUnit,
 
 	the_olive_branch: theOliveBranch,
 	white_rose: whiteRose,
@@ -235,6 +244,7 @@ const allRewards: Record<string, Material> = {
 	surfing_among_stars: surfingAmongStars,
 	rouge_et_noir: rougeEtNoir,
 	shining_idol: shiningIdol,
+	drifting_petals: driftingPetals,
 
 	//cosmetics - gliders
 	underboss: underboss,
@@ -247,6 +257,8 @@ const allRewards: Record<string, Material> = {
 	super_specter: superSpecter,
 	the_harbinger: theHarbinger,
 	day_adrift: dayAdrift,
+	joy_buoy: joyBuoy,
+	hand_of_y: handOfY,
 }
 
 export function getAllRewards() {

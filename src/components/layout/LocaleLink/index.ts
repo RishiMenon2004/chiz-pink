@@ -1,0 +1,1 @@
+export { LocaleLink } from "./LocaleLink"

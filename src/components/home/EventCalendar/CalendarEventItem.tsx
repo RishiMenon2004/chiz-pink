@@ -6,7 +6,7 @@ import { CSSProperties, MouseEventHandler, useRef, useState } from "react"
 import { EventData } from "@/data/activities/events"
 import { formatEventDateTime } from "@/helpers/serverTime"
 
-import { useCalendarContext } from "@/contexts"
+import { useCalendarContext, useLocale, useT } from "@/contexts"
 
 import { EventDetails, getInitialDetailsStyle } from "@/components/layout/EventDetails"
 
@@ -19,6 +19,8 @@ export function CalendarEventItem({
 	eventData: EventData
 	previousEnd: number
 }) {
+	const t = useT()
+	const locale = useLocale()
 	const {
 		daySize,
 		msPerDay,
@@ -133,19 +135,20 @@ export function CalendarEventItem({
 				<Image
 					className={styles.eventImage}
 					src={eventImageSrc}
-					alt={`${eventData.name} event banner`}
+					alt={t("home.calendar.eventBannerAlt", { name: eventData.name })}
 					width={1920}
 					height={1080}
 				/>
 			)}
 			<div className={styles.eventName}>
-				{eventData.type === "BTR" && "Beyond the Rails: "}
-				{eventData.name}
+				{eventData.type === "BTR"
+					? t("home.calendar.btrName", { name: eventData.name })
+					: eventData.name}
 			</div>
 			<div className={styles.eventDates}>
-				{formatEventDateTime(start, dayBoundaryMode, server, dateFormat)}
+				{formatEventDateTime(start, dayBoundaryMode, server, locale, dateFormat)}
 				{" ▸ "}
-				{formatEventDateTime(end, dayBoundaryMode, server, dateFormat)}
+				{formatEventDateTime(end, dayBoundaryMode, server, locale, dateFormat)}
 			</div>
 			{showDetails &&
 				detailsInitialStyle &&

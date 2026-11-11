@@ -6,7 +6,7 @@ import type { Ability } from "@/types/character"
 
 import { ProfileAbility } from "../ProfileAbility"
 
-import pageStyles from "@/app/page.module.css"
+import pageStyles from "@/app/[lang]/page.module.css"
 import styles from "../profile.module.css"
 
 export type AbilityEntry = [kind: string, ability: Ability | undefined]
