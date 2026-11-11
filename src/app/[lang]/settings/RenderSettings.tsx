@@ -35,6 +35,7 @@ import {
 	AppearanceSection,
 	BehaviourSection,
 	CloudBackupSection,
+	LanguageSection,
 	LocalDataSection,
 	PWAInstallSection,
 	AppraiserSection,
@@ -196,6 +197,7 @@ export function RenderSettings() {
 			<PWAInstallSection />
 
 			<Section>
+				<LanguageSection />
 				<AppearanceSection />
 				<BehaviourSection />
 			</Section>

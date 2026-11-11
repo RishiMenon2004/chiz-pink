@@ -658,6 +658,12 @@
 			"calendarServerTime": "Calendar: Server Time",
 			"calendarLocalTime": "Calendar: Local Time"
 		},
+		"language": {
+			"title": "LANGUAGE",
+			"label": "Language",
+			"helpTranslate": "Want Chiz.Pink in your language? Translations are done by players like you, no coding needed.",
+			"translateButton": "Help Translate"
+		},
 		"appraiser": {
 			"title": "APPRAISER",
 			"nickname": "Nickname",
