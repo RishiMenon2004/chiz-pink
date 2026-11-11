@@ -2,7 +2,7 @@
 
 import { useSession } from "next-auth/react"
 
-import { useCloudSyncContext, useT } from "@/contexts"
+import { useCloudSyncContext, useLocale, useT } from "@/contexts"
 
 import { signInWithGooglePopup } from "@/helpers"
 
@@ -27,6 +27,7 @@ export function CloudBackupSection({
 	setUnlinkWarning,
 }: CloudBackupSectionProps) {
 	const t = useT()
+	const locale = useLocale()
 	const { data: session, status } = useSession()
 	const cloudSync = useCloudSyncContext()
 
@@ -65,7 +66,7 @@ export function CloudBackupSection({
 						<b>{t("settings.cloud.lastBackup")}</b>
 						<span className={styles.backupTimestamp}>
 							{cloudSync.latestBackupUpdatedAt
-								? formatDate(cloudSync.latestBackupUpdatedAt)
+								? formatDate(cloudSync.latestBackupUpdatedAt, locale)
 								: t("settings.cloud.noBackup")}
 						</span>
 					</ContentRow>

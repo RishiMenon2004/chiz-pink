@@ -5,7 +5,7 @@ import { useEffect, useRef, useState, useSyncExternalStore } from "react"
 import type { MessageKey } from "@/types/messages"
 import type { BackupData } from "@/types/settings"
 
-import { useT } from "@/contexts"
+import { useLocale, useT } from "@/contexts"
 
 import {
 	backupImport,
@@ -19,6 +19,7 @@ import {
 	isMigrationMessage,
 	type MigrationMessage,
 } from "@/helpers/domainMigration"
+import { formatLocale, type Locale } from "@/helpers/locale"
 import { useInitialSyncPending } from "@/helpers/syncGate"
 import * as memoryStorage from "@/helpers/storage/memoryStorage"
 
@@ -34,9 +35,10 @@ type Status = "connecting" | "conflict" | "saving" | "done" | "error"
 
 const noopSubscribe = () => () => {}
 
-function formatTimestamp(value: number | null, unknown: string) {
+function formatTimestamp(value: number | null, unknown: string, locale: Locale) {
 	if (value == null) return unknown
-	return new Date(value).toLocaleString(undefined, {
+	// English keeps the browser's own date format.
+	return new Date(value).toLocaleString(formatLocale(locale), {
 		dateStyle: "medium",
 		timeStyle: "short",
 	})
@@ -59,6 +61,7 @@ const STATUS_TEXT = {
  */
 export function RenderMigrate() {
 	const t = useT()
+	const locale = useLocale()
 	// false: opened directly (not as the old domain's popup), so there's
 	// nothing to receive. null until hydrated - useInitialSyncPending() also
 	// reports the server's "not pending" during hydration, so starting then
@@ -178,6 +181,7 @@ export function RenderMigrate() {
 									{formatTimestamp(
 										localLastUpdated,
 										t("migrate.conflict.unknown"),
+										locale,
 									)}
 								</p>
 							</div>
@@ -191,6 +195,7 @@ export function RenderMigrate() {
 									{formatTimestamp(
 										incoming.lastUpdated,
 										t("migrate.conflict.unknown"),
+										locale,
 									)}
 								</p>
 							</div>

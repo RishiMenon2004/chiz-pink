@@ -6,7 +6,7 @@ import { CSSProperties, MouseEventHandler, useRef, useState } from "react"
 import { EventData } from "@/data/activities/events"
 import { formatEventDateTime } from "@/helpers/serverTime"
 
-import { useCalendarContext, useT } from "@/contexts"
+import { useCalendarContext, useLocale, useT } from "@/contexts"
 
 import { EventDetails, getInitialDetailsStyle } from "@/components/layout/EventDetails"
 
@@ -20,6 +20,7 @@ export function CalendarEventItem({
 	previousEnd: number
 }) {
 	const t = useT()
+	const locale = useLocale()
 	const {
 		daySize,
 		msPerDay,
@@ -145,9 +146,9 @@ export function CalendarEventItem({
 					: eventData.name}
 			</div>
 			<div className={styles.eventDates}>
-				{formatEventDateTime(start, dayBoundaryMode, server, dateFormat)}
+				{formatEventDateTime(start, dayBoundaryMode, server, locale, dateFormat)}
 				{" ▸ "}
-				{formatEventDateTime(end, dayBoundaryMode, server, dateFormat)}
+				{formatEventDateTime(end, dayBoundaryMode, server, locale, dateFormat)}
 			</div>
 			{showDetails &&
 				detailsInitialStyle &&

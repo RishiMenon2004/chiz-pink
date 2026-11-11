@@ -20,6 +20,15 @@ export function isLocale(value: string): value is Locale {
 	return (LOCALES as readonly string[]).includes(value)
 }
 
+/**
+ * The tag to format dates and numbers with. English pages keep the formats
+ * the site has always used (pass "en-US" or "en-GB", or nothing for the
+ * browser's own); other languages use their own conventions.
+ */
+export function formatLocale(locale: Locale, english?: string): string | undefined {
+	return locale === DEFAULT_LOCALE ? english : locale
+}
+
 /** A [lang] route param as a Locale, or the default for anything unknown. */
 export function toLocale(value: string): Locale {
 	return isLocale(value) ? value : DEFAULT_LOCALE

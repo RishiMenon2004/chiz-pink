@@ -10,7 +10,9 @@ import {
 	getWeaponRequiredMaterials,
 } from "@/helpers/getRequiredMaterials"
 
-import { useProfileLevelContext, useT } from "@/contexts"
+import { formatLocale } from "@/helpers/locale"
+
+import { useLocale, useProfileLevelContext, useT } from "@/contexts"
 
 import { MaterialIcon } from "@/components/layout/MaterialIcon"
 
@@ -18,10 +20,6 @@ import { LEVELS, MAX_LEVEL_INDEX } from "../ProfileLevel"
 
 import pageStyles from "@/app/[lang]/page.module.css"
 import styles from "../profile.module.css"
-
-// Fixed locale: the server and the browser must format identically, or the
-// first render won't match (e.g. en-IN groups 21,49,000 vs en-US 2,149,000).
-const amountFormat = new Intl.NumberFormat("en-US")
 
 // Level-up cost only: skills are disabled so the totals match what the
 // planner shows for a character with just its level goal set.
@@ -66,6 +64,10 @@ export function ProfileMaterials({
 	// Inside a ProfileLevelProvider the level is shared with the profile
 	// card; otherwise the slider keeps its own.
 	const t = useT()
+	// A fixed tag, never the browser's: the server and the browser must
+	// format identically, or the first render won't match (en-IN groups
+	// 21,49,000 where en-US has 2,149,000).
+	const amountFormat = new Intl.NumberFormat(formatLocale(useLocale(), "en-US"))
 	const shared = useProfileLevelContext()
 	const [localIndex, setLocalIndex] = useState(MAX_LEVEL_INDEX)
 	const index = shared?.index ?? localIndex

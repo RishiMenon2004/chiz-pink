@@ -10,7 +10,7 @@ import { characterLevelStats } from "@/data/characters"
 import { placeholderAbilities } from "@/data/characters/placeholder"
 
 import { getCharacterBannerThemeColor } from "@/helpers/bannerStatus"
-import type { Locale } from "@/helpers/locale"
+import { formatLocale, type Locale } from "@/helpers/locale"
 import { getTranslator } from "@/helpers/messages"
 
 import { CharacterElement } from "@/components/layout/CharacterAvatar"
@@ -42,9 +42,6 @@ function getArtSrcs(character: Character) {
 		? { female: src, male: counterpart }
 		: null
 }
-
-// Fixed locale so the server and the browser format alike.
-const statFormat = new Intl.NumberFormat("en-US")
 
 // Hand-picked quote colours that win over the banner/art colour.
 const QUOTE_COLOR_OVERRIDES: Record<string, string> = {
@@ -81,6 +78,7 @@ export async function CharacterProfile({
 	locale: Locale
 }) {
 	const t = await getTranslator(locale)
+	const statFormat = new Intl.NumberFormat(formatLocale(locale, "en-US"))
 	const { abilities } = character
 	const backgroundSrc = getBackgroundSrc(character)
 	const quoteColor = await getQuoteColor(character, backgroundSrc)

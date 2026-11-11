@@ -21,7 +21,7 @@ import { findCharacter } from "@/data/characters"
 import { stopPropagation } from "@/helpers"
 import { formatEventDateTime } from "@/helpers/serverTime"
 
-import { useT } from "@/contexts"
+import { useLocale, useT } from "@/contexts"
 
 import { LocaleLink } from "../LocaleLink"
 
@@ -127,6 +127,7 @@ function EventDetailsBox({
 	themeOverlay = true,
 }: EventDetailsProps & { eventBoxRef: RefObject<HTMLElement> }) {
 	const t = useT()
+	const locale = useLocale()
 	const [finalSize, setFinalSize] = useState<CSSProperties>(initialStyle)
 
 	useEffect(() => {
@@ -221,13 +222,15 @@ function EventDetailsBox({
 				{formatEventDateTime(
 					eventData.getStartDate(server),
 					dayBoundaryMode,
-					server
+					server,
+					locale
 				)}
 				{" ▸ "}
 				{formatEventDateTime(
 					eventData.getEndDate(server),
 					dayBoundaryMode,
-					server
+					server,
+					locale
 				)}
 				<span
 					style={{

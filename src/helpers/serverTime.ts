@@ -1,5 +1,7 @@
 import { SettingsRecord } from "@/types/settings"
 
+import { formatLocale, type Locale } from "./locale"
+
 export const SERVER_UTC_OFFSET_HOURS: Record<
 	SettingsRecord["userdata"]["server"],
 	number
@@ -69,6 +71,7 @@ export function formatEventDateTime(
 	timestamp: number,
 	mode: SettingsRecord["behaviour"]["calendar-day-boundary"],
 	server: SettingsRecord["userdata"]["server"],
+	locale: Locale,
 	options: Intl.DateTimeFormatOptions = {
 		month: "short",
 		day: "numeric",
@@ -76,12 +79,13 @@ export function formatEventDateTime(
 		minute: "2-digit",
 	}
 ): string {
+	const tag = formatLocale(locale, "en-US")
 	if (mode === "local") {
-		return new Date(timestamp).toLocaleString("en-US", options)
+		return new Date(timestamp).toLocaleString(tag, options)
 	}
 
 	const offsetMs = SERVER_UTC_OFFSET_HOURS[server] * 60 * 60 * 1000
-	return new Date(timestamp + offsetMs).toLocaleString("en-US", {
+	return new Date(timestamp + offsetMs).toLocaleString(tag, {
 		...options,
 		timeZone: "UTC",
 	})

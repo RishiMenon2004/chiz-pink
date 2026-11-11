@@ -9,8 +9,14 @@ import { EnumMaterialType, findMaterial, getItemRarityStyle } from "@/data/items
 import { useTooltip, useMaterialEditorModal, useInventoryStore } from "@/hooks"
 
 import { getCraftRatio, getLinkedMaterials } from "@/helpers"
+import { formatLocale } from "@/helpers/locale"
 
-import { usePlannerBoxContext, usePlannerMaterialsContext, useT } from "@/contexts"
+import {
+	useLocale,
+	usePlannerBoxContext,
+	usePlannerMaterialsContext,
+	useT,
+} from "@/contexts"
 
 import { MaterialIcon } from "@/components/layout"
 
@@ -24,6 +30,7 @@ export function PlannerMaterialBox({
 	requiredAmount: number
 }) {
 	const t = useT()
+	const numberLocale = formatLocale(useLocale(), "en-US")
 	const {
 		Tooltip,
 		showTooltip,
@@ -81,7 +88,7 @@ export function PlannerMaterialBox({
 			return `~${(displayAmount / 1000000).toFixed(2)}m`
 		}
 
-		return `${isExpMaterial ? "~" : ""}${displayAmount.toLocaleString("en-us")}`
+		return `${isExpMaterial ? "~" : ""}${displayAmount.toLocaleString(numberLocale)}`
 	}
 
 	const disabled = () => {}
@@ -116,15 +123,13 @@ export function PlannerMaterialBox({
 				<div className="tooltip-details">
 					{t.rich("planner.material.totalNeeded", {
 						n: (text) => <span className="font-barlow">{text}</span>,
-						amount: `${isExpMaterial ? "~" : ""}${requiredAmount.toLocaleString("en-us")}`,
+						amount: `${isExpMaterial ? "~" : ""}${requiredAmount.toLocaleString(numberLocale)}`,
 					})}
 					<br />
 					{t.rich("planner.material.ownedAvailable", {
 						n: (text) => <span className="font-barlow">{text}</span>,
-						owned: ownedAmount.toLocaleString("en-us"),
-						available: (availableAmount + craftedAmount).toLocaleString(
-							"en-us"
-						),
+						owned: ownedAmount.toLocaleString(numberLocale),
+						available: (availableAmount + craftedAmount).toLocaleString(numberLocale),
 					})}
 					{usingCrafted && (
 						<em>
@@ -154,7 +159,7 @@ export function PlannerMaterialBox({
 										<div key={id}>
 											{`${craftingMaterial.name}: `}
 											<span className="font-barlow">
-												{`${amount.toLocaleString("en-us")} \u2192 + ${amount / divisor}`}
+												{`${amount.toLocaleString(numberLocale)} \u2192 + ${amount / divisor}`}
 											</span>
 										</div>
 									)

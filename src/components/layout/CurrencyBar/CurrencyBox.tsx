@@ -22,15 +22,16 @@ import { usePlannerStore } from "@/hooks/usePlannerStore"
 import { useTooltip } from "@/hooks/useTooltip"
 import { getAggregatedMaterial } from "@/hooks/usePlannerStore"
 
-import { useT } from "@/contexts"
+import { formatLocale } from "@/helpers/locale"
+
+import { useLocale, useT } from "@/contexts"
 
 import styles from "./currencyBar.module.css"
 import { MaterialIcon } from "../MaterialIcon"
 
-const localeUS = (x: number) => x.toLocaleString("en-US")
-
 export function CurrencyBox({ currency }: { currency: Material }) {
 	const t = useT()
+	const numberLocale = formatLocale(useLocale(), "en-US")
 	const { Tooltip, showTooltip, hideTooltip } = useTooltip()
 
 	const [isEdit, setIsEdit] = useState<boolean>(false)
@@ -146,7 +147,7 @@ export function CurrencyBox({ currency }: { currency: Material }) {
 
 			{showRequirementIndicator && (
 				<div className={styles.requirementIndicator}>
-					{requiredAmount.toLocaleString("en-US")}
+					{requiredAmount.toLocaleString(numberLocale)}
 				</div>
 			)}
 
@@ -168,7 +169,7 @@ export function CurrencyBox({ currency }: { currency: Material }) {
 				ref={valueDispRef}
 				onClick={handleClick}
 				className={`${styles.amountDisplay} ${isEdit ? styles.editing : ""}`}>
-				{localeUS(currencyValue)}
+				{currencyValue.toLocaleString(numberLocale)}
 			</span>
 			<button
 				className={styles.editBtn}

@@ -1,6 +1,8 @@
 "use client"
 
-import { useT } from "@/contexts"
+import { formatLocale, type Locale } from "@/helpers/locale"
+
+import { useLocale, useT } from "@/contexts"
 
 import { AlertContainer } from "@/components/layout/Alert"
 import {
@@ -9,9 +11,10 @@ import {
 } from "@/components/layout/Alert/AlertContainer"
 import { ModalContainer } from "@/components/layout/Modal/ModalContainer"
 
-function formatTimestamp(value: number | null, unknown: string) {
+function formatTimestamp(value: number | null, unknown: string, locale: Locale) {
 	if (value == null) return unknown
-	return new Date(value).toLocaleString(undefined, {
+	// English keeps the browser's own date format.
+	return new Date(value).toLocaleString(formatLocale(locale), {
 		dateStyle: "medium",
 		timeStyle: "short",
 	})
@@ -33,6 +36,7 @@ export function SyncConflictModal({
 	onUseCloud: () => void
 }) {
 	const t = useT()
+	const locale = useLocale()
 
 	return (
 		<ModalContainer>
@@ -46,11 +50,11 @@ export function SyncConflictModal({
 				<div className={alertTextColumns}>
 					<div className={`inset-control ${alertTextBox}`}>
 						<b>{t("layout.syncConflict.thisDevice")}</b>
-						<p>{formatTimestamp(localLastUpdated, t("layout.syncConflict.unknown"))}</p>
+						<p>{formatTimestamp(localLastUpdated, t("layout.syncConflict.unknown"), locale)}</p>
 					</div>
 					<div className={`inset-control ${alertTextBox}`}>
 						<b>{t("layout.syncConflict.cloud")}</b>
-						<p>{formatTimestamp(cloudLastUpdated, t("layout.syncConflict.unknown"))}</p>
+						<p>{formatTimestamp(cloudLastUpdated, t("layout.syncConflict.unknown"), locale)}</p>
 					</div>
 				</div>
 			</AlertContainer>

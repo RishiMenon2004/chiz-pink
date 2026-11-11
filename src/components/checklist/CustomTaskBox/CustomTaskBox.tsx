@@ -8,7 +8,7 @@ import type { MessageKey } from "@/types/messages"
 import { useChecklistStore, useSettingsStore } from "@/hooks"
 
 import { getUpcomingResetDates, stopPropagation } from "@/helpers"
-import type { Locale } from "@/helpers/locale"
+import { formatLocale, type Locale } from "@/helpers/locale"
 
 import { useLocale, useT } from "@/contexts"
 
@@ -53,8 +53,8 @@ function isSameBiWeeklyCycle(a: string, b: string) {
 	return days % 14 === 0
 }
 
-function formatDate(date: string) {
-	return new Date(date).toLocaleDateString("en-GB", {
+function formatDate(date: string, locale: Locale) {
+	return new Date(date).toLocaleDateString(formatLocale(locale, "en-GB"), {
 		weekday: "short",
 		day: "numeric",
 		month: "short",
@@ -288,7 +288,7 @@ export function CustomTaskBox({
 										)
 										.map((date) => (
 											<option key={date} value={date}>
-												{formatDate(date)}
+												{formatDate(date, locale)}
 											</option>
 										))}
 								</select>

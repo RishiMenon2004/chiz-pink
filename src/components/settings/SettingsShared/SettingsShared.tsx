@@ -9,6 +9,8 @@ import {
 
 import type { MessageKey } from "@/types/messages"
 
+import { formatLocale, type Locale } from "@/helpers/locale"
+
 import { useT } from "@/contexts"
 
 import { getCachedInventory } from "@/hooks/useInventoryStore"
@@ -252,8 +254,10 @@ export const dateDisplayConfig: Intl.DateTimeFormatOptions = {
 	hour12: true,
 }
 
-export const formatDate = (date: number): string => {
-	return new Date(date).toLocaleString("en-GB", dateDisplayConfig).toUpperCase()
+export const formatDate = (date: number, locale: Locale): string => {
+	return new Date(date)
+		.toLocaleString(formatLocale(locale, "en-GB"), dateDisplayConfig)
+		.toLocaleUpperCase(locale)
 }
 
 export function hasExistingPlannerData() {
