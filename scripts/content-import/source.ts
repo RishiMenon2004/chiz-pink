@@ -14,8 +14,8 @@ import { EnumItemLvls, EnumRarity } from "@/data/items/item"
 import * as materials from "@/data/items/materials"
 
 export const REPO = "Waifus-Grace/NTE_Assets"
-// 1.4.13 (CN). Bump with --ref, then update this once the result checks out.
-const DEFAULT_REF = "1816e237ffe9edf687dd6942d028e89cce121381"
+// 1.5.4. Bump with --ref, then update this once the result checks out.
+const DEFAULT_REF = "c457cb6a549e5034fa2d8b7a808e8e6b49e8d00e"
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../..")
 export const fromRoot = (...parts: string[]) => path.join(root, ...parts)
@@ -122,7 +122,7 @@ export async function readTable<T>(paths: readonly string[]): Promise<Table<T>> 
 export const TEXT_FILE = ["Localization/en/game.json", "Localization/Game/en/game.json"]
 
 export type Localization = Record<string, Record<string, string>>
-export type LocalizedText = { TableId?: string; Key: string; SourceString: string }
+export type LocalizedText = { TableId?: string; Key: string; SourceString: string; LocalizedString?: string }
 
 export type ModifyRow = { ModifyData: { PropName: string; PropValue: number }[] }
 
@@ -183,6 +183,7 @@ const MATERIAL_IDS: Record<string, string> = {
 	weeklycloneboss_a01_01: "good_boy_stamp",
 	weeklycloneboss_a02_01: "dress_sleeves_of_vanity",
 	weeklycloneboss_a03_01: "eternal_memory",
+	weeklycloneboss_a04_01: "hollowflower_seed",
 }
 
 export const materialFamily = (itemId: string) => itemId.replace(/_lv\d+$/, "")
