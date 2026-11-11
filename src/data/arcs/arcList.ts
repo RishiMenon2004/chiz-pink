@@ -17,44 +17,105 @@ import { EnumArcType } from "./arc"
 
 const allArcs: Record<string, Arc> = {
 	dotted_horizon: {
-		isPlaceholder: true,
 		id: "dotted_horizon",
 		imageSrc: "dotted_horizon.webp",
 		name: "Dotted Horizon",
+		description:
+			"Scenes I've imagined countless times, and a future I never once pictured.",
 		rarity: EnumRarity.Epic,
 		type: EnumArcType.Plasma,
-		baseAtk: 0,
+		baseAtk: 37,
 		mainAttribute: {
-			attribute: EnumStatAttribute.ATK,
-			baseValue: 0,
+			attribute: EnumStatAttribute.CritDMG,
+			baseValue: 0.192,
 		},
-		ascensionMaterialSet1: ascAppleSeedSet,
-		ascensionMaterialSet2: ascAppleSeedSet,
+		ascensionMaterialSet1: ascLiquidDreamSet,
+		ascensionMaterialSet2: ascNumeralSet,
 		effect: {
-			name: "Details to be announced.",
-			description: "Details to be announced.",
-			values: {},
+			name: "Ethereal Bond",
+			description:
+				"Increases Crit DMG by <dn>{0}</>.\nIncreases DMG dealt by the Wearer's summons by <dn>{1}</>. Whenever the Wearer deals <el>Chaos DMG</>, DMG dealt by all summons on the field increases by <dn>{2}</> for <dn>20</>s, up to <dn>10</> stacks. Resets the duration when triggered again.",
+			values: {
+				"1": [
+					{ type: "Percent", value: 0.32 },
+					{ type: "Percent", value: 0.28 },
+					{ type: "Percent", value: 0.02 },
+				],
+				"2": [
+					{ type: "Percent", value: 0.4 },
+					{ type: "Percent", value: 0.35 },
+					{ type: "Percent", value: 0.025 },
+				],
+				"3": [
+					{ type: "Percent", value: 0.48 },
+					{ type: "Percent", value: 0.42 },
+					{ type: "Percent", value: 0.03 },
+				],
+				"4": [
+					{ type: "Percent", value: 0.56 },
+					{ type: "Percent", value: 0.49 },
+					{ type: "Percent", value: 0.035 },
+				],
+				"5": [
+					{ type: "Percent", value: 0.64 },
+					{ type: "Percent", value: 0.56 },
+					{ type: "Percent", value: 0.04 },
+				],
+			},
 		},
 	},
 	
 	echoes_on_hold: {
-		isPlaceholder: true,
 		id: "echoes_on_hold",
 		imageSrc: "echoes_on_hold.webp",
 		name: "Echoes on Hold",
+		description:
+			"Pretend to press the keys, pretend to leave a message, pretend to wait… What comes back?",
 		rarity: EnumRarity.Epic,
 		type: EnumArcType.Solid,
-		baseAtk: 0,
+		baseAtk: 37,
 		mainAttribute: {
-			attribute: EnumStatAttribute.ATK,
-			baseValue: 0,
+			attribute: EnumStatAttribute.CritRate,
+			baseValue: 0.096,
 		},
-		ascensionMaterialSet1: ascAppleSeedSet,
-		ascensionMaterialSet2: ascAppleSeedSet,
+		ascensionMaterialSet1: ascMusicSet,
+		ascensionMaterialSet2: ascSilhouetteSet,
 		effect: {
-			name: "Details to be announced.",
-			description: "Details to be announced.",
-			values: {},
+			name: "Voicemail #Redial",
+			description:
+				"Increases ATK by <dn>{0}</>.\nAfter the Wearer casts their Ultimate, dealing Follow-up Attack DMG 3 times grants the whole team <dn>{1}</> DEF Ignore and grants the Wearer an additional <dn>{2}</> DEF Ignore for <dn>20</>s. Resets the duration when triggered again. This effect is unique within the team.\nGrants the whole team <dn>{3}</> Cosmos Resistance Penetration for <dn>20</>s when the Wearer casts a Redirect Skill. Resets the duration when triggered again. This effect is unique within the team.\nTriggers all the above effects immediately when the Wearer enters combat.",
+			values: {
+				"1": [
+					{ type: "Percent", value: 0.15 },
+					{ type: "Percent", value: 0.12 },
+					{ type: "Percent", value: 0.1 },
+					{ type: "Percent", value: 0.08 },
+				],
+				"2": [
+					{ type: "Percent", value: 0.1875 },
+					{ type: "Percent", value: 0.14 },
+					{ type: "Percent", value: 0.125 },
+					{ type: "Percent", value: 0.11 },
+				],
+				"3": [
+					{ type: "Percent", value: 0.225 },
+					{ type: "Percent", value: 0.16 },
+					{ type: "Percent", value: 0.15 },
+					{ type: "Percent", value: 0.14 },
+				],
+				"4": [
+					{ type: "Percent", value: 0.2625 },
+					{ type: "Percent", value: 0.18 },
+					{ type: "Percent", value: 0.175 },
+					{ type: "Percent", value: 0.17 },
+				],
+				"5": [
+					{ type: "Percent", value: 0.3 },
+					{ type: "Percent", value: 0.2 },
+					{ type: "Percent", value: 0.2 },
+					{ type: "Percent", value: 0.2 },
+				],
+			},
 		},
 	},
 
@@ -76,7 +137,7 @@ const allArcs: Record<string, Arc> = {
 		effect: {
 			name: "Gravitide",
 			description:
-				"Increases Crit Rate by <dn>{0}</>.\nIncreases the wearer's Redirect Skill DMG by <dn>{1}</>. Increases the wearer's Basic Attack DMG by <dn>{1}</> and <el>Lakshana DMG</> by <dn>{2}</> for <dn>15</>s after casting a Redirect Skill.",
+				"Increases Crit Rate by <dn>{0}</>.\nIncreases the wearer's Redirect Skill DMG by <dn>{1}</>. Increases Basic Attack DMG by <dn>{1}</> and <el>Lakshana DMG</> by <dn>{2}</> for <dn>15</>s after casting a Redirect Skill.",
 			values: {
 				"1": [
 					{ type: "Percent", value: 0.15 },
