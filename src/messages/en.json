@@ -739,7 +739,7 @@
 				"overwrite": "Overwrite",
 				"merge": "Add to Existing",
 				"mergeInfo": "Add to Existing: Replaces your Inventory. Appends Characters and Arcs onto your existing planner.",
-				"overwriteInfo": "Overwrite. Replaces your Inventory, Characters, and Arcs entirely."
+				"overwriteInfo": "Overwrite: Replaces your Inventory, Characters, and Arcs entirely."
 			},
 			"externalSummary": {
 				"title": "{source} Data Imported",
