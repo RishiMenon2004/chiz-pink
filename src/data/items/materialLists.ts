@@ -92,6 +92,9 @@ import {
 	dayAdrift,
 	rougeEtNoir,
 	shiningIdol,
+	driftingPetals,
+	joyBuoy,
+	handOfY,
 } from "./materials"
 
 const allMaterials: Record<string, Material> = {
@@ -241,6 +244,7 @@ const allRewards: Record<string, Material> = {
 	surfing_among_stars: surfingAmongStars,
 	rouge_et_noir: rougeEtNoir,
 	shining_idol: shiningIdol,
+	drifting_petals: driftingPetals,
 
 	//cosmetics - gliders
 	underboss: underboss,
@@ -253,6 +257,8 @@ const allRewards: Record<string, Material> = {
 	super_specter: superSpecter,
 	the_harbinger: theHarbinger,
 	day_adrift: dayAdrift,
+	joy_buoy: joyBuoy,
+	hand_of_y: handOfY,
 }
 
 export function getAllRewards() {
