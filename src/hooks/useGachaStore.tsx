@@ -330,19 +330,22 @@ function importSummary(
 	total: number,
 	written: Pull[],
 	existing: Record<string, Pull>
-): ImportMessage {
+): ImportMessage[] {
 	const updated = written.filter((pull) => pull.uid in existing).length
 	const added = written.length - updated
 	const skipped = total - written.length
-	const message =
-		updated > 0 && skipped > 0
-			? "pulls.import.messages.summaryUpdatedSkipped"
-			: updated > 0
-				? "pulls.import.messages.summaryUpdated"
-				: skipped > 0
-					? "pulls.import.messages.summarySkipped"
-					: "pulls.import.messages.summary"
-	return { message, params: { added, updated, skipped }, status: "info" }
+
+	// One message per count, so each gets its own plural form.
+	const messages: ImportMessage[] = [
+		{ message: "pulls.import.messages.summary", params: { count: added }, status: "info" },
+	]
+	if (updated > 0) {
+		messages.push({ message: "pulls.import.messages.summaryUpdated", params: { count: updated }, status: "info" })
+	}
+	if (skipped > 0) {
+		messages.push({ message: "pulls.import.messages.summarySkipped", params: { count: skipped }, status: "info" })
+	}
+	return messages
 }
 
 // Adds imported pulls. Pulls already stored under the same uid are replaced
@@ -386,7 +389,7 @@ export const gachaPullsActions = {
 
 			response.status = "success"
 			response.messages.push(
-				importSummary(pulls.length, filteredPulls, existing)
+				...importSummary(pulls.length, filteredPulls, existing)
 			)
 			return response
 		}
@@ -399,7 +402,7 @@ export const gachaPullsActions = {
 			true
 		)
 		response.messages.push(
-			importSummary(pulls.length, filteredPulls, existing)
+			...importSummary(pulls.length, filteredPulls, existing)
 		)
 
 		if (filteredPulls.length > 0) {

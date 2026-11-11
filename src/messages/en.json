@@ -630,10 +630,12 @@
 				"readFailed": "Couldn't read the file - {error}",
 				"unrecognisedFile": "File is either unrecognised or does not contain pull history.",
 				"parseFailed": "Error while parsing file",
-				"summary": "Imported {added} pulls.",
-				"summaryUpdated": "Imported {added} pulls. (Updated {updated} existing pulls.)",
-				"summarySkipped": "Imported {added} pulls. (Skipped {skipped} existing pulls.)",
-				"summaryUpdatedSkipped": "Imported {added} pulls. (Updated {updated} existing pulls.) (Skipped {skipped} existing pulls.)"
+				"summary_one": "Imported {count} pull.",
+				"summary_other": "Imported {count} pulls.",
+				"summaryUpdated_one": "(Updated {count} existing pull.)",
+				"summaryUpdated_other": "(Updated {count} existing pulls.)",
+				"summarySkipped_one": "(Skipped {count} existing pull.)",
+				"summarySkipped_other": "(Skipped {count} existing pulls.)"
 			}
 		},
 		"external": {
