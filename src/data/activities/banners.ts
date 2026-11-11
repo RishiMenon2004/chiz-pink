@@ -188,7 +188,7 @@ export const characterBanners: CharacterBannerData[] = [
 		getStartDate: getPhase1Start("version1_5"),
 		getEndDate: getPhase1End("version1_5"),
 		eventImage: "version1.5/gacha_elyms.webp",
-		themeColor: "#6a7fe0",
+		themeColor: "#efc4fe",
 		yOffset: "20%",
 	},
 	{
