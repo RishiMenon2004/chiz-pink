@@ -59,8 +59,10 @@ Styling's just plain CSS Modules, nothing fancy.
 ## Contribution
 
 **Translations are welcome!** Chiz.Pink is getting multi-language support, and
-translations will be done through a hosted translation tool, no coding needed.
-See [`CONTRIBUTING.md`](CONTRIBUTING.md) for details.
+translations are done on [Weblate](https://hosted.weblate.org/engage/chiz-pink/),
+no coding needed. See [`CONTRIBUTING.md`](CONTRIBUTING.md) for details.
+
+[![Translation status](https://hosted.weblate.org/widget/chiz-pink/svg-badge.svg)](https://hosted.weblate.org/engage/chiz-pink/)
 
 As for the code, I'm not looking for any contributors at the moment. The code was not
 written with contributors in mind. I'm just a guy :standing_person: I just do what works.

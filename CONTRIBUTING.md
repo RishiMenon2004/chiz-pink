@@ -9,8 +9,8 @@ language. English (`src/messages/en.json`) is the source and all other
 languages are translated from it.
 
 You don't need to touch the code or GitHub to help. Translations are done
-through Weblate, a website where you pick your language and translate
-strings one at a time. *(Link coming soon.)*
+through [Weblate](https://hosted.weblate.org/engage/chiz-pink/), a website
+where you pick your language and translate strings one at a time.
 
 A few things to keep in mind:
 
