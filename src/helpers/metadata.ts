@@ -5,7 +5,7 @@ import type { EnumRarity } from "@/data/items/item"
 import { RoutesData, type RoutePath } from "@/data/routes"
 
 import { getRarityName } from "./getRarityName"
-import { toLocale } from "./locale"
+import { LOCALES, localizePath, toLocale, type Locale } from "./locale"
 import { getTranslator } from "./messages"
 
 // Hardcoded rather than read from Vercel's env, so canonicals point here
@@ -17,6 +17,24 @@ export const SITE_NAME = "Chiz.Pink"
 // Share preview for pages without their own image. Its alt text is the
 // site.ogImageAlt message.
 export const SITE_OG_IMAGE_URL = "/layout/site-og.png"
+
+/** og:locale wants language_TERRITORY: "en_US", "pt_BR". */
+export function ogLocale(locale: Locale) {
+	const tag: string = locale
+	return tag === "en" ? "en_US" : tag.replace("-", "_")
+}
+
+/**
+ * hreflang links: the same page in every language, plus x-default (the
+ * unprefixed English URL, which the proxy sends to the visitor's own
+ * language). Also used by the sitemap.
+ */
+export function languageAlternates(path: string, base = "") {
+	return Object.fromEntries([
+		...LOCALES.map((locale) => [locale, base + localizePath(path, locale)]),
+		["x-default", base + path],
+	])
+}
 
 /** t() for metadata functions, from the page's [lang] param. */
 export function getMetadataTranslator(lang: string) {
@@ -64,16 +82,18 @@ export function buildMetadata(
 	// Pages under the root get the "| Chiz.Pink" template; the home page
 	// doesn't, so its title is already the full one.
 	const fullTitle = path === "/" ? title : `${title} | ${SITE_NAME}`
+	const url = localizePath(path, t.locale)
 
 	return {
 		title: path === "/" ? { absolute: title } : title,
 		description,
-		alternates: { canonical: path },
+		alternates: { canonical: url, languages: languageAlternates(path) },
 		openGraph: {
 			type: "website",
-			locale: "en_US",
+			locale: ogLocale(t.locale),
+			alternateLocale: LOCALES.filter((l) => l !== t.locale).map(ogLocale),
 			siteName: SITE_NAME,
-			url: path,
+			url,
 			title: fullTitle,
 			description,
 			images,

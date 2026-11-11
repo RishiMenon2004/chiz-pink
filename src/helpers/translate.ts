@@ -41,6 +41,7 @@ export function createTranslator(messages: Messages, locale: Locale): Translate 
 
 	const t = ((key, params) => resolve(key, params)) as Translate
 	t.rich = (key, params) => wrapTags(resolve(key, params), params)
+	t.locale = locale
 	return t
 }
 

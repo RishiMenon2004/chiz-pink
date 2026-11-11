@@ -6,6 +6,7 @@ import { isLocale, LOCALES } from "@/helpers/locale"
 import { getMessages } from "@/helpers/messages"
 import {
 	getMetadataTranslator,
+	ogLocale,
 	SITE_NAME,
 	SITE_URL,
 	siteOgImage,
@@ -72,7 +73,7 @@ export async function generateMetadata({
 		// one entirely. No url here: it would mark every page as the home page.
 		openGraph: {
 			type: "website",
-			locale: "en_US",
+			locale: ogLocale(t.locale),
 			siteName: SITE_NAME,
 			title: SITE_NAME,
 			description,

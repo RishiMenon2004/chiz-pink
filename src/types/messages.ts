@@ -2,6 +2,8 @@ import type { ReactNode } from "react"
 
 import type en from "@/messages/en.json"
 
+import type { Locale } from "@/helpers/locale"
+
 // English is the source language: its file defines every key, and other
 // languages may leave any of them out (they fall back to English).
 export type Messages = typeof en
@@ -44,4 +46,6 @@ export type Translate = {
 	(key: MessageKey, params?: MessageParams): string
 	/** For text with markup inside: "Read the <link>privacy policy</link>". */
 	rich(key: MessageKey, params: RichParams): ReactNode
+	/** The language this translator was made for. */
+	locale: Locale
 }

@@ -3,7 +3,8 @@ import type { MetadataRoute } from "next"
 import { getAllCharactersList } from "@/data/characters"
 import { getAllArcsList } from "@/data/arcs"
 
-import { SITE_URL } from "@/helpers/metadata"
+import { LOCALES } from "@/helpers/locale"
+import { languageAlternates, SITE_URL } from "@/helpers/metadata"
 
 export default function sitemap(): MetadataRoute.Sitemap {
 	const baseUrl = SITE_URL
@@ -88,5 +89,15 @@ export default function sitemap(): MetadataRoute.Sitemap {
 		priority: 0.7,
 	}))
 
-	return [...staticRoutes, ...characterRoutes, ...arcRoutes]
+	// One entry per language, each listing all of them (hreflang).
+	return [...staticRoutes, ...characterRoutes, ...arcRoutes].flatMap((entry) => {
+		const path = entry.url.slice(baseUrl.length) || "/"
+		const languages = languageAlternates(path, baseUrl)
+
+		return LOCALES.map((locale) => ({
+			...entry,
+			url: languages[locale],
+			alternates: { languages },
+		}))
+	})
 }
