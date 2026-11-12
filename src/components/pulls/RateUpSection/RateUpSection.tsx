@@ -11,7 +11,7 @@ import { findPullItem, isArcRateUp, isScarboroughPull } from "@/helpers"
 
 import { RateUpPull, usePullTrackerContext, useT } from "@/contexts"
 
-import { ArcIcon, CharacterAvatar } from "@/components/layout"
+import { ArcIcon, CharacterAvatar, InfoBox } from "@/components/layout"
 
 import pageStyles from "@/app/[lang]/pulls/page.module.css"
 import styles from "./rateUpSection.module.css"
@@ -66,6 +66,8 @@ export function RateUpSection() {
 		permanentBanner: t("pulls.banners.permanent"),
 	}
 
+	const hasPulls = Object.values(rateUpPulls).some((pulls) => pulls.length > 0)
+
 	return (
 		<div
 			className={`metallic-panel ${pageStyles.section} ${styles.rateupSection}`}>
@@ -80,6 +82,11 @@ export function RateUpSection() {
 				</label>
 			</div>
 			<div className={`inset-control ${styles.rateupBannerList}`}>
+				{!hasPulls && (
+					<InfoBox sticker="peek" className={styles.emptyNotice}>
+						<div>{t("pulls.rateUp.empty")}</div>
+					</InfoBox>
+				)}
 				{(
 					Object.entries(rateUpPulls) as [
 						keyof PullsRecord,

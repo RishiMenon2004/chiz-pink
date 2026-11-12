@@ -1,0 +1,13 @@
+.statsSection {
+	grid-column: 1 / -1;
+
+	.statsContent {
+		border-radius: 1.25rem;
+		padding: 0.5rem;
+	}
+
+	/* The shared InfoBox is spaced for a full page; here it fills the panel. */
+	.notice {
+		margin: 0.5rem;
+	}
+}

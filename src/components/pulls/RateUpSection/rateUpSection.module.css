@@ -1,6 +1,11 @@
 .rateupSection {
 	grid-column: 1 / -1;
 
+	/* The shared InfoBox is spaced for a full page; here it fills the list. */
+	.emptyNotice {
+		margin: 0.5rem;
+	}
+
 	.rateupBannerList {
 		border-radius: 1.25rem;
 		background-color: var(--interactive-bg);

@@ -593,7 +593,12 @@
 		},
 		"rateUp": {
 			"title": "RECENT S-RANKS",
-			"onlyRateUpArcs": "Only show Rate-Up Arcs"
+			"onlyRateUpArcs": "Only show Rate-Up Arcs",
+			"empty": "Y-you haven't pulled any S-Ranks yet... I'll show them here as soon as you do!"
+		},
+		"stats": {
+			"title": "STATS",
+			"comingSoon": "C-coming soon! I'm still counting everything up..."
 		},
 		"list": {
 			"title": "PULLS",

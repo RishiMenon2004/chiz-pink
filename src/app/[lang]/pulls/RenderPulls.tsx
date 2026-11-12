@@ -33,6 +33,7 @@ import {
 	PullsListSection,
 	ImportSection,
 	RateUpSection,
+	StatsSection,
 } from "@/components/pulls"
 
 import styles from "./page.module.css"
@@ -202,6 +203,7 @@ export function RenderPulls() {
 					<PullsListSection />
 					<ImportSection />
 					<RateUpSection />
+					<StatsSection />
 				</PullTrackerContext.Provider>
 			</main>
 		</>
