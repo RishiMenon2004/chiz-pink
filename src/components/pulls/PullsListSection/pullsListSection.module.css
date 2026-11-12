@@ -85,6 +85,12 @@
 	overflow: hidden;
 
 	flex-grow: 1;
+
+	/* The last banner box already stops short of its label row's bottom, so
+	   less padding leaves the same gap below it as beside it. */
+	&:not([data-bannertype="permanentBanner"]) {
+		padding-bottom: 0.125rem;
+	}
 }
 
 .listHeader {
@@ -312,6 +318,33 @@
 	}
 }
 
+/* A run of pulls made on one banner, closed by its label. It shares the
+   list's grid, so its rows line up with every other row. */
+.bannerGroup {
+	grid-column: 1 / -1;
+	display: grid;
+	grid-template-columns: subgrid;
+	grid-template-rows: subgrid;
+
+	position: relative;
+	isolation: isolate;
+
+	&::before {
+		content: "";
+		position: absolute;
+		/* As much room above the first pull as beside it. The label row at the
+		   bottom has room to spare, so the box ends a little inside it and
+		   stays clear of the next box's top. */
+		inset: -0.25rem -0.25rem 0.125rem;
+		z-index: -1;
+
+		border-radius: 1rem;
+		background-color: color-mix(in srgb, var(--group-color) 30%, transparent);
+		outline: 1px solid color-mix(in srgb, var(--group-color) 70%, transparent);
+		outline-offset: -1px;
+	}
+}
+
 .bannerDivider {
 	align-self: center;
 	grid-column: 1 / -1;
@@ -330,9 +363,7 @@
 	letter-spacing: 0.05em;
 	text-transform: uppercase;
 
-	--mix-percent: 60%;
-
-	background-color: color-mix(in srgb, var(--pink) var(--mix-percent), var(--interactive-bg));
+	background-color: color-mix(in srgb, var(--pink) 60%, var(--interactive-bg));
 
 	outline: 1px solid var(--outline-color);
 	outline-offset: -1px;
@@ -341,13 +372,12 @@
 	-webkit-text-stroke: 2px black;
 
 	user-select: none;
+}
 
-	&[data-type="placeholder"] {
-		opacity: 0.9;
-		--mix-percent: 40%;
-		outline-style: double;
-		outline-width: 3px;
-	}
+/* A banner box's label: the divider's text, sitting straight on the box. */
+.groupLabel {
+	background-color: transparent;
+	outline: none;
 }
 
 .pageChangeRow {

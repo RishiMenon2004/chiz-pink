@@ -1,6 +1,6 @@
 "use client"
 
-import { CSSProperties, useEffect, useMemo, useRef, useState } from "react"
+import { CSSProperties, useCallback, useEffect, useMemo, useRef, useState } from "react"
 import Image from "next/image"
 
 import { ScarboroughFairPull, MiracleBoxPull } from "@/types/pulls"
@@ -12,11 +12,13 @@ import {
 	isScarboroughPull,
 	isRateUp,
 	findPullItem,
+	findPoolBanner,
 	staticArcBanners,
 	getResolvedGachaBanners,
 	isPullInBannerWindow,
 	getOptimizedImageUrl,
 } from "@/helpers"
+import { getCharacterBannerThemeColor } from "@/helpers/bannerStatus"
 import { fuzzyScoreAny } from "@/helpers/fuzzyMatch"
 
 import {
@@ -56,6 +58,26 @@ function DiceRoll({ pull }: { pull: MiracleBoxPull | ScarboroughFairPull }) {
 		return <div className={styles.pullDice}>{pullDice()}</div>
 	}
 }
+
+type Pull = MiracleBoxPull | ScarboroughFairPull
+
+type OwnBanner = { name: string; themeColor: string | null }
+
+// A stretch of consecutive pulls from one banner. labelled: the exporter
+// recorded the banner; otherwise banners lists every banner running then.
+type Run = {
+	key: string
+	banners: string[]
+	themeColor: string | null
+	labelled: boolean
+}
+
+// ending: the run ends here, rather than carrying on to the next page.
+type LabelRow = { type: "label"; run: Run; ending: boolean }
+
+type ListRow = { type: "pull"; pull: Pull } | LabelRow
+
+type Group = { run: Run; pulls: Pull[]; label?: LabelRow }
 
 function PullEntry({
 	pull,
@@ -154,6 +176,8 @@ export function PullsListSection() {
 		setPage(0)
 	}, [selectedBanner])
 	const pullsPerPage = 10
+	// One spare row for the label or divider closing the page's last run.
+	const rowsPerPage = pullsPerPage + 1
 
 	const isSearching = search.trim() !== ""
 
@@ -174,72 +198,114 @@ export function PullsListSection() {
 	// Arc history is laid out in its ten-pull groups, which only means
 	// something with every pull present; search results use the plain list.
 	const isArcLayout = selectedBanner === "arcsBanner" && !isSearching
+	const isPermanent = selectedBanner === "permanentBanner"
 
-	const pullBannerMap = useMemo(() => {
-		const map = new Map<string, string[]>()
+	// pullBannerMap: every banner running when a pull was made, used for
+	// the "End of ..." dividers of pulls without a pool.
+	// ownBannerMap: the one banner a pull was made on, going by the pool the
+	// exporter recorded. Each run of a banner's pulls is boxed and labelled
+	// instead, which keeps banners running side by side apart.
+	const { pullBannerMap, ownBannerMap } = useMemo(() => {
+		const names = new Map<string, string[]>()
+		const own = new Map<string, OwnBanner>()
 		const limitedBanners =
 			selectedBanner === "limitedBanner"
 				? getResolvedGachaBanners(gachaBanners, server)
 				: []
 
 		pulls.forEach((pull) => {
-			let bannerNames: string[]
-			if (selectedBanner === "arcsBanner") {
-				bannerNames = staticArcBanners
-					.filter((b) => isPullInBannerWindow(b, pull))
-					.map((b) => b.name)
-			} else if (selectedBanner === "limitedBanner") {
-				bannerNames = limitedBanners
-					.filter((b) => isPullInBannerWindow(b, pull))
-					.map((b) => b.name)
-			} else {
-				bannerNames = [permanentBanner.name]
+			if (selectedBanner === "permanentBanner") {
+				names.set(pull.uid, [permanentBanner.name])
+				return
 			}
-			map.set(pull.uid, bannerNames.length > 0 ? bannerNames : [t("pulls.list.unknownBanner")])
+
+			if (selectedBanner === "arcsBanner") {
+				names.set(
+					pull.uid,
+					staticArcBanners
+						.filter((b) => isPullInBannerWindow(b, pull))
+						.map((b) => b.name)
+				)
+
+				const banner = findPoolBanner(staticArcBanners, pull, (b) => b.character)
+				if (banner) {
+					own.set(pull.uid, {
+						name: banner.name,
+						themeColor: banner.character
+							? getCharacterBannerThemeColor(banner.character)
+							: null,
+					})
+				}
+				return
+			}
+
+			names.set(
+				pull.uid,
+				limitedBanners
+					.filter((b) => isPullInBannerWindow(b, pull))
+					.map((b) => b.name)
+			)
+
+			const banner = findPoolBanner(limitedBanners, pull, (b) => b.rateupItem)
+			if (banner) {
+				own.set(pull.uid, { name: banner.name, themeColor: banner.themeColor ?? null })
+			}
 		})
 
-		return map
+		for (const [uid, bannerNames] of names) {
+			if (bannerNames.length === 0) names.set(uid, [t("pulls.list.unknownBanner")])
+		}
+
+		return { pullBannerMap: names, ownBannerMap: own }
 	}, [pulls, selectedBanner, gachaBanners, server, t])
 
+	// Every pull belongs to a run, boxed and closed by a label: the banner
+	// the exporter recorded, or else every banner running at the time.
+	const runOf = useCallback(
+		(pull: Pull): Run => {
+			const own = ownBannerMap.get(pull.uid)
+			if (own) {
+				return {
+					key: `own:${own.name}`,
+					banners: [own.name],
+					themeColor: own.themeColor,
+					labelled: true,
+				}
+			}
+			const banners = pullBannerMap.get(pull.uid) ?? []
+			return {
+				key: `date:${banners.join("/")}`,
+				banners,
+				themeColor: null,
+				labelled: false,
+			}
+		},
+		[ownBannerMap, pullBannerMap]
+	)
+
+	const sameRun = useCallback(
+		(a: Pull, b: Pull) => runOf(a).key === runOf(b).key,
+		[runOf]
+	)
+
+	// Arc pages hold exactly one ten-pull group each, plus the labels closing
+	// each run on the page, so a run going on to the next page is labelled on
+	// both.
 	const arcPages = useMemo(() => {
 		if (!isArcLayout) return []
 
-		const pages: Array<
-			Array<
-				| { type: "pull"; pull: MiracleBoxPull | ScarboroughFairPull }
-				| { type: "divider"; banners: string[] }
-				| { type: "placeholder"; banners: string[] }
-			>
-		> = []
-		let currentPage: Array<
-			| { type: "pull"; pull: MiracleBoxPull | ScarboroughFairPull }
-			| { type: "divider"; banners: string[] }
-			| { type: "placeholder"; banners: string[] }
-		> = []
+		const pages: ListRow[][] = []
+		let currentPage: ListRow[] = []
 		let pullCountInPage = 0
 
 		for (let i = 0; i < visiblePulls.length; i++) {
 			const pull = visiblePulls[i]
+			const prev = visiblePulls[i - 1]
 
-			if (i > 0) {
-				const prevBanners = pullBannerMap.get(visiblePulls[i - 1].uid)
-				const currentBanners = pullBannerMap.get(pull.uid)
-				if (prevBanners?.[0] !== currentBanners?.[0]) {
-					currentPage.push({
-						type: "divider",
-						banners: prevBanners ?? [],
-					})
-				}
-
-				if (
-					prevBanners?.[0] === currentBanners?.[0] &&
-					pullCountInPage === pullsPerPage
-				) {
-					currentPage.push({
-						type: "placeholder",
-						banners: currentBanners ?? [],
-					})
-				}
+			if (prev && !sameRun(prev, pull)) {
+				currentPage.push({ type: "label", run: runOf(prev), ending: true })
+			} else if (prev && pullCountInPage === pullsPerPage) {
+				currentPage.push({ type: "label", run: runOf(prev), ending: false })
 			}
 
 			if (pullCountInPage === pullsPerPage) {
@@ -252,77 +318,109 @@ export function PullsListSection() {
 			pullCountInPage++
 		}
 
-		if (visiblePulls.length > 0) {
-			const lastBanners = pullBannerMap.get(visiblePulls.at(-1)!.uid)
-			currentPage.push({
-				type: "divider",
-				banners: lastBanners ?? [],
-			})
-		}
+		const last = visiblePulls.at(-1)
+		if (last) currentPage.push({ type: "label", run: runOf(last), ending: true })
 
 		if (currentPage.length > 0) {
 			pages.push(currentPage)
 		}
 
 		return pages
-	}, [isArcLayout, visiblePulls, pullBannerMap, pullsPerPage])
+	}, [isArcLayout, visiblePulls, pullsPerPage, runOf, sameRun])
 
-	const regularRows = useMemo(() => {
+	// Other banners fill each page with up to rowsPerPage rows, labels
+	// included, so every page is as tall as an arc page. A run always keeps a
+	// row free for its label, so a run split across pages is labelled on both.
+	// The permanent banner is one endless run, so it just lists its pulls.
+	const regularPages = useMemo(() => {
 		if (isArcLayout) return []
 
-		const result: Array<
-			| { type: "pull"; pull: MiracleBoxPull | ScarboroughFairPull }
-			| { type: "divider"; banners: string[] }
-		> = []
+		const pages: ListRow[][] = []
+		if (isPermanent) {
+			for (let i = 0; i < visiblePulls.length; i += rowsPerPage) {
+				pages.push(
+					visiblePulls
+						.slice(i, i + rowsPerPage)
+						.map((pull): ListRow => ({ type: "pull", pull }))
+				)
+			}
+			return pages
+		}
+
+		let currentPage: ListRow[] = []
+		const closePage = () => {
+			if (currentPage.length > 0) pages.push(currentPage)
+			currentPage = []
+		}
+		const addRow = (row: ListRow) => {
+			if (currentPage.length >= rowsPerPage) closePage()
+			currentPage.push(row)
+		}
 
 		visiblePulls.forEach((pull, i) => {
-			if (i > 0) {
-				const prevBanners = pullBannerMap.get(visiblePulls[i - 1].uid)
-				const currentBanners = pullBannerMap.get(pull.uid)
-				if (prevBanners?.[0] !== currentBanners?.[0]) {
-					result.push({
-						type: "divider",
-						banners: prevBanners ?? [],
-					})
-				}
+			const prev = visiblePulls[i - 1]
+			if (prev && !sameRun(prev, pull)) {
+				addRow({ type: "label", run: runOf(prev), ending: true })
 			}
-			result.push({ type: "pull", pull })
+
+			if (currentPage.length >= rowsPerPage - 1) {
+				const lastRow = currentPage.at(-1)
+				if (lastRow?.type === "pull" && sameRun(lastRow.pull, pull)) {
+					currentPage.push({ type: "label", run: runOf(pull), ending: false })
+				}
+				closePage()
+			}
+
+			addRow({ type: "pull", pull })
 		})
 
-		if (visiblePulls.length > 0 && selectedBanner !== "permanentBanner") {
-			const lastBanners = pullBannerMap.get(visiblePulls.at(-1)!.uid)
-			result.push({
-				type: "divider",
-				banners: lastBanners ?? [],
-			})
-		}
+		const last = visiblePulls.at(-1)
+		if (last) addRow({ type: "label", run: runOf(last), ending: true })
+		closePage()
 
-		return result
-	}, [isArcLayout, selectedBanner, visiblePulls, pullBannerMap])
+		return pages
+	}, [isArcLayout, isPermanent, visiblePulls, rowsPerPage, runOf, sameRun])
 
-	const maxPages = useMemo(() => {
-		if (isArcLayout) {
-			return Math.max(arcPages.length - 1, 0)
-		}
-		return Math.floor(
-			Math.max(
-				regularRows.length -
-					(selectedBanner === "permanentBanner" ? 0 : 1),
-				0
-			) / pullsPerPage
-		)
-	}, [isArcLayout, selectedBanner, arcPages.length, regularRows.length, pullsPerPage])
+	const listPages = isArcLayout ? arcPages : regularPages
+	const maxPages = Math.max(listPages.length - 1, 0)
 
 	const clampedPage = Math.min(page, maxPages)
 
-	const pageRows = useMemo(() => {
-		if (isArcLayout) {
-			return arcPages[clampedPage] ?? []
+	// The page's rows gathered into one box per run, each with its label.
+	const pageGroups = useMemo(() => {
+		const groups: Group[] = []
+		for (const row of listPages[clampedPage] ?? []) {
+			const last = groups.at(-1)
+			const open = last && !last.label ? last : undefined
+
+			if (row.type === "label") {
+				if (open) open.label = row
+			} else if (open && sameRun(open.pulls[0], row.pull)) {
+				open.pulls.push(row.pull)
+			} else {
+				groups.push({ run: runOf(row.pull), pulls: [row.pull] })
+			}
 		}
-		const pageStart = clampedPage * pullsPerPage
-		const pageEnd = pageStart + pullsPerPage
-		return regularRows.slice(pageStart, pageEnd)
-	}, [isArcLayout, arcPages, regularRows, clampedPage, pullsPerPage])
+		return groups
+	}, [listPages, clampedPage, runOf, sameRun])
+
+	// What a box's label says. A run without a recorded banner keeps the old
+	// "End of ..." wording where it ends.
+	const labelText = ({ run, ending }: LabelRow) => {
+		const names = run.banners.map((banner) => `"${banner}"`).join(" / ")
+		return run.labelled || !ending
+			? names
+			: t("pulls.list.endOf", { banners: names })
+	}
+
+	const renderPull = (pull: MiracleBoxPull | ScarboroughFairPull) => (
+		<PullEntry
+			key={pull.uid}
+			pull={pull}
+			pity={pityMap[selectedBanner].get(pull.uid) ?? 0}
+			pullNumber={pullNumberMap[selectedBanner].get(pull.uid) ?? -1}
+		/>
+	)
 
 	useEffect(() => {
 		// eslint-disable-next-line react-hooks/set-state-in-effect
@@ -374,7 +472,7 @@ export function PullsListSection() {
 			<div
 				data-bannertype={selectedBanner}
 				style={{
-					gridTemplateRows: `auto repeat(${pullsPerPage + (selectedBanner === "arcsBanner" ? 1 : 0)}, 1fr)`,
+					gridTemplateRows: `auto repeat(${rowsPerPage}, 1fr)`,
 				}}
 				className={`inset-control ${styles.pullsList}`}>
 				<div className={styles.listHeader}>
@@ -391,39 +489,25 @@ export function PullsListSection() {
 					</div>
 					<div className={styles.pullPity}>{t("pulls.list.pity")}</div>
 				</div>
-				{pageRows.map((row) => {
-					if (row.type === "divider" || row.type === "placeholder") {
-						return (
-							<div
-								data-type={row.type}
-								key={`divider-${row.banners.join("/")}`}
-								className={styles.bannerDivider}>
-								{row.type === "divider"
-									? t("pulls.list.endOf", {
-											banners: row.banners
-												.map((banner) => `"${banner}"`)
-												.join(" / "),
-										})
-									: row.banners
-											.map((banner) => `"${banner}"`)
-											.join(" / ")}
+				{pageGroups.map((group) => isPermanent ? group.pulls.map(renderPull) : (
+					<div
+						key={`group-${group.pulls[0].uid}`}
+						className={styles.bannerGroup}
+						style={
+							{
+								gridRow: `span ${group.pulls.length + (group.label ? 1 : 0)}`,
+								"--group-color": group.run.themeColor ?? "var(--pink)",
+							} as CSSProperties
+						}>
+						{group.pulls.map(renderPull)}
+						{group.label && (
+							<div className={`${styles.bannerDivider} ${styles.groupLabel}`}>
+								{labelText(group.label)}
 							</div>
-						)
-					}
-
-					const pull = row.pull
-					return (
-						<PullEntry
-							key={pull.uid}
-							pull={pull}
-							pity={pityMap[selectedBanner].get(pull.uid) ?? 0}
-							pullNumber={
-								pullNumberMap[selectedBanner].get(pull.uid) ?? -1
-							}
-						/>
-					)
-				})}
-				{pageRows.length <= 0 && (
+						)}
+					</div>
+				))}
+				{pageGroups.length <= 0 && (
 					<div className={styles.bannerDivider}>
 						{isSearching ? t("pulls.list.noMatches") : t("pulls.list.noHistory")}
 					</div>
