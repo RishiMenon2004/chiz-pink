@@ -70,7 +70,7 @@
 		{
 			"character": "shinku",
 			"phase": 1,
-			"name": "Before the Dawn: Shinku",
+			"name": "Before the Dawn: Shinku (Rerun)",
 			"themeColor": "#8162a6",
 			"yOffset": "19%",
 			"arcBanner": { "arc": "blushing_mirage", "name": "Resolve Special" }
@@ -78,7 +78,7 @@
 		{
 			"character": "chaos",
 			"phase": 2,
-			"name": "Forsaken Path: Chaos",
+			"name": "Forsaken Path: Chaos (Rerun)",
 			"themeColor": "#6b92e1",
 			"yOffset": "23%",
 			"arcBanner": { "arc": "whats_desired", "name": "Pursuit Special" }

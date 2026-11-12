@@ -168,7 +168,7 @@ export const characterBanners: CharacterBannerData[] = [
 		yOffset: "21%",
 	},
 	{
-		name: "Fading Reverie: Lacrimosa",
+		name: "Fading Reverie: Lacrimosa (Rerun)",
 		type: "Gacha",
 		rateupItem: "lacrimosa",
 		arcBanner: { name: "Nocturne Special", rateupItem: "the_last_rose" },
@@ -203,7 +203,7 @@ export const characterBanners: CharacterBannerData[] = [
 		yOffset: "29%",
 	},
 	{
-		name: "Before the Dawn: Shinku",
+		name: "Before the Dawn: Shinku (Rerun)",
 		type: "Gacha",
 		rateupItem: "shinku",
 		arcBanner: { name: "Resolve Special", rateupItem: "blushing_mirage" },
@@ -214,7 +214,7 @@ export const characterBanners: CharacterBannerData[] = [
 		yOffset: "19%",
 	},
 	{
-		name: "Forsaken Path: Chaos",
+		name: "Forsaken Path: Chaos (Rerun)",
 		type: "Gacha",
 		rateupItem: "chaos",
 		arcBanner: { name: "Pursuit Special", rateupItem: "whats_desired" },
