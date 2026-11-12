@@ -25,6 +25,9 @@ type NteExporterScan = {
 export type NteExporterRecord = {
 	uid: string
 	pool_group_id: NteBannerType
+	// The banner rotation, e.g. "Lottery_LingKe". Exporter 0.3.4+ only, and
+	// null when it couldn't be decoded.
+	pool_id?: string | null
 	timestamp: string
 	timestamp_group_ordinal: number
 	reward_type: "arc" | "item" | "cosmetic" | "character"
@@ -62,6 +65,7 @@ export type ImportedPull = {
 	rank: EnumRarity
 	rewardId: string
 	rewardType: NteExporterRecord["reward_type"]
+	poolId?: string
 	diceRoll?: number
 	quantity?: number
 }
@@ -85,6 +89,9 @@ export type MiracleBoxPull = {
 	timestamp: number
 	rank: EnumRarity
 	rewardId: string
+	// The exporter's pool_id: which banner the pull was made on (see
+	// findPoolBanner). Missing on pulls imported before it was recorded.
+	poolId?: string
 }
 
 export type ScarboroughFairPull = {
@@ -92,6 +99,7 @@ export type ScarboroughFairPull = {
 	timestamp: number
 	rank: EnumRarity
 	rewardId: string
+	poolId?: string
 	diceRoll: number
 	resultType: ImportedPull["resultType"]
 	rewardType: ImportedPull["rewardType"]

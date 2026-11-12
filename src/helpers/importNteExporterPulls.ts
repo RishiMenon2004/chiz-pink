@@ -167,6 +167,7 @@ export function parseNteExporterImport(
 				rank,
 				rewardId,
 				rewardType: record.reward_type,
+				...(record.pool_id ? { poolId: record.pool_id } : {}),
 				resultType,
 				diceRoll: record.roll_result,
 				quantity: record.quantity,

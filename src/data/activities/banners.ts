@@ -228,11 +228,12 @@ export const characterBanners: CharacterBannerData[] = [
 
 // Arc banners run alongside a character banner and share its dates.
 export const arcBanners = characterBanners.flatMap(
-	({ arcBanner, getStartDate, getEndDate }) =>
+	({ arcBanner, rateupItem, getStartDate, getEndDate }) =>
 		arcBanner
 			? [
 					{
 						...arcBanner,
+						character: rateupItem,
 						getStartDate: () => getStartDate("Asia"),
 						getEndDate: () => getEndDate("Asia"),
 					},

@@ -2,6 +2,7 @@ import { MiracleBoxPull, ScarboroughFairPull, PullsRecord } from "@/types/pulls"
 import { SettingsRecord } from "@/types/settings"
 import { EventData } from "@/data/activities/events"
 import {
+	findPoolBanner,
 	findRateUpBanner,
 	getResolvedGachaBanners,
 	isPullInBannerWindow,
@@ -39,6 +40,7 @@ export function getBannerThemeColor(
 	const banners = getResolvedGachaBanners(gachaBanners, server)
 	const banner =
 		findRateUpBanner(banners, pull) ??
+		findPoolBanner(banners, pull, (b) => b.rateupItem) ??
 		banners.find((b) => isPullInBannerWindow(b, pull))
 
 	return banner?.themeColor ?? "var(--pink)"

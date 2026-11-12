@@ -56,6 +56,7 @@ export {
 	isScarboroughPull,
 	isArcRateUp,
 	isRateUp,
+	findPoolBanner,
 	findRateUpBanner,
 	isPullInBannerWindow,
 	staticArcBanners,

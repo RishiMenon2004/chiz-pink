@@ -2,11 +2,13 @@ import { MiracleBoxPull, ScarboroughFairPull, PullsRecord } from "@/types/pulls"
 import { SettingsRecord } from "@/types/settings"
 import { EventData } from "@/data/activities/events"
 import { arcBanners, permanentBanner } from "@/data/activities/banners"
+import { bannerPoolCharacters } from "@/data/activities/bannerPools"
 import { EnumRarity } from "@/data/items"
 
 export const staticArcBanners = arcBanners.map((b) => ({
 	name: b.name,
 	rateupItem: b.rateupItem,
+	character: b.character,
 	themeColor: (b as typeof b & { themeColor?: string }).themeColor,
 	startDate: b.getStartDate(),
 	endDate: b.getEndDate(),
@@ -56,16 +58,17 @@ export function isPullInBannerWindow(
 	)
 }
 
-// Rate-ups only drop from their own banner, so any match counts. Prefers the
-// banner live at the pull, then the nearest one (for reruns).
-export function findRateUpBanner<
-	T extends { rateupItem?: string; startDate: number; endDate: number },
->(banners: T[], pull: MiracleBoxPull | ScarboroughFairPull): T | undefined {
+// Of several runs of a banner, the one live at the pull, else the nearest.
+function closestBanner<T extends { startDate: number; endDate: number }>(
+	banners: T[],
+	pull: MiracleBoxPull | ScarboroughFairPull,
+	matches: (banner: T) => boolean
+): T | undefined {
 	let closest: T | undefined
 	let closestDistance = Infinity
 
 	for (const b of banners) {
-		if (b.rateupItem !== pull.rewardId) continue
+		if (!matches(b)) continue
 		if (isPullInBannerWindow(b, pull)) return b
 
 		const distance = Math.abs(b.startDate - pull.timestamp)
@@ -76,6 +79,36 @@ export function findRateUpBanner<
 	}
 
 	return closest
+}
+
+// Rate-ups only drop from their own banner, so any match counts. Prefers the
+// banner live at the pull, then the nearest one (for reruns).
+export function findRateUpBanner<
+	T extends { rateupItem?: string; startDate: number; endDate: number },
+>(banners: T[], pull: MiracleBoxPull | ScarboroughFairPull): T | undefined {
+	return closestBanner(banners, pull, (b) => b.rateupItem === pull.rewardId)
+}
+
+// "Lottery_LingKe" (limited board) and "ForkLottery_LingKe" (arc board) are
+// both the pool of the character filed under "LingKe".
+const POOL_ID_PATTERN = /^(?:Fork)?Lottery_(.+)$/
+
+// The banner a pull was made on, going by the pool the exporter recorded for
+// it. Unlike a date, that tells banners running side by side apart. A rerun
+// shares its first run's pool, so the date still picks between runs.
+// `characterOf` names the character a banner belongs to. Undefined for pulls
+// without a pool (older imports, the permanent board) or one the site
+// doesn't know yet - callers fall back to the pull's date.
+export function findPoolBanner<T extends { startDate: number; endDate: number }>(
+	banners: T[],
+	pull: MiracleBoxPull | ScarboroughFairPull,
+	characterOf: (banner: T) => string | undefined
+): T | undefined {
+	const code = pull.poolId?.match(POOL_ID_PATTERN)?.[1]
+	const character = code ? bannerPoolCharacters[code] : undefined
+	if (!character) return undefined
+
+	return closestBanner(banners, pull, (b) => characterOf(b) === character)
 }
 
 export function isScarboroughPull(
