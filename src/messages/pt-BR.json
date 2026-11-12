@@ -1,1 +1,108 @@
-{}
+{
+	"routes": {
+		"planner": {
+			"description": "Calcule todos os materiais que você precisa para elevar o nível e ascender seus Espers e Discos em Neverness to Everness, conferindo com o seu inventário.",
+			"title": "PLANEJADOR",
+			"head": "Planejador de ascensão do NTE",
+			"tooltip": "Planejador de ascensão"
+		},
+		"arcs": {
+			"title": "PLANEJADOR DE DISCO",
+			"head": "Planejador de ascensão de disco do NTE",
+			"tooltip": "Planejador de disco",
+			"description": "Planeje nível e ascensão dos discos no Neverness to Everness e veja quanto exatamente de material você vai precisar farmar."
+		},
+		"characters": {
+			"title": "PLANEJADOR DE PERSONAGEM",
+			"head": "Planejador de ascensão de personagem do NTE",
+			"tooltip": "Planejador de personagem",
+			"description": "Planeje nível do Esper, ascensão e talentos no Neverness to Everness e veja exatamente quanto material você precisa farmar."
+		},
+		"pulls": {
+			"title": "RASTREADOR DE INVOCAÇÃO",
+			"head": "Invocação e rastreador de pity do NTE",
+			"tooltip": "Rastreador de invocação",
+			"description": "Rastreie suas invocações e seu pity no Neverness to Everness para cada banner, ou importe seu histórico de invocações para ver suas vitórias na chance aumentada."
+		},
+		"inventory": {
+			"title": "INVENTÁRIO",
+			"head": "Inventário de material do NTE",
+			"tooltip": "Inventário",
+			"description": "Continue contando o seu material do Neverness to Everness para que o planejador de ascensão saiba quanto você ainda precisa farmar."
+		},
+		"settings": {
+			"title": "CONFIGURAÇÕES",
+			"head": "Configurações",
+			"tooltip": "Configurações"
+		},
+		"privacy_policy": {
+			"title": "POLÍTICA DE PRIVACIDADE",
+			"head": "Política de privacidade",
+			"tooltip": "Política de privacidade",
+			"description": "O que Chiz.Pink guarda e onde: tudo permanece em seu navegador a menos que você ative a sincronização com Google, que tem criptografia ponta-a-ponta."
+		},
+		"home": {
+			"title": "PAINEL",
+			"head": "Chiz.Pink: Planejadora & Rastreadora de invocação para Neverness to Everness",
+			"tooltip": "Painel"
+		},
+		"checklist": {
+			"title": "TAREFAS",
+			"head": "Tarefas Diárias e Semanais do NTE",
+			"tooltip": "Tarefas",
+			"description": "Uma lista de tarefas diárias e semanais para Neverness to Everness, que reseta baseado no seu servidor. Adicionalmente, crie suas próprias tarefas."
+		},
+		"character_list": {
+			"title": "PERSONAGENS",
+			"head": "Personagens do Neverness to Everness",
+			"tooltip": "Personagens",
+			"description": "Todo Esper de Neverness to Everness tem seu elemento, tipo de disco, habilidades, passivas e materiais de ascensão."
+		},
+		"character_info": {
+			"title": "PERFIL DO PERSONAGEM",
+			"head": "Perfil do Personagem",
+			"tooltip": "Perfil do Personagem"
+		},
+		"arc_list": {
+			"title": "DISCOS",
+			"head": "Discos do Neverness to Everness",
+			"tooltip": "Discos",
+			"description": "Todo disco do Neverness to Everness tem seu efeito, atributos e materiais de ascensão."
+		},
+		"migrate": {
+			"title": "MOVENDO",
+			"head": "Movendo para chiz.pink",
+			"tooltip": "Movendo para chiz.pink"
+		},
+		"import_external": {
+			"title": "IMPORTAR INVOCAÇÕES",
+			"head": "Importar invocações",
+			"tooltip": "Importar invocações"
+		},
+		"content_tool": {
+			"title": "FERRAMENTA DE CONTEÚDO",
+			"head": "Ferramenta de conteúdo",
+			"tooltip": "Ferramenta de conteúdo"
+		},
+		"popup-callback": {
+			"title": "Conta vínculada",
+			"head": "Conta vínculada",
+			"tooltip": "Conta vínculada"
+		}
+	},
+	"site": {
+		"description": "Sua companheira mais rosada, planejadora de ascensão e rastreadora de invocações para NTE :D",
+		"ogImageAlt": "Chiz.Pink: Planejadora de ascensão e rastreadora de invocação para Neverness to Everness"
+	},
+	"meta": {
+		"offline": "Você está desconectado",
+		"character": {
+			"title": "{name}: Perfil de personagem do NTE",
+			"notFound": "Personagem não encontado",
+			"introA": "{name} é {rank} {element} Esper do Neverness to Everness",
+			"introAn": "{name} é {rank} {element} Esper do Neverness to Everness",
+			"comingSoon": "{intro} Detalhes serão anunciados depois.",
+			"released": "{intro} Veja suas habilidades, matérias e tabuleiro."
+		}
+	}
+}
