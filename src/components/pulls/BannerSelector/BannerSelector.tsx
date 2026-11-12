@@ -1,6 +1,6 @@
 "use client"
 
-import { CSSProperties, useMemo } from "react"
+import { CSSProperties, useEffect, useMemo, useRef } from "react"
 
 import {
 	getPhase2End,
@@ -47,6 +47,32 @@ export function BannerSelector() {
 		userdata: { server },
 	} = useSettingsConfigContext()
 
+	const rowRef = useRef<HTMLDivElement>(null)
+	const hasCentered = useRef(false)
+
+	// Scroll the row so the selected card sits in its middle: at once on
+	// load, smoothly after that. The card grows when selected, so it's
+	// centred again once that finishes. Only the row scrolls, never the page.
+	useEffect(() => {
+		const row = rowRef.current
+		const card = row?.querySelector<HTMLElement>(`.${styles.selected}`)
+		if (!row || !card) return
+
+		const center = (behavior: ScrollBehavior) =>
+			row.scrollTo({
+				left: card.offsetLeft + card.offsetWidth / 2 - row.clientWidth / 2,
+				behavior,
+			})
+		const onGrown = (e: TransitionEvent) => {
+			if (e.propertyName === "flex-grow") center("smooth")
+		}
+
+		center(hasCentered.current ? "smooth" : "instant")
+		hasCentered.current = true
+		card.addEventListener("transitionend", onGrown)
+		return () => card.removeEventListener("transitionend", onGrown)
+	}, [selectedBanner])
+
 	const currentLimitedBanner = useMemo(() => {
 		if (now === null) return characterBannerFallback
 		return (
@@ -69,7 +95,7 @@ export function BannerSelector() {
 	}, [now])
 
 	return (
-		<div className={styles.bannerSelection}>
+		<div ref={rowRef} className={styles.bannerSelection}>
 			<div
 				style={
 					{

@@ -1,5 +1,7 @@
 .bannerSelection {
 	grid-column: 1 / -1;
+	/* The cards' offsetLeft is measured from here when centring one. */
+	position: relative;
 	display: flex;
 	/* max-width: fit-content; */
 	flex-direction: row;
