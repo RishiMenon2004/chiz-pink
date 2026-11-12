@@ -27,7 +27,12 @@ import { skia } from "./skia"
 import { zankou } from "./zankou"
 import { zero } from "./zero"
 
+// Display order for lists that have no sort of their own. The content script
+// (scripts/content-add.ts) files new characters under these headings.
 const allCharacters: Record<string, Character> = {
+	// Limited S rank: newest first
+	exe,
+	elyms,
 	akane,
 	blackbird,
 	linko,
@@ -38,6 +43,7 @@ const allCharacters: Record<string, Character> = {
 	lacrimosa,
 	hotori,
 	nanally,
+	// Standard S rank: A-Z, after Esper Zero
 	zero,
 	baicang,
 	chiz,
@@ -46,14 +52,13 @@ const allCharacters: Record<string, Character> = {
 	hathor,
 	jiuyuan,
 	sakiri,
+	// A rank: A-Z
 	adler,
 	aurelia,
 	edgar,
 	haniel,
 	mint,
 	skia,
-	elyms,
-	exe,
 }
 
 export function getAllCharacters() {

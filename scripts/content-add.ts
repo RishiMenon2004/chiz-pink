@@ -488,8 +488,24 @@ ${abilities}
 		const at = before ? before.index : imports.at(-1)!.index + imports.at(-1)![0].length
 		characterList = characterList.slice(0, at) + importLine + characterList.slice(at)
 
-		const close = characterList.indexOf("\n}\n\nexport function getAllCharacters")
-		characterList = `${characterList.slice(0, close)}\n\t${name},${characterList.slice(close)}`
+		// The list is in display order: limited S ranks newest first, then
+		// standard S ranks and A ranks, each A-Z. A character with a banner in
+		// this version counts as limited.
+		const isLimited = content.banners?.some((banner) => banner.character === character.id)
+		const section =
+			character.rarity === "A" ? "A rank" : isLimited ? "Limited S rank" : "Standard S rank"
+
+		const lines = characterList.split("\n")
+		const heading = lines.findIndex((line) => line.startsWith(`\t// ${section}:`))
+		if (heading === -1) fail(`characterList.ts has no "// ${section}:" section`)
+
+		let row = heading + 1
+		if (section !== "Limited S rank") {
+			// Esper Zero leads the standard S ranks whatever the alphabet says.
+			while (/^\t\w+,/.test(lines[row]) && (lines[row] === "\tzero," || lines[row].trim() < `${name},`)) row++
+		}
+		lines.splice(row, 0, `\t${name},`)
+		characterList = lines.join("\n")
 		write("src/data/characters/characterList.ts", characterList)
 
 		const index = read("src/data/characters/index.ts")
