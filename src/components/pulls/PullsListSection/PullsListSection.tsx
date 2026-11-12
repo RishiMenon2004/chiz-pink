@@ -17,6 +17,7 @@ import {
 	isPullInBannerWindow,
 	getOptimizedImageUrl,
 } from "@/helpers"
+import { fuzzyScoreAny } from "@/helpers/fuzzyMatch"
 
 import {
 	usePullTrackerContext,
@@ -136,6 +137,7 @@ export function PullsListSection() {
 	} = useSettingsConfigContext()
 
 	const [page, setPage] = useState<number>(0)
+	const [search, setSearch] = useState<string>("")
 	const [pageInput, setPageInput] = useState<string>("")
 	const [inputWidth, setInputWidth] = useState<number>(0)
 	const measureRef = useRef<HTMLSpanElement>(null)
@@ -152,6 +154,26 @@ export function PullsListSection() {
 		setPage(0)
 	}, [selectedBanner])
 	const pullsPerPage = 10
+
+	const isSearching = search.trim() !== ""
+
+	// Matches keep their place in the history (newest first) instead of
+	// being ranked, so pull numbers and pity still read in order.
+	const visiblePulls = useMemo(() => {
+		if (!isSearching) return pulls
+
+		return pulls.filter((pull) => {
+			const item = findPullItem(
+				pull.rewardId,
+				isScarboroughPull(pull) ? pull.rewardType : "arc"
+			)
+			return fuzzyScoreAny(search, [item.name, pull.rewardId]) !== null
+		})
+	}, [pulls, search, isSearching])
+
+	// Arc history is laid out in its ten-pull groups, which only means
+	// something with every pull present; search results use the plain list.
+	const isArcLayout = selectedBanner === "arcsBanner" && !isSearching
 
 	const pullBannerMap = useMemo(() => {
 		const map = new Map<string, string[]>()
@@ -180,7 +202,7 @@ export function PullsListSection() {
 	}, [pulls, selectedBanner, gachaBanners, server, t])
 
 	const arcPages = useMemo(() => {
-		if (selectedBanner !== "arcsBanner") return []
+		if (!isArcLayout) return []
 
 		const pages: Array<
 			Array<
@@ -196,11 +218,11 @@ export function PullsListSection() {
 		> = []
 		let pullCountInPage = 0
 
-		for (let i = 0; i < pulls.length; i++) {
-			const pull = pulls[i]
+		for (let i = 0; i < visiblePulls.length; i++) {
+			const pull = visiblePulls[i]
 
 			if (i > 0) {
-				const prevBanners = pullBannerMap.get(pulls[i - 1].uid)
+				const prevBanners = pullBannerMap.get(visiblePulls[i - 1].uid)
 				const currentBanners = pullBannerMap.get(pull.uid)
 				if (prevBanners?.[0] !== currentBanners?.[0]) {
 					currentPage.push({
@@ -230,8 +252,8 @@ export function PullsListSection() {
 			pullCountInPage++
 		}
 
-		if (pulls.length > 0) {
-			const lastBanners = pullBannerMap.get(pulls[pulls.length - 1].uid)
+		if (visiblePulls.length > 0) {
+			const lastBanners = pullBannerMap.get(visiblePulls.at(-1)!.uid)
 			currentPage.push({
 				type: "divider",
 				banners: lastBanners ?? [],
@@ -243,19 +265,19 @@ export function PullsListSection() {
 		}
 
 		return pages
-	}, [selectedBanner, pulls, pullBannerMap, pullsPerPage])
+	}, [isArcLayout, visiblePulls, pullBannerMap, pullsPerPage])
 
 	const regularRows = useMemo(() => {
-		if (selectedBanner === "arcsBanner") return []
+		if (isArcLayout) return []
 
 		const result: Array<
 			| { type: "pull"; pull: MiracleBoxPull | ScarboroughFairPull }
 			| { type: "divider"; banners: string[] }
 		> = []
 
-		pulls.forEach((pull, i) => {
+		visiblePulls.forEach((pull, i) => {
 			if (i > 0) {
-				const prevBanners = pullBannerMap.get(pulls[i - 1].uid)
+				const prevBanners = pullBannerMap.get(visiblePulls[i - 1].uid)
 				const currentBanners = pullBannerMap.get(pull.uid)
 				if (prevBanners?.[0] !== currentBanners?.[0]) {
 					result.push({
@@ -267,8 +289,8 @@ export function PullsListSection() {
 			result.push({ type: "pull", pull })
 		})
 
-		if (pulls.length > 0 && selectedBanner !== "permanentBanner") {
-			const lastBanners = pullBannerMap.get(pulls[pulls.length - 1].uid)
+		if (visiblePulls.length > 0 && selectedBanner !== "permanentBanner") {
+			const lastBanners = pullBannerMap.get(visiblePulls.at(-1)!.uid)
 			result.push({
 				type: "divider",
 				banners: lastBanners ?? [],
@@ -276,10 +298,10 @@ export function PullsListSection() {
 		}
 
 		return result
-	}, [selectedBanner, pulls, pullBannerMap])
+	}, [isArcLayout, selectedBanner, visiblePulls, pullBannerMap])
 
 	const maxPages = useMemo(() => {
-		if (selectedBanner === "arcsBanner") {
+		if (isArcLayout) {
 			return Math.max(arcPages.length - 1, 0)
 		}
 		return Math.floor(
@@ -289,18 +311,18 @@ export function PullsListSection() {
 				0
 			) / pullsPerPage
 		)
-	}, [selectedBanner, arcPages.length, regularRows.length, pullsPerPage])
+	}, [isArcLayout, selectedBanner, arcPages.length, regularRows.length, pullsPerPage])
 
 	const clampedPage = Math.min(page, maxPages)
 
 	const pageRows = useMemo(() => {
-		if (selectedBanner === "arcsBanner") {
+		if (isArcLayout) {
 			return arcPages[clampedPage] ?? []
 		}
 		const pageStart = clampedPage * pullsPerPage
 		const pageEnd = pageStart + pullsPerPage
 		return regularRows.slice(pageStart, pageEnd)
-	}, [selectedBanner, arcPages, regularRows, clampedPage, pullsPerPage])
+	}, [isArcLayout, arcPages, regularRows, clampedPage, pullsPerPage])
 
 	useEffect(() => {
 		// eslint-disable-next-line react-hooks/set-state-in-effect
@@ -318,6 +340,36 @@ export function PullsListSection() {
 			className={`metallic-panel ${pageStyles.section} ${styles.pullsSection}`}>
 			<div className={pageStyles.sectionTitleRow}>
 				<span className={pageStyles.sectionTitle}>{t("pulls.list.title")}</span>
+				<div className={`inset-control ${styles.searchField}`}>
+					<input
+						type="search"
+						name="pull search"
+						placeholder={t("pulls.list.searchPlaceholder")}
+						aria-label={t("pulls.list.searchLabel")}
+						autoComplete="off"
+						enterKeyHint="done"
+						value={search}
+						onChange={(e) => {
+							setSearch(e.currentTarget.value)
+							setPage(0)
+						}}
+						onKeyDown={(e) => {
+							if (e.key === "Enter") e.currentTarget.blur()
+						}}
+						className={styles.searchInput}
+					/>
+					{search && (
+						<button
+							type="button"
+							className={styles.searchClear}
+							aria-label={t("pulls.list.clearSearch")}
+							onClick={() => {
+								setSearch("")
+								setPage(0)
+							}}
+						/>
+					)}
+				</div>
 			</div>
 			<div
 				data-bannertype={selectedBanner}
@@ -372,7 +424,9 @@ export function PullsListSection() {
 					)
 				})}
 				{pageRows.length <= 0 && (
-					<div className={styles.bannerDivider}>{t("pulls.list.noHistory")}</div>
+					<div className={styles.bannerDivider}>
+						{isSearching ? t("pulls.list.noMatches") : t("pulls.list.noHistory")}
+					</div>
 				)}
 			</div>
 			{mounted && (

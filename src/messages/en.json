@@ -606,6 +606,10 @@
 			"unknownBanner": "Unknown",
 			"endOf": "End of {banners}",
 			"noHistory": "No Pull History",
+			"noMatches": "No pulls match your search",
+			"searchPlaceholder": "Search...",
+			"searchLabel": "Search pulls by item name",
+			"clearSearch": "Clear search",
 			"prev": "PREV",
 			"next": "NEXT"
 		},
