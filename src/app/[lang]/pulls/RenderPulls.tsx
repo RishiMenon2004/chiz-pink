@@ -201,9 +201,9 @@ export function RenderPulls() {
 					}}>
 					<BannerSelector />
 					<PullsListSection />
+					<StatsSection />
 					<ImportSection />
 					<RateUpSection />
-					<StatsSection />
 				</PullTrackerContext.Provider>
 			</main>
 		</>

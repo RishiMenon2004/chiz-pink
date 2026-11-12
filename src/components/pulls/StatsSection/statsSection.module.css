@@ -1,7 +1,22 @@
+/* Under the pulls list, in its column; import runs alongside both. On
+   narrow screens it falls back into the single column. */
 .statsSection {
-	grid-column: 1 / -1;
+	grid-column: 1;
+	grid-row: 3;
+
+	/* The soft pity stretch: a yellow line where it starts, then fading in to
+	   red at hard pity. */
+	--soft-pity-start: rgb(255, 208, 0);
+	--soft-pity-end: rgb(255, 30, 0);
+
+	/* Ties the Average Pity tile to its line on the meter. */
+	--average-color: rgb(64, 180, 255);
 
 	.statsContent {
+		display: flex;
+		flex-direction: column;
+		gap: 1rem;
+
 		border-radius: 1.25rem;
 		padding: 0.5rem;
 	}
@@ -9,5 +24,543 @@
 	/* The shared InfoBox is spaced for a full page; here it fills the panel. */
 	.notice {
 		margin: 0.5rem;
+	}
+}
+
+/* ---------- Header tabs, styled like the profile page's ability tabs ---------- */
+
+.tabs {
+	display: flex;
+	gap: 0.25rem;
+	margin-inline-start: auto;
+	padding: 0.25rem;
+	border-radius: 100vh;
+}
+
+.tab {
+	padding: 0.15em 0.9em;
+	border: none;
+	border-radius: 100vh;
+
+	color: color-mix(in srgb, var(--foreground), transparent 35%);
+	font-family: var(--font-barlow-condensed);
+	font-size: 1rem;
+	font-weight: 750;
+	letter-spacing: 2.5%;
+	text-transform: uppercase;
+	white-space: nowrap;
+
+	background-color: transparent;
+
+	transition:
+		background-color 150ms ease-out,
+		color 150ms ease-out;
+
+	&:hover,
+	&:focus-visible {
+		outline: none;
+		color: var(--foreground);
+	}
+
+	&:focus-visible {
+		box-shadow: 0 0 0 2px var(--pink);
+	}
+
+	&[aria-selected="true"] {
+		color: var(--foreground);
+		background-color: var(--pink);
+		paint-order: stroke fill;
+		-webkit-text-stroke: 3px black;
+		box-shadow:
+			var(--shadow-dark-60) -1px -1px 5px -2px inset,
+			rgba(255, 255, 255, 0.645) 2px 2px 3px -2px inset;
+	}
+}
+
+/* ---------- Number tiles ---------- */
+
+.statGrid {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr));
+	gap: 0.5rem;
+}
+
+/* Compact: the number and its label side by side on one line. A label too
+   long to fit drops whole onto a line of its own, never splitting. */
+.stat {
+	position: relative;
+	display: flex;
+	flex-wrap: wrap;
+	align-items: baseline;
+	justify-content: center;
+	/* Centred top to bottom too, for when a neighbour's wrapped label makes
+	   the row taller than this tile's own content. */
+	align-content: center;
+	gap: 0 0.5rem;
+
+	padding: 0.375rem 0.75rem;
+	border-radius: 0.75rem;
+
+	background-color: color-mix(in srgb, var(--pink) 35%, var(--interactive-bg));
+	outline: 1px solid var(--outline-color);
+	outline-offset: -1px;
+
+	user-select: none;
+}
+
+.statIcon {
+	align-self: center;
+	width: 1.5rem;
+	height: 1.5rem;
+	filter: drop-shadow(var(--shadow-dark-60) 0 0 2px);
+}
+
+.averageStat {
+	background-color: color-mix(in srgb, var(--average-color) 35%, var(--interactive-bg));
+}
+
+.statValue {
+	font-family: var(--font-barlow-condensed);
+	font-size: 1.5rem;
+	font-style: italic;
+	font-weight: 700;
+	line-height: 1;
+
+	paint-order: stroke fill;
+	-webkit-text-stroke: 3px black;
+}
+
+.statLabel {
+	white-space: nowrap;
+	font-family: var(--font-barlow-condensed);
+	font-style: italic;
+	font-size: 0.9rem;
+	text-transform: uppercase;
+	letter-spacing: 0.05em;
+
+	paint-order: stroke fill;
+	-webkit-text-stroke: 2px black;
+}
+
+/* Recent S-Ranks' pity colour: green for a lucky pull, red near hard pity.
+   Declared on each element that sets --pity-share, since a custom property
+   is worked out where it's declared. */
+.meterFill,
+.columnBar {
+	--pity-color: color-mix(
+		in hsl,
+		rgb(255, 0, 0) var(--pity-share),
+		rgb(66, 190, 0)
+	);
+}
+
+/* ---------- Pity meter ---------- */
+
+.meter {
+	padding-inline: 0.5rem;
+}
+
+.meterHeading {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: space-between;
+	align-items: baseline;
+	gap: 0.25rem 1rem;
+	margin-bottom: 0.375rem;
+
+	font-family: var(--font-barlow-condensed);
+	font-style: italic;
+	text-transform: uppercase;
+	letter-spacing: 0.05em;
+
+	paint-order: stroke fill;
+	-webkit-text-stroke: 2px black;
+}
+
+.meterCurrent {
+	display: flex;
+	align-items: baseline;
+	gap: 0.5rem;
+	font-size: 0.9rem;
+	font-weight: 600;
+
+	strong {
+		font-size: 1.75rem;
+		line-height: 1;
+		letter-spacing: 0;
+		-webkit-text-stroke: 3px black;
+	}
+}
+
+.meterRemaining {
+	display: flex;
+	gap: 1rem;
+	font-size: 0.9rem;
+	opacity: 0.85;
+}
+
+/* A groove the fill sits in, shaded like .inset-control (--shadow-control
+   in globals.css). The track carries its edge: the dark line above and a
+   softer highlight below than the shared one. An overlay draws its inner
+   shadow over everything in the track, fill included, so the fill reads
+   as sunk in. */
+.meterTrack {
+	position: relative;
+	height: 1.25rem;
+	border-radius: 100vh;
+	overflow: hidden;
+
+	/* Faint diagonal hatching on the empty track, left uncovered by the
+	   fill. */
+	background-color: rgba(0, 0, 0, 0.35);
+	background-image: repeating-linear-gradient(
+		-45deg,
+		rgba(255, 255, 255, 0.06) 0 2px,
+		transparent 2px 4px
+	);
+	box-shadow:
+		var(--shadow-dark-60) 0px -1px 2px,
+		rgba(255, 255, 255, 0.35) 0px 1px 1px;
+
+	&::after {
+		content: "";
+		position: absolute;
+		inset: 0;
+		z-index: 2;
+		border-radius: inherit;
+		box-shadow: var(--shadow-dark-30) 0px 1px 3px -1px inset;
+		pointer-events: none;
+	}
+
+	.softZone {
+		position: absolute;
+		inset-block: 0;
+		right: 0;
+		background-image: linear-gradient(
+			to right,
+			color-mix(in srgb, var(--soft-pity-start) 40%, transparent),
+			transparent
+		);
+		border-left: 2px solid var(--soft-pity-start);
+	}
+}
+
+/* Average pity per S-rank, in the Average Pity tile's colour. */
+.averageMark {
+	position: absolute;
+	inset-block: 0;
+	width: 3px;
+	translate: -50%;
+	z-index: 1;
+	background-color: var(--average-color);
+}
+
+/* Fills from green up to the colour of the pity reached. */
+.meterFill {
+	position: relative;
+	height: 100%;
+	border-radius: 100vh;
+
+	background-image: linear-gradient(to right, rgb(66, 190, 0), var(--pity-color));
+}
+
+.meterScale {
+	position: relative;
+	height: 1.5rem;
+
+	font-family: var(--font-barlow-condensed);
+	font-style: italic;
+	font-size: 0.85rem;
+	font-variant-numeric: tabular-nums;
+
+	span {
+		position: absolute;
+		top: 0.25rem;
+		translate: -50%;
+		white-space: nowrap;
+		opacity: 0.75;
+
+		&:first-child {
+			translate: 0;
+		}
+
+		&:last-child {
+			translate: -100%;
+		}
+	}
+}
+
+.softLabel {
+	font-weight: 600;
+	text-transform: uppercase;
+	letter-spacing: 0.05em;
+}
+
+/* Names the average line, in its colour. */
+.averageLabel {
+	color: var(--average-color);
+	font-weight: 600;
+	letter-spacing: 0.05em;
+	paint-order: stroke fill;
+	-webkit-text-stroke: 2px black;
+}
+
+/* ---------- S-rank lineup ---------- */
+
+.lineup {
+	display: flex;
+	flex-direction: column;
+	gap: 0.5rem;
+	padding-inline: 0.5rem;
+}
+
+/* The top margin is headroom for the portraits on the tallest columns; the
+   left one holds the tick numbers. */
+.lineupPlot {
+	position: relative;
+	height: 11rem;
+	margin: 3rem 0 0 2rem;
+
+	.softZone {
+		position: absolute;
+		top: 0;
+		inset-inline: 0;
+
+		/* The label sits on the yellow line, where soft pity starts. */
+		display: flex;
+		justify-content: flex-end;
+		align-items: flex-end;
+		padding: 0 0.5rem 0.125rem;
+
+		background-image: linear-gradient(
+			to top,
+			transparent,
+			color-mix(in srgb, var(--soft-pity-end) 30%, transparent)
+		);
+
+		.softLabel {
+			font-family: var(--font-barlow-condensed);
+			font-style: italic;
+			font-size: 0.8rem;
+			opacity: 0.75;
+		}
+	}
+}
+
+/* Where soft pity starts. The see-through columns stand in front of it, so
+   it still shows through them. */
+.softLine {
+	position: absolute;
+	inset-inline: 0;
+	height: 2px;
+	translate: 0 50%;
+	z-index: 0;
+	background-color: var(--soft-pity-start);
+	pointer-events: none;
+}
+
+.tick {
+	position: absolute;
+	inset-inline: 0;
+	height: 1px;
+	background-color: rgba(255, 255, 255, 0.12);
+
+	span {
+		position: absolute;
+		right: calc(100% + 0.5rem);
+		translate: 0 -50%;
+
+		font-family: var(--font-barlow-condensed);
+		font-style: italic;
+		font-size: 0.85rem;
+		font-variant-numeric: tabular-nums;
+		opacity: 0.75;
+	}
+}
+
+/* Columns stand a fixed gap apart from the left, shrinking only once
+   there are too many to fit. */
+.columns {
+	position: absolute;
+	inset: 0 0 0 0.75rem;
+	display: flex;
+	align-items: flex-end;
+	gap: 0.75rem;
+}
+
+/* The whole slot, up to the top of the plot, is the hover target. */
+.column {
+	flex: 0 1 2.75rem;
+	min-width: 0;
+	height: 100%;
+
+	display: flex;
+	align-items: flex-end;
+	justify-content: center;
+
+	outline: none;
+
+	&:hover,
+	&:focus-visible {
+		.columnHead {
+			scale: 1.1;
+		}
+
+		.columnTip {
+			opacity: 1;
+		}
+	}
+}
+
+.columnBar {
+	position: relative;
+	z-index: 1;
+	width: 100%;
+	min-height: 0.5rem;
+	border-radius: 0.5rem 0.5rem 0 0;
+
+	/* Styled like the pulls list's banner boxes: a faint fill and a
+	   stronger outline in the same colour. */
+	background-color: color-mix(in srgb, var(--pity-color) 45%, transparent);
+	outline: 1px solid color-mix(in srgb, var(--pity-color) 85%, transparent);
+	outline-offset: -1px;
+}
+
+/* The S-rank's portrait, framed in its pity colour, standing just clear of
+   the column so the column's end stays visible. */
+.columnHead {
+	position: absolute;
+	bottom: calc(100% + 0.25rem);
+	left: 50%;
+	translate: -50%;
+	z-index: 2;
+
+	width: max(100%, 1.5rem);
+	aspect-ratio: 1;
+	border: 2px solid var(--pity-color);
+	border-radius: 0.625rem;
+	overflow: hidden;
+
+	background-color: color-mix(in srgb, var(--pity-color) 40%, var(--interactive-bg));
+
+	transition: scale 100ms ease-out;
+
+	.portrait {
+		display: block;
+		width: 100%;
+		height: auto;
+	}
+}
+
+.columnTip {
+	position: absolute;
+	bottom: calc(100% + 3.5rem);
+	left: 50%;
+	translate: -50%;
+	z-index: 3;
+
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	padding: 0.25rem 0.625rem;
+	border-radius: 0.5rem;
+
+	font-family: var(--font-barlow-condensed);
+	font-style: italic;
+	white-space: nowrap;
+
+	background-color: var(--interactive-bg);
+	box-shadow: var(--shadow-control);
+	outline: 1px solid var(--outline-color);
+
+	opacity: 0;
+	pointer-events: none;
+	transition: opacity 100ms ease-out;
+
+	strong {
+		font-size: 1.25rem;
+		line-height: 1;
+	}
+
+	span {
+		font-size: 0.85rem;
+		opacity: 0.8;
+	}
+}
+
+/* ---------- Banners ---------- */
+
+.bannerTable {
+	display: grid;
+	grid-template-columns: 1fr max-content max-content;
+	gap: 0.25rem 0;
+}
+
+.bannerHeader,
+.bannerRow {
+	grid-column: 1 / -1;
+	display: grid;
+	grid-template-columns: subgrid;
+	align-items: center;
+
+	& > :not(:first-child) {
+		min-width: 6ch;
+		padding-inline: 0.75rem;
+		text-align: center;
+	}
+}
+
+.bannerHeader {
+	padding: 0.25rem 0.75rem;
+
+	font-family: var(--font-barlow-condensed);
+	font-style: italic;
+	font-size: 0.9rem;
+	text-transform: uppercase;
+	opacity: 0.8;
+}
+
+.bannerRow {
+	height: 2.5rem;
+	padding-inline: 0.75rem;
+	border-radius: 0.75rem;
+
+	font-family: var(--font-barlow-condensed);
+	font-style: italic;
+	font-size: 1.1rem;
+	font-weight: 600;
+
+	background-color: color-mix(in srgb, var(--banner-color) 30%, transparent);
+	outline: 1px solid color-mix(in srgb, var(--banner-color) 70%, transparent);
+	outline-offset: -1px;
+
+	paint-order: stroke fill;
+	-webkit-text-stroke: 2px black;
+}
+
+.bannerName {
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+}
+
+/* Narrow panel: tabs get their own full-width row, split evenly. */
+@container (width < 500px) {
+	.tabs {
+		flex-basis: 100%;
+		margin-inline: 0;
+	}
+
+	.tab {
+		flex: 1;
+		padding-inline: 0.4em;
+		font-size: 0.9rem;
+	}
+}
+
+@media (max-width: 1220px) {
+	.statsSection {
+		grid-column: unset;
+		grid-row: unset;
 	}
 }

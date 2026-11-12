@@ -598,7 +598,31 @@
 		},
 		"stats": {
 			"title": "STATS",
-			"comingSoon": "C-coming soon! I'm still counting everything up..."
+			"empty": "N-nothing to count yet... import some pulls and I'll crunch the numbers for you!",
+			"tabs": {
+				"overview": "Overview",
+				"sRanks": "S-Ranks",
+				"banners": "Banners"
+			},
+			"totalPulls": "Pulls",
+			"sRanks": "S-Ranks",
+			"rateUpArcs": "Rate-Up Arcs",
+			"currentPity": "Current Pity",
+			"toSoftPity": "{count} to soft pity",
+			"toHardPity": "{count} to hard pity",
+			"averagePity": "Average Pity",
+			"annulithSpent": "Annulith Spent",
+			"averageShort": "AVG",
+			"luckiest": "Lowest Pity",
+			"unluckiest": "Highest Pity",
+			"beforeSoftPity": "Before Soft Pity",
+			"inSoftPity": "In Soft Pity",
+			"banner": "Banner",
+			"meterLabel": "Pity {current} of {hard}",
+			"softPityAt": "Soft pity {pity}",
+			"softPity": "Soft pity",
+			"pityChartTitle": "Every S-Rank, oldest first",
+			"columnLabel": "{name}: pity {pity}"
 		},
 		"list": {
 			"title": "PULLS",

@@ -12,13 +12,13 @@ import {
 	isScarboroughPull,
 	isRateUp,
 	findPullItem,
-	findPoolBanner,
+	findPullPoolBanner,
 	staticArcBanners,
 	getResolvedGachaBanners,
 	isPullInBannerWindow,
 	getOptimizedImageUrl,
+	type PullBanner,
 } from "@/helpers"
-import { getCharacterBannerThemeColor } from "@/helpers/bannerStatus"
 import { fuzzyScoreAny } from "@/helpers/fuzzyMatch"
 
 import {
@@ -60,8 +60,6 @@ function DiceRoll({ pull }: { pull: MiracleBoxPull | ScarboroughFairPull }) {
 }
 
 type Pull = MiracleBoxPull | ScarboroughFairPull
-
-type OwnBanner = { name: string; themeColor: string | null }
 
 // A stretch of consecutive pulls from one banner. labelled: the exporter
 // recorded the banner; otherwise banners lists every banner running then.
@@ -207,7 +205,7 @@ export function PullsListSection() {
 	// instead, which keeps banners running side by side apart.
 	const { pullBannerMap, ownBannerMap } = useMemo(() => {
 		const names = new Map<string, string[]>()
-		const own = new Map<string, OwnBanner>()
+		const own = new Map<string, PullBanner>()
 		const limitedBanners =
 			selectedBanner === "limitedBanner"
 				? getResolvedGachaBanners(gachaBanners, server)
@@ -219,37 +217,15 @@ export function PullsListSection() {
 				return
 			}
 
-			if (selectedBanner === "arcsBanner") {
-				names.set(
-					pull.uid,
-					staticArcBanners
-						.filter((b) => isPullInBannerWindow(b, pull))
-						.map((b) => b.name)
-				)
-
-				const banner = findPoolBanner(staticArcBanners, pull, (b) => b.character)
-				if (banner) {
-					own.set(pull.uid, {
-						name: banner.name,
-						themeColor: banner.character
-							? getCharacterBannerThemeColor(banner.character)
-							: null,
-					})
-				}
-				return
-			}
-
+			const banners =
+				selectedBanner === "arcsBanner" ? staticArcBanners : limitedBanners
 			names.set(
 				pull.uid,
-				limitedBanners
-					.filter((b) => isPullInBannerWindow(b, pull))
-					.map((b) => b.name)
+				banners.filter((b) => isPullInBannerWindow(b, pull)).map((b) => b.name)
 			)
 
-			const banner = findPoolBanner(limitedBanners, pull, (b) => b.rateupItem)
-			if (banner) {
-				own.set(pull.uid, { name: banner.name, themeColor: banner.themeColor ?? null })
-			}
+			const banner = findPullPoolBanner(selectedBanner, pull, limitedBanners)
+			if (banner) own.set(pull.uid, banner)
 		})
 
 		for (const [uid, bannerNames] of names) {

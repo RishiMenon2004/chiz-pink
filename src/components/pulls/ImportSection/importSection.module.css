@@ -1,5 +1,6 @@
+/* Beside both the pulls list and the stats below it. */
 .importSection {
-	grid-row: 2;
+	grid-row: 2 / span 2;
 
 	.importFileBox {
 		border-radius: 1.25rem 1.25rem 0.75rem 0.75rem;
