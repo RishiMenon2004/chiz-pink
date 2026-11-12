@@ -53,6 +53,9 @@
 
 .rateupItem {
 	position: relative;
+	/* Keeps the outline and pity badge's z-indexes inside the card, so they
+	   don't rise over the header or the sticky banner row. */
+	isolation: isolate;
 
 	width: 64px;
 	border-radius: 0.75rem;
