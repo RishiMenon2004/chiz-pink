@@ -102,7 +102,12 @@
 			"introA": "{name} é {rank} {element} Esper do Neverness to Everness",
 			"introAn": "{name} é {rank} {element} Esper do Neverness to Everness",
 			"comingSoon": "{intro} Detalhes serão anunciados depois.",
-			"released": "{intro} Veja suas habilidades, matérias e tabuleiro."
+			"released": "{intro} Veja suas habilidades, matérias e tabuleiro.",
+			"imageAlt": "{name} cartão do personagem"
+		},
+		"arc": {
+			"notFound": "Disco não encontrado",
+			"introA": "{name} é um Disco de {rank} {type} no Neverness to Everness."
 		}
 	}
 }
