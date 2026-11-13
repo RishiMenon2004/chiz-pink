@@ -136,6 +136,9 @@ export type PullTrackerContextType = {
 	pullNumberMap: Record<keyof PullsRecord, Map<string, number>>
 	currentPity: number
 	rateUpPulls: Record<keyof PullsRecord, RateUpPull[]>
+	// Per board, the pulls pities set by hand stand for but that weren't
+	// logged (see countUnloggedPulls).
+	unloggedPulls: Record<keyof PullsRecord, number>
 	// A pull to bring up in the pulls list (from recent S-ranks): its board
 	// is selected and the list turns to its page. `request` tells repeat
 	// asks for the same pull apart.

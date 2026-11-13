@@ -128,26 +128,27 @@ export function RenderPulls() {
 		[gachaPulls]
 	)
 
-	const { pityMap, pullNumberMap, rateUpPulls } = useMemo(() => {
+	const { pityMap, pullNumberMap, rateUpPulls, unloggedPulls } = useMemo(() => {
+		// Pulls a pity set by hand stands for but that weren't logged, tallied
+		// in the same pass (the stats count them in).
+		const unlogged: Record<keyof PullsRecord, { count: number }> = {
+			limitedBanner: { count: 0 },
+			arcsBanner: { count: 0 },
+			permanentBanner: { count: 0 },
+		}
+		const pityFor = (banner: keyof PullsRecord) =>
+			calculatePityMap(
+				pullsRecord[banner],
+				banner,
+				staticGachaBanners,
+				server,
+				10,
+				unlogged[banner]
+			)
 		const bannerPityMap: Record<keyof PullsRecord, Map<string, number>> = {
-			limitedBanner: calculatePityMap(
-				pullsRecord.limitedBanner,
-				"limitedBanner",
-				staticGachaBanners,
-				server
-			),
-			arcsBanner: calculatePityMap(
-				pullsRecord.arcsBanner,
-				"arcsBanner",
-				staticGachaBanners,
-				server
-			),
-			permanentBanner: calculatePityMap(
-				pullsRecord.permanentBanner,
-				"permanentBanner",
-				staticGachaBanners,
-				server
-			),
+			limitedBanner: pityFor("limitedBanner"),
+			arcsBanner: pityFor("arcsBanner"),
+			permanentBanner: pityFor("permanentBanner"),
 		}
 
 		const bannerPullNumberMap: Record<keyof PullsRecord, Map<string, number>> = {
@@ -181,6 +182,11 @@ export function RenderPulls() {
 			pityMap: bannerPityMap,
 			pullNumberMap: bannerPullNumberMap,
 			rateUpPulls: bannerRateUps,
+			unloggedPulls: {
+				limitedBanner: unlogged.limitedBanner.count,
+				arcsBanner: unlogged.arcsBanner.count,
+				permanentBanner: unlogged.permanentBanner.count,
+			},
 		}
 	}, [pullsRecord, server])
 
@@ -207,6 +213,7 @@ export function RenderPulls() {
 						pullNumberMap,
 						currentPity,
 						rateUpPulls,
+						unloggedPulls,
 						shownPull,
 						showPull,
 					}}>

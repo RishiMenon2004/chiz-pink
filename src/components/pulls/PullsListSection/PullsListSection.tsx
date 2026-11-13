@@ -4,6 +4,7 @@ import {
 	CSSProperties,
 	ReactNode,
 	useCallback,
+	useDeferredValue,
 	useEffect,
 	useMemo,
 	useRef,
@@ -382,21 +383,31 @@ export function PullsListSection() {
 	// One spare row for the label or divider closing the page's last run.
 	const rowsPerPage = pullsPerPage + 1
 
-	const isSearching = search.trim() !== ""
+	// The search the list goes by trails the box while typing, so a long
+	// history doesn't hold up each keystroke (React renders the box first).
+	const deferredSearch = useDeferredValue(search)
+	const isSearching = deferredSearch.trim() !== ""
+
+	// What each pull is searched by, worked out once per history rather
+	// than on every keystroke.
+	const searchTerms = useMemo(
+		() =>
+			pulls.map((pull) => [
+				findPullItem(pull.rewardId, isScarboroughPull(pull) ? pull.rewardType : "arc")
+					.name,
+				pull.rewardId,
+			]),
+		[pulls]
+	)
 
 	// Matches keep their place in the history (newest first) instead of
 	// being ranked, so pull numbers and pity still read in order.
 	const visiblePulls = useMemo(() => {
 		if (!isSearching) return pulls
-
-		return pulls.filter((pull) => {
-			const item = findPullItem(
-				pull.rewardId,
-				isScarboroughPull(pull) ? pull.rewardType : "arc"
-			)
-			return fuzzyScoreAny(search, [item.name, pull.rewardId]) !== null
-		})
-	}, [pulls, search, isSearching])
+		return pulls.filter(
+			(_pull, index) => fuzzyScoreAny(deferredSearch, searchTerms[index]) !== null
+		)
+	}, [pulls, searchTerms, deferredSearch, isSearching])
 
 	// Arc history is laid out in its ten-pull groups, which only means
 	// something with every pull present; search results use the plain list.
@@ -433,12 +444,10 @@ export function PullsListSection() {
 			if (banner) own.set(pull.uid, banner)
 		})
 
-		for (const [uid, bannerNames] of names) {
-			if (bannerNames.length === 0) names.set(uid, [t("pulls.list.unknownBanner")])
-		}
-
+		// No banner running at all is labelled "unknown" when drawn (see
+		// labelText), so a change of language doesn't redo all this.
 		return { pullBannerMap: names, ownBannerMap: own }
-	}, [pulls, selectedBanner, gachaBanners, server, t])
+	}, [pulls, selectedBanner, gachaBanners, server])
 
 	// Every pull belongs to a run, boxed and closed by a label: the banner
 	// the exporter recorded, or else every banner running at the time.
@@ -617,7 +626,8 @@ export function PullsListSection() {
 	// What a box's label says. A run without a recorded banner keeps the old
 	// "End of ..." wording where it ends.
 	const labelText = ({ run, ending }: LabelRow) => {
-		const names = run.banners.map((banner) => `"${banner}"`).join(" / ")
+		const banners = run.banners.length > 0 ? run.banners : [t("pulls.list.unknownBanner")]
+		const names = banners.map((banner) => `"${banner}"`).join(" / ")
 		return run.labelled || !ending
 			? names
 			: t("pulls.list.endOf", { banners: names })

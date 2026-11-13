@@ -12,7 +12,6 @@ import type { MessageKey } from "@/types/messages"
 import { annulith } from "@/data/items/materials"
 
 import {
-	countUnloggedPulls,
 	findPullBanner,
 	findPullItem,
 	getResolvedGachaBanners,
@@ -239,7 +238,7 @@ function Stat({
 }
 
 export function StatsSection() {
-	const { selectedBanner, gachaBanners, pulls, pityMap, pullNumberMap } =
+	const { selectedBanner, gachaBanners, pulls, pityMap, pullNumberMap, unloggedPulls } =
 		usePullTrackerContext()
 	const {
 		userdata: { server },
@@ -302,16 +301,15 @@ export function StatsSection() {
 			banners.set(name, entry)
 		}
 
-		// Pities set by hand can stand for pulls that weren't logged, too.
-		const unloggedPulls = countUnloggedPulls(pulls, selectedBanner, gachaBanners, server)
-
 		return {
-			totalPulls: counted.length + unloggedPulls,
+			// Pities set by hand can stand for pulls that weren't logged, too
+			// (counted with the pity maps).
+			totalPulls: counted.length + unloggedPulls[selectedBanner],
 			sRanks,
 			currentPity,
 			banners: [...banners.values()],
 		}
-	}, [pulls, pityMap, pullNumberMap, selectedBanner, gachaBanners, server, t])
+	}, [pulls, pityMap, pullNumberMap, unloggedPulls, selectedBanner, gachaBanners, server, t])
 
 	const rules = pityRules[selectedBanner]
 	const sRankPities = stats.sRanks.map((sRank) => sRank.pity)
