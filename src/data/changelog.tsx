@@ -38,6 +38,7 @@ export const ChangeLogs = {
 		"<tag>NEW</> Elyms & Exe can now be added in the planner",
 	],
 	"1.2.0": [
+		"Version 1.5 (\"Once Upon a Glitched Call\") is finally here!!",
 		"<ntetag>NTE</> Up to date with <itag color='#ab9dec'>Patch 1.5</>",
 		"<ntetag>NTE</> Characters added: Elyms, with her full kit & Exe, with his partial kit",
 		"<ntetag>NTE</> Arcs added: Echoes on Hold & Dotted Horizon",
@@ -49,5 +50,16 @@ export const ChangeLogs = {
 		"<tag>NEW</> Help translate Chiz.Pink into your language on <link href='https://hosted.weblate.org/engage/chiz-pink/'>Weblate</>, no coding needed (also under Settings > Language)",
 		"<tag color='#ffbd47'>FIX</> Akane Rin & Hathor ability text updated for 1.5",
 		"<tag color='#ffbd47'>FIX</> Fixed rate-up pulls made just before or after a banner's listed times not being recognised as rate-ups",
+	],
+	"1.2.1": [
+		"<ntetag>NTE</> Event added: Open Roads Ahead Mystery Box",
+		"The Pull Tracker is getting some love <3 Here's a few QoL features you guys might like:",
+		"<tag>NEW</> Refreshed Pull Tracker layout",
+		"<tag>NEW</> You can now manually log pulls",
+		"<tag>NEW</> Pulls now show some basic stats for each banner type",
+		"<tag>NEW</> Pulls are now grouped by the specific banner they were made on (This only works with the latest version of NTE Exporter)",
+		"<tag>NEW</> Edit any pull - Right click, or tap and hold to edit",
+		"<tag>NEW</> Click a Recent S-Rank to jump to it in your pull history",
+		"<tag color='#ffbd47'>FIX</> Perfomance improvements in the Pull Tracker for large histories",
 	],
 }
