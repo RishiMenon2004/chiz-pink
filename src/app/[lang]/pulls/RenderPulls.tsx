@@ -1,6 +1,6 @@
 "use client"
 
-import { useMemo, useState } from "react"
+import { useCallback, useMemo, useState } from "react"
 
 import { MiracleBoxPull, PullsRecord, ScarboroughFairPull } from "@/types/pulls"
 import { SettingsRecord } from "@/types/settings"
@@ -106,6 +106,15 @@ export function RenderPulls() {
 
 	const [selectedBanner, setSelectedBanner] =
 		useState<keyof PullsRecord>("limitedBanner")
+	const [shownPull, setShownPull] = useState<{
+		banner: keyof PullsRecord
+		uid: string
+		request: number
+	} | null>(null)
+	const showPull = useCallback((banner: keyof PullsRecord, uid: string) => {
+		setSelectedBanner(banner)
+		setShownPull((current) => ({ banner, uid, request: (current?.request ?? 0) + 1 }))
+	}, [])
 
 	const pullsRecord: Record<
 		keyof PullsRecord,
@@ -198,6 +207,8 @@ export function RenderPulls() {
 						pullNumberMap,
 						currentPity,
 						rateUpPulls,
+						shownPull,
+						showPull,
 					}}>
 					<BannerSelector />
 					<div className={styles.column}>

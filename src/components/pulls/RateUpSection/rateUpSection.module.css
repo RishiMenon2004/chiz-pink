@@ -91,6 +91,24 @@
 	overflow: hidden;
 	user-select: none;
 
+	/* A button: takes you to the pull in the pulls list. */
+	padding: 0;
+	border: none;
+	cursor: var(--pointer-cursor);
+
+	transition: transform 100ms ease-out;
+
+	&:hover,
+	&:focus-visible {
+		outline: none;
+		transform: translateY(-2px);
+
+		&::after {
+			outline: 2px solid white;
+			outline-offset: -2px;
+		}
+	}
+
 	&::after {
 		content: "";
 		position: absolute;

@@ -136,6 +136,11 @@ export type PullTrackerContextType = {
 	pullNumberMap: Record<keyof PullsRecord, Map<string, number>>
 	currentPity: number
 	rateUpPulls: Record<keyof PullsRecord, RateUpPull[]>
+	// A pull to bring up in the pulls list (from recent S-ranks): its board
+	// is selected and the list turns to its page. `request` tells repeat
+	// asks for the same pull apart.
+	shownPull: { banner: keyof PullsRecord; uid: string; request: number } | null
+	showPull: (banner: keyof PullsRecord, uid: string) => void
 }
 
 export const PullTrackerContext = createContext<PullTrackerContextType>(null!)

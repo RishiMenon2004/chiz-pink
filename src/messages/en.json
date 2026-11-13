@@ -592,6 +592,7 @@
 			"permanent": "Strange Encounters"
 		},
 		"rateUp": {
+			"showPull": "{name}, pity {pity}. Show in the pulls list",
 			"title": "RECENT S-RANKS",
 			"onlyRateUpArcs": "Only show Rate-Up Arcs",
 			"empty": "Y-you haven't pulled any S-Ranks yet... I'll show them here as soon as you do!"

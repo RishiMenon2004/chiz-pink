@@ -1,3 +1,8 @@
+/* Scrolled to from recent S-ranks: a little room above it. */
+.pullsSection {
+	scroll-margin-top: 1rem;
+}
+
 /* Header search box, styled like the catalog toolbar's. */
 .searchField {
 	position: relative;
@@ -609,5 +614,29 @@
 		translate: 0 -0.25rem;
 		scale: 1.02;
 		filter: drop-shadow(0 0.5rem 1rem rgba(0, 0, 0, 0.5));
+	}
+}
+
+/* A pull brought up from recent S-ranks: a white ring that pulses twice,
+   inside the row (which clips anything around it), as its focus ring is. */
+.pullEntry[data-highlighted] {
+	outline: 3px solid transparent;
+	outline-offset: -3px;
+	animation: pull-found 0.9s ease-out 2;
+}
+
+@keyframes pull-found {
+	from {
+		outline-color: white;
+	}
+	to {
+		outline-color: transparent;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.pullEntry[data-highlighted] {
+		animation: none;
+		outline-color: white;
 	}
 }

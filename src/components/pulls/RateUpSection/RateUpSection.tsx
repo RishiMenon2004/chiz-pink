@@ -56,7 +56,7 @@ function ItemImage({ item }: { item: Arc | Character }) {
 }
 
 export function RateUpSection() {
-	const { rateUpPulls } = usePullTrackerContext()
+	const { rateUpPulls, showPull } = usePullTrackerContext()
 	const [onlyRateUp, setOnlyRateUp] = useState<boolean>(false)
 	const t = useT()
 
@@ -121,9 +121,15 @@ export function RateUpSection() {
 											const bannerColor = themeColor
 											return (
 												isNotMaterial(item) && (
-													<div
+													<button
+														type="button"
 														className={`epic ${styles.rateupItem}`}
 														key={pull.uid}
+														aria-label={t("pulls.rateUp.showPull", {
+															name: item.name,
+															pity,
+														})}
+														onClick={() => showPull(banner, pull.uid)}
 														style={
 															{
 																"--mix-percent": `${((pity - 0) / hardPity[banner]) * 100}%`,
@@ -138,7 +144,7 @@ export function RateUpSection() {
 															}>
 															{pity}
 														</span>
-													</div>
+													</button>
 												)
 											)
 										}

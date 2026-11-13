@@ -112,10 +112,13 @@ function PullEntry({
 	pullNumber,
 	actions,
 	slots,
+	highlighted = false,
 }: {
 	pull: MiracleBoxPull | ScarboroughFairPull
 	pity: number
 	pullNumber: number
+	// Just brought up from recent S-ranks: flashes to be found.
+	highlighted?: boolean
 	// Absent on the copy lifted over the list while editing.
 	actions?: PullActions
 	// While editing: controls in place of the dice, the name and the pity.
@@ -166,6 +169,7 @@ function PullEntry({
 				key={pull.uid}
 				data-rateup={isRateup}
 				data-rewardtype={rewardType}
+				data-highlighted={highlighted || undefined}
 				style={
 					{
 						"--bg-image": `url("${getOptimizedImageUrl(imageSrc)}")`,
@@ -351,7 +355,7 @@ function PullMenu({
 }
 
 export function PullsListSection() {
-	const { selectedBanner, gachaBanners, pulls, pityMap, pullNumberMap } =
+	const { selectedBanner, gachaBanners, pulls, pityMap, pullNumberMap, shownPull } =
 		usePullTrackerContext()
 	const {
 		userdata: { server },
@@ -561,6 +565,35 @@ export function PullsListSection() {
 	const listPages = isArcLayout ? arcPages : regularPages
 	const maxPages = Math.max(listPages.length - 1, 0)
 
+	// A pull asked for from recent S-ranks: once its board is showing (the
+	// page selects it) and any search is cleared, turn to its page, bring
+	// the list into view and flash the row.
+	const sectionRef = useRef<HTMLDivElement>(null)
+	const handledRequest = useRef(0)
+	const [highlighted, setHighlighted] = useState<string | null>(null)
+	useEffect(() => {
+		if (!shownPull || shownPull.request === handledRequest.current) return
+		if (shownPull.banner !== selectedBanner) return
+		if (isSearching) {
+			// eslint-disable-next-line react-hooks/set-state-in-effect
+			setSearch("")
+			return
+		}
+		const index = listPages.findIndex((rows) =>
+			rows.some((row) => row.type === "pull" && row.pull.uid === shownPull.uid)
+		)
+		if (index === -1) return
+		handledRequest.current = shownPull.request
+		setPage(index)
+		setHighlighted(shownPull.uid)
+		sectionRef.current?.scrollIntoView({ behavior: "smooth", block: "start" })
+	}, [shownPull, selectedBanner, isSearching, listPages])
+	useEffect(() => {
+		if (!highlighted) return
+		const timer = window.setTimeout(() => setHighlighted(null), 2000)
+		return () => window.clearTimeout(timer)
+	}, [highlighted])
+
 	const clampedPage = Math.min(page, maxPages)
 
 	// The page's rows gathered into one box per run, each with its label.
@@ -630,6 +663,7 @@ export function PullsListSection() {
 			pity={pityMap[selectedBanner].get(pull.uid) ?? 0}
 			pullNumber={pullNumberMap[selectedBanner].get(pull.uid) ?? -1}
 			actions={pullActions}
+			highlighted={pull.uid === highlighted}
 		/>
 	)
 
@@ -646,6 +680,7 @@ export function PullsListSection() {
 
 	return (
 		<div
+			ref={sectionRef}
 			className={`metallic-panel ${pageStyles.section} ${styles.pullsSection}`}>
 			<div className={pageStyles.sectionTitleRow}>
 				<span className={pageStyles.sectionTitle}>{t("pulls.list.title")}</span>
