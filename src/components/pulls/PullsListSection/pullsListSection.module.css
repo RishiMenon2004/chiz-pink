@@ -544,6 +544,8 @@
 	border-radius: 0.375rem;
 
 	color: var(--foreground);
+	/* The page's font, as the tooltip has (buttons don't inherit it). */
+	font-family: inherit;
 	font-weight: 700;
 	text-align: start;
 
