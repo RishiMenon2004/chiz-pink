@@ -229,6 +229,9 @@ function withUniqueNames(candidates: Candidate[]): Candidate[] {
 
 export const newManualUid = () => `manual-${randomId()}`
 
+// The time a pull logged "just now" is given, read when it's saved.
+export const pulledNow = () => Date.now()
+
 // "YYYY-MM-DDTHH:mm" in local time, as a datetime-local input wants it.
 export function toLocalInput(time: number) {
 	const date = new Date(time)

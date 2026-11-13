@@ -4,8 +4,12 @@ import { useMemo, useState } from "react"
 
 import type { MiracleBoxPull, ScarboroughFairPull } from "@/types/pulls"
 
+import { findArc } from "@/data/arcs"
+import { getItemRarityStyle } from "@/data/items"
+
 import { useGachaStore } from "@/hooks"
 
+import { getCharacterBannerThemeColor } from "@/helpers/bannerStatus"
 import {
 	getResolvedGachaBanners,
 	isPullInBannerWindow,
@@ -19,6 +23,7 @@ import {
 	useT,
 } from "@/contexts"
 
+import { BannerPicker, type BannerOption } from "./BannerPicker"
 import { DicePicker } from "./DicePicker"
 import { ItemPicker } from "./ItemPicker"
 import { NumberStepper } from "./NumberStepper"
@@ -30,7 +35,6 @@ import {
 	type Result,
 } from "./manualPulls"
 
-import settingsStyles from "@/app/[lang]/settings/settings.module.css"
 import styles from "./manualPullEntry.module.css"
 
 type Row = { key: number; itemName: string; result: Result; quantity: number }
@@ -47,7 +51,14 @@ const newRows = (count: number) => Array.from({ length: count }, newRow)
 // The full manual entry form, opened from the simple one: a date, the
 // banner, and a single pull or a ten-pull with a row per result in the
 // order pulled, extra results (points gifts, Slumberland) included.
-export function AdvancedPullEntry({ onClose }: { onClose: () => void }) {
+// Saving closes it; `onSaved` hears how many pulls were added.
+export function AdvancedPullEntry({
+	onClose,
+	onSaved,
+}: {
+	onClose: () => void
+	onSaved: (count: number) => void
+}) {
 	const { selectedBanner, gachaBanners } = usePullTrackerContext()
 	const {
 		userdata: { server },
@@ -56,50 +67,61 @@ export function AdvancedPullEntry({ onClose }: { onClose: () => void }) {
 	const t = useT()
 
 	const [dateInput, setDateInput] = useState(() => toLocalInput(Date.now()))
-	const [bannerName, setBannerName] = useState<string>("")
+	// A banner picked from the list ("" goes by the date).
+	const [bannerKey, setBannerKey] = useState("")
+	const [openedAt] = useState(() => Date.now())
 	const [rows, setRows] = useState<Row[]>(() => newRows(1))
-	const [savedCount, setSavedCount] = useState<number | null>(null)
 
 	const isArcs = selectedBanner === "arcsBanner"
 	const hasDice = !isArcs
 	const timestamp = new Date(dateInput).getTime()
 
-
-	// The banners running at the chosen time, reruns included. The
-	// permanent board has just the one.
+	// Every banner that has started, reruns included, newest first. The
+	// permanent board has just the one, so no list.
+	// Each with its art: a limited banner's event art, an arc banner's arc.
 	const banners = useMemo(() => {
-		if (selectedBanner === "permanentBanner" || Number.isNaN(timestamp)) return []
+		if (selectedBanner === "permanentBanner") return []
 		const all = isArcs
-			? staticArcBanners
-			: getResolvedGachaBanners(gachaBanners, server)
-		return all.filter((banner) =>
-			isPullInBannerWindow(banner, { timestamp } as MiracleBoxPull)
-		)
-	}, [selectedBanner, isArcs, gachaBanners, server, timestamp])
+			? staticArcBanners.map((b) => ({
+					...b,
+					image: `/arcs/${findArc(b.rateupItem).imageSrc}`,
+					offset: "30%",
+					themeColor:
+						b.themeColor ??
+						(b.character ? getCharacterBannerThemeColor(b.character) : null) ??
+						undefined,
+				}))
+			: getResolvedGachaBanners(gachaBanners, server).map((b, index) => ({
+					...b,
+					image: `/events/${gachaBanners[index].eventImage}`,
+					offset: gachaBanners[index].yOffset,
+				}))
+		return all
+			.filter((b) => b.startDate <= openedAt)
+			.toSorted((a, b) => b.startDate - a.startDate)
+	}, [selectedBanner, isArcs, gachaBanners, server, openedAt])
+	const keyOf = (b: { name: string; startDate: number }) => `${b.name}-${b.startDate}`
+	const inWindow = (b: { startDate: number; endDate: number }, time: number) =>
+		isPullInBannerWindow(b, { timestamp: time } as MiracleBoxPull)
 
+	// The one picked, else the one running at the chosen time.
 	const banner =
-		banners.find((b) => b.name === bannerName) ?? banners[0] ?? undefined
+		banners.find((b) => keyOf(b) === bannerKey) ??
+		(Number.isNaN(timestamp) ? undefined : banners.find((b) => inWindow(b, timestamp)))
 
 	// What the banners running at the chosen time feature goes first.
-	const candidates = useMemo(
-		() =>
-			candidatesFor(
-				selectedBanner,
-				Number.isNaN(timestamp) ? undefined : { timestamp, server }
-			),
-		[selectedBanner, timestamp, server]
+	// (Memoized by the React Compiler.)
+	const candidates = candidatesFor(
+		selectedBanner,
+		Number.isNaN(timestamp) ? undefined : { timestamp, server }
 	)
-	const byName = useMemo(
-		() => new Map(candidates.map((c) => [c.name.toLowerCase(), c])),
-		[candidates]
-	)
+	const byName = new Map(candidates.map((c) => [c.name.toLowerCase(), c]))
 
 	const resolved = rows.map((row) => byName.get(row.itemName.trim().toLowerCase()))
 	const canSave =
 		!Number.isNaN(timestamp) && rows.length > 0 && resolved.every(Boolean)
 
 	const updateRow = (key: number, change: Partial<Row>) => {
-		setSavedCount(null)
 		setRows((current) =>
 			current.map((row) => (row.key === key ? { ...row, ...change } : row))
 		)
@@ -136,8 +158,8 @@ export function AdvancedPullEntry({ onClose }: { onClose: () => void }) {
 			pulls as MiracleBoxPull[] | ScarboroughFairPull[],
 			selectedBanner
 		)
-		setSavedCount(pulls.length)
-		setRows(newRows(rows.length))
+		onSaved(pulls.length)
+		onClose()
 	}
 
 	return (
@@ -160,30 +182,36 @@ export function AdvancedPullEntry({ onClose }: { onClose: () => void }) {
 						value={dateInput}
 						required
 						onChange={(e) => {
-							setSavedCount(null)
-							setDateInput(e.currentTarget.value)
+							const value = e.currentTarget.value
+							setDateInput(value)
+							// A time outside the picked banner goes back to the one
+							// running then.
+							const picked = banners.find((b) => keyOf(b) === bannerKey)
+							if (picked && !inWindow(picked, new Date(value).getTime())) {
+								setBannerKey("")
+							}
 						}}
 					/>
 				</label>
 
 				{selectedBanner !== "permanentBanner" && (
-					<label className={styles.field}>
+					<div className={styles.field}>
 						<b>{t("pulls.manual.banner")}</b>
-						<select
-							className={`inset-control ${settingsStyles.configSelect}`}
-							value={banner?.name ?? ""}
-							disabled={banners.length === 0}
-							onChange={(e) => setBannerName(e.currentTarget.value)}>
-							{banners.length === 0 && (
-								<option value="">{t("pulls.manual.noBanner")}</option>
-							)}
-							{banners.map((b) => (
-								<option key={`${b.name}-${b.startDate}`} value={b.name}>
-									{b.name}
-								</option>
-							))}
-						</select>
-					</label>
+						<BannerPicker
+							banners={banners.map((b): BannerOption => ({ ...b, key: keyOf(b) }))}
+							value={banner && { ...banner, key: keyOf(banner) }}
+							label={t("pulls.manual.banner")}
+							onChange={(key) => {
+								setBannerKey(key)
+								// Picking a banner the chosen time isn't in moves the
+								// time to its start.
+								const picked = banners.find((b) => keyOf(b) === key)
+								if (picked && (Number.isNaN(timestamp) || !inWindow(picked, timestamp))) {
+									setDateInput(toLocalInput(picked.startDate))
+								}
+							}}
+						/>
+					</div>
 				)}
 
 				<div className={styles.field}>
@@ -196,7 +224,6 @@ export function AdvancedPullEntry({ onClose }: { onClose: () => void }) {
 								aria-pressed={rows.length === count}
 								className={styles.countButton}
 								onClick={() => {
-									setSavedCount(null)
 									setRows(newRows(count))
 								}}>
 								{t(count === 1 ? "pulls.manual.single" : "pulls.manual.tenPull")}
@@ -206,56 +233,74 @@ export function AdvancedPullEntry({ onClose }: { onClose: () => void }) {
 				</div>
 			</div>
 
-			<ol className={styles.rows}>
-				{rows.map((row, index) => {
-					const item = resolved[index]
-					return (
-						<li key={row.key} className={styles.row}>
-							<span className={styles.rowNumber}>{index + 1}</span>
-							<ItemPicker
-								value={row.itemName}
-								onChange={(name) => updateRow(row.key, { itemName: name })}
-								candidates={candidates}
-								label={t("pulls.manual.itemLabel", { number: index + 1 })}
-								className={styles.itemInput}
-							/>
-							{hasDice && (
-								<DicePicker
-									value={row.result}
-									onChange={(result) => updateRow(row.key, { result })}
-									label={t("pulls.manual.resultLabel", { number: index + 1 })}
+			{/* Laid out as the quick form's rows: one strip each, under
+			    headers. Every row has every cell (empty where it doesn't
+			    apply) so the columns line up. */}
+			<div className={styles.entryTable} data-dice={hasDice} data-quantity={hasDice}>
+				<div className={styles.entryHead} aria-hidden>
+					<span />
+					<span>{t("pulls.list.item")}</span>
+					{hasDice && <span>{t("pulls.list.dice")}</span>}
+					{hasDice && <span>{t("pulls.manual.quantity")}</span>}
+					<span />
+				</div>
+				<ol className={styles.entryRows}>
+					{rows.map((row, index) => {
+						const item = resolved[index]
+						return (
+							<li
+								key={row.key}
+								className={`inset-control ${styles.entryRow} ${item ? getItemRarityStyle(item) : ""}`}
+								data-picked={Boolean(item)}>
+								<span className={styles.rowNumber}>{index + 1}</span>
+								<ItemPicker
+									value={row.itemName}
+									onChange={(name) => updateRow(row.key, { itemName: name })}
+									candidates={candidates}
+									label={t("pulls.manual.itemLabel", { number: index + 1 })}
+									className={styles.itemInput}
 								/>
-							)}
-							{item?.rewardType === "item" && (
-								<NumberStepper
-									value={row.quantity}
-									onChange={(quantity) => updateRow(row.key, { quantity })}
-									min={1}
-									label={t("pulls.manual.quantityLabel", { number: index + 1 })}
-								/>
-							)}
-							{rows.length > 1 && (
-								<button
-									type="button"
-									className={styles.removeRow}
-									aria-label={t("pulls.manual.removeRow", { number: index + 1 })}
-									onClick={() => {
-										setSavedCount(null)
-										setRows((current) => current.filter((r) => r.key !== row.key))
-									}}
-								/>
-							)}
-						</li>
-					)
-				})}
-			</ol>
+								{hasDice && (
+									<DicePicker
+										value={row.result}
+										onChange={(result) => updateRow(row.key, { result })}
+										label={t("pulls.manual.resultLabel", { number: index + 1 })}
+									/>
+								)}
+								{hasDice &&
+									(item?.rewardType === "item" ? (
+										<NumberStepper
+											value={row.quantity}
+											onChange={(quantity) => updateRow(row.key, { quantity })}
+											min={1}
+											label={t("pulls.manual.quantityLabel", { number: index + 1 })}
+										/>
+									) : (
+										<span />
+									))}
+								{rows.length > 1 ? (
+									<button
+										type="button"
+										className={styles.removeRow}
+										aria-label={t("pulls.manual.removeRow", { number: index + 1 })}
+										onClick={() => {
+											setRows((current) => current.filter((r) => r.key !== row.key))
+										}}
+									/>
+								) : (
+									<span />
+								)}
+							</li>
+						)
+					})}
+				</ol>
+			</div>
 
 			{hasDice && (
 				<button
 					type="button"
 					className={`pill-button ${styles.addRow}`}
 					onClick={() => {
-						setSavedCount(null)
 						setRows((current) => [...current, newRow()])
 					}}>
 					{t("pulls.manual.addRow")}
@@ -270,12 +315,6 @@ export function AdvancedPullEntry({ onClose }: { onClose: () => void }) {
 					{t("pulls.manual.save", { count: rows.length })}
 				</button>
 			</div>
-
-			{savedCount !== null && (
-				<p className={styles.saved} role="status">
-					{t("pulls.manual.saved", { count: savedCount })}
-				</p>
-			)}
 		</form>
 	)
 }

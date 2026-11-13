@@ -5,7 +5,7 @@ import { createPortal } from "react-dom"
 
 import type { MiracleBoxPull, ScarboroughFairPull } from "@/types/pulls"
 
-import { EnumRarity } from "@/data/items"
+import { EnumRarity, getItemRarityStyle } from "@/data/items"
 
 import { useGachaStore } from "@/hooks"
 import { useTooltip } from "@/hooks/useTooltip"
@@ -26,7 +26,7 @@ import {
 	useT,
 } from "@/contexts"
 
-import { ModalContainer } from "@/components/layout"
+import { InfoBox, ModalContainer } from "@/components/layout"
 
 import { AdvancedPullEntry } from "./AdvancedPullEntry"
 import { DicePicker } from "./DicePicker"
@@ -36,6 +36,7 @@ import {
 	candidatesFor,
 	HARD_PITY,
 	newManualUid,
+	pulledNow,
 	resultFields,
 	type Result,
 } from "./manualPulls"
@@ -167,9 +168,9 @@ export function ManualPullEntry() {
 		)
 	}
 
-	const save = () => {
+	// `timestamp` is taken in the submit handler: the pulls were made now.
+	const save = (timestamp: number) => {
 		if (!canSave) return
-		const timestamp = Date.now()
 		const banners = isArcs
 			? staticArcBanners
 			: selectedBanner === "limitedBanner"
@@ -219,7 +220,7 @@ export function ManualPullEntry() {
 				className={styles.manualEntry}
 				onSubmit={(e) => {
 					e.preventDefault()
-					save()
+					save(pulledNow())
 				}}>
 				<div className={styles.quickButtons}>
 					<button
@@ -246,6 +247,12 @@ export function ManualPullEntry() {
 					</button>
 				</div>
 
+				{rows.length === 0 && (
+					<InfoBox sticker="peek" className={styles.emptyNotice}>
+						<div>{t("pulls.manual.empty")}</div>
+					</InfoBox>
+				)}
+
 				{rows.length > 0 && (
 					<div className={styles.entryTable} data-dice={hasDice}>
 						<div className={styles.entryHead} aria-hidden>
@@ -260,7 +267,10 @@ export function ManualPullEntry() {
 								const item = resolved[index]
 								const counted = countedPities[index]
 								return (
-									<li key={row.key}>
+									<li
+										key={row.key}
+										className={`inset-control ${styles.entryRow} ${item ? getItemRarityStyle(item) : ""}`}
+										data-picked={Boolean(item)}>
 										<span className={styles.rowNumber}>{index + 1}</span>
 										<ItemPicker
 											value={row.itemName}
@@ -340,7 +350,10 @@ export function ManualPullEntry() {
 			{showAdvanced &&
 				createPortal(
 					<ModalContainer onClickOut={() => setShowAdvanced(false)}>
-						<AdvancedPullEntry onClose={() => setShowAdvanced(false)} />
+						<AdvancedPullEntry
+							onClose={() => setShowAdvanced(false)}
+							onSaved={setSavedCount}
+						/>
 					</ModalContainer>,
 					document.body
 				)}
