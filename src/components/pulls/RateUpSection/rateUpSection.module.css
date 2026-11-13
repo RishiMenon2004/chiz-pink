@@ -1,5 +1,4 @@
 .rateupSection {
-	grid-column: 1 / -1;
 
 	/* The shared InfoBox is spaced for a full page; here it fills the list. */
 	.emptyNotice {

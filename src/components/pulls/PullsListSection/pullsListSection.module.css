@@ -1,7 +1,3 @@
-.pullsSection {
-	grid-row: 2;
-}
-
 /* Header search box, styled like the catalog toolbar's. */
 .searchField {
 	position: relative;
@@ -488,7 +484,6 @@
 @media (max-width: 1220px) {
 	/* One column: pulls, stats, recent S-ranks, then import. */
 	.pullsSection {
-		grid-row: unset;
 		order: 1;
 	}
 }

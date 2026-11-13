@@ -1,6 +1,27 @@
-/* Beside both the pulls list and the stats below it. */
 .importSection {
-	grid-row: 2 / span 2;
+
+	/* The chosen tab's content, under the header. */
+	.tabPanel {
+		display: flex;
+		flex-direction: column;
+	}
+
+	/* The exporter link, at the top of the JSON tab: black on the panel,
+	   as it was in the header (.sectionTitleRow), its link pink. */
+	.description {
+		margin: 0 1rem 0.5rem;
+		color: black;
+
+		a {
+			color: var(--pink);
+			font-family: var(--font-barlow-condensed);
+			font-weight: 800;
+			font-style: italic;
+			text-decoration: underline;
+
+			cursor: var(--pointer-cursor);
+		}
+	}
 
 	.importFileBox {
 		border-radius: 1.25rem 1.25rem 0.75rem 0.75rem;
@@ -181,7 +202,6 @@
 
 @media (max-width: 1220px) {
 	.importSection {
-		grid-row: unset;
 		order: 4;
 	}
 }

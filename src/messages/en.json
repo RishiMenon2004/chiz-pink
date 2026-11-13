@@ -704,6 +704,7 @@
 			"importButton_one": "Import {count} Pull",
 			"importButton_other": "Import {count} Pulls",
 			"manual": "Manual",
+			"jsonTab": "JSON",
 			"messages": {
 				"parsedArc": "Parsed Arc Miracle Box History",
 				"parsedLimited": "Parsed Limited Character Banner History",

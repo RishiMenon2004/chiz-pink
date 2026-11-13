@@ -200,10 +200,14 @@ export function RenderPulls() {
 						rateUpPulls,
 					}}>
 					<BannerSelector />
-					<PullsListSection />
-					<StatsSection />
-					<ImportSection />
-					<RateUpSection />
+					<div className={styles.column}>
+						<PullsListSection />
+						<StatsSection />
+					</div>
+					<div className={styles.column}>
+						<ImportSection />
+						<RateUpSection />
+					</div>
 				</PullTrackerContext.Provider>
 			</main>
 		</>

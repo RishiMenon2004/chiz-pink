@@ -355,7 +355,7 @@ export function StatsSection() {
 				<div
 					role="tablist"
 					aria-label={t("pulls.stats.title")}
-					className={`inset-control ${styles.tabs}`}>
+					className={`inset-control ${pageStyles.sectionTabs}`}>
 					{tabs.map((tab, index) => (
 						<button
 							key={tab}
@@ -368,7 +368,7 @@ export function StatsSection() {
 							aria-selected={tab === currentTab}
 							aria-controls={`${baseId}-panel`}
 							tabIndex={tab === currentTab ? 0 : -1}
-							className={styles.tab}
+							className={pageStyles.sectionTab}
 							onClick={() => setActiveTab(tab)}
 							onKeyDown={onTabKeyDown}>
 							{t(tabLabels[tab])}

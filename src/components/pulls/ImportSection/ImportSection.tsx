@@ -1,6 +1,14 @@
 "use client"
 
-import { DragEventHandler, MouseEventHandler, useMemo, useState } from "react"
+import {
+	DragEventHandler,
+	KeyboardEvent,
+	MouseEventHandler,
+	useId,
+	useMemo,
+	useRef,
+	useState,
+} from "react"
 
 import { ImportedPullsResult, ImportMessage } from "@/types/pulls"
 
@@ -17,9 +25,32 @@ import { ManualPullEntry } from "../ManualPullEntry"
 import pageStyles from "@/app/[lang]/pulls/page.module.css"
 import styles from "./importSection.module.css"
 
+type Tab = "json" | "manual"
+const TABS: Tab[] = ["json", "manual"]
+
+// Two ways in, as tabs: a JSON file from the exporter, or pulls entered by
+// hand.
 export function ImportSection() {
 	const t = useT()
 	const { selectedBanner } = usePullTrackerContext()
+	const baseId = useId()
+	const [tab, setTab] = useState<Tab>("json")
+	const tabRefs = useRef<(HTMLButtonElement | null)[]>([])
+
+	// Arrow keys move between the tabs, as in the stats section.
+	const onTabKeyDown = (e: KeyboardEvent<HTMLButtonElement>) => {
+		const index = TABS.indexOf(tab)
+		const next = {
+			ArrowRight: (index + 1) % TABS.length,
+			ArrowLeft: (index + TABS.length - 1) % TABS.length,
+			Home: 0,
+			End: TABS.length - 1,
+		}[e.key]
+		if (next === undefined) return
+		e.preventDefault()
+		setTab(TABS[next])
+		tabRefs.current[next]?.focus()
+	}
 	const [importMessages, setImportMessages] = useState<ImportMessage[]>([])
 	const [parsedData, setParsedData] = useState<ImportedPullsResult>(null!)
 	const [fileName, setFileName] = useState<string>(null!)
@@ -113,88 +144,118 @@ export function ImportSection() {
 			className={`metallic-panel ${pageStyles.section} ${styles.importSection}`}>
 			<div className={pageStyles.sectionTitleRow}>
 				<div className={pageStyles.sectionTitle}>{t("pulls.import.title")}</div>
-				<div>
-					{t.rich("pulls.import.description", {
-						link: (text) => (
-							<a
-								href="https://github.com/RishiMenon2004/nte-exporter/releases/latest"
-								target="_blank">
-								{text}
-							</a>
-						),
-					})}
+				<div
+					role="tablist"
+					aria-label={t("pulls.import.title")}
+					className={`inset-control ${pageStyles.sectionTabs}`}>
+					{TABS.map((option, index) => (
+						<button
+							key={option}
+							ref={(el) => {
+								tabRefs.current[index] = el
+							}}
+							type="button"
+							role="tab"
+							id={`${baseId}-tab-${option}`}
+							aria-selected={option === tab}
+							aria-controls={`${baseId}-panel`}
+							tabIndex={option === tab ? 0 : -1}
+							className={pageStyles.sectionTab}
+							onClick={() => setTab(option)}
+							onKeyDown={onTabKeyDown}>
+							{t(option === "json" ? "pulls.import.jsonTab" : "pulls.import.manual")}
+						</button>
+					))}
 				</div>
 			</div>
 			<div
-				onDragEnter={() => {
-					setfileDragOver(true)
-				}}
-				onDragExit={() => {
-					setfileDragOver(false)
-				}}
-				onDragOver={(e) => e.preventDefault()}
-				onDrop={handleDrop}
-				className={`inset-control ${styles.importFileBox} ${(fileDragHover && styles.fileDropActive) || ""}`}>
-				<div className={styles.importFileDrop} onClick={openFileSelect}>
-					<p>{t("pulls.import.dropHere")}</p>
-				</div>
-				<div className={`${styles.importFileSelect}`}>
-					<code>
-						<span className={styles.fileName}>
-							{fileName || t("pulls.import.noFile")}
-						</span>
-					</code>
-					{parsedData && (
-						<button
-							className={`pill-button ${styles.clearFileButton}`}
-							onClick={clearImports}>
-							X
-						</button>
-					)}
-					<button
-						className={`pill-button ${styles.fileButton}`}
-						onClick={openFileSelect}>
-						{parsedData ? t("pulls.import.changeFile") : t("pulls.import.selectFile")}
-					</button>
-				</div>
+				role="tabpanel"
+				id={`${baseId}-panel`}
+				aria-labelledby={`${baseId}-tab-${tab}`}
+				className={styles.tabPanel}>
+				{tab === "json" ? (
+					<>
+						<div className={styles.description}>
+							{t.rich("pulls.import.description", {
+								link: (text) => (
+									<a
+										href="https://github.com/RishiMenon2004/nte-exporter/releases/latest"
+										target="_blank">
+										{text}
+									</a>
+								),
+							})}
+						</div>
+						<div
+							onDragEnter={() => {
+								setfileDragOver(true)
+							}}
+							onDragExit={() => {
+								setfileDragOver(false)
+							}}
+							onDragOver={(e) => e.preventDefault()}
+							onDrop={handleDrop}
+							className={`inset-control ${styles.importFileBox} ${(fileDragHover && styles.fileDropActive) || ""}`}>
+							<div className={styles.importFileDrop} onClick={openFileSelect}>
+								<p>{t("pulls.import.dropHere")}</p>
+							</div>
+							<div className={`${styles.importFileSelect}`}>
+								<code>
+									<span className={styles.fileName}>
+										{fileName || t("pulls.import.noFile")}
+									</span>
+								</code>
+								{parsedData && (
+									<button
+										className={`pill-button ${styles.clearFileButton}`}
+										onClick={clearImports}>
+										X
+									</button>
+								)}
+								<button
+									className={`pill-button ${styles.fileButton}`}
+									onClick={openFileSelect}>
+									{parsedData ? t("pulls.import.changeFile") : t("pulls.import.selectFile")}
+								</button>
+							</div>
 
-				{importMessages.length > 0 && (
-					<span className={`${styles.importMessageBox}`}>
-						{importMessages.map((row, index) => {
-							return (
-								<p
-									key={index}
-									data-type={row.status}
-									className={styles.importMessage}>
-									{t(row.message, row.params)}
-								</p>
-							)
-						})}
-					</span>
+							{importMessages.length > 0 && (
+								<span className={`${styles.importMessageBox}`}>
+									{importMessages.map((row, index) => {
+										return (
+											<p
+												key={index}
+												data-type={row.status}
+												className={styles.importMessage}>
+												{t(row.message, row.params)}
+											</p>
+										)
+									})}
+								</span>
+							)}
+						</div>
+						<button
+							disabled={
+								!parsedData ||
+								parsedData.messages.some(
+									(message) => message.status === "error"
+								)
+							}
+							className={`pill-button ${styles.importButton}`}
+							onClick={(e) => {
+								e.preventDefault()
+								importData()
+							}}>
+							{t("pulls.import.importButton", {
+								count: parsedData?.pulls.length ?? 0,
+							})}
+						</button>
+					</>
+				) : (
+					// Keyed by board: switching boards drops rows queued for another.
+					<ManualPullEntry key={selectedBanner} />
 				)}
 			</div>
-			<button
-				disabled={
-					!parsedData ||
-					parsedData.messages.some(
-						(message) => message.status === "error"
-					)
-				}
-				className={`pill-button ${styles.importButton}`}
-				onClick={(e) => {
-					e.preventDefault()
-					importData()
-				}}>
-				{t("pulls.import.importButton", {
-					count: parsedData?.pulls.length ?? 0,
-				})}
-			</button>
-			<hr />
-			<div className={pageStyles.sectionTitleRow}>
-				<div className={pageStyles.sectionTitle}>{t("pulls.import.manual")}</div>
-			</div>
-			{/* Keyed by board: switching boards drops rows queued for another. */}
-			<ManualPullEntry key={selectedBanner} />
 		</div>
 	)
 }
