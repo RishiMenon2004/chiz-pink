@@ -5,6 +5,7 @@ import { isInitialSyncPending } from "@/helpers/syncGate"
 import { dismissToolIntro } from "@/helpers/toolIntro"
 
 import { safeParse } from "@/helpers/dataCorruption"
+import { randomId } from "@/helpers/randomId"
 import * as idbStorage from "@/helpers/storage/idbStorage"
 import * as memoryStorage from "@/helpers/storage/memoryStorage"
 import {
@@ -89,6 +90,14 @@ function isSamePull(a: Pull, b: Pull): boolean {
 // import is authoritative for its own uids, which lets re-importing repair
 // pulls saved by an older, buggier parser (including ones a cloud merge
 // brought back after a local clear).
+//
+// Manual pulls stay out of the signature count both ways: a hand-entered
+// pull never stops an imported one that looks the same from being added,
+// and is never dropped as a copy of one. Both are kept, the manual one
+// marked, for the player to sort out. Only their uid dedupes them.
+//
+// An imported pull the player has edited is never added back: its manual
+// copy names it in `editedFrom`.
 function filterNewPulls<T extends Pull>(
 	existing: Pull[],
 	incoming: T[],
@@ -96,6 +105,9 @@ function filterNewPulls<T extends Pull>(
 	overwrite = false
 ): T[] {
 	const existingByUid = new Map(existing.map((pull) => [pull.uid, pull]))
+	const editedAway = new Set(
+		existing.flatMap((pull) => (pull.editedFrom ? [pull.editedFrom] : []))
+	)
 	const incomingByUid = new Map(incoming.map((pull) => [pull.uid, pull]))
 	const signatureOf = (pull: Pull) => getPullSignature({ ...pull, bannerType })
 
@@ -103,6 +115,7 @@ function filterNewPulls<T extends Pull>(
 	// (corrected) signature, not its stale one
 	const existingCounts = new Map<string, number>()
 	for (const pull of existing) {
+		if (pull.manual) continue
 		const signature = signatureOf(
 			(overwrite && incomingByUid.get(pull.uid)) || pull
 		)
@@ -110,13 +123,19 @@ function filterNewPulls<T extends Pull>(
 	}
 	const incomingCounts = new Map<string, number>()
 	for (const pull of incoming) {
+		if (pull.manual) continue
 		const signature = signatureOf(pull)
 		incomingCounts.set(signature, (incomingCounts.get(signature) ?? 0) + 1)
 	}
 
 	return incoming.filter((pull) => {
+		if (editedAway.has(pull.uid)) return false
 		const stored = existingByUid.get(pull.uid)
 		if (stored) return overwrite && !isSamePull(stored, pull)
+		if (pull.manual) {
+			existingByUid.set(pull.uid, pull)
+			return true
+		}
 
 		const signature = signatureOf(pull)
 		const count = existingCounts.get(signature) ?? 0
@@ -196,6 +215,20 @@ export function applyPulls(pulls: StoredPull[], overwrite = false) {
 	cachedPulls = next
 }
 
+// A copy of `record` with the given pulls of one banner taken out.
+function withoutPulls(
+	record: PullsRecord,
+	bannerType: BannerType,
+	uids: string[]
+): PullsRecord {
+	const remove = new Set(uids)
+	const kept: Record<string, Pull> = {}
+	for (const pull of Object.values(record[bannerType])) {
+		if (!remove.has(pull.uid)) kept[pull.uid] = pull
+	}
+	return { ...record, [bannerType]: kept }
+}
+
 // Merges a whole incoming PullsRecord (e.g. from cloud sync) into the current
 // local state without overwriting local-only pulls, deduplicating by uid & signature.
 export function mergePullsRecord(remotePulls: PullsRecord) {
@@ -235,11 +268,14 @@ export function mergePullsRecord(remotePulls: PullsRecord) {
 memoryStorage.onCustomBroadcast(PULLS_BROADCAST_CHANNEL, (payload) => {
 	const message = payload as
 		| { kind: "add"; pulls: StoredPull[]; overwrite?: boolean }
+		| { kind: "remove"; bannerType: BannerType; uids: string[] }
 		| { kind: "replace"; pullsRecord: PullsRecord }
 		| { kind: "clear" }
 
 	if (message.kind === "add") {
 		applyPulls(message.pulls, message.overwrite)
+	} else if (message.kind === "remove") {
+		cachedPulls = withoutPulls(cachedPulls, message.bannerType, message.uids)
 	} else if (message.kind === "replace") {
 		cachedPulls = message.pullsRecord
 	} else {
@@ -434,6 +470,115 @@ export const gachaPullsActions = {
 		response.status = "success"
 		return response
 	},
+
+	// Saves pulls the player entered by hand, `pulls` in the order they are
+	// to be listed (newest first). Each is new, with a fresh uid, so none is
+	// ever skipped as a duplicate.
+	addManualPulls(
+		pulls: MiracleBoxPull[] | ScarboroughFairPull[],
+		bannerType: BannerType
+	) {
+		if (typeof window === "undefined" || isInitialSyncPending()) return
+		dismissToolIntro("pulls")
+
+		const storedPulls: StoredPull[] = pulls.map((pull, seq) => ({
+			...pull,
+			manual: true,
+			bannerType,
+			seq,
+		}))
+
+		applyPulls(storedPulls)
+		if (memoryStorage.isFallbackMode()) {
+			writeLegacyBlob(cachedPulls)
+		} else {
+			memoryStorage.broadcastCustom(PULLS_BROADCAST_CHANNEL, {
+				kind: "add",
+				pulls: storedPulls,
+			})
+			idbStorage.putPulls(storedPulls, bannerType).catch((error) => {
+				console.error(`IndexedDB write failed for manual pulls (${bannerType})`, error)
+			})
+		}
+
+		memoryStorage.notifyListeners()
+		memoryStorage.setItem("gachaLastUpdated", Date.now())
+	},
+
+	// Saves the player's edit of a stored pull. A manual pull is updated in
+	// place; an imported one is replaced by a manual copy (a fresh uid,
+	// marked manual) that remembers the pull it replaced.
+	editPull(bannerType: BannerType, originalUid: string, edited: Pull) {
+		if (typeof window === "undefined") return
+		const original = cachedPulls[bannerType][originalUid] as
+			| (Pull & { seq?: number })
+			| undefined
+		if (!original) return
+
+		const replacement: StoredPull = {
+			...edited,
+			...(original.seq !== undefined ? { seq: original.seq } : {}),
+			manual: true,
+			...(original.manual
+				? { uid: original.uid }
+				: { uid: `manual-${randomId()}`, editedFrom: original.uid }),
+			bannerType,
+		}
+		const removed = original.manual ? [] : [original.uid]
+
+		cachedPulls = withoutPulls(cachedPulls, bannerType, removed)
+		applyPulls([replacement], true)
+		memoryStorage.notifyListeners()
+
+		if (memoryStorage.isFallbackMode()) {
+			writeLegacyBlob(cachedPulls)
+		} else {
+			if (removed.length > 0) {
+				memoryStorage.broadcastCustom(PULLS_BROADCAST_CHANNEL, {
+					kind: "remove",
+					bannerType,
+					uids: removed,
+				})
+				idbStorage.deletePulls(removed).catch((error) => {
+					console.error("IndexedDB delete failed for pulls", error)
+				})
+			}
+			memoryStorage.broadcastCustom(PULLS_BROADCAST_CHANNEL, {
+				kind: "add",
+				pulls: [replacement],
+				overwrite: true,
+			})
+			idbStorage.putPulls([replacement], bannerType).catch((error) => {
+				console.error("IndexedDB write failed for an edited pull", error)
+			})
+		}
+
+		memoryStorage.setItem("gachaLastUpdated", Date.now())
+	},
+
+	// Deletes pulls of one banner by uid (the list only offers this for
+	// manual pulls).
+	removePulls(bannerType: BannerType, uids: string[]) {
+		if (typeof window === "undefined" || uids.length === 0) return
+
+		cachedPulls = withoutPulls(cachedPulls, bannerType, uids)
+		memoryStorage.notifyListeners()
+
+		if (memoryStorage.isFallbackMode()) {
+			writeLegacyBlob(cachedPulls)
+		} else {
+			memoryStorage.broadcastCustom(PULLS_BROADCAST_CHANNEL, {
+				kind: "remove",
+				bannerType,
+				uids,
+			})
+			idbStorage.deletePulls(uids).catch((error) => {
+				console.error("IndexedDB delete failed for pulls", error)
+			})
+		}
+
+		memoryStorage.setItem("gachaLastUpdated", Date.now())
+	},
 }
 
 // Full overwrite (backup restore / cloud pull) - unlike addPulls, this
@@ -513,6 +658,9 @@ export function useGachaStore() {
 		gachaPulls,
 		actions: {
 			addPulls: gachaPullsActions.addPulls,
+			addManualPulls: gachaPullsActions.addManualPulls,
+			removePulls: gachaPullsActions.removePulls,
+			editPull: gachaPullsActions.editPull,
 		},
 	}
 }

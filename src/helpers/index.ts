@@ -66,9 +66,16 @@ export {
 	calculateCharacterBannerPity,
 	calculatePityMap,
 	calculatePullNumberMap,
+	countUnloggedPulls,
 } from "./calculatePity"
 
 export { getBannerThemeColor } from "./getBannerThemeColor"
-export { findPullBanner, findPullPoolBanner, type PullBanner } from "./pullBanner"
+export {
+	findPullBanner,
+	findPullPoolBanner,
+	poolIdForBanner,
+	type PullBanner,
+} from "./pullBanner"
 export { findPullItem } from "./findPullItem"
 export { stopPropagation } from "./stopPropagation"
+export { randomId } from "./randomId"

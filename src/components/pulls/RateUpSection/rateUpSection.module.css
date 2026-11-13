@@ -139,3 +139,10 @@
 		-webkit-text-stroke: 2px black;
 	}
 }
+
+/* One column: after the stats (see .pullsSection). */
+@media (max-width: 1220px) {
+	.rateupSection {
+		order: 3;
+	}
+}

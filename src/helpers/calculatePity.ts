@@ -149,9 +149,14 @@ export const isRateUp = (
  * Pity is tracked in 10-pull groups. Single rate-up items retain the group pity,
  * while multiple rate-up items in the same group give 0 pity to newer rate-ups onward.
  */
+// Tallies pulls that weren't logged: wherever a pull's pity was set by
+// hand above the pity counted for it, the difference.
+type UnloggedTally = { count: number }
+
 export function calculateArcBannerPity(
 	pulls: (MiracleBoxPull | ScarboroughFairPull)[],
-	pullsPerPage: number = 10
+	pullsPerPage: number = 10,
+	unlogged?: UnloggedTally
 ): Map<string, number> {
 	const pityMap = new Map<string, number>()
 	let lastRateUpGroupIndex = 0
@@ -167,6 +172,20 @@ export function calculateArcBannerPity(
 		if (pullGroupIndex !== groupIndex) {
 			groupIndex = pullGroupIndex
 			rateUpInGroupCount = 0
+		}
+
+		if (isArcRateUp(pull) && pull.pity !== undefined) {
+			// A rate-up with its pity set by hand: it shows that, and pity
+			// starts again from the next group.
+			if (unlogged) {
+				const counted = (groupIndex - lastRateUpGroupIndex) * 10
+				unlogged.count += Math.max(0, pull.pity - counted)
+			}
+			pityMap.set(pull.uid, pull.pity)
+			rateUpInGroupCount++
+			lastRateUpGroupIndex = groupIndex
+			lastRateUpGroupPity = 0
+			continue
 		}
 
 		if (isArcRateUp(pull)) {
@@ -213,6 +232,12 @@ export function calculateArcBannerPity(
 			// count up normally from 0 from the last rate-up pull
 			groupPity = (groupIndex - lastRateUpGroupIndex) * 10
 		}
+		// Arc pity is by ten-pull group, so a pity set by hand only changes
+		// what this pull shows.
+		if (pull.pity !== undefined) {
+			if (unlogged) unlogged.count += Math.max(0, pull.pity - groupPity)
+			groupPity = pull.pity
+		}
 		pityMap.set(pull.uid, groupPity)
 	}
 
@@ -227,7 +252,8 @@ export function calculateCharacterBannerPity(
 	pulls: (MiracleBoxPull | ScarboroughFairPull)[],
 	selectedBanner: "limitedBanner" | "permanentBanner",
 	gachaBanners: EventData[],
-	server: SettingsRecord["userdata"]["server"]
+	server: SettingsRecord["userdata"]["server"],
+	unlogged?: UnloggedTally
 ): Map<string, number> {
 	const pityMap = new Map<string, number>()
 	let pityCounter = 1
@@ -235,6 +261,12 @@ export function calculateCharacterBannerPity(
 	for (let i = pulls.length - 1; i >= 0; i--) {
 		const pull = pulls[i]
 		const isScarborough = isScarboroughPull(pull)
+
+		// A pity set by hand takes over the count from this pull on.
+		if (pull.pity !== undefined) {
+			if (unlogged) unlogged.count += Math.max(0, pull.pity - pityCounter)
+			pityCounter = pull.pity
+		}
 
 		if (isRateUp(selectedBanner, gachaBanners, pull, server)) {
 			pityMap.set(pull.uid, pityCounter)
@@ -284,15 +316,30 @@ export function calculatePityMap(
 	selectedBanner: keyof PullsRecord,
 	gachaBanners: EventData[],
 	server: SettingsRecord["userdata"]["server"],
-	pullsPerPage: number = 10
+	pullsPerPage: number = 10,
+	unlogged?: UnloggedTally
 ): Map<string, number> {
 	if (selectedBanner === "arcsBanner") {
-		return calculateArcBannerPity(pulls, pullsPerPage)
+		return calculateArcBannerPity(pulls, pullsPerPage, unlogged)
 	}
 	return calculateCharacterBannerPity(
 		pulls,
 		selectedBanner,
 		gachaBanners,
-		server
+		server,
+		unlogged
 	)
+}
+
+// How many pulls weren't logged, going by the pities set by hand (see
+// Pull.pity). Stats count these alongside the logged ones.
+export function countUnloggedPulls(
+	pulls: (MiracleBoxPull | ScarboroughFairPull)[],
+	selectedBanner: keyof PullsRecord,
+	gachaBanners: EventData[],
+	server: SettingsRecord["userdata"]["server"]
+): number {
+	const unlogged = { count: 0 }
+	calculatePityMap(pulls, selectedBanner, gachaBanners, server, 10, unlogged)
+	return unlogged.count
 }

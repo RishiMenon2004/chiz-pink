@@ -1,12 +1,24 @@
 "use client"
 
-import { CSSProperties, useCallback, useEffect, useMemo, useRef, useState } from "react"
+import {
+	CSSProperties,
+	ReactNode,
+	useCallback,
+	useEffect,
+	useMemo,
+	useRef,
+	useState,
+} from "react"
+import { createPortal } from "react-dom"
 import Image from "next/image"
 
 import { ScarboroughFairPull, MiracleBoxPull } from "@/types/pulls"
 
 import { getItemRarityStyle } from "@/data/items"
 import { permanentBanner } from "@/data/activities/banners"
+
+import { useGachaStore } from "@/hooks"
+import { useTooltip } from "@/hooks/useTooltip"
 
 import {
 	isScarboroughPull,
@@ -26,6 +38,11 @@ import {
 	useSettingsConfigContext,
 	useT,
 } from "@/contexts"
+
+import { AlertContainer, ModalContainer } from "@/components/layout"
+import { alertMessage } from "@/components/layout/Alert/AlertContainer"
+
+import { PullEditOverlay } from "./PullEditOverlay"
 
 import pageStyles from "@/app/[lang]/pulls/page.module.css"
 import styles from "./pullsListSection.module.css"
@@ -77,15 +94,43 @@ type ListRow = { type: "pull"; pull: Pull } | LabelRow
 
 type Group = { run: Run; pulls: Pull[]; label?: LabelRow }
 
+// How long a touch has to be held to edit a pull, and how far it may
+// wander before it counts as a scroll instead.
+const HOLD_MS = 500
+const HOLD_SLOP = 10
+
+type PullActions = {
+	// A right-click: the menu at the pointer.
+	onMenu: (pull: Pull, anchor: HTMLElement, x: number, y: number) => void
+	// A press and hold on touch: straight to editing.
+	onEdit: (pull: Pull, anchor: HTMLElement) => void
+}
+
 function PullEntry({
 	pull,
 	pity,
 	pullNumber,
+	actions,
+	slots,
 }: {
 	pull: MiracleBoxPull | ScarboroughFairPull
 	pity: number
 	pullNumber: number
+	// Absent on the copy lifted over the list while editing.
+	actions?: PullActions
+	// While editing: controls in place of the dice, the name and the pity.
+	slots?: { dice?: ReactNode; name: ReactNode; pity: ReactNode }
 }) {
+	const t = useT()
+	const { Tooltip, showTooltip, hideTooltip } = useTooltip()
+	const hold = useRef<{ timer: number; x: number; y: number; fired: boolean } | null>(null)
+	const lastPointer = useRef<string>("mouse")
+
+	const cancelHold = () => {
+		if (hold.current) window.clearTimeout(hold.current.timer)
+		hold.current = null
+	}
+
 	const { selectedBanner, gachaBanners } = usePullTrackerContext()
 	const {
 		userdata: { server },
@@ -126,9 +171,78 @@ function PullEntry({
 						"--bg-image": `url("${getOptimizedImageUrl(imageSrc)}")`,
 					} as CSSProperties
 				}
-				className={`${styles.pullEntry} ${getItemRarityStyle(item)}`}>
+				className={`${styles.pullEntry} ${getItemRarityStyle(item)}`}
+				// Focusable, so a keyboard can edit it too: Enter or Space opens
+				// the editor, the context-menu key (or Shift+F10) the menu.
+				tabIndex={actions ? 0 : undefined}
+				aria-label={
+					actions
+						? t("pulls.manual.rowLabel", {
+								name: item?.name ?? pull.rewardId,
+								pity: pullNumber > 0 ? pity : "-",
+							})
+						: undefined
+				}
+				aria-haspopup={actions ? "menu" : undefined}
+				onKeyDown={(e) => {
+					if (!actions || e.target !== e.currentTarget) return
+					if (e.key === "Enter" || e.key === " ") {
+						e.preventDefault()
+						actions.onEdit(pull, e.currentTarget)
+					}
+				}}
+				onPointerDown={(e) => {
+					lastPointer.current = e.pointerType
+					if (!actions || e.pointerType === "mouse") return
+					const anchor = e.currentTarget
+					cancelHold()
+					hold.current = {
+						x: e.clientX,
+						y: e.clientY,
+						fired: false,
+						timer: window.setTimeout(() => {
+							if (hold.current) hold.current.fired = true
+							actions.onEdit(pull, anchor)
+						}, HOLD_MS),
+					}
+				}}
+				onPointerMove={(e) => {
+					const start = hold.current
+					if (
+						start &&
+						Math.hypot(e.clientX - start.x, e.clientY - start.y) > HOLD_SLOP
+					)
+						cancelHold()
+				}}
+				onPointerUp={cancelHold}
+				onPointerCancel={cancelHold}
+				onContextMenu={(e) => {
+					if (!actions) return
+					e.preventDefault()
+					// A long press on touch raises this too; it edits instead.
+					if (lastPointer.current !== "mouse") {
+						if (!hold.current?.fired) {
+							cancelHold()
+							actions.onEdit(pull, e.currentTarget)
+						}
+						return
+					}
+					// From the keyboard there's no pointer: open at the row instead.
+					const rect = e.currentTarget.getBoundingClientRect()
+					const fromKeyboard = e.clientX === 0 && e.clientY === 0
+					actions.onMenu(
+						pull,
+						e.currentTarget,
+						fromKeyboard ? rect.left + 16 : e.clientX,
+						fromKeyboard ? rect.bottom : e.clientY
+					)
+				}}>
 				<div className={styles.pullArt} aria-hidden />
-				<DiceRoll pull={pull} />
+				{slots?.dice ? (
+					<div className={styles.pullDice}>{slots.dice}</div>
+				) : (
+					<DiceRoll pull={pull} />
+				)}
 
 				<div
 					className={styles.pullName}
@@ -136,16 +250,103 @@ function PullEntry({
 						gridColumn:
 							selectedBanner === "arcsBanner" ? "span 2" : "unset",
 					}}>
-					{item?.name}
-					{isScarborough &&
-						pull.rewardType === "item" &&
-						` ×${pull.quantity}`}
+					{slots ? (
+						slots.name
+					) : (
+						<>
+							{item?.name}
+							{isScarborough &&
+								pull.rewardType === "item" &&
+								` ×${pull.quantity}`}
+							{pull.manual && (
+								<>
+									<span
+										role="img"
+										className={styles.manualTag}
+										aria-label={t("pulls.manual.tag_tooltip")}
+										onPointerEnter={showTooltip}
+										onPointerLeave={hideTooltip}
+									/>
+									<Tooltip offset={{ x: 32, y: 0 }}>{t("pulls.manual.tag_tooltip")}</Tooltip>
+								</>
+							)}
+						</>
+					)}
 				</div>
 				<div className={styles.pullPity}>
-					{pullNumber > 0 ? pity : "-"}
+					{slots ? slots.pity : pullNumber > 0 ? pity : "-"}
 				</div>
 			</div>
 		</>
+	)
+}
+
+// The right-click menu on a pull: Edit, and Delete for a manual pull.
+// Closes on a press elsewhere, Escape or scrolling.
+function PullMenu({
+	pull,
+	x,
+	y,
+	onEdit,
+	onDelete,
+	onClose,
+}: {
+	pull: Pull
+	x: number
+	y: number
+	onEdit: () => void
+	onDelete: () => void
+	onClose: () => void
+}) {
+	const t = useT()
+	const menuRef = useRef<HTMLDivElement>(null)
+
+	useEffect(() => {
+		const onPointerDown = (e: PointerEvent) => {
+			if (!menuRef.current?.contains(e.target as Node)) onClose()
+		}
+		const onKeyDown = (e: KeyboardEvent) => {
+			if (e.key === "Escape") onClose()
+		}
+		document.addEventListener("pointerdown", onPointerDown)
+		window.addEventListener("keydown", onKeyDown)
+		window.addEventListener("scroll", onClose, true)
+		menuRef.current?.querySelector("button")?.focus()
+		return () => {
+			document.removeEventListener("pointerdown", onPointerDown)
+			window.removeEventListener("keydown", onKeyDown)
+			window.removeEventListener("scroll", onClose, true)
+		}
+	}, [onClose])
+
+	return createPortal(
+		<div
+			ref={menuRef}
+			role="menu"
+			className={styles.pullMenu}
+			// Kept on screen near the window's right and bottom edges.
+			style={{
+				left: Math.min(x, window.innerWidth - 176),
+				top: Math.min(y, window.innerHeight - 96),
+			}}>
+			<button type="button" role="menuitem" className={styles.pullMenuItem} onClick={onEdit}>
+				{t("pulls.manual.edit")}
+			</button>
+			{pull.manual && (
+				<button
+					type="button"
+					role="menuitem"
+					className={styles.pullMenuItem}
+					data-variant="danger"
+					onClick={() => {
+						onClose()
+						onDelete()
+					}}>
+					{t("pulls.manual.deleteButton")}
+				</button>
+			)}
+		</div>,
+		document.body
 	)
 }
 
@@ -389,12 +590,46 @@ export function PullsListSection() {
 			: t("pulls.list.endOf", { banners: names })
 	}
 
+	// The pull whose right-click menu is open, and the one being edited.
+	const [menu, setMenu] = useState<{
+		pull: Pull
+		anchor: HTMLElement
+		x: number
+		y: number
+	} | null>(null)
+	const [editing, setEditing] = useState<{ pull: Pull; anchor: HTMLElement } | null>(
+		null
+	)
+	const closeMenu = useCallback(() => setMenu(null), [])
+	// A manual pull waiting on the delete alert.
+	const [deleting, setDeleting] = useState<Pull | null>(null)
+	const { actions: gachaActions } = useGachaStore()
+	// Focus goes back to the row it came from, while that row's still there.
+	const closeEditor = useCallback(() => {
+		setEditing((current) => {
+			const anchor = current?.anchor
+			if (anchor?.isConnected) requestAnimationFrame(() => anchor.focus())
+			return null
+		})
+	}, [])
+	const pullActions: PullActions = useMemo(
+		() => ({
+			onMenu: (pull, anchor, x, y) => setMenu({ pull, anchor, x, y }),
+			onEdit: (pull, anchor) => {
+				setMenu(null)
+				setEditing({ pull, anchor })
+			},
+		}),
+		[]
+	)
+
 	const renderPull = (pull: MiracleBoxPull | ScarboroughFairPull) => (
 		<PullEntry
 			key={pull.uid}
 			pull={pull}
 			pity={pityMap[selectedBanner].get(pull.uid) ?? 0}
 			pullNumber={pullNumberMap[selectedBanner].get(pull.uid) ?? -1}
+			actions={pullActions}
 		/>
 	)
 
@@ -552,6 +787,51 @@ export function PullsListSection() {
 						{t("pulls.list.next")}
 					</button>
 				</div>
+			)}
+			{menu && (
+				<PullMenu
+					pull={menu.pull}
+					x={menu.x}
+					y={menu.y}
+					onEdit={() => pullActions.onEdit(menu.pull, menu.anchor)}
+					onDelete={() => setDeleting(menu.pull)}
+					onClose={closeMenu}
+				/>
+			)}
+			{deleting &&
+				createPortal(
+					<ModalContainer>
+						<AlertContainer
+							type="dangerous-confirm"
+							confirmLabel={t("pulls.manual.deleteButton")}
+							cancelLabel={t("pulls.manual.cancel")}
+							onCancel={() => setDeleting(null)}
+							onConfirm={() => {
+								gachaActions.removePulls(selectedBanner, [deleting.uid])
+								setDeleting(null)
+							}}>
+							{t("pulls.manual.deleteConfirm")}
+							<br />
+							<p className={alertMessage}>{t("pulls.manual.deleteConfirmNote")}</p>
+						</AlertContainer>
+					</ModalContainer>,
+					document.body
+				)}
+			{editing && (
+				<PullEditOverlay
+					pull={editing.pull}
+					shownPity={pityMap[selectedBanner].get(editing.pull.uid) ?? 0}
+					anchor={editing.anchor}
+					renderRow={(draft, pity, slots) => (
+						<PullEntry
+							pull={draft as MiracleBoxPull | ScarboroughFairPull}
+							pity={pity}
+							pullNumber={pullNumberMap[selectedBanner].get(editing.pull.uid) ?? -1}
+							slots={slots}
+						/>
+					)}
+					onClose={closeEditor}
+				/>
 			)}
 		</div>
 	)

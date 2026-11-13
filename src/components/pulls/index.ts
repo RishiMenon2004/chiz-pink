@@ -1,6 +1,7 @@
 export { BannerSelector } from "./BannerSelector"
 export { ExternalImport } from "./ExternalImport"
 export { ImportSection } from "./ImportSection"
+export { ManualPullEntry } from "./ManualPullEntry"
 export { PullsListSection } from "./PullsListSection"
 export { RateUpSection } from "./RateUpSection"
 export { StatsSection } from "./StatsSection"

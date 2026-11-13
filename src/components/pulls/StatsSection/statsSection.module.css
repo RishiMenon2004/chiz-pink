@@ -3,6 +3,9 @@
 .statsSection {
 	grid-column: 1;
 	grid-row: 3;
+	/* Its own height at the top of its row, which grows when the import
+	   panel beside it does. */
+	align-self: start;
 
 	/* The soft pity stretch: a yellow line where it starts, then fading in to
 	   red at hard pity. */
@@ -562,5 +565,6 @@
 	.statsSection {
 		grid-column: unset;
 		grid-row: unset;
+		order: 2;
 	}
 }

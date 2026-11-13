@@ -1,0 +1,667 @@
+/* ---------- Simple form, in the import panel ---------- */
+
+.manualEntry {
+	display: flex;
+	flex-direction: column;
+	gap: 0.375rem;
+	padding: 0 0.375rem 0.5rem;
+
+	color: black;
+}
+
+/* The rows being filled in, under headers: number, item, dice (not on
+   the arc board), pity, remove. Rows share the columns by subgrid. */
+.entryTable {
+	display: grid;
+	grid-template-columns: auto 1fr auto auto auto;
+	gap: 0.375rem;
+
+	&[data-dice="false"] {
+		grid-template-columns: auto 1fr auto auto;
+	}
+}
+
+.entryHead,
+.entryRows,
+.entryRows > li {
+	grid-column: 1 / -1;
+	display: grid;
+	grid-template-columns: subgrid;
+	align-items: center;
+}
+
+.entryHead {
+	font-family: var(--font-barlow-condensed);
+	font-size: 0.9rem;
+	font-weight: 600;
+	text-align: center;
+	opacity: 0.6;
+
+	/* The item header sits over the text in its box, not centred. */
+	> :nth-child(2) {
+		padding-inline-start: 1rem;
+		text-align: start;
+	}
+}
+
+.entryRows {
+	row-gap: 0.375rem;
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+/* Clear and Add, set apart from the last row. */
+.entryActions {
+	margin-block-start: 0.5rem;
+}
+
+/* +1 and +10 split the width, Advanced beneath them. */
+.quickButtons {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	/* Clear of the buttons' thick outlines, which eat into a smaller gap. */
+	gap: 0.75rem;
+}
+
+.quickButton {
+	height: 2.75rem;
+	font-size: 1.35rem;
+}
+
+.advancedButton {
+	grid-column: 1 / -1;
+	/* Room between the buttons and the rows they add. */
+	margin-block-end: 0.5rem;
+}
+
+.advancedLink {
+	margin-inline-start: auto;
+	padding: 0;
+	border: none;
+	background: none;
+
+	color: var(--pink);
+	font-family: var(--font-barlow-condensed);
+	font-style: italic;
+	font-weight: 700;
+	text-decoration: underline;
+
+	cursor: var(--pointer-cursor);
+}
+
+/* ---------- Advanced form, in a modal ---------- */
+
+.advanced {
+	width: min(36rem, 100%);
+	margin-block: min(10dvh, 6rem) auto;
+	padding: 1rem 0.75rem 0.75rem;
+	border-radius: 1.5rem;
+
+	display: flex;
+	flex-direction: column;
+	gap: 0.75rem;
+
+	color: black;
+}
+
+/* Opened under a pull in the list: as wide as the pull, no page margin. */
+.attached {
+	width: 100%;
+	margin: 0;
+}
+
+.advancedTitle {
+	margin-inline: 0.5rem;
+
+	color: var(--interactive-bg);
+	font-size: 1.5rem;
+	font-weight: 725;
+	text-transform: uppercase;
+}
+
+.note {
+	margin: 0 0.5rem;
+	font-size: 0.9rem;
+	opacity: 0.75;
+}
+
+.actions {
+	display: flex;
+	justify-content: flex-end;
+	gap: 0.75rem;
+
+	[data-variant="danger"] {
+		margin-inline-end: auto;
+	}
+}
+
+/* Label on the left, control on the right, one per line. */
+.fields {
+	display: grid;
+	grid-template-columns: max-content 1fr;
+	gap: 0.5rem 0.75rem;
+	padding-inline: 0.25rem;
+}
+
+.field {
+	grid-column: 1 / -1;
+	display: grid;
+	grid-template-columns: subgrid;
+	align-items: center;
+
+	font-family: var(--font-barlow-condensed);
+
+	b {
+		margin-inline-start: 0.375rem;
+		font-weight: 500;
+	}
+
+	> :not(b) {
+		min-width: 0;
+	}
+}
+
+.input {
+	width: 100%;
+	min-width: 0;
+	height: 2rem;
+	padding-inline: 0.75rem;
+	border: none;
+	border-radius: 100vh;
+
+	color: white;
+	font-family: var(--font-barlow-condensed);
+	font-size: 1.05rem;
+	font-style: italic;
+
+	cursor: var(--edit-cursor);
+	color-scheme: dark;
+
+	&::placeholder {
+		color: color-mix(in srgb, white 50%, transparent);
+	}
+
+	&:focus-visible {
+		outline: 2px solid var(--pink);
+		outline-offset: -2px;
+	}
+}
+
+.countToggle {
+	display: flex;
+	gap: 0.25rem;
+	padding: 0.25rem;
+	border-radius: 100vh;
+}
+
+.countButton {
+	flex: 1;
+	padding: 0.15em 0.9em;
+	border: none;
+	border-radius: 100vh;
+
+	color: color-mix(in srgb, var(--foreground), transparent 35%);
+	font-family: var(--font-barlow-condensed);
+	font-size: 1rem;
+	font-weight: 750;
+	text-transform: uppercase;
+
+	background-color: transparent;
+
+	&:hover,
+	&:focus-visible {
+		outline: none;
+		color: var(--foreground);
+	}
+
+	&[aria-pressed="true"] {
+		color: var(--foreground);
+		background-color: var(--pink);
+		paint-order: stroke fill;
+		-webkit-text-stroke: 3px black;
+	}
+}
+
+/* One row per result, in the order pulled. */
+.rows {
+	display: flex;
+	flex-direction: column;
+	gap: 0.375rem;
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.row {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 0.375rem;
+}
+
+.rowNumber {
+	flex-shrink: 0;
+	width: 2ch;
+
+	font-family: var(--font-barlow-condensed);
+	text-align: end;
+	opacity: 0.6;
+}
+
+.itemInput {
+	flex: 1;
+	min-width: 8rem;
+
+	/* A name that doesn't match anything the board can give. */
+	&[data-valid="false"] {
+		outline: 2px solid var(--danger-color);
+		outline-offset: -2px;
+	}
+}
+
+.removeRow {
+	flex-shrink: 0;
+	width: 1.5rem;
+	height: 1.5rem;
+	padding: 0;
+	border: none;
+	border-radius: 100%;
+
+	background-color: var(--button-background);
+	background-image: url("/button_icons/cross.png");
+	background-size: contain;
+	background-position: center;
+	background-repeat: no-repeat;
+
+	&:hover,
+	&:focus-visible {
+		outline: none;
+		background-color: var(--danger-color);
+		background-image: url("/button_icons/cross_white.png");
+	}
+}
+
+.addRow {
+	align-self: flex-start;
+	font-size: 0.9rem;
+}
+
+.saved {
+	margin: 0 0.625rem;
+	font-family: var(--font-barlow-condensed);
+	font-style: italic;
+}
+
+/* ---------- Item picker ---------- */
+
+/* The item grid, in its dropdown. */
+.picker {
+	width: min(26rem, 100vw - 1rem);
+
+	display: flex;
+	flex-direction: column;
+	gap: 0.5rem;
+	padding: 0.25rem;
+}
+
+.pickerFilters {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.25rem;
+}
+
+.pickerFilter {
+	padding: 0.15em 0.9em;
+	border: none;
+	border-radius: 100vh;
+
+	color: color-mix(in srgb, var(--foreground), transparent 35%);
+	font-family: var(--font-barlow-condensed);
+	font-size: 0.95rem;
+	font-weight: 750;
+	text-transform: uppercase;
+
+	background-color: rgba(255, 255, 255, 0.08);
+
+	&:hover,
+	&:focus-visible {
+		outline: none;
+		color: var(--foreground);
+	}
+
+	&[aria-pressed="true"] {
+		color: var(--foreground);
+		background-color: var(--pink);
+		paint-order: stroke fill;
+		-webkit-text-stroke: 3px black;
+	}
+}
+
+/* Scrolls inside a fixed height, so a long list doesn't push the page far. */
+.pickerGrid {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(4.5rem, 1fr));
+	gap: 0.375rem;
+	max-height: 16rem;
+	overflow-y: auto;
+	padding: 0.125rem;
+}
+
+.pickerTile {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 0.125rem;
+	min-width: 0;
+	padding: 0.25rem;
+	border: none;
+	border-radius: 0.625rem;
+
+	color: white;
+	background-color: color-mix(in srgb, var(--rarity-color) 35%, transparent);
+	outline: 1px solid color-mix(in srgb, var(--rarity-color) 70%, transparent);
+	outline-offset: -1px;
+
+	&:hover,
+	&:focus-visible {
+		outline: 2px solid var(--foreground);
+		outline-offset: -2px;
+	}
+
+	&[aria-pressed="true"] {
+		background-color: color-mix(in srgb, var(--rarity-color) 70%, transparent);
+	}
+}
+
+.pickerImage {
+	width: 100%;
+	height: auto;
+	aspect-ratio: 1;
+	object-fit: contain;
+	/* The tile's radius less its padding, so the corners run parallel. */
+	border-radius: 0.375rem;
+}
+
+.pickerName {
+	width: 100%;
+	overflow: hidden;
+
+	font-family: var(--font-barlow-condensed);
+	font-size: 0.75rem;
+	line-height: 1.1;
+	text-align: center;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+.pickerEmpty {
+	margin: 0.25rem 0.5rem;
+	font-family: var(--font-barlow-condensed);
+	font-style: italic;
+	color: var(--foreground);
+	opacity: 0.75;
+}
+
+/* ---------- Number stepper ---------- */
+
+/* The inventory's -/+ quantity box, sized for these forms. */
+.stepper {
+	display: block;
+	min-width: 7rem;
+	height: 2rem;
+
+	> span {
+		height: 100%;
+		color: white;
+
+		/* The inventory box sets its number up for its own tile (line-height
+		   0, wide letter spacing); here it's centred in the pill. */
+		> span {
+			display: grid;
+			place-items: center;
+		}
+
+		input {
+			/* A pity or quantity is a few digits; a text box's own width
+			   (~20 characters) would stretch an auto-sized column. */
+			width: 4ch;
+			min-width: 0;
+			height: auto;
+			line-height: 1;
+			font-size: 1.15rem;
+			letter-spacing: normal;
+			color: white;
+		}
+	}
+}
+
+/* A Points Gift's pity cell: it has none, as in the pulls list. */
+.noPity {
+	text-align: center;
+	font-family: var(--font-barlow-condensed);
+	font-style: italic;
+	opacity: 0.6;
+}
+
+.simplePity {
+	flex: 0 0 8rem;
+}
+
+.pityControl {
+	display: flex;
+	align-items: center;
+	gap: 0.75rem;
+
+	.stepper {
+		flex: 1;
+	}
+}
+
+/* ---------- Dice picker ---------- */
+
+/* Like the header search field: a dark inset pill that turns darker pink
+   on hover or focus. It holds the list's own white dice face. */
+.diceButton {
+	flex-shrink: 0;
+	display: flex;
+	align-items: center;
+	height: 2rem;
+	/* An even rim round the face, so the pill keeps the face's shape. */
+	padding: 0.1875rem;
+	border: none;
+	border-radius: 100vh;
+
+	background-color: var(--interactive-bg);
+	box-shadow: var(--shadow-control);
+	cursor: var(--dropdown-cursor);
+
+	&:hover,
+	&:focus-visible,
+	&[aria-expanded="true"] {
+		outline: none;
+		background-color: var(--darker-pink);
+	}
+}
+
+/* The list's dice face, at a fixed height wherever it's shown (a height
+   in % would fall back to the image's full size inside the menu). */
+.diceFace {
+	display: block;
+	width: auto;
+	height: 1.5rem;
+	/* The image (168x64) has empty rows above and below its pill (6 and 7
+	   px). Cropped to the pill alone, so anything round it sits evenly. */
+	aspect-ratio: 168 / 51;
+	object-fit: cover;
+	object-position: center 46%;
+	filter: drop-shadow(var(--shadow-dark-30) 0px 0px 4px);
+}
+
+/* In the button, the face fills the pill inside its rim. */
+.diceButton:not(.previewDice) > .diceFace,
+.diceButton:not(.previewDice) > .resultChip {
+	height: 100%;
+}
+
+/* A chip fills it too, edge to edge, as a dice face does (the button can
+   be wider than the chip, sharing a column with dice faces). */
+.diceButton:not(.previewDice) > .resultChip {
+	flex: 1;
+}
+
+/* The list's chip for results that aren't dice. */
+.resultChip {
+	display: grid;
+	place-items: center;
+	height: 1.5rem;
+	padding: 0 0.625rem;
+	border-radius: 100vh;
+
+	color: var(--foreground);
+	font-family: var(--font-barlow-condensed);
+	font-size: 0.85rem;
+	font-weight: 600;
+	white-space: nowrap;
+
+	background-color: rgba(0, 0, 0, 0.375);
+}
+
+/* Every dropdown (FloatingPanel): the tooltip's surface (.tooltip in
+   globals.css), floating over the page, the lifted editor included. */
+.floating {
+	position: fixed;
+	z-index: 6;
+
+	padding: 0.25rem;
+	border-radius: 1rem;
+
+	background-color: var(--interactive-bg);
+	box-shadow:
+		var(--shadow-dark-60) 0px -1px 2px,
+		var(--foreground) 0px 0px 1px 1px,
+		var(--shadow-dark-70) 0px 1px inset;
+}
+
+/* The dice menu: two results a row. */
+.diceMenu {
+	display: grid;
+	grid-template-columns: repeat(2, auto);
+	gap: 0.125rem;
+}
+
+/* Each result, picked like a profile ability tab: pink when chosen. */
+.diceOption {
+	display: grid;
+	place-items: center;
+	padding: 0.1875rem 0.25rem;
+	border: none;
+	border-radius: 100vh;
+
+	background: none;
+	cursor: var(--pointer-cursor);
+
+	&:hover,
+	&:focus-visible {
+		outline: none;
+		background-color: rgba(255, 255, 255, 0.12);
+	}
+
+	&[aria-checked="true"] {
+		background-color: var(--pink);
+		box-shadow:
+			var(--shadow-dark-60) -1px -1px 5px -2px inset,
+			rgba(255, 255, 255, 0.645) 2px 2px 3px -2px inset;
+	}
+
+	/* A chip spans the option, as wide as the dice faces beside it. */
+	> .resultChip {
+		justify-self: stretch;
+	}
+}
+
+/* ---------- Editing a pull in its row ---------- */
+
+.editor {
+	display: flex;
+	flex-direction: column;
+	gap: 0.5rem;
+}
+
+/* In the row, the dice keeps the size the list draws it (its 32px image's
+   25.5px pill) on a dark pill, so it reads as something to press. */
+.diceButton.previewDice {
+	height: auto;
+	padding: 0.125rem;
+
+	> .diceFace {
+		height: 25.5px;
+	}
+	background-color: rgba(0, 0, 0, 0.35);
+	/* Not the dropdown button's inset shadow: a flat pill, as the list's
+	   chips for results that aren't dice. */
+	box-shadow: none;
+
+	&:hover,
+	&:focus-visible,
+	&[aria-expanded="true"] {
+		background-color: rgba(0, 0, 0, 0.5);
+	}
+}
+
+/* The name, editable where it sits: the row's own white, black-stroked
+   text on a light dark wash, a little darker on hover or focus (like the
+   checklist editor's inline fields). */
+.previewName {
+	/* Stops short of the item's art (.pullArt, --art-width wide at the
+	   row's end), though never narrower than half the cell. */
+	width: max(50%, 100% - var(--art-width, 5rem));
+	min-width: 0;
+	padding: 0.125rem 0.375rem;
+	border: none;
+	border-radius: 0.5rem;
+
+	color: inherit;
+	font: inherit;
+	paint-order: stroke fill;
+	-webkit-text-stroke: 2px black;
+
+	background-color: rgba(0, 0, 0, 0.2);
+	cursor: var(--edit-cursor);
+
+	&:hover,
+	&:focus-visible {
+		outline: none;
+		background-color: rgba(0, 0, 0, 0.35);
+	}
+
+	&[data-valid="false"] {
+		outline: 2px solid var(--danger-color);
+		outline-offset: -2px;
+	}
+}
+
+.previewPity {
+	font-variant-numeric: tabular-nums;
+}
+
+/* Everything else, in a panel under the row: centred under the pull
+   itself (past its number cell, --lead wide) and no wider than it needs.
+   The lead margin is counted in the centring, which shifts the box half of
+   it to the right. */
+.editorBox {
+	/* Over the lifted row, so the row's shadow doesn't fall on it. */
+	position: relative;
+	z-index: 1;
+	align-self: center;
+	width: min(30rem, 100% - var(--lead, 0px));
+	margin-inline-start: var(--lead, 0px);
+
+	display: flex;
+	flex-direction: column;
+	gap: 0.75rem;
+	padding: 0.75rem;
+	border-radius: 1.25rem;
+
+	color: black;
+}

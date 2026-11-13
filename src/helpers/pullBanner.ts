@@ -1,5 +1,7 @@
 import type { BannerType, Pull } from "@/types/pulls"
 
+import { bannerPoolCharacters } from "@/data/activities/bannerPools"
+
 import {
 	findPoolBanner,
 	findRateUpBanner,
@@ -10,6 +12,28 @@ import {
 import { getCharacterBannerThemeColor } from "./bannerStatus"
 
 export type PullBanner = { name: string; themeColor: string | null }
+
+// Pool code name by character, the reverse of bannerPoolCharacters.
+const poolCodeByCharacter = new Map(
+	Object.entries(bannerPoolCharacters).map(([code, character]) => [character, code])
+)
+
+// The pool_id the exporter would have recorded for a pull on `banner`, so a
+// manual pull is placed on its banner the same way an imported one is.
+// Undefined when the banner's pool isn't known yet; the pull's date is
+// used instead then.
+export function poolIdForBanner(
+	bannerType: BannerType,
+	banner: { rateupItem?: string; character?: string } | undefined
+): string | undefined {
+	if (bannerType === "permanentBanner") return "Lottery_Permanent"
+	if (!banner) return undefined
+
+	const character = bannerType === "arcsBanner" ? banner.character : banner.rateupItem
+	const code = character ? poolCodeByCharacter.get(character) : undefined
+	if (!code) return undefined
+	return bannerType === "arcsBanner" ? `ForkLottery_${code}` : `Lottery_${code}`
+}
 
 // The banner a pull was made on, going by the pool the exporter recorded.
 // Undefined for the permanent board and for pulls without a known pool.

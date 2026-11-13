@@ -91,7 +91,18 @@ export type MiracleBoxPull = {
 	rewardId: string
 	// The exporter's pool_id: which banner the pull was made on (see
 	// findPoolBanner). Missing on pulls imported before it was recorded.
+	// Manual pulls get one built from the banner the player picked.
 	poolId?: string
+	// Entered by hand rather than imported. Always marked as such in the
+	// list, and never treated as a copy of an imported pull.
+	manual?: true
+	// Pity the player set by hand: the pull shows it, and the pulls after it
+	// count on from it (after an S-rank, from 1 again). Where it's above the
+	// counted pity, the difference is pulls that weren't logged.
+	pity?: number
+	// For an imported pull the player edited: the uid of the imported pull
+	// this manual copy replaced, so importing it again doesn't bring it back.
+	editedFrom?: string
 }
 
 export type ScarboroughFairPull = {
@@ -100,6 +111,9 @@ export type ScarboroughFairPull = {
 	rank: EnumRarity
 	rewardId: string
 	poolId?: string
+	manual?: true
+	pity?: number
+	editedFrom?: string
 	diceRoll: number
 	resultType: ImportedPull["resultType"]
 	rewardType: ImportedPull["rewardType"]

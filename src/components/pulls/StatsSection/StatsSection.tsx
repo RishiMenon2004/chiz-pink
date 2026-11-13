@@ -12,6 +12,7 @@ import type { MessageKey } from "@/types/messages"
 import { annulith } from "@/data/items/materials"
 
 import {
+	countUnloggedPulls,
 	findPullBanner,
 	findPullItem,
 	getResolvedGachaBanners,
@@ -301,8 +302,11 @@ export function StatsSection() {
 			banners.set(name, entry)
 		}
 
+		// Pities set by hand can stand for pulls that weren't logged, too.
+		const unloggedPulls = countUnloggedPulls(pulls, selectedBanner, gachaBanners, server)
+
 		return {
-			totalPulls: counted.length,
+			totalPulls: counted.length + unloggedPulls,
 			sRanks,
 			currentPity,
 			banners: [...banners.values()],

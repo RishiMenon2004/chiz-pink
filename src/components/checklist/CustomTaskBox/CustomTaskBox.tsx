@@ -7,7 +7,7 @@ import type { MessageKey } from "@/types/messages"
 
 import { useChecklistStore, useSettingsStore } from "@/hooks"
 
-import { getUpcomingResetDates, stopPropagation } from "@/helpers"
+import { getUpcomingResetDates, randomId, stopPropagation } from "@/helpers"
 import { formatLocale, type Locale } from "@/helpers/locale"
 
 import { useLocale, useT } from "@/contexts"
@@ -60,14 +60,6 @@ function formatDate(date: string, locale: Locale) {
 		month: "short",
 		timeZone: "UTC",
 	})
-}
-
-// crypto.randomUUID() only exists in secure contexts (HTTPS/localhost), so
-// it's missing when the dev server is opened over a LAN IP; getRandomValues
-// works everywhere.
-function createTaskId() {
-	const bytes = crypto.getRandomValues(new Uint8Array(16))
-	return Array.from(bytes, (b) => b.toString(16).padStart(2, "0")).join("")
 }
 
 const ORDINAL_KEYS = {
@@ -160,7 +152,7 @@ export function CustomTaskBox({
 		if (!trimmedTitle) return
 
 		actions.saveCustomTask({
-			id: task?.id ?? createTaskId(),
+			id: task?.id ?? randomId(),
 			title: trimmedTitle,
 			description: description.trim(),
 			schedule: buildSchedule(),

@@ -247,6 +247,24 @@ export function replaceAllPulls(
 	)
 }
 
+// Removes pulls by uid (the store's primary key), e.g. a manual entry the
+// player deletes.
+export function deletePulls(uids: string[]): Promise<void> {
+	if (uids.length === 0) return Promise.resolve()
+
+	return openDB().then(
+		(db) =>
+			new Promise<void>((resolve, reject) => {
+				const tx = db.transaction(PULLS_STORE, "readwrite")
+				const store = tx.objectStore(PULLS_STORE)
+				for (const uid of uids) store.delete(uid)
+
+				tx.oncomplete = () => resolve()
+				tx.onerror = () => reject(tx.error)
+			})
+	)
+}
+
 export function clearAllPulls(): Promise<void> {
 	return runRequest(PULLS_STORE, "readwrite", (store) =>
 		store.clear()

@@ -10,13 +10,16 @@ import {
 	parseNteExporterImport,
 } from "@/helpers/importNteExporterPulls"
 
-import { useT } from "@/contexts"
+import { usePullTrackerContext, useT } from "@/contexts"
+
+import { ManualPullEntry } from "../ManualPullEntry"
 
 import pageStyles from "@/app/[lang]/pulls/page.module.css"
 import styles from "./importSection.module.css"
 
 export function ImportSection() {
 	const t = useT()
+	const { selectedBanner } = usePullTrackerContext()
 	const [importMessages, setImportMessages] = useState<ImportMessage[]>([])
 	const [parsedData, setParsedData] = useState<ImportedPullsResult>(null!)
 	const [fileName, setFileName] = useState<string>(null!)
@@ -189,8 +192,9 @@ export function ImportSection() {
 			<hr />
 			<div className={pageStyles.sectionTitleRow}>
 				<div className={pageStyles.sectionTitle}>{t("pulls.import.manual")}</div>
-				{t("pulls.import.comingSoon")}
 			</div>
+			{/* Keyed by board: switching boards drops rows queued for another. */}
+			<ManualPullEntry key={selectedBanner} />
 		</div>
 	)
 }
