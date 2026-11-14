@@ -107,7 +107,328 @@
 		},
 		"arc": {
 			"notFound": "Disco não encontrado",
-			"introA": "{name} é um Disco de {rank} {type} no Neverness to Everness."
+			"introA": "{name} é um Disco de {rank} {type} no Neverness to Everness.",
+			"imageAlt": "{name} cartão do disco",
+			"introAn": "{name} é um disco {rank} {type} do Neverness to Everness.",
+			"comingSoon": "{intro} Detalhes serão anunciados em breve.",
+			"released": "{intro} Veja os atributos, passivas e materiais."
+		}
+	},
+	"notFound": {
+		"title": "Essa página não pode ser encontrada",
+		"goHome": "PÁGINA INICIAL"
+	},
+	"home": {
+		"showcase": {
+			"characters": "Personagens",
+			"arcs": "Discos",
+			"viewAll": "VER TUDO"
+		},
+		"stamina": {
+			"adjust": "Ajustar {label}",
+			"empty": "VAZIO",
+			"full": "CHEIO",
+			"spend": "Gastar {amount} {label}",
+			"add": "Adicionar {amount} {label}"
+		},
+		"dailyTasks": {
+			"title": "Tarefas Diárias",
+			"addToInventory": "Adicionar ao Inventário",
+			"quickClaim": "RECEBER RAPIDAMENTE"
+		},
+		"dailyChecklist": {
+			"title": "Lista de Tarefas Diárias",
+			"editTasks": "EDITAR TAREFAS",
+			"editTitle": "Editar Tarefas Diárias",
+			"visible": "Visível",
+			"hidden": "Oculto",
+			"completed": "Completo",
+			"customTask": "Tarefa customizada"
+		},
+		"farming": {
+			"title": "Lista a farmar",
+			"emptyPlanner": "Vo-Você não tem nada planejado ainda... <link>Começe a planejar</link> e eu irei li-listar o que precisa ser farmado aqui!",
+			"allDone": "Uaau, você ja tem tu-tudo de seu planejamento! Não precisa farmar nada.",
+			"viewAll": "Ver tudo (+{count})"
+		},
+		"featured": {
+			"preview": "Pre-Visualizar",
+			"featured": "Destaque",
+			"bannerTba": "Datas do banner a ser definido",
+			"bannerEnds": "Banner finaliza em <b>{time}</b>",
+			"bannerStarts": "Banner inicia em <b>{time}</b>"
+		},
+		"featuredArcs": {
+			"artAlt": "{name} arte do disco"
+		},
+		"featuredCarousel": {
+			"label": "Personagens em destaque",
+			"slidePreview": "{name} - pre-visualizar",
+			"slideFeatured": "{name} - destaque",
+			"artAlt": "{name} - arte completa",
+			"show": "Mostrar {name}",
+			"viewProfile": "Ver Perfil"
+		},
+		"calendar": {
+			"title": "Calendário de eventos",
+			"today": "HOJE",
+			"eventBannerAlt": "{name} evento do banner",
+			"weekdays": {
+				"su": "Dom",
+				"mo": "Seg",
+				"tu": "Ter",
+				"we": "Quar",
+				"th": "Quin",
+				"fr": "Sex",
+				"sa": "Sab"
+			},
+			"localTime": "Tempo Local ({offset})",
+			"serverTime": "Tempo do Servidor ({offset})"
+		}
+	},
+	"catalog": {
+		"preview": "Pre-Visualizar",
+		"featured": "Destaque",
+		"emptyFilters": "E-Eu não consegui achar nada com esses filtros. Gostaria de <link>tentar novamente?</link>",
+		"switch": {
+			"label": "Catálogo",
+			"characters": "Personagens",
+			"arcs": "Discos"
+		},
+		"toolbar": {
+			"groupBy": "Agrupar por",
+			"searchPlaceholder": "Pesquisar",
+			"searchLabel": "Pesquisar por nome",
+			"allRanks": "Todos os Ranques",
+			"allElements": "Todos os Elementos",
+			"allArcTypes": "Todos os Tipos de Disco",
+			"byRank": "Por Ranque",
+			"byElement": "Por Elemento",
+			"byArcType": "Por Tipo de Disco",
+			"byType": "Por Tipo",
+			"byFeatured": "Por Destaques",
+			"byName": "Por Nomes"
+		}
+	},
+	"inventory": {
+		"intro": "Rastreie seus materiais pada o planejador saber o que você tem.",
+		"newUser": "Parece que você é novo por aqui. Vo-você gostaria de abrir uma conta conosco? <start>Edite qualquer item para começar.</start>",
+		"toolbar": {
+			"filterBy": "Filtrar por",
+			"owned": "Obtido",
+			"required": "Requer",
+			"acquired": "Adquirido",
+			"allRanks": "Todos os Ranks",
+			"groupBy": "Agrupar por",
+			"byOwned": "Por Obtido",
+			"byRequired": "Por Requerido",
+			"byAcquired": "Por Adquirido",
+			"byType": "Por Tipo",
+			"byRank": "Por Rank",
+			"byName": "Por Nome"
+		},
+		"groups": {
+			"emptyFilter": "E-Eu não consegui achar nada com esses filtros. Você deseja <retry>tentar de novo?</retry>",
+			"owned": "Adquirido",
+			"notOwned": "Não adquirido",
+			"required": "Requerido",
+			"acquired": "Adquirido",
+			"noOwned": "Des-desculpe... Você parece não ter nada.",
+			"noRequired": "Hmm, parece que... você não precisa de nada agora.",
+			"nothingToCollect": "Na-Nada para coletar ainda... Planeje algo, e eu i-irei ficar de olho no que foi reunido!",
+			"nothingCollected": "Vo-Você ainda não terminou de coletar... na-nada.",
+			"allCollected": "Ah, uau! Você ja coletou tu-tudo que precida!"
+		},
+		"material": {
+			"need": "Necessita:",
+			"neededFor": "Necessário Para:",
+			"sources": "Fontes:",
+			"sourceAlt": "{name} Fonte",
+			"more_one": "",
+			"more_many": "",
+			"more_other": ""
+		}
+	},
+	"checklist": {
+		"intro": "Suas diárias e semanais, reseta baseada no tempo do servidor.",
+		"resetsIn": "Reseta em: {time}",
+		"edit": "EDITAR",
+		"editTask": "Editar {title}",
+		"addTask": "ADICIONAR TAREFAS",
+		"visible": "Visível",
+		"hidden": "Oculto",
+		"sections": {
+			"daily": "Diária",
+			"weekly": "Semanais",
+			"biWeekly": "Bi-Semanais",
+			"monthly": "Mensal",
+			"seasonal": "Sazonal"
+		},
+		"editTasks": {
+			"button": "EDITAR TAREFAS",
+			"title": "Editar Tarefaa"
+		},
+		"customTask": {
+			"defaultTitle": "Novo Título",
+			"editForm": "Editar Tarefas",
+			"addForm": "Adicionar Tarefas",
+			"titleLabel": "Título",
+			"titlePlaceholder": "Título da Tarefa",
+			"descriptionLabel": "Descrição",
+			"descriptionPlaceholder": "Adicionar descrição (opcional)",
+			"type": "Tipo",
+			"onEvery": "Em tudo",
+			"nextReset": "Próximo reset",
+			"resetsOn": "Reseta em",
+			"hintSeasonal": "Reseta quando uma nova versão do jogo entra em vigor.",
+			"hintServerTime": "Reseta as 05:00 no tempo do servidor.",
+			"delete": "DELETAR",
+			"cancel": "CANCELAR",
+			"save": "SALVAR",
+			"orLastDay": "{dia} (ou último dia)"
+		}
+	},
+	"layout": {
+		"alert": {
+			"yes": "SIM",
+			"no": "NÃO"
+		},
+		"currencyBox": {
+			"icon": "Icone de {name}",
+			"source": "{name} Fonte",
+			"need": "Requer:",
+			"neededFor": "Requerido por:",
+			"annulithProcessing": "Processamento de Annulith:",
+			"solidDice": "Dados Solidos x{amount}",
+			"sources": "Fontes:",
+			"sourceItem": "{name} x{amount}"
+		},
+		"domainMove": {
+			"title": "Nós movemos!",
+			"body": {
+				"returned": "Seus dados ja foram movidos para chiz.pink. Vá para la, ou continue usando esse endereço.",
+				"changed": "Você fez alterações desde que",
+				"stillHere": "Você fez alterações desde que nos mudamos. Traga-o para o novo endereço, ou continue aqui.",
+				"waiting": "Termine na janela aberta do chiz.pink.",
+				"failed": "Não foi possível mudar seus dados automaticamente. Tente novamente (permita pop-ups se solicitado), ou baixe o download e importe nas configurações do chiz.pink."
+			},
+			"stay": "PERMANECER AQUI",
+			"downloadBackup": "BAIXAR BACKUP",
+			"goTo": "IR PARA {domain}",
+			"move": "MOVER MEUS DADOS",
+			"reopen": "REABRIR JANELA",
+			"tryAgain": "TENTAR NOVAMENTE"
+		},
+		"eventDetails": {
+			"localTime": "(Tempo Local)",
+			"serverTime": "(Tempo do Servidor)",
+			"viewCharacter": "VER {name}"
+		},
+		"footer": {
+			"copyright": "© <name>Rishi Menon</name> 2026",
+			"links": "<privacy>POLÍTICA DE PRIVACIDADE</privacy> | Bugs ou idéias? Entre no <discord>DISCORD</discord> | Feito com <nextjs>NextJS</nextjs>",
+			"gameContents": "Conteudo do jogo percente a <studio>HOTTA STUDIO™</studio>",
+			"aboutLabel": "Sobre Chiz.Pink",
+			"aboutText": "<name>Chiz.Pink</name> é um aplicativo de companhia para Neverness to Everness (NTE). Planeje seu Esper e materiais de ascensão de discos, rastreie suas invocações e pity de todos os banners, cheque suas diárias e semanais, alem de contar os seus materiais. Tudo é salvo em seu navegador localmente sem uma conta.",
+			"disclaimer": "<about>CHIZ.PINK</about> e um projeto não oficial e não possyu afiliação com <studio>HOTTA STUDIO™</studio>"
+		},
+		"infoBox": {
+			"dismiss": "Recusar"
+		},
+		"installPwa": {
+			"button": "INSTALAR APLICATIVO",
+			"gotIt": "Entendido",
+			"iosSafari": {
+				"title": "Instalar no iPhone/iPad",
+				"step1": "Toque no icone Compartilhar na barra de ferramenta do Safari.",
+				"step2": "Desça e toque em 'Adicionar a Tela Inicial'.",
+				"step3": "Toque 'Adicionar' no canto superior direito."
+			},
+			"iosOther": {
+				"title": "Instalar no iPhone/iPad",
+				"step1": "Toque em Compartilhar ou no icone do menu barra de ferramenta do navegador.",
+				"step2": "Toque 'Adicionar a Tela Inicial'.",
+				"step3": "Confime ao trocar em 'Adicionar'."
+			},
+			"macosSafari": {
+				"title": "Instalar no Mac",
+				"step1": "Toque no icone Compartilhar na barra de ferramenta do Safari.",
+				"step2": "Selecione 'Adicionar ao Dock'",
+				"step3": "Confirme por clicar 'Adicionar'"
+			},
+			"firefox": {
+				"title": "Instalar no Firefox",
+				"step1": "Abrir o menu do navegador.",
+				"step2": "Toque 'Instalar' ou 'Adicionar a Tela Inicial', se disponível.",
+				"step3": "Se estiver faltando, use Chrome, Edge, ou Safari para instalar Chiz.Pink."
+			},
+			"samsung": {
+				"title": "Instalar no Samsung Internet",
+				"step1": "Toque no icone do menu na barra de ferramentas.",
+				"step2": "Toque 'Adicionar página a'.",
+				"step3": "Selecione 'Tela Inicial' e confirme."
+			},
+			"other": {
+				"title": "Instalar Chiz.Pink",
+				"step1": "Abrir menu do seu navegador.",
+				"step2": "Travar em 'Adicionar a Tela Inicial' ou 'Instalar Aplicativo'.",
+				"step3": "Siga as instruções para finalizar a instalação."
+			}
+		},
+		"materialEditor": {
+			"icon": "{name} icone"
+		},
+		"modal": {
+			"dismissHint": "Clique em qualquer espaço vazio para fechar"
+		},
+		"quantityInput": {
+			"minusOne": "{name} menos um botão",
+			"plusOne": "{name} mais um botão"
+		},
+		"reorderBox": {
+			"title": "Mudar Prioridade"
+		},
+		"sidebar": {
+			"catalog": "Catálogo"
+		},
+		"splash": {
+			"joinDiscord": "ENTRAR NO DISCORD",
+			"welcome": "BEM-VINDO A <title>CHIZ.PINK</title>",
+			"subtitle": "Sua companhia rosada, planejador de ascensão e rastreio de invocação para NTE :3",
+			"links": {
+				"dashboard": "<link>Painel</link> — Rastreie sua estamina, eventos atuais, e banners em destaque.",
+				"checklist": "<link>Lista de Tarefas</link> — Sua Lista de Tarefas Diárias e Semanais",
+				"planner": "<link>Planejador</link> — Planejador de ascensão para seus personagens e discos.",
+				"pulls": "<link>Invocações</link> — Importe e rastreie seu histórico de invocação.",
+				"inventory": "<link>Inventário</link> — Rastreie seus itens no jogo.",
+				"settings": "<link>Configurações</link> — Migrando do <ntePlanner>NTE Planner</ntePlanner> ou <nteWiz>NTEWiz</nteWiz>? Importe seus dados com facilidade."
+			},
+			"continue": "CONTINUAR >>",
+			"recentUpdates": "ATUALIZAÇÃO RECENTES",
+			"latestVersion": "Ultima Versão: {version}",
+			"chizAlt": "Arte da Chiz - Completa"
+		},
+		"syncConflict": {
+			"unknown": "Desconhecido",
+			"useCloud": "Usar versão da Nuvem",
+			"keepLocal": "Manter o desse dispositivo",
+			"message": "Nos encontramos dados ja existentes em sua nuvem. Deseja manter qual versão?",
+			"thisDevice": "Esse Dispositivo",
+			"cloud": "Nuvem"
+		}
+	},
+	"error": {
+		"title": "Algo deu errado!",
+		"tryAgain": "TENTAR NOVAMENTE"
+	},
+	"planner": {
+		"intro": "Planeje seus Espers e discos e veja quais materiais você ainda precisa.",
+		"currentLevel": "Nível atual",
+		"targetLevel": "Nivel pretendido",
+		"requiredMaterials": "Materiais requiridos",
+		"cancel": "CANCELAR",
+		"switch": {
+			"characters": "Personagens"
 		}
 	}
 }
