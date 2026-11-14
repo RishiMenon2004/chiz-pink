@@ -16,7 +16,8 @@
 
 	filter: drop-shadow(0px 0px 7.5px hsl(0, 0%, 4%));
 
-	h1 {
+	.pageTitle {
+		font-size: 2em;
 		align-self: center;
 		flex-shrink: 0;
 		font-family: var(--font-syne);
@@ -220,7 +221,7 @@ div.currencyBox {
 	.titleBar {
 		gap: 1rem;
 
-		h1 {
+		.pageTitle {
 			font-size: clamp(1.25rem, 2.1vw, 2em);
 		}
 	}
@@ -258,7 +259,7 @@ div.currencyBox {
 		flex-direction: column;
 		gap: 0.5rem;
 
-		h1 {
+		.pageTitle {
 			font-size: 1em;
 			width: 100%;
 			line-height: normal;

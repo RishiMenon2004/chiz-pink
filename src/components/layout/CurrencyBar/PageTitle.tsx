@@ -8,9 +8,9 @@ import { useT } from "@/contexts"
 
 import styles from "./currencyBar.module.css"
 
+const dynamicPattern = /^\/(characters|arcs)\/[^/]+$/
+
 function getRouteLookupKey(pathname: string): string {
-	const dynamicPattern = /^\/(characters|arcs)\/[^/]+$/
-	
 	if (dynamicPattern.test(pathname)) {
 		const segments = pathname.split("/")
 		return `/${segments[1]}/[id]`
@@ -29,9 +29,13 @@ export function PageTitle() {
 		| (typeof RoutesData)[RoutePath]
 		| undefined
 
+	// Character/arc profile pages render their own <h1> (the profile name),
+	// so the section label here must not be a second one.
+	const Tag = dynamicPattern.test(pathname) ? "p" : "h1"
+
 	return (
-		<h1 className={styles.pageTitle}>
+		<Tag className={styles.pageTitle}>
 			{currentRoute ? t(`routes.${currentRoute.id}.title`) : "404"}
-		</h1>
+		</Tag>
 	)
 }
