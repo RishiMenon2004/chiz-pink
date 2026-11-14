@@ -8,7 +8,12 @@ import type { NextRequest } from "next/server"
 
 import { VERSION_PATTERN } from "@/helpers/contentJson"
 
-const TYPES: Record<string, string> = { ".webp": "image/webp", ".png": "image/png" }
+const TYPES: Record<string, string> = {
+	".webp": "image/webp",
+	".png": "image/png",
+	".jpg": "image/jpeg",
+	".jpeg": "image/jpeg",
+}
 
 export function GET(request: NextRequest) {
 	if (process.env.NODE_ENV !== "development") return new Response(null, { status: 404 })

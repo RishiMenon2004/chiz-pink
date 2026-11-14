@@ -9,7 +9,7 @@ import path from "node:path"
 
 import type { ContentFile, ContentImageStatus } from "@/types/content"
 
-import { expectedImages, formatContentJson, VERSION_PATTERN } from "@/helpers/contentJson"
+import { expectedImages, findIntakeImage, formatContentJson, VERSION_PATTERN } from "@/helpers/contentJson"
 
 const intakeRoot = path.join(process.cwd(), "content-intake")
 const publicRoot = path.join(process.cwd(), "public")
@@ -59,18 +59,15 @@ export async function checkImages(content: ContentFile) {
 	const folder = versionFolder(content.version)
 	const intakeFiles = existsSync(folder) ? readdirSync(folder) : []
 
-	const images: ContentImageStatus[] = expectedImages(content).map((image) => ({
-		...image,
-		status: intakeFiles.includes(image.file)
-			? "intake"
-			: existsSync(path.join(publicRoot, image.destination))
-				? "public"
-				: "missing",
-	}))
+	const images: ContentImageStatus[] = expectedImages(content).map((image) => {
+		const source = findIntakeImage(image.file, intakeFiles)
+		if (source) return { ...image, status: "intake", source }
+		return { ...image, status: existsSync(path.join(publicRoot, image.destination)) ? "public" : "missing" }
+	})
 
 	// Images in the folder that nothing in content.json will pick up,
 	// usually a misspelt name.
-	const expected = new Set(images.map((image) => image.file))
+	const expected = new Set(images.map((image) => image.source))
 	const unused = intakeFiles.filter((file) => file !== "content.json" && !expected.has(file))
 
 	return { images, unused }

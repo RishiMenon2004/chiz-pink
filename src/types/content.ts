@@ -106,4 +106,7 @@ export type ContentImageStatus = {
 	// "intake": in the version folder, copied in by content:add.
 	// "public": already on the site. "missing": neither yet.
 	status: "intake" | "public" | "missing"
+	// The intake file found for it, when status is "intake". Can be another
+	// format (gacha_x.jpg for gacha_x.webp), converted by content:add.
+	source?: string
 }

@@ -205,6 +205,18 @@ export type ExpectedImage = {
 	label: string
 }
 
+// Formats an intake image can come in. content:add converts anything that
+// isn't already the destination's format.
+export const INTAKE_IMAGE_EXTENSIONS = [".webp", ".png", ".jpg", ".jpeg"]
+
+// The intake file that supplies an expected image: the exact name if it's
+// there, otherwise the same name in another accepted format.
+export function findIntakeImage(file: string, intakeFiles: string[]): string | undefined {
+	if (intakeFiles.includes(file)) return file
+	const base = file.slice(0, file.lastIndexOf("."))
+	return INTAKE_IMAGE_EXTENSIONS.map((extension) => base + extension).find((name) => intakeFiles.includes(name))
+}
+
 // The images content:add looks for, named the way it names them.
 export function expectedImages(content: ContentFile): ExpectedImage[] {
 	const file = cleanContent(content)

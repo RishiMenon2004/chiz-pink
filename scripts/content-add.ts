@@ -1,6 +1,6 @@
 // npm run content:add -- content-intake/<version> [--force]
 //
-// Turns a version's intake folder (converted WebP screenshots plus a
+// Turns a version's intake folder (screenshots as WebP, PNG or JPG plus a
 // content.json) into site data: copies the images into public/, writes the
 // version's events file, phase dates, character banners and BTR circle names,
 // and creates placeholder characters and arcs.
@@ -13,13 +13,15 @@
 // The content.json fields are described in the content pipeline guide and
 // typed in src/types/content.ts. The /content-tool dev page writes them.
 
-import { copyFileSync, existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs"
+import { copyFileSync, existsSync, mkdirSync, readdirSync, readFileSync, writeFileSync } from "node:fs"
 import path from "node:path"
 import { fileURLToPath } from "node:url"
 
+import sharp from "sharp"
+
 import type { ContentDateRef as DateRef, ContentFile } from "@/types/content"
 
-import { snakeCase } from "@/helpers/contentJson"
+import { findIntakeImage, snakeCase } from "@/helpers/contentJson"
 
 // ---------- Setup ----------
 
@@ -122,19 +124,35 @@ const utcCode = (date: ParsedDate) =>
 
 // ---------- Images ----------
 
-// Copies <name>.webp from the intake folder if it's there. Returns whether
-// the destination exists afterwards (copied now or already in public/).
-function placeImage(name: string, destination: string, extension = "webp") {
-	const source = path.join(folder, `${name}.${extension}`)
-	const target = fromRoot("public", destination)
+const intakeFiles = readdirSync(folder)
+// Conversions run in the background; awaited before the report prints.
+const conversions: Promise<void>[] = []
 
-	if (existsSync(source)) {
-		mkdirSync(path.dirname(target), { recursive: true })
+// Places <name>.<extension> from the intake folder if it's there, taking a
+// .webp, .png, .jpg or .jpeg and converting it when it isn't already the
+// destination's format. Returns whether the destination exists afterwards
+// (placed now or already in public/).
+function placeImage(name: string, destination: string, extension = "webp") {
+	const file = findIntakeImage(`${name}.${extension}`, intakeFiles)
+	const target = fromRoot("public", destination)
+	if (!file) return existsSync(target)
+
+	const source = path.join(folder, file)
+	mkdirSync(path.dirname(target), { recursive: true })
+
+	if (path.extname(file) === `.${extension}`) {
 		copyFileSync(source, target)
-		report.push(`Image: ${name}.${extension} → public/${destination}`)
+		report.push(`Image: ${file} → public/${destination}`)
+	} else {
+		const image = sharp(source)
+		conversions.push(
+			(extension === "png" ? image.png() : image.webp({ quality: 90 }))
+				.toFile(target)
+				.then(() => void report.push(`Image: ${file} → public/${destination} (converted)`))
+		)
 	}
 
-	return existsSync(target)
+	return true
 }
 
 const identifier = (id: string) => id.replace(/_([a-z0-9])/g, (_, c: string) => c.toUpperCase())
@@ -697,6 +715,8 @@ if (content.btr?.length || content.patch) {
 }
 
 // ---------- Report ----------
+
+await Promise.all(conversions)
 
 console.log(`content:add ${intakeLabel}\n`)
 for (const line of report) console.log(`  ${line}`)

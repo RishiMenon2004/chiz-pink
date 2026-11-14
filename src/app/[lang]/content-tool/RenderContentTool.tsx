@@ -158,7 +158,8 @@ export function RenderContentTool({
 	const imageUrl = (file: string) => {
 		const image = images.images.find((entry) => entry.file === file)
 		if (image?.status === "intake") {
-			return `/content-tool/image?version=${content.version}&file=${encodeURIComponent(file)}&t=${imageToken}`
+			const source = image.source ?? file
+			return `/content-tool/image?version=${content.version}&file=${encodeURIComponent(source)}&t=${imageToken}`
 		}
 		if (image?.status === "public") return `/${image.destination}`
 		return undefined
@@ -406,7 +407,11 @@ export function RenderContentTool({
 							{shownImages.map((image) => (
 								<li key={image.file} className={styles[image.status]} title={`→ public/${image.destination}`}>
 									<span className={styles.imageStatus}>{STATUS_LABELS[image.status]}</span>
-									<code>{image.file}</code>
+									<code>
+										{image.source && image.source !== image.file
+											? `${image.source} → ${image.file.slice(image.file.lastIndexOf("."))}`
+											: image.file}
+									</code>
 									<span className={styles.imageLabel}>{image.label}</span>
 								</li>
 							))}
