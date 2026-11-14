@@ -149,7 +149,7 @@ export async function CharacterProfile({
 								backgroundSrc && (
 									<Image
 										src={backgroundSrc}
-										alt=""
+										alt={t("profile.character.background", { name: character.name })}
 										width={1384}
 										height={830}
 										sizes="(max-width: 1000px) 120vw, 50rem"

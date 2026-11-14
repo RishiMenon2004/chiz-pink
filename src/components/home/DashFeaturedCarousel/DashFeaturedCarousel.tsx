@@ -86,7 +86,7 @@ function Slide({
 			<div className={styles.background}>
 				<Image
 					src={`/characters/background/${character.id}.png`}
-					alt=""
+					alt={t("home.featuredCarousel.backgroundAlt", { name: character.name })}
 					width={1384}
 					height={830}
 					sizes="(max-width: 800px) 100vw, 50vw"
@@ -178,7 +178,7 @@ export function DashFeaturedCarousel({ entries }: { entries: Entry[] }) {
 							onClick={() => go(i)}>
 							<CharacterAvatar
 								character={item}
-								alt=""
+								alt={item.name}
 								className={styles.thumbAvatar}
 								width={96}
 								height={96}

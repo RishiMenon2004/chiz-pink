@@ -30,7 +30,7 @@ export default function Error({
 					<Image
 						className={styles.errorSticker}
 						src="/stickers/chiz_faint.webp"
-						alt=""
+						alt={t("error.stickerAlt")}
 						width={256}
 						height={256}
 					/>

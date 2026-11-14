@@ -125,11 +125,11 @@ export const ItemGrid = forwardRef<
 								src={candidate.imageSrc}
 								width={64}
 								height={64}
-								alt=""
+								alt={candidate.name}
 								unoptimized
 								className={styles.pickerImage}
 							/>
-							<span className={styles.pickerName}>{candidate.name}</span>
+							<span className={styles.pickerName} aria-hidden="true">{candidate.name}</span>
 						</button>
 					))}
 				</div>

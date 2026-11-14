@@ -18,7 +18,7 @@ export default function NotFound() {
 					<Image
 						className={styles.errorSticker}
 						src="/stickers/chiz_cry.webp"
-						alt=""
+						alt={t("notFound.stickerAlt")}
 						width={256}
 						height={256}
 					/>

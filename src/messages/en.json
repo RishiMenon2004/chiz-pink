@@ -122,7 +122,8 @@
 	},
 	"notFound": {
 		"title": "This page could not be found",
-		"goHome": "GO HOME"
+		"goHome": "GO HOME",
+		"stickerAlt": "Crying Chiz sticker"
 	},
 	"home": {
 		"showcase": {
@@ -180,6 +181,7 @@
 			"slidePreview": "{name} - preview",
 			"slideFeatured": "{name} - featured",
 			"artAlt": "{name} full art",
+			"backgroundAlt": "{name} background art",
 			"show": "Show {name}",
 			"viewProfile": "View Profile"
 		},
@@ -325,6 +327,7 @@
 		},
 		"domainMove": {
 			"title": "We've moved!",
+			"iconAlt": "Chiz.Pink app icon",
 			"body": {
 				"returned": "Your data has already moved to chiz.pink. Head over there, or keep using this address.",
 				"changed": "You've made changes here since moving. Bring them along to chiz.pink, or keep using this address.",
@@ -353,7 +356,8 @@
 			"disclaimer": "<about>CHIZ.PINK</about> is an unofficial project and is not affiliated with <studio>HOTTA STUDIO™</studio>"
 		},
 		"infoBox": {
-			"dismiss": "Dismiss"
+			"dismiss": "Dismiss",
+			"sticker": "Chiz sticker"
 		},
 		"installPwa": {
 			"button": "INSTALL APP",
@@ -439,7 +443,8 @@
 	},
 	"error": {
 		"title": "Something has gone wrong!",
-		"tryAgain": "TRY AGAIN"
+		"tryAgain": "TRY AGAIN",
+		"stickerAlt": "Fainted Chiz sticker"
 	},
 	"planner": {
 		"intro": "Plan your Espers and arcs and see which materials you still need.",
@@ -552,6 +557,7 @@
 			"allCharacters": "ALL CHARACTERS",
 			"artMale": "{name} (male)",
 			"artFemale": "{name} (female)",
+			"background": "{name} background art",
 			"placeholderNoMaterials": "U-um... I don't have {name}'s abilities or materials on file yet. I'll a-add them as soon as they're announced, I promise!",
 			"placeholderPartial": "U-um... I only have part of {name}'s kit on file so far, but the materials are confirmed, so you can start pre-farming!"
 		},

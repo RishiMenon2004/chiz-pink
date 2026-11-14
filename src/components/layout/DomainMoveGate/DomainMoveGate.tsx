@@ -197,7 +197,7 @@ export function DomainMoveGate() {
 				<Image
 					className={styles.icon}
 					src="/app_icon.png"
-					alt=""
+					alt={t("layout.domainMove.iconAlt")}
 					width={72}
 					height={72}
 				/>

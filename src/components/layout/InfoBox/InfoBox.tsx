@@ -35,7 +35,7 @@ export function InfoBox({
 				<Image
 					className={styles.sticker}
 					src={`/stickers/chiz_${sticker}.webp`}
-					alt=""
+					alt={t("layout.infoBox.sticker")}
 					width={256}
 					height={256}
 				/>
