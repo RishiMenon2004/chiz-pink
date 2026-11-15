@@ -98,13 +98,21 @@ function isSamePull(a: Pull, b: Pull): boolean {
 //
 // An imported pull the player has edited is never added back: its manual
 // copy names it in `editedFrom`.
+//
+// Exports from before the exporter recorded pools carry no `poolId`, so an
+// incoming pull without one keeps the stored copy's. Otherwise re-importing
+// an old file would wipe the pool, and with it the pull's banner.
 function filterNewPulls<T extends Pull>(
 	existing: Pull[],
-	incoming: T[],
+	incomingPulls: T[],
 	bannerType: BannerType,
 	overwrite = false
 ): T[] {
 	const existingByUid = new Map(existing.map((pull) => [pull.uid, pull]))
+	const incoming = incomingPulls.map((pull) => {
+		const storedPoolId = existingByUid.get(pull.uid)?.poolId
+		return storedPoolId && !pull.poolId ? { ...pull, poolId: storedPoolId } : pull
+	})
 	const editedAway = new Set(
 		existing.flatMap((pull) => (pull.editedFrom ? [pull.editedFrom] : []))
 	)
