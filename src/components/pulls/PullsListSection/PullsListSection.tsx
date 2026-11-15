@@ -444,6 +444,22 @@ export function PullsListSection() {
 			if (banner) own.set(pull.uid, banner)
 		})
 
+		// Pulls rolled in the same second came from one multi-roll, so a pull
+		// saved without its pool (an older import) takes its neighbours' banner
+		// instead of splitting the roll into separately labelled boxes.
+		const ownByTimestamp = new Map<number, PullBanner>()
+		pulls.forEach((pull) => {
+			const banner = own.get(pull.uid)
+			if (banner && !ownByTimestamp.has(pull.timestamp)) {
+				ownByTimestamp.set(pull.timestamp, banner)
+			}
+		})
+		pulls.forEach((pull) => {
+			if (own.has(pull.uid)) return
+			const banner = ownByTimestamp.get(pull.timestamp)
+			if (banner) own.set(pull.uid, banner)
+		})
+
 		// No banner running at all is labelled "unknown" when drawn (see
 		// labelText), so a change of language doesn't redo all this.
 		return { pullBannerMap: names, ownBannerMap: own }
