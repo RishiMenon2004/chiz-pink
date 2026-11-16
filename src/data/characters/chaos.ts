@@ -14,6 +14,7 @@ export const chaos: Character = {
 	id: "chaos",
 	imageSrc: "chaos.webp",
 	name: "Chaos",
+	gender: "male",
 	description:
 		"Current member of ETD-6. Your most righteous and reliable friend.",
 	rarity: EnumRarity.Epic,

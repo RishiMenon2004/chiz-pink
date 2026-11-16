@@ -14,6 +14,7 @@ export const iroi: Character = {
 	id: "iroi",
 	imageSrc: "iroi.webp",
 	name: "Iroi",
+	gender: "female",
 	description: "Oneiroi is a well-behaved kid who ticks all the boxes.",
 	rarity: EnumRarity.Epic,
 	element: EnumCharacterElement.ANIMA,

@@ -14,6 +14,7 @@ export const zero: Character = {
 	id: "zero",
 	imageSrc: "zero_f.webp",
 	name: "Esper Zero",
+	gender: null,
 	description:
 		"The only esper in history without a detectable Wertheimer Index.",
 	rarity: EnumRarity.Epic,

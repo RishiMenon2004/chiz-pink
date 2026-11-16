@@ -14,6 +14,7 @@ export const mint: Character = {
 	id: "mint",
 	imageSrc: "mint.webp",
 	name: "Mint",
+	gender: "female",
 	description:
 		"If there was such a ranking, I'd probably hold the record for \"Most Times Tricked by Anomalies\" in the Containment Units…",
 	rarity: EnumRarity.Rare,

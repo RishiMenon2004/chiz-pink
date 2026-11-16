@@ -149,7 +149,7 @@ export async function CharacterProfile({
 								backgroundSrc && (
 									<Image
 										src={backgroundSrc}
-										alt={t("profile.character.background", { name: character.name })}
+										alt={t("profile.character.background", { name: character.name, gender: character.gender })}
 										width={1384}
 										height={830}
 										sizes="(max-width: 1000px) 120vw, 50rem"
@@ -183,8 +183,8 @@ export async function CharacterProfile({
 						{character.isPlaceholder && (
 							<InfoBox sticker="peek">
 								{character.hasPlaceholderMaterials
-									? t("profile.character.placeholderNoMaterials", { name: character.name })
-									: t("profile.character.placeholderPartial", { name: character.name })}
+									? t("profile.character.placeholderNoMaterials", { name: character.name, gender: character.gender })
+									: t("profile.character.placeholderPartial", { name: character.name, gender: character.gender })}
 							</InfoBox>
 						)}
 						<ProfileAbilityGroup

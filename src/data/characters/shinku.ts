@@ -14,6 +14,7 @@ export const shinku: Character = {
 	id: "shinku",
 	imageSrc: "shinku.webp",
 	name: "Shinku",
+	gender: "female",
 	description:
 		"A cold, distant type who's used to keeping people at arm's length.",
 	rarity: EnumRarity.Epic,

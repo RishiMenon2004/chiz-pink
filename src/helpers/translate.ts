@@ -18,6 +18,9 @@ import type {
  * - With a numeric `count` param, plural forms are picked with the
  *   language's own rules: "pulls_one" / "pulls_other" (also _zero, _two,
  *   _few, _many for languages that have them).
+ * - With a `gender` param ("male" / "female"), "view_male" / "view_female"
+ *   is used when the messages have it, for languages whose grammar changes
+ *   with the gender of who's being talked about ("do" / "da" in Portuguese).
  * - `t.rich("x", { link: (text) => <a>{text}</a> })` wraps `<link>...</link>`
  *   spans in elements, for sentences with links or emphasis inside them.
  * - A key that doesn't exist comes back as-is, so it's easy to spot.
@@ -26,12 +29,21 @@ export function createTranslator(messages: Messages, locale: Locale): Translate 
 	const plurals = new Intl.PluralRules(locale)
 
 	function resolve(key: MessageKey, params?: RichParams | MessageParams) {
-		let message = lookup(messages, key)
+		let base: string = key
+		const gender = params?.gender
+		if (gender === "male" || gender === "female") {
+			const gendered = `${key}_${gender}`
+			if (lookup(messages, gendered) ?? lookup(messages, `${gendered}_other`)) {
+				base = gendered
+			}
+		}
+
+		let message = lookup(messages, base)
 
 		if (typeof params?.count === "number") {
 			message =
-				lookup(messages, `${key}_${plurals.select(params.count)}`) ??
-				lookup(messages, `${key}_other`) ??
+				lookup(messages, `${base}_${plurals.select(params.count)}`) ??
+				lookup(messages, `${base}_other`) ??
 				message
 		}
 

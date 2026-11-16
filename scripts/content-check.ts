@@ -191,6 +191,11 @@ section(
 	"Characters without level stats (run npm run content:import -- --write)",
 	characters.filter((c) => !c.isPlaceholder && !characterLevelStats[c.id]).map(label)
 )
+section(
+	unfinished,
+	"Characters without a gender (gendered translations use the neutral text)",
+	characters.filter((c) => c.gender === undefined).map(label)
+)
 section(unfinished, "Placeholder images", placeholderImages)
 section(unfinished, "Characters without a profile background", missingBackgrounds)
 section(unfinished, "Events without an image", eventsWithoutImage)

@@ -14,6 +14,7 @@ export const baicang: Character = {
 	id: "baicang",
 	imageSrc: "baicang.webp",
 	name: "Baicang",
+	gender: "male",
 	description: "The widely recognized \"least captain-like captain\" from ETD-4.",
 	rarity: EnumRarity.Epic,
 	element: EnumCharacterElement.INCANTATION,

@@ -14,6 +14,7 @@ export const skia: Character = {
 	id: "skia",
 	imageSrc: "skia.webp",
 	name: "Skia",
+	gender: "male",
 	description:
 		"Often mistaken for Squad <dn>4</>'s captain, despite being the lieutenant.",
 	rarity: EnumRarity.Rare,

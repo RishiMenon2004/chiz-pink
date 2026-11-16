@@ -14,6 +14,7 @@ export const sakiri: Character = {
 	id: "sakiri",
 	imageSrc: "sakiri.webp",
 	name: "Sakiri",
+	gender: "female",
 	description: "Unrivaled at Eibon and as scary as she looks.",
 	rarity: EnumRarity.Epic,
 	element: EnumCharacterElement.INCANTATION,

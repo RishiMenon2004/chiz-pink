@@ -14,6 +14,7 @@ export const daffodill: Character = {
 	id: "daffodill",
 	imageSrc: "daffodill.webp",
 	name: "Daffodill",
+	gender: "female",
 	description:
 		"A ruthless bodyguard of few words, working exclusively for Eibon.",
 	rarity: EnumRarity.Epic,

@@ -54,12 +54,26 @@ function withFallback(fallback: unknown, translated: unknown): unknown {
 
 	// Plural forms English doesn't have (Polish "_few", Arabic "_two"...).
 	for (const [key, value] of Object.entries(target)) {
-		if (!(key in merged) && PLURAL_FORM.test(key) && typeof value === "string" && value.trim()) {
+		if (!(key in merged) && PLURAL_FORM.test(key) && isText(value)) {
 			merged[key] = value
+		}
+	}
+
+	// Gendered forms are optional: one this language hasn't translated uses
+	// its own neutral text ("view"), not the English "view_male".
+	for (const key of Object.keys(merged)) {
+		const match = GENDER_FORM.exec(key)
+		const base = match && `${match[1]}${match[3] ?? ""}`
+		if (base && base in merged && !isText(target[key])) {
+			merged[key] = merged[base]
 		}
 	}
 
 	return merged
 }
 
+const isText = (value: unknown) => typeof value === "string" && value.trim() !== ""
+
 const PLURAL_FORM = /_(zero|one|two|few|many|other)$/
+// "view_male", or "pulls_female_one" for a gendered plural.
+const GENDER_FORM = /^(.*)_(male|female)(_(?:zero|one|two|few|many|other))?$/

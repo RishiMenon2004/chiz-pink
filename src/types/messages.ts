@@ -13,6 +13,7 @@ export type PartialMessages = {
 type DeepPartial<T> = T extends string ? string : { [K in keyof T]?: DeepPartial<T[K]> }
 
 type PluralCategory = "zero" | "one" | "two" | "few" | "many" | "other"
+type GenderForm = "male" | "female"
 
 // "notFound.title" style paths to every string in the messages file.
 type Paths<T, Prefix extends string = ""> = {
@@ -24,22 +25,25 @@ type Paths<T, Prefix extends string = ""> = {
 type MessagePath = Paths<Messages>
 
 // Plural forms are stored as "pulls_one" / "pulls_other" and looked up as
-// "pulls" with a count, so the suffixed keys aren't valid on their own.
+// "pulls" with a count, so the suffixed keys aren't valid on their own. The
+// same goes for gendered forms ("view_male"), picked with a gender param.
 export type MessageKey =
-	| Exclude<MessagePath, `${string}_${PluralCategory}`>
+	| Exclude<MessagePath, `${string}_${PluralCategory}` | `${string}_${GenderForm}`>
 	| (MessagePath extends infer P
 			? P extends `${infer Base}_other`
 				? Base
 				: never
 			: never)
 
-export type MessageParams = Record<string, string | number>
+// null / undefined are allowed so optional values (a character's gender) can
+// be passed straight through; they never fill a placeholder.
+export type MessageParams = Record<string, string | number | null | undefined>
 
 // For t.rich(): `{name}` placeholders take strings or numbers, `<tag>...</tag>`
 // spans take a function that wraps the text inside them.
 export type RichParams = Record<
 	string,
-	string | number | ((chunk: string) => ReactNode)
+	string | number | null | undefined | ((chunk: string) => ReactNode)
 >
 
 export type Translate = {

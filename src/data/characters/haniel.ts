@@ -14,6 +14,7 @@ export const haniel: Character = {
 	id: "haniel",
 	imageSrc: "haniel.webp",
 	name: "Haniel",
+	gender: "female",
 	description:
 		"My dream is to become a beautiful high school girl who saves the world!",
 	rarity: EnumRarity.Rare,

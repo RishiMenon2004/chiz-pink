@@ -24,6 +24,8 @@ export type ContentCharacter = {
 	rarity?: "S" | "A"
 	element?: string
 	arcType?: string
+	// For gendered translations; null if the player chooses.
+	gender?: "male" | "female" | null
 	description?: string
 	// Material ids. The two sets also take the set's name ("Whispers").
 	materials?: {

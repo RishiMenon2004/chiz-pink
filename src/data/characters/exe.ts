@@ -17,6 +17,7 @@ export const exe: Character = {
 	id: "exe",
 	imageSrc: "exe.webp",
 	name: "Exe",
+	gender: "male",
 	description: "Details to be announced.",
 	rarity: EnumRarity.Epic,
 	element: EnumCharacterElement.CHAOS,

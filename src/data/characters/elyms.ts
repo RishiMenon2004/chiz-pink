@@ -13,6 +13,7 @@ export const elyms: Character = {
 	id: "elyms",
 	imageSrc: "elyms.webp",
 	name: "Elyms",
+	gender: "female",
 	description:
 		"Beep-beep~ Remember to stay in touch with your good friends!",
 	rarity: EnumRarity.Epic,

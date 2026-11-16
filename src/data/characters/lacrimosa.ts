@@ -14,6 +14,7 @@ export const lacrimosa: Character = {
 	id: "lacrimosa",
 	imageSrc: "lacrimosa.webp",
 	name: "Lacrimosa",
+	gender: "female",
 	description:
 		"Holds the record for most maintenance requests submitted by BAC staff.",
 	rarity: EnumRarity.Epic,

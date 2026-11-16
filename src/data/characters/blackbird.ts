@@ -13,6 +13,7 @@ export const blackbird: Character = {
 	id: "blackbird",
 	imageSrc: "blackbird.webp",
 	name: "Blackbird",
+	gender: "female",
 	description:
 		"The owner of The Witch's House, an elusive and elegant witch.",
 	rarity: EnumRarity.Epic,

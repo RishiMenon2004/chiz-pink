@@ -400,7 +400,7 @@ export function PlannerCharacterBox({
 											} as CSSProperties)
 										: undefined
 								}
-								aria-label={t("planner.characterBox.view", { name: char.name })}
+								aria-label={t("planner.characterBox.view", { name: char.name, gender: char.gender })}
 								onPointerEnter={showProfileTooltip}
 								onPointerLeave={hideProfileTooltip}>
 								<CharacterAvatar

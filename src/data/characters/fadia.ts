@@ -14,6 +14,7 @@ export const fadia: Character = {
 	id: "fadia",
 	imageSrc: "fadia.webp",
 	name: "Fadia",
+	gender: "female",
 	description:
 		"A dangerous yet captivating ETD member who represents the director's unpredictable hiring standards.",
 	rarity: EnumRarity.Epic,

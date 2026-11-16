@@ -14,6 +14,7 @@ export const jiuyuan: Character = {
 	id: "jiuyuan",
 	imageSrc: "jiuyuan.webp",
 	name: "Jiuyuan",
+	gender: "female",
 	description: "A smooth-talking and enigmatic Elite Courier of Sterry who also serves as Acting Manager.",
 	rarity: EnumRarity.Epic,
 	element: EnumCharacterElement.ANIMA,

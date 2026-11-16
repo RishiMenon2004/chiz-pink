@@ -14,6 +14,7 @@ export const chiz: Character = {
 	id: "chiz",
 	imageSrc: "chiz.webp",
 	name: "Chiz",
+	gender: "female",
 	description:
 		"Though she may seem a bit timid, she's the Pink Paws Bank's most dependable manager.",
 	rarity: EnumRarity.Epic,

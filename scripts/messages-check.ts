@@ -8,6 +8,8 @@
 // have, and placeholders or <tags> that don't match the English text (they'd
 // show up raw or go missing on the page). Missing translations are only
 // counted, since they fall back to English; pass a locale to list them.
+// Gendered forms ("view_male" / "view_female") aren't counted at all: a
+// language only fills them in when its grammar needs them.
 //
 // A language is only served once it's in LOCALES (src/helpers/locale.ts)
 // and in the loader map in src/helpers/messages.ts.
@@ -22,6 +24,7 @@ const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..")
 const messagesDir = path.join(root, "src", "messages")
 
 const PLURAL_FORM = /^(.*)_(zero|one|two|few|many|other)$/
+const GENDER_FORM = /_(male|female)(_(zero|one|two|few|many|other))?$/
 const PLACEHOLDER = /\{(\w+)\}/g
 const TAG = /<(\w+)>[\s\S]*?<\/\1>/g
 
@@ -140,10 +143,11 @@ for (const locale of files) {
 	}
 
 	// English plural forms the language doesn't use (a "_one" in a language
-	// without one) aren't needed.
+	// without one) aren't needed, and gendered forms ("view_male") are
+	// optional: left out, the neutral text is used.
 	const needed = [...english.keys()].filter((key) => {
 		const plural = pluralBase(key)
-		return !plural || categories.has(plural.category)
+		return (!plural || categories.has(plural.category)) && !GENDER_FORM.test(key)
 	})
 	const missing = needed.filter((key) => {
 		const value = translated.get(key)

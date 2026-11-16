@@ -105,7 +105,11 @@
 			"title": "{name}: NTE Character Profile",
 			"notFound": "Character Not Found",
 			"introA": "{name} is a {rank} {element} Esper in Neverness to Everness.",
+			"introA_male": "{name} is a {rank} {element} Esper in Neverness to Everness.",
+			"introA_female": "{name} is a {rank} {element} Esper in Neverness to Everness.",
 			"introAn": "{name} is an {rank} {element} Esper in Neverness to Everness.",
+			"introAn_male": "{name} is an {rank} {element} Esper in Neverness to Everness.",
+			"introAn_female": "{name} is an {rank} {element} Esper in Neverness to Everness.",
 			"comingSoon": "{intro} Details will be announced soon.",
 			"released": "{intro} View their Abilities, materials and banners.",
 			"imageAlt": "{name} character card"
@@ -181,7 +185,11 @@
 			"slidePreview": "{name} - preview",
 			"slideFeatured": "{name} - featured",
 			"artAlt": "{name} full art",
+			"artAlt_male": "{name} full art",
+			"artAlt_female": "{name} full art",
 			"backgroundAlt": "{name} background art",
+			"backgroundAlt_male": "{name} background art",
+			"backgroundAlt_female": "{name} background art",
 			"show": "Show {name}",
 			"viewProfile": "View Profile"
 		},
@@ -490,6 +498,8 @@
 		},
 		"characterBox": {
 			"view": "View {name}'s profile",
+			"view_male": "View {name}'s profile",
+			"view_female": "View {name}'s profile",
 			"viewProfile": "View Profile",
 			"esperAbilities": "Esper Abilities",
 			"basicAttack": "Basic Attack",
@@ -558,8 +568,14 @@
 			"artMale": "{name} (male)",
 			"artFemale": "{name} (female)",
 			"background": "{name} background art",
+			"background_male": "{name} background art",
+			"background_female": "{name} background art",
 			"placeholderNoMaterials": "U-um... I don't have {name}'s abilities or materials on file yet. I'll a-add them as soon as they're announced, I promise!",
-			"placeholderPartial": "U-um... I only have part of {name}'s kit on file so far, but the materials are confirmed, so you can start pre-farming!"
+			"placeholderNoMaterials_male": "U-um... I don't have {name}'s abilities or materials on file yet. I'll a-add them as soon as they're announced, I promise!",
+			"placeholderNoMaterials_female": "U-um... I don't have {name}'s abilities or materials on file yet. I'll a-add them as soon as they're announced, I promise!",
+			"placeholderPartial": "U-um... I only have part of {name}'s kit on file so far, but the materials are confirmed, so you can start pre-farming!",
+			"placeholderPartial_male": "U-um... I only have part of {name}'s kit on file so far, but the materials are confirmed, so you can start pre-farming!",
+			"placeholderPartial_female": "U-um... I only have part of {name}'s kit on file so far, but the materials are confirmed, so you can start pre-farming!"
 		},
 		"abilities": {
 			"esper": "ESPER ABILITIES",

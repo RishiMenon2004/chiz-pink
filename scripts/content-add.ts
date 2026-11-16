@@ -469,6 +469,14 @@ for (const [index, character] of (content.characters ?? []).entries()) {
 		(existsSync(fromRoot(file)) && read(file).match(/\n(\tabilities: [\s\S]*,)\n\}\n?$/)?.[1]) ||
 		"\tabilities: placeholderAbilities,"
 
+	// Left out when unknown; content:check lists characters without one.
+	const { gender } = character
+	if (gender !== undefined && gender !== null && gender !== "male" && gender !== "female") {
+		fail(`${where}: gender must be "male", "female" or null`)
+	}
+	if (gender === undefined) warnings.push(`${where}: no gender, gendered translations will use the neutral text`)
+	const genderLine = gender === undefined ? "" : `\tgender: ${gender === null ? "null" : str(gender)},\n`
+
 	write(
 		file,
 		`import { Character } from "@/types/character"
@@ -484,7 +492,7 @@ export const ${name}: Character = {
 ${character.arcType === undefined ? "\thasPlaceholderArcType: true,\n" : ""}${hasStandIns ? "\thasPlaceholderMaterials: true,\n" : ""}	id: ${str(character.id)},
 	imageSrc: ${str(hasAvatar || hasFull ? `${character.id}.webp` : "placeholder.webp")},
 	name: ${str(character.name)},
-	description: ${str(character.description ?? "Details to be announced.")},
+${genderLine}	description: ${str(character.description ?? "Details to be announced.")},
 	rarity: ${rarityCode(character.rarity, where)},
 	element: EnumCharacterElement.${(element ?? "cosmos").toUpperCase()},
 	arcType: ${arcTypeCode(character.arcType, where)},

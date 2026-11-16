@@ -13,6 +13,7 @@ export const linko: Character = {
 	id: "linko",
 	imageSrc: "linko.webp",
 	name: "Linko",
+	gender: "female",
 	description:
 		'A girl who can detect "frequencies" of all things, perceiving the world like no one else.',
 	rarity: EnumRarity.Epic,

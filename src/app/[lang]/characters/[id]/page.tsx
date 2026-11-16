@@ -38,6 +38,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 	const { rank, takesAn } = rankForIntro(char.rarity)
 	const intro = t(takesAn ? "meta.character.introAn" : "meta.character.introA", {
 		name: char.name,
+		gender: char.gender,
 		rank,
 		element,
 	})

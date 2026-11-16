@@ -14,6 +14,7 @@ export const hathor: Character = {
 	id: "hathor",
 	imageSrc: "hathor.webp",
 	name: "Hathor",
+	gender: "female",
 	description:
 		"An efficient courier who enjoys creating comprehensive task schedules and strictly executing them to completion.",
 	rarity: EnumRarity.Epic,

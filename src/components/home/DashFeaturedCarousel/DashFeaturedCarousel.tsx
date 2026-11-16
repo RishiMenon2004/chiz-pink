@@ -86,7 +86,7 @@ function Slide({
 			<div className={styles.background}>
 				<Image
 					src={`/characters/background/${character.id}.png`}
-					alt={t("home.featuredCarousel.backgroundAlt", { name: character.name })}
+					alt={t("home.featuredCarousel.backgroundAlt", { name: character.name, gender: character.gender })}
 					width={1384}
 					height={830}
 					sizes="(max-width: 800px) 100vw, 50vw"
@@ -96,7 +96,7 @@ function Slide({
 			<div className={styles.art}>
 				<Image
 					src={`/characters/full/${character.imageSrc}`}
-					alt={t("home.featuredCarousel.artAlt", { name: character.name })}
+					alt={t("home.featuredCarousel.artAlt", { name: character.name, gender: character.gender })}
 					width={1080}
 					height={1280}
 					sizes="(max-width: 800px) 70vw, 30vw"

@@ -14,6 +14,7 @@ export const adler: Character = {
 	id: "adler",
 	imageSrc: "adler.webp",
 	name: "Adler",
+	gender: "male",
 	description:
 		"The perfect butler who brings peace of mind to everyone at Eibon and the neighborhood.",
 	rarity: EnumRarity.Rare,

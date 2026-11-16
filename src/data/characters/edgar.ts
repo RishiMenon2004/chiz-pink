@@ -14,6 +14,7 @@ export const edgar: Character = {
 	id: "edgar",
 	imageSrc: "edgar.webp",
 	name: "Edgar",
+	gender: "male",
 	description:
 		"Thinks quick, looks like a kid. Is a kid, actually.",
 	rarity: EnumRarity.Rare,

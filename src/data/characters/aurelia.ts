@@ -14,6 +14,7 @@ export const aurelia: Character = {
 	id: "aurelia",
 	imageSrc: "aurelia.webp",
 	name: "Aurelia",
+	gender: "female",
 	description:
 		"A fun fact about Hethereau, thanks to meeting Aurelia: cruising the streets on a jellyfish isn't a traffic violation.",
 	rarity: EnumRarity.Rare,

@@ -35,7 +35,12 @@ export type CharacterLevelStats = {
 	def: number[]
 }
 
+export type CharacterGender = "male" | "female"
+
 export interface Character extends Item {
+	// Picks gendered translations ("do"/"da" {name} in Portuguese). null when
+	// the player chooses (Esper Zero), which gets the neutral text.
+	gender?: CharacterGender | null
 	// Announced but kit unknown: abilities are stand-ins (or only partly
 	// typed in), and the profile shows a TBD notice above them.
 	isPlaceholder?: boolean

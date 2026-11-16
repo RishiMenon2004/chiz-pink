@@ -14,6 +14,7 @@ export const nanally: Character = {
 	id: "nanally",
 	imageSrc: "nanally.webp",
 	name: "Nanally",
+	gender: "female",
 	description:
 		"The Ichi-daime of the Coluccis—currently seeking new recruits!",
 	rarity: EnumRarity.Epic,

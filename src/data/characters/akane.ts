@@ -13,6 +13,7 @@ export const akane: Character = {
 	id: "akane",
 	imageSrc: "akane.webp",
 	name: "Akane Rin",
+	gender: "female",
 	description: "You should be saving energy when offstage.",
 	rarity: EnumRarity.Epic,
 	element: EnumCharacterElement.LAKSHANA,
