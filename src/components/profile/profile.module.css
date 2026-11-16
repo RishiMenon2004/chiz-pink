@@ -377,6 +377,197 @@ a.backLink:not(:disabled):is(:hover, :focus, :focus-visible) {
 	}
 }
 
+/* ---------- Banner history ---------- */
+
+.panelBody.bannerHistory {
+	gap: 0.5rem;
+	padding: 1rem 0 0.75rem;
+}
+
+/* Days since the last run, in the character's banner colour. */
+.bannerCounter {
+	display: flex;
+	align-items: center;
+	gap: 0.75rem;
+	padding-inline: 1.25rem;
+}
+
+.bannerCounterValue {
+	color: oklch(from var(--theme-color) 0.8 calc(c * 1.2) h);
+	font-family: var(--font-barlow-condensed);
+	font-size: 3rem;
+	font-style: italic;
+	font-weight: 700;
+	line-height: 1;
+	text-transform: uppercase;
+	/* The italic leans past its box; this keeps the gap to the label even. */
+	padding-inline-end: 0.15em;
+}
+
+.bannerCounterLabel {
+	max-width: 6rem;
+	color: var(--white);
+	font-family: var(--font-barlow-condensed);
+	font-size: 1.1rem;
+	font-weight: 600;
+	line-height: 1.1;
+}
+
+/* Scrolls sideways once there are too many versions to fit. Today's
+   label sits beside the timeline, after the end of the bar. */
+.bannerTimelineScroll {
+	--track-height: 2.25rem;
+
+	display: flex;
+	align-items: flex-end;
+	overflow-x: auto;
+	scrollbar-width: thin;
+}
+
+.bannerTimeline {
+	--track-top: 1.75rem;
+
+	position: relative;
+	flex-grow: 1;
+	/* Squishes to fit; only scrolls once versions would get very narrow. */
+	min-width: calc(var(--units) * 2.5rem);
+	height: calc(var(--track-top) + var(--track-height));
+	/* Today's label follows straight on when there is one. */
+	margin-inline: 1.25rem 0;
+
+	&:last-child {
+		margin-inline-end: 1.25rem;
+	}
+}
+
+.bannerAxis {
+	position: absolute;
+	inset: 0 0 auto;
+	height: 1.25rem;
+	list-style: none;
+
+	li {
+		position: absolute;
+		translate: -50% 0;
+
+		color: var(--white);
+		font-family: var(--font-barlow-condensed);
+		font-size: 1rem;
+		font-weight: 600;
+
+		/* Tick line from the label down to the bar. */
+		&::after {
+			content: "";
+			position: absolute;
+			top: 1.25rem;
+			left: 50%;
+			width: 1px;
+			height: calc(var(--track-top) - 1.25rem + var(--track-height));
+			background: hsla(0, 0%, 100%, 0.15);
+		}
+	}
+}
+
+/* Fainter lines at each phase 2 start, only as tall as the bar; under it
+   like the version ticks, so they show through the dim parts only. */
+.bannerPhaseLines span {
+	position: absolute;
+	top: var(--track-top);
+	width: 1px;
+	height: var(--track-height);
+	background: hsla(0, 0%, 100%, 0.1);
+}
+
+.bannerTrack {
+	position: absolute;
+	inset: var(--track-top) 0 auto;
+	height: var(--track-height);
+	overflow: clip;
+	border-radius: 0.625rem;
+	background: hsla(0, 0%, 100%, 0.06);
+	/* Fades out at the end: the story isn't over. */
+	mask-image: linear-gradient(to right, black calc(100% - 4rem), transparent);
+
+	span {
+		position: absolute;
+		inset-block: 0;
+	}
+}
+
+/* Time on a banner: solid, drawn over the dim bar below. */
+.bannerTrackRun {
+	border-radius: 0.625rem;
+	background: oklch(from var(--theme-color) 0.75 calc(c * 1.2) h);
+}
+
+/* Time since the debut: the same bar, dimmed, running under the runs. */
+.bannerTrackGap {
+	background: color-mix(in srgb, var(--theme-color) 35%, transparent);
+}
+
+.bannerMarkers {
+	position: absolute;
+	inset: 0;
+	list-style: none;
+	pointer-events: none;
+}
+
+/* Labels sit inside the bar, starting where each run starts. */
+.bannerMarker {
+	position: absolute;
+	top: var(--track-top);
+	height: var(--track-height);
+
+	display: flex;
+	align-items: center;
+	padding-inline: 0.25rem;
+
+	pointer-events: auto;
+}
+
+/* Text straight on the bar, with the site's black outline (as on the pulls
+   banner selector) to keep it readable on the bright runs. */
+.bannerMarkerLabel {
+	display: flex;
+	flex-direction: column;
+
+	padding-inline: 0.375rem;
+
+	color: var(--foreground);
+	paint-order: stroke fill;
+	-webkit-text-stroke: 3px black;
+	font-family: var(--font-barlow-condensed);
+	font-size: 0.9rem;
+	font-weight: 600;
+	line-height: 1.05;
+	white-space: nowrap;
+}
+
+/* The wait so far, boxed in the banner colour just past the end of the bar. */
+.bannerNow {
+	flex-shrink: 0;
+	align-self: flex-end;
+
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+
+	min-height: var(--track-height);
+	margin-inline: 0.5rem 1.25rem;
+	padding: 0.125rem 0.625rem;
+	border-radius: 0.5rem;
+
+	color: var(--foreground);
+	background: var(--theme-color);
+	font-family: var(--font-barlow-condensed);
+	font-size: 0.9rem;
+	font-weight: 600;
+	line-height: 1.05;
+	white-space: nowrap;
+	paint-order: stroke fill;
+	-webkit-text-stroke: 3px black;
+}
+
 .panelBody {
 	display: flex;
 	flex-direction: column;

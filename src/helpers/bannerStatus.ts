@@ -222,6 +222,36 @@ export function getCharacterActiveBanner(
 	)
 }
 
+export type CharacterBannerRun = CharacterBanner & {
+	// "1.3" and 1 | 2, when the run lines up with a patch half.
+	version: string | null
+	phase: 1 | 2 | null
+	isRerun: boolean
+}
+
+// Which patch half a banner opened with, from the patch timings.
+function getPatchPhase(start: number) {
+	for (const [key, timing] of Object.entries(patchTimings)) {
+		const version = key.replace(/^version/, "").replace("_", ".")
+		if (timing.phase1Start() === start) return { version, phase: 1 as const }
+		if (timing.phase2Start() === start) return { version, phase: 2 as const }
+	}
+	return { version: null, phase: null }
+}
+
+// Every rate-up run a character has had or has scheduled, oldest first.
+// The first is their debut; the rest are reruns.
+export function getCharacterBannerRuns(characterId: string): CharacterBannerRun[] {
+	const banners = (getCharactersBanners().get(characterId) ?? []).toSorted(
+		(a, b) => a.start - b.start
+	)
+	return banners.map((banner, index) => ({
+		...banner,
+		...getPatchPhase(banner.start),
+		isRerun: index > 0,
+	}))
+}
+
 // Coarser than formatTimeRemaining - a banner countdown only needs the
 // two largest units.
 export function formatBannerCountdown(ms: number) {

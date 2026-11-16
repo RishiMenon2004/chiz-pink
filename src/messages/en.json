@@ -596,6 +596,18 @@
 			"endsIn": "Ends in <b>{time}</b>",
 			"startsIn": "Starts in <b>{time}</b>"
 		},
+		"bannerHistory": {
+			"title": "Banner History",
+			"phase": "v{version} · Phase {phase}",
+			"daysSince_one": "day since last banner",
+			"daysSince_other": "days since last banner",
+			"versions_one": "{count} Version",
+			"versions_other": "{count} Versions",
+			"days_one": "{count} Day",
+			"days_other": "{count} Days",
+			"debut": "Debut",
+			"live": "Live now"
+		},
 		"materials": {
 			"title": "Materials",
 			"levelFrom": "LV. 1",

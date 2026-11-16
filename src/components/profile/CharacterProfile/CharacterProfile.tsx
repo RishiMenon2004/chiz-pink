@@ -18,6 +18,7 @@ import { InfoBox } from "@/components/layout/InfoBox"
 
 import { ProfileAbilityGroup } from "../ProfileAbilityGroup"
 import { ProfileBanner } from "../ProfileBanner"
+import { ProfileBannerHistory } from "../ProfileBannerHistory"
 import { ProfileHero } from "../ProfileHero"
 import { LevelStatValue, ProfileLevelProvider } from "../ProfileLevel"
 import { ProfileMaterials } from "../ProfileMaterials"
@@ -218,6 +219,7 @@ export async function CharacterProfile({
 								levelStats={levelStats}
 							/>
 						)}
+						<ProfileBannerHistory characterId={character.id} />
 					</div>
 				</div>
 			</main>
