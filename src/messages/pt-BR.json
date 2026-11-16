@@ -50,7 +50,7 @@
 			"title": "TAREFAS",
 			"head": "Tarefas Diárias e Semanais do NTE",
 			"tooltip": "Tarefas",
-			"description": "Uma lista de tarefas diárias e semanais para Neverness to Everness, que reseta baseado no seu servidor. Adicionalmente, crie suas próprias tarefas."
+			"description": "Uma lista de tarefas diárias e semanais para Neverness to Everness, que reseta baseado no seu servidor. Adicionalmente, você pode criar suas próprias tarefas."
 		},
 		"character_list": {
 			"title": "PERSONAGENS",
@@ -71,8 +71,8 @@
 		},
 		"migrate": {
 			"title": "MOVENDO",
-			"head": "Movendo para chiz.pink",
-			"tooltip": "Movendo para chiz.pink"
+			"head": "Movendo para Chiz.Pink",
+			"tooltip": "Movendo para Chiz.Pink"
 		},
 		"import_external": {
 			"title": "IMPORTAR INVOCAÇÕES",
@@ -88,6 +88,11 @@
 			"title": "Conta vínculada",
 			"head": "Conta vínculada",
 			"tooltip": "Conta vínculada"
+		},
+		"arc_info": {
+			"title": "ÍNDICE DE DISCOS",
+			"head": "Índice de Discos",
+			"tooltip": "Índice de Discos"
 		}
 	},
 	"site": {
@@ -111,12 +116,14 @@
 			"imageAlt": "{name} cartão do disco",
 			"introAn": "{name} é um disco {rank} {type} do Neverness to Everness.",
 			"comingSoon": "{intro} Detalhes serão anunciados em breve.",
-			"released": "{intro} Veja os atributos, passivas e materiais."
+			"released": "{intro} Veja os atributos, passivas e materiais.",
+			"title": "{name}: Índice de Disco do NTE"
 		}
 	},
 	"notFound": {
 		"title": "Essa página não pode ser encontrada",
-		"goHome": "PÁGINA INICIAL"
+		"goHome": "IR PARA PÁGINA INICIAL",
+		"stickerAlt": "Figurinha da Chiz chorando"
 	},
 	"home": {
 		"showcase": {
@@ -129,7 +136,13 @@
 			"empty": "VAZIO",
 			"full": "CHEIO",
 			"spend": "Gastar {amount} {label}",
-			"add": "Adicionar {amount} {label}"
+			"add": "Adicionar {amount} {label}",
+			"title": "Vigor",
+			"editMax": "EDITAR VIGOR MÁXIMO",
+			"currentPixels": "Pixels atuais",
+			"currentCityStamina": "Vigor da Cidade Atual",
+			"pixels": "Pixels",
+			"cityStamina": "Vigor da Cidade"
 		},
 		"dailyTasks": {
 			"title": "Tarefas Diárias",
@@ -149,7 +162,8 @@
 			"title": "Lista a farmar",
 			"emptyPlanner": "Vo-Você não tem nada planejado ainda... <link>Começe a planejar</link> e eu irei li-listar o que precisa ser farmado aqui!",
 			"allDone": "Uaau, você ja tem tu-tudo de seu planejamento! Não precisa farmar nada.",
-			"viewAll": "Ver tudo (+{count})"
+			"viewAll": "Ver tudo (+{count})",
+			"collapse": "RECOLHER"
 		},
 		"featured": {
 			"preview": "Pre-Visualizar",
@@ -159,7 +173,8 @@
 			"bannerStarts": "Banner inicia em <b>{time}</b>"
 		},
 		"featuredArcs": {
-			"artAlt": "{name} arte do disco"
+			"artAlt": "{name} arte do disco",
+			"viewIndex": "Ver Índice"
 		},
 		"featuredCarousel": {
 			"label": "Personagens em destaque",
@@ -167,7 +182,8 @@
 			"slideFeatured": "{name} - destaque",
 			"artAlt": "{name} - arte completa",
 			"show": "Mostrar {name}",
-			"viewProfile": "Ver Perfil"
+			"viewProfile": "Ver Perfil",
+			"backgroundAlt": "{name} arte de fundo"
 		},
 		"calendar": {
 			"title": "Calendário de eventos",
@@ -183,7 +199,8 @@
 				"sa": "Sab"
 			},
 			"localTime": "Tempo Local ({offset})",
-			"serverTime": "Tempo do Servidor ({offset})"
+			"serverTime": "Tempo do Servidor ({offset})",
+			"btrName": "Além dos Trilhos: {name}"
 		}
 	},
 	"catalog": {
@@ -244,9 +261,9 @@
 			"neededFor": "Necessário Para:",
 			"sources": "Fontes:",
 			"sourceAlt": "{name} Fonte",
-			"more_one": "",
-			"more_many": "",
-			"more_other": ""
+			"more_one": "Mais +(count)",
+			"more_many": "Mais +(count)",
+			"more_other": "Mais +(count)"
 		}
 	},
 	"checklist": {
@@ -285,7 +302,13 @@
 			"delete": "DELETAR",
 			"cancel": "CANCELAR",
 			"save": "SALVAR",
-			"orLastDay": "{dia} (ou último dia)"
+			"orLastDay": "{dia} (ou último dia)",
+			"ordinal": {
+				"st": "{day}",
+				"nd": "{day}",
+				"rd": "{day}",
+				"th": "{day}"
+			}
 		}
 	},
 	"layout": {
@@ -317,7 +340,8 @@
 			"goTo": "IR PARA {domain}",
 			"move": "MOVER MEUS DADOS",
 			"reopen": "REABRIR JANELA",
-			"tryAgain": "TENTAR NOVAMENTE"
+			"tryAgain": "TENTAR NOVAMENTE",
+			"iconAlt": "Icone do app Chiz.Pink"
 		},
 		"eventDetails": {
 			"localTime": "(Tempo Local)",
@@ -333,7 +357,8 @@
 			"disclaimer": "<about>CHIZ.PINK</about> e um projeto não oficial e não possyu afiliação com <studio>HOTTA STUDIO™</studio>"
 		},
 		"infoBox": {
-			"dismiss": "Recusar"
+			"dismiss": "Recusar",
+			"sticker": "Figurinha da Chiz"
 		},
 		"installPwa": {
 			"button": "INSTALAR APLICATIVO",
@@ -419,7 +444,8 @@
 	},
 	"error": {
 		"title": "Algo deu errado!",
-		"tryAgain": "TENTAR NOVAMENTE"
+		"tryAgain": "TENTAR NOVAMENTE",
+		"stickerAlt": "Figurinha da Chiz Desmaiada"
 	},
 	"planner": {
 		"intro": "Planeje seus Espers e discos e veja quais materiais você ainda precisa.",
@@ -428,7 +454,483 @@
 		"requiredMaterials": "Materiais requiridos",
 		"cancel": "CANCELAR",
 		"switch": {
-			"characters": "Personagens"
+			"characters": "Personagens",
+			"arcs": "Discos"
+		},
+		"toolbar": {
+			"addCharacter": "ADICIONAR PERSONAGEM",
+			"addArc": "ADICIONAR DISCO",
+			"adjustPriority": "AJUSTAR PRIORIDADE",
+			"hybridPlanner": "Planejamento Híbrido"
+		},
+		"empty": {
+			"arcs": "N-Não tem nada planejado ainda... Aperte ADICIONAR DISCO acima, e eu i-irei organizar o que você precisa!",
+			"characters": "N-Não tem nada planejado ainda... Aperte ADICIONAR PERSONAGEM acima, e eu i-irei organizar o que você precisa!",
+			"both": "N-Não tem nada planejado ainda... Aperte ADICIONAR PERSONAGEM ou ADICIONAR DISCO acima, e eu i-irei organizar o que você precisa!"
+		},
+		"addArc": {
+			"title": "Adicionar Disco",
+			"meta": "{rank} {type} Disco",
+			"search": "Pesquisar",
+			"filterType": "Tipo",
+			"filterRank": "Ranque",
+			"cancel": "CANCELAR",
+			"add": "ADICIONAR"
+		},
+		"addCharacter": {
+			"title": "Adicionar Personagem",
+			"search": "Pesquisar",
+			"preview": "Pré-Visualizar",
+			"featured": "Destaque",
+			"rankIcon": "icone {rank}"
+		},
+		"arcBox": {
+			"view": "Ver {name}",
+			"viewIndex": "Ver Índice",
+			"confirmDelete": "Vo-Você tem certeza de que deseja deletar esse Disco?"
+		},
+		"characterBox": {
+			"view": "Ver {name} perfil",
+			"viewProfile": "Ver Perfil",
+			"esperAbilities": "Habilidades Esper",
+			"basicAttack": "Ataque Básico",
+			"redirectSkill": "Habilidade",
+			"ultimate": "Suprema",
+			"supportSkill": "Habilidade de Suporte",
+			"passive1": "Passiva 1",
+			"passive2": "Passiva 2",
+			"passive3": "Passiva 3",
+			"lifeSkills": "Habilidade de Vida",
+			"lifeSkill1": "Habilidade de Vida 1",
+			"lifeSkill2": "Habilidade de Vida 2",
+			"confirmDelete": "Vo-Você deseja deletar esse personagem?"
+		},
+		"material": {
+			"clickToEdit": "Clique para Editar",
+			"totalNeeded": "Total necessário: <n>{amount}</n>",
+			"ownedAvailable": "Obtido: <n>{owned}</n> | Disponível: <n>{available}</n>",
+			"fromSubstitutes": "(<n>+{amount}</n> para substitutos de menor EXP)",
+			"fromCrafting": "(<n>+{amount}</n> da criação)",
+			"using": "Usando:",
+			"sources": "Fontes:"
+		},
+		"buttons": {
+			"dragToReorder": "Arraste para reordenar",
+			"adjustPriority": "Ajustar prioridades",
+			"enhancementComplete": "Melhoria Completa",
+			"targetAchieved": "Você já completou seu objetivo!",
+			"completeEnhancement": "Melhoria Completa",
+			"deductNote": "Materiais serão deduzidos do seu inventario.",
+			"inadequate": "Você não possui materiais o suficiente.",
+			"confirmLevellingAria": "Botão de Confirmação de Nível",
+			"disableArc": "Desativar Disco",
+			"disableCharacter": "Desativar Personagem",
+			"disableArcAria": "Botão de Desativação de Disco",
+			"disableCharacterAria": "Botão de Desativação de Personagem",
+			"deleteArc": "Deletar Disco",
+			"deleteCharacter": "Deletar Personagem",
+			"deleteArcAria": "Botão de Deletar Planejamento de Disco",
+			"deleteCharacterAria": "Botão de Deletar Planejamento de Personagem",
+			"deleteWarning": "Tenha cuidado! Você não pode desfazer essa ação."
 		}
+	},
+	"profile": {
+		"stats": {
+			"type": "Tipo",
+			"baseAtk": "ATK Base",
+			"mainStat": "Atributo Principal",
+			"atk": "ATK",
+			"hp": "HP",
+			"def": "DEF",
+			"element": "Elemento",
+			"arcType": "Tipo de Disco",
+			"tbd": "TBD"
+		},
+		"arc": {
+			"allArcs": "TODOS OS DISCOS",
+			"effect": "Efeito",
+			"tierGroup": "Nível do Disco",
+			"tier": "Nível",
+			"tierN": "Nível {tier}",
+			"placeholderNote": "U-Um... Eu não tenho os atributos ou materiais {name} arquivados ainda. Irei adi-adiciona-los o quanto antes, eu prometo!"
+		},
+		"character": {
+			"allCharacters": "TODOS OS PERSONAGENS",
+			"artMale": "{name} (homem)",
+			"artFemale": "{name} (mulher)",
+			"background": "{name} arte de fundo",
+			"placeholderNoMaterials": "Uh-Uhm... Eu ainda não tenho as habilidades ou materiais de {name} arquivados. Eu irei adi-adicionar o mais cedo possível ao ser anunciado, eu prometo!",
+			"placeholderPartial": "Uh-Uhm... Eu ainda não tenho parte das informações de {name} ate agora, mas eu tenho os materiais, então você pode começar o pre-farm!"
+		},
+		"abilities": {
+			"esper": "HABILIDADES ESPER",
+			"basicAttack": "Ataque Básico",
+			"skill": "Habilidade",
+			"ultimate": "Suprema",
+			"support": "Habilidade de Suporte",
+			"passiveSkills": "Habilidade Passiva",
+			"passive1": "Passiva 1",
+			"passive2": "Passiva 2",
+			"passive3": "Passiva 3",
+			"lifeSkills": "Habilidades de Vida",
+			"lifeSkill1": "Habilidades de Vida 1",
+			"lifeSkill2": "Habilidades de Vida 2"
+		},
+		"banner": {
+			"expand": "Expandir {name} banner",
+			"endsIn": "Termina em <b>{time}</b>",
+			"startsIn": "Inicia em <b>{time}</b>"
+		},
+		"materials": {
+			"title": "Materiais",
+			"levelFrom": "NV. 1",
+			"levelTo": "NV. {level}",
+			"to": "para",
+			"targetLevel": "Objetivo de Nível",
+			"levelValue": "Nível {level}",
+			"empty": "Nada é necessário para nível 1."
+		}
+	},
+	"pulls": {
+		"intro": "Importe suas invocações e rastreie seu pity em cada banner.",
+		"banners": {
+			"limited": "Tabuleiro de Personagem Limitado",
+			"arc": "Caixa Milagrosa de Discos",
+			"permanent": "Encontros Misteriosos"
+		},
+		"rateUp": {
+			"showPull": "{name}, pity {pity}. Mostrar na lista de invocações",
+			"title": "RANQUES S RECENTES",
+			"onlyRateUpArcs": "Mostrar apenas Discos de Destaque",
+			"empty": "Vo-Você ainda não fez invocação de ranques-S ainda... Eu irei mostrar eles assim que você fizer!"
+		},
+		"stats": {
+			"title": "ATRIBUTOS",
+			"empty": "Nada para contar ainda... Importe algumas invocações e eu farei as contas por você!",
+			"tabs": {
+				"overview": "Visão geral",
+				"sRanks": "Ranques-S",
+				"banners": "Banners"
+			},
+			"totalPulls": "Invocações",
+			"sRanks": "Ranques-S",
+			"rateUpArcs": "Discos em Destaque",
+			"currentPity": "Pity Atual",
+			"toSoftPity": "{count} para o soft pity",
+			"toHardPity": "{count} para o garantido",
+			"averagePity": "Pity Médio",
+			"annulithSpent": "Annulith Gasto",
+			"averageShort": "MED",
+			"luckiest": "Pity mais baixo",
+			"unluckiest": "Pity mais alto",
+			"beforeSoftPity": "Antes do Soft Pity",
+			"inSoftPity": "No Soft Pity",
+			"banner": "Banner",
+			"meterLabel": "Pity {current} de {hard}",
+			"softPityAt": "Soft pity {pity}",
+			"softPity": "Soft Pity",
+			"pityChartTitle": "Todo Ranque-S, mais velho primeiro",
+			"columnLabel": "{name}: pity {pity}"
+		},
+		"manual": {
+			"item": "Item",
+			"result": "Rolamento de Dados",
+			"pity": "Pity",
+			"pityHint": "Ajuste a contagem de pity manualmente. Próximo registro será feito do 0.",
+			"pityHintAny": "Ajuste a contagem de pity manualmente. Próximo registro ira continua a contagem.",
+			"addOneLabel": "Adicionar uma invocação",
+			"addTenLabel": "Adicionar 10 invocações",
+			"clear": "Limpar",
+			"empty": "N-Não há invocação na fila... pressione +1 ou +10 e eu criarei linhas para você preencher!",
+			"advanced": "Avançado...",
+			"advancedTitle": "Adicionar Invocações",
+			"close": "Fechar",
+			"date": "Data & Hora",
+			"banner": "Banner",
+			"noBanner": "Nenhum banner ativo agora",
+			"count": "Invocações",
+			"single": "individual",
+			"tenPull": "10 invocações",
+			"itemPlaceholder": "Procurar itens...",
+			"noItems": "Sem item encontrado.",
+			"filters": {
+				"label": "Mostrar",
+				"all": "Todos",
+				"sRank": "Ranques-S",
+				"aRank": "Ranques-A",
+				"bRank": "Ranques-B",
+				"items": "Itens",
+				"cosmetics": "Cosméticos"
+			},
+			"itemLabel": "Item da invocação {number}",
+			"resultLabel": "Resultado da invocação {number}",
+			"quantityLabel": "Quantidade para invocação {number}",
+			"removeRow": "Remover invocação {number}",
+			"dice": "Dado {roll}",
+			"addRow": "Adicionar",
+			"save_one": "Adicionar {count} invocação",
+			"save_many": "Adicionar {count} invocações",
+			"save_other": "Adicionar {count} invocações",
+			"saved_one": "Adicionado {count} invocação.",
+			"saved_many": "Adicionado {count} invocações.",
+			"saved_other": "Adicionado {count} invocações.",
+			"tag_tooltip": "Entrada Manual",
+			"edit": "Editar",
+			"rowLabel": "{name}, pity {pity}. Aperte Enter para editar.",
+			"editTitle": "Editar Invocação",
+			"editNote": "Salvar qualquer alteração fará essa ser uma entrada manual.",
+			"quantity": "Quantidade",
+			"pityReset": "Redefinir",
+			"cancel": "Cancelar",
+			"saveEdit": "Salvar",
+			"deleteButton": "Apagar",
+			"deleteConfirm": "Apagar essa invocação manual?",
+			"deleteConfirmNote": "Isso não pode ser desfeito."
+		},
+		"list": {
+			"title": "INVOCAÇÕES",
+			"dice": "Dado",
+			"item": "Item",
+			"pity": "Pity",
+			"diceRollAlt": "Rolagem de Dado: {roll}",
+			"pointsGift": "Presente de Pontos",
+			"slumberland": "Terra dos Sonhos",
+			"unknownBanner": "Desconhecido",
+			"endOf": "Fim do {banners}",
+			"noHistory": "Sem Histórico de Invocação",
+			"noMatches": "Nenhuma resultado para sua pesquisa de invocação",
+			"searchPlaceholder": "Pesquisar...",
+			"searchLabel": "Pesquisar invocação pelo nome do item",
+			"clearSearch": "Limpar pesquisa",
+			"prev": "ANTES",
+			"next": "DEPOIS"
+		},
+		"import": {
+			"title": "Importar",
+			"description": "Exporte suas invocações usando <link>NTE History Exporter</link>. Então importe aqui para ver seu histórico de invocação e pity.",
+			"dropHere": "Solte o .JSON aqui",
+			"noFile": "sem arquivo selecionado (.json)",
+			"changeFile": "TROCAR ARQUIVO",
+			"selectFile": "SELECIONAR ARQUIVO",
+			"importButton_one": "Importar {count} invocação",
+			"importButton_many": "Importar {count} invocações",
+			"importButton_other": "Importar {count} invocações",
+			"manual": "Manual",
+			"jsonTab": "JSON",
+			"messages": {
+				"parsedArc": "Histórico da Caixa Milagrosa de Disco analisada",
+				"parsedLimited": "Histórico do Banner de Personagem Limitado analisado",
+				"parsedPermanent": "Histórico do Banner Permanente analisado",
+				"unreadableBanner": "Não foi possível ler o tipo de banner",
+				"unknownServer": "Servidor não reconhecido no arquivo. Usando o servidor configurado.",
+				"unknownBannerType": "Tipo de banner não reconhecido",
+				"readFailed": "Não foi possível ser o arquivo - {error}",
+				"unrecognisedFile": "O arquivo não foi reconhecido ou não contém histórico de invocação.",
+				"parseFailed": "Erro ao analisar o arquivo",
+				"summary_one": "{count} invocação importada.",
+				"summary_many": "{count} invocações importadas.",
+				"summary_other": "{count} invocações importadas.",
+				"summaryUpdated_one": "({count} invocação já existente atualizada)",
+				"summaryUpdated_many": "({count} invocações já existente atualizadas)",
+				"summaryUpdated_other": "({count} invocações já existente atualizadas)",
+				"summarySkipped_one": "(Pulado {count} invocação já existente)",
+				"summarySkipped_many": "(Pulado {count} invocações já existentes)",
+				"summarySkipped_other": "(Pulado {count} invocações já existentes)"
+			}
+		},
+		"external": {
+			"title": "Importar Invocações",
+			"source": "Do NTE History Exporter",
+			"loading": "Buscando suas invocações...",
+			"failed": "Esse link de importação expirou ou já foi usado. Exporte novamente, ou <link>importe um arquivo</link>.",
+			"bannerRow_one": "{bannerName}: {count} invocação ({server})",
+			"bannerRow_many": "{bannerName}: {count} invocações ({server})",
+			"bannerRow_other": "{bannerName}: {count} invocações ({server})",
+			"viewPulls": "Ver invocações"
+		}
+	},
+	"settings": {
+		"appearance": {
+			"title": "APARÊNCIA",
+			"customCursors": "Cursor Customizado",
+			"hybridPlanner": "Planejamento Híbrido"
+		},
+		"behaviour": {
+			"title": "COMPORTAMENTO",
+			"autoClaim": "Tarefas Diárias: Adicionar ao Inventário",
+			"calendarServerTime": "Calendário: Tempo do Servidor",
+			"calendarLocalTime": "Calendário: Tempo Local"
+		},
+		"language": {
+			"title": "LINGUAGEM",
+			"label": "Linguagem",
+			"helpTranslate": "Deseja traduzir Chiz.Pink em sua língua? Traduções são feitas por jogadores como você, não precisa saber programação.",
+			"translateButton": "Ajudar a Traduzir"
+		},
+		"appraiser": {
+			"title": "AVALIADOR",
+			"nickname": "Apelido",
+			"nicknamePlaceholder": "Avaliador",
+			"server": "Servidor",
+			"servers": {
+				"america": "America",
+				"europe": "Europa",
+				"asia": "Asia",
+				"sea": "Pacífico"
+			},
+			"characterPixels": "Pixels de Personagem",
+			"maxPixels": "Máximo de Pixels",
+			"cityStamina": "Vigor da Cidade",
+			"maxStamina": "Vigor Máximo"
+		},
+		"pwa": {
+			"title": "INSTALAR COMO PWA",
+			"description": "Instale Chiz.Pink como um aplicativo nativo em qualquer dispositivo com um navegador suportado.",
+			"offlineNote": "Use-o em qualquer lugar ou mesmo quando estiver sem conexão!"
+		},
+		"timers": {
+			"resetIn": "Reseta em: {time}",
+			"resetInUnknown": "Reseta em: -",
+			"next": "Próximo: {time}",
+			"full": "Total: {time}"
+		},
+		"shared": {
+			"beta": "BETA",
+			"decrease": "Diminuir {name}",
+			"increase": "Aumentar {name}",
+			"syncStatus": {
+				"idle": "Não sincronizado",
+				"syncing": "Sincronizando...",
+				"synced": "Sincronizado",
+				"error": "Falha na sincronização"
+			}
+		},
+		"cloud": {
+			"title": "BACKUP EM NUVEM",
+			"notLinked": "Não Conectado",
+			"account": "Conta:",
+			"lastBackup": "Ultimo Backup:",
+			"noBackup": "SEM BACKUP",
+			"signOut": "Sair",
+			"unlink": "Sair e Deletar Dados em Nuvem",
+			"description": "Sincronize seus dados através de dispositivos, com criptografia ponta-a-ponta. Chiz.Pink nunca vai ter acesso aos seus dados descriptografados - apenas você pode descriptografar.",
+			"signIn": "Entrar"
+		},
+		"local": {
+			"title": "DADO LOCAL",
+			"description": "Gerencie os dados armazenados no IndexedDB do seu navegador.",
+			"migrating": "Migrando de outro aplicativo? Importe os dados compatível de: ",
+			"backup": "Backup",
+			"import": "Importar Dados",
+			"export": "Exportar Dados",
+			"erase": "Apagar",
+			"erasePulls": "Histórico de Invocação",
+			"eraseAll": "Todos os Dados"
+		},
+		"modals": {
+			"importOverwrite": {
+				"confirm": "Sobrescrever",
+				"cancel": "Cancelar",
+				"older": "Esse arquivo contem informações velhas.",
+				"overwritten": "Os dados existentes serão sobrescritos.",
+				"question": "Você tem certeza de que deseja substituir seus dados atuais?"
+			},
+			"externalPending": {
+				"title": "Importar dados de {source}",
+				"overwrite": "Sobrescrever",
+				"merge": "Adicionar ao Existente",
+				"mergeInfo": "Adicionar ao existente: Substitui seu inventário. Anexa personagens e discos ao seu planejador existente.",
+				"overwriteInfo": "Sobrescrever: Substitui seu inventario, Personagens e Discos por completo."
+			},
+			"externalSummary": {
+				"title": "Dados de {source} importado",
+				"confirm": "Entendi",
+				"inventory": "Inventario: {imported} itens importados",
+				"inventorySkipped": "Inventario: {imported} itens importado, {skipped} pulados (sem correspondência)",
+				"characters": "Personagens: {imported} importado",
+				"charactersSkipped": "Personagens: {imported} importado, {skipped} pulado (personagem desconhecido)",
+				"arcs": "Discos: {imported} importado",
+				"arcsSkipped": "Discos: {imported} importado, {skipped} pulado (disco desconhecido)",
+				"staminaUpdated": "Vigor e Pixels atualizado",
+				"activitiesUnsupported": "Importar conclusão de Atividade/Evento ainda não é suportado."
+			},
+			"signout": {
+				"title": "Parar sincronização em nuvem?",
+				"message": "Você precisará entrar novamente para poder ativar a sincronia.",
+				"confirm": "Sair",
+				"cancel": "Permanecer conectado"
+			},
+			"eraseAll": {
+				"title": "Apagar todos os dados locais?",
+				"message": "Essa ação ira apagar todos os dados desse dispositivo.",
+				"confirm": "Apagar",
+				"cancel": "Cancelar"
+			},
+			"erasePulls": {
+				"title": "Apagar histórico de invocação?",
+				"message": "Isso ira apagar todas suas invocações importadas desse dispositivo.",
+				"messageSignedIn": "Isso ira apagar suas invocações importadas desse dispositivo e também de seu backup em nuvem.",
+				"confirm": "Apagar",
+				"cancel": "Cancelar"
+			},
+			"eraseSyncChoice": {
+				"title": "Manter seu salvamento em nuvem?",
+				"message": "Você poderá usar seu backup quando você entrar novamente.",
+				"confirm": "Apagar backup em nuvem",
+				"cancel": "Manter backup em nuvem"
+			},
+			"unlink": {
+				"title": "Desvincular de sua conta Google?",
+				"message": "Isso apagara seu backup em nuvem.",
+				"confirm": "Desvincular",
+				"cancel": "Manter vinculado"
+			}
+		}
+	},
+	"sync": {
+		"corruption": {
+			"eraseAndStartFresh": "Apague e comece do zero",
+			"both": {
+				"message": "Não foi possível ler seus dados locais nem seu backup na nuvem. Para continuar, seus dados neste dispositivo serão apagados para que você possa começar do zero."
+			},
+			"cloud": {
+				"message": "Seu backup na nuvem não pode ser lido ou talvez esteja corrompido. Sobrescrever com os dados desse dispositivo, ou apagar desse dispositivo e iniciar do zero.",
+				"confirm": "Sobrescrever nuvem com local"
+			},
+			"local": {
+				"messageWithCloud": "Alguns dos seus dados locais não puderam ser lidos e podem estar corrompidos. Restaure seu último backup na nuvem ou apague os dados nesse dispositivo e inicie do zero.",
+				"messageNoCloud": "Alguns de seus dados locais não puderam ser lidos e podem estar corrompidos. Nenhum backup em nuvem esta disponível, apague os dados nesse dispositivo e inicie do zero.",
+				"confirmResync": "Re-Sincronizar da nuvem",
+				"confirmErase": "Apagar Dados Locais"
+			}
+		}
+	},
+	"migrate": {
+		"title": "Movendo para Chiz.Pink",
+		"nothingToMove": "Não tem nada a mover aqui. <link>Ir para Tela Inicial</link>",
+		"status": {
+			"connecting": "Transferindo seus dados...",
+			"saving": "Salvando...",
+			"done": "Tudo foi movido! Você pode fechar essa janela.",
+			"error": "Aconteceu algo de errado ao mover seus dados. Feche essa janela e tente novamente."
+		},
+		"conflict": {
+			"message": "Chiz.Pink já tem seus dados salvos. Qual versão deseja manter? O histórico de invocação de ambos é mantido de qualquer forma.",
+			"useOld": "Usar dados antigos",
+			"keepCurrent": "Manter dados do Chiz.Pink",
+			"current": "Chiz.Pink",
+			"currentNewer": "Chiz.Pink (novo)",
+			"old": "Endereço antigo",
+			"oldNewer": "Endereço antigo (recente)",
+			"unknown": "Desconhecido"
+		}
+	},
+	"offline": {
+		"title": "Vixe! Vo-Você esta sem conexão!",
+		"description": "Você deverá conseguir ver as páginas que você já visitou."
+	},
+	"auth": {
+		"signedIn": "Logado com Google",
+		"closeWindow": "Você pode fechar essa janela."
 	}
 }
