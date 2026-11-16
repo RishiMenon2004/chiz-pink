@@ -261,9 +261,9 @@
 			"neededFor": "Necessário Para:",
 			"sources": "Fontes:",
 			"sourceAlt": "{name} Fonte",
-			"more_one": "Mais +(count)",
-			"more_many": "Mais +(count)",
-			"more_other": "Mais +(count)"
+			"more_one": "Mais +{count}",
+			"more_many": "Mais +{count}",
+			"more_other": "Mais +{count}"
 		}
 	},
 	"checklist": {
@@ -302,7 +302,7 @@
 			"delete": "DELETAR",
 			"cancel": "CANCELAR",
 			"save": "SALVAR",
-			"orLastDay": "{dia} (ou último dia)",
+			"orLastDay": "{day} (ou último dia)",
 			"ordinal": {
 				"st": "{day}",
 				"nd": "{day}",
