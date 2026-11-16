@@ -207,6 +207,25 @@ export function CharactersSection({ content, update, options, imageUrl }: Sectio
 											onChange={(arcType) => set({ arcType })}
 										/>
 									</Field>
+									<Field label="Gender">
+										{/* "player" stands in for null (Zero-style, the player picks); empty leaves it unset. */}
+										<SelectInput
+											value={character.gender === null ? "player" : character.gender}
+											options={[
+												{ value: "male", label: "Male" },
+												{ value: "female", label: "Female" },
+												{ value: "player", label: "Player chooses" },
+											]}
+											onChange={(gender) =>
+												set({
+													gender:
+														gender === "player"
+															? null
+															: ((gender || undefined) as "male" | "female" | undefined),
+												})
+											}
+										/>
+									</Field>
 									<Field label="Description" wide>
 										<TextInput
 											value={character.description}
