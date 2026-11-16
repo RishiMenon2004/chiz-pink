@@ -10,6 +10,7 @@ import { CloudSyncContext, useT } from "@/contexts"
 import { AlertContainer } from "@/components/layout/Alert"
 import { ModalContainer } from "@/components/layout/Modal/ModalContainer"
 import { SyncConflictModal } from "@/components/layout/SyncConflictModal"
+import { SyncToast } from "@/components/layout/SyncToast"
 
 import {
 	backupImport,
@@ -227,6 +228,20 @@ export function CloudSyncProvider({ children }: { children: React.ReactNode }) {
 
 		setInitialSyncPending(pending)
 	}, [sessionStatus, initialCheckComplete])
+
+	// Only the signed-in half of the gate is worth surfacing - a signed-out
+	// session's brief "loading" window has nothing to pull. Modals already
+	// cover the restore/corruption cases, so the toast steps aside for them.
+	const initialSyncToastState =
+		sessionStatus !== "authenticated" ||
+		initialCheckComplete ||
+		restorePrompt ||
+		hasCorruption ||
+		remoteCorrupt
+			? "hidden"
+			: status === "error"
+				? "error"
+				: "syncing"
 
 	// Reconciles main backup whenever a new row comes down the live query
 	useEffect(() => {
@@ -624,6 +639,7 @@ export function CloudSyncProvider({ children }: { children: React.ReactNode }) {
 		<CloudSyncContext.Provider
 			value={{ status, lastSyncedAt, latestBackupUpdatedAt, syncNow }}>
 			{children}
+			<SyncToast state={initialSyncToastState} />
 			{restorePrompt && (
 				<SyncConflictModal
 					localLastUpdated={restorePrompt.localLastUpdated}

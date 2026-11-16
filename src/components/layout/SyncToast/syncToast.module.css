@@ -1,0 +1,153 @@
+div.syncToast {
+	/* --titlebar-bottom is measured by CurrencyBar; the fallback covers
+	   the first paint before it does. */
+	position: fixed;
+	inset-block-start: calc(
+		var(--titlebar-bottom, var(--titlebar-height)) + 1rem
+	);
+	inset-inline-end: 1.5rem;
+	z-index: 100;
+
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	gap: 0.5rem;
+
+	/* Sized so the message splits into two even lines (no widow). */
+	max-width: min(20rem, calc(100vw - 2rem));
+	padding: 0.75rem;
+	border-radius: 1.5rem;
+
+	/* Background comes from .metallic-panel; its shadow is repeated here so
+	   the drop shadow can be layered on top of it. */
+	color: var(--interactive-bg);
+	box-shadow:
+		var(--shadow-metallic-panel),
+		0px 2px 20px var(--shadow-deep);
+
+	pointer-events: none;
+	opacity: 0;
+	translate: 0 -1rem;
+	transition:
+		opacity 200ms ease,
+		translate 200ms ease;
+
+	&[data-visible="true"] {
+		opacity: 1;
+		translate: 0 0;
+	}
+
+	&[data-state="error"] {
+		outline: 2px solid var(--danger-color);
+	}
+}
+
+/* Same pill and blinking light as the Cloud Backup status in settings
+   (settings.module.css) - orange while syncing, red on error. */
+.statusLabel {
+	--embed-shadow:
+		var(--shadow-dark-60) 0px -1px 2px,
+		var(--foreground) 0px 1px 1px,
+		var(--shadow-dark-60) -1px -1px 4px inset,
+		var(--shadow-glow-white-60) 1px 1px 2px inset,
+		var(--shadow-glow-white-60) 1px 1px 4px inset;
+	--glow-color: hsla(39, 100%, 50%, 0.9);
+
+	position: relative;
+	align-self: stretch;
+
+	padding-block: 0.25rem;
+	padding-inline: 1rem 2rem;
+	border-radius: 100vh;
+
+	color: var(--background);
+	font-family: var(--font-barlow-condensed);
+	font-size: 1.25rem;
+	font-style: italic;
+	font-weight: 600;
+	text-wrap-mode: nowrap;
+
+	background-color: var(--button-background);
+	box-shadow: var(--shadow-dark-30) 0 0 4px inset;
+
+	user-select: none;
+
+	&::before {
+		content: "";
+		position: absolute;
+		right: 0.5rem;
+		top: 50%;
+		translate: 0 -50%;
+
+		height: 0.75rem;
+		aspect-ratio: 1;
+		border-radius: 100%;
+
+		background-color: orange;
+		background-image: repeating-linear-gradient(
+			to right,
+			transparent 0 50%,
+			hsl(0, 0%, 20%) 50% 100%
+		);
+		background-size: 200%;
+		background-position: 0rem;
+		box-shadow:
+			var(--glow-color) 0 0 15px,
+			var(--embed-shadow);
+
+		animation: sync-toast-blink 1s steps(2) forwards infinite;
+	}
+
+	[data-state="error"] & {
+		--glow-color: hsla(0, 100%, 64%, 0.9);
+
+		&::before {
+			background-color: var(--danger-color);
+		}
+	}
+}
+
+.message {
+	/* With the panel's 0.75rem padding, puts the text 1.25rem from each side. */
+	margin-inline: 0.5rem;
+	font-size: 0.85rem;
+	font-weight: 500;
+	/* Even lines with no widow; SyncToast.tsx then shrinks the message to
+	   its widest line so balancing doesn't leave a gap on the right. */
+	text-wrap-style: balance;
+}
+
+@keyframes sync-toast-blink {
+	from {
+		background-position: 0rem;
+		box-shadow:
+			var(--glow-color) 0 0 15px,
+			var(--embed-shadow);
+	}
+
+	to {
+		background-position: 1.5rem;
+		box-shadow: var(--embed-shadow);
+	}
+}
+
+/* Matches the sidebar's switch to its mobile layout. */
+@media (max-width: 1000px) {
+	div.syncToast {
+		/* Centred via auto margins rather than left: 50%, which would cap
+		   the shrink-to-fit width at half the viewport and wrap the text. */
+		inset-inline: 1rem;
+		width: fit-content;
+		margin-inline: auto;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	div.syncToast {
+		transition: none;
+	}
+
+	.statusLabel::before {
+		animation-duration: 3s;
+	}
+}

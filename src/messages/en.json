@@ -896,6 +896,10 @@
 		}
 	},
 	"sync": {
+		"initialToast": {
+			"message": "Changes are paused until your cloud backup finishes loading.",
+			"errorMessage": "Changes are paused. Reload the page to try again."
+		},
 		"corruption": {
 			"eraseAndStartFresh": "Erase & Start Fresh",
 			"both": {
