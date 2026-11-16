@@ -214,14 +214,18 @@ export function ConfigSelect({
 	value,
 	onChange,
 	children,
+	fit,
 }: {
 	name: string
 	value?: string | number | readonly string[]
 	onChange: ChangeEventHandler<HTMLSelectElement>
 	children: ReactNode
+	/** Size to the options instead of filling the row - for a select alone on its row. */
+	fit?: boolean
 }) {
 	return (
-		<div className={styles.configSelectColumn}>
+		<div
+			className={`${styles.configSelectColumn} ${fit ? styles.fit : ""}`}>
 			<b>{name}</b>
 			<select
 				className={`inset-control ${styles.configSelect}`}

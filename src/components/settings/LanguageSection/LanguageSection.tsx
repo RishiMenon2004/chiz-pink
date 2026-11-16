@@ -57,6 +57,7 @@ export function LanguageSection() {
 				{LOCALES.length > 1 && (
 					<ContentRow>
 						<ConfigSelect
+							fit
 							name={t("settings.language.label")}
 							value={locale}
 							onChange={(e) => {
