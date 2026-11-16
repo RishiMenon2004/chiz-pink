@@ -224,6 +224,28 @@ export const characterBanners: CharacterBannerData[] = [
 		themeColor: "#6b92e1",
 		yOffset: "23%",
 	},
+
+	//v1.6
+	{
+		name: "Phase 1: Nitsa",
+		type: "Gacha",
+		rateupItem: "nitsa",
+		getStartDate: getPhase1Start("version1_6"),
+		getEndDate: getPhase1End("version1_6"),
+		eventImage: "version1.6/gacha_nitsa.webp",
+		themeColor: "#617cff",
+		yOffset: "22%",
+	},
+	{
+		name: "Phase 2: Ellie",
+		type: "Gacha",
+		rateupItem: "ellie",
+		getStartDate: getPhase2Start("version1_6"),
+		getEndDate: getPhase2End("version1_6"),
+		eventImage: "version1.6/gacha_ellie.webp",
+		themeColor: "#83d8ed",
+		yOffset: "27.5%",
+	},
 ]
 
 // Arc banners run alongside a character banner and share its dates.

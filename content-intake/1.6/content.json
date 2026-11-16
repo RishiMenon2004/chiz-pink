@@ -4,5 +4,37 @@
 		"phase1Start": "2026-12-23",
 		"phase2Start": "2027-01-13",
 		"end": "2027-02-02"
-	}
+	},
+	"characters": [
+		{
+			"id": "nitsa",
+			"name": "Nitsa",
+			"rarity": "S",
+			"element": "psyche",
+			"arcType": "Liquid",
+			"gender": "female"
+		},
+		{
+			"id": "ellie",
+			"name": "Ellie",
+			"element": "incantation",
+			"rarity": "S",
+			"gender": "female"
+		}
+	],
+	"banners": [
+		{
+			"character": "nitsa",
+			"phase": 1,
+			"name": "Phase 1: Nitsa",
+			"yOffset": "22%",
+			"themeColor": "#617cff"
+		},
+		{
+			"character": "ellie",
+			"phase": 2,
+			"themeColor": "#83d8ed",
+			"yOffset": "27.5%"
+		}
+	]
 }

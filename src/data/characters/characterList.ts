@@ -9,6 +9,7 @@ import { chaos } from "./chaos"
 import { chiz } from "./chiz"
 import { daffodill } from "./daffodill"
 import { edgar } from "./edgar"
+import { ellie } from "./ellie"
 import { elyms } from "./elyms"
 import { exe } from "./exe"
 import { fadia } from "./fadia"
@@ -21,6 +22,7 @@ import { lacrimosa } from "./lacrimosa"
 import { linko } from "./linko"
 import { mint } from "./mint"
 import { nanally } from "./nanally"
+import { nitsa } from "./nitsa"
 import { sakiri } from "./sakiri"
 import { shinku } from "./shinku"
 import { skia } from "./skia"
@@ -31,6 +33,8 @@ import { zero } from "./zero"
 // (scripts/content-add.ts) files new characters under these headings.
 const allCharacters: Record<string, Character> = {
 	// Limited S rank: newest first
+	ellie,
+	nitsa,
 	exe,
 	elyms,
 	akane,
