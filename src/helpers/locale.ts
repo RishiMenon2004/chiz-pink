@@ -7,7 +7,7 @@
 // translated (npm run messages:check shows how far along it is).
 //
 // No imports: the proxy runs separately from the app and pulls this in.
-export const LOCALES = ["en"] as const
+export const LOCALES = ["en", "pt-BR"] as const
 export type Locale = (typeof LOCALES)[number]
 
 export const DEFAULT_LOCALE: Locale = "en"

@@ -11,6 +11,7 @@ import { createTranslator } from "@/helpers/translate"
 // the server only; pages get the merged result through LocaleProvider.
 const translations: Record<Locale, () => Promise<PartialMessages>> = {
 	en: async () => en,
+	"pt-BR": async () => (await import("@/messages/pt-BR.json")).default,
 }
 
 /**
