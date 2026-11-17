@@ -40,11 +40,17 @@ function axisPosition(time: number) {
 
 // A headline count of days since the character's last banner, then a
 // timeline from 1.0 to today: a dim bar from their debut on, solid where a
-// run was live. Each rerun is labelled with the wait before it, and a pill
-// just past the bar's end gives the wait so far. Waits count from the end of the
-// previous run. Needs the clock, so it renders
-// nothing until useNow() resolves.
-export function ProfileBannerHistory({ characterId }: { characterId: string }) {
+// run was live. Each rerun is labelled with the wait before it, counted from
+// the end of the previous run. Needs the clock, so it renders nothing until
+// useNow() resolves.
+// themeColor matches the profile's quote marks.
+export function ProfileBannerHistory({
+	characterId,
+	themeColor,
+}: {
+	characterId: string
+	themeColor: string | null
+}) {
 	const t = useT()
 	const locale = useLocale()
 	const now = useNow()
@@ -74,9 +80,9 @@ export function ProfileBannerHistory({ characterId }: { characterId: string }) {
 		month: "short",
 		year: "numeric",
 	})
-	// Wait from the end of a run to a moment, in versions and days.
+	// Wait from the end of a run to a moment, in whole versions and days.
 	const wait = (previous: { end: number }, to: number) => {
-		const versions = patchIndexAt(to) - patchIndexAt(previous.end)
+		const versions = Math.floor(axisPosition(to) - axisPosition(previous.end) + 1e-9)
 		const days = Math.max(0, Math.floor((to - previous.end) / DAY_MS))
 		return {
 			// Same patch: "0 Versions" says nothing, so only the days show.
@@ -85,7 +91,6 @@ export function ProfileBannerHistory({ characterId }: { characterId: string }) {
 		}
 	}
 	const daysSinceEnd = Math.floor((now - latest.end) / DAY_MS)
-	const sinceLast = wait(latest, now)
 	const numbers = new Intl.NumberFormat(formatLocale(locale))
 
 	return (
@@ -93,7 +98,7 @@ export function ProfileBannerHistory({ characterId }: { characterId: string }) {
 			className={`metallic-panel ${pageStyles.section}`}
 			style={
 				{
-					"--theme-color": latest.event.themeColor ?? "var(--pink)",
+					"--theme-color": themeColor ?? "var(--pink)",
 				} as CSSProperties
 			}
 		>
@@ -181,15 +186,6 @@ export function ProfileBannerHistory({ characterId }: { characterId: string }) {
 							})}
 						</ol>
 					</div>
-					{/* Today, just past the end of the bar: versions since the last
-					    run (the counter has the days). Left out while a run is live -
-					    its bar already reaches today. */}
-					{!live && (
-						<span className={styles.bannerNow}>
-							{sinceLast.versions && <span>{sinceLast.versions}</span>}
-							<span>{sinceLast.days}</span>
-						</span>
-					)}
 				</div>
 			</div>
 		</section>

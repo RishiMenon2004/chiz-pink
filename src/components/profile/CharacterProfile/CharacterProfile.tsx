@@ -49,7 +49,7 @@ const QUOTE_COLOR_OVERRIDES: Record<string, string> = {
 	chiz: "var(--pink)", // the site's namesake
 }
 
-// Quote-mark colour: the character's banner colour if they've had a rate-up,
+// Quote-mark colour: the character's latest banner colour if they've had a rate-up,
 // else a hue taken from their background art. The art is mostly dark and
 // muted, so only its hue survives - lightness is fixed and chroma boosted
 // (but capped low for near-grey art, so it stays near grey).
@@ -219,7 +219,7 @@ export async function CharacterProfile({
 								levelStats={levelStats}
 							/>
 						)}
-						<ProfileBannerHistory characterId={character.id} />
+						<ProfileBannerHistory characterId={character.id} themeColor={quoteColor} />
 					</div>
 				</div>
 			</main>

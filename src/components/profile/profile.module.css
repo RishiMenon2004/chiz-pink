@@ -432,12 +432,7 @@ a.backLink:not(:disabled):is(:hover, :focus, :focus-visible) {
 	/* Squishes to fit; only scrolls once versions would get very narrow. */
 	min-width: calc(var(--units) * 2.5rem);
 	height: calc(var(--track-top) + var(--track-height));
-	/* Today's label follows straight on when there is one. */
-	margin-inline: 1.25rem 0;
-
-	&:last-child {
-		margin-inline-end: 1.25rem;
-	}
+	margin-inline: 1.25rem;
 }
 
 .bannerAxis {
@@ -541,31 +536,6 @@ a.backLink:not(:disabled):is(:hover, :focus, :focus-visible) {
 	font-weight: 600;
 	line-height: 1.05;
 	white-space: nowrap;
-}
-
-/* The wait so far, boxed in the banner colour just past the end of the bar. */
-.bannerNow {
-	flex-shrink: 0;
-	align-self: flex-end;
-
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-
-	min-height: var(--track-height);
-	margin-inline: 0.5rem 1.25rem;
-	padding: 0.125rem 0.625rem;
-	border-radius: 0.5rem;
-
-	color: var(--foreground);
-	background: var(--theme-color);
-	font-family: var(--font-barlow-condensed);
-	font-size: 0.9rem;
-	font-weight: 600;
-	line-height: 1.05;
-	white-space: nowrap;
-	paint-order: stroke fill;
-	-webkit-text-stroke: 3px black;
 }
 
 .panelBody {
