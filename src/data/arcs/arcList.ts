@@ -64,7 +64,7 @@ const allArcs: Record<string, Arc> = {
 			},
 		},
 	},
-	
+
 	echoes_on_hold: {
 		id: "echoes_on_hold",
 		imageSrc: "echoes_on_hold.webp",
@@ -455,93 +455,6 @@ const allArcs: Record<string, Arc> = {
 		},
 	},
 
-	stellar_veil: {
-		id: "stellar_veil",
-		imageSrc: "stellar_veil.webp",
-		name: "Stellar Veil",
-		description: "At sunrise, the lost stars are merely homeward bound.",
-		rarity: EnumRarity.Epic,
-		type: EnumArcType.Plasma,
-		baseAtk: 33,
-		mainAttribute: {
-			attribute: EnumStatAttribute.ATKBonus,
-			baseValue: 0.11,
-		},
-		ascensionMaterialSet1: ascLiquidDreamSet,
-		ascensionMaterialSet2: ascDelusionsSet,
-		effect: {
-			name: "Aqua Astra",
-			description:
-				"Increases the wearer's <el>Psyche DMG</> by <dn>{0}</>. Increases Crit DMG dealt by <dn>{1}</> for <dn>5</>s when dealing <el>Psyche DMG</>, up to <dn>10</> stacks. Triggers at most once every <dn>0.1</>s.",
-			values: {
-				"1": [
-					{ type: "Percent", value: 0.12 },
-					{ type: "Percent", value: 0.02 },
-				],
-				"2": [
-					{ type: "Percent", value: 0.145 },
-					{ type: "Percent", value: 0.024 },
-				],
-				"3": [
-					{ type: "Percent", value: 0.17 },
-					{ type: "Percent", value: 0.028 },
-				],
-				"4": [
-					{ type: "Percent", value: 0.195 },
-					{ type: "Percent", value: 0.032 },
-				],
-				"5": [
-					{ type: "Percent", value: 0.21 },
-					{ type: "Percent", value: 0.036 },
-				],
-			},
-		},
-	},
-
-	the_rain_that_shook_the_world: {
-		id: "the_rain_that_shook_the_world",
-		imageSrc: "the_rain_that_shook_the_world.webp",
-		name: "The Rain That Shook the World",
-		description:
-			"It emerged from a downpour that turned the world upside down.",
-		rarity: EnumRarity.Epic,
-		type: EnumArcType.Solid,
-		baseAtk: 33,
-		mainAttribute: {
-			attribute: EnumStatAttribute.CritRate,
-			baseValue: 0.088,
-		},
-		ascensionMaterialSet1: ascMusicSet,
-		ascensionMaterialSet2: ascWhispersSet,
-		effect: {
-			name: "Hypervortex",
-			description:
-				"Deals <dn>{0}</> increased <el>Cosmos DMG</> with the wearer's Redirect Skill and Ultimate.\nIncreases the wearer's Cycle Intensity by <dn>{1}</> for <dn>15</>s after casting a Redirect Skill. Resets the duration when triggered again.",
-			values: {
-				"1": [
-					{ type: "Percent", value: 0.3 },
-					{ type: "Integer", value: 36 },
-				],
-				"2": [
-					{ type: "Percent", value: 0.33 },
-					{ type: "Integer", value: 45 },
-				],
-				"3": [
-					{ type: "Percent", value: 0.36 },
-					{ type: "Integer", value: 54 },
-				],
-				"4": [
-					{ type: "Percent", value: 0.39 },
-					{ type: "Integer", value: 63 },
-				],
-				"5": [
-					{ type: "Percent", value: 0.42 },
-					{ type: "Integer", value: 72 },
-				],
-			},
-		},
-	},
-
 	the_last_rose: {
 		id: "the_last_rose",
 		imageSrc: "the_last_rose.webp",
@@ -683,6 +596,93 @@ const allArcs: Record<string, Arc> = {
 		},
 	},
 
+	stellar_veil: {
+		id: "stellar_veil",
+		imageSrc: "stellar_veil.webp",
+		name: "Stellar Veil",
+		description: "At sunrise, the lost stars are merely homeward bound.",
+		rarity: EnumRarity.Epic,
+		type: EnumArcType.Plasma,
+		baseAtk: 33,
+		mainAttribute: {
+			attribute: EnumStatAttribute.ATKBonus,
+			baseValue: 0.11,
+		},
+		ascensionMaterialSet1: ascLiquidDreamSet,
+		ascensionMaterialSet2: ascDelusionsSet,
+		effect: {
+			name: "Aqua Astra",
+			description:
+				"Increases the wearer's <el>Psyche DMG</> by <dn>{0}</>. Increases Crit DMG dealt by <dn>{1}</> for <dn>5</>s when dealing <el>Psyche DMG</>, up to <dn>10</> stacks. Triggers at most once every <dn>0.1</>s.",
+			values: {
+				"1": [
+					{ type: "Percent", value: 0.12 },
+					{ type: "Percent", value: 0.02 },
+				],
+				"2": [
+					{ type: "Percent", value: 0.145 },
+					{ type: "Percent", value: 0.024 },
+				],
+				"3": [
+					{ type: "Percent", value: 0.17 },
+					{ type: "Percent", value: 0.028 },
+				],
+				"4": [
+					{ type: "Percent", value: 0.195 },
+					{ type: "Percent", value: 0.032 },
+				],
+				"5": [
+					{ type: "Percent", value: 0.21 },
+					{ type: "Percent", value: 0.036 },
+				],
+			},
+		},
+	},
+
+	the_rain_that_shook_the_world: {
+		id: "the_rain_that_shook_the_world",
+		imageSrc: "the_rain_that_shook_the_world.webp",
+		name: "The Rain That Shook the World",
+		description:
+			"It emerged from a downpour that turned the world upside down.",
+		rarity: EnumRarity.Epic,
+		type: EnumArcType.Solid,
+		baseAtk: 33,
+		mainAttribute: {
+			attribute: EnumStatAttribute.CritRate,
+			baseValue: 0.088,
+		},
+		ascensionMaterialSet1: ascMusicSet,
+		ascensionMaterialSet2: ascWhispersSet,
+		effect: {
+			name: "Hypervortex",
+			description:
+				"Deals <dn>{0}</> increased <el>Cosmos DMG</> with the wearer's Redirect Skill and Ultimate.\nIncreases the wearer's Cycle Intensity by <dn>{1}</> for <dn>15</>s after casting a Redirect Skill. Resets the duration when triggered again.",
+			values: {
+				"1": [
+					{ type: "Percent", value: 0.3 },
+					{ type: "Integer", value: 36 },
+				],
+				"2": [
+					{ type: "Percent", value: 0.33 },
+					{ type: "Integer", value: 45 },
+				],
+				"3": [
+					{ type: "Percent", value: 0.36 },
+					{ type: "Integer", value: 54 },
+				],
+				"4": [
+					{ type: "Percent", value: 0.39 },
+					{ type: "Integer", value: 63 },
+				],
+				"5": [
+					{ type: "Percent", value: 0.42 },
+					{ type: "Integer", value: 72 },
+				],
+			},
+		},
+	},
+
 	song_of_the_whale: {
 		id: "song_of_the_whale",
 		imageSrc: "song_of_the_whale.webp",
@@ -718,7 +718,10 @@ const allArcs: Record<string, Arc> = {
 					{ type: "Percent", value: 0.18 },
 					{ type: "Percent", value: 0.3 },
 				],
-				"5": [{ type: "Percent", value: 0.2 }, { type: "Percent", value: 0.3 }],
+				"5": [
+					{ type: "Percent", value: 0.2 },
+					{ type: "Percent", value: 0.3 },
+				],
 			},
 		},
 	},
@@ -1294,11 +1297,26 @@ const allArcs: Record<string, Arc> = {
 			description:
 				"Increases wearer's ATK by <dn>{0}</>. Unlocks Arc: Eclipse.\nArc: Eclipse — The wearer creates a <dn>40</>s Eclipse. During the Eclipse, each enemy defeated restores <dn>{1}</> Ultimate Energy, up to <dn>5</> times. (cooldown: <dn>300</>s).",
 			values: {
-				"1": [{ type: "Percent", value: 0.3 }, { type: "Integer", value: 6 }],
-				"2": [{ type: "Percent", value: 0.35 }, { type: "Integer", value: 7 }],
-				"3": [{ type: "Percent", value: 0.4 }, { type: "Integer", value: 8 }],
-				"4": [{ type: "Percent", value: 0.45 }, { type: "Integer", value: 9 }],
-				"5": [{ type: "Percent", value: 0.5 }, { type: "Integer", value: 10 }],
+				"1": [
+					{ type: "Percent", value: 0.3 },
+					{ type: "Integer", value: 6 },
+				],
+				"2": [
+					{ type: "Percent", value: 0.35 },
+					{ type: "Integer", value: 7 },
+				],
+				"3": [
+					{ type: "Percent", value: 0.4 },
+					{ type: "Integer", value: 8 },
+				],
+				"4": [
+					{ type: "Percent", value: 0.45 },
+					{ type: "Integer", value: 9 },
+				],
+				"5": [
+					{ type: "Percent", value: 0.5 },
+					{ type: "Integer", value: 10 },
+				],
 			},
 		},
 	},
@@ -1815,11 +1833,26 @@ const allArcs: Record<string, Arc> = {
 			description:
 				"Increases Break Intensity by <dn>{0}</>.\nIncreases DMG by <dn>{1}</> against Broken units.",
 			values: {
-				"1": [{ type: "Integer", value: 48 }, { type: "Percent", value: 0.1 }],
-				"2": [{ type: "Integer", value: 57 }, { type: "Percent", value: 0.12 }],
-				"3": [{ type: "Integer", value: 66 }, { type: "Percent", value: 0.14 }],
-				"4": [{ type: "Integer", value: 75 }, { type: "Percent", value: 0.16 }],
-				"5": [{ type: "Integer", value: 84 }, { type: "Percent", value: 0.18 }],
+				"1": [
+					{ type: "Integer", value: 48 },
+					{ type: "Percent", value: 0.1 },
+				],
+				"2": [
+					{ type: "Integer", value: 57 },
+					{ type: "Percent", value: 0.12 },
+				],
+				"3": [
+					{ type: "Integer", value: 66 },
+					{ type: "Percent", value: 0.14 },
+				],
+				"4": [
+					{ type: "Integer", value: 75 },
+					{ type: "Percent", value: 0.16 },
+				],
+				"5": [
+					{ type: "Integer", value: 84 },
+					{ type: "Percent", value: 0.18 },
+				],
 			},
 		},
 	},
