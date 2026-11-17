@@ -1,7 +1,7 @@
 import type { Item } from "@/types/item"
 
 import { Events, patchTimings, type EventData } from "@/data/activities/events"
-import { arcBanners } from "@/data/activities/banners"
+import { arcBanners, characterBanners } from "@/data/activities/banners"
 
 export type ItemStatus = "featured" | "preview" | null
 
@@ -73,31 +73,36 @@ function getCharactersBanners() {
 	return charactersBanners
 }
 
-// A character takes the theme colour of their first rate-up banner. Arc
+// A character takes the theme colour of their latest rate-up banner. Arc
 // banners carry no colour of their own; each runs alongside a character
 // banner, so an arc takes the colour of the character banner live when its
-// first arc banner starts (the same fallback the pulls list uses). Items
-// that never had a banner get no entry.
+// latest arc banner starts. Items that never had a banner get no entry.
 function getThemeColors() {
 	if (themeColors) return themeColors
 
 	themeColors = new Map()
-	const coloured = getGachaBanners().filter(({ event }) => event.themeColor)
+	const coloured = getGachaBanners()
+		.filter(({ event }) => event.themeColor)
+		.toSorted((a, b) => a.start - b.start)
 
 	for (const { event } of coloured) {
-		if (event.rateupItem && !themeColors.has(event.rateupItem)) {
-			themeColors.set(event.rateupItem, event.themeColor!)
-		}
+		if (event.rateupItem) themeColors.set(event.rateupItem, event.themeColor!)
 	}
 
-	const seenArcs = new Set<string>()
-	for (const arcBanner of arcBanners) {
-		if (seenArcs.has(arcBanner.rateupItem)) continue
-		seenArcs.add(arcBanner.rateupItem)
-
+	// Arcs without a paired character banner fall back to whichever was live.
+	const byStart = arcBanners.toSorted((a, b) => a.getStartDate() - b.getStartDate())
+	for (const arcBanner of byStart) {
 		const start = arcBanner.getStartDate()
-		const companion = coloured.find((b) => b.start <= start && start < b.end)
+		const companion = coloured.findLast((b) => b.start <= start && start < b.end)
 		if (companion) themeColors.set(arcBanner.rateupItem, companion.event.themeColor!)
+	}
+
+	const pairedArc = new Map<EventData, string | undefined>(
+		characterBanners.map((banner) => [banner, banner.arcBanner?.rateupItem])
+	)
+	for (const { event } of coloured) {
+		const arcId = pairedArc.get(event)
+		if (arcId) themeColors.set(arcId, event.themeColor!)
 	}
 
 	return themeColors
