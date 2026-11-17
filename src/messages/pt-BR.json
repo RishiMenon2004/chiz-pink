@@ -137,7 +137,7 @@
 		},
 		"stamina": {
 			"adjust": "Ajustar {label}",
-			"empty": "VAZIAR",
+			"empty": "ESVAZIAR",
 			"full": "LOTAR",
 			"spend": "Gastar {amount} {label}",
 			"add": "Adicionar {amount} {label}",
@@ -338,10 +338,10 @@
 			"title": "Nós movemos!",
 			"body": {
 				"returned": "Seus dados ja foram movidos para chiz.pink. Vá para la, ou continue usando esse endereço.",
-				"changed": "Você fez alterações desde que",
-				"stillHere": "Você fez alterações desde que nos mudamos. Traga-o para o novo endereço, ou continue aqui.",
+				"changed": "Você fez alterações aqui desde a mudança. Leve-as para chiz.pink ou continue usando este endereço.",
+				"stillHere": "Seus dados ainda estão salvos no endereço antigo. Leve-os para continuar de onde parou, ou continue usando este endereço.",
 				"waiting": "Termine na janela aberta do chiz.pink.",
-				"failed": "Não foi possível mudar seus dados automaticamente. Tente novamente (permita pop-ups se solicitado), ou baixe o download e importe nas configurações do chiz.pink."
+				"failed": "Não foi possível mudar seus dados automaticamente. Tente novamente (permita pop-ups se solicitado), ou baixe um backup e importe nas configurações do chiz.pink."
 			},
 			"stay": "PERMANECER AQUI",
 			"downloadBackup": "BAIXAR BACKUP",
@@ -373,21 +373,21 @@
 			"gotIt": "Entendi",
 			"iosSafari": {
 				"title": "Instalar no iPhone/iPad",
-				"step1": "Toque no icone Compartilhar na barra de ferramenta do Safari.",
+				"step1": "Toque no ícone Compartilhar na barra de ferramentas do Safari.",
 				"step2": "Desça e toque em 'Adicionar a Tela Inicial'.",
 				"step3": "Toque 'Adicionar' no canto superior direito."
 			},
 			"iosOther": {
 				"title": "Instalar no iPhone/iPad",
-				"step1": "Toque em Compartilhar ou no icone do menu barra de ferramenta do navegador.",
+				"step1": "Toque em Compartilhar ou no ícone do menu na barra de ferramentas do navegador.",
 				"step2": "Toque 'Adicionar a Tela Inicial'.",
-				"step3": "Confime ao trocar em 'Adicionar'."
+				"step3": "Confirme tocando em 'Adicionar'."
 			},
 			"macosSafari": {
 				"title": "Instalar no Mac",
-				"step1": "Toque no icone Compartilhar na barra de ferramenta do Safari.",
+				"step1": "Clique no ícone Compartilhar na barra de ferramentas do Safari.",
 				"step2": "Selecione 'Adicionar ao Dock'",
-				"step3": "Confirme por clicar 'Adicionar'"
+				"step3": "Confirme clicando em 'Adicionar'."
 			},
 			"firefox": {
 				"title": "Instalar no Firefox",
@@ -527,7 +527,7 @@
 		"buttons": {
 			"dragToReorder": "Arraste para reordenar",
 			"adjustPriority": "Ajustar Prioridade",
-			"enhancementComplete": "Completar Melhoria",
+			"enhancementComplete": "Melhoria Concluída",
 			"targetAchieved": "Você já completou seu objetivo!",
 			"completeEnhancement": "Completar Melhoria",
 			"deductNote": "Materiais serão deduzidos do seu inventario.",
