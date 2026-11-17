@@ -48,6 +48,16 @@ import {
 	suspendedWhispers,
 	hesitationOfTheWaves,
 	expansionCore,
+	anomalyPilgrimageSelectionBox,
+	anomalyPilgrimageSelectionBox2,
+	anomalyHuntSelectionBox,
+	developmentExpSelectionBox,
+	esperMaterialSelectionBox,
+	esperAbilitySelectionBox,
+	esperAbilitySelectionBox2,
+	developmentExpSelectionBox2,
+	anomalyMaterialSelectionBox,
+	arcAscensionSelectionBox,
 	dreamlessSeed,
 	goldenAppleSeed,
 	silverAppleSeed,
@@ -109,6 +119,9 @@ const allMaterials: Record<string, Material> = {
 	eternal_memory: eternalMemory,
 	hollowflower_seed: hollowflowerSeed,
 
+	anomaly_pilgrimage_selection_box: anomalyPilgrimageSelectionBox,
+	anomaly_pilgrimage_selection_box_2: anomalyPilgrimageSelectionBox2,
+
 	/* rare */
 	elite_hunter_guide: eliteHunterGuide,
 
@@ -141,6 +154,9 @@ const allMaterials: Record<string, Material> = {
 	special_cold_dessert: specialColdDessert,
 	collectors_drama_core: collectorsDramaCore,
 
+	anomaly_hunt_selection_box: anomalyHuntSelectionBox,
+	development_exp_selection_box_2: developmentExpSelectionBox2,
+
 	chaotic_dye: chaoticDye,
 
 	/* uncommon */
@@ -165,6 +181,10 @@ const allMaterials: Record<string, Material> = {
 
 	dreamless_seed: dreamlessSeed,
 
+	development_exp_selection_box: developmentExpSelectionBox,
+	esper_ability_selection_box_2: esperAbilitySelectionBox2,
+	
+
 	colorless_dye: colorlessDye,
 
 	/* common  */
@@ -186,6 +206,11 @@ const allMaterials: Record<string, Material> = {
 	liquid_dream_trial_kit: liquidDreamTrialKit,
 	flavorless_cold_dessert: flavorlessColdDessert,
 	beginner_drama_core: beginnerDramaCore,
+
+	esper_material_selection_box: esperMaterialSelectionBox,
+	anomaly_material_selection_box: anomalyMaterialSelectionBox,
+	esper_ability_selection_box: esperAbilitySelectionBox,
+	arc_ascension_selection_box: arcAscensionSelectionBox,
 
 	light_dye: lightDye,
 }

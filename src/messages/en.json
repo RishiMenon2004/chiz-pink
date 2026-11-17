@@ -267,6 +267,7 @@
 		"material": {
 			"need": "Need:",
 			"neededFor": "Needed For:",
+			"grantsOneOf": "Grants one of:",
 			"sources": "Sources:",
 			"sourceAlt": "{name} Source",
 			"more_one": "+{count} More",

@@ -93,7 +93,20 @@ export function PlannerInventoryProvider({
 					// lower material couldn't fully cover the deficit, any
 					// genuine leftover must stay available for other
 					// materials/items later in the sequence to use.
-					const consumedAmount = usableCraftedAmount * craftRatio
+					// Selection boxes open whole (craftRatio < 1), so round up
+					// and keep whatever the last box gave beyond the deficit.
+					const consumedAmount = Math.ceil(
+						usableCraftedAmount * craftRatio - 1e-9
+					)
+					const surplusAmount =
+						Math.round(consumedAmount / craftRatio) - usableCraftedAmount
+
+					if (surplusAmount > 0) {
+						localInventory[material.id] = {
+							amount: localInventory[material.id].amount + surplusAmount,
+							craftedAmount: 0,
+						}
+					}
 
 					if (consumedAmount > 0) {
 						craftedFrom.push({

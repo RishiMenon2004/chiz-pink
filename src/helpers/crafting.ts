@@ -1,7 +1,12 @@
 import type { CumulativeInventory } from "@/types/inventory"
 import type { Material } from "@/types/item"
 
-import { EnumMaterialType, EnumRarity, findMaterial } from "@/data/items"
+import {
+	EnumMaterialType,
+	EnumRarity,
+	findMaterial,
+	getAllMaterialsList,
+} from "@/data/items"
 
 import { weaponExpAmount } from "./calculateWeaponCosts"
 import { characterExpAmount } from "./calculateCharacterCosts"
@@ -38,8 +43,33 @@ function getSubstituteMaterial(material: Material): Material | undefined {
 		: undefined
 }
 
+// How many of `material` one `box` grants, or 0 if it isn't an option.
+function getSelectionAmount(box: Material, material: Material): number {
+	return (
+		box.selectionOptions?.find((option) => option.id === material.id)
+			?.amount ?? 0
+	)
+}
+
+let selectionBoxes: Material[] | undefined
+
+// The selection boxes offering a material, those with the fewest options
+// first so the more flexible boxes are kept for materials only they cover.
+function getSelectionBoxes(material: Material): Material[] {
+	selectionBoxes ??= getAllMaterialsList()
+		.filter((box) => box.selectionOptions)
+		.sort((a, b) => a.selectionOptions!.length - b.selectionOptions!.length)
+
+	return selectionBoxes.filter((box) => getSelectionAmount(box, material) > 0)
+}
+
+export function isSelectionBox(material: Material): boolean {
+	return Boolean(material.selectionOptions)
+}
+
 // What a material can be made from, in the order to spend it: its own lower
-// tiers first, highest tier first, and the substitute only once those run out.
+// tiers first, highest tier first, then the substitute, and selection boxes
+// only once those run out.
 export function getCraftSources(material: Material): Material[] {
 	const lowerMaterials = (material.linkedMaterials ?? [])
 		.map((linkedMaterialId) => findMaterial(linkedMaterialId))
@@ -48,11 +78,20 @@ export function getCraftSources(material: Material): Material[] {
 
 	const substitute = getSubstituteMaterial(material)
 
-	return substitute ? [...lowerMaterials, substitute] : lowerMaterials
+	return [
+		...lowerMaterials,
+		...(substitute ? [substitute] : []),
+		...getSelectionBoxes(material),
+	]
 }
 
-// How many of `source` it takes to make one `material`.
+// How many of `source` it takes to make one `material`. A selection box
+// grants several at once, so its ratio is a fraction.
 export function getCraftRatio(material: Material, source: Material): number {
+	if (isSelectionBox(source)) {
+		return 1 / (getSelectionAmount(source, material) || 1)
+	}
+
 	const isWeaponExp = material.materialType === EnumMaterialType.WeaponExp
 	const isCharacterExp = material.materialType === EnumMaterialType.CharacterExp
 
@@ -75,8 +114,22 @@ export function getCraftRatio(material: Material, source: Material): number {
 	return 3 ** (material.rarity - sourceRarity)
 }
 
+// How many of `material` were made from `craftedFrom`. Selection boxes open
+// whole, so this can be more than was needed; the rest is kept.
+export function getCraftedYield(
+	material: Material,
+	craftedFrom: { id: string; amount: number }[] = []
+): number {
+	return craftedFrom.reduce(
+		(total, { id, amount }) =>
+			total + Math.round(amount / getCraftRatio(material, findMaterial(id))),
+		0
+	)
+}
+
 // What crafting touched, for the final adjustment after an ascension: each
-// crafted material's tiers, then any substitute that was actually spent.
+// crafted material's tiers, then any substitute or selection box that was
+// actually spent.
 export function getCraftAdjustmentMaterials(
 	requiredMaterials: { id: string }[],
 	inventory: CumulativeInventory = {}
@@ -95,6 +148,11 @@ export function getCraftAdjustmentMaterials(
 		if (substitute && craftedFrom?.some((from) => from.id === substitute.id)) {
 			substitutes.push(substitute)
 		}
+
+		craftedFrom?.forEach((from) => {
+			const source = findMaterial(from.id)
+			if (isSelectionBox(source)) substitutes.push(source)
+		})
 	})
 
 	return [...tiers, ...substitutes]

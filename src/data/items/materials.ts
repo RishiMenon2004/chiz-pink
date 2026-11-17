@@ -620,6 +620,185 @@ export const heterogeneousUnit: Material = {
 	sources: ["999 Nights", "Events"],
 }
 
+/* Selection boxes */
+const each = (amount: number, ...ids: string[]) =>
+	ids.map((id) => ({ id, amount }))
+
+export const anomalyPilgrimageSelectionBox: Material = {
+	id: "anomaly_pilgrimage_selection_box",
+	name: "Anomaly Pilgrimage Material Selection Box",
+	rarity: EnumRarity.Epic,
+	materialType: EnumMaterialType.Substitute,
+	imageSrc: "box_anomaly_material.png",
+	showOptionsBadge: true,
+	sources: ["Ebisu Auction House", "Events"],
+	selectionOptions: each(
+		1,
+		"good_boy_stamp",
+		"dress_sleeves_of_vanity",
+		"eternal_memory"
+	),
+}
+
+export const anomalyPilgrimageSelectionBox2: Material = {
+	id: "anomaly_pilgrimage_selection_box_2",
+	name: "Anomaly Pilgrimage Material Selection Box II",
+	rarity: EnumRarity.Epic,
+	materialType: EnumMaterialType.Substitute,
+	imageSrc: "box_anomaly_material.png",
+	showOptionsBadge: true,
+	sources: ["Events"],
+	selectionOptions: each(
+		1,
+		"good_boy_stamp",
+		"dress_sleeves_of_vanity",
+		"eternal_memory",
+		"hollowflower_seed"
+	),
+}
+
+export const anomalyHuntSelectionBox: Material = {
+	id: "anomaly_hunt_selection_box",
+	name: "Anomaly Hunt Material Selection Box",
+	rarity: EnumRarity.Rare,
+	materialType: EnumMaterialType.Substitute,
+	imageSrc: "box_anomaly_material.png",
+	showOptionsBadge: true,
+	sources: ["Hunter Exchange"],
+	selectionOptions: each(
+		1,
+		"confessional_flower_seed",
+		"charging_knight_spark_plug",
+		"a_page_from_delusions_shore",
+		"water_moon_pick",
+		"nest_guard_fragment",
+		"colorful_ticket_stub",
+		"tear_of_the_sea"
+	),
+}
+
+// The game also offers Manhole Crook ×15, which the site doesn't track.
+export const developmentExpSelectionBox: Material = {
+	id: "development_exp_selection_box",
+	name: "Development EXP Selection Box I",
+	rarity: EnumRarity.Uncommon,
+	materialType: EnumMaterialType.Substitute,
+	imageSrc: "box_development_exp.png",
+	sources: ["Circle Bounty"],
+	selectionOptions: [
+		...each(15, "senior_hunter_guide", "colorless_dye"),
+		...each(35000, "beetle_coin"),
+	],
+}
+
+// The game also offers Manhole Boss ×15, which the site doesn't track.
+export const developmentExpSelectionBox2: Material = {
+	id: "development_exp_selection_box_2",
+	name: "Development EXP Selection Box II",
+	rarity: EnumRarity.Rare,
+	materialType: EnumMaterialType.Substitute,
+	imageSrc: "box_development_exp_2.png",
+	sources: ["Circle Bounty"],
+	selectionOptions: [
+		...each(15, "elite_hunter_guide", "chaotic_dye"),
+		...each(150000, "beetle_coin"),
+	],
+}
+
+export const anomalyMaterialSelectionBox: Material = {
+	id: "anomaly_material_selection_box",
+	name: "Anomaly Material Selection Box I",
+	rarity: EnumRarity.Common,
+	materialType: EnumMaterialType.Substitute,
+	imageSrc: "box_anomaly_ascension.png",
+	sources: ["Circle Bounty", "Hunter Exchange"],
+	selectionOptions: each(
+		1,
+		"lost_whispers",
+		"fading_silhouette",
+		"blurred_numeral",
+		"suspended_delusions"
+	),
+}
+
+export const arcAscensionSelectionBox: Material = {
+	id: "arc_ascension_selection_box",
+	name: "Arc Ascension Material Selection Box I",
+	rarity: EnumRarity.Common,
+	materialType: EnumMaterialType.Substitute,
+	imageSrc: "box_arc_ascension.png",
+	sources: ["Circle Bounty", "Hunter Exchange"],
+	selectionOptions: each(
+		1,
+		"iron_apple_seed",
+		"beaty",
+		"liquid_dream_trial_kit",
+		"flavorless_cold_dessert",
+		"beginner_drama_core"
+	),
+}
+
+export const esperMaterialSelectionBox: Material = {
+	id: "esper_material_selection_box",
+	name: "Character Esper Material Selection Box I",
+	rarity: EnumRarity.Common,
+	materialType: EnumMaterialType.Substitute,
+	imageSrc: "box_esper_material.png",
+	sources: ["Circle Bounty", "Hunter Exchange"],
+	selectionOptions: each(
+		1,
+		"nestlings_longing",
+		"fng",
+		"first_expectations",
+		"synchronicity_of_thought",
+		"hesitation_of_the_waves"
+	),
+}
+
+export const esperAbilitySelectionBox: Material = {
+	id: "esper_ability_selection_box",
+	name: "Character Esper Ability Selection Box I",
+	rarity: EnumRarity.Common,
+	materialType: EnumMaterialType.Substitute,
+	imageSrc: "box_esper_ability.png",
+	sources: ["Circle Bounty"],
+	selectionOptions: each(
+		8,
+		"synchronicity_of_thought",
+		"nestlings_longing",
+		"fng",
+		"first_expectations",
+		"hesitation_of_the_waves",
+		"iron_apple_seed",
+		"beaty",
+		"liquid_dream_trial_kit",
+		"flavorless_cold_dessert",
+		"beginner_drama_core"
+	),
+}
+
+export const esperAbilitySelectionBox2: Material = {
+	id: "esper_ability_selection_box_2",
+	name: "Character Esper Ability Selection Box II",
+	rarity: EnumRarity.Uncommon,
+	materialType: EnumMaterialType.Substitute,
+	imageSrc: "box_esper_ability_2.png",
+	sources: ["Circle Bounty"],
+	selectionOptions: each(
+		10,
+		"doves_flutter",
+		"co",
+		"known_weariness",
+		"resonance_of_faith",
+		"suspended_whispers",
+		"silver_apple_seed",
+		"versey",
+		"liquid_dream_travel_kit",
+		"plain_cold_dessert",
+		"master_drama_core"
+	),
+}
+
 /* Talent */
 export const theOliveBranch: Material = {
 	id: "the_olive_branch",

@@ -16,7 +16,13 @@ export interface Material extends Item {
 	materialType: EnumMaterialType
 	sources: string[]
 	linkedMaterials?: string[]
+	// Selection boxes: opening one grants `amount` of any one of these.
+	selectionOptions?: SelectionOption[]
+	// Cycle the options in a corner badge, for boxes that share one icon.
+	showOptionsBadge?: boolean
 }
+
+export type SelectionOption = { id: string; amount: number }
 
 export type MaterialSet = readonly [Material, Material, Material]
 

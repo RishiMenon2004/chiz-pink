@@ -12,7 +12,7 @@ import {
 
 import type { Material } from "@/types/item"
 
-import { getItemRarityStyle } from "@/data/items"
+import { findMaterial, getItemRarityStyle } from "@/data/items"
 import { findItem } from "@/data/items/findItem"
 
 import {
@@ -28,6 +28,7 @@ import { getLinkedMaterials } from "@/helpers"
 import { useT } from "@/contexts"
 
 import { MaterialIcon, QuantityInput } from "@/components/layout"
+import { InventorySelectionBadge } from "../SelectionBadge"
 
 import styles from "./inventoryMaterial.module.css"
 import pageStyles from "@/app/[lang]/inventory/page.module.css"
@@ -154,6 +155,12 @@ export function MaterialItemBox({
 					quality={100}
 					loading="eager"
 				/>
+				{material.showOptionsBadge && material.selectionOptions && (
+					<InventorySelectionBadge
+						options={material.selectionOptions}
+						className={styles.iconBadge}
+					/>
+				)}
 			</div>
 
 			<span className={styles.label}>{material.name}</span>
@@ -213,6 +220,19 @@ export function MaterialItemBox({
 									})}
 								</div>
 							)}
+						</div>
+					</>
+				)}
+				{material.selectionOptions && (
+					<>
+						<hr className="tooltip-hr" />
+						<div className="tooltip-source-list">
+							{t("inventory.material.grantsOneOf")}
+							{material.selectionOptions.map(({ id, amount }) => (
+								<div className="tooltip-source" key={id}>
+									{`${findMaterial(id).name}${amount > 1 ? ` ×${amount.toLocaleString()}` : ""}`}
+								</div>
+							))}
 						</div>
 					</>
 				)}

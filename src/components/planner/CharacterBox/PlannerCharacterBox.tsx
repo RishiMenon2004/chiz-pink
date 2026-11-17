@@ -14,7 +14,7 @@ import { useSortable } from "@dnd-kit/react/sortable"
 import { KeyMouseEventType } from "@/types"
 import { CharacterRecord, SkillLvlRecord } from "@/types/planner"
 
-import { EnumItemLvls, getItemRarityStyle } from "@/data/items"
+import { EnumItemLvls, findMaterial, getItemRarityStyle } from "@/data/items"
 import { findCharacter } from "@/data/characters"
 
 import {
@@ -25,7 +25,10 @@ import {
 } from "@/hooks"
 
 import { getCharacterBannerThemeColor } from "@/helpers/bannerStatus"
-import { getCraftAdjustmentMaterials } from "@/helpers/crafting"
+import {
+	getCraftAdjustmentMaterials,
+	getCraftedYield,
+} from "@/helpers/crafting"
 
 import { PlannerBoxContext, usePlannerMaterialsContext, useT } from "@/contexts"
 
@@ -255,9 +258,16 @@ export function PlannerCharacterBox({
 					)
 				})
 
+				// Crafting covers the shortfall exactly, except opened
+				// selection boxes, which can give more than was needed.
+				const craftedYield = getCraftedYield(
+					findMaterial(material.id),
+					craftedFrom
+				)
+
 				localInventory[material.id] = Math.max(
 					0,
-					inventoryAmount - material.amount
+					inventoryAmount + craftedYield - material.amount
 				)
 			})
 

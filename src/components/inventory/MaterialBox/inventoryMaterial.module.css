@@ -94,6 +94,45 @@
 
 			z-index: 4;
 		}
+
+		.iconBadge {
+			position: absolute;
+			right: 8px;
+			bottom: 8px;
+			display: grid;
+			place-items: center;
+			width: 1.75rem;
+			aspect-ratio: 1;
+			border-radius: 50%;
+			background-color: color-mix(in srgb, var(--interactive-bg) 85%, transparent);
+			outline: 1px solid rgba(255, 255, 255, 0.35);
+			box-shadow: var(--shadow-dark-40) 0px 1px 3px;
+			z-index: 4;
+
+			img {
+				grid-area: 1 / 1;
+				height: 1.5rem;
+				filter: none;
+				opacity: 0;
+				scale: 0.85;
+				transition:
+					opacity 600ms ease-in-out,
+					scale 600ms ease-in-out;
+
+				&[data-active="true"] {
+					opacity: 1;
+					scale: 1;
+				}
+			}
+		}
+
+		&:hover .iconBadge img {
+			scale: 0.85;
+
+			&[data-active="true"] {
+				scale: 1;
+			}
+		}
 	}
 
 	&.multi {
@@ -310,5 +349,11 @@ span.amount {
 			height: 1.15rem;
 			margin: 0.2rem;
 		}
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.materialBox .iconContainer .iconBadge img {
+		transition: none;
 	}
 }

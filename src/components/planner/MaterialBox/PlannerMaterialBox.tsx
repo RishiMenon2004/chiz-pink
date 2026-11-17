@@ -159,7 +159,7 @@ export function PlannerMaterialBox({
 										<div key={id}>
 											{`${craftingMaterial.name}: `}
 											<span className="font-barlow">
-												{`${amount.toLocaleString(numberLocale)} \u2192 + ${amount / divisor}`}
+												{`${amount.toLocaleString(numberLocale)} \u2192 + ${Math.round(amount / divisor).toLocaleString(numberLocale)}`}
 											</span>
 										</div>
 									)
