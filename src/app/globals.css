@@ -383,6 +383,17 @@ button {
 	box-shadow: var(--shadow-control);
 }
 
+/* Read by screen readers and crawlers, never shown - e.g. link text for
+   icon-only buttons. */
+.visually-hidden {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	overflow: hidden;
+	clip-path: inset(50%);
+	white-space: nowrap;
+}
+
 .metallic-panel {
 	background-color: var(--white);
 	box-shadow: var(--shadow-metallic-panel);

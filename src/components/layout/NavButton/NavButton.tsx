@@ -32,6 +32,8 @@ export function NavButton({
 
 	const { Tooltip, showTooltip, hideTooltip } = useTooltip()
 
+	const label = tooltip ?? t(`routes.${RoutesData[`/${href}` as RoutePath].id}.tooltip`)
+
 	return (
 		<LocaleLink
 			tabIndex={1}
@@ -44,10 +46,10 @@ export function NavButton({
 				className={styles.icon}
 				style={{ backgroundImage: `url("/nav/borders/${icon}.png")` }}
 			/>
+			{/* Real link text for crawlers and screen readers - the icon alone has none. */}
+			<span className="visually-hidden">{label}</span>
 
-			<Tooltip offset={{ x: 6, y: 0 }}>
-				{tooltip ?? t(`routes.${RoutesData[`/${href}` as RoutePath].id}.tooltip`)}
-			</Tooltip>
+			<Tooltip offset={{ x: 6, y: 0 }}>{label}</Tooltip>
 		</LocaleLink>
 	)
 }
