@@ -38,7 +38,7 @@ export const ChangeLogs = {
 		"<tag>NEW</> Elyms & Exe can now be added in the planner",
 	],
 	"1.2.0": [
-		"Version 1.5 (\"Once Upon a Glitched Call\") is finally here!!",
+		'Version 1.5 ("Once Upon a Glitched Call") is finally here!!',
 		"<ntetag>NTE</> Up to date with <itag color='#ab9dec'>Patch 1.5</>",
 		"<ntetag>NTE</> Characters added: Elyms, with her full kit & Exe, with his partial kit",
 		"<ntetag>NTE</> Arcs added: Echoes on Hold & Dotted Horizon",
@@ -60,6 +60,14 @@ export const ChangeLogs = {
 		"<tag>NEW</> Pulls are now grouped by the specific banner they were made on (This only works with the latest version of NTE Exporter)",
 		"<tag>NEW</> Edit any pull - Right click, or tap and hold to edit",
 		"<tag>NEW</> Click a Recent S-Rank to jump to it in your pull history",
-		"<tag color='#ffbd47'>FIX</> Perfomance improvements in the Pull Tracker for large histories",
+		"<tag color='#ffbd47'>FIX</> Performance improvements in the Pull Tracker for large histories",
+	],
+	"1.2.2": [
+		"<ntetag>NTE</> Character Forecasts: Nitsa & Ellie",
+		"<tag>NEW</> Chiz.Pink is now available in Português (Brasil)! Switch under Settings > Language",
+		"<tag>NEW</> The planner now uses your Material Selection Boxes as substitutes",
+		"<tag>NEW</> Character pages now show their banner history",
+		"<tag>NEW</> A sync notice now shows while your cloud data loads for the first time",
+		"<tag color='#ffbd47'>FIX</> Tooltips no longer go off the edge of the screen",
 	],
 }
