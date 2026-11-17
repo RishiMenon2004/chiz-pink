@@ -22,7 +22,7 @@
 			"title": "RASTREADOR DE INVOCAÇÃO",
 			"head": "Invocação e rastreador de pity do NTE",
 			"tooltip": "Rastreador de invocação",
-			"description": "Rastreie suas invocações e seu pity no Neverness to Everness para cada banner, ou importe seu histórico de invocações para ver suas vitórias na chance aumentada."
+			"description": "Rastreie suas invocações e seu pity no Neverness to Everness para cada tabuleiro, ou importe seu histórico de rolagens para ver suas vitórias na chance aumentada."
 		},
 		"inventory": {
 			"title": "INVENTÁRIO",
@@ -75,9 +75,9 @@
 			"tooltip": "Movendo para Chiz.Pink"
 		},
 		"import_external": {
-			"title": "IMPORTAR INVOCAÇÕES",
-			"head": "Importar invocações",
-			"tooltip": "Importar invocações"
+			"title": "IMPORTAR ROLAGENS",
+			"head": "Importar Rolagens",
+			"tooltip": "Importar rolagens"
 		},
 		"content_tool": {
 			"title": "FERRAMENTA DE CONTEÚDO",
@@ -96,7 +96,7 @@
 		}
 	},
 	"site": {
-		"description": "Sua companheira mais rosada, planejadora de ascensão e rastreadora de invocações para NTE :D",
+		"description": "Sua companheira mais rosada, planejadora de ascensão e rastreadora de rolagens para NTE :D",
 		"ogImageAlt": "Chiz.Pink: Planejadora de ascensão e rastreadora de invocação para Neverness to Everness"
 	},
 	"meta": {
@@ -104,11 +104,15 @@
 		"character": {
 			"title": "{name}: Perfil de personagem do NTE",
 			"notFound": "Personagem não encontado",
-			"introA": "{name} é {rank} {element} Esper do Neverness to Everness",
-			"introAn": "{name} é {rank} {element} Esper do Neverness to Everness",
-			"comingSoon": "{intro} Detalhes serão anunciados depois.",
+			"introA": "{name} é {rank} {element} Esper do Neverness to Everness.",
+			"introAn": "{name} é {rank} {element} Esper do Neverness to Everness.",
+			"comingSoon": "{intro} Detalhes serão anunciados em breve.",
 			"released": "{intro} Veja suas habilidades, matérias e tabuleiro.",
-			"imageAlt": "{name} cartão do personagem"
+			"imageAlt": "{name} cartão do personagem",
+			"introA_male": "{name} é um Esper {rank} {element} do Neverness to Everness.",
+			"introA_female": "{name} é uma Esper {rank} {element} do Neverness to Everness.",
+			"introAn_male": "{name} é um Esper {rank} {element} do Neverness to Everness.",
+			"introAn_female": "{name} é uma Esper {rank} {element} do Neverness to Everness."
 		},
 		"arc": {
 			"notFound": "Disco não encontrado",
@@ -133,8 +137,8 @@
 		},
 		"stamina": {
 			"adjust": "Ajustar {label}",
-			"empty": "VAZIO",
-			"full": "CHEIO",
+			"empty": "VAZIAR",
+			"full": "LOTAR",
 			"spend": "Gastar {amount} {label}",
 			"add": "Adicionar {amount} {label}",
 			"title": "Vigor",
@@ -168,27 +172,31 @@
 		"featured": {
 			"preview": "Pre-Visualizar",
 			"featured": "Destaque",
-			"bannerTba": "Datas do banner a ser definido",
-			"bannerEnds": "Banner finaliza em <b>{time}</b>",
-			"bannerStarts": "Banner inicia em <b>{time}</b>"
+			"bannerTba": "Datas do tabuleiro a ser definido",
+			"bannerEnds": "Tabuleiro termina em <b>{time}</b>",
+			"bannerStarts": "Tabuleiro começa em <b>{time}</b>"
 		},
 		"featuredArcs": {
-			"artAlt": "{name} arte do disco",
+			"artAlt": "Arte do Disco {name}",
 			"viewIndex": "Ver Índice"
 		},
 		"featuredCarousel": {
 			"label": "Personagens em destaque",
 			"slidePreview": "{name} - pre-visualizar",
 			"slideFeatured": "{name} - destaque",
-			"artAlt": "{name} - arte completa",
+			"artAlt": "Arte Completa de {name}",
 			"show": "Mostrar {name}",
 			"viewProfile": "Ver Perfil",
-			"backgroundAlt": "{name} arte de fundo"
+			"backgroundAlt": "{name} arte de fundo",
+			"artAlt_male": "Arte completa de {name}",
+			"artAlt_female": "Arte completa de {name}",
+			"backgroundAlt_male": "Arte de fundo de {name}",
+			"backgroundAlt_female": "Arte de fundo de {name}"
 		},
 		"calendar": {
 			"title": "Calendário de eventos",
 			"today": "HOJE",
-			"eventBannerAlt": "{name} evento do banner",
+			"eventBannerAlt": "{name} tabuleiro",
 			"weekdays": {
 				"su": "Dom",
 				"mo": "Seg",
@@ -216,15 +224,15 @@
 			"groupBy": "Agrupar por",
 			"searchPlaceholder": "Pesquisar",
 			"searchLabel": "Pesquisar por nome",
-			"allRanks": "Todos os Ranques",
-			"allElements": "Todos os Elementos",
-			"allArcTypes": "Todos os Tipos de Disco",
-			"byRank": "Por Ranque",
-			"byElement": "Por Elemento",
-			"byArcType": "Por Tipo de Disco",
-			"byType": "Por Tipo",
-			"byFeatured": "Por Destaques",
-			"byName": "Por Nomes"
+			"allRanks": "Ranques",
+			"allElements": "Elementos",
+			"allArcTypes": "Tipos de Disco",
+			"byRank": "Ranque",
+			"byElement": "Elemento",
+			"byArcType": "Tipo de Disco",
+			"byType": "Tipo",
+			"byFeatured": "Destaque",
+			"byName": "Nome"
 		}
 	},
 	"inventory": {
@@ -233,22 +241,22 @@
 		"toolbar": {
 			"filterBy": "Filtrar por",
 			"owned": "Obtido",
-			"required": "Requer",
+			"required": "Necessário",
 			"acquired": "Adquirido",
-			"allRanks": "Todos os Ranks",
+			"allRanks": "Todos os Ranques",
 			"groupBy": "Agrupar por",
 			"byOwned": "Por Obtido",
-			"byRequired": "Por Requerido",
+			"byRequired": "Por Necessidade",
 			"byAcquired": "Por Adquirido",
 			"byType": "Por Tipo",
-			"byRank": "Por Rank",
+			"byRank": "Por Ranque",
 			"byName": "Por Nome"
 		},
 		"groups": {
 			"emptyFilter": "E-Eu não consegui achar nada com esses filtros. Você deseja <retry>tentar de novo?</retry>",
 			"owned": "Adquirido",
 			"notOwned": "Não adquirido",
-			"required": "Requerido",
+			"required": "Necessário",
 			"acquired": "Adquirido",
 			"noOwned": "Des-desculpe... Você parece não ter nada.",
 			"noRequired": "Hmm, parece que... você não precisa de nada agora.",
@@ -275,7 +283,7 @@
 		"visible": "Visível",
 		"hidden": "Oculto",
 		"sections": {
-			"daily": "Diária",
+			"daily": "Diárias",
 			"weekly": "Semanais",
 			"biWeekly": "Bi-Semanais",
 			"monthly": "Mensal",
@@ -283,7 +291,7 @@
 		},
 		"editTasks": {
 			"button": "EDITAR TAREFAS",
-			"title": "Editar Tarefaa"
+			"title": "Editar Tarefa"
 		},
 		"customTask": {
 			"defaultTitle": "Novo Título",
@@ -294,9 +302,9 @@
 			"descriptionLabel": "Descrição",
 			"descriptionPlaceholder": "Adicionar descrição (opcional)",
 			"type": "Tipo",
-			"onEvery": "Em tudo",
+			"onEvery": "Em todo(a)",
 			"nextReset": "Próximo reset",
-			"resetsOn": "Reseta em",
+			"resetsOn": "Reseta dia",
 			"hintSeasonal": "Reseta quando uma nova versão do jogo entra em vigor.",
 			"hintServerTime": "Reseta as 05:00 no tempo do servidor.",
 			"delete": "DELETAR",
@@ -319,10 +327,10 @@
 		"currencyBox": {
 			"icon": "Icone de {name}",
 			"source": "{name} Fonte",
-			"need": "Requer:",
-			"neededFor": "Requerido por:",
+			"need": "Precisa:",
+			"neededFor": "Necessário Por:",
 			"annulithProcessing": "Processamento de Annulith:",
-			"solidDice": "Dados Solidos x{amount}",
+			"solidDice": "Dados Sólidos x{amount}",
 			"sources": "Fontes:",
 			"sourceItem": "{name} x{amount}"
 		},
@@ -353,8 +361,8 @@
 			"links": "<privacy>POLÍTICA DE PRIVACIDADE</privacy> | Bugs ou idéias? Entre no <discord>DISCORD</discord> | Feito com <nextjs>NextJS</nextjs>",
 			"gameContents": "Conteudo do jogo percente a <studio>HOTTA STUDIO™</studio>",
 			"aboutLabel": "Sobre Chiz.Pink",
-			"aboutText": "<name>Chiz.Pink</name> é um aplicativo de companhia para Neverness to Everness (NTE). Planeje seu Esper e materiais de ascensão de discos, rastreie suas invocações e pity de todos os banners, cheque suas diárias e semanais, alem de contar os seus materiais. Tudo é salvo em seu navegador localmente sem uma conta.",
-			"disclaimer": "<about>CHIZ.PINK</about> e um projeto não oficial e não possyu afiliação com <studio>HOTTA STUDIO™</studio>"
+			"aboutText": "<name>Chiz.Pink</name> é um aplicativo de companhia para Neverness to Everness (NTE). Planeje seus Espers e materiais de ascensão de discos, rastreie suas rolagens e pity de todos os tabuleiros cheque suas diárias e semanais, além de contar os seus materiais. Tudo é salvo em seu navegador localmente sem uma conta.",
+			"disclaimer": "<about>CHIZ.PINK</about> é um projeto não oficial e não possui afiliação com <studio>HOTTA STUDIO™</studio>"
 		},
 		"infoBox": {
 			"dismiss": "Recusar",
@@ -362,7 +370,7 @@
 		},
 		"installPwa": {
 			"button": "INSTALAR APLICATIVO",
-			"gotIt": "Entendido",
+			"gotIt": "Entendi",
 			"iosSafari": {
 				"title": "Instalar no iPhone/iPad",
 				"step1": "Toque no icone Compartilhar na barra de ferramenta do Safari.",
@@ -421,10 +429,10 @@
 			"welcome": "BEM-VINDO A <title>CHIZ.PINK</title>",
 			"subtitle": "Sua companhia rosada, planejador de ascensão e rastreio de invocação para NTE :3",
 			"links": {
-				"dashboard": "<link>Painel</link> — Rastreie sua estamina, eventos atuais, e banners em destaque.",
+				"dashboard": "<link>Painel</link> — Rastreie seu vigor, eventos atuais, e tabuleiros em destaque.",
 				"checklist": "<link>Lista de Tarefas</link> — Sua Lista de Tarefas Diárias e Semanais",
 				"planner": "<link>Planejador</link> — Planejador de ascensão para seus personagens e discos.",
-				"pulls": "<link>Invocações</link> — Importe e rastreie seu histórico de invocação.",
+				"pulls": "<link>Rolagens</link> — Importe e rastreie seu histórico de rolagens.",
 				"inventory": "<link>Inventário</link> — Rastreie seus itens no jogo.",
 				"settings": "<link>Configurações</link> — Migrando do <ntePlanner>NTE Planner</ntePlanner> ou <nteWiz>NTEWiz</nteWiz>? Importe seus dados com facilidade."
 			},
@@ -451,7 +459,7 @@
 		"intro": "Planeje seus Espers e discos e veja quais materiais você ainda precisa.",
 		"currentLevel": "Nível atual",
 		"targetLevel": "Nivel pretendido",
-		"requiredMaterials": "Materiais requiridos",
+		"requiredMaterials": "Materiais necessários",
 		"cancel": "CANCELAR",
 		"switch": {
 			"characters": "Personagens",
@@ -482,7 +490,7 @@
 			"search": "Pesquisar",
 			"preview": "Pré-Visualizar",
 			"featured": "Destaque",
-			"rankIcon": "icone {rank}"
+			"rankIcon": "Ícone {rank}"
 		},
 		"arcBox": {
 			"view": "Ver {name}",
@@ -503,7 +511,9 @@
 			"lifeSkills": "Habilidade de Vida",
 			"lifeSkill1": "Habilidade de Vida 1",
 			"lifeSkill2": "Habilidade de Vida 2",
-			"confirmDelete": "Vo-Você deseja deletar esse personagem?"
+			"confirmDelete": "Vo-Você deseja deletar esse personagem?",
+			"view_male": "Ver perfil de {name}",
+			"view_female": "Ver perfil de {name}"
 		},
 		"material": {
 			"clickToEdit": "Clique para Editar",
@@ -516,10 +526,10 @@
 		},
 		"buttons": {
 			"dragToReorder": "Arraste para reordenar",
-			"adjustPriority": "Ajustar prioridades",
-			"enhancementComplete": "Melhoria Completa",
+			"adjustPriority": "Ajustar Prioridade",
+			"enhancementComplete": "Completar Melhoria",
 			"targetAchieved": "Você já completou seu objetivo!",
-			"completeEnhancement": "Melhoria Completa",
+			"completeEnhancement": "Completar Melhoria",
 			"deductNote": "Materiais serão deduzidos do seu inventario.",
 			"inadequate": "Você não possui materiais o suficiente.",
 			"confirmLevellingAria": "Botão de Confirmação de Nível",
@@ -550,8 +560,8 @@
 			"allArcs": "TODOS OS DISCOS",
 			"effect": "Efeito",
 			"tierGroup": "Nível do Disco",
-			"tier": "Nível",
-			"tierN": "Nível {tier}",
+			"tier": "Mistura",
+			"tierN": "Mistura {tier}",
 			"placeholderNote": "U-Um... Eu não tenho os atributos ou materiais {name} arquivados ainda. Irei adi-adiciona-los o quanto antes, eu prometo!"
 		},
 		"character": {
@@ -560,7 +570,13 @@
 			"artFemale": "{name} (mulher)",
 			"background": "{name} arte de fundo",
 			"placeholderNoMaterials": "Uh-Uhm... Eu ainda não tenho as habilidades ou materiais de {name} arquivados. Eu irei adi-adicionar o mais cedo possível ao ser anunciado, eu prometo!",
-			"placeholderPartial": "Uh-Uhm... Eu ainda não tenho parte das informações de {name} ate agora, mas eu tenho os materiais, então você pode começar o pre-farm!"
+			"placeholderPartial": "Uh-Uhm... Eu ainda não tenho parte das informações de {name} ate agora, mas eu tenho os materiais, então você pode começar o pre-farm!",
+			"background_male": "Arte de fundo de {name}",
+			"background_female": "Arte de fundo de {name}",
+			"placeholderNoMaterials_male": "Uh-Uhm... Eu ainda não tenho as habilidades ou materiais do {name} arquivados. Eu irei adi-adicionar o mais cedo possível ao ser anunciado, prometo!",
+			"placeholderNoMaterials_female": "Uh-Uhm... Eu ainda não tenho as habilidades ou materiais da {name} arquivados. Eu irei adi-adicionar o mais cedo possível ao ser anunciado, prometo!",
+			"placeholderPartial_male": "Uh-Uhm... Eu só tenho parte do kit do {name}, mas os materiais estão confirmado, então você pode começar o pre-farm!",
+			"placeholderPartial_female": "Uh-Uhm... Eu só tenho parte do kit da {name}, mas os materiais estão confirmado, então você pode começar o pre-farm!"
 		},
 		"abilities": {
 			"esper": "HABILIDADES ESPER",
@@ -577,7 +593,7 @@
 			"lifeSkill2": "Habilidades de Vida 2"
 		},
 		"banner": {
-			"expand": "Expandir {name} banner",
+			"expand": "Expandir tabuleiro de {name}",
 			"endsIn": "Termina em <b>{time}</b>",
 			"startsIn": "Inicia em <b>{time}</b>"
 		},
@@ -592,31 +608,31 @@
 		}
 	},
 	"pulls": {
-		"intro": "Importe suas invocações e rastreie seu pity em cada banner.",
+		"intro": "Importe suas rolagens e rastreie seu pity em cada tabuleiro.",
 		"banners": {
 			"limited": "Tabuleiro de Personagem Limitado",
 			"arc": "Caixa Milagrosa de Discos",
 			"permanent": "Encontros Misteriosos"
 		},
 		"rateUp": {
-			"showPull": "{name}, pity {pity}. Mostrar na lista de invocações",
+			"showPull": "{name}, pity {pity}. Mostrar na lista de rolagens",
 			"title": "RANQUES S RECENTES",
 			"onlyRateUpArcs": "Mostrar apenas Discos de Destaque",
-			"empty": "Vo-Você ainda não fez invocação de ranques-S ainda... Eu irei mostrar eles assim que você fizer!"
+			"empty": "Vo-Você ainda não fez rolagens de ranques S ainda... Eu irei mostrar eles assim que você fizer!"
 		},
 		"stats": {
-			"title": "ATRIBUTOS",
-			"empty": "Nada para contar ainda... Importe algumas invocações e eu farei as contas por você!",
+			"title": "ESTATÍSTICAS",
+			"empty": "Nada para contar ainda... Importe algumas rolagens e eu farei as contas por você!",
 			"tabs": {
 				"overview": "Visão geral",
-				"sRanks": "Ranques-S",
-				"banners": "Banners"
+				"sRanks": "Ranques S",
+				"banners": "Tabuleiros"
 			},
-			"totalPulls": "Invocações",
-			"sRanks": "Ranques-S",
+			"totalPulls": "Rolagens",
+			"sRanks": "Ranques S",
 			"rateUpArcs": "Discos em Destaque",
 			"currentPity": "Pity Atual",
-			"toSoftPity": "{count} para o soft pity",
+			"toSoftPity": "{count} para a chance aumentada",
 			"toHardPity": "{count} para o garantido",
 			"averagePity": "Pity Médio",
 			"annulithSpent": "Annulith Gasto",
@@ -624,12 +640,12 @@
 			"luckiest": "Pity mais baixo",
 			"unluckiest": "Pity mais alto",
 			"beforeSoftPity": "Antes do Soft Pity",
-			"inSoftPity": "No Soft Pity",
-			"banner": "Banner",
+			"inSoftPity": "Na Chance Aumentada",
+			"banner": "Tabuleiro",
 			"meterLabel": "Pity {current} de {hard}",
-			"softPityAt": "Soft pity {pity}",
-			"softPity": "Soft Pity",
-			"pityChartTitle": "Todo Ranque-S, mais velho primeiro",
+			"softPityAt": "Chance aumentada {pity}",
+			"softPity": "Chance aumentada",
+			"pityChartTitle": "Todos Ranque S, mais velho primeiro",
 			"columnLabel": "{name}: pity {pity}"
 		},
 		"manual": {
@@ -639,26 +655,26 @@
 			"pityHint": "Ajuste a contagem de pity manualmente. Próximo registro será feito do 0.",
 			"pityHintAny": "Ajuste a contagem de pity manualmente. Próximo registro ira continua a contagem.",
 			"addOneLabel": "Adicionar uma invocação",
-			"addTenLabel": "Adicionar 10 invocações",
+			"addTenLabel": "Adicionar 10 rolagens",
 			"clear": "Limpar",
 			"empty": "N-Não há invocação na fila... pressione +1 ou +10 e eu criarei linhas para você preencher!",
 			"advanced": "Avançado...",
-			"advancedTitle": "Adicionar Invocações",
+			"advancedTitle": "Adicionar rolagens",
 			"close": "Fechar",
 			"date": "Data & Hora",
-			"banner": "Banner",
-			"noBanner": "Nenhum banner ativo agora",
-			"count": "Invocações",
+			"banner": "Tabuleiro",
+			"noBanner": "Nenhum tabuleiro ativo agora",
+			"count": "Rolagens",
 			"single": "individual",
-			"tenPull": "10 invocações",
+			"tenPull": "10 rolagens",
 			"itemPlaceholder": "Procurar itens...",
 			"noItems": "Sem item encontrado.",
 			"filters": {
 				"label": "Mostrar",
 				"all": "Todos",
-				"sRank": "Ranques-S",
-				"aRank": "Ranques-A",
-				"bRank": "Ranques-B",
+				"sRank": "Ranques S",
+				"aRank": "Ranques A",
+				"bRank": "Ranques B",
 				"items": "Itens",
 				"cosmetics": "Cosméticos"
 			},
@@ -668,12 +684,12 @@
 			"removeRow": "Remover invocação {number}",
 			"dice": "Dado {roll}",
 			"addRow": "Adicionar",
-			"save_one": "Adicionar {count} invocação",
-			"save_many": "Adicionar {count} invocações",
-			"save_other": "Adicionar {count} invocações",
-			"saved_one": "Adicionado {count} invocação.",
-			"saved_many": "Adicionado {count} invocações.",
-			"saved_other": "Adicionado {count} invocações.",
+			"save_one": "Adicionar {count} rolagem",
+			"save_many": "Adicionar {count} rolagens",
+			"save_other": "Adicionar {count} rolagens",
+			"saved_one": "Adicionado {count} rolagem.",
+			"saved_many": "Adicionado {count} rolagens.",
+			"saved_other": "Adicionado {count} rolagens.",
 			"tag_tooltip": "Entrada Manual",
 			"edit": "Editar",
 			"rowLabel": "{name}, pity {pity}. Aperte Enter para editar.",
@@ -688,7 +704,7 @@
 			"deleteConfirmNote": "Isso não pode ser desfeito."
 		},
 		"list": {
-			"title": "INVOCAÇÕES",
+			"title": "ROLAGENS",
 			"dice": "Dado",
 			"item": "Item",
 			"pity": "Pity",
@@ -702,51 +718,51 @@
 			"searchPlaceholder": "Pesquisar...",
 			"searchLabel": "Pesquisar invocação pelo nome do item",
 			"clearSearch": "Limpar pesquisa",
-			"prev": "ANTES",
-			"next": "DEPOIS"
+			"prev": "ANTERIOR",
+			"next": "PRÓXIMO"
 		},
 		"import": {
 			"title": "Importar",
-			"description": "Exporte suas invocações usando <link>NTE History Exporter</link>. Então importe aqui para ver seu histórico de invocação e pity.",
+			"description": "Exporte suas rolagens usando <link>NTE History Exporter</link>. Então importe aqui para ver seu histórico de rolagens e pity.",
 			"dropHere": "Solte o .JSON aqui",
 			"noFile": "sem arquivo selecionado (.json)",
 			"changeFile": "TROCAR ARQUIVO",
 			"selectFile": "SELECIONAR ARQUIVO",
-			"importButton_one": "Importar {count} invocação",
-			"importButton_many": "Importar {count} invocações",
-			"importButton_other": "Importar {count} invocações",
+			"importButton_one": "Importar {count} rolagem",
+			"importButton_many": "Importar {count} rolagens",
+			"importButton_other": "Importar {count} rolagens",
 			"manual": "Manual",
 			"jsonTab": "JSON",
 			"messages": {
 				"parsedArc": "Histórico da Caixa Milagrosa de Disco analisada",
-				"parsedLimited": "Histórico do Banner de Personagem Limitado analisado",
-				"parsedPermanent": "Histórico do Banner Permanente analisado",
-				"unreadableBanner": "Não foi possível ler o tipo de banner",
+				"parsedLimited": "Histórico do Tabuleiro de Personagem Limitado analisado",
+				"parsedPermanent": "Histórico do Tabuleiro Permanente analisado",
+				"unreadableBanner": "Não foi possível ler o tipo de tabuleiro",
 				"unknownServer": "Servidor não reconhecido no arquivo. Usando o servidor configurado.",
-				"unknownBannerType": "Tipo de banner não reconhecido",
+				"unknownBannerType": "Tipo de tabuleiro não reconhecido",
 				"readFailed": "Não foi possível ser o arquivo - {error}",
 				"unrecognisedFile": "O arquivo não foi reconhecido ou não contém histórico de invocação.",
 				"parseFailed": "Erro ao analisar o arquivo",
-				"summary_one": "{count} invocação importada.",
-				"summary_many": "{count} invocações importadas.",
-				"summary_other": "{count} invocações importadas.",
-				"summaryUpdated_one": "({count} invocação já existente atualizada)",
-				"summaryUpdated_many": "({count} invocações já existente atualizadas)",
-				"summaryUpdated_other": "({count} invocações já existente atualizadas)",
-				"summarySkipped_one": "(Pulado {count} invocação já existente)",
-				"summarySkipped_many": "(Pulado {count} invocações já existentes)",
-				"summarySkipped_other": "(Pulado {count} invocações já existentes)"
+				"summary_one": "{count} rolagem importada.",
+				"summary_many": "{count} rolagens importadas.",
+				"summary_other": "{count} rolagens importadas.",
+				"summaryUpdated_one": "({count} rolagem já existente atualizada)",
+				"summaryUpdated_many": "({count} rolagens já existente atualizadas)",
+				"summaryUpdated_other": "({count} rolagens já existente atualizadas)",
+				"summarySkipped_one": "(Pulado {count} rolagem já existente)",
+				"summarySkipped_many": "(Pulado {count} rolagens já existentes)",
+				"summarySkipped_other": "(Pulado {count} rolagens já existentes)"
 			}
 		},
 		"external": {
-			"title": "Importar Invocações",
+			"title": "Importar Rolagens",
 			"source": "Do NTE History Exporter",
-			"loading": "Buscando suas invocações...",
+			"loading": "Buscando suas rolagens...",
 			"failed": "Esse link de importação expirou ou já foi usado. Exporte novamente, ou <link>importe um arquivo</link>.",
-			"bannerRow_one": "{bannerName}: {count} invocação ({server})",
-			"bannerRow_many": "{bannerName}: {count} invocações ({server})",
-			"bannerRow_other": "{bannerName}: {count} invocações ({server})",
-			"viewPulls": "Ver invocações"
+			"bannerRow_one": "{bannerName}: {count} rolagem ({server})",
+			"bannerRow_many": "{bannerName}: {count} rolagens ({server})",
+			"bannerRow_other": "{bannerName}: {count} rolagens ({server})",
+			"viewPulls": "Ver rolagens"
 		}
 	},
 	"settings": {
@@ -868,8 +884,8 @@
 			},
 			"erasePulls": {
 				"title": "Apagar histórico de invocação?",
-				"message": "Isso ira apagar todas suas invocações importadas desse dispositivo.",
-				"messageSignedIn": "Isso ira apagar suas invocações importadas desse dispositivo e também de seu backup em nuvem.",
+				"message": "Isso ira apagar todas as suas rolagens importadas desse dispositivo.",
+				"messageSignedIn": "Isso ira apagar suas rolagens importadas desse dispositivo e também de seu backup em nuvem.",
 				"confirm": "Apagar",
 				"cancel": "Cancelar"
 			},
@@ -903,6 +919,10 @@
 				"confirmResync": "Re-Sincronizar da nuvem",
 				"confirmErase": "Apagar Dados Locais"
 			}
+		},
+		"initialToast": {
+			"message": "Alterações são pausadas enquanto seu backup em nuvem é feito.",
+			"errorMessage": "Mudanças foram pausadas, recarregue a pagina e tente novamente."
 		}
 	},
 	"migrate": {
