@@ -36,7 +36,6 @@ export function NavButton({
 
 	return (
 		<LocaleLink
-			tabIndex={1}
 			href={`/${href}`}
 			className={`inset-control ${styles.navBtn} ${active ? styles.active : ""} ${className}`}
 			style={{ backgroundImage: `url("/nav/${icon}.png")` }}
