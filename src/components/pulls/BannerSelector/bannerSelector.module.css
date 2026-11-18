@@ -74,7 +74,6 @@
 
 		&[data-type="permanent"] {
 			--theme-color: #006fe2;
-			--bg-image: url("/events/gacha_permanent.webp");
 			justify-content: end;
 		}
 

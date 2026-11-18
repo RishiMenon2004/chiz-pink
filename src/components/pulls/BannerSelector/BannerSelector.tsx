@@ -11,7 +11,7 @@ import { findArc } from "@/data/arcs"
 
 import { useNow } from "@/hooks"
 
-import { formatTimeRemaining } from "@/helpers"
+import { formatTimeRemaining, getOptimizedImageUrl } from "@/helpers"
 
 import {
 	usePullTrackerContext,
@@ -101,7 +101,7 @@ export function BannerSelector() {
 					{
 						"--offset": currentLimitedBanner.yOffset,
 						"--theme-color": currentLimitedBanner.themeColor,
-						"--bg-image": `url("/events/${currentLimitedBanner.eventImage}")`,
+						"--bg-image": `url("${getOptimizedImageUrl(`/events/${currentLimitedBanner.eventImage}`)}")`,
 					} as CSSProperties
 				}
 				data-type="limited"
@@ -123,7 +123,7 @@ export function BannerSelector() {
 				style={
 					{
 						"--theme-color": currentLimitedBanner.themeColor,
-						"--bg-image": `url("/arcs/${findArc(currentArcBanner.rateupItem).imageSrc}")`,
+						"--bg-image": `url("${getOptimizedImageUrl(`/arcs/${findArc(currentArcBanner.rateupItem).imageSrc}`)}")`,
 					} as CSSProperties
 				}
 				data-type="arc"
@@ -145,6 +145,7 @@ export function BannerSelector() {
 				style={
 					{
 						"--offset": "50%",
+						"--bg-image": `url("${getOptimizedImageUrl("/events/gacha_permanent.webp")}")`,
 					} as CSSProperties
 				}
 				data-type="permanent"

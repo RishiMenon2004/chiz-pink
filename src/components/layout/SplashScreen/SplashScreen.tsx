@@ -157,7 +157,7 @@ function WelcomeSplashScreen({ closeSplash }: { closeSplash: () => void }) {
 						alt={t("layout.splash.chizAlt")}
 						width={512}
 						height={512}
-						quality={100}
+						quality={75}
 						preload
 						loading="eager"
 						style={{
