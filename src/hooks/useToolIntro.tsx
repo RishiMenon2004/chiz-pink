@@ -31,7 +31,7 @@ export function decideToolIntros() {
 }
 
 // Whether to show the intro with this id, and a function that closes it
-// for good. Hidden on the server and until the existing-user check has
+// for good. Collapsed on the server and until the existing-user check has
 // run, so returning users never see it flash in.
 export function useToolIntro(id: ToolIntroId) {
 	const getSnapshot = (): boolean => {

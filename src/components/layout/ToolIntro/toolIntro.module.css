@@ -1,0 +1,55 @@
+/* Same placement as an open InfoBox. */
+.about {
+	margin-top: 2rem;
+	margin-inline: 6rem;
+}
+
+.summary {
+	width: fit-content;
+	font-family: var(--font-syne);
+	font-weight: 600;
+	font-size: 0.9rem;
+	color: color-mix(in srgb, white 60%, transparent);
+	cursor: var(--pointer-cursor);
+	border-radius: 4px;
+
+	display: flex;
+	align-items: center;
+	gap: 0.4rem;
+	list-style: none;
+
+	&::-webkit-details-marker {
+		display: none;
+	}
+
+	&:hover,
+	&:focus-visible {
+		color: white;
+	}
+}
+
+.icon {
+	flex-shrink: 0;
+	width: 1.1em;
+	height: 1.1em;
+	fill: none;
+	stroke: currentColor;
+	stroke-width: 1.5;
+	stroke-linecap: round;
+}
+
+.about .box {
+	margin: 0.75rem 0 0;
+}
+
+@media (max-width: 1135px) {
+	.about {
+		margin-inline: 3rem;
+	}
+}
+
+@media (max-width: 800px) {
+	.about {
+		margin-inline: 1rem;
+	}
+}

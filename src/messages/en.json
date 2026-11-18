@@ -368,6 +368,9 @@
 			"dismiss": "Dismiss",
 			"sticker": "Chiz sticker"
 		},
+		"toolIntro": {
+			"about": "About the {tool}"
+		},
 		"installPwa": {
 			"button": "INSTALL APP",
 			"gotIt": "Got it",
