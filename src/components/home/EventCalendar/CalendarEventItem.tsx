@@ -138,6 +138,7 @@ export function CalendarEventItem({
 					alt={t("home.calendar.eventBannerAlt", { name: eventData.name })}
 					width={1920}
 					height={1080}
+					sizes={`${widthDays}rem`}
 				/>
 			)}
 			<div className={styles.eventName}>
