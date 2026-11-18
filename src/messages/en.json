@@ -57,9 +57,9 @@
 		},
 		"pulls": {
 			"title": "PULL TRACKER",
-			"head": "NTE Pull & Pity Tracker",
+			"head": "NTE Pull Tracker",
 			"tooltip": "Pull Tracker",
-			"description": "Track your Neverness to Everness pulls and pity on every banner, or import your pull history to see your rate-up wins and losses."
+			"description": "Track your Neverness to Everness pulls and pity on every banner. Import your pull history to see each S-Rank, its pity and whether it was a rate-up."
 		},
 		"inventory": {
 			"title": "INVENTORY",
@@ -236,7 +236,7 @@
 		}
 	},
 	"inventory": {
-		"intro": "Track your materials so the planner knows what you have.",
+		"intro": "Keep track of the materials you have in-game. The planner uses your inventory to work out what you still need to farm.",
 		"newUser": "Seems like you're new here. W-would you like to open an account with us? <start>Edit any item to get started.</start>",
 		"toolbar": {
 			"filterBy": "Filter By",
@@ -275,7 +275,7 @@
 		}
 	},
 	"checklist": {
-		"intro": "Your dailies and weeklies, reset on your server's time.",
+		"intro": "Daily and weekly NTE tasks that reset with your server. You can hide tasks you don't need and add your own.",
 		"resetsIn": "Resets in: {time}",
 		"edit": "EDIT",
 		"editTask": "Edit {title}",
@@ -456,7 +456,7 @@
 		"stickerAlt": "Fainted Chiz sticker"
 	},
 	"planner": {
-		"intro": "Plan your Espers and arcs and see which materials you still need.",
+		"intro": "Add the Espers and Arcs you want to build and set their target levels. The planner shows what materials you still need, based on your inventory, what you can craft and any selection boxes you have. You can also reorder your plans by priority.",
 		"currentLevel": "Current Level",
 		"targetLevel": "Target Level",
 		"requiredMaterials": "Required Materials",
@@ -620,7 +620,7 @@
 		}
 	},
 	"pulls": {
-		"intro": "Import your pulls to track pity on every banner.",
+		"intro": "Import your NTE pull history or add pulls by hand to see your pity on every banner. Pity carries over between banners of the same type, like it does in-game. You can also see every S-Rank you've pulled, its pity, and whether it was a rate-up.",
 		"banners": {
 			"limited": "Limited Character Board",
 			"arc": "Arc Miracle Box",
