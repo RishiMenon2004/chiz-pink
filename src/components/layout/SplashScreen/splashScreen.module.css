@@ -1,398 +1,339 @@
-.splashContainer {
-	position: fixed;
-	inset: 0;
-	z-index: 999;
-	display: grid;
-	place-items: center;
-	background-color: color-mix(
-		in srgb,
-		var(--darker-pink) 20%,
-		rgba(0, 0, 0, 0.5)
-	);
+.card {
+	--chiz-section-width: 16rem;
+	--chiz-section-offset: 3rem;
+	--card-padding: 2rem;
 
-	backdrop-filter: blur(4px);
-}
-
-.welcomeSplashContainer,
-.updateSplashContainer {
-	width: 100%;
+	position: relative;
+	margin-top: 2rem;
+	margin-inline: 6rem;
+	border-radius: 1.5rem;
 
 	color: black;
-
 	font-family: var(--font-syne);
 	font-weight: 700;
-	display: flex;
-	flex-direction: row;
-	align-items: center;
-	justify-content: center;
+
+	/* Both views stack in one cell and share these rows (tab, bar, box,
+	   buttons), so Continue swaps them without anything moving. */
+	display: grid;
+	grid-template-rows: auto auto minmax(0, 1fr) auto;
 }
 
-.welcomeSplashContainer {
-	--chiz-section-width: 30.458dvw;
-	--chiz-section-offset: 7.6145dvw;
+.welcomeView,
+.updateView {
+	display: contents;
+}
 
-	.chizSection {
-		flex-shrink: 0;
+/* Sized as if empty, so the long changelog fills the welcome view's
+   height and scrolls instead of growing the card. */
+.updateView .infoBox {
+	contain: size;
+	max-height: none;
+}
 
-		position: absolute;
-		right: var(--chiz-section-offset);
+.chizSection {
+	position: absolute;
+	top: 50%;
+	right: var(--chiz-section-offset);
+	z-index: 1;
+	translate: 0 -50%;
 
-		display: grid;
-		place-items: center;
+	display: grid;
+	place-items: center;
 
-		width: var(--chiz-section-width);
-		aspect-ratio: 1;
-		border-radius: 100%;
+	width: var(--chiz-section-width);
+	aspect-ratio: 1;
+	border-radius: 100%;
 
-		background-image: url("/layout/chiz_container.png");
-		background-size: contain;
+	background-image: url("/layout/chiz_container.png");
+	background-size: contain;
 
-		box-shadow: 0px 2px 10px var(--shadow-dark-60);
+	box-shadow: 0px 2px 10px var(--shadow-dark-60);
+}
 
-		.chizContainer {
-			--chiz-container-width: calc(var(--chiz-section-width) * 0.8125);
+.chizContainer {
+	display: grid;
+	place-items: end;
 
-			display: grid;
-			place-items: end;
+	width: calc(var(--chiz-section-width) * 0.8125);
+	aspect-ratio: 1;
+	border-radius: 100%;
 
-			width: var(--chiz-container-width);
-			aspect-ratio: 1;
-			border-radius: 100%;
+	background-color: var(--interactive-bg);
 
-			background-color: var(--interactive-bg);
+	box-shadow:
+		color-mix(in srgb, var(--pink), transparent) 0 0 100px inset,
+		var(--shadow-dark-40) 0px -1px 6px 2px,
+		var(--foreground) 0px 2px 4px;
+}
 
-			box-shadow:
-				color-mix(in srgb, var(--pink), transparent) 0 0 100px inset,
-				var(--shadow-dark-40) 0px -1px 6px 2px,
-				var(--foreground) 0px 2px 4px;
-		}
-
-		.chiz {
-			display: flex;
-
-			height: auto;
-			width: 100%;
-
-			transform-origin: bottom center;
-		}
-	}
+.chiz {
+	display: flex;
+	width: 100%;
+	height: auto;
+	transform-origin: bottom center;
 }
 
 .infoSection {
+	grid-area: 1 / 1 / -1 / -1;
 	display: grid;
+	grid-template-rows: subgrid;
+	row-gap: 1rem;
+	padding: 0 var(--card-padding) 1rem;
+}
+
+.welcomeText {
+	width: fit-content;
+	margin: 0;
+	padding: 1rem 2rem;
+	border-radius: 0 0 1rem 1rem;
+
+	background-color: hsla(334, 50%, 60%, 0.25);
+
+	font-size: 1.5rem;
+	font-weight: 760;
+
+	box-shadow: var(--shadow-dark-20) 0 -1px 6px -1px inset;
+}
+
+/* The tab matches the taller welcome tab; keep the text at its bottom. */
+.updateView .welcomeText {
+	display: flex;
+	align-items: flex-end;
+}
+
+.title {
+	margin-inline: 0.5rem;
+
+	color: white;
+	font-size: 3rem;
+	font-weight: 800;
+	font-style: italic;
+	paint-order: stroke fill;
+	-webkit-text-stroke: 10px black;
+}
+
+/* Runs off the card's right edge. */
+.welcomeSubTitle {
+	display: flex;
+	align-items: center;
+	margin: 0;
+	margin-right: calc(-1 * var(--card-padding));
+	padding: 1rem 1.5rem;
+	border-radius: 100vh 0 0 100vh;
+
+	color: white;
+	font-size: 1.25rem;
+	font-style: italic;
+	paint-order: stroke fill;
+	-webkit-text-stroke: 4px black;
+
+	background-color: var(--pink);
+}
+
+.infoBox {
+	display: flex;
+	flex-direction: column;
 	gap: 1rem;
 
-	height: fit-content;
-	width: 100%;
-	padding-block: 0 1rem;
-	padding-inline: 8rem 0;
+	max-height: 50dvh;
+	margin: 0;
+	padding: 1rem;
+	border-radius: 1.5rem;
+	overflow-y: auto;
 
-	background-color: var(--white);
+	color: white;
+	font-size: 1.125rem;
+	list-style-position: inside;
 
-	box-shadow:
-		black 0 0 50px,
-		var(--shadow-metallic-panel),
-		0px 2px 70px var(--shadow-dark-60);
-
-	scale: calc(100% * 1vw);
-
-	.welcomeText {
-		width: fit-content;
-		padding-block: 1rem;
-		padding-inline: 2rem;
-		border-radius: 0 0 1rem 1rem;
-
-		background-color: hsla(334, 50%, 60%, 0.25);
-
-		font-weight: 760;
-
-		box-shadow: var(--shadow-dark-20) 0 -1px 6px -1px inset;
+	li {
+		font-weight: 600;
 	}
 
-	.welcomeSubTitle {
-		padding: 1rem 1.5rem;
-		border-radius: 100vh 0 0 100vh;
+	a {
+		font-weight: 760;
+	}
+}
 
-		color: white;
-		font-size: 1.25rem;
-		font-style: italic;
-		paint-order: stroke fill;
-		-webkit-text-stroke: 4px black;
+.versionSection {
+	&:not(:only-child) {
+		margin-block-end: 1.5rem;
+	}
 
+	hr {
+		height: 4px;
+		margin-block: 0.5ch;
+		border: none;
+		border-radius: 100vh;
 		background-color: var(--pink);
 	}
+}
 
-	.infoBox {
-		max-height: 50dvh;
-		padding: 1rem;
-		border-radius: 1.5rem;
+.versionTitle {
+	margin: 0;
+	font-size: 1.5em;
+	font-style: italic;
+}
 
-		color: white;
-		font-size: 1.125rem;
+.versionText {
+	margin-block: 1ch;
+	font-size: 0.9em;
 
-		list-style-position: inside;
-
-		overflow-y: auto;
-
-		ul {
-			display: flex;
-			flex-direction: column;
-			gap: 1rem;
-		}
-
-		li {
-			font-weight: 600;
-		}
-
-		a {
-			font-weight: 760;
-		}
+	&:last-child {
+		margin-bottom: 0;
 	}
 
+	& > span[data-taller-line="true"] + span {
+		line-height: 1.2rem;
+	}
+}
+
+.btnContainer {
+	display: flex;
+	justify-content: flex-end;
+	gap: 2rem;
+
+	& > :is(button, a) {
+		display: grid;
+		place-items: center;
+		min-width: 10rem;
+
+		text-decoration: none;
+
+		padding: 0.25rem 1rem;
+		margin-block: 0.5rem;
+
+		&:hover,
+		&:focus-visible {
+			-webkit-text-stroke: 4px black;
+		}
+	}
+}
+
+/* Leave room for Chiz on the right. */
+.welcomeView {
+	.infoBox,
 	.btnContainer {
-		display: flex;
-		justify-content: flex-start;
-		gap: 2rem;
-
-		& > :is(button, a) {
-			display: grid;
-			place-items: center;
-			width: 50%;
-
-			text-decoration: none;
-
-			padding: 0.25rem 1rem;
-			margin-block: 0.5rem;
-
-			&:hover,
-			&:focus-visible {
-				-webkit-text-stroke: 4px black;
-			}
-		}
-	}
-
-	.welcomeSplashContainer & {
-		padding-inline: 8rem max(calc(var(--chiz-section-offset) - 2rem), 2rem);
-
-		.title {
-			margin-inline: 0.5rem;
-
-			color: white;
-			font-size: 3rem;
-			font-weight: 800;
-			font-style: italic;
-			paint-order: stroke fill;
-			-webkit-text-stroke: 10px black;
-		}
-
-		.welcomeSubTitle {
-			padding-right: calc(var(--chiz-section-width) - 6rem);
-			margin-right: calc(-2rem + var(--chiz-section-width) / 2);
-		}
-
-		.infoBox {
-			padding-right: calc(
-				var(--chiz-section-width) + var(--chiz-section-offset)
-			);
-		}
-
-		.btnContainer {
-			margin-right: calc(
-				var(--chiz-section-width) + var(--chiz-section-offset)
-			);
-		}
-	}
-
-	.updateSplashContainer & {
-		padding-inline: 8rem 0;
-
-		.welcomeText {
-			font-size: 1.5rem;
-		}
-
-		.infoBox {
-			margin-right: 8rem;
-
-			.versionSection {
-				&:not(:only-child) {
-					margin-block-end: 1.5rem;
-				}
-
-				.versionTitle {
-					font-size: 1.5em;
-					font-style: italic;
-				}
-
-				hr {
-					border: none;
-					height: 4px;
-					background-color: var(--pink);
-					border-radius: 100vh;
-					margin-block: 0.5ch;
-				}
-
-				.versionText {
-					font-size: 0.9em;
-					margin-block: 1ch;
-
-					&:last-child {
-						margin-bottom: 0;
-					}
-
-					& > span[data-taller-line="true"] + span {
-						line-height: 1.2rem;
-					}
-				}
-			}
-		}
-
-		.btnContainer {
-			margin-right: 20vw;
-
-			& > :is(button, a) {
-				width: 25%;
-			}
-		}
+		margin-right: calc(
+			var(--chiz-section-width) + var(--chiz-section-offset) - var(--card-padding) + 1rem
+		);
 	}
 }
 
 @media (max-width: 1400px) {
-	.welcomeSplashContainer {
-		--chiz-section-offset: 1.9dvw;
-
-		.chizSection {
-			left: var(--chiz-section-offset);
-			right: auto;
-
-			box-shadow:
-				var(--shadow-dark-30) 0px -3px 8px -2px,
-				var(--shadow-glow-white-80) 0px 3px 4px 2px;
-
-			.chiz {
-				transform: scaleX(-1);
-			}
-		}
+	.card {
+		--chiz-section-width: 13rem;
+		--chiz-section-offset: 2rem;
 	}
 
-	.infoSection {
-		padding-inline: 2rem;
+	.chizSection {
+		right: auto;
+		left: var(--chiz-section-offset);
 
-		.welcomeSubTitle {
-			padding-right: 2rem;
-			margin-right: -2rem;
-		}
+		box-shadow:
+			var(--shadow-dark-30) 0px -3px 8px -2px,
+			var(--shadow-glow-white-80) 0px 3px 4px 2px;
+	}
 
-		.infoBox {
-			padding-right: 2rem;
-		}
+	.chiz {
+		transform: scaleX(-1);
+	}
 
-		.btnContainer {
-			justify-content: flex-end;
-		}
-
-		.welcomeSplashContainer & {
+	.welcomeView {
+		.infoSection {
 			padding-left: calc(
 				var(--chiz-section-offset) + var(--chiz-section-width) + 2rem
 			);
-
-			.infoBox {
-				padding-right: 2rem;
-			}
-
-			.welcomeSubTitle {
-				padding-right: 2rem;
-				margin-right: -2rem;
-			}
-
-			.btnContainer {
-				margin-right: 0;
-			}
 		}
 
-		.updateSplashContainer & {
-			padding-inline: 2rem;
-
-			.infoBox {
-				margin-right: 0;
-				max-width: unset;
-			}
-
-			.btnContainer {
-				margin-right: unset;
-
-				& > :is(button, a) {
-					width: 50%;
-				}
-			}
+		.infoBox,
+		.btnContainer {
+			margin-right: 0;
 		}
 	}
 }
 
+@media (max-width: 1135px) {
+	.card {
+		margin-inline: 3rem;
+	}
+}
+
 @media (max-width: 1000px) {
-	.welcomeSplashContainer {
-		.chizSection {
-			display: none;
-		}
+	.chizSection {
+		display: none;
 	}
 
-	.infoSection {
-		padding-inline: 2rem;
+	.welcomeView .infoSection {
+		padding-left: var(--card-padding);
+	}
 
-		.welcomeSplashContainer & {
-			padding-inline: 2rem;
+	.btnContainer {
+		justify-content: center;
+	}
+}
 
-			.btnContainer {
-				justify-content: center;
-			}
+@media (max-width: 800px) {
+	.card {
+		--card-padding: 1rem;
+		margin-inline: 1rem;
+	}
+
+	.btnContainer {
+		flex-wrap: wrap;
+		gap: 1.25rem;
+
+		& > :is(button, a) {
+			min-width: 0;
 		}
 	}
 }
 
 @media (max-width: 570px) {
-	.infoSection {
-		padding-inline: 1rem;
+	.welcomeText,
+	.updateView .welcomeText {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: flex-end;
+		width: 100%;
+		font-size: 1rem;
+	}
 
-		.welcomeText {
-			display: flex;
-			flex-direction: column;
-			align-items: center;
-
-			width: 100%;
-		}
-
-		.welcomeSplashContainer & {
-			.title {
-				font-size: 2rem;
-				-webkit-text-stroke-width: 7.5px;
-			}
-		}
-
-		.updateSplashContainer & {
-			.welcomeText {
-				font-size: 1rem;
-			}
-		}
+	.title {
+		font-size: 2rem;
+		-webkit-text-stroke-width: 7.5px;
 	}
 }
 
 @media (max-width: 420px) {
-	.infoSection {
-		.infoBox {
-			padding-right: 1rem;
-			font-size: 0.9rem;
-		}
-
-		.welcomeSplashContainer & {
-			.title {
-				margin-left: 0;
-
-				font-size: 1.5rem;
-				-webkit-text-stroke-width: 5px;
-			}
-
-			.welcomeSubTitle {
-				font-size: 0.9rem;
-			}
-		}
+	.infoBox {
+		font-size: 0.9rem;
 	}
+
+	.title {
+		margin-left: 0;
+		font-size: 1.5rem;
+		-webkit-text-stroke-width: 5px;
+	}
+
+	.welcomeSubTitle {
+		font-size: 0.9rem;
+	}
+}
+
+/* Which view shows: welcome by default (server HTML, first visits),
+   otherwise whatever data-splash on <html> says. visibility, not display,
+   so the welcome view keeps holding the card height. Last, so nothing
+   above overrides it. */
+.card .updateView,
+:global(html[data-splash="update"]) .card .welcomeView {
+	visibility: hidden;
+}
+
+:global(html[data-splash="update"]) .card .updateView {
+	visibility: visible;
+}
+
+:global(html[data-splash="none"]) .card {
+	display: none;
 }

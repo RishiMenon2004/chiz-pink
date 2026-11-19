@@ -2,6 +2,8 @@ import type { Metadata, Viewport } from "next"
 import { Barlow_Condensed, Syne } from "next/font/google"
 import { notFound } from "next/navigation"
 
+import { ChangeLogs } from "@/data/changelog"
+
 import { isLocale, LOCALES } from "@/helpers/locale"
 import { getMessages } from "@/helpers/messages"
 import {
@@ -11,6 +13,7 @@ import {
 	SITE_URL,
 	siteOgImage,
 } from "@/helpers/metadata"
+import { splashInitScript } from "@/helpers/splashState"
 
 import "../globals.css"
 
@@ -116,7 +119,18 @@ export default async function RootLayout({
 		<html
 			lang={lang}
 			className={`${barlowCondensed.variable} ${syne.variable}`}
+			// The splash script below sets data-splash before hydration.
+			suppressHydrationWarning
 		>
+			<head>
+				<script
+					dangerouslySetInnerHTML={{
+						__html: splashInitScript(
+							Object.keys(ChangeLogs).at(-1) ?? "0.0.0",
+						),
+					}}
+				/>
+			</head>
 			<body>
 				<LocaleProvider locale={lang} messages={messages}>
 					<AppStorageInitializer />
@@ -125,10 +139,10 @@ export default async function RootLayout({
 							<ConvexClientProvider>
 								<SyncErrorBoundary>
 									<ServiceWorkerRegister />
-									<SplashScreen />
 									<DomainMoveGate />
 									<Sidebar />
 									<CurrencyBar />
+									<SplashScreen />
 									{children}
 								</SyncErrorBoundary>
 							</ConvexClientProvider>

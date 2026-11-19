@@ -440,6 +440,7 @@
 				"settings": "<link>Settings</link> — Switching from <ntePlanner>NTE Planner</ntePlanner> or <nteWiz>NTEWiz</nteWiz>? Import your data with ease."
 			},
 			"continue": "CONTINUE >>",
+			"close": "CLOSE",
 			"recentUpdates": "RECENT UPDATES",
 			"latestVersion": "Latest Version: {version}",
 			"chizAlt": "Chiz Art - Full"
