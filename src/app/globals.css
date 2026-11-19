@@ -214,6 +214,14 @@ body {
 	flex: 1;
 	padding-inline: 6rem;
 	padding-block: 4rem;
+
+	@media (max-width: 1135px) {
+		padding-inline: 3rem;
+	}
+
+	@media (max-width: 800px) {
+		padding-inline: 1rem;
+	}
 }
 
 a {

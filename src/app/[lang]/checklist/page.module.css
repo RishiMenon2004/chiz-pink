@@ -195,10 +195,6 @@ div.dailyActivity {
 }
 
 @media (max-width: 810px) {
-	.page {
-		padding-inline: 3rem !important;
-	}
-
 	.activitySection {
 		.activityTitleRow {
 			margin-inline-start: 0.5rem;
@@ -266,10 +262,6 @@ div.dailyActivity {
 }
 
 @media (max-width: 550px) {
-	.page {
-		padding-inline: 1rem !important;
-	}
-
 	.checklistItem {
 		.itemTitle {
 			font-size: 0.8rem;

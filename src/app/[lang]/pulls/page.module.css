@@ -159,17 +159,7 @@
 	}
 }
 
-@media (max-width: 800px) {
-	.page {
-		padding-inline: 3rem;
-	}
-}
-
 @media (max-width: 550px) {
-	.page {
-		padding-inline: 1rem;
-	}
-
 	.sectionTitle {
 		font-size: 1rem;
 	}

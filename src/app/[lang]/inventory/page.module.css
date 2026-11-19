@@ -108,7 +108,6 @@
 }
 
 @media (max-width: 1135px) {
-	.page,
 	.multiMatContainer {
 		padding-inline: 3rem !important;
 	}
@@ -134,7 +133,6 @@
 }
 
 @media (max-width: 800px) {
-	.page,
 	.multiMatContainer {
 		padding-inline: 1rem !important;
 	}
