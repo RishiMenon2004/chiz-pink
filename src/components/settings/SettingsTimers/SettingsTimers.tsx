@@ -37,7 +37,7 @@ export function StaminaResetCountdown({
 	server: SettingsRecord["userdata"]["server"]
 }) {
 	const t = useT()
-	const now = useNow()
+	const now = useNow(60_000)
 
 	const content =
 		now === null

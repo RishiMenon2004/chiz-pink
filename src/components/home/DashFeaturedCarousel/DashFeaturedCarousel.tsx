@@ -31,7 +31,7 @@ const SWIPE_THRESHOLD = 40
 
 function BannerTiming({ character }: { character: Character }) {
 	const t = useT()
-	const now = useNow()
+	const now = useNow(60_000)
 	if (now === null) return null
 
 	const banner = getCharacterActiveBanner(character.id, now)

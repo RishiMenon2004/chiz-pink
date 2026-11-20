@@ -271,7 +271,7 @@ export function EventCalendar() {
 		"left" | "right" | false
 	>(false)
 
-	const now = useNow()
+	const now = useNow(60_000)
 
 	useEffect(() => {
 		const container = calendarContainerRef.current

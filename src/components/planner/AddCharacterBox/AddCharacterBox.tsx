@@ -87,7 +87,7 @@ export function PlannerAddCharacterBox({
 	const t = useT()
 	const { addCharacter } = useAddCharContext()
 	const { plannerData } = usePlannerStore()
-	const now = useNow()
+	const now = useNow(60_000)
 
 	const searchRef = useRef<HTMLInputElement>(null)
 

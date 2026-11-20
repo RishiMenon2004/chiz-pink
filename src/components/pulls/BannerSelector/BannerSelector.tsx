@@ -41,7 +41,7 @@ const characterBannerFallback = {
 export function BannerSelector() {
 	const { selectedBanner, setSelectedBanner, gachaBanners } =
 		usePullTrackerContext()
-	const now = useNow()
+	const now = useNow(60_000)
 	const t = useT()
 	const {
 		userdata: { server },

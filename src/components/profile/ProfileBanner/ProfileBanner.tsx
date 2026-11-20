@@ -17,7 +17,7 @@ import styles from "../profile.module.css"
 
 export function ProfileBanner({ characterId }: { characterId: string }) {
 	const t = useT()
-	const now = useNow()
+	const now = useNow(60_000)
 	const { settings } = useSettingsStore()
 	const frameRef = useRef<HTMLDivElement>(null!)
 	const [detailsStyle, setDetailsStyle] = useState<CSSProperties | null>(null)

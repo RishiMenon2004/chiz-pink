@@ -139,7 +139,7 @@ function ArcCard({ arc, status }: { arc: Arc; status: ItemStatus }) {
 }
 
 function useCatalogItems<T extends Item>(items: T[], onlyFlagged: boolean) {
-	const now = useNow()
+	const now = useNow(MINUTE_MS)
 	const minute = now === null ? null : Math.floor(now / MINUTE_MS)
 
 	return useMemo(() => {
