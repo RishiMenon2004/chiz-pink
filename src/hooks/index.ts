@@ -6,6 +6,8 @@ export { useLocalePathname } from "./useLocalePathname"
 export { useInventoryFilters } from "./useInventoryFilters"
 export {
 	useInventoryStore,
+	useInventoryAmount,
+	useInventoryWhen,
 	updateInventory,
 	replaceInventory,
 } from "./useInventoryStore"

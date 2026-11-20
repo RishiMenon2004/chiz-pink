@@ -158,3 +158,27 @@ export function useInventoryStore() {
 
 	return { inventory, updateInventory }
 }
+
+// Subscribes to a single material's count so edits don't wake unrelated tiles.
+export function useInventoryAmount(materialId: string): number {
+	return useSyncExternalStore(
+		memoryStorage.subscribe,
+		() =>
+			typeof window === "undefined"
+				? 0
+				: cachedInventory[materialId] || 0,
+		() => 0
+	)
+}
+
+// Reads the full inventory only while enabled; returns a stable empty object otherwise.
+export function useInventoryWhen(enabled: boolean): Inventory {
+	return useSyncExternalStore(
+		memoryStorage.subscribe,
+		() =>
+			enabled && typeof window !== "undefined"
+				? cachedInventory
+				: SERVER_FALLBACK,
+		getServerSnapshot
+	)
+}

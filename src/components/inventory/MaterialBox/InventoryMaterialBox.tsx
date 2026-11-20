@@ -11,17 +11,17 @@ import {
 } from "react"
 
 import type { Material } from "@/types/item"
+import type { AggregateMaterial } from "@/types/planner"
 
 import { findMaterial, getItemRarityStyle } from "@/data/items"
 import { findItem } from "@/data/items/findItem"
 
 import {
-	useInventoryStore,
-	usePlannerStore,
+	updateInventory,
+	useInventoryAmount,
 	useMaterialEditorModal,
 	useTooltip,
 } from "@/hooks"
-import { getAggregatedMaterial } from "@/hooks/usePlannerStore"
 
 import { getLinkedMaterials } from "@/helpers"
 
@@ -35,9 +35,11 @@ import pageStyles from "@/app/[lang]/inventory/page.module.css"
 
 export function MaterialItemBox({
 	material,
+	required,
 	canHaveMultiMat = true,
 }: {
 	material: Material
+	required?: AggregateMaterial
 	canHaveMultiMat?: boolean
 }) {
 	const t = useT()
@@ -58,15 +60,10 @@ export function MaterialItemBox({
 	)
 
 	const countRef = useRef<HTMLInputElement>(null)
-	const { inventory, updateInventory } = useInventoryStore()
-	const itemQuantity = inventory[material.id] || 0
+	const itemQuantity = useInventoryAmount(material.id)
 
-	const { plannerData } = usePlannerStore()
-	const { amount: requiredQuantity, sources: requiredSources } =
-		getAggregatedMaterial(plannerData, material) || {
-			amount: 0,
-			sources: [],
-		}
+	const requiredQuantity = required?.amount ?? 0
+	const requiredSources = required?.sources ?? {}
 
 	const requiredSorcesList = Object.entries(requiredSources)
 
