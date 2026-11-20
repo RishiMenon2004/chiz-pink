@@ -25,9 +25,7 @@
 		"next-auth": "^4.24.14",
 		"react": "19.2.4",
 		"react-dom": "19.2.4",
-		"sharp": "^0.34.5",
-		"unrs-resolver": "^1.12.2",
-		"uuid": "^14.0.1"
+		"sharp": "^0.34.5"
 	},
 	"devDependencies": {
 		"@types/node": "^20",
@@ -35,8 +33,9 @@
 		"@types/react-dom": "^19",
 		"babel-plugin-react-compiler": "1.0.0",
 		"eslint": "^9",
-		"eslint-config-next": "16.2.7",
-		"typescript": "^5"
+		"eslint-config-next": "16.2.9",
+		"typescript": "^5",
+		"unrs-resolver": "^1.12.2"
 	},
 	"allowScripts": {
 		"sharp@0.34.5": true,

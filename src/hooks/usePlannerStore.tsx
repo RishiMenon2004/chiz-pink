@@ -1,7 +1,8 @@
 "use client"
 
 import { useSyncExternalStore } from "react"
-import { v4 as uuidv4 } from "uuid"
+
+import { randomId } from "@/helpers/randomId"
 
 import { isInitialSyncPending } from "@/helpers/syncGate"
 import { dismissToolIntro } from "@/helpers/toolIntro"
@@ -221,7 +222,7 @@ export const plannerActions = {
 	addWeapon(
 		weapon: Omit<WeaponRecord, "uid" | "requiredMaterials" | "isDisabled">
 	) {
-		const newUID = uuidv4()
+		const newUID = randomId()
 
 		this.updatePlanner((current) => ({
 			arcs: {
