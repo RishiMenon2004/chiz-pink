@@ -18,7 +18,6 @@ import { splashInitScript } from "@/helpers/splashState"
 import "../globals.css"
 
 import { AuthProvider } from "@/components/layout/AuthProvider"
-import { ConvexClientProvider } from "@/components/layout/ConvexClientProvider"
 import { CurrencyBar } from "@/components/layout/CurrencyBar/CurrencyBar"
 import { DomainMoveGate } from "@/components/layout/DomainMoveGate"
 import { Footer } from "@/components/layout/Footer"
@@ -26,8 +25,8 @@ import { Sidebar } from "@/components/layout/Sidebar"
 import { SiteAnalytics } from "@/components/layout/SiteAnalytics"
 import { SplashScreen } from "@/components/layout/SplashScreen"
 
+import { CloudSyncGate } from "@/helpers/CloudSyncGate"
 import { ServiceWorkerRegister } from "@/helpers/ServiceWorkerRegister"
-import { SyncErrorBoundary } from "@/helpers/SyncErrorBoundary"
 import { AppStorageInitializer } from "@/helpers/AppStorageInitializer"
 
 import { SettingsProvider } from "@/hooks/useSettingsStore"
@@ -136,16 +135,14 @@ export default async function RootLayout({
 					<AppStorageInitializer />
 					<AuthProvider>
 						<SettingsProvider>
-							<ConvexClientProvider>
-								<SyncErrorBoundary>
-									<ServiceWorkerRegister />
-									<DomainMoveGate />
-									<Sidebar />
-									<CurrencyBar />
-									<SplashScreen />
-									{children}
-								</SyncErrorBoundary>
-							</ConvexClientProvider>
+							<CloudSyncGate>
+								<ServiceWorkerRegister />
+								<DomainMoveGate />
+								<Sidebar />
+								<CurrencyBar />
+								<SplashScreen />
+								{children}
+							</CloudSyncGate>
 						</SettingsProvider>
 					</AuthProvider>
 					<Footer locale={lang} />

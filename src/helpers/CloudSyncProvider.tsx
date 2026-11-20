@@ -1,12 +1,16 @@
 "use client"
 
-import { useCallback, useEffect, useRef, useState } from "react"
+import { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import { signOut, useSession } from "next-auth/react"
 import { useConvexAuth, useMutation, useQuery } from "convex/react"
 
 import { api } from "@convex/_generated/api"
 
-import { CloudSyncContext, useT } from "@/contexts"
+import {
+	CloudSyncContext,
+	type CloudSyncContextValue,
+	useT,
+} from "@/contexts"
 import { AlertContainer } from "@/components/layout/Alert"
 import { ModalContainer } from "@/components/layout/Modal/ModalContainer"
 import { SyncConflictModal } from "@/components/layout/SyncConflictModal"
@@ -29,7 +33,10 @@ import {
 	type GachaBackupData,
 } from "./backupCrypto"
 import { getOrCreateBackupKey } from "./driveBackupKey"
-import { setInitialSyncPending } from "./syncGate"
+import {
+	hasObservedUnauthenticated,
+	setInitialSyncPending,
+} from "./syncGate"
 import { clearCorruption, useCorruptedKeys } from "./dataCorruption"
 import { mergePullsRecord } from "@/hooks/useGachaStore"
 import * as memoryStorage from "./storage/memoryStorage"
@@ -45,7 +52,13 @@ type RestorePrompt = {
 	localLastUpdated: number | null
 }
 
-export function CloudSyncProvider({ children }: { children: React.ReactNode }) {
+export function CloudSyncProvider({
+	children,
+	onStateChange,
+}: {
+	children?: React.ReactNode
+	onStateChange?: (value: CloudSyncContextValue | null) => void
+}) {
 	const t = useT()
 	const { data: session, status: sessionStatus } = useSession()
 	const accessToken = session?.accessToken
@@ -104,7 +117,7 @@ export function CloudSyncProvider({ children }: { children: React.ReactNode }) {
 	// Set once this tab has observed an "unauthenticated" session - lets us
 	// tell a genuine, explicit fresh sign-in apart from a page just resuming
 	// an existing session (see the account-status effect below).
-	const hasBeenUnauthenticatedRef = useRef(false)
+	const hasBeenUnauthenticatedRef = useRef(hasObservedUnauthenticated())
 	const hasClearedUnlinkRef = useRef(false)
 	// One-shot per key epoch (sign-in/out cycle) - guards the "converge"
 	// effect below so it pushes local up to Convex at most once per epoch
@@ -350,6 +363,9 @@ export function CloudSyncProvider({ children }: { children: React.ReactNode }) {
 
 	const upsertBackup = useMutation(api.backups.upsertBackup)
 	const upsertGachaBackup = useMutation(api.gachaBackups.upsertBackup)
+	const deleteCloudBackup = useMutation(api.backups.deleteBackup)
+	const deleteGachaBackup = useMutation(api.gachaBackups.deleteBackup)
+	const markUnlinked = useMutation(api.backups.markUnlinked)
 
 	// Encrypts and pushes main payload and/or gacha payload to Convex
 	const pushToConvex = useCallback(async () => {
@@ -635,10 +651,39 @@ export function CloudSyncProvider({ children }: { children: React.ReactNode }) {
 			: undefined
 	}
 
-	return (
-		<CloudSyncContext.Provider
-			value={{ status, lastSyncedAt, latestBackupUpdatedAt, syncNow }}>
-			{children}
+	const contextValue = useMemo<CloudSyncContextValue>(
+		() => ({
+			status,
+			lastSyncedAt,
+			latestBackupUpdatedAt,
+			syncNow,
+			deleteCloudBackup,
+			deleteGachaBackup,
+			markUnlinked,
+		}),
+		[
+			status,
+			lastSyncedAt,
+			latestBackupUpdatedAt,
+			syncNow,
+			deleteCloudBackup,
+			deleteGachaBackup,
+			markUnlinked,
+		]
+	)
+
+	useEffect(() => {
+		onStateChange?.(contextValue)
+	}, [onStateChange, contextValue])
+
+	useEffect(() => {
+		return () => {
+			onStateChange?.(null)
+		}
+	}, [onStateChange])
+
+	const overlays = (
+		<>
 			<SyncToast state={initialSyncToastState} />
 			{restorePrompt && (
 				<SyncConflictModal
@@ -662,6 +707,17 @@ export function CloudSyncProvider({ children }: { children: React.ReactNode }) {
 					</AlertContainer>
 				</ModalContainer>
 			)}
+		</>
+	)
+
+	if (onStateChange) {
+		return overlays
+	}
+
+	return (
+		<CloudSyncContext.Provider value={contextValue}>
+			{children}
+			{overlays}
 		</CloudSyncContext.Provider>
 	)
 }

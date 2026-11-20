@@ -106,12 +106,17 @@ export function useMaterialAdjustmentContext() {
 	return useContext(MatAdjustmentContext)
 }
 
-export const CloudSyncContext = createContext<{
+export type CloudSyncContextValue = {
 	status: "idle" | "syncing" | "synced" | "error"
 	lastSyncedAt: number | null
 	latestBackupUpdatedAt: number | null
 	syncNow: () => void
-}>(null!)
+	deleteCloudBackup: (args: Record<string, never>) => Promise<unknown>
+	deleteGachaBackup: (args: Record<string, never>) => Promise<unknown>
+	markUnlinked: (args: Record<string, never>) => Promise<unknown>
+}
+
+export const CloudSyncContext = createContext<CloudSyncContextValue>(null!)
 export function useCloudSyncContext() {
 	return useContext(CloudSyncContext)
 }

@@ -1,7 +1,7 @@
 "use client"
 
 import { useEffect, useRef, useState } from "react"
-import { useMutation } from "convex/react"
+import { ConvexHttpClient } from "convex/browser"
 
 import { api } from "@convex/_generated/api"
 
@@ -26,7 +26,6 @@ type Status = "loading" | "ready" | "imported" | "failed"
 
 export function ExternalImport() {
 	const t = useT()
-	const claimDrop = useMutation(api.importDrops.claim)
 	const syncPending = useInitialSyncPending()
 	const [status, setStatus] = useState<Status>("loading")
 	const [results, setResults] = useState<ImportedPullsResult[]>([])
@@ -45,8 +44,14 @@ export function ExternalImport() {
 		const load = async () => {
 			try {
 				if (!fragment) throw new Error("No drop in the link")
+				const convexUrl = process.env.NEXT_PUBLIC_CONVEX_URL
+				if (!convexUrl) throw new Error("Convex URL is not configured")
 
-				const drop = await claimDrop({ dropId: fragment.dropId })
+				// One-shot HTTP mutation so signed-out visitors don't need a WebSocket.
+				const client = new ConvexHttpClient(convexUrl)
+				const drop = await client.mutation(api.importDrops.claim, {
+					dropId: fragment.dropId,
+				})
 				if (!drop) throw new Error("Drop not found")
 
 				const exports = await decryptDrop(drop, fragment.key)
@@ -65,7 +70,7 @@ export function ExternalImport() {
 			}
 		}
 		load()
-	}, [claimDrop])
+	}, [])
 
 	const importAll = () => {
 		if (syncPending) return

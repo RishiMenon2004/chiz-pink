@@ -1,10 +1,8 @@
 "use client"
 
-import { ReactNode, useCallback } from "react"
+import { ReactNode, useCallback, useEffect, useState } from "react"
 import { getSession, useSession } from "next-auth/react"
 import { ConvexProviderWithAuth, ConvexReactClient } from "convex/react"
-
-const convex = new ConvexReactClient(process.env.NEXT_PUBLIC_CONVEX_URL as string)
 
 // Convex's generic "bring your own OIDC provider" auth hook, fed by the
 // Google id_token next-auth already holds - Convex verifies it directly
@@ -41,6 +39,21 @@ function useAuthFromNextAuth() {
 }
 
 export function ConvexClientProvider({ children }: { children: ReactNode }) {
+	const [convex, setConvex] = useState<ConvexReactClient | null>(null)
+
+	useEffect(() => {
+		const client = new ConvexReactClient(
+			process.env.NEXT_PUBLIC_CONVEX_URL as string
+		)
+		// eslint-disable-next-line react-hooks/set-state-in-effect
+		setConvex(client)
+		return () => {
+			void client.close()
+		}
+	}, [])
+
+	if (!convex) return null
+
 	return (
 		<ConvexProviderWithAuth client={convex} useAuth={useAuthFromNextAuth}>
 			{children}

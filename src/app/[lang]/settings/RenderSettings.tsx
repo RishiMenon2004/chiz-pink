@@ -1,10 +1,7 @@
 "use client"
 
 import { signOut, useSession } from "next-auth/react"
-import { useMutation } from "convex/react"
 import { useMemo, useState } from "react"
-
-import { api } from "@convex/_generated/api"
 
 import { BackupData } from "@/types/settings"
 
@@ -18,6 +15,7 @@ import { getCachedInventory } from "@/hooks/useInventoryStore"
 import { getCachedPlanner } from "@/hooks/usePlannerStore"
 
 import { ExternalImportResult } from "@/helpers/importExternal"
+import { unlinkGoogleAccount } from "@/helpers/unlinkGoogleAccount"
 
 import {
 	backupImport,
@@ -28,8 +26,9 @@ import {
 	isNteWizBackup,
 	parseNtePlannerImport,
 	parseNteWizImport,
-	unlinkGoogleAccount,
 } from "@/helpers"
+
+import { useCloudSyncContext } from "@/contexts"
 
 import {
 	AppearanceSection,
@@ -67,9 +66,8 @@ function hasExistingPlannerData() {
 
 export function RenderSettings() {
 	const { data: session, status } = useSession()
-	const deleteCloudBackup = useMutation(api.backups.deleteBackup)
-	const deleteGachaBackup = useMutation(api.gachaBackups.deleteBackup)
-	const markUnlinked = useMutation(api.backups.markUnlinked)
+	const { deleteCloudBackup, deleteGachaBackup, markUnlinked } =
+		useCloudSyncContext()
 
 	const [isImportOlder, setImportOlder] = useState<boolean>(false)
 	const [askOverwrite, setAskOverwrite] = useState<boolean>(false)
