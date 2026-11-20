@@ -13,6 +13,7 @@ import {
 	isNteExporterData,
 	parseNteExporterImport,
 } from "@/helpers/importNteExporterPulls"
+import { useInitialSyncPending } from "@/helpers/syncGate"
 
 import { useT } from "@/contexts"
 
@@ -26,6 +27,7 @@ type Status = "loading" | "ready" | "imported" | "failed"
 export function ExternalImport() {
 	const t = useT()
 	const claimDrop = useMutation(api.importDrops.claim)
+	const syncPending = useInitialSyncPending()
 	const [status, setStatus] = useState<Status>("loading")
 	const [results, setResults] = useState<ImportedPullsResult[]>([])
 	const [messages, setMessages] = useState<ImportMessage[]>([])
@@ -66,9 +68,13 @@ export function ExternalImport() {
 	}, [claimDrop])
 
 	const importAll = () => {
+		if (syncPending) return
+		const outcomes = results.map((row) => importParsedPulls(row))
+		if (outcomes.some((outcome) => outcome.status === "pending")) return
+
 		setMessages([
 			...messages,
-			...results.flatMap((row) => importParsedPulls(row)),
+			...outcomes.flatMap((outcome) => outcome.messages),
 		])
 		setStatus("imported")
 	}
@@ -130,9 +136,11 @@ export function ExternalImport() {
 			{status === "ready" && (
 				<button
 					className={`pill-button ${styles.action}`}
-					disabled={hasErrors || pullCount === 0}
+					disabled={hasErrors || pullCount === 0 || syncPending}
 					onClick={importAll}>
-					{t("pulls.import.importButton", { count: pullCount })}
+					{syncPending
+						? t("settings.shared.syncStatus.syncing")
+						: t("pulls.import.importButton", { count: pullCount })}
 				</button>
 			)}
 

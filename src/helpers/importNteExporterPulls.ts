@@ -189,7 +189,14 @@ function isScarboroughPull(
 	return "diceRoll" in pull
 }
 
-export function importParsedPulls(result: ImportedPullsResult): ImportMessage[] {
+export type ImportPullsOutcome = {
+	status: "pending" | "error" | "success"
+	messages: ImportMessage[]
+}
+
+export function importParsedPulls(
+	result: ImportedPullsResult
+): ImportPullsOutcome {
 	let bannerType: keyof PullsRecord
 	switch (result.bannerType) {
 		case "permanent":
@@ -202,7 +209,15 @@ export function importParsedPulls(result: ImportedPullsResult): ImportMessage[] 
 			bannerType = "arcsBanner"
 			break
 		case "unknown":
-			return [{ message: "pulls.import.messages.unknownBannerType", status: "error" }]
+			return {
+				status: "error",
+				messages: [
+					{
+						message: "pulls.import.messages.unknownBannerType",
+						status: "error",
+					},
+				],
+			}
 	}
 
 	const pulls: MiracleBoxPull[] | ScarboroughFairPull[] = result.pulls.map(
@@ -229,5 +244,5 @@ export function importParsedPulls(result: ImportedPullsResult): ImportMessage[] 
 		}
 	)
 
-	return gachaPullsActions.addPulls(pulls, bannerType).messages
+	return gachaPullsActions.addPulls(pulls, bannerType)
 }
