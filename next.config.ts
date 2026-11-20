@@ -58,10 +58,12 @@ const nextConfig: NextConfig = {
   // A stable address for the NTE History Exporter, so it doesn't depend on the
   // Convex deployment's URL.
   async rewrites() {
+    const convexSiteUrl = process.env.NEXT_PUBLIC_CONVEX_SITE_URL;
+    if (!convexSiteUrl) return [];
     return [
       {
         source: "/api/import-drop",
-        destination: `${process.env.NEXT_PUBLIC_CONVEX_SITE_URL}/import-drop`,
+        destination: `${convexSiteUrl}/import-drop`,
       },
     ];
   },
