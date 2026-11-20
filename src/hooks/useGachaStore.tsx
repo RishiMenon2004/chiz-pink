@@ -517,7 +517,7 @@ export const gachaPullsActions = {
 	// place; an imported one is replaced by a manual copy (a fresh uid,
 	// marked manual) that remembers the pull it replaced.
 	editPull(bannerType: BannerType, originalUid: string, edited: Pull) {
-		if (typeof window === "undefined") return
+		if (typeof window === "undefined" || isInitialSyncPending()) return
 		const original = cachedPulls[bannerType][originalUid] as
 			| (Pull & { seq?: number })
 			| undefined
@@ -567,7 +567,12 @@ export const gachaPullsActions = {
 	// Deletes pulls of one banner by uid (the list only offers this for
 	// manual pulls).
 	removePulls(bannerType: BannerType, uids: string[]) {
-		if (typeof window === "undefined" || uids.length === 0) return
+		if (
+			typeof window === "undefined" ||
+			isInitialSyncPending() ||
+			uids.length === 0
+		)
+			return
 
 		cachedPulls = withoutPulls(cachedPulls, bannerType, uids)
 		memoryStorage.notifyListeners()

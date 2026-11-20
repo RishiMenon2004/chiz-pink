@@ -11,6 +11,7 @@ import { useGachaStore } from "@/hooks"
 import { useTooltip } from "@/hooks/useTooltip"
 
 import { findPullItem, isScarboroughPull } from "@/helpers"
+import { useInitialSyncPending } from "@/helpers/syncGate"
 
 import { usePullTrackerContext, useSettingsConfigContext, useT } from "@/contexts"
 
@@ -62,6 +63,7 @@ export function PullEditor({
 		userdata: { server },
 	} = useSettingsConfigContext()
 	const { actions } = useGachaStore()
+	const syncPending = useInitialSyncPending()
 	const t = useT()
 	const { Tooltip, showTooltip, hideTooltip } = useTooltip()
 
@@ -144,7 +146,7 @@ export function PullEditor({
 	}, [pull, timestamp, item, pityOverride, hasDice, scarborough, result, quantity])
 
 	const save = () => {
-		if (!valid) return
+		if (!valid || syncPending) return
 		const changed = (Object.keys({ ...pull, ...draft }) as (keyof Pull)[]).some(
 			(key) =>
 				(pull as Record<string, unknown>)[key] !== (draft as Record<string, unknown>)[key]
@@ -284,6 +286,7 @@ export function PullEditor({
 							type="button"
 							className="pill-button"
 							data-variant="danger"
+							disabled={syncPending}
 							onClick={() => setConfirmingDelete(true)}>
 							{t("pulls.manual.deleteButton")}
 						</button>
@@ -291,7 +294,10 @@ export function PullEditor({
 					<button type="button" className="pill-button" onClick={onClose}>
 						{t("pulls.manual.cancel")}
 					</button>
-					<button type="submit" className="pill-button" disabled={!valid}>
+					<button
+						type="submit"
+						className="pill-button"
+						disabled={!valid || syncPending}>
 						{t("pulls.manual.saveEdit")}
 					</button>
 				</div>
@@ -306,6 +312,7 @@ export function PullEditor({
 							cancelLabel={t("pulls.manual.cancel")}
 							onCancel={() => setConfirmingDelete(false)}
 							onConfirm={() => {
+								if (syncPending) return
 								actions.removePulls(selectedBanner, [pull.uid])
 								onClose()
 							}}>

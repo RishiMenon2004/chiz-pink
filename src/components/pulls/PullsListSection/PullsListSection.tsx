@@ -33,6 +33,7 @@ import {
 	type PullBanner,
 } from "@/helpers"
 import { fuzzyScoreAny } from "@/helpers/fuzzyMatch"
+import { isInitialSyncPending } from "@/helpers/syncGate"
 
 import {
 	usePullTrackerContext,
@@ -868,6 +869,7 @@ export function PullsListSection() {
 							cancelLabel={t("pulls.manual.cancel")}
 							onCancel={() => setDeleting(null)}
 							onConfirm={() => {
+								if (isInitialSyncPending()) return
 								gachaActions.removePulls(selectedBanner, [deleting.uid])
 								setDeleting(null)
 							}}>
