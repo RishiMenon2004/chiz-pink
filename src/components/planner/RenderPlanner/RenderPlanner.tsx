@@ -1,6 +1,5 @@
 "use client"
 
-import dynamic from "next/dynamic"
 import { useEffect, useMemo, useState } from "react"
 
 import { DragDropProvider, DragOverlay } from "@dnd-kit/react"
@@ -21,20 +20,13 @@ import { useLocale, useT } from "@/contexts"
 
 import { MaterialGroup } from "@/components/inventory/"
 import { InfoBox } from "@/components/layout/InfoBox"
+import { PlannerArcBox } from "../ArcBox"
+import { PlannerCharacterBox } from "../CharacterBox"
 import { PlannerMaterialsList } from "../MaterialsList"
 
 import plannerBoxStyles from "./plannerBox.module.css"
 import styles from "./renderPlanner.module.css"
 import { useRouter } from "next/navigation"
-
-const PlannerCharacterBox = dynamic(
-	() => import("../CharacterBox").then((mod) => mod.PlannerCharacterBox),
-	{ ssr: false }
-)
-const PlannerArcBox = dynamic(
-	() => import("../ArcBox").then((mod) => mod.PlannerArcBox),
-	{ ssr: false }
-)
 
 const materialOrder = new Map<string, number>()
 getAllMaterialsList().forEach((material, index) =>

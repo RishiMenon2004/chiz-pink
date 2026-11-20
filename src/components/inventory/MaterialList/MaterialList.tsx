@@ -1,15 +1,10 @@
 "use client"
 
-import dynamic from "next/dynamic"
-
 import type { Material } from "@/types/item"
 
-import styles from "@/app/[lang]/inventory/page.module.css"
+import { MaterialItemBox } from "../MaterialBox"
 
-const InventoryMaterialBox = dynamic(
-	() => import("../MaterialBox").then((mod) => mod.MaterialItemBox),
-	{ ssr: false }
-)
+import styles from "@/app/[lang]/inventory/page.module.css"
 
 export function MaterialList({
 	materials,
@@ -21,7 +16,7 @@ export function MaterialList({
 	return (
 		<div className={`${inset ? "inset-control " : ""}${styles.materialList}`}>
 			{materials.map((material) => (
-				<InventoryMaterialBox key={material.id} material={material} />
+				<MaterialItemBox key={material.id} material={material} />
 			))}
 		</div>
 	)

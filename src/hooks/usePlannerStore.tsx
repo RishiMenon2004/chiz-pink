@@ -385,7 +385,9 @@ export function getAggregatedMaterial(
 	materialRef: Material,
 	type: "arc" | "char" | "both" = "both"
 ) {
-	if (typeof window === "undefined") return {} as AggregateMaterial
+	if (typeof window === "undefined") {
+		return { sources: {}, amount: 0 }
+	}
 
 	let aggregatedMaterial: AggregateMaterial = {
 		sources: {},

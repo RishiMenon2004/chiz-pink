@@ -1,17 +1,13 @@
 "use client"
 
 import { useEffect, useRef } from "react"
-import dynamic from "next/dynamic"
 
 import { annulith, beetleCoin, fons } from "@/data/items/materials"
 
+import { CurrencyBox } from "./CurrencyBox"
 import { PageTitle } from "./PageTitle"
 
 import styles from "./currencyBar.module.css"
-
-const CurrencyBox = dynamic(() => import("./CurrencyBox").then((mod) => mod.CurrencyBox), {
-	ssr: false,
-})
 
 export function CurrencyBar() {
 	const barRef = useRef<HTMLDivElement>(null)
