@@ -5,7 +5,7 @@ import { notFound } from "next/navigation"
 import { ChangeLogs } from "@/data/changelog"
 
 import { isLocale, LOCALES } from "@/helpers/locale"
-import { getMessages } from "@/helpers/messages"
+import { getLayoutMessages } from "@/helpers/messages"
 import {
 	getMetadataTranslator,
 	ogLocale,
@@ -112,7 +112,8 @@ export default async function RootLayout({
 }>) {
 	const { lang } = await params
 	if (!isLocale(lang)) notFound()
-	const messages = await getMessages(lang)
+	const messages = await getLayoutMessages(lang)
+	const latestVersion = Object.keys(ChangeLogs).at(-1) ?? "0.0.0"
 
 	return (
 		<html
@@ -124,9 +125,7 @@ export default async function RootLayout({
 			<head>
 				<script
 					dangerouslySetInnerHTML={{
-						__html: splashInitScript(
-							Object.keys(ChangeLogs).at(-1) ?? "0.0.0",
-						),
+						__html: splashInitScript(latestVersion),
 					}}
 				/>
 			</head>
@@ -140,7 +139,7 @@ export default async function RootLayout({
 								<DomainMoveGate />
 								<Sidebar />
 								<CurrencyBar />
-								<SplashScreen />
+								<SplashScreen latestVersion={latestVersion} />
 								{children}
 							</CloudSyncGate>
 						</SettingsProvider>

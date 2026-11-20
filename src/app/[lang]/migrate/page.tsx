@@ -1,6 +1,7 @@
 import type { Metadata } from "next"
 
 import { getMetadataTranslator } from "@/helpers/metadata"
+import { PageMessages } from "@/helpers/PageMessages"
 
 import { RenderMigrate } from "./RenderMigrate"
 
@@ -16,6 +17,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 	}
 }
 
-export default function MigratePage() {
-	return <RenderMigrate />
+export default async function MigratePage({ params }: Props) {
+	const { lang } = await params
+
+	return (
+		<PageMessages lang={lang} namespaces={["migrate"]}>
+			<RenderMigrate />
+		</PageMessages>
+	)
 }

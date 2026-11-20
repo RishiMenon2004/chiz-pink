@@ -1,6 +1,7 @@
 import { Metadata } from "next"
 
 import { getMetadataTranslator } from "@/helpers/metadata"
+import { PageMessages } from "@/helpers/PageMessages"
 
 import { ExternalImport } from "@/components/pulls/ExternalImport"
 
@@ -16,10 +17,14 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 	}
 }
 
-export default function ImportExternal() {
+export default async function ImportExternal({ params }: Props) {
+	const { lang } = await params
+
 	return (
-		<main className="page" role="main">
-			<ExternalImport />
-		</main>
+		<PageMessages lang={lang} namespaces={["pulls"]}>
+			<main className="page" role="main">
+				<ExternalImport />
+			</main>
+		</PageMessages>
 	)
 }

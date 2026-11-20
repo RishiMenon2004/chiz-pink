@@ -1,6 +1,7 @@
 import { Metadata } from "next"
 
 import { buildRouteMetadata, SITE_NAME, SITE_URL } from "@/helpers/metadata"
+import { PageMessages } from "@/helpers/PageMessages"
 
 import { RenderHome } from "./RenderHome"
 
@@ -22,7 +23,9 @@ const websiteJsonLd = {
 	url: `${SITE_URL}/`,
 }
 
-export default function Home() {
+export default async function Home({ params }: Props) {
+	const { lang } = await params
+
 	return (
 		<>
 			<script
@@ -31,7 +34,9 @@ export default function Home() {
 					__html: JSON.stringify(websiteJsonLd).replace(/</g, "\\u003c"),
 				}}
 			/>
-			<RenderHome/>
+			<PageMessages lang={lang} namespaces={["home", "planner"]}>
+				<RenderHome />
+			</PageMessages>
 		</>
 	)
 }

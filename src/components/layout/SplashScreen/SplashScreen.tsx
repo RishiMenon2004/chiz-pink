@@ -1,37 +1,35 @@
 "use client"
 
+import dynamic from "next/dynamic"
 import Image from "next/image"
 import { useEffect, useSyncExternalStore } from "react"
 
 import type { MessageKey } from "@/types/messages"
 
-import { ChangeLogs } from "@/data/changelog"
-
 import { useFirstVisit } from "@/hooks/useFirstVisit"
 import { useLocalePathname } from "@/hooks/useLocalePathname"
 import { useLastSeen } from "@/hooks/useLastSeen"
 
-import { parseDescription } from "@/helpers/parseDescription"
 import {
+	getSplashStateSnapshot,
 	setSplashMarker,
 	setSplashState,
+	subscribeSplashState,
 	type SplashState,
 } from "@/helpers/splashState"
 import * as memoryStorage from "@/helpers/storage/memoryStorage"
 
 import { useT } from "@/contexts"
 
-import { InstallPWAButton } from "../InstallPWAButton"
 import { LocaleLink } from "../LocaleLink"
+import { SplashButtons } from "./SplashButtons"
 
 import styles from "./splashScreen.module.css"
 
-const DISCORD_INVITE_URL = "https://discord.gg/rSeMKWMy69"
-
-// The updates view lists only the newest changelog entries.
-const RECENT_CHANGELOGS = 5
-
-const LATEST_VERSION = Object.keys(ChangeLogs).at(-1) ?? "0.0.0"
+const SplashUpdateView = dynamic(
+	() => import("./SplashUpdateView").then((mod) => mod.SplashUpdateView),
+	{ ssr: false }
+)
 
 const NO_SPLASH_PATHS = new Set([
 	"/migrate",
@@ -47,26 +45,30 @@ const SPLASH_LINKS = [
 	{ href: "/inventory", key: "layout.splash.links.inventory" },
 ] as const satisfies { href: string; key: MessageKey }[]
 
-const showUpdates = () => setSplashState("update")
 const closeSplash = () => setSplashState("none")
 
 // Welcome / updates card; which view shows is CSS, via data-splash on <html>.
-export function SplashScreen() {
+export function SplashScreen({ latestVersion }: { latestVersion: string }) {
 	const pathname = useLocalePathname()
 
 	if (NO_SPLASH_PATHS.has(pathname)) return null
 
-	return <SplashCard />
+	return <SplashCard latestVersion={latestVersion} />
 }
 
-function SplashCard() {
+function SplashCard({ latestVersion }: { latestVersion: string }) {
 	const isHydrated = useSyncExternalStore(
 		memoryStorage.subscribe,
 		memoryStorage.isHydrated,
 		() => false
 	)
+	const splashState = useSyncExternalStore(
+		subscribeSplashState,
+		getSplashStateSnapshot,
+		() => null
+	)
 	const isFirstVisit = useFirstVisit()
-	const isLastSeenOld = useLastSeen(LATEST_VERSION)
+	const isLastSeenOld = useLastSeen(latestVersion)
 
 	// Confirms the pre-paint guess once storage has loaded.
 	useEffect(() => {
@@ -77,42 +79,16 @@ function SplashCard() {
 				? "update"
 				: "none"
 		setSplashState(state)
-		setSplashMarker(LATEST_VERSION)
-	}, [isHydrated, isFirstVisit, isLastSeenOld])
+		setSplashMarker(latestVersion)
+	}, [isHydrated, isFirstVisit, isLastSeenOld, latestVersion])
 
 	return (
 		<section className={`metallic-panel ${styles.card}`}>
 			<WelcomeView />
-			<UpdateView />
+			{splashState === "update" && (
+				<SplashUpdateView latestVersion={latestVersion} />
+			)}
 		</section>
-	)
-}
-
-function SplashButtons({ last }: { last?: boolean }) {
-	const t = useT()
-
-	return (
-		<div className={styles.btnContainer}>
-			<InstallPWAButton type="button" />
-			<a
-				className="pill-button"
-				data-variant="normal"
-				href={DISCORD_INVITE_URL}
-				target="_blank"
-				rel="noopener noreferrer">
-				<span className={styles.longLabel}>
-					{t("layout.splash.joinDiscord")}
-				</span>
-				<span className={styles.shortLabel}>
-					{t("layout.splash.discord")}
-				</span>
-			</a>
-			<button
-				className="pill-button"
-				onClick={last ? closeSplash : showUpdates}>
-				{last ? t("layout.splash.close") : t("layout.splash.continue")}
-			</button>
-		</div>
 	)
 }
 
@@ -200,60 +176,6 @@ function WelcomeView() {
 				<SplashButtons />
 			</div>
 			<ChizArt />
-		</div>
-	)
-}
-
-function UpdateView() {
-	const t = useT()
-
-	return (
-		<div className={styles.updateView}>
-			<div className={styles.infoSection}>
-				<h2 className={styles.welcomeText}>
-					{t("layout.splash.recentUpdates")}
-				</h2>
-
-				<div className={styles.updateBody}>
-					<p className={styles.welcomeSubTitle}>
-						{t("layout.splash.latestVersion", {
-							version: LATEST_VERSION,
-						})}
-					</p>
-					<div className={`inset-control ${styles.infoBox}`}>
-						{Object.entries(ChangeLogs)
-							.toReversed()
-							.slice(0, RECENT_CHANGELOGS)
-							.map(([version, logs]) => (
-								<div
-									key={version}
-									className={styles.versionSection}>
-									<h3
-										id={`changelog-v${version}`}
-										className={styles.versionTitle}>
-										v{version}
-									</h3>
-									<hr />
-									{logs.map((log, line) => (
-										<div
-											key={line}
-											className={styles.versionText}>
-											{typeof log === "string"
-												? parseDescription(
-														log,
-														undefined,
-														undefined,
-														closeSplash
-													)
-												: log}
-										</div>
-									))}
-								</div>
-							))}
-					</div>
-					<SplashButtons last />
-				</div>
-			</div>
 		</div>
 	)
 }

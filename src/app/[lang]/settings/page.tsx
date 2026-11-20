@@ -1,6 +1,7 @@
 import { Metadata } from "next"
 
 import { buildRouteMetadata } from "@/helpers/metadata"
+import { PageMessages } from "@/helpers/PageMessages"
 import { RenderSettings } from "./RenderSettings"
 
 // Personal settings: nothing here for search.
@@ -15,6 +16,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 	}
 }
 
-export default function Settings() {
-	return <RenderSettings />
+export default async function Settings({ params }: Props) {
+	const { lang } = await params
+
+	return (
+		<PageMessages lang={lang} namespaces={["settings"]}>
+			<RenderSettings />
+		</PageMessages>
+	)
 }
