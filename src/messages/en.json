@@ -275,7 +275,7 @@
 		}
 	},
 	"checklist": {
-		"intro": "Daily and weekly NTE tasks that reset with your server. You can hide tasks you don't need and add your own.",
+		"intro": "Keep track of your recurring tasks and when they reset. You can hide ones you don't need or even add your own.",
 		"resetsIn": "Resets in: {time}",
 		"edit": "EDIT",
 		"editTask": "Edit {title}",
