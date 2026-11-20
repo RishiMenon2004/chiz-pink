@@ -18,19 +18,6 @@ import {
 
 import styles from "@/app/[lang]/settings/settings.module.css"
 
-const resetDayTimeConfig: Intl.DateTimeFormatOptions = {
-	weekday: "long",
-	hour: "numeric",
-	minute: "2-digit",
-	hour12: true,
-}
-
-const formatResetDayTime = (date: number): string => {
-	return new Date(date)
-		.toLocaleString("en-GB", resetDayTimeConfig)
-		.toUpperCase()
-}
-
 export function StaminaResetCountdown({
 	server,
 }: {

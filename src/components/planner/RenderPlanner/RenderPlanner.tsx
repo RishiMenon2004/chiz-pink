@@ -91,6 +91,8 @@ export function RenderPlanner({
 		handleDragEnd(e)
 	}
 
+	const activeDragItem = activeDragId ? items[activeDragId] : null
+
 	if (shouldRedirect) {
 		return <main className={`page ${styles.page}`} role="main" />
 	}
@@ -152,22 +154,18 @@ export function RenderPlanner({
 							)
 						)}
 						<DragOverlay>
-							{activeDragId &&
-								(() => {
-									const active = items[activeDragId]
-									if (!active) return null
-									return "uid" in active ? (
-										<PlannerArcBox
-											arcRecord={active}
-											index={-200}
-										/>
-									) : (
-										<PlannerCharacterBox
-											charRecord={active}
-											index={-200}
-										/>
-									)
-								})()}
+							{activeDragItem &&
+								("uid" in activeDragItem ? (
+									<PlannerArcBox
+										arcRecord={activeDragItem}
+										index={-200}
+									/>
+								) : (
+									<PlannerCharacterBox
+										charRecord={activeDragItem}
+										index={-200}
+									/>
+								))}
 						</DragOverlay>
 					</div>
 				</DragDropProvider>

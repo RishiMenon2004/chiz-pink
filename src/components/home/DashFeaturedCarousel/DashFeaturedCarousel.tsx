@@ -94,7 +94,8 @@ function Slide({
 					width={1080}
 					height={1280}
 					sizes="(max-width: 800px) 70vw, 30vw"
-					priority={active}
+					loading={active ? "eager" : "lazy"}
+					fetchPriority={active ? "high" : undefined}
 				/>
 			</div>
 			<div className={styles.info}>
