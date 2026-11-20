@@ -48,15 +48,15 @@ export function RenderPlanner({
 }) {
 	const t = useT()
 	const { settings } = useSettingsStore()
+	const { plannerData, isLoaded } = usePlannerStore()
 	const router = useRouter()
 	const locale = useLocale()
 
 	const combinedEnabled = settings.appearance?.["use-hybrid-planner"] ?? false
 
-	//redirect to /characters if accessing /planner and disabled combined planner
-	//vice versa, redirect to /planner if accessing /characters or /arcs and enabled combined planner
+	// Wait for storage hydration before redirecting so defaults never override saved mode.
 	const shouldRedirect =
-		plannerType === "both" ? !combinedEnabled : combinedEnabled
+		isLoaded && (plannerType === "both" ? !combinedEnabled : combinedEnabled)
 	const redirectTo = localizePath(
 		plannerType === "both" ? "/planner/characters" : "/planner",
 		locale
@@ -66,27 +66,29 @@ export function RenderPlanner({
 		if (shouldRedirect) router.replace(redirectTo)
 	}, [shouldRedirect, redirectTo, router])
 
-	const { plannerData, isLoaded } = usePlannerStore()
 	const { items, itemsList, handleDragEnd } = usePlannerItems(plannerType)
 
 	const [activeDragId, setActiveDragId] = useState<string | null>(null)
 
 	const allRequiredMaterials = useMemo(
 		() =>
-			Object.entries(
-				getAggregatedMaterials(
-					plannerData,
-					plannerType === "characters"
-						? "char"
-						: plannerType === "arcs"
-							? "arc"
-							: "both"
-				)
-			).sort(
-				([idA], [idB]) =>
-					(materialOrder.get(idA) ?? 0) - (materialOrder.get(idB) ?? 0)
-			),
-		[plannerData, plannerType]
+			shouldRedirect
+				? []
+				: Object.entries(
+						getAggregatedMaterials(
+							plannerData,
+							plannerType === "characters"
+								? "char"
+								: plannerType === "arcs"
+									? "arc"
+									: "both"
+						)
+					).sort(
+						([idA], [idB]) =>
+							(materialOrder.get(idA) ?? 0) -
+							(materialOrder.get(idB) ?? 0)
+					),
+		[plannerData, plannerType, shouldRedirect]
 	)
 
 	const onDragStart = (e: DragStartEvent) =>
@@ -95,6 +97,10 @@ export function RenderPlanner({
 	const onDragEnd = (e: DragEndEvent) => {
 		setActiveDragId(null)
 		handleDragEnd(e)
+	}
+
+	if (shouldRedirect) {
+		return <main className={`page ${styles.page}`} role="main" />
 	}
 
 	return (

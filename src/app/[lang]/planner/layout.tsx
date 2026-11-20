@@ -15,13 +15,14 @@ export default function PlannerLayout({ children }: { children: ReactNode }) {
 	const [section, setSectionState] = useState<PlannerSection>(
 		segment === "arcs" ? "arcs" : "characters"
 	)
+	const [prevSegment, setPrevSegment] = useState(segment)
 
-	useEffect(() => {
+	if (prevSegment !== segment) {
+		setPrevSegment(segment)
 		if (segment === "arcs" || segment === "characters") {
-			// eslint-disable-next-line react-hooks/set-state-in-effect
 			setSectionState(segment)
 		}
-	}, [segment])
+	}
 
 	useEffect(() => {
 		const handlePopState = () => {
