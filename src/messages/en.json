@@ -326,6 +326,7 @@
 		},
 		"currencyBox": {
 			"icon": "{name} icon",
+			"edit": "Edit {name}",
 			"source": "{name} Source",
 			"need": "Need:",
 			"neededFor": "Needed For:",

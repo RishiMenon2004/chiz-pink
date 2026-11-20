@@ -74,12 +74,6 @@ function Slide({
 			className={`${styles.slide} ${getItemRarityStyle(character)}`}
 			data-active={active}
 			inert={!active}
-			aria-label={t(
-				status === "preview"
-					? "home.featuredCarousel.slidePreview"
-					: "home.featuredCarousel.slideFeatured",
-				{ name: character.name }
-			)}
 			style={themeColor ? ({ "--theme-color": themeColor } as CSSProperties) : undefined}
 			onPointerEnter={onPointerEnter}
 			onPointerLeave={onPointerLeave}>

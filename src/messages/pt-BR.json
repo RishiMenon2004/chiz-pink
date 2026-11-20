@@ -326,6 +326,7 @@
 		},
 		"currencyBox": {
 			"icon": "Icone de {name}",
+			"edit": "Editar {name}",
 			"source": "{name} Fonte",
 			"need": "Precisa:",
 			"neededFor": "Necessário Por:",

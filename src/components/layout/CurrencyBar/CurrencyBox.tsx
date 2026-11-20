@@ -172,7 +172,9 @@ export function CurrencyBox({ currency }: { currency: Material }) {
 				{currencyValue.toLocaleString(numberLocale)}
 			</span>
 			<button
+				type="button"
 				className={styles.editBtn}
+				aria-label={t("layout.currencyBox.edit", { name: currency.name })}
 				onClick={toggleEdit}
 				ref={editBtnRef}
 			/>
