@@ -2,7 +2,7 @@
 // without a prefix (/planner); every other language lives under its own
 // prefix (/pt-BR/planner). src/proxy.ts maps unprefixed URLs onto the
 // app/[lang] routes. Adding a locale here (and to the loader map in
-// helpers/messages.ts) puts it live: browsers asking for that language are
+// helpers/messages.ts and NON_DEFAULT_LOCALES in public/sw.js) puts it live: browsers asking for that language are
 // sent to it, so only add one once src/messages/<locale>.json is mostly
 // translated (npm run messages:check shows how far along it is).
 //
