@@ -20,6 +20,7 @@ export { signInWithGooglePopup } from "./signInWithGooglePopup"
 export { isInitialSyncPending, setInitialSyncPending } from "./syncGate"
 
 export {
+	formatMinutesSeconds,
 	formatTimeRemaining,
 	getPixelsRefillTime,
 	getNextPixelRecoveryTime,

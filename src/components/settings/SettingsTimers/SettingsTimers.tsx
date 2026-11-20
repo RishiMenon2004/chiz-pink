@@ -9,6 +9,7 @@ import { useT } from "@/contexts"
 import { useNow } from "@/hooks"
 
 import {
+	formatMinutesSeconds,
 	formatTimeRemaining,
 	getNextPixelRecoveryTime,
 	getPixelsRefillTime,
@@ -92,7 +93,7 @@ export function PixelRefillCountdown({
 		nextText =
 			nextRecoveryAt === null
 				? "-"
-				: formatTimeRemaining(nextRecoveryAt - now)
+				: formatMinutesSeconds(nextRecoveryAt - now)
 		fullText =
 			refilledAt === null ? "-" : formatTimeRemaining(refilledAt - now)
 	}
