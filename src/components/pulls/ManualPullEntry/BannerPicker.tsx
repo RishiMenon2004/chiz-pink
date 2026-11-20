@@ -2,6 +2,7 @@
 
 import { CSSProperties, useCallback, useId, useRef, useState } from "react"
 
+import { getOptimizedImageUrl } from "@/helpers/getOptimizedImageUrl"
 import { formatLocale } from "@/helpers/locale"
 
 import { useLocale, useT } from "@/contexts"
@@ -34,7 +35,7 @@ function BannerArt({ banner, className }: { banner: BannerOption; className: str
 			className={className}
 			style={
 				{
-					"--bg-image": `url("${banner.image}")`,
+					"--bg-image": `url("${getOptimizedImageUrl(banner.image)}")`,
 					"--offset": banner.offset ?? "30%",
 					"--theme-color": banner.themeColor ?? "var(--pink)",
 				} as CSSProperties
