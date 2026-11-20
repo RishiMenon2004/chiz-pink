@@ -28,8 +28,7 @@ export type CustomTask = {
 }
 
 export type ChecklistRecord = {
-	// Optional on disk: saves and backups from before custom tasks existed
-	// don't have it. getSnapshot() backfills it in memory.
+	// Optional on disk: older saves omit it; readers fall back with `?? {}`.
 	customTasks?: Record<string, CustomTask>
 	activities: {
 		daily: Record<string, ChecklistEntry>

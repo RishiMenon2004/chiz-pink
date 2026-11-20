@@ -30,7 +30,7 @@ export const SERVER_FALLBACK: SettingsRecord = {
 		server: "SEA",
 		"current-pixels": 240,
 		"max-pixels": 240,
-		"pixels-last-edited": Date.now(),
+		"pixels-last-edited": 0,
 		"current-stamina": 500,
 		"max-stamina": 500,
 		"last-stamina-reset": 0,
@@ -213,7 +213,7 @@ export function SettingsProvider({ children }: { children: ReactNode }) {
 			syncPending ||
 			currentPixels === undefined ||
 			maxPixels === undefined ||
-			pixelsLastEdited === undefined
+			!pixelsLastEdited
 		)
 			return
 

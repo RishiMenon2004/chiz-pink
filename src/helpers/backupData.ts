@@ -132,6 +132,34 @@ function isStoredPlannerItem(value: unknown): value is StoredPlannerItem {
 	)
 }
 
+function isValidCustomTaskSchedule(value: unknown): boolean {
+	if (!isPlainObject(value) || typeof value.type !== "string") return false
+	switch (value.type) {
+		case "daily":
+		case "weekly":
+		case "seasonal":
+			return true
+		case "biWeekly":
+			return typeof value.anchorDate === "string"
+		case "monthly":
+			return typeof value.day === "number"
+		default:
+			return false
+	}
+}
+
+function isValidCustomTask(value: unknown): boolean {
+	return (
+		isPlainObject(value) &&
+		typeof value.id === "string" &&
+		typeof value.title === "string" &&
+		typeof value.description === "string" &&
+		isValidCustomTaskSchedule(value.schedule) &&
+		typeof value.createdAt === "number" &&
+		(value.checkedAt === null || typeof value.checkedAt === "number")
+	)
+}
+
 // Only the current export shape is accepted - JSON.parse gives no runtime
 // guarantee an imported file matches BackupData, and older chiz-pink export
 // formats aren't supported. gachaPulls is optional since the main cloud
@@ -142,6 +170,11 @@ function isCurrentBackup(data: unknown): data is BackupData {
 		typeof data.lastUpdated === "number" &&
 		isPlainObject(data.checklist) &&
 		isPlainObject(data.checklist.activities) &&
+		(data.checklist.customTasks === undefined ||
+			(isPlainObject(data.checklist.customTasks) &&
+				Object.values(data.checklist.customTasks).every(
+					isValidCustomTask
+				))) &&
 		isPlainObject(data.inventory) &&
 		Array.isArray(data.planner) &&
 		data.planner.every(isStoredPlannerItem) &&
@@ -230,8 +263,8 @@ export function backupImport(json: string) {
 	}
 
 	// The one remaining conflict: first-ever sync on this device, with
-	// pre-existing local data that would otherwise be silently discarded.
-	if (!hasSyncedBefore && hasLocalData()) {
+	// pre-existing local data or pull history that would otherwise be discarded.
+	if (!hasSyncedBefore && (hasLocalData() || hasLocalPulls())) {
 		return { status: "overwrite", data }
 	}
 

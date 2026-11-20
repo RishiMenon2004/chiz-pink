@@ -82,15 +82,20 @@ export function AdvancedPullEntry({
 	const banners = useMemo(() => {
 		if (selectedBanner === "permanentBanner") return []
 		const all = isArcs
-			? staticArcBanners.map((b) => ({
-					...b,
-					image: `/arcs/${findArc(b.rateupItem).imageSrc}`,
-					offset: "30%",
-					themeColor:
-						b.themeColor ??
-						(b.character ? getCharacterBannerThemeColor(b.character) : null) ??
-						undefined,
-				}))
+			? staticArcBanners.map((b) => {
+					const arcImage = findArc(b.rateupItem)?.imageSrc
+					return {
+						...b,
+						image: arcImage
+							? `/arcs/${arcImage}`
+							: "/arcs/placeholder.webp",
+						offset: "30%",
+						themeColor:
+							b.themeColor ??
+							(b.character ? getCharacterBannerThemeColor(b.character) : null) ??
+							undefined,
+					}
+				})
 			: getResolvedGachaBanners(gachaBanners, server).map((b, index) => ({
 					...b,
 					image: `/events/${gachaBanners[index].eventImage}`,

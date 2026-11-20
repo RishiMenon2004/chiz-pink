@@ -135,6 +135,9 @@ export function parseNteExporterImport(
 				case "S":
 					rank = EnumRarity.Epic
 					break
+				default:
+					rank = EnumRarity.Uncommon
+					break
 			}
 
 			let rewardId: string = record.reward_name
