@@ -2,6 +2,7 @@ const CACHE_VERSION = "v14"
 const SHELL_CACHE = `chiz-pink-shell-${CACHE_VERSION}`
 const RUNTIME_CACHE = `chiz-pink-runtime-${CACHE_VERSION}`
 const CURRENT_CACHES = [SHELL_CACHE, RUNTIME_CACHE]
+const MAX_RUNTIME_ENTRIES = 300
 
 // Keep in sync with LOCALES / DEFAULT_LOCALE in src/helpers/locale.ts.
 const DEFAULT_LOCALE = "en"
@@ -17,6 +18,8 @@ const APP_SHELL_ROUTES = [
 	"/planner/arcs",
 	"/pulls",
 	"/inventory",
+	"/characters",
+	"/arcs",
 	"/settings",
 	"/privacy",
 	OFFLINE_URL,
@@ -317,12 +320,34 @@ async function cacheFirst(request, cacheName) {
 // have for the *original* /public path (kept warm by staleWhileRevalidate),
 // then the category placeholder, rather than letting the fetch rejection go
 // unhandled.
+let runtimeTrimInFlight = false
+
+// Keeps RUNTIME_CACHE bounded by dropping the oldest entries past the cap.
+async function trimRuntimeCache(cache) {
+	if (runtimeTrimInFlight) return
+	runtimeTrimInFlight = true
+	try {
+		const keys = await cache.keys()
+		const excess = keys.length - MAX_RUNTIME_ENTRIES
+		if (excess > 0) {
+			await Promise.all(keys.slice(0, excess).map((key) => cache.delete(key)))
+		}
+	} finally {
+		runtimeTrimInFlight = false
+	}
+}
+
+async function putRuntime(cache, request, response) {
+	await cache.put(request, response)
+	void trimRuntimeCache(cache)
+}
+
 async function optimizedImage(request, url, cacheName) {
 	try {
 		const response = await fetch(request)
 		if (response.ok) {
 			const cache = await caches.open(cacheName)
-			cache.put(request, response.clone())
+			void putRuntime(cache, request, response.clone())
 		}
 		return response
 	} catch {
@@ -362,7 +387,7 @@ async function staleWhileRevalidate(request, cacheName) {
 	const networkFetch = fetch(request)
 		.then((response) => {
 			if (response.ok) {
-				cache.put(request, response.clone())
+				void putRuntime(cache, request, response.clone())
 			}
 			return response
 		})
@@ -379,7 +404,7 @@ async function networkFirstRSC(request) {
 	try {
 		const response = await fetch(request)
 		if (response.ok && !response.redirected) {
-			cache.put(request, response.clone())
+			void putRuntime(cache, request, response.clone())
 		}
 		return response
 	} catch {
@@ -429,7 +454,7 @@ async function networkFirstNavigation(request) {
 	try {
 		const response = await fetch(request)
 		if (response.ok && !response.redirected) {
-			cache.put(request, response.clone())
+			void putRuntime(cache, request, response.clone())
 		}
 		return response
 	} catch {
