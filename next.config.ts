@@ -1,15 +1,17 @@
 import type { NextConfig } from "next";
 
+const isProd = process.env.NODE_ENV === "production";
+
 const cspDirectives = [
   "default-src 'self'",
-  "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://va.vercel-scripts.com",
+  `script-src 'self' 'unsafe-inline'${isProd ? "" : " 'unsafe-eval'"} https://va.vercel-scripts.com`,
   "style-src 'self' 'unsafe-inline'",
   "img-src 'self' data: blob: https:",
   "font-src 'self' data:",
   "connect-src 'self' https://*.convex.cloud wss://*.convex.cloud https://www.googleapis.com https://oauth2.googleapis.com https://vitals.vercel-insights.com",
   "worker-src 'self' blob:",
   "frame-ancestors 'none'",
-  ...(process.env.NODE_ENV === "production" ? ["upgrade-insecure-requests"] : []),
+  ...(isProd ? ["upgrade-insecure-requests"] : []),
 ]
   .filter(Boolean)
   .join("; ");
