@@ -12,6 +12,18 @@ async function getOwnGachaBackup(ctx: QueryCtx) {
 		.unique()
 }
 
+export const getBackupMeta = query({
+	args: {},
+	handler: async (ctx) => {
+		const existing = await getOwnGachaBackup(ctx)
+		if (!existing) return null
+
+		return {
+			lastUpdated: existing.lastUpdated,
+		}
+	},
+})
+
 export const getBackup = query({
 	args: {},
 	handler: async (ctx) => {
