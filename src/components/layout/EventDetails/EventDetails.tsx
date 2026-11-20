@@ -215,6 +215,7 @@ function EventDetailsBox({
 				src={`/events/${eventData.eventImage!}`}
 				width={1920}
 				height={1080}
+				sizes="(max-width: 768px) 100vw, 48rem"
 				loading="eager"
 				alt={eventData.name}
 			/>

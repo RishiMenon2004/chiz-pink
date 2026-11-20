@@ -174,6 +174,7 @@ export const CalendarContext = createContext<{
 	calendarEnd: number
 	now: number | null
 	scrollToPos: (el: HTMLElement, behavior?: ScrollBehavior) => Promise<void>
+	observeEventVisible: (el: HTMLElement, onVisible: () => void) => () => void
 }>(null!)
 
 export function useCalendarContext() {

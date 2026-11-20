@@ -127,7 +127,9 @@ function ChizArt() {
 				alt={t("layout.splash.chizAlt")}
 				width={512}
 				height={512}
-				sizes="48rem"
+				sizes="(max-width: 900px) 16px, 40rem"
+				loading="eager"
+				fetchPriority="high"
 			/>
 		</div>
 	)

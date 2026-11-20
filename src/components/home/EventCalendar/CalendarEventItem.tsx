@@ -1,7 +1,7 @@
 "use client"
 
 import Image from "next/image"
-import { CSSProperties, MouseEventHandler, useRef, useState } from "react"
+import { CSSProperties, MouseEventHandler, useEffect, useRef, useState } from "react"
 
 import { EventData } from "@/data/activities/events"
 import { formatEventDateTime } from "@/helpers/serverTime"
@@ -29,11 +29,13 @@ export function CalendarEventItem({
 		server,
 		dayBoundaryMode,
 		scrollToPos,
+		observeEventVisible,
 	} = useCalendarContext()
 
 	const [showDetails, setShowDetails] = useState(false)
 	const [detailsInitialStyle, setDetailsInitialStyle] =
 		useState<CSSProperties | null>(null)
+	const [loadImage, setLoadImage] = useState(false)
 
 	const start = eventData.getStartDate(server)
 	const end = eventData.getEndDate(server)
@@ -109,6 +111,11 @@ export function CalendarEventItem({
 
 	const eventBoxRef = useRef<HTMLDivElement>(null!)
 
+	useEffect(() => {
+		if (!eventImageSrc || loadImage) return
+		return observeEventVisible(eventBoxRef.current, () => setLoadImage(true))
+	}, [eventImageSrc, loadImage, observeEventVisible])
+
 	return (
 		<div
 			ref={eventBoxRef}
@@ -131,14 +138,14 @@ export function CalendarEventItem({
 			}}
 			className={`${styles.calendarEvent} ${eventType ? eventType : ""}`}
 			style={eventStyles}>
-			{eventImageSrc && (
+			{eventImageSrc && loadImage && (
 				<Image
 					className={styles.eventImage}
 					src={eventImageSrc}
 					alt={t("home.calendar.eventBannerAlt", { name: eventData.name })}
 					width={1920}
 					height={1080}
-					sizes={`${widthDays}rem`}
+					sizes={`${Math.ceil(widthDays)}rem`}
 				/>
 			)}
 			<div className={styles.eventName}>
