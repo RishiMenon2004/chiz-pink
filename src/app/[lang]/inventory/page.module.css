@@ -112,10 +112,6 @@
 		padding-inline: 3rem !important;
 	}
 
-	.page {
-		padding-top: 3rem !important;
-	}
-
 	.matGroup {
 		&:open {
 			summary {

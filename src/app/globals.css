@@ -213,7 +213,7 @@ body {
 .page {
 	flex: 1;
 	padding-inline: 6rem;
-	padding-block: 4rem;
+	padding-block: 2rem 4rem;
 
 	@media (max-width: 1135px) {
 		padding-inline: 3rem;

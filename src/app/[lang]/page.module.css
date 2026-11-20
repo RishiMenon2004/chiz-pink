@@ -1,14 +1,16 @@
 .page {
 	display: flex;
 	flex-direction: column;
-	gap: 2rem;
+	gap: 1rem;
+	/* No tool intro above the dashboard, so it keeps the roomier top. */
+	padding-top: 4rem;
 	flex-grow: 1;
 }
 
 .twoColumns {
 	display: grid;
 	grid-template-columns: repeat(2, 1fr);
-	gap: 2rem;
+	gap: 1rem;
 }
 
 .homeGrid {
@@ -117,7 +119,7 @@
 	.twoColumns {
 		display: grid;
 		grid-template-columns: 1fr;
-		gap: 2rem;
+		gap: 1rem;
 	}
 
 	.section {

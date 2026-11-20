@@ -1,4 +1,8 @@
-/* Same placement as an open InfoBox. */
+/* div. beats InfoBox's own 4rem margin. */
+div.open {
+	margin-top: 2rem;
+}
+
 .about {
 	margin-top: 2rem;
 	margin-inline: 6rem;
