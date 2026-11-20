@@ -1,12 +1,6 @@
 "use client"
 
-import {
-	ChangeEvent,
-	CSSProperties,
-	MouseEvent,
-	useEffect,
-	useState,
-} from "react"
+import { ChangeEvent, CSSProperties, MouseEvent, useState } from "react"
 import { createPortal } from "react-dom"
 
 import { useSortable } from "@dnd-kit/react/sortable"
@@ -66,10 +60,6 @@ export function PlannerCharacterBox({
 
 	const t = useT()
 	const { actions } = usePlannerStore()
-
-	const [CharacterState, setCharacterState] = useState<CharacterRecord>({
-		...charRecord,
-	})
 
 	const buildAdjustmentMaterials = (): Material[] => {
 		const matList: Material[] = [beetleCoin]
@@ -152,30 +142,27 @@ export function PlannerCharacterBox({
 		ability?: keyof CharacterRecord["abilitySet"]
 	) => {
 		const value = Number(e.currentTarget.value)
-		const newState = () => {
-			if (ability && CharacterState.abilitySet[ability]) {
-				const { targetLvl } = CharacterState.abilitySet[ability]
-				return {
-					...CharacterState,
-					abilitySet: {
-						...CharacterState.abilitySet,
-						[ability]: {
-							...CharacterState.abilitySet[ability],
-							currentLvl: value,
-							targetLvl: value > targetLvl ? value : targetLvl,
-						},
+		if (ability && charRecord.abilitySet[ability]) {
+			const { targetLvl } = charRecord.abilitySet[ability]
+			actions.updateCharacter({
+				...charRecord,
+				abilitySet: {
+					...charRecord.abilitySet,
+					[ability]: {
+						...charRecord.abilitySet[ability],
+						currentLvl: value,
+						targetLvl: value > targetLvl ? value : targetLvl,
 					},
-				}
-			} else {
-				const { targetLvl } = CharacterState
-				return {
-					...CharacterState,
-					currentLvl: value,
-					targetLvl: value > targetLvl ? value : targetLvl,
-				}
-			}
+				},
+			})
+		} else {
+			const { targetLvl } = charRecord
+			actions.updateCharacter({
+				...charRecord,
+				currentLvl: value,
+				targetLvl: value > targetLvl ? value : targetLvl,
+			})
 		}
-		setCharacterState(newState())
 	}
 
 	const handleTargetLvlChange = (
@@ -183,58 +170,42 @@ export function PlannerCharacterBox({
 		ability?: keyof CharacterRecord["abilitySet"]
 	) => {
 		const value = Number(e.currentTarget.value)
-		setCharacterState((prevState) => {
-			if (ability && prevState.abilitySet[ability]) {
-				const { currentLvl } = prevState.abilitySet[ability]
-				return {
-					...prevState,
-					abilitySet: {
-						...prevState.abilitySet,
-						[ability]: {
-							...prevState.abilitySet[ability],
-							currentLvl: value < currentLvl ? value : currentLvl,
-							targetLvl: value,
-						},
+		if (ability && charRecord.abilitySet[ability]) {
+			const { currentLvl } = charRecord.abilitySet[ability]
+			actions.updateCharacter({
+				...charRecord,
+				abilitySet: {
+					...charRecord.abilitySet,
+					[ability]: {
+						...charRecord.abilitySet[ability],
+						currentLvl: value < currentLvl ? value : currentLvl,
+						targetLvl: value,
 					},
-				}
-			} else {
-				const { currentLvl } = prevState
-				return {
-					...prevState,
-					currentLvl: value < currentLvl ? value : currentLvl,
-					targetLvl: value,
-				}
-			}
-		})
+				},
+			})
+		} else {
+			const { currentLvl } = charRecord
+			actions.updateCharacter({
+				...charRecord,
+				currentLvl: value < currentLvl ? value : currentLvl,
+				targetLvl: value,
+			})
+		}
 	}
 
 	const handleToggleSkill = (ability: keyof CharacterRecord["abilitySet"]) => {
-		if (CharacterState.abilitySet[ability]) {
-			const isDisabled = !CharacterState.abilitySet[ability].isDisabled
-
-			setCharacterState((prevState) => ({
-				...prevState,
-				abilitySet: {
-					...prevState.abilitySet,
-					[ability]: {
-						...prevState.abilitySet[ability],
-						isDisabled,
-					},
+		if (!charRecord.abilitySet[ability]) return
+		actions.updateCharacter({
+			...charRecord,
+			abilitySet: {
+				...charRecord.abilitySet,
+				[ability]: {
+					...charRecord.abilitySet[ability],
+					isDisabled: !charRecord.abilitySet[ability].isDisabled,
 				},
-			}))
-		}
+			},
+		})
 	}
-
-	useEffect(() => {
-		if (JSON.stringify(CharacterState) === JSON.stringify(charRecord)) {
-			return
-		}
-
-		actions.updateCharacter(CharacterState)
-
-		// disable warning because other deps trigger this effect unnecessarily
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [CharacterState])
 
 	const handleEnhancement = (e: MouseEvent) => {
 		e.stopPropagation()
@@ -272,78 +243,73 @@ export function PlannerCharacterBox({
 			})
 
 			updateInventory(localInventory)
-			setCharacterState((prevState) => {
-				const { abilitySet } = prevState
-				const newState = {
-					...prevState,
-					currentLvl: prevState.targetLvl,
-					abilitySet: {
-						...abilitySet,
-						basicAttack: {
-							...abilitySet.basicAttack,
-							isDisabled: true,
-							currentLvl: abilitySet.basicAttack.targetLvl,
-						},
-						skill: {
-							...abilitySet.skill,
-							isDisabled: true,
-							currentLvl: abilitySet.skill.targetLvl,
-						},
-						ultimate: {
-							...abilitySet.ultimate,
-							isDisabled: true,
-							currentLvl: abilitySet.ultimate.targetLvl,
-						},
-						support: {
-							...abilitySet.support,
-							isDisabled: true,
-							currentLvl: abilitySet.support.targetLvl,
-						},
-						lifeSkill1: {
-							...abilitySet.lifeSkill1,
-							isDisabled: true,
-							currentLvl: abilitySet.lifeSkill1.targetLvl,
-						},
-						passive1: {
-							...abilitySet.passive1,
-							isDisabled: true,
-						},
-						passive2: {
-							...abilitySet.passive2,
-							isDisabled: true,
-						},
+			const { abilitySet } = charRecord
+			const nextRecord: CharacterRecord = {
+				...charRecord,
+				currentLvl: charRecord.targetLvl,
+				abilitySet: {
+					...abilitySet,
+					basicAttack: {
+						...abilitySet.basicAttack,
+						isDisabled: true,
+						currentLvl: abilitySet.basicAttack.targetLvl,
 					},
-				}
-
-				if (abilitySet.lifeSkill2) {
-					newState.abilitySet.lifeSkill2 = {
-						...abilitySet.lifeSkill2,
+					skill: {
+						...abilitySet.skill,
 						isDisabled: true,
-						currentLvl: abilitySet.lifeSkill2.targetLvl,
-					}
-				}
-
-				if (abilitySet.passive3) {
-					newState.abilitySet.passive3 = {
-						...abilitySet.passive3,
+						currentLvl: abilitySet.skill.targetLvl,
+					},
+					ultimate: {
+						...abilitySet.ultimate,
 						isDisabled: true,
-					}
+						currentLvl: abilitySet.ultimate.targetLvl,
+					},
+					support: {
+						...abilitySet.support,
+						isDisabled: true,
+						currentLvl: abilitySet.support.targetLvl,
+					},
+					lifeSkill1: {
+						...abilitySet.lifeSkill1,
+						isDisabled: true,
+						currentLvl: abilitySet.lifeSkill1.targetLvl,
+					},
+					passive1: {
+						...abilitySet.passive1,
+						isDisabled: true,
+					},
+					passive2: {
+						...abilitySet.passive2,
+						isDisabled: true,
+					},
+				},
+			}
+
+			if (abilitySet.lifeSkill2) {
+				nextRecord.abilitySet.lifeSkill2 = {
+					...abilitySet.lifeSkill2,
+					isDisabled: true,
+					currentLvl: abilitySet.lifeSkill2.targetLvl,
 				}
+			}
 
-				return newState
-			})
+			if (abilitySet.passive3) {
+				nextRecord.abilitySet.passive3 = {
+					...abilitySet.passive3,
+					isDisabled: true,
+				}
+			}
 
+			actions.updateCharacter(nextRecord)
 			showFinalAdjustmenModal()
 		}
 	}
 
 	const handleDisable = (e: MouseEvent) => {
 		e.stopPropagation()
-		setCharacterState((prevState) => {
-			return {
-				...prevState,
-				isDisabled: !prevState.isDisabled,
-			}
+		actions.updateCharacter({
+			...charRecord,
+			isDisabled: !charRecord.isDisabled,
 		})
 	}
 
@@ -395,7 +361,7 @@ export function PlannerCharacterBox({
 					dragRef: handleRef,
 				}}>
 				<div
-					className={`${plannerBoxStyles.plannerBox} ${getItemRarityStyle(char)} ${CharacterState.isDisabled ? `${plannerBoxStyles.plannerBoxDisabled} ${topStyles.noInteract}` : ""} ${dropPreviewOrDragOverlay().join(" ")}`}>
+					className={`${plannerBoxStyles.plannerBox} ${getItemRarityStyle(char)} ${charRecord.isDisabled ? `${plannerBoxStyles.plannerBoxDisabled} ${topStyles.noInteract}` : ""} ${dropPreviewOrDragOverlay().join(" ")}`}>
 					<div
 						className={`metallic-panel ${plannerBoxStyles.infoContainer} ${topStyles.infoContainer}`}>
 						<div className={topStyles.arcInfoTop}>
@@ -432,14 +398,14 @@ export function PlannerCharacterBox({
 								<span
 									className={`${topStyles.arcStatsLvlContainer} ${topStyles.currentLvl}`}>
 									<div className={topStyles.arcPhases}>
-										<ItemPhases lvl={CharacterState.currentLvl} />
+										<ItemPhases lvl={charRecord.currentLvl} />
 									</div>
 									<span className={topStyles.arcLevelSectionLabel}>
 										{t("planner.currentLevel")}
 									</span>
 									<select
 										className="inset-control"
-										value={CharacterState.currentLvl}
+										value={charRecord.currentLvl}
 										onChange={handleCurrentLvlChange}
 										tabIndex={0}>
 										{LvlOptions.map((opt) => (
@@ -455,14 +421,14 @@ export function PlannerCharacterBox({
 								<span
 									className={`${topStyles.arcStatsLvlContainer}`}>
 									<div className={topStyles.arcPhases}>
-										<ItemPhases lvl={CharacterState.targetLvl} />
+										<ItemPhases lvl={charRecord.targetLvl} />
 									</div>
 									<span className={topStyles.arcLevelSectionLabel}>
 										{t("planner.targetLevel")}
 									</span>
 									<select
 										className="inset-control"
-										value={CharacterState.targetLvl}
+										value={charRecord.targetLvl}
 										onChange={handleTargetLvlChange}
 										tabIndex={0}>
 										{LvlOptions.map((opt) => (
