@@ -429,6 +429,7 @@
 		},
 		"splash": {
 			"joinDiscord": "JOIN THE DISCORD",
+			"discord": "DISCORD",
 			"welcome": "WELCOME TO <title>CHIZ.PINK!</title>",
 			"subtitle": "Your pinkest companion, Ascension Planner and Pull Tracker for NTE :3",
 			"links": {

@@ -1,8 +1,4 @@
-// Which splash card shows is set by an attribute on <html>: unset or
-// "welcome" (the server default), "update" or "none". The real checks
-// (hasVisited, lastSeen) live in IndexedDB and load after first paint, so
-// a synchronous localStorage copy of the last version seen lets the inline
-// script below pick the right card before paint, with no flash or shift.
+// data-splash on <html> picks the splash view before paint, from a localStorage copy of the last version seen.
 
 export const SPLASH_ATTRIBUTE = "data-splash"
 export const SPLASH_MARKER_KEY = "splashSeenVersion"

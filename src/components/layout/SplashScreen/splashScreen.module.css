@@ -1,6 +1,12 @@
 .card {
-	--chiz-section-width: 16rem;
-	--chiz-section-offset: 3rem;
+	/* 1rem at full width, shrinking faster than the card below that. */
+	--chiz-unit: clamp(0rem, (100cqw - 30rem) / 39.5, 1rem);
+	container-type: inline-size;
+	/* The empty strip right of the info box; Chiz's face centres in it. */
+	--chiz-space: calc(32 * var(--chiz-unit));
+	/* Where her face sits across the image. */
+	--chiz-face-x: 44%;
+	--chiz-drop: 1.5rem;
 	--card-padding: 2rem;
 
 	position: relative;
@@ -12,10 +18,11 @@
 	font-family: var(--font-syne);
 	font-weight: 700;
 
-	/* Both views stack in one cell and share these rows (tab, bar, box,
-	   buttons), so Continue swaps them without anything moving. */
+	/* Both views share these rows, so swapping them moves nothing. */
 	display: grid;
 	grid-template-rows: auto auto minmax(0, 1fr) auto;
+	/* Never wider than the card, whatever the content's min width. */
+	grid-template-columns: minmax(0, 1fr);
 }
 
 .welcomeView,
@@ -23,60 +30,48 @@
 	display: contents;
 }
 
-/* Sized as if empty, so the long changelog fills the welcome view's
-   height and scrolls instead of growing the card. */
+/* Scrolls instead of growing the card. */
 .updateView .infoBox {
 	contain: size;
 	max-height: none;
 }
 
+/* Clipped only at the bottom, hiding where the art ends. */
 .chizSection {
 	position: absolute;
-	top: 50%;
-	right: var(--chiz-section-offset);
-	z-index: 1;
-	translate: 0 -50%;
+	top: 0;
+	bottom: 0;
+	right: 0;
+	z-index: 0;
 
-	display: grid;
-	place-items: center;
-
-	width: var(--chiz-section-width);
-	aspect-ratio: 1;
-	border-radius: 100%;
-
-	background-image: url("/layout/chiz_container.png");
-	background-size: contain;
-
-	box-shadow: 0px 2px 10px var(--shadow-dark-60);
+	width: var(--chiz-space);
+	clip-path: inset(-100vh -100vw 0 -100vw);
 }
 
-.chizContainer {
-	display: grid;
-	place-items: end;
-
-	width: calc(var(--chiz-section-width) * 0.8125);
-	aspect-ratio: 1;
-	border-radius: 100%;
-
-	background-color: var(--interactive-bg);
-
-	box-shadow:
-		color-mix(in srgb, var(--pink), transparent) 0 0 100px inset,
-		var(--shadow-dark-40) 0px -1px 6px 2px,
-		var(--foreground) 0px 2px 4px;
-}
-
+/* 4/3 height puts her halo at the top; face centred in the strip. */
 .chiz {
-	display: flex;
-	width: 100%;
-	height: auto;
-	transform-origin: bottom center;
+	position: absolute;
+	bottom: 0;
+	left: 50%;
+	width: auto;
+	height: calc(80% * 4 / 3);
+	max-width: none;
+	translate: calc(-1 * var(--chiz-face-x)) var(--chiz-drop);
+}
+
+/* Over Chiz; the tab and pink bar stay under her. */
+.infoBox,
+.btnContainer {
+	position: relative;
+	z-index: 1;
 }
 
 .infoSection {
 	grid-area: 1 / 1 / -1 / -1;
 	display: grid;
 	grid-template-rows: subgrid;
+	/* Keeps the unwrapped button row from widening the bar and box. */
+	grid-template-columns: minmax(0, 1fr);
 	row-gap: 1rem;
 	padding: 0 var(--card-padding) 1rem;
 }
@@ -99,6 +94,19 @@
 .updateView .welcomeText {
 	display: flex;
 	align-items: flex-end;
+}
+
+/* Spans the rows below the tab, so the changelog fills the leftover space. */
+.updateBody {
+	grid-row: 2 / -1;
+	display: flex;
+	flex-direction: column;
+	gap: 1rem;
+	min-height: 0;
+
+	.infoBox {
+		flex: 1;
+	}
 }
 
 .title {
@@ -189,13 +197,19 @@
 
 .btnContainer {
 	display: flex;
-	justify-content: flex-end;
+	/* safe: overflows right, over Chiz, not off the left edge. */
+	justify-content: safe flex-end;
+	/* Don't stretch to the shared row's height. */
+	align-items: center;
+	align-content: center;
 	gap: 2rem;
 
 	& > :is(button, a) {
 		display: grid;
 		place-items: center;
 		min-width: 10rem;
+		flex-shrink: 0;
+		white-space: nowrap;
 
 		text-decoration: none;
 
@@ -209,46 +223,11 @@
 	}
 }
 
-/* Leave room for Chiz on the right. */
+/* Leave the strip for Chiz. */
 .welcomeView {
 	.infoBox,
 	.btnContainer {
-		margin-right: calc(
-			var(--chiz-section-width) + var(--chiz-section-offset) - var(--card-padding) + 1rem
-		);
-	}
-}
-
-@media (max-width: 1400px) {
-	.card {
-		--chiz-section-width: 13rem;
-		--chiz-section-offset: 2rem;
-	}
-
-	.chizSection {
-		right: auto;
-		left: var(--chiz-section-offset);
-
-		box-shadow:
-			var(--shadow-dark-30) 0px -3px 8px -2px,
-			var(--shadow-glow-white-80) 0px 3px 4px 2px;
-	}
-
-	.chiz {
-		transform: scaleX(-1);
-	}
-
-	.welcomeView {
-		.infoSection {
-			padding-left: calc(
-				var(--chiz-section-offset) + var(--chiz-section-width) + 2rem
-			);
-		}
-
-		.infoBox,
-		.btnContainer {
-			margin-right: 0;
-		}
+		margin-right: calc(var(--chiz-space) - var(--card-padding));
 	}
 }
 
@@ -258,29 +237,50 @@
 	}
 }
 
-@media (max-width: 1000px) {
+@media (max-width: 900px) {
+	.card {
+		--card-padding: 0.5rem;
+	}
+
+	/* Clear of the card's corner radius. */
+	.welcomeText {
+		margin-inline: 1.25rem;
+	}
+
+	/* Buttons inset 0.75rem, concentric with the card's corner (1rem + 0.75rem). */
+	.card {
+		border-radius: 1.75rem;
+	}
+
+	.infoSection {
+		padding-bottom: 0.25rem;
+	}
+
+	.btnContainer {
+		padding-inline: 0.25rem;
+	}
+
 	.chizSection {
 		display: none;
 	}
 
-	.welcomeView .infoSection {
-		padding-left: var(--card-padding);
-	}
-
-	.btnContainer {
-		justify-content: center;
+	.welcomeView {
+		.infoBox,
+		.btnContainer {
+			margin-right: 0;
+		}
 	}
 }
 
 @media (max-width: 800px) {
 	.card {
-		--card-padding: 1rem;
 		margin-inline: 1rem;
 	}
 
 	.btnContainer {
 		flex-wrap: wrap;
-		gap: 1.25rem;
+		/* No row gap: the buttons' own block margins space wrapped lines. */
+		gap: 0 1.25rem;
 
 		& > :is(button, a) {
 			min-width: 0;
@@ -288,14 +288,37 @@
 	}
 }
 
+/* Short Discord label on mobile. */
+.shortLabel {
+	display: none;
+}
+
 @media (max-width: 570px) {
+	.longLabel {
+		display: none;
+	}
+
+	.shortLabel {
+		display: inline;
+	}
+
+	/* Install and Discord share a line; Continue/Close gets its own. */
+	.btnContainer > :is(button, a) {
+		flex: 1 1 0;
+
+		&:last-child {
+			flex-basis: 100%;
+		}
+	}
+
 	.welcomeText,
 	.updateView .welcomeText {
 		display: flex;
 		flex-direction: column;
 		align-items: center;
 		justify-content: flex-end;
-		width: 100%;
+		/* Stretches between its side margins. */
+		width: auto;
 		font-size: 1rem;
 	}
 
@@ -321,10 +344,7 @@
 	}
 }
 
-/* Which view shows: welcome by default (server HTML, first visits),
-   otherwise whatever data-splash on <html> says. visibility, not display,
-   so the welcome view keeps holding the card height. Last, so nothing
-   above overrides it. */
+/* Which view shows, from data-splash on <html>. Last, so it wins. */
 .card .updateView,
 :global(html[data-splash="update"]) .card .welcomeView {
 	visibility: hidden;
