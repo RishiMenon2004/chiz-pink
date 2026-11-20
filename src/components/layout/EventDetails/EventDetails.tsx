@@ -18,7 +18,7 @@ import type { SettingsRecord } from "@/types/settings"
 import { EventData } from "@/data/activities/events"
 import { findCharacter } from "@/data/characters"
 
-import { stopPropagation } from "@/helpers"
+import { stopPropagation } from "@/helpers/stopPropagation"
 import { formatEventDateTime } from "@/helpers/serverTime"
 
 import { useLocale, useT } from "@/contexts"

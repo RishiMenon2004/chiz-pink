@@ -13,7 +13,7 @@ import {
 	TitleBar,
 } from "../SettingsShared"
 
-import { LocaleLink } from "@/components/layout"
+import { LocaleLink } from "@/components/layout/LocaleLink"
 
 import styles from "@/app/[lang]/settings/settings.module.css"
 

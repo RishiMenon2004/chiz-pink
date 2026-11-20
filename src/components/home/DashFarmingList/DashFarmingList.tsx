@@ -23,7 +23,7 @@ import { useT, usePlannerMaterialsContext } from "@/contexts"
 import { InfoBox } from "@/components/layout/InfoBox"
 import { PlannerMaterialBox } from "@/components/planner/MaterialBox"
 
-import { LocaleLink } from "@/components/layout"
+import { LocaleLink } from "@/components/layout/LocaleLink"
 
 import pageStyles from "@/app/[lang]/page.module.css"
 import styles from "./DashFarmingList.module.css"

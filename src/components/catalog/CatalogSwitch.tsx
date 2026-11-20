@@ -6,7 +6,7 @@ import type { MessageKey } from "@/types/messages"
 
 import { useT } from "@/contexts"
 
-import { LocaleLink } from "@/components/layout"
+import { LocaleLink } from "@/components/layout/LocaleLink"
 
 import styles from "@/components/planner/PlannerSwitch/plannerSwitch.module.css"
 import catalogStyles from "./catalog.module.css"

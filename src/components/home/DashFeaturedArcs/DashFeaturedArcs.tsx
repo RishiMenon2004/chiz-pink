@@ -19,7 +19,7 @@ import {
 
 import { useT } from "@/contexts"
 
-import { LocaleLink } from "@/components/layout"
+import { LocaleLink } from "@/components/layout/LocaleLink"
 
 import styles from "./DashFeaturedArcs.module.css"
 

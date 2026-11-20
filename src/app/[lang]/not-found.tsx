@@ -4,7 +4,7 @@ import Image from "next/image"
 
 import { useT } from "@/contexts"
 
-import { LocaleLink } from "@/components/layout"
+import { LocaleLink } from "@/components/layout/LocaleLink"
 
 import styles from "./page.module.css"
 

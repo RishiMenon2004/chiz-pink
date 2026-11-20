@@ -21,7 +21,7 @@ import { CharacterAvatar, CharacterElement } from "@/components/layout/Character
 
 import { useT } from "@/contexts"
 
-import { LocaleLink } from "@/components/layout"
+import { LocaleLink } from "@/components/layout/LocaleLink"
 
 import styles from "./DashFeaturedCarousel.module.css"
 

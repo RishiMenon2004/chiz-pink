@@ -16,7 +16,7 @@ const eslintConfig = defineConfig([
             {
               name: "next/link",
               message:
-                "Use LocaleLink from @/components/layout, which keeps the page's language prefix.",
+                "Use LocaleLink from @/components/layout/LocaleLink, which keeps the page's language prefix.",
             },
             {
               name: "next/navigation",

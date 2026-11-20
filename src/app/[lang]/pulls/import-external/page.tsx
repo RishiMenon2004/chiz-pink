@@ -2,7 +2,7 @@ import { Metadata } from "next"
 
 import { getMetadataTranslator } from "@/helpers/metadata"
 
-import { ExternalImport } from "@/components/pulls"
+import { ExternalImport } from "@/components/pulls/ExternalImport"
 
 type Props = {
 	params: Promise<{ lang: string }>

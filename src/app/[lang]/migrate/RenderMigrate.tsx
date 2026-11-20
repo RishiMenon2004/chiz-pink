@@ -23,7 +23,9 @@ import { formatLocale, type Locale } from "@/helpers/locale"
 import { useInitialSyncPending } from "@/helpers/syncGate"
 import * as memoryStorage from "@/helpers/storage/memoryStorage"
 
-import { AlertContainer, LocaleLink, ModalContainer } from "@/components/layout"
+import { AlertContainer } from "@/components/layout/Alert"
+import { LocaleLink } from "@/components/layout/LocaleLink"
+import { ModalContainer } from "@/components/layout/Modal"
 import {
 	alertTextBox,
 	alertTextColumns,

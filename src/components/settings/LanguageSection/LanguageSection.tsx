@@ -12,7 +12,7 @@ import {
 
 import { useLocale, useT } from "@/contexts"
 
-import { LocaleLink } from "@/components/layout"
+import { LocaleLink } from "@/components/layout/LocaleLink"
 
 import {
 	ConfigSelect,

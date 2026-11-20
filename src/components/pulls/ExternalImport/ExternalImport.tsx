@@ -17,7 +17,7 @@ import { useInitialSyncPending } from "@/helpers/syncGate"
 
 import { useT } from "@/contexts"
 
-import { LocaleLink } from "@/components/layout"
+import { LocaleLink } from "@/components/layout/LocaleLink"
 
 import pageStyles from "@/app/[lang]/pulls/page.module.css"
 import styles from "./externalImport.module.css"

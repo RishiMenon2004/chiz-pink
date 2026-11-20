@@ -9,7 +9,7 @@ import { CharacterRecord, WeaponRecord } from "@/types/planner"
 import { getItemRarityStyle } from "@/data/items"
 import { findItem } from "@/data/items/findItem"
 
-import { stopPropagation } from "@/helpers"
+import { stopPropagation } from "@/helpers/stopPropagation"
 
 import { useT } from "@/contexts"
 

@@ -17,7 +17,7 @@ import { ProfileHero } from "../ProfileHero"
 import { LevelStatValue, ProfileLevelProvider } from "../ProfileLevel"
 import { ProfileMaterials } from "../ProfileMaterials"
 
-import { LocaleLink } from "@/components/layout"
+import { LocaleLink } from "@/components/layout/LocaleLink"
 
 import pageStyles from "@/app/[lang]/page.module.css"
 import styles from "../profile.module.css"

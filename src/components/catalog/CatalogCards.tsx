@@ -41,7 +41,7 @@ import {
 	type CatalogSort,
 } from "./CatalogFilterToolbar"
 import { CatalogSwitch } from "./CatalogSwitch"
-import { LocaleLink } from "@/components/layout"
+import { LocaleLink } from "@/components/layout/LocaleLink"
 
 import styles from "./catalog.module.css"
 import pageStyles from "@/app/[lang]/page.module.css"
