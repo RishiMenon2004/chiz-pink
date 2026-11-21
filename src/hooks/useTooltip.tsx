@@ -147,5 +147,6 @@ export function useTooltip() {
 		hideTooltip,
 		longPressHandlers,
 		consumeLongPress,
+		isDrawerShown,
 	}
 }

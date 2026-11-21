@@ -37,6 +37,7 @@ export function PlannerMaterialBox({
 		hideTooltip,
 		longPressHandlers,
 		consumeLongPress,
+		isDrawerShown,
 	} = useTooltip()
 
 	const linkedMaterials = useMemo(
@@ -118,7 +119,11 @@ export function PlannerMaterialBox({
 
 			<MaterialEditor materials={linkedMaterials} />
 
-			<Tooltip offset={{ x: 36, y: 0 }} subText={t("planner.material.clickToEdit")}>
+			<Tooltip
+				offset={{ x: 36, y: 0 }}
+				subText={
+					isDrawerShown ? undefined : t("planner.material.clickToEdit")
+				}>
 				<div>{material.name}</div>
 				<div className="tooltip-details">
 					{t.rich("planner.material.totalNeeded", {
@@ -177,7 +182,7 @@ export function PlannerMaterialBox({
 						</div>
 					))}
 				</div>
-				<hr className="tooltip-hr" />
+				{!isDrawerShown && <hr className="tooltip-hr" />}
 			</Tooltip>
 		</div>
 	)
