@@ -70,4 +70,12 @@ export const ChangeLogs = {
 		"<tag>NEW</> A sync notice now shows while your cloud data loads for the first time",
 		"<tag color='#ffbd47'>FIX</> Tooltips no longer go off the edge of the screen",
 	],
+	"1.2.3": [
+		"Big under-the-hood performance & stability update across the whole site!",
+		"<tag>NEW</> Error messages now let you know if an import, backup, or cloud sync fails instead of failing silently",
+		"<tag color='#ffbd47'>FIX</> Pages and images load noticeably faster, and editing in the Inventory and Planner feels smoother",
+		"<tag color='#ffbd47'>FIX</> Fixed offline mode and opening the installed app in Português (Brasil), and Character & Arc pages now work offline too",
+		"<tag color='#ffbd47'>FIX</> Fixed pulls sometimes not saving when imported or edited right after opening the site while cloud sync was still loading",
+		"<tag color='#ffbd47'>FIX</> Importing a backup file now properly warns you before overwriting saved pull history",
+	],
 }
