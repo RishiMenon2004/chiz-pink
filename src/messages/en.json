@@ -1034,9 +1034,9 @@
 				},
 				"mobile": {
 					"step1": "Tap <b>Copy URL</b> above.",
-					"step2": "Bookmark any page, edit that bookmark, give it a short name like <b>ntewiz</b>, and replace its URL with the copied link.",
+					"step2": "Bookmark any page, edit that bookmark, give it a short name like <b>migrate</b>, and replace its URL with the copied link.",
 					"step3": "Open <link>www.ntewiz.xyz</link> (ignore the disabled/error page).",
-					"step4": "Tap the <b>address bar</b>, type <b>ntewiz</b>, and tap the <b>starred bookmark suggestion</b>. Then tap <b>Send to Chiz.Pink</b> (or <b>Download JSON</b> and upload it below).",
+					"step4": "Tap the <b>address bar</b>, type <b>migrate</b>, and tap the <b>starred bookmark suggestion</b>. Then tap <b>Send to Chiz.Pink</b> (or <b>Download JSON</b> and upload it below).",
 					"chromeNote": "On Chrome Mobile, don't tap the bookmark from the Bookmarks menu. Launching it from the address bar dropdown is required so it runs on the NTEWiz tab."
 				}
 			},
