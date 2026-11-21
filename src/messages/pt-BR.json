@@ -679,6 +679,12 @@
 				"items": "Itens",
 				"cosmetics": "Cosméticos"
 			},
+			"types": {
+				"character": "Personagem",
+				"arc": "Disco",
+				"item": "Item",
+				"cosmetic": "Cosmético"
+			},
 			"itemLabel": "Item da invocação {number}",
 			"resultLabel": "Resultado da invocação {number}",
 			"quantityLabel": "Quantidade para invocação {number}",

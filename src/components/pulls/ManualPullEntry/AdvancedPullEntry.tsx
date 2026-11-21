@@ -118,6 +118,7 @@ export function AdvancedPullEntry({
 	// (Memoized by the React Compiler.)
 	const candidates = candidatesFor(
 		selectedBanner,
+		t,
 		Number.isNaN(timestamp) ? undefined : { timestamp, server }
 	)
 	const byName = new Map(candidates.map((c) => [c.name.toLowerCase(), c]))

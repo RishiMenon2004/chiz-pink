@@ -24,8 +24,9 @@ import {
 } from "@/hooks"
 
 import { getLinkedMaterials } from "@/helpers"
+import { formatLocale } from "@/helpers/locale"
 
-import { useT } from "@/contexts"
+import { useLocale, useT } from "@/contexts"
 
 import { MaterialIcon, QuantityInput } from "@/components/layout"
 import { InventorySelectionBadge } from "../SelectionBadge"
@@ -43,6 +44,7 @@ export function MaterialItemBox({
 	canHaveMultiMat?: boolean
 }) {
 	const t = useT()
+	const locale = useLocale()
 	const {
 		Tooltip,
 		showTooltip,
@@ -227,7 +229,7 @@ export function MaterialItemBox({
 							{t("inventory.material.grantsOneOf")}
 							{material.selectionOptions.map(({ id, amount }) => (
 								<div className="tooltip-source" key={id}>
-									{`${findMaterial(id).name}${amount > 1 ? ` ×${amount.toLocaleString()}` : ""}`}
+									{`${findMaterial(id).name}${amount > 1 ? ` ×${amount.toLocaleString(formatLocale(locale))}` : ""}`}
 								</div>
 							))}
 						</div>

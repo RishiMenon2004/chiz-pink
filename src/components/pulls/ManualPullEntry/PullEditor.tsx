@@ -71,8 +71,8 @@ export function PullEditor({
 	const hasDice = selectedBanner !== "arcsBanner"
 	// What the banners running when it was pulled feature goes first.
 	const candidates = useMemo(
-		() => candidatesFor(selectedBanner, { timestamp: pull.timestamp, server }),
-		[selectedBanner, pull.timestamp, server]
+		() => candidatesFor(selectedBanner, t, { timestamp: pull.timestamp, server }),
+		[selectedBanner, t, pull.timestamp, server]
 	)
 
 	// Its name as the picker has it (with "(Arc)" or the like where two

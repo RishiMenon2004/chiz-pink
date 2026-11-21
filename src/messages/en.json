@@ -696,6 +696,14 @@
 				"items": "Items",
 				"cosmetics": "Cosmetics"
 			},
+			"types": {
+				"character": "Character",
+				"arc": "Arc",
+				"item": "Item",
+				"cosmetic": "Cosmetic",
+				"outfit": "Outfit",
+				"glider": "Glider"
+			},
 			"itemLabel": "Item for pull {number}",
 			"resultLabel": "Result for pull {number}",
 			"quantityLabel": "Quantity for pull {number}",
