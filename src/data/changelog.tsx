@@ -78,4 +78,9 @@ export const ChangeLogs = {
 		"<tag color='#ffbd47'>FIX</> Fixed pulls sometimes not saving when imported or edited right after opening the site while cloud sync was still loading",
 		"<tag color='#ffbd47'>FIX</> Importing a backup file now properly warns you before overwriting saved pull history",
 	],
+	"1.2.4": [
+		"<tag>NEW</> Direct <link href='/migrate/ntewiz'>NTEWiz Migration Tool</> - move your saved NTEWiz characters, arcs, inventory, stamina, and pull history straight into Chiz.Pink without needing a backup file",
+		"<tag>NEW</> NTEWiz backup JSON imports now include your pull history too (migrated pulls show an NTEWiz tag in place of dice rolls)",
+		"<tag color='#ffbd47'>FIX</> Splash screen cards no longer overlap page toolbars and intro boxes",
+	],
 }
