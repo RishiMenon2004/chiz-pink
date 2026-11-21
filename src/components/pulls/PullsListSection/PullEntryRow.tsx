@@ -1,6 +1,13 @@
 "use client"
 
-import { CSSProperties, ReactNode, useMemo, useRef, useState } from "react"
+import {
+	CSSProperties,
+	ReactNode,
+	useEffect,
+	useMemo,
+	useRef,
+	useState,
+} from "react"
 import Image from "next/image"
 
 import type { MiracleBoxPull, ScarboroughFairPull } from "@/types/pulls"
@@ -28,7 +35,108 @@ import styles from "./pullsListSection.module.css"
 
 const HOLD_MS = 500
 const HOLD_SLOP = 10
+const GHOST_CLICK_MS = 450
 const TOOLTIP_OFFSET = { x: 32, y: 0 }
+
+// Lifting the finger that just opened the lifted editor fires touchend and
+// then synthesized mouse/click events at the same coordinates, which now sit
+// over the editor's inputs (e.g. the item name field). Suppress that release
+// until the press finishes, disarming immediately on any new press.
+let releaseGuardCleanup: (() => void) | null = null
+
+function swallowHoldRelease(pointerId: number | null) {
+	releaseGuardCleanup?.()
+
+	let released = pointerId === null
+	let releaseTimer: number | null = null
+
+	const cleanup = () => {
+		if (releaseTimer !== null) {
+			window.clearTimeout(releaseTimer)
+			releaseTimer = null
+		}
+		window.removeEventListener("touchend", onTouchEnd, true)
+		window.removeEventListener("touchcancel", onRelease, true)
+		window.removeEventListener("pointerup", onPointerRelease, true)
+		window.removeEventListener("pointercancel", onPointerRelease, true)
+		window.removeEventListener("pointerdown", onNewPointerDown, true)
+		window.removeEventListener("touchstart", onNewTouchStart, true)
+		window.removeEventListener("contextmenu", onContextMenu, true)
+		window.removeEventListener("mousedown", onMouseEvent, true)
+		window.removeEventListener("mouseup", onMouseEvent, true)
+		window.removeEventListener("click", onMouseEvent, true)
+		window.removeEventListener("blur", cleanup)
+		if (releaseGuardCleanup === cleanup) releaseGuardCleanup = null
+	}
+
+	const scheduleCleanup = () => {
+		released = true
+		if (releaseTimer === null) {
+			releaseTimer = window.setTimeout(cleanup, GHOST_CLICK_MS)
+		}
+	}
+
+	const onTouchEnd = (e: TouchEvent) => {
+		if (e.cancelable) e.preventDefault()
+		if (e.touches.length === 0) scheduleCleanup()
+	}
+
+	const onRelease = () => {
+		scheduleCleanup()
+	}
+
+	const onPointerRelease = (e: PointerEvent) => {
+		if (pointerId === null || e.pointerId === pointerId) {
+			scheduleCleanup()
+		}
+	}
+
+	const onNewPointerDown = (e: PointerEvent) => {
+		if (released || (e.isPrimary && e.pointerId !== pointerId)) {
+			cleanup()
+		}
+	}
+
+	const onNewTouchStart = (e: TouchEvent) => {
+		if (released || e.touches.length === 1) {
+			cleanup()
+		}
+	}
+
+	const onContextMenu = (e: MouseEvent) => {
+		if (!released) {
+			e.preventDefault()
+			e.stopPropagation()
+			e.stopImmediatePropagation()
+		}
+	}
+
+	const onMouseEvent = (e: MouseEvent) => {
+		e.preventDefault()
+		e.stopPropagation()
+		e.stopImmediatePropagation()
+		if (e.type === "click") cleanup()
+	}
+
+	if (released) scheduleCleanup()
+
+	window.addEventListener("touchend", onTouchEnd, {
+		capture: true,
+		passive: false,
+	})
+	window.addEventListener("touchcancel", onRelease, true)
+	window.addEventListener("pointerup", onPointerRelease, true)
+	window.addEventListener("pointercancel", onPointerRelease, true)
+	window.addEventListener("pointerdown", onNewPointerDown, true)
+	window.addEventListener("touchstart", onNewTouchStart, true)
+	window.addEventListener("contextmenu", onContextMenu, true)
+	window.addEventListener("mousedown", onMouseEvent, true)
+	window.addEventListener("mouseup", onMouseEvent, true)
+	window.addEventListener("click", onMouseEvent, true)
+	window.addEventListener("blur", cleanup)
+
+	releaseGuardCleanup = cleanup
+}
 
 export type PullActions = {
 	onMenu: (pull: Pull, anchor: HTMLElement, x: number, y: number) => void
@@ -84,13 +192,26 @@ export function PullEntry({
 	const t = useT()
 	const { Tooltip, showTooltip, hideTooltip } = useTooltip()
 	const [hoveringManualTag, setHoveringManualTag] = useState(false)
-	const hold = useRef<{ timer: number; x: number; y: number; fired: boolean } | null>(null)
+	const hold = useRef<{
+		timer: number
+		pointerId: number
+		x: number
+		y: number
+		fired: boolean
+	} | null>(null)
 	const lastPointer = useRef<string>("mouse")
 
 	const cancelHold = () => {
 		if (hold.current) window.clearTimeout(hold.current.timer)
 		hold.current = null
 	}
+
+	useEffect(() => {
+		return () => {
+			if (hold.current) window.clearTimeout(hold.current.timer)
+			hold.current = null
+		}
+	}, [])
 
 	const { selectedBanner, gachaBanners } = usePullTrackerContext()
 	const {
@@ -164,14 +285,19 @@ export function PullEntry({
 				onPointerDown={(e) => {
 					lastPointer.current = e.pointerType
 					if (!actions || e.pointerType === "mouse") return
-					const anchor = e.currentTarget
 					cancelHold()
+					if (!e.isPrimary) return
+					const anchor = e.currentTarget
+					const { pointerId } = e
 					hold.current = {
+						pointerId,
 						x: e.clientX,
 						y: e.clientY,
 						fired: false,
 						timer: window.setTimeout(() => {
 							if (hold.current) hold.current.fired = true
+							hideTooltip()
+							swallowHoldRelease(pointerId)
 							actions.onEdit(pull, anchor)
 						}, HOLD_MS),
 					}
@@ -180,12 +306,18 @@ export function PullEntry({
 					const start = hold.current
 					if (
 						start &&
+						!start.fired &&
+						start.pointerId === e.pointerId &&
 						Math.hypot(e.clientX - start.x, e.clientY - start.y) > HOLD_SLOP
 					)
 						cancelHold()
 				}}
-				onPointerUp={cancelHold}
-				onPointerCancel={cancelHold}
+				onPointerUp={(e) => {
+					if (hold.current?.pointerId === e.pointerId) cancelHold()
+				}}
+				onPointerCancel={(e) => {
+					if (hold.current?.pointerId === e.pointerId) cancelHold()
+				}}
 				onContextMenu={(e) => {
 					if (!actions) return
 					e.preventDefault()
@@ -193,7 +325,9 @@ export function PullEntry({
 					// Long-press on touch also raises contextmenu; edit instead.
 					if (lastPointer.current !== "mouse") {
 						if (!hold.current?.fired) {
+							const activePointerId = hold.current?.pointerId ?? null
 							cancelHold()
+							swallowHoldRelease(activePointerId)
 							actions.onEdit(pull, e.currentTarget)
 						}
 						return
