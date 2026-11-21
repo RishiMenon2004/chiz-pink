@@ -7,6 +7,7 @@ import { dismissToolIntro } from "@/helpers/toolIntro"
 import { safeParse } from "@/helpers/dataCorruption"
 import * as idbStorage from "@/helpers/storage/idbStorage"
 import * as memoryStorage from "@/helpers/storage/memoryStorage"
+import { reportStorageWriteError } from "@/helpers/storage/storageError"
 import type { Inventory, StoredInventoryItem } from "@/types/inventory"
 
 // Inventory lives in IndexedDB's normalized `inventory` store (one row per
@@ -35,12 +36,13 @@ function writeLegacyBlob(inventory: Inventory) {
 		window.localStorage.setItem(LEGACY_KEY, JSON.stringify(inventory))
 	} catch (error) {
 		console.error("localStorage fallback write failed for inventory", error)
+		reportStorageWriteError()
 	}
 }
 
 memoryStorage.onCustomBroadcast(INVENTORY_BROADCAST_CHANNEL, (payload) => {
 	cachedInventory = payload as Inventory
-	memoryStorage.notifyListeners()
+	memoryStorage.notifyListeners(INVENTORY_BROADCAST_CHANNEL)
 })
 
 // Bootstraps the inventory cache from IndexedDB. Safe to call more than
@@ -53,7 +55,7 @@ export async function hydrateInventoryCache(): Promise<void> {
 
 	if (memoryStorage.isFallbackMode() || !idbStorage.isIndexedDBAvailable()) {
 		cachedInventory = readLegacyBlob()
-		memoryStorage.notifyListeners()
+		memoryStorage.notifyListeners(INVENTORY_BROADCAST_CHANNEL)
 		return
 	}
 
@@ -62,7 +64,7 @@ export async function hydrateInventoryCache(): Promise<void> {
 		const next: Inventory = {}
 		for (const row of rows) next[row.id] = row.amount
 		cachedInventory = next
-		memoryStorage.notifyListeners()
+		memoryStorage.notifyListeners(INVENTORY_BROADCAST_CHANNEL)
 	} catch (error) {
 		console.error("IndexedDB inventory hydration failed", error)
 	}
@@ -83,12 +85,12 @@ export function updateInventory(data: Inventory) {
 		)
 		idbStorage.putInventoryItems(rows).catch((error) => {
 			console.error("IndexedDB write-through failed for inventory", error)
+			reportStorageWriteError()
 		})
 		memoryStorage.broadcastCustom(INVENTORY_BROADCAST_CHANNEL, cachedInventory)
 	}
 
-	// setItem("lastUpdated", ...) notifies this tab's subscribers - see
-	// memoryStorage.notifyListeners()'s doc comment.
+	memoryStorage.notifyListeners(INVENTORY_BROADCAST_CHANNEL)
 	memoryStorage.setItem("lastUpdated", Date.now())
 }
 
@@ -108,10 +110,12 @@ export function replaceInventory(data: Inventory) {
 		)
 		idbStorage.replaceAllInventory(rows).catch((error) => {
 			console.error("IndexedDB replace failed for inventory", error)
+			reportStorageWriteError()
 		})
 		memoryStorage.broadcastCustom(INVENTORY_BROADCAST_CHANNEL, data)
 	}
 
+	memoryStorage.notifyListeners(INVENTORY_BROADCAST_CHANNEL)
 	memoryStorage.setItem("lastUpdated", Date.now())
 }
 
@@ -120,7 +124,7 @@ export function clearInventory(): void {
 	if (typeof window === "undefined") return
 
 	cachedInventory = SERVER_FALLBACK
-	memoryStorage.notifyListeners()
+	memoryStorage.notifyListeners(INVENTORY_BROADCAST_CHANNEL)
 
 	if (memoryStorage.isFallbackMode()) {
 		window.localStorage.removeItem(LEGACY_KEY)
@@ -129,6 +133,7 @@ export function clearInventory(): void {
 
 	idbStorage.clearInventory().catch((error) => {
 		console.error("IndexedDB clear failed for inventory", error)
+		reportStorageWriteError()
 	})
 
 	memoryStorage.broadcastCustom(INVENTORY_BROADCAST_CHANNEL, SERVER_FALLBACK)
@@ -149,12 +154,39 @@ const getServerSnapshot = () => {
 	return SERVER_FALLBACK
 }
 
+const subscribeInventory = (listener: () => void) =>
+	memoryStorage.subscribeKey(INVENTORY_BROADCAST_CHANNEL, listener)
+
 export function useInventoryStore() {
 	const inventory = useSyncExternalStore<Inventory>(
-		memoryStorage.subscribe,
+		subscribeInventory,
 		getSnapshot,
 		getServerSnapshot
 	)
 
 	return { inventory, updateInventory }
+}
+
+// Subscribes to a single material's count so edits don't wake unrelated tiles.
+export function useInventoryAmount(materialId: string): number {
+	return useSyncExternalStore(
+		subscribeInventory,
+		() =>
+			typeof window === "undefined"
+				? 0
+				: cachedInventory[materialId] || 0,
+		() => 0
+	)
+}
+
+// Reads the full inventory only while enabled; returns a stable empty object otherwise.
+export function useInventoryWhen(enabled: boolean): Inventory {
+	return useSyncExternalStore(
+		subscribeInventory,
+		() =>
+			enabled && typeof window !== "undefined"
+				? cachedInventory
+				: SERVER_FALLBACK,
+		getServerSnapshot
+	)
 }

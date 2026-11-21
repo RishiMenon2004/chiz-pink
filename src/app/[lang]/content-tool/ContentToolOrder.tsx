@@ -40,7 +40,6 @@ function OrderRow({ item, index }: { item: OrderItem; index: number }) {
 	return (
 		<div ref={ref} className={reorderStyles.item}>
 			{item.icon ? (
-				// eslint-disable-next-line @next/next/no-img-element
 				<img className={`inset-control ${reorderStyles.itemIcon}`} src={item.icon} alt="" />
 			) : (
 				<span className={`inset-control ${reorderStyles.itemIcon} ${styles.orderNoIcon}`} />

@@ -1,13 +1,16 @@
-const CACHE_VERSION = "v13"
+const CACHE_VERSION = "v14"
 const SHELL_CACHE = `chiz-pink-shell-${CACHE_VERSION}`
 const RUNTIME_CACHE = `chiz-pink-runtime-${CACHE_VERSION}`
 const CURRENT_CACHES = [SHELL_CACHE, RUNTIME_CACHE]
+const MAX_RUNTIME_ENTRIES = 300
 
+// Keep in sync with LOCALES / DEFAULT_LOCALE in src/helpers/locale.ts.
+const DEFAULT_LOCALE = "en"
+const NON_DEFAULT_LOCALES = ["pt-BR"]
 const OFFLINE_URL = "/offline"
 
-// Core routes + fallback page. Dynamic routes (/characters/[id], /arcs/[id])
-// are cached lazily as the user visits them via the navigate handler below.
-const APP_SHELL_URLS = [
+// Core routes localized at install; dynamic routes are cached on visit.
+const APP_SHELL_ROUTES = [
 	"/",
 	"/checklist",
 	"/planner",
@@ -15,9 +18,15 @@ const APP_SHELL_URLS = [
 	"/planner/arcs",
 	"/pulls",
 	"/inventory",
+	"/characters",
+	"/arcs",
 	"/settings",
 	"/privacy",
 	OFFLINE_URL,
+]
+
+// Shared static assets.
+const APP_SHELL_ASSETS = [
 	"/app_icon.png",
 	"/favicon.png",
 
@@ -90,25 +99,89 @@ const APP_SHELL_URLS = [
 	"/cursors/sort.png",
 ]
 
+function localizePath(path, locale) {
+	if (!locale || locale === DEFAULT_LOCALE) return path
+	return path === "/" ? `/${locale}` : `/${locale}${path}`
+}
+
+function localeFromPath(pathname) {
+	const segment = pathname.split("/")[1] || ""
+	return NON_DEFAULT_LOCALES.includes(segment) ? segment : DEFAULT_LOCALE
+}
+
+// Clear the redirected flag so browsers accept cached navigation responses.
+async function cleanResponse(response) {
+	if (!response.redirected) return response
+	const body = await response.blob()
+	return new Response(body, {
+		status: response.status,
+		statusText: response.statusText,
+		headers: response.headers,
+	})
+}
+
+// Fetch a route and cache it under its resolved pathname.
+async function precacheRoute(cache, url) {
+	const response = await fetch(url)
+	if (!response.ok) {
+		throw new Error(`HTTP ${response.status} for ${url}`)
+	}
+	const finalPath = new URL(response.url).pathname
+	const clean = await cleanResponse(response)
+	await cache.put(finalPath, clean)
+	return finalPath
+}
+
+// Precache shell routes for a locale, probing OFFLINE_URL first on install.
+async function precacheRoutesForLocale(cache, locale) {
+	let resolvedLocale = locale
+	const cachedPaths = new Set()
+
+	// Cache the offline fallback first, on its own -- this is the last
+	// resort every failed navigation falls back to, so it has to exist.
+	try {
+		const finalOfflinePath = await precacheRoute(
+			cache,
+			localizePath(OFFLINE_URL, resolvedLocale)
+		)
+		cachedPaths.add(finalOfflinePath)
+		if (!resolvedLocale) {
+			resolvedLocale = localeFromPath(finalOfflinePath)
+		}
+	} catch (err) {
+		console.error("Failed to precache offline fallback:", err)
+	}
+
+	// Best-effort for the rest of the shell routes: cache.addAll() is
+	// all-or-nothing, so one flaky/failing URL would otherwise wipe
+	// out the entire precache, silently including the offline page
+	// above. Cache each independently instead.
+	const routeResults = await Promise.allSettled(
+		APP_SHELL_ROUTES.filter((route) => route !== OFFLINE_URL).map((route) => {
+			const target = localizePath(route, resolvedLocale)
+			return precacheRoute(cache, target).catch((err) => {
+				console.error(`Failed to precache ${target}:`, err)
+				throw err
+			})
+		})
+	)
+
+	for (const result of routeResults) {
+		if (result.status === "fulfilled") cachedPaths.add(result.value)
+	}
+
+	return cachedPaths
+}
+
 self.addEventListener("install", (event) => {
 	event.waitUntil(
 		(async () => {
 			const cache = await caches.open(SHELL_CACHE)
 
-			// Cache the offline fallback first, on its own -- this is the last
-			// resort every failed navigation falls back to, so it has to exist.
-			try {
-				await cache.add(OFFLINE_URL)
-			} catch (err) {
-				console.error("Failed to precache offline fallback:", err)
-			}
+			await precacheRoutesForLocale(cache)
 
-			// Best-effort for the rest of the shell: cache.addAll() is
-			// all-or-nothing, so one flaky/failing URL would otherwise wipe
-			// out the entire precache, silently including the offline page
-			// above. Cache each independently instead.
 			await Promise.allSettled(
-				APP_SHELL_URLS.filter((url) => url !== OFFLINE_URL).map((url) =>
+				APP_SHELL_ASSETS.map((url) =>
 					cache.add(url).catch((err) => {
 						console.error(`Failed to precache ${url}:`, err)
 					})
@@ -116,6 +189,48 @@ self.addEventListener("install", (event) => {
 			)
 
 			await self.skipWaiting()
+		})()
+	)
+})
+
+self.addEventListener("message", (event) => {
+	if (event.data?.type !== "LOCALE_CHANGED") return
+	const nextLocale = event.data.locale
+	if (
+		nextLocale !== DEFAULT_LOCALE &&
+		!NON_DEFAULT_LOCALES.includes(nextLocale)
+	) {
+		return
+	}
+
+	event.waitUntil(
+		(async () => {
+			const shellCache = await caches.open(SHELL_CACHE)
+			const runtimeCache = await caches.open(RUNTIME_CACHE)
+
+			// Precache first so an offline switch doesn't clear a working shell.
+			const cachedPaths = await precacheRoutesForLocale(
+				shellCache,
+				nextLocale
+			)
+			if (cachedPaths.size === 0) return
+
+			// Drop stale-locale shell routes unless just cached.
+			const otherLocales = [DEFAULT_LOCALE, ...NON_DEFAULT_LOCALES].filter(
+				(loc) => loc !== nextLocale
+			)
+			await Promise.all(
+				otherLocales.flatMap((loc) =>
+					APP_SHELL_ROUTES.flatMap((route) => {
+						const localized = localizePath(route, loc)
+						if (cachedPaths.has(localized)) return []
+						return [
+							shellCache.delete(localized),
+							runtimeCache.delete(localized),
+						]
+					})
+				)
+			)
 		})()
 	)
 })
@@ -205,12 +320,34 @@ async function cacheFirst(request, cacheName) {
 // have for the *original* /public path (kept warm by staleWhileRevalidate),
 // then the category placeholder, rather than letting the fetch rejection go
 // unhandled.
+let runtimeTrimInFlight = false
+
+// Keeps RUNTIME_CACHE bounded by dropping the oldest entries past the cap.
+async function trimRuntimeCache(cache) {
+	if (runtimeTrimInFlight) return
+	runtimeTrimInFlight = true
+	try {
+		const keys = await cache.keys()
+		const excess = keys.length - MAX_RUNTIME_ENTRIES
+		if (excess > 0) {
+			await Promise.all(keys.slice(0, excess).map((key) => cache.delete(key)))
+		}
+	} finally {
+		runtimeTrimInFlight = false
+	}
+}
+
+async function putRuntime(cache, request, response) {
+	await cache.put(request, response)
+	void trimRuntimeCache(cache)
+}
+
 async function optimizedImage(request, url, cacheName) {
 	try {
 		const response = await fetch(request)
 		if (response.ok) {
 			const cache = await caches.open(cacheName)
-			cache.put(request, response.clone())
+			void putRuntime(cache, request, response.clone())
 		}
 		return response
 	} catch {
@@ -250,7 +387,7 @@ async function staleWhileRevalidate(request, cacheName) {
 	const networkFetch = fetch(request)
 		.then((response) => {
 			if (response.ok) {
-				cache.put(request, response.clone())
+				void putRuntime(cache, request, response.clone())
 			}
 			return response
 		})
@@ -266,8 +403,8 @@ async function networkFirstRSC(request) {
 
 	try {
 		const response = await fetch(request)
-		if (response.ok) {
-			cache.put(request, response.clone())
+		if (response.ok && !response.redirected) {
+			void putRuntime(cache, request, response.clone())
 		}
 		return response
 	} catch {
@@ -280,23 +417,65 @@ async function networkFirstRSC(request) {
 	}
 }
 
+async function matchCachedNavigation(cache, request, url) {
+	const cached =
+		(await cache.match(request)) ||
+		(await caches.match(request)) ||
+		(url.search ? await caches.match(url.pathname) : null)
+	if (!cached) return null
+	return cleanResponse(cached)
+}
+
+async function matchOfflineFallback(pathname) {
+	const requestLocale = localeFromPath(pathname)
+	const candidates = [
+		localizePath(OFFLINE_URL, requestLocale),
+		...NON_DEFAULT_LOCALES.map((loc) => localizePath(OFFLINE_URL, loc)),
+		OFFLINE_URL,
+	]
+	const seen = new Set()
+
+	for (const candidate of candidates) {
+		if (seen.has(candidate)) continue
+		seen.add(candidate)
+		const match = await caches.match(candidate)
+		if (match) return cleanResponse(match)
+	}
+
+	return null
+}
+
 // Network-first with offline fallback: for page navigations, so users
 // always get fresh content when online, and a cached/offline page when not.
 async function networkFirstNavigation(request) {
 	const cache = await caches.open(RUNTIME_CACHE)
+	const url = new URL(request.url)
 
 	try {
 		const response = await fetch(request)
-		if (response.ok) {
-			cache.put(request, response.clone())
+		if (response.ok && !response.redirected) {
+			void putRuntime(cache, request, response.clone())
 		}
 		return response
 	} catch {
-		const cached =
-			(await cache.match(request)) || (await caches.match(request))
+		const cached = await matchCachedNavigation(cache, request, url)
 		if (cached) return cached
 
-		const offlineFallback = await caches.match(OFFLINE_URL)
+		// Redirect unprefixed offline hits to the cached localized route.
+		if (localeFromPath(url.pathname) === DEFAULT_LOCALE) {
+			for (const loc of NON_DEFAULT_LOCALES) {
+				const localizedPath = localizePath(url.pathname, loc)
+				const localizedMatch = await caches.match(localizedPath)
+				if (localizedMatch) {
+					return Response.redirect(
+						new URL(localizedPath + url.search, self.location.origin).href,
+						302
+					)
+				}
+			}
+		}
+
+		const offlineFallback = await matchOfflineFallback(url.pathname)
 		if (offlineFallback) return offlineFallback
 
 		// Last resort: never hand the browser Response.error() here, since

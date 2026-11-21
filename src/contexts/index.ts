@@ -1,6 +1,7 @@
 "use client"
 
 import {
+	ChangeEvent,
 	createContext,
 	createElement,
 	Dispatch,
@@ -23,7 +24,7 @@ import type {
 import type { CharacterRecord, WeaponRecord } from "@/types/planner"
 import { SettingsRecord } from "@/types/settings"
 import { PullsRecord, MiracleBoxPull, ScarboroughFairPull } from "@/types/pulls"
-import type { Messages, Translate } from "@/types/messages"
+import type { PartialMessages, Translate } from "@/types/messages"
 import { EventData } from "@/data/activities/events"
 
 import type { Locale } from "@/helpers/locale"
@@ -44,6 +45,18 @@ export function usePlannerMaterialsContext() {
 	return useContext(PlannerMaterialsContext)
 }
 
+export type CharacterSkillChangeHandlers = [
+	(
+		e: ChangeEvent<HTMLSelectElement>,
+		ability?: keyof CharacterRecord["abilitySet"]
+	) => void,
+	(
+		e: ChangeEvent<HTMLSelectElement>,
+		ability?: keyof CharacterRecord["abilitySet"]
+	) => void,
+	(ability: keyof CharacterRecord["abilitySet"]) => void,
+]
+
 export const PlannerBoxContext = createContext<{
 	itemRecord: CharacterRecord | WeaponRecord
 	entryIndex: number
@@ -51,8 +64,7 @@ export const PlannerBoxContext = createContext<{
 	toggleDisable: (e: MouseEvent<HTMLElement>) => void
 	handleEnhancement: (e: MouseEvent<HTMLElement>) => void
 	handleDelete: (e: MouseEvent<HTMLElement>) => void
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	changeHandlers: Array<(...args: any[]) => void>
+	changeHandlers?: CharacterSkillChangeHandlers
 	dragRef: (element: Element | null) => void
 }>(null!)
 export function usePlannerBoxContext() {
@@ -106,12 +118,17 @@ export function useMaterialAdjustmentContext() {
 	return useContext(MatAdjustmentContext)
 }
 
-export const CloudSyncContext = createContext<{
+export type CloudSyncContextValue = {
 	status: "idle" | "syncing" | "synced" | "error"
 	lastSyncedAt: number | null
 	latestBackupUpdatedAt: number | null
 	syncNow: () => void
-}>(null!)
+	deleteCloudBackup: (args: Record<string, never>) => Promise<unknown>
+	deleteGachaBackup: (args: Record<string, never>) => Promise<unknown>
+	markUnlinked: (args: Record<string, never>) => Promise<unknown>
+}
+
+export const CloudSyncContext = createContext<CloudSyncContextValue>(null!)
 export function useCloudSyncContext() {
 	return useContext(CloudSyncContext)
 }
@@ -174,16 +191,17 @@ export const CalendarContext = createContext<{
 	calendarEnd: number
 	now: number | null
 	scrollToPos: (el: HTMLElement, behavior?: ScrollBehavior) => Promise<void>
+	observeEventVisible: (el: HTMLElement, onVisible: () => void) => () => void
 }>(null!)
 
 export function useCalendarContext() {
 	return useContext(CalendarContext)
 }
 
-// The page's language and its messages (already merged with the English
-// fallback by getMessages() in the layout).
+// The page's language and its active message subset.
 export const LocaleContext = createContext<{
 	locale: Locale
+	messages: PartialMessages
 	t: Translate
 }>(null!)
 
@@ -193,15 +211,35 @@ export function LocaleProvider({
 	children,
 }: {
 	locale: Locale
-	messages: Messages
+	messages: PartialMessages
 	children: ReactNode
 }) {
 	const value = useMemo(
-		() => ({ locale, t: createTranslator(messages, locale) }),
+		() => ({ locale, messages, t: createTranslator(messages, locale) }),
 		[locale, messages],
 	)
 
 	// createElement rather than JSX: this file is .ts.
+	return createElement(LocaleContext, { value }, children)
+}
+
+export function LocaleMessagesProvider({
+	messages,
+	children,
+}: {
+	messages: PartialMessages
+	children: ReactNode
+}) {
+	const parent = useContext(LocaleContext)
+	const value = useMemo(() => {
+		const merged = { ...parent.messages, ...messages }
+		return {
+			locale: parent.locale,
+			messages: merged,
+			t: createTranslator(merged, parent.locale),
+		}
+	}, [parent, messages])
+
 	return createElement(LocaleContext, { value }, children)
 }
 

@@ -1,12 +1,14 @@
 "use client"
 
+import { useMemo } from "react"
+
 import type { Material } from "@/types/item"
 import type { Inventory } from "@/types/inventory"
 import type { AggregateMaterialsType } from "@/types/planner"
 
 import { EnumRarity, EnumMaterialType } from "@/data/items"
 
-import { useInventoryFilters, useInventoryStore } from "@/hooks"
+import { useInventoryFilters, useInventoryWhen } from "@/hooks"
 import { getAggregatedMaterials, usePlannerStore } from "@/hooks/usePlannerStore"
 
 import { getRarityName } from "@/helpers"
@@ -37,7 +39,13 @@ export function EmptyFilterNotice({ onReset }: { onReset: () => void }) {
 	)
 }
 
-export function RarityGroup({ materials }: { materials: Material[] }) {
+export function RarityGroup({
+	materials,
+	aggregatedMaterials,
+}: {
+	materials: Material[]
+	aggregatedMaterials: AggregateMaterialsType
+}) {
 	const ranks = Object.entries(EnumRarity)
 		.filter((v) => typeof v[1] === "number")
 		.reverse()
@@ -54,7 +62,11 @@ export function RarityGroup({ materials }: { materials: Material[] }) {
 					<MaterialGroup
 						key={rarity[1]}
 						title={getRarityName(Number(rarity[1]))}>
-						<MaterialList materials={filteredRarity} inset />
+						<MaterialList
+							materials={filteredRarity}
+							aggregatedMaterials={aggregatedMaterials}
+							inset
+						/>
 					</MaterialGroup>
 				)
 			})}
@@ -62,7 +74,13 @@ export function RarityGroup({ materials }: { materials: Material[] }) {
 	)
 }
 
-export function TypeGroup({ materials }: { materials: Material[] }) {
+export function TypeGroup({
+	materials,
+	aggregatedMaterials,
+}: {
+	materials: Material[]
+	aggregatedMaterials: AggregateMaterialsType
+}) {
 	const types = Object.values(EnumMaterialType)
 
 	return (
@@ -75,7 +93,11 @@ export function TypeGroup({ materials }: { materials: Material[] }) {
 
 				return (
 					<MaterialGroup key={type} title={type}>
-						<MaterialList materials={filteredType} inset />
+						<MaterialList
+							materials={filteredType}
+							aggregatedMaterials={aggregatedMaterials}
+							inset
+						/>
 					</MaterialGroup>
 				)
 			})}
@@ -86,9 +108,11 @@ export function TypeGroup({ materials }: { materials: Material[] }) {
 export function OwnedGroup({
 	materials,
 	inventoryStore,
+	aggregatedMaterials,
 }: {
 	materials: Material[]
 	inventoryStore: Inventory
+	aggregatedMaterials: AggregateMaterialsType
 }) {
 	const t = useT()
 	const ownedMats = materials.filter((mat) => (inventoryStore[mat.id] || 0) > 0)
@@ -106,11 +130,19 @@ export function OwnedGroup({
 					</InfoBox>
 				}
 				title={t("inventory.groups.owned")}>
-				<MaterialList materials={ownedMats} inset />
+				<MaterialList
+					materials={ownedMats}
+					aggregatedMaterials={aggregatedMaterials}
+					inset
+				/>
 			</MaterialGroup>
 			{unownedMats.length > 0 && (
 				<MaterialGroup key="unowned" title={t("inventory.groups.notOwned")}>
-					<MaterialList materials={unownedMats} inset />
+					<MaterialList
+						materials={unownedMats}
+						aggregatedMaterials={aggregatedMaterials}
+						inset
+					/>
 				</MaterialGroup>
 			)}
 		</>
@@ -133,7 +165,7 @@ export function RequiredGroup({
 			},
 			material
 		) => {
-			if (Object.keys(aggregatedMaterials).includes(material.id)) {
+			if (material.id in aggregatedMaterials) {
 				result.requiredMaterials.push(material)
 			} else {
 				result.notRequiredMaterials.push(material)
@@ -155,9 +187,17 @@ export function RequiredGroup({
 						<div>{t("inventory.groups.noRequired")}</div>
 					</InfoBox>
 				}>
-				<MaterialList materials={requiredMaterials} inset />
+				<MaterialList
+					materials={requiredMaterials}
+					aggregatedMaterials={aggregatedMaterials}
+					inset
+				/>
 			</MaterialGroup>
-			<MaterialList key="not required" materials={notRequiredMaterials} />
+			<MaterialList
+				key="not required"
+				materials={notRequiredMaterials}
+				aggregatedMaterials={aggregatedMaterials}
+			/>
 		</>
 	)
 }
@@ -180,7 +220,7 @@ export function AcquiredGroup({
 			},
 			material
 		) => {
-			if (Object.keys(aggregatedMaterials).includes(material.id)) {
+			if (material.id in aggregatedMaterials) {
 				result.requiredMaterials.push(material)
 			} else {
 				result.notRequiredMaterials.push(material)
@@ -231,7 +271,11 @@ export function AcquiredGroup({
 						</div>
 					</InfoBox>
 				}>
-				<MaterialList materials={acquiredMaterials} inset />
+				<MaterialList
+					materials={acquiredMaterials}
+					aggregatedMaterials={aggregatedMaterials}
+					inset
+				/>
 			</MaterialGroup>
 			<MaterialGroup
 				key="required"
@@ -248,15 +292,35 @@ export function AcquiredGroup({
 						</div>
 					</InfoBox>
 				}>
-				<MaterialList materials={notAcquiredMaterials} inset />
+				<MaterialList
+					materials={notAcquiredMaterials}
+					aggregatedMaterials={aggregatedMaterials}
+					inset
+				/>
 			</MaterialGroup>
-			<MaterialList key="not required" materials={notRequiredMaterials} />
+			<MaterialList
+				key="not required"
+				materials={notRequiredMaterials}
+				aggregatedMaterials={aggregatedMaterials}
+			/>
 		</>
 	)
 }
 
-export function DefaultGroup({ materials }: { materials: Material[] }) {
-	return <MaterialList key="default" materials={materials} />
+export function DefaultGroup({
+	materials,
+	aggregatedMaterials,
+}: {
+	materials: Material[]
+	aggregatedMaterials: AggregateMaterialsType
+}) {
+	return (
+		<MaterialList
+			key="default"
+			materials={materials}
+			aggregatedMaterials={aggregatedMaterials}
+		/>
+	)
 }
 
 export function GroupedInventory({
@@ -264,35 +328,53 @@ export function GroupedInventory({
 }: {
 	onResetFilters: () => void
 }) {
-	const { inventory: inventoryStore } = useInventoryStore()
 	const { plannerData } = usePlannerStore()
 
 	const { filter, rarityFilter, sort, group, sortReverse } =
 		useInventoryFilterContext()
 
+	const inventoryStore = useInventoryWhen(
+		group === "owned" || group === "acquired"
+	)
+
+	const aggregatedMaterials = useMemo(
+		() => getAggregatedMaterials(plannerData),
+		[plannerData]
+	)
+
 	const filteredMaterials = useInventoryFilters(
 		filter,
 		rarityFilter,
 		sort,
-		sortReverse
+		sortReverse,
+		aggregatedMaterials
 	)
 
 	if (filteredMaterials.length <= 0) {
 		return <EmptyFilterNotice onReset={onResetFilters} />
 	}
 
-	const aggregatedMaterials = getAggregatedMaterials(plannerData)
-
 	switch (group) {
 		case "rarity":
-			return <RarityGroup materials={filteredMaterials} />
+			return (
+				<RarityGroup
+					materials={filteredMaterials}
+					aggregatedMaterials={aggregatedMaterials}
+				/>
+			)
 		case "type":
-			return <TypeGroup materials={filteredMaterials} />
+			return (
+				<TypeGroup
+					materials={filteredMaterials}
+					aggregatedMaterials={aggregatedMaterials}
+				/>
+			)
 		case "owned":
 			return (
 				<OwnedGroup
 					materials={filteredMaterials}
 					inventoryStore={inventoryStore}
+					aggregatedMaterials={aggregatedMaterials}
 				/>
 			)
 		case "required":
@@ -312,6 +394,11 @@ export function GroupedInventory({
 			)
 		case "default":
 		default:
-			return <DefaultGroup materials={filteredMaterials} />
+			return (
+				<DefaultGroup
+					materials={filteredMaterials}
+					aggregatedMaterials={aggregatedMaterials}
+				/>
+			)
 	}
 }

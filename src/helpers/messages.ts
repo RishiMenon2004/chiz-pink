@@ -28,6 +28,45 @@ export const getMessages = cache(async function getMessages(
 	return withFallback(en, translated) as Messages
 })
 
+export type MessageNamespace = keyof Messages
+
+export function pickMessages(
+	messages: Messages,
+	namespaces: readonly MessageNamespace[],
+): PartialMessages {
+	const picked: Record<string, unknown> = {}
+	for (const ns of namespaces) {
+		picked[ns] = messages[ns]
+	}
+	return picked as PartialMessages
+}
+
+// Shared namespaces serialized by the root layout; route namespaces load per page.
+export async function getLayoutMessages(
+	locale: Locale,
+): Promise<PartialMessages> {
+	const messages = await getMessages(locale)
+	return {
+		layout: messages.layout,
+		routes: messages.routes,
+		sync: messages.sync,
+		error: messages.error,
+		notFound: messages.notFound,
+		auth: messages.auth,
+		settings: {
+			shared: messages.settings.shared,
+			timers: messages.settings.timers,
+		},
+	}
+}
+
+export async function getPageMessages(
+	locale: Locale,
+	namespaces: readonly MessageNamespace[],
+): Promise<PartialMessages> {
+	return pickMessages(await getMessages(locale), namespaces)
+}
+
 /** t() for server components: `const t = await getTranslator(lang)`. */
 export async function getTranslator(locale: Locale): Promise<Translate> {
 	return createTranslator(await getMessages(locale), locale)

@@ -1,7 +1,7 @@
 "use client"
 
 import { useEffect, useRef, useState } from "react"
-import { useMutation } from "convex/react"
+import { ConvexHttpClient } from "convex/browser"
 
 import { api } from "@convex/_generated/api"
 
@@ -13,10 +13,11 @@ import {
 	isNteExporterData,
 	parseNteExporterImport,
 } from "@/helpers/importNteExporterPulls"
+import { useInitialSyncPending } from "@/helpers/syncGate"
 
 import { useT } from "@/contexts"
 
-import { LocaleLink } from "@/components/layout"
+import { LocaleLink } from "@/components/layout/LocaleLink"
 
 import pageStyles from "@/app/[lang]/pulls/page.module.css"
 import styles from "./externalImport.module.css"
@@ -25,7 +26,7 @@ type Status = "loading" | "ready" | "imported" | "failed"
 
 export function ExternalImport() {
 	const t = useT()
-	const claimDrop = useMutation(api.importDrops.claim)
+	const syncPending = useInitialSyncPending()
 	const [status, setStatus] = useState<Status>("loading")
 	const [results, setResults] = useState<ImportedPullsResult[]>([])
 	const [messages, setMessages] = useState<ImportMessage[]>([])
@@ -43,8 +44,14 @@ export function ExternalImport() {
 		const load = async () => {
 			try {
 				if (!fragment) throw new Error("No drop in the link")
+				const convexUrl = process.env.NEXT_PUBLIC_CONVEX_URL
+				if (!convexUrl) throw new Error("Convex URL is not configured")
 
-				const drop = await claimDrop({ dropId: fragment.dropId })
+				// One-shot HTTP mutation so signed-out visitors don't need a WebSocket.
+				const client = new ConvexHttpClient(convexUrl)
+				const drop = await client.mutation(api.importDrops.claim, {
+					dropId: fragment.dropId,
+				})
 				if (!drop) throw new Error("Drop not found")
 
 				const exports = await decryptDrop(drop, fragment.key)
@@ -63,12 +70,16 @@ export function ExternalImport() {
 			}
 		}
 		load()
-	}, [claimDrop])
+	}, [])
 
 	const importAll = () => {
+		if (syncPending) return
+		const outcomes = results.map((row) => importParsedPulls(row))
+		if (outcomes.some((outcome) => outcome.status === "pending")) return
+
 		setMessages([
 			...messages,
-			...results.flatMap((row) => importParsedPulls(row)),
+			...outcomes.flatMap((outcome) => outcome.messages),
 		])
 		setStatus("imported")
 	}
@@ -130,9 +141,11 @@ export function ExternalImport() {
 			{status === "ready" && (
 				<button
 					className={`pill-button ${styles.action}`}
-					disabled={hasErrors || pullCount === 0}
+					disabled={hasErrors || pullCount === 0 || syncPending}
 					onClick={importAll}>
-					{t("pulls.import.importButton", { count: pullCount })}
+					{syncPending
+						? t("settings.shared.syncStatus.syncing")
+						: t("pulls.import.importButton", { count: pullCount })}
 				</button>
 			)}
 

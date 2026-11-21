@@ -17,6 +17,7 @@ import {
 	isNteExporterData,
 	parseNteExporterImport,
 } from "@/helpers/importNteExporterPulls"
+import { useInitialSyncPending } from "@/helpers/syncGate"
 
 import { usePullTrackerContext, useT } from "@/contexts"
 
@@ -33,6 +34,7 @@ const TABS: Tab[] = ["json", "manual"]
 export function ImportSection() {
 	const t = useT()
 	const { selectedBanner } = usePullTrackerContext()
+	const syncPending = useInitialSyncPending()
 	const baseId = useId()
 	const [tab, setTab] = useState<Tab>("json")
 	const tabRefs = useRef<(HTMLButtonElement | null)[]>([])
@@ -59,8 +61,28 @@ export function ImportSection() {
 	const parseData = useMemo(() => {
 		return (file: File) => {
 			const reader = new FileReader()
+			reader.onerror = () => {
+				console.error("Failed to read pull history file", reader.error)
+				setImportMessages([
+					{
+						message: "pulls.import.messages.readFailed",
+						params: { error: String(reader.error ?? "File read error") },
+						status: "error",
+					},
+				])
+			}
 			reader.onload = () => {
-				const result = reader.result as string
+				if (typeof reader.result !== "string") {
+					setImportMessages([
+						{
+							message: "pulls.import.messages.readFailed",
+							params: { error: "Unreadable file content" },
+							status: "error",
+						},
+					])
+					return
+				}
+				const result = reader.result
 
 				let parsed: unknown = null
 				try {
@@ -96,11 +118,13 @@ export function ImportSection() {
 	}, [])
 
 	const importData = () => {
-		let importResult: ReturnType<typeof importParsedPulls> = []
+		if (syncPending) return
+		let importResult: ImportMessage[] = []
 
 		if (parsedData) {
-			importResult = importParsedPulls(parsedData)
-			importResult = [...parsedData.messages, ...importResult]
+			const outcome = importParsedPulls(parsedData)
+			if (outcome.status === "pending") return
+			importResult = [...parsedData.messages, ...outcome.messages]
 		} else {
 			importResult = [
 				{ message: "pulls.import.messages.parseFailed", status: "error" },
@@ -236,6 +260,7 @@ export function ImportSection() {
 						</div>
 						<button
 							disabled={
+								syncPending ||
 								!parsedData ||
 								parsedData.messages.some(
 									(message) => message.status === "error"
@@ -246,9 +271,11 @@ export function ImportSection() {
 								e.preventDefault()
 								importData()
 							}}>
-							{t("pulls.import.importButton", {
-								count: parsedData?.pulls.length ?? 0,
-							})}
+							{syncPending && parsedData
+								? t("settings.shared.syncStatus.syncing")
+								: t("pulls.import.importButton", {
+										count: parsedData?.pulls.length ?? 0,
+									})}
 						</button>
 					</>
 				) : (

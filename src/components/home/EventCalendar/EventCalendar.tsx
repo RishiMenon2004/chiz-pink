@@ -1,6 +1,6 @@
 "use client"
 
-import { CSSProperties, Ref, useEffect, useMemo, useRef, useState } from "react"
+import { CSSProperties, Ref, useCallback, useEffect, useMemo, useRef, useState } from "react"
 
 import type { MessageKey } from "@/types/messages"
 import type { DayBoundaryMode, MonthChunk } from "@/types/calendar"
@@ -216,6 +216,21 @@ export function EventCalendar() {
 
 	const calendarContainerRef = useRef<HTMLDivElement>(null)
 	const calendarContentRef = useRef<HTMLDivElement>(null)
+	const imageObserverRef = useRef<IntersectionObserver | null>(null)
+	const imageCallbacksRef = useRef(new Map<Element, () => void>())
+
+	// Defer off-screen banner images until the initial scroll lands on today.
+	const observeEventVisible = useCallback(
+		(el: HTMLElement, onVisible: () => void) => {
+			imageCallbacksRef.current.set(el, onVisible)
+			imageObserverRef.current?.observe(el)
+			return () => {
+				imageCallbacksRef.current.delete(el)
+				imageObserverRef.current?.unobserve(el)
+			}
+		},
+		[]
+	)
 
 	useEffect(() => {
 		const container = calendarContainerRef.current
@@ -256,7 +271,7 @@ export function EventCalendar() {
 		"left" | "right" | false
 	>(false)
 
-	const now = useNow()
+	const now = useNow(60_000)
 
 	useEffect(() => {
 		const container = calendarContainerRef.current
@@ -409,14 +424,37 @@ export function EventCalendar() {
 		const content = calendarContentRef.current
 		if (!container || !content) return
 
-		// wait for first load, then scroll to the now marker
+		function startImageObserver() {
+			if (imageObserverRef.current) return
+			const observer = new IntersectionObserver(
+				(entries) => {
+					for (const entry of entries) {
+						if (!entry.isIntersecting) continue
+						const onVisible = imageCallbacksRef.current.get(entry.target)
+						if (onVisible) {
+							imageCallbacksRef.current.delete(entry.target)
+							observer.unobserve(entry.target)
+							onVisible()
+						}
+					}
+				},
+				{ root: container, rootMargin: "0px 300px", threshold: 0 }
+			)
+			imageObserverRef.current = observer
+			for (const el of imageCallbacksRef.current.keys()) {
+				observer.observe(el)
+			}
+		}
+
+		// Jump straight to today before observing so past banners stay unloaded.
 		let didScroll = false
 
 		function tryScrollToNow() {
 			if (didScroll) return
 			if (container!.clientWidth === 0 || content!.offsetWidth === 0) return
-			scrollToNow("smooth")
+			scrollToNow("instant")
 			didScroll = true
+			startImageObserver()
 		}
 
 		tryScrollToNow()
@@ -425,7 +463,11 @@ export function EventCalendar() {
 		observer.observe(container)
 		observer.observe(content)
 
-		return () => observer.disconnect()
+		return () => {
+			observer.disconnect()
+			imageObserverRef.current?.disconnect()
+			imageObserverRef.current = null
+		}
 	}, [calendarOrigin, msPerDay, daySize, nowReady])
 
 	const rows: EventData[][] = []
@@ -523,6 +565,7 @@ export function EventCalendar() {
 						calendarEnd,
 						now,
 						scrollToPos,
+						observeEventVisible,
 					}}>
 					<div
 						ref={calendarContentRef}

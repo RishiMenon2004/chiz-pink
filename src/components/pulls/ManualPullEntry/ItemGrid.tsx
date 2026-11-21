@@ -126,7 +126,6 @@ export const ItemGrid = forwardRef<
 								width={64}
 								height={64}
 								alt={candidate.name}
-								unoptimized
 								className={styles.pickerImage}
 							/>
 							<span className={styles.pickerName} aria-hidden="true">{candidate.name}</span>

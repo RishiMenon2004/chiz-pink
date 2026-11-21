@@ -326,6 +326,7 @@
 		},
 		"currencyBox": {
 			"icon": "Icone de {name}",
+			"edit": "Editar {name}",
 			"source": "{name} Fonte",
 			"need": "Precisa:",
 			"neededFor": "Necessário Por:",
@@ -677,6 +678,12 @@
 				"bRank": "Ranques B",
 				"items": "Itens",
 				"cosmetics": "Cosméticos"
+			},
+			"types": {
+				"character": "Personagem",
+				"arc": "Disco",
+				"item": "Item",
+				"cosmetic": "Cosmético"
 			},
 			"itemLabel": "Item da invocação {number}",
 			"resultLabel": "Resultado da invocação {number}",

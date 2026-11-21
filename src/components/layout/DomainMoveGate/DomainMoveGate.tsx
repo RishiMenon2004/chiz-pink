@@ -30,6 +30,7 @@ import styles from "./domainMoveGate.module.css"
 // No popup handshake within this long means the opener link didn't survive
 // (e.g. an installed PWA opening the popup in a separate browser).
 const HANDSHAKE_TIMEOUT_MS = 15_000
+const CLOSE_GRACE_MS = 300
 
 // Set for the rest of the browser session once they choose to stay, so
 // the prompt doesn't come back on every page load.
@@ -110,6 +111,14 @@ export function DomainMoveGate() {
 
 		let handshakeDone = false
 		let finished = false
+		let closeGraceTimer: ReturnType<typeof setTimeout> | null = null
+
+		const clearCloseGrace = () => {
+			if (closeGraceTimer) {
+				clearTimeout(closeGraceTimer)
+				closeGraceTimer = null
+			}
+		}
 
 		const send = (message: MigrationMessage) =>
 			popupRef.current?.postMessage(message, NEW_ORIGIN)
@@ -125,6 +134,7 @@ export function DomainMoveGate() {
 					break
 				case "done":
 					finished = true
+					clearCloseGrace()
 					memoryStorage.setItem(MIGRATED_KEY, Date.now())
 					// Must be on disk before leaving, or the next visit would
 					// offer the move again.
@@ -133,14 +143,19 @@ export function DomainMoveGate() {
 					break
 				case "error":
 					finished = true
+					clearCloseGrace()
 					setStatus("failed")
 					break
 			}
 		}
 
-		// The popup was closed before finishing: offer the move again.
+		// The popup was closed before finishing: wait a grace tick for in-flight messages.
 		const closedCheck = setInterval(() => {
-			if (!finished && popupRef.current?.closed) setStatus("prompt")
+			if (finished || closeGraceTimer || !popupRef.current?.closed) return
+			closeGraceTimer = setTimeout(() => {
+				closeGraceTimer = null
+				if (!finished) setStatus("prompt")
+			}, CLOSE_GRACE_MS)
 		}, 500)
 		const handshakeTimeout = setTimeout(() => {
 			if (!handshakeDone) setStatus("failed")
@@ -151,6 +166,7 @@ export function DomainMoveGate() {
 			window.removeEventListener("message", handleMessage)
 			clearInterval(closedCheck)
 			clearTimeout(handshakeTimeout)
+			clearCloseGrace()
 		}
 	}, [status])
 

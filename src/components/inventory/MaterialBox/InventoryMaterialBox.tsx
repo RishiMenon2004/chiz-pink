@@ -11,21 +11,22 @@ import {
 } from "react"
 
 import type { Material } from "@/types/item"
+import type { AggregateMaterial } from "@/types/planner"
 
 import { findMaterial, getItemRarityStyle } from "@/data/items"
 import { findItem } from "@/data/items/findItem"
 
 import {
-	useInventoryStore,
-	usePlannerStore,
+	updateInventory,
+	useInventoryAmount,
 	useMaterialEditorModal,
 	useTooltip,
 } from "@/hooks"
-import { getAggregatedMaterial } from "@/hooks/usePlannerStore"
 
 import { getLinkedMaterials } from "@/helpers"
+import { formatLocale } from "@/helpers/locale"
 
-import { useT } from "@/contexts"
+import { useLocale, useT } from "@/contexts"
 
 import { MaterialIcon, QuantityInput } from "@/components/layout"
 import { InventorySelectionBadge } from "../SelectionBadge"
@@ -35,12 +36,15 @@ import pageStyles from "@/app/[lang]/inventory/page.module.css"
 
 export function MaterialItemBox({
 	material,
+	required,
 	canHaveMultiMat = true,
 }: {
 	material: Material
+	required?: AggregateMaterial
 	canHaveMultiMat?: boolean
 }) {
 	const t = useT()
+	const locale = useLocale()
 	const {
 		Tooltip,
 		showTooltip,
@@ -58,15 +62,10 @@ export function MaterialItemBox({
 	)
 
 	const countRef = useRef<HTMLInputElement>(null)
-	const { inventory, updateInventory } = useInventoryStore()
-	const itemQuantity = inventory[material.id] || 0
+	const itemQuantity = useInventoryAmount(material.id)
 
-	const { plannerData } = usePlannerStore()
-	const { amount: requiredQuantity, sources: requiredSources } =
-		getAggregatedMaterial(plannerData, material) || {
-			amount: 0,
-			sources: [],
-		}
+	const requiredQuantity = required?.amount ?? 0
+	const requiredSources = required?.sources ?? {}
 
 	const requiredSorcesList = Object.entries(requiredSources)
 
@@ -230,7 +229,7 @@ export function MaterialItemBox({
 							{t("inventory.material.grantsOneOf")}
 							{material.selectionOptions.map(({ id, amount }) => (
 								<div className="tooltip-source" key={id}>
-									{`${findMaterial(id).name}${amount > 1 ? ` ×${amount.toLocaleString()}` : ""}`}
+									{`${findMaterial(id).name}${amount > 1 ? ` ×${amount.toLocaleString(formatLocale(locale))}` : ""}`}
 								</div>
 							))}
 						</div>

@@ -15,12 +15,12 @@ export { parseDescription } from "./parseDescription"
 
 export { generateNewCharacter } from "./generateNewCharacter"
 
-export { unlinkGoogleAccount } from "./unlinkGoogleAccount"
 export { signInWithGooglePopup } from "./signInWithGooglePopup"
 
 export { isInitialSyncPending, setInitialSyncPending } from "./syncGate"
 
 export {
+	formatMinutesSeconds,
 	formatTimeRemaining,
 	getPixelsRefillTime,
 	getNextPixelRecoveryTime,

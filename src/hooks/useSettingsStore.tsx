@@ -30,7 +30,7 @@ export const SERVER_FALLBACK: SettingsRecord = {
 		server: "SEA",
 		"current-pixels": 240,
 		"max-pixels": 240,
-		"pixels-last-edited": Date.now(),
+		"pixels-last-edited": 0,
 		"current-stamina": 500,
 		"max-stamina": 500,
 		"last-stamina-reset": 0,
@@ -93,39 +93,31 @@ export function useSettingsStore() {
 
 	return {
 		settings,
-		actions: {
-			updateSettings: settingsActions.updateSettings,
-			setConfig: settingsActions.setConfig,
-		},
+		actions: settingsActions,
 	}
 }
 
 export function SettingsProvider({ children }: { children: ReactNode }) {
-	const { settings, actions } = useSettingsStore()
+	const { settings } = useSettingsStore()
 	const { checklist } = useChecklistStore()
 
 	// Depends on syncPending so this retries once the initial Drive check
 	// resolves - the backfill is a no-op while sync is pending, and without
 	// this dependency it would only ever get the one shot on mount.
 	const syncPending = useInitialSyncPending()
+	const needsBackfill =
+		!settings?.appearance || !settings?.behaviour || !settings?.userdata
 
 	useEffect(() => {
-		if (syncPending) return
+		if (syncPending || !needsBackfill) return
 
-		if (
-			!settings?.appearance ||
-			!settings?.behaviour ||
-			!settings?.userdata
-		) {
-			actions.updateSettings(
-				{
-					...SERVER_FALLBACK,
-				},
-				{ silent: true }
-			)
-		}
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [syncPending])
+		settingsActions.updateSettings(
+			{
+				...SERVER_FALLBACK,
+			},
+			{ silent: true }
+		)
+	}, [syncPending, needsBackfill])
 
 	const useCustomCursor = settings.appearance?.["use-cursors"]
 
@@ -148,7 +140,7 @@ export function SettingsProvider({ children }: { children: ReactNode }) {
 				// not a real user edit - shouldn't make local data look newer than
 				// an otherwise-identical Drive backup (see updateSettings' options
 				// param doc comment).
-				actions.setConfig(
+				settingsActions.setConfig(
 					"userdata",
 					{
 						"current-stamina": maxStamina,
@@ -162,7 +154,6 @@ export function SettingsProvider({ children }: { children: ReactNode }) {
 		checkStaminaReset()
 		const interval = setInterval(checkStaminaReset, 30_000)
 		return () => clearInterval(interval)
-		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [syncPending, server, maxStamina, lastStaminaReset])
 
 	useEffect(() => {
@@ -213,7 +204,7 @@ export function SettingsProvider({ children }: { children: ReactNode }) {
 			syncPending ||
 			currentPixels === undefined ||
 			maxPixels === undefined ||
-			pixelsLastEdited === undefined
+			!pixelsLastEdited
 		)
 			return
 
@@ -230,7 +221,7 @@ export function SettingsProvider({ children }: { children: ReactNode }) {
 			// Deterministically re-derivable from elapsed time (see
 			// getRefilledPixelsState), not a real user edit - see the
 			// stamina-reset silent write above for why this matters.
-			actions.setConfig(
+			settingsActions.setConfig(
 				"userdata",
 				{
 					"current-pixels": refilled.current,
@@ -243,7 +234,6 @@ export function SettingsProvider({ children }: { children: ReactNode }) {
 		checkPixelRefill()
 		const interval = setInterval(checkPixelRefill, 30_000)
 		return () => clearInterval(interval)
-		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [syncPending, currentPixels, maxPixels, pixelsLastEdited])
 
 	return (

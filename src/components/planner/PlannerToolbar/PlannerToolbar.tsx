@@ -3,6 +3,7 @@
 import {
 	AddNewArcContext,
 	AddNewCharContext,
+	useLocale,
 	usePlannerSectionContext,
 	useT,
 } from "@/contexts"
@@ -23,14 +24,18 @@ import { PlannerAddCharacterBox } from "../AddCharacterBox"
 import { EnumItemLvls } from "@/data/items"
 import { getAllArcsList } from "@/data/arcs"
 import { WeaponRecord } from "@/types/planner"
-import { useSelectedLayoutSegment } from "next/navigation"
+import { useRouter, useSelectedLayoutSegment } from "next/navigation"
 import { DragDropProvider } from "@dnd-kit/react"
 import { Feedback } from "@dnd-kit/dom"
 import { PlannerReorderBox } from "@/components/layout/ReorderBox/PlannerReorderBox"
 import { getItemStatus } from "@/helpers/bannerStatus"
+import { localizePath } from "@/helpers/locale"
+import { isInitialSyncPending } from "@/helpers/syncGate"
 
 export function PlannerToolbar() {
 	const t = useT()
+	const locale = useLocale()
+	const router = useRouter()
 	const { actions } = usePlannerStore()
 	const { settings, actions: settingsActions } = useSettingsStore()
 
@@ -152,9 +157,17 @@ export function PlannerToolbar() {
 					name={t("planner.toolbar.hybridPlanner")}
 					checked={combinedEnabled}
 					onChange={() => {
+						if (isInitialSyncPending()) return
+						const nextCombined = !combinedEnabled
 						settingsActions.setConfig("appearance", {
-							"use-hybrid-planner": !combinedEnabled,
+							"use-hybrid-planner": nextCombined,
 						})
+						router.replace(
+							localizePath(
+								nextCombined ? "/planner" : "/planner/characters",
+								locale
+							)
+						)
 					}}
 				/>
 			</label>

@@ -3,6 +3,7 @@
 import { safeParse, validateShape } from "@/helpers/dataCorruption"
 
 import * as idbStorage from "./idbStorage"
+import { reportStorageWriteError } from "./storageError"
 
 // Synchronous in-memory cache backing the *Store hooks' getSnapshot(), with
 // async write-through to IndexedDB. See
@@ -45,7 +46,9 @@ type BroadcastEnvelope =
 	| { kind: "custom"; channel: string; payload: unknown }
 
 const cache = new Map<string, unknown>()
-const listeners = new Set<Listener>()
+const globalListeners = new Set<Listener>()
+const keyedListeners = new Map<string, Set<Listener>>()
+const hydrationListeners = new Set<Listener>()
 const writeState = new Map<string, WriteState>()
 const customBroadcastHandlers = new Map<string, (payload: unknown) => void>()
 
@@ -54,24 +57,53 @@ let hydrationStarted = false
 let hydrated = false
 let channel: BroadcastChannel | null = null
 
-function notify() {
-	listeners.forEach((listener) => listener())
+function notifyAll() {
+	globalListeners.forEach((listener) => listener())
+	keyedListeners.forEach((set) => {
+		set.forEach((listener) => listener())
+	})
+	hydrationListeners.forEach((listener) => listener())
 }
 
-// Exposed for storage modules that keep their own cache outside this one
-// (currently just useGachaStore.tsx's normalized pulls cache) but still
-// need to wake the same useSyncExternalStore subscribers - every store
-// already re-runs its own getSnapshot() on any notify and bails out via
-// referential equality when its own key didn't change, so piggybacking on
-// this single global signal is consistent with how every other store
-// already behaves, not a new pattern.
-export function notifyListeners() {
-	notify()
+function notifyKey(key: string) {
+	keyedListeners.get(key)?.forEach((listener) => listener())
+	globalListeners.forEach((listener) => listener())
+}
+
+// Exposed for storage modules with their own caches (inventory, planner, pulls).
+export function notifyListeners(key?: string) {
+	if (key) {
+		notifyKey(key)
+	} else {
+		notifyAll()
+	}
 }
 
 export function subscribe(listener: Listener) {
-	listeners.add(listener)
-	return () => listeners.delete(listener)
+	globalListeners.add(listener)
+	return () => {
+		globalListeners.delete(listener)
+	}
+}
+
+export function subscribeKey(key: string, listener: Listener) {
+	let set = keyedListeners.get(key)
+	if (!set) {
+		set = new Set()
+		keyedListeners.set(key, set)
+	}
+	set.add(listener)
+	return () => {
+		set.delete(listener)
+		if (set.size === 0) keyedListeners.delete(key)
+	}
+}
+
+export function subscribeHydration(listener: Listener) {
+	hydrationListeners.add(listener)
+	return () => {
+		hydrationListeners.delete(listener)
+	}
 }
 
 export function isFallbackMode() {
@@ -100,7 +132,7 @@ function getChannel(): BroadcastChannel | null {
 				} else {
 					cache.set(message.key, message.value)
 				}
-				notify()
+				notifyKey(message.key)
 				return
 			}
 
@@ -169,6 +201,7 @@ async function flushWrite(key: string) {
 		await idbStorage.set(key, cache.get(key))
 	} catch (error) {
 		console.error(`IndexedDB write-through failed for "${key}"`, error)
+		reportStorageWriteError()
 	} finally {
 		state.writing = false
 		if (state.dirty) {
@@ -204,7 +237,7 @@ export function setItem<T>(key: string, value: T): void {
 
 	cache.set(key, value)
 	broadcast(key, value)
-	notify()
+	notifyKey(key)
 	window.dispatchEvent(new Event("local-storage-update"))
 
 	if (fallbackMode) {
@@ -212,6 +245,7 @@ export function setItem<T>(key: string, value: T): void {
 			window.localStorage.setItem(key, JSON.stringify(value))
 		} catch (error) {
 			console.error(`localStorage fallback write failed for "${key}"`, error)
+			reportStorageWriteError()
 		}
 		return
 	}
@@ -250,7 +284,7 @@ export function removeItem(key: string): void {
 
 	cache.delete(key)
 	broadcast(key, undefined)
-	notify()
+	notifyKey(key)
 	window.dispatchEvent(new Event("local-storage-update"))
 
 	if (fallbackMode) {
@@ -260,6 +294,7 @@ export function removeItem(key: string): void {
 
 	idbStorage.del(key).catch((error) => {
 		console.error(`IndexedDB delete failed for "${key}"`, error)
+		reportStorageWriteError()
 	})
 }
 
@@ -276,7 +311,7 @@ export async function hydrate(): Promise<void> {
 	if (!idbStorage.isIndexedDBAvailable()) {
 		fallbackMode = true
 		hydrated = true
-		notify()
+		notifyAll()
 		return
 	}
 
@@ -292,5 +327,5 @@ export async function hydrate(): Promise<void> {
 	}
 
 	hydrated = true
-	notify()
+	notifyAll()
 }

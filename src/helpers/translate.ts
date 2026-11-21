@@ -4,7 +4,7 @@ import type { Locale } from "@/helpers/locale"
 import type {
 	MessageKey,
 	MessageParams,
-	Messages,
+	PartialMessages,
 	RichParams,
 	Translate,
 } from "@/types/messages"
@@ -25,7 +25,10 @@ import type {
  *   spans in elements, for sentences with links or emphasis inside them.
  * - A key that doesn't exist comes back as-is, so it's easy to spot.
  */
-export function createTranslator(messages: Messages, locale: Locale): Translate {
+export function createTranslator(
+	messages: PartialMessages,
+	locale: Locale,
+): Translate {
 	const plurals = new Intl.PluralRules(locale)
 
 	function resolve(key: MessageKey, params?: RichParams | MessageParams) {
@@ -57,7 +60,7 @@ export function createTranslator(messages: Messages, locale: Locale): Translate 
 	return t
 }
 
-function lookup(messages: Messages, path: string): string | undefined {
+function lookup(messages: PartialMessages, path: string): string | undefined {
 	let node: unknown = messages
 	for (const part of path.split(".")) {
 		if (typeof node !== "object" || node === null) return undefined

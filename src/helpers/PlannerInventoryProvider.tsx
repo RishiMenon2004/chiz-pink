@@ -20,64 +20,59 @@ export function PlannerInventoryProvider({
 }) {
 	const { inventory: currentInventory } = useInventoryStore()
 
-	const convertedInventory: CumulativeInventory = useMemo(() => {
-		const cumulativeInventory: CumulativeInventory = {}
-
-		Object.entries(currentInventory).forEach(([materialId, amount]) => {
-			cumulativeInventory[materialId] = { amount, craftedAmount: 0 }
-		})
-
-		return cumulativeInventory
-	}, [currentInventory])
-
 	const cumulativeInventory = useMemo(() => {
-		const localInventory = { ...convertedInventory }
-
-		const deductedInventories = [
-			{ ...convertedInventory },
-		] as CumulativeInventory[]
-
+		const remaining: Record<string, number> = { ...currentInventory }
+		const cardSnapshots: CumulativeInventory[] = []
+		const totalsSnapshot: CumulativeInventory = {}
 		const craftedTotals: Record<string, number> = {}
 		const craftedFromTotals: Record<string, Record<string, number>> = {}
 
-		itemRecords.forEach((itemRecord, index) => {
-			if (itemRecord.isDisabled) {
-				deductedInventories.push({ ...localInventory })
-				return
+		for (const itemRecord of itemRecords) {
+			const cardSnapshot: CumulativeInventory = {}
+
+			// Capture pre-card available counts only for materials this card uses.
+			for (const material of itemRecord.requiredMaterials) {
+				if (!(material.id in cardSnapshot)) {
+					cardSnapshot[material.id] = {
+						amount: remaining[material.id] ?? 0,
+						craftedAmount: 0,
+					}
+				}
+				if (!(material.id in totalsSnapshot)) {
+					totalsSnapshot[material.id] = {
+						amount: currentInventory[material.id] ?? 0,
+						craftedAmount: 0,
+					}
+				}
 			}
-			itemRecord.requiredMaterials.forEach((material) => {
-				const inventoryAmount = localInventory[material.id]?.amount || 0
-				const remainingAmount = Math.max(
+
+			if (itemRecord.isDisabled) {
+				cardSnapshots.push(cardSnapshot)
+				continue
+			}
+
+			for (const material of itemRecord.requiredMaterials) {
+				const inventoryAmount = remaining[material.id] ?? 0
+				remaining[material.id] = Math.max(
 					0,
 					inventoryAmount - material.amount
 				)
 
-				localInventory[material.id] = {
-					amount: remainingAmount,
-					craftedAmount: 0,
-				}
-
 				const matData = findMaterial(material.id)
-
-				const stillNeededAmount = Math.max(
+				let remainingDeficiency = Math.max(
 					0,
 					material.amount - inventoryAmount
 				)
-
-				let remainingDeficiency = stillNeededAmount
 				let totalCraftedAmount = 0
 				const craftedFrom: { id: string; amount: number }[] = []
 
 				for (const lowerMaterial of getCraftSources(matData)) {
 					if (remainingDeficiency <= 0) break
 
-					const lowerMaterialRemaining =
-						localInventory[lowerMaterial.id]?.amount ?? 0
-
+					const lowerMaterialRemaining = remaining[lowerMaterial.id] ?? 0
 					if (lowerMaterialRemaining <= 0) continue
 
 					const craftRatio = getCraftRatio(matData, lowerMaterial)
-
 					const craftableAmount = Math.floor(
 						lowerMaterialRemaining / craftRatio
 					)
@@ -89,12 +84,7 @@ export function PlannerInventoryProvider({
 					remainingDeficiency -= usableCraftedAmount
 					totalCraftedAmount += usableCraftedAmount
 
-					// Only consume what was actually crafted — even when this
-					// lower material couldn't fully cover the deficit, any
-					// genuine leftover must stay available for other
-					// materials/items later in the sequence to use.
-					// Selection boxes open whole (craftRatio < 1), so round up
-					// and keep whatever the last box gave beyond the deficit.
+					// Selection boxes open whole (craftRatio < 1), keeping any surplus.
 					const consumedAmount = Math.ceil(
 						usableCraftedAmount * craftRatio - 1e-9
 					)
@@ -102,10 +92,8 @@ export function PlannerInventoryProvider({
 						Math.round(consumedAmount / craftRatio) - usableCraftedAmount
 
 					if (surplusAmount > 0) {
-						localInventory[material.id] = {
-							amount: localInventory[material.id].amount + surplusAmount,
-							craftedAmount: 0,
-						}
+						remaining[material.id] =
+							(remaining[material.id] ?? 0) + surplusAmount
 					}
 
 					if (consumedAmount > 0) {
@@ -115,19 +103,15 @@ export function PlannerInventoryProvider({
 						})
 					}
 
-					localInventory[lowerMaterial.id] = {
-						amount: Math.max(
-							0,
-							lowerMaterialRemaining - consumedAmount
-						),
-						craftedAmount: 0,
-					}
+					remaining[lowerMaterial.id] = Math.max(
+						0,
+						lowerMaterialRemaining - consumedAmount
+					)
 				}
 
 				if (totalCraftedAmount > 0) {
-					const prevInventory = deductedInventories[index]
-					prevInventory[material.id] = {
-						...prevInventory[material.id],
+					cardSnapshot[material.id] = {
+						...cardSnapshot[material.id],
 						craftedAmount: totalCraftedAmount,
 						craftedFrom,
 					}
@@ -138,29 +122,28 @@ export function PlannerInventoryProvider({
 					const fromTotals =
 						craftedFromTotals[material.id] ??
 						(craftedFromTotals[material.id] = {})
-					craftedFrom.forEach(({ id, amount }) => {
+					for (const { id, amount } of craftedFrom) {
 						fromTotals[id] = (fromTotals[id] ?? 0) + amount
-					})
+					}
 				}
-			})
+			}
 
-			deductedInventories.push({ ...localInventory })
-		})
+			cardSnapshots.push(cardSnapshot)
+		}
 
-		const totalsSnapshot: CumulativeInventory = { ...convertedInventory }
-		Object.entries(craftedTotals).forEach(([materialId, amount]) => {
+		for (const [materialId, amount] of Object.entries(craftedTotals)) {
 			totalsSnapshot[materialId] = {
-				...totalsSnapshot[materialId],
 				amount: totalsSnapshot[materialId]?.amount ?? 0,
 				craftedAmount: amount,
 				craftedFrom: Object.entries(
 					craftedFromTotals[materialId] ?? {}
 				).map(([id, amt]) => ({ id, amount: amt })),
 			}
-		})
+		}
 
-		return [...deductedInventories, totalsSnapshot]
-	}, [convertedInventory, itemRecords])
+		cardSnapshots.push(totalsSnapshot)
+		return cardSnapshots
+	}, [currentInventory, itemRecords])
 
 	return (
 		<PlannerMaterialsContext.Provider value={cumulativeInventory}>

@@ -9,6 +9,7 @@ import {
 	getMetadataTranslator,
 	rankForIntro,
 } from "@/helpers/metadata"
+import { PageMessages } from "@/helpers/PageMessages"
 
 import { ArcProfile } from "@/components/profile"
 
@@ -63,5 +64,9 @@ export default async function ArcInfoPage({ params }: Props) {
 		notFound()
 	}
 
-	return <ArcProfile arc={arc} locale={toLocale(lang)} />
+	return (
+		<PageMessages lang={lang} namespaces={["profile"]}>
+			<ArcProfile arc={arc} locale={toLocale(lang)} />
+		</PageMessages>
+	)
 }

@@ -21,7 +21,7 @@ import { CharacterAvatar, CharacterElement } from "@/components/layout/Character
 
 import { useT } from "@/contexts"
 
-import { LocaleLink } from "@/components/layout"
+import { LocaleLink } from "@/components/layout/LocaleLink"
 
 import styles from "./DashFeaturedCarousel.module.css"
 
@@ -31,7 +31,7 @@ const SWIPE_THRESHOLD = 40
 
 function BannerTiming({ character }: { character: Character }) {
 	const t = useT()
-	const now = useNow()
+	const now = useNow(60_000)
 	if (now === null) return null
 
 	const banner = getCharacterActiveBanner(character.id, now)
@@ -74,12 +74,6 @@ function Slide({
 			className={`${styles.slide} ${getItemRarityStyle(character)}`}
 			data-active={active}
 			inert={!active}
-			aria-label={t(
-				status === "preview"
-					? "home.featuredCarousel.slidePreview"
-					: "home.featuredCarousel.slideFeatured",
-				{ name: character.name }
-			)}
 			style={themeColor ? ({ "--theme-color": themeColor } as CSSProperties) : undefined}
 			onPointerEnter={onPointerEnter}
 			onPointerLeave={onPointerLeave}>
@@ -100,7 +94,8 @@ function Slide({
 					width={1080}
 					height={1280}
 					sizes="(max-width: 800px) 70vw, 30vw"
-					priority={active}
+					loading={active ? "eager" : "lazy"}
+					fetchPriority={active ? "high" : undefined}
 				/>
 			</div>
 			<div className={styles.info}>

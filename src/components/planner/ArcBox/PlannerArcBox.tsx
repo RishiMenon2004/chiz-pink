@@ -1,12 +1,6 @@
 "use client"
 
-import {
-	ChangeEvent,
-	CSSProperties,
-	MouseEvent,
-	useEffect,
-	useState,
-} from "react"
+import { ChangeEvent, CSSProperties, MouseEvent, useState } from "react"
 import { createPortal } from "react-dom"
 
 import { useSortable } from "@dnd-kit/react/sortable"
@@ -84,11 +78,7 @@ export function PlannerArcBox({
 		showModal: showFinalAdjustmenModal,
 	} = useMaterialEditorModal(plannerBoxStyles.modalMaterialBoxContainer)
 
-	const [currentLvl, setCurrentLvl] = useState<EnumItemLvls>(
-		arcRecord.currentLvl
-	)
-	const [targetLvl, setTargetLvl] = useState<EnumItemLvls>(arcRecord.targetLvl)
-	const [isDisabled, setIsDisabled] = useState<boolean>(arcRecord.isDisabled)
+	const { currentLvl, targetLvl, isDisabled } = arcRecord
 
 	const LvlOptions = Object.keys(EnumItemLvls)
 		.filter((key) => isNaN(Number(key)))
@@ -135,37 +125,20 @@ export function PlannerArcBox({
 
 	function handleCurrentChange(e: ChangeEvent<HTMLSelectElement>) {
 		const value = Number(e.currentTarget.value)
-		setCurrentLvl(value)
-		if (value > targetLvl) {
-			setTargetLvl(value)
-		}
+		actions.updateWeapon({
+			...arcRecord,
+			currentLvl: value,
+			targetLvl: value > targetLvl ? value : targetLvl,
+		})
 	}
 	function handleTargetChange(e: ChangeEvent<HTMLSelectElement>) {
 		const value = Number(e.currentTarget.value)
-		setTargetLvl(value)
-		if (value < currentLvl) {
-			setCurrentLvl(value)
-		}
-	}
-
-	useEffect(() => {
-		if (
-			currentLvl === arcRecord.currentLvl &&
-			targetLvl === arcRecord.targetLvl &&
-			isDisabled === arcRecord.isDisabled
-		) {
-			return
-		}
-
 		actions.updateWeapon({
 			...arcRecord,
-			currentLvl,
-			targetLvl,
-			isDisabled,
-		} as WeaponRecord)
-		// disable warning because other deps trigger this effect unnecessarily
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [currentLvl, targetLvl, isDisabled])
+			currentLvl: value < currentLvl ? value : currentLvl,
+			targetLvl: value,
+		})
+	}
 
 	const handleEnhancement = (e: MouseEvent) => {
 		e.stopPropagation()
@@ -203,7 +176,10 @@ export function PlannerArcBox({
 			})
 
 			updateInventory(localInventory)
-			setCurrentLvl(targetLvl)
+			actions.updateWeapon({
+				...arcRecord,
+				currentLvl: targetLvl,
+			})
 
 			showFinalAdjustmenModal()
 		}
@@ -211,8 +187,9 @@ export function PlannerArcBox({
 
 	const handleDisable = (e: MouseEvent) => {
 		e.stopPropagation()
-		setIsDisabled((prev) => {
-			return !prev
+		actions.updateWeapon({
+			...arcRecord,
+			isDisabled: !isDisabled,
 		})
 	}
 
@@ -244,7 +221,6 @@ export function PlannerArcBox({
 					toggleDisable: handleDisable,
 					handleEnhancement,
 					handleDelete,
-					changeHandlers: null!,
 					dragRef: handleRef,
 				}}>
 				<div

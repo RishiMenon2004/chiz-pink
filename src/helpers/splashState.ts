@@ -5,8 +5,25 @@ export const SPLASH_MARKER_KEY = "splashSeenVersion"
 
 export type SplashState = "welcome" | "update" | "none"
 
+const listeners = new Set<() => void>()
+
+export function subscribeSplashState(listener: () => void) {
+	listeners.add(listener)
+	return () => {
+		listeners.delete(listener)
+	}
+}
+
+export function getSplashStateSnapshot(): SplashState | null {
+	if (typeof document === "undefined") return null
+	return document.documentElement.getAttribute(
+		SPLASH_ATTRIBUTE
+	) as SplashState | null
+}
+
 export function setSplashState(state: SplashState) {
 	document.documentElement.setAttribute(SPLASH_ATTRIBUTE, state)
+	listeners.forEach((listener) => listener())
 }
 
 export function setSplashMarker(version: string) {

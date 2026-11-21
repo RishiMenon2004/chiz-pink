@@ -16,7 +16,7 @@ const eslintConfig = defineConfig([
             {
               name: "next/link",
               message:
-                "Use LocaleLink from @/components/layout, which keeps the page's language prefix.",
+                "Use LocaleLink from @/components/layout/LocaleLink, which keeps the page's language prefix.",
             },
             {
               name: "next/navigation",
@@ -36,6 +36,11 @@ const eslintConfig = defineConfig([
       "src/hooks/useLocalePathname.ts",
     ],
     rules: { "no-restricted-imports": "off" },
+  },
+  {
+    // Dev-only tool previewing arbitrary local content-intake images via API route.
+    files: ["src/app/*/content-tool/**"],
+    rules: { "@next/next/no-img-element": "off" },
   },
   // Override default ignores of eslint-config-next.
   globalIgnores([

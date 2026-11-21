@@ -16,7 +16,10 @@ import type { Material } from "@/types/item"
 
 import { findItem } from "@/data/items/findItem"
 
-import { useInventoryStore } from "@/hooks/useInventoryStore"
+import {
+	updateInventory,
+	useInventoryAmount,
+} from "@/hooks/useInventoryStore"
 import { useLocalePathname } from "@/hooks/useLocalePathname"
 import { usePlannerStore } from "@/hooks/usePlannerStore"
 import { useTooltip } from "@/hooks/useTooltip"
@@ -39,8 +42,7 @@ export function CurrencyBox({ currency }: { currency: Material }) {
 	const inputBoxRef = useRef<HTMLInputElement>(null)
 	const valueDispRef = useRef<HTMLSpanElement>(null)
 	const editBtnRef = useRef<HTMLButtonElement>(null)
-	const { inventory, updateInventory } = useInventoryStore()
-	const currencyValue = inventory[currency.id] || 0
+	const currencyValue = useInventoryAmount(currency.id)
 
 	const { plannerData } = usePlannerStore()
 	const { amount: requiredQuantity, sources: requiredSources } =
@@ -172,7 +174,9 @@ export function CurrencyBox({ currency }: { currency: Material }) {
 				{currencyValue.toLocaleString(numberLocale)}
 			</span>
 			<button
+				type="button"
 				className={styles.editBtn}
+				aria-label={t("layout.currencyBox.edit", { name: currency.name })}
 				onClick={toggleEdit}
 				ref={editBtnRef}
 			/>

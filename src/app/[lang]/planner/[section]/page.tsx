@@ -5,6 +5,14 @@ import { buildRouteMetadata } from "@/helpers/metadata"
 
 import { RenderSplitPlanner } from "./RenderSplitPlanner"
 
+const SECTIONS = ["arcs", "characters"] as const
+
+export const dynamicParams = false
+
+export function generateStaticParams() {
+	return SECTIONS.map((section) => ({ section }))
+}
+
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
 	const { lang, section } = await params
 	if (section !== "arcs" && section !== "characters") return {}

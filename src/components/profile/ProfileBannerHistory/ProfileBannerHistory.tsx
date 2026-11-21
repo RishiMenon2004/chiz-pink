@@ -53,7 +53,7 @@ export function ProfileBannerHistory({
 }) {
 	const t = useT()
 	const locale = useLocale()
-	const now = useNow()
+	const now = useNow(60_000)
 
 	if (now === null) return null
 

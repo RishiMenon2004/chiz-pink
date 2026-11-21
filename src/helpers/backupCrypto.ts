@@ -1,10 +1,15 @@
 import type { BackupData, MainBackupData, GachaBackupData } from "@/types/settings"
 
 const IV_LENGTH_BYTES = 12
+const BASE64_CHUNK_SIZE = 0x8000
 
 function bytesToBase64(bytes: Uint8Array) {
 	let binary = ""
-	for (const byte of bytes) binary += String.fromCharCode(byte)
+	for (let i = 0; i < bytes.length; i += BASE64_CHUNK_SIZE) {
+		binary += String.fromCharCode(
+			...bytes.subarray(i, i + BASE64_CHUNK_SIZE)
+		)
+	}
 	return window.btoa(binary)
 }
 

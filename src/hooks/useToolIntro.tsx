@@ -33,6 +33,9 @@ export function decideToolIntros() {
 // Whether to show the intro with this id, and a function that closes it
 // for good. Collapsed on the server and until the existing-user check has
 // run, so returning users never see it flash in.
+const subscribeToolIntro = (listener: () => void) =>
+	memoryStorage.subscribeKey(DISMISSED_INTROS_KEY, listener)
+
 export function useToolIntro(id: ToolIntroId) {
 	const getSnapshot = (): boolean => {
 		const dismissed = getDismissedIntros()
@@ -40,7 +43,7 @@ export function useToolIntro(id: ToolIntroId) {
 	}
 
 	const show = useSyncExternalStore(
-		memoryStorage.subscribe,
+		subscribeToolIntro,
 		getSnapshot,
 		() => false
 	)

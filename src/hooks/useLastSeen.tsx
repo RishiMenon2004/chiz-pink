@@ -1,6 +1,6 @@
 "use client"
 
-import { useSyncExternalStore } from "react"
+import { useEffect, useSyncExternalStore } from "react"
 
 import * as memoryStorage from "@/helpers/storage/memoryStorage"
 
@@ -22,34 +22,44 @@ function compareVersions(a: string, b: string) {
 	return 0
 }
 
+const subscribeLastSeen = (listener: () => void) =>
+	memoryStorage.subscribeKey(key, listener)
+
 export function useLastSeen(version: string) {
+	const isHydrated = useSyncExternalStore(
+		memoryStorage.subscribeHydration,
+		memoryStorage.isHydrated,
+		() => false
+	)
+
+	// Pure snapshot: resolves once after hydration without writing during render.
 	const getSnapshot = (): boolean => {
 		if (typeof window === "undefined") return false
 		if (resolved) return isLastSeenOld
-
-		// Same pre-hydration race as useFirstVisit.tsx: memoryStorage hasn't
-		// loaded "lastSeen" from IndexedDB yet, so treating a missing cache
-		// entry as "never seen" here (and then never re-checking) meant the
-		// update splash reappeared on every reload for every visitor, not
-		// just when there was genuinely a new changelog entry.
 		if (!memoryStorage.isHydrated()) return false
 
 		resolved = true
 
-		// Before 1.1.1 this held a changelog timestamp, which always means an
-		// older version than any that stores a version string.
+		// Before 1.1.1 this held a changelog timestamp, which is always older.
 		const lastSeen = memoryStorage.getItem<string | number | null>(key, null)
 		isLastSeenOld =
 			typeof lastSeen !== "string" || compareVersions(version, lastSeen) > 0
 
-		memoryStorage.setItem(key, version)
 		return isLastSeenOld
 	}
 
 	const lastSeenOld = useSyncExternalStore(
-		memoryStorage.subscribe,
+		subscribeLastSeen,
 		getSnapshot,
 		getServerSnapshot
 	)
+
+	useEffect(() => {
+		if (!isHydrated) return
+		if (memoryStorage.getItem<string | number | null>(key, null) !== version) {
+			memoryStorage.setItem(key, version)
+		}
+	}, [isHydrated, version])
+
 	return lastSeenOld
 }

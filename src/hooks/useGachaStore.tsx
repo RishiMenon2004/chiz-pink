@@ -8,6 +8,7 @@ import { safeParse } from "@/helpers/dataCorruption"
 import { randomId } from "@/helpers/randomId"
 import * as idbStorage from "@/helpers/storage/idbStorage"
 import * as memoryStorage from "@/helpers/storage/memoryStorage"
+import { reportStorageWriteError } from "@/helpers/storage/storageError"
 import {
 	BannerType,
 	ImportMessage,
@@ -251,7 +252,7 @@ export function mergePullsRecord(remotePulls: PullsRecord) {
 		}
 	}
 	applyPulls(pullsToApply)
-	memoryStorage.notifyListeners()
+	memoryStorage.notifyListeners(PULLS_BROADCAST_CHANNEL)
 
 	if (memoryStorage.isFallbackMode()) {
 		writeLegacyBlob(cachedPulls)
@@ -270,6 +271,7 @@ export function mergePullsRecord(remotePulls: PullsRecord) {
 		)
 		.catch((error) => {
 			console.error("IndexedDB merge replace failed for pulls", error)
+			reportStorageWriteError()
 		})
 }
 
@@ -289,7 +291,7 @@ memoryStorage.onCustomBroadcast(PULLS_BROADCAST_CHANNEL, (payload) => {
 	} else {
 		cachedPulls = SERVER_FALLBACK
 	}
-	memoryStorage.notifyListeners()
+	memoryStorage.notifyListeners(PULLS_BROADCAST_CHANNEL)
 })
 
 // Bootstraps the pulls cache from IndexedDB. Safe to call more than once -
@@ -301,7 +303,7 @@ export async function hydratePullsCache(): Promise<void> {
 
 	if (memoryStorage.isFallbackMode() || !idbStorage.isIndexedDBAvailable()) {
 		cachedPulls = readLegacyBlob()
-		memoryStorage.notifyListeners()
+		memoryStorage.notifyListeners(PULLS_BROADCAST_CHANNEL)
 		return
 	}
 
@@ -316,7 +318,7 @@ export async function hydratePullsCache(): Promise<void> {
 			BANNER_TYPES.map((bannerType) => idbStorage.getPullsByBanner(bannerType))
 		)
 		applyPulls(rowsByBanner.flat())
-		memoryStorage.notifyListeners()
+		memoryStorage.notifyListeners(PULLS_BROADCAST_CHANNEL)
 	} catch (error) {
 		console.error("IndexedDB pulls hydration failed", error)
 	}
@@ -331,11 +333,13 @@ export function importParsedPulls(rowsByBanner: StoredPull[][]) {
 	if (memoryStorage.isFallbackMode()) {
 		applyPulls(rowsByBanner.flat())
 		writeLegacyBlob(cachedPulls)
+		memoryStorage.notifyListeners(PULLS_BROADCAST_CHANNEL)
 		memoryStorage.setItem("gachaLastUpdated", Date.now())
 		return
 	}
 
 	applyPulls(rowsByBanner.flat())
+	memoryStorage.notifyListeners(PULLS_BROADCAST_CHANNEL)
 	memoryStorage.broadcastCustom(PULLS_BROADCAST_CHANNEL, {
 		kind: "add",
 		pulls: rowsByBanner.flat(),
@@ -349,6 +353,7 @@ export function importParsedPulls(rowsByBanner: StoredPull[][]) {
 				`IndexedDB bulk put failed for pulls (${bannerType})`,
 				error
 			)
+			reportStorageWriteError()
 		})
 	}
 
@@ -367,6 +372,7 @@ function writeLegacyBlob(pullsRecord: PullsRecord) {
 		window.localStorage.setItem(LEGACY_KEY, JSON.stringify(pullsRecord))
 	} catch (error) {
 		console.error("localStorage fallback write failed for pulls", error)
+		reportStorageWriteError()
 	}
 }
 
@@ -429,6 +435,7 @@ export const gachaPullsActions = {
 
 			writeLegacyBlob(updatedPulls)
 			cachedPulls = updatedPulls
+			memoryStorage.notifyListeners(PULLS_BROADCAST_CHANNEL)
 			memoryStorage.setItem("gachaLastUpdated", Date.now())
 
 			response.status = "success"
@@ -457,6 +464,7 @@ export const gachaPullsActions = {
 			}))
 
 			applyPulls(storedPulls, true)
+			memoryStorage.notifyListeners(PULLS_BROADCAST_CHANNEL)
 			memoryStorage.broadcastCustom(PULLS_BROADCAST_CHANNEL, {
 				kind: "add",
 				pulls: storedPulls,
@@ -468,6 +476,7 @@ export const gachaPullsActions = {
 					`IndexedDB write-through failed for pulls (${bannerType})`,
 					error
 				)
+				reportStorageWriteError()
 			})
 
 			// Bumps gachaLastUpdated instead of lastUpdated, keeping routine
@@ -506,10 +515,11 @@ export const gachaPullsActions = {
 			})
 			idbStorage.putPulls(storedPulls, bannerType).catch((error) => {
 				console.error(`IndexedDB write failed for manual pulls (${bannerType})`, error)
+				reportStorageWriteError()
 			})
 		}
 
-		memoryStorage.notifyListeners()
+		memoryStorage.notifyListeners(PULLS_BROADCAST_CHANNEL)
 		memoryStorage.setItem("gachaLastUpdated", Date.now())
 	},
 
@@ -517,7 +527,7 @@ export const gachaPullsActions = {
 	// place; an imported one is replaced by a manual copy (a fresh uid,
 	// marked manual) that remembers the pull it replaced.
 	editPull(bannerType: BannerType, originalUid: string, edited: Pull) {
-		if (typeof window === "undefined") return
+		if (typeof window === "undefined" || isInitialSyncPending()) return
 		const original = cachedPulls[bannerType][originalUid] as
 			| (Pull & { seq?: number })
 			| undefined
@@ -536,7 +546,7 @@ export const gachaPullsActions = {
 
 		cachedPulls = withoutPulls(cachedPulls, bannerType, removed)
 		applyPulls([replacement], true)
-		memoryStorage.notifyListeners()
+		memoryStorage.notifyListeners(PULLS_BROADCAST_CHANNEL)
 
 		if (memoryStorage.isFallbackMode()) {
 			writeLegacyBlob(cachedPulls)
@@ -549,6 +559,7 @@ export const gachaPullsActions = {
 				})
 				idbStorage.deletePulls(removed).catch((error) => {
 					console.error("IndexedDB delete failed for pulls", error)
+					reportStorageWriteError()
 				})
 			}
 			memoryStorage.broadcastCustom(PULLS_BROADCAST_CHANNEL, {
@@ -558,6 +569,7 @@ export const gachaPullsActions = {
 			})
 			idbStorage.putPulls([replacement], bannerType).catch((error) => {
 				console.error("IndexedDB write failed for an edited pull", error)
+				reportStorageWriteError()
 			})
 		}
 
@@ -567,10 +579,15 @@ export const gachaPullsActions = {
 	// Deletes pulls of one banner by uid (the list only offers this for
 	// manual pulls).
 	removePulls(bannerType: BannerType, uids: string[]) {
-		if (typeof window === "undefined" || uids.length === 0) return
+		if (
+			typeof window === "undefined" ||
+			isInitialSyncPending() ||
+			uids.length === 0
+		)
+			return
 
 		cachedPulls = withoutPulls(cachedPulls, bannerType, uids)
-		memoryStorage.notifyListeners()
+		memoryStorage.notifyListeners(PULLS_BROADCAST_CHANNEL)
 
 		if (memoryStorage.isFallbackMode()) {
 			writeLegacyBlob(cachedPulls)
@@ -582,6 +599,7 @@ export const gachaPullsActions = {
 			})
 			idbStorage.deletePulls(uids).catch((error) => {
 				console.error("IndexedDB delete failed for pulls", error)
+				reportStorageWriteError()
 			})
 		}
 
@@ -595,7 +613,7 @@ export function replaceAllPulls(pullsRecord: PullsRecord): void {
 	if (typeof window === "undefined") return
 
 	cachedPulls = pullsRecord
-	memoryStorage.notifyListeners()
+	memoryStorage.notifyListeners(PULLS_BROADCAST_CHANNEL)
 
 	if (memoryStorage.isFallbackMode()) {
 		writeLegacyBlob(pullsRecord)
@@ -613,6 +631,7 @@ export function replaceAllPulls(pullsRecord: PullsRecord): void {
 		)
 		.catch((error) => {
 			console.error("IndexedDB replace failed for pulls", error)
+			reportStorageWriteError()
 		})
 
 	memoryStorage.broadcastCustom(PULLS_BROADCAST_CHANNEL, {
@@ -626,7 +645,7 @@ export function clearAllPulls(): void {
 	if (typeof window === "undefined") return
 
 	cachedPulls = SERVER_FALLBACK
-	memoryStorage.notifyListeners()
+	memoryStorage.notifyListeners(PULLS_BROADCAST_CHANNEL)
 
 	if (memoryStorage.isFallbackMode()) {
 		window.localStorage.removeItem(LEGACY_KEY)
@@ -635,6 +654,7 @@ export function clearAllPulls(): void {
 
 	idbStorage.clearAllPulls().catch((error) => {
 		console.error("IndexedDB clear failed for pulls", error)
+		reportStorageWriteError()
 	})
 
 	memoryStorage.broadcastCustom(PULLS_BROADCAST_CHANNEL, { kind: "clear" })
@@ -655,9 +675,12 @@ const getServerSnapshot = () => {
 	return SERVER_FALLBACK
 }
 
+const subscribeGacha = (listener: () => void) =>
+	memoryStorage.subscribeKey(PULLS_BROADCAST_CHANNEL, listener)
+
 export function useGachaStore() {
 	const gachaPulls = useSyncExternalStore<PullsRecord>(
-		memoryStorage.subscribe,
+		subscribeGacha,
 		getSnapshot,
 		getServerSnapshot
 	)

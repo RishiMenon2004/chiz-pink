@@ -23,7 +23,9 @@ import { formatLocale, type Locale } from "@/helpers/locale"
 import { useInitialSyncPending } from "@/helpers/syncGate"
 import * as memoryStorage from "@/helpers/storage/memoryStorage"
 
-import { AlertContainer, LocaleLink, ModalContainer } from "@/components/layout"
+import { AlertContainer } from "@/components/layout/Alert"
+import { LocaleLink } from "@/components/layout/LocaleLink"
+import { ModalContainer } from "@/components/layout/Modal"
 import {
 	alertTextBox,
 	alertTextColumns,
@@ -33,6 +35,7 @@ import styles from "./migrate.module.css"
 
 type Status = "connecting" | "conflict" | "saving" | "done" | "error"
 
+const HANDSHAKE_TIMEOUT_MS = 15_000
 const noopSubscribe = () => () => {}
 
 function formatTimestamp(value: number | null, unknown: string, locale: Locale) {
@@ -77,32 +80,49 @@ export function RenderMigrate() {
 	const [incoming, setIncoming] = useState<BackupData | null>(null)
 	// The old domain answers every "ready" with the data; only act on it once.
 	const receivedRef = useRef(false)
+	const finishingRef = useRef(false)
 	// Which old address sent the data - replies go only there.
 	const openerOriginRef = useRef<string | null>(null)
 
 	// Pull history is always merged, whichever main data is kept - unlike
 	// main data, both sides' pulls can be combined without losing any.
 	const finish = async (data: BackupData, useIncomingMain: boolean) => {
+		if (finishingRef.current) return
+		finishingRef.current = true
 		setStatus("saving")
-		if (useIncomingMain) backupSetMainImport(data)
-		mergeImportedPulls(data)
-		// The window closes next - unsaved writes would be lost with it.
-		await memoryStorage.flushPendingWrites()
-		if (openerOriginRef.current) {
-			send({ type: "done" }, openerOriginRef.current)
+
+		try {
+			if (useIncomingMain) backupSetMainImport(data)
+			mergeImportedPulls(data)
+			// The window closes next - unsaved writes would be lost with it.
+			await memoryStorage.flushPendingWrites()
+			if (openerOriginRef.current) {
+				send({ type: "done" }, openerOriginRef.current)
+			}
+			setStatus("done")
+			window.close()
+		} catch (error) {
+			console.error("Failed to save migrated data", error)
+			if (openerOriginRef.current) {
+				send({ type: "error" }, openerOriginRef.current)
+			}
+			setStatus("error")
 		}
-		setStatus("done")
-		window.close()
 	}
 
 	useEffect(() => {
 		if (hasOpener !== true || syncPending) return
+
+		const handshakeTimeout = setTimeout(() => {
+			if (!receivedRef.current) setStatus("error")
+		}, HANDSHAKE_TIMEOUT_MS)
 
 		const handleMessage = (e: MessageEvent) => {
 			if (!isOldOrigin(e.origin) || e.source !== window.opener) return
 			if (!isMigrationMessage(e.data) || e.data.type !== "data") return
 			if (receivedRef.current) return
 			receivedRef.current = true
+			clearTimeout(handshakeTimeout)
 			openerOriginRef.current = e.origin
 
 			// Same validation as a manual backup file import.
@@ -128,7 +148,10 @@ export function RenderMigrate() {
 		// The opener's address isn't readable cross-origin, so offer "ready"
 		// to each old address; the browser only delivers the one that matches.
 		for (const origin of getOldOrigins()) send({ type: "ready" }, origin)
-		return () => window.removeEventListener("message", handleMessage)
+		return () => {
+			window.removeEventListener("message", handleMessage)
+			clearTimeout(handshakeTimeout)
+		}
 	}, [hasOpener, syncPending])
 
 	const localLastUpdated = memoryStorage.getItem<number | null>(

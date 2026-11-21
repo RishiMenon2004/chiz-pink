@@ -14,6 +14,7 @@ export function CharacterSkillGroup({
 	label: string
 }) {
 	const { itemRecord: charRecord, changeHandlers } = usePlannerBoxContext()
+	if (!changeHandlers) return null
 
 	const [handleCurrentLvlChange, handleTargetLvlChange, handleToggleSkill] =
 		changeHandlers

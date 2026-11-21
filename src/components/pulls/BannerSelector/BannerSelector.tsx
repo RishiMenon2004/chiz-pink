@@ -41,7 +41,7 @@ const characterBannerFallback = {
 export function BannerSelector() {
 	const { selectedBanner, setSelectedBanner, gachaBanners } =
 		usePullTrackerContext()
-	const now = useNow()
+	const now = useNow(60_000)
 	const t = useT()
 	const {
 		userdata: { server },
@@ -123,7 +123,7 @@ export function BannerSelector() {
 				style={
 					{
 						"--theme-color": currentLimitedBanner.themeColor,
-						"--bg-image": `url("${getOptimizedImageUrl(`/arcs/${findArc(currentArcBanner.rateupItem).imageSrc}`)}")`,
+						"--bg-image": `url("${getOptimizedImageUrl(findArc(currentArcBanner.rateupItem)?.imageSrc ? `/arcs/${findArc(currentArcBanner.rateupItem)?.imageSrc}` : "/arcs/placeholder.webp")}")`,
 					} as CSSProperties
 				}
 				data-type="arc"

@@ -7,7 +7,7 @@ import { useArcCatalog, useCharacterCatalog } from "@/components/catalog"
 import { DashFeaturedArcs } from "../DashFeaturedArcs"
 import { DashFeaturedCarousel } from "../DashFeaturedCarousel"
 
-import { LocaleLink } from "@/components/layout"
+import { LocaleLink } from "@/components/layout/LocaleLink"
 
 import pageStyles from "@/app/[lang]/page.module.css"
 

@@ -9,6 +9,7 @@ import { useT } from "@/contexts"
 import { useNow } from "@/hooks"
 
 import {
+	formatMinutesSeconds,
 	formatTimeRemaining,
 	getNextPixelRecoveryTime,
 	getPixelsRefillTime,
@@ -17,26 +18,13 @@ import {
 
 import styles from "@/app/[lang]/settings/settings.module.css"
 
-const resetDayTimeConfig: Intl.DateTimeFormatOptions = {
-	weekday: "long",
-	hour: "numeric",
-	minute: "2-digit",
-	hour12: true,
-}
-
-const formatResetDayTime = (date: number): string => {
-	return new Date(date)
-		.toLocaleString("en-GB", resetDayTimeConfig)
-		.toUpperCase()
-}
-
 export function StaminaResetCountdown({
 	server,
 }: {
 	server: SettingsRecord["userdata"]["server"]
 }) {
 	const t = useT()
-	const now = useNow()
+	const now = useNow(60_000)
 
 	const content =
 		now === null
@@ -92,7 +80,7 @@ export function PixelRefillCountdown({
 		nextText =
 			nextRecoveryAt === null
 				? "-"
-				: formatTimeRemaining(nextRecoveryAt - now)
+				: formatMinutesSeconds(nextRecoveryAt - now)
 		fullText =
 			refilledAt === null ? "-" : formatTimeRemaining(refilledAt - now)
 	}

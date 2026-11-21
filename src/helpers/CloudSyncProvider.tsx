@@ -1,12 +1,16 @@
 "use client"
 
-import { useCallback, useEffect, useRef, useState } from "react"
+import { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import { signOut, useSession } from "next-auth/react"
-import { useConvexAuth, useMutation, useQuery } from "convex/react"
+import { useConvex, useConvexAuth, useMutation, useQuery } from "convex/react"
 
 import { api } from "@convex/_generated/api"
 
-import { CloudSyncContext, useT } from "@/contexts"
+import {
+	CloudSyncContext,
+	type CloudSyncContextValue,
+	useT,
+} from "@/contexts"
 import { AlertContainer } from "@/components/layout/Alert"
 import { ModalContainer } from "@/components/layout/Modal/ModalContainer"
 import { SyncConflictModal } from "@/components/layout/SyncConflictModal"
@@ -29,7 +33,10 @@ import {
 	type GachaBackupData,
 } from "./backupCrypto"
 import { getOrCreateBackupKey } from "./driveBackupKey"
-import { setInitialSyncPending } from "./syncGate"
+import {
+	hasObservedUnauthenticated,
+	setInitialSyncPending,
+} from "./syncGate"
 import { clearCorruption, useCorruptedKeys } from "./dataCorruption"
 import { mergePullsRecord } from "@/hooks/useGachaStore"
 import * as memoryStorage from "./storage/memoryStorage"
@@ -45,10 +52,17 @@ type RestorePrompt = {
 	localLastUpdated: number | null
 }
 
-export function CloudSyncProvider({ children }: { children: React.ReactNode }) {
+export function CloudSyncProvider({
+	children,
+	onStateChange,
+}: {
+	children?: React.ReactNode
+	onStateChange?: (value: CloudSyncContextValue | null) => void
+}) {
 	const t = useT()
 	const { data: session, status: sessionStatus } = useSession()
 	const accessToken = session?.accessToken
+	const convex = useConvex()
 	const convexAuth = useConvexAuth()
 
 	const [status, setStatus] = useState<SyncStatus>("idle")
@@ -70,6 +84,10 @@ export function CloudSyncProvider({ children }: { children: React.ReactNode }) {
 	// (derived below, once `row` exists) naturally clears without needing an
 	// explicit reset.
 	const [failedRemoteRow, setFailedRemoteRow] = useState<number | null>(null)
+	const [failedGachaRow, setFailedGachaRow] = useState<number | null>(null)
+	const [dismissedGachaRow, setDismissedGachaRow] = useState<number | null>(
+		null
+	)
 	// Any localStorage-backed record that failed to parse (see
 	// dataCorruption.ts). Blocks auto-sync until the user picks a recovery
 	// path, same as restorePrompt does - we don't want to push corrupt data
@@ -83,6 +101,7 @@ export function CloudSyncProvider({ children }: { children: React.ReactNode }) {
 	const keyRef = useRef<CryptoKey | null>(null)
 	const isSyncingRef = useRef(false)
 	const isReconcilingRef = useRef(false)
+	const isReconcilingGachaRef = useRef(false)
 	const pendingRef = useRef(false)
 	const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 	const hasStartedKeyFetchRef = useRef(false)
@@ -104,7 +123,7 @@ export function CloudSyncProvider({ children }: { children: React.ReactNode }) {
 	// Set once this tab has observed an "unauthenticated" session - lets us
 	// tell a genuine, explicit fresh sign-in apart from a page just resuming
 	// an existing session (see the account-status effect below).
-	const hasBeenUnauthenticatedRef = useRef(false)
+	const hasBeenUnauthenticatedRef = useRef(hasObservedUnauthenticated())
 	const hasClearedUnlinkRef = useRef(false)
 	// One-shot per key epoch (sign-in/out cycle) - guards the "converge"
 	// effect below so it pushes local up to Convex at most once per epoch
@@ -147,52 +166,54 @@ export function CloudSyncProvider({ children }: { children: React.ReactNode }) {
 	// current row (if any) hasn't been reconciled against it yet - leaving
 	// this stale would let initialCheckComplete go true off last epoch's
 	// reconcile before the fresh one actually runs.
-	useEffect(() => {
-		if (convexAuth.isLoading) return
-		if (!convexAuth.isAuthenticated) {
-			hasBeenUnauthenticatedRef.current = true
-			hasClearedUnlinkRef.current = false
-			hasStartedKeyFetchRef.current = false
-			keyRef.current = null
-			lastReconciledRef.current = null
-			lastReconciledGachaRef.current = null
-			lastPushedMainHashRef.current = null
-			lastPushedGachaHashRef.current = null
-			hasPushedThisEpochRef.current = false
-			// eslint-disable-next-line react-hooks/set-state-in-effect
+	const isUnauthenticated = !convexAuth.isLoading && !convexAuth.isAuthenticated
+	const [wasUnauthenticated, setWasUnauthenticated] =
+		useState(isUnauthenticated)
+
+	if (isUnauthenticated !== wasUnauthenticated) {
+		setWasUnauthenticated(isUnauthenticated)
+		if (isUnauthenticated) {
 			setKeyReady(false)
 			setStatus("idle")
 			setRestorePrompt(null)
 			setFailedRemoteRow(null)
+			setFailedGachaRow(null)
+			setDismissedGachaRow(null)
 			setInitialReconcileDone(false)
 		}
-	}, [convexAuth.isLoading, convexAuth.isAuthenticated])
+	}
+
+	useEffect(() => {
+		if (!isUnauthenticated) return
+		hasBeenUnauthenticatedRef.current = true
+		hasClearedUnlinkRef.current = false
+		hasStartedKeyFetchRef.current = false
+		keyRef.current = null
+		lastReconciledRef.current = null
+		lastReconciledGachaRef.current = null
+		lastPushedMainHashRef.current = null
+		lastPushedGachaHashRef.current = null
+		hasPushedThisEpochRef.current = false
+	}, [isUnauthenticated])
 
 	const clearUnlinked = useMutation(api.backups.clearUnlinked)
 
-	// Live subscription to the main application backup (checklist, inventory, planner, settings)
-	const row = useQuery(
-		api.backups.getBackup,
+	// Live metadata subscriptions; full ciphertext is fetched one-shot on demand.
+	const meta = useQuery(
+		api.backups.getBackupMeta,
 		convexAuth.isAuthenticated ? {} : "skip"
 	)
 
-	// Live subscription to decoupled gacha pulls backup
-	const gachaRow = useQuery(
-		api.gachaBackups.getBackup,
+	const gachaMeta = useQuery(
+		api.gachaBackups.getBackupMeta,
 		convexAuth.isAuthenticated ? {} : "skip"
 	)
 
-	// Whether some other device unlinked this account - rides on the same
-	// `row` subscription used for main sync instead of a dedicated query.
-	// deleteBackup clears content on unlink but keeps the row so this marker
-	// survives (see convex/backups.ts), so any signed-in device (this one
-	// included) reacts to it instantly.
+	// React immediately when another device unlinks this account.
 	useEffect(() => {
-		if (row === undefined || row === null || row.unlinkedAt == null) return
+		if (meta === undefined || meta === null || meta.unlinkedAt == null) return
 
-		// A fresh, explicit sign-in in this tab (session went unauthenticated
-		// -> authenticated) after being unlinked is the user deliberately
-		// choosing to re-link - clear the marker instead of signing back out.
+		// A fresh, explicit sign-in in this tab after unlink means the user chose to re-link.
 		if (hasBeenUnauthenticatedRef.current) {
 			if (hasClearedUnlinkRef.current) return
 			hasClearedUnlinkRef.current = true
@@ -202,21 +223,19 @@ export function CloudSyncProvider({ children }: { children: React.ReactNode }) {
 			return
 		}
 
-		// Otherwise this is either an already-open tab that just got unlinked
-		// elsewhere, or a device resuming a session that was unlinked while it
-		// was closed - either way, force it back to signed out.
 		signOut()
-	}, [row, clearUnlinked])
+	}, [meta, clearUnlinked])
 
-	// True when this specific row (by lastUpdated) failed to decrypt or parse
-	// - the cloud backup itself is unreadable, not just local.
-	const remoteCorrupt = row != null && failedRemoteRow === row.lastUpdated
+	// True when this specific remote revision failed to decrypt or parse.
+	const remoteCorrupt = meta != null && failedRemoteRow === meta.lastUpdated
+	const gachaRemoteCorrupt =
+		gachaMeta != null && failedGachaRow === gachaMeta.lastUpdated
 
 	const initialCheckComplete =
 		keyReady &&
-		row !== undefined &&
-		(row === null ||
-			row.lastUpdated == null ||
+		meta !== undefined &&
+		(meta === null ||
+			meta.lastUpdated == null ||
 			initialReconcileDone ||
 			hasCorruption)
 
@@ -229,9 +248,7 @@ export function CloudSyncProvider({ children }: { children: React.ReactNode }) {
 		setInitialSyncPending(pending)
 	}, [sessionStatus, initialCheckComplete])
 
-	// Only the signed-in half of the gate is worth surfacing - a signed-out
-	// session's brief "loading" window has nothing to pull. Modals already
-	// cover the restore/corruption cases, so the toast steps aside for them.
+	// Only surface the toast while signed-in initial sync is running and no modal is open.
 	const initialSyncToastState =
 		sessionStatus !== "authenticated" ||
 		initialCheckComplete ||
@@ -243,11 +260,11 @@ export function CloudSyncProvider({ children }: { children: React.ReactNode }) {
 				? "error"
 				: "syncing"
 
-	// Reconciles main backup whenever a new row comes down the live query
+	// Fetches and reconciles main backup only when remote lastUpdated differs from ours.
 	useEffect(() => {
-		if (!keyReady || row === undefined || row === null) return
-		const { ciphertext, iv, lastUpdated } = row
-		if (ciphertext == null || iv == null || lastUpdated == null) return
+		if (!keyReady || meta === undefined || meta === null) return
+		const targetLastUpdated = meta.lastUpdated
+		if (targetLastUpdated == null) return
 		if (
 			restorePrompt ||
 			hasCorruption ||
@@ -256,108 +273,159 @@ export function CloudSyncProvider({ children }: { children: React.ReactNode }) {
 			isReconcilingRef.current
 		)
 			return
-		if (lastReconciledRef.current === lastUpdated) return
+		if (lastReconciledRef.current === targetLastUpdated) return
 
 		const key = keyRef.current
 		if (!key) return
 
 		isReconcilingRef.current = true
-		decryptBackupPayload<MainBackupData>(key, ciphertext, iv)
-			.then(async (data) => {
+		convex
+			.query(api.backups.getBackup, {})
+			.then(async (row) => {
 				if (!mountedRef.current) return
-				lastReconciledRef.current = lastUpdated
-				lastPushedMainHashRef.current = await hashBackupPayload(data)
+				if (
+					!row ||
+					row.ciphertext == null ||
+					row.iv == null ||
+					row.lastUpdated == null
+				) {
+					setInitialReconcileDone(true)
+					return
+				}
 
-				const result = backupImport(JSON.stringify(data))
+				const { ciphertext, iv, lastUpdated } = row
+				try {
+					const data = await decryptBackupPayload<MainBackupData>(
+						key,
+						ciphertext,
+						iv
+					)
+					if (!mountedRef.current) return
+					lastReconciledRef.current = lastUpdated
+					lastPushedMainHashRef.current = await hashBackupPayload(data)
 
-				if (result.status === "overwrite") {
-					const localLastUpdated = memoryStorage.getItem<number | null>(
-						"lastUpdated",
-						null
-					)
-					setRestorePrompt({ data: result.data, localLastUpdated })
-				} else if (result.status === "newer") {
-					backupSetImport(result.data)
-					markSynced()
-					setStatus("synced")
-					setLastSyncedAt(Date.now())
-					setLatestBackupUpdatedAt(
-						Number(result.data.lastUpdated) || Date.now()
-					)
-				} else {
-					// "synced"/"older": local already matches or leads under LWW.
-					// Only reflect it here on an exact match - a strictly-ahead
-					// local gets pushed up immediately by the converge effect
-					// below, which sets this same state off the freshly-pushed value.
-					const localLastUpdated = memoryStorage.getItem<number>(
-						"lastUpdated",
-						0
-					)
-					if (localLastUpdated === lastUpdated) {
+					const result = backupImport(JSON.stringify(data))
+
+					if (result.status === "overwrite") {
+						const localLastUpdated = memoryStorage.getItem<number | null>(
+							"lastUpdated",
+							null
+						)
+						setRestorePrompt({ data: result.data, localLastUpdated })
+					} else if (result.status === "newer") {
+						backupSetImport(result.data)
 						markSynced()
 						setStatus("synced")
 						setLastSyncedAt(Date.now())
-						setLatestBackupUpdatedAt(lastUpdated)
+						setLatestBackupUpdatedAt(
+							Number(result.data.lastUpdated) || Date.now()
+						)
+					} else {
+						const localLastUpdated = memoryStorage.getItem<number>(
+							"lastUpdated",
+							0
+						)
+						if (localLastUpdated === lastUpdated) {
+							markSynced()
+							setStatus("synced")
+							setLastSyncedAt(Date.now())
+							setLatestBackupUpdatedAt(lastUpdated)
+						}
 					}
+				} catch (error) {
+					console.error("Failed to decrypt Convex backup", error)
+					setFailedRemoteRow(lastUpdated)
+				} finally {
+					setInitialReconcileDone(true)
 				}
 			})
 			.catch((error) => {
-				console.error("Failed to decrypt Convex backup", error)
-				setFailedRemoteRow(lastUpdated)
+				console.error("Failed to fetch Convex backup", error)
+				if (mountedRef.current) setStatus("error")
 			})
 			.finally(() => {
 				isReconcilingRef.current = false
-				setInitialReconcileDone(true)
 			})
-	}, [row, keyReady, restorePrompt, hasCorruption, remoteCorrupt])
+	}, [convex, meta, keyReady, restorePrompt, hasCorruption, remoteCorrupt])
 
-	// Reconciles decoupled gacha pulls without modal conflicts (auto-merges by uid & signature)
+	// Fetches and auto-merges decoupled gacha pulls only when remote lastUpdated changes.
 	useEffect(() => {
-		if (!keyReady || gachaRow === undefined || gachaRow === null) return
-		if (lastReconciledGachaRef.current === gachaRow.lastUpdated) return
+		if (
+			!keyReady ||
+			gachaMeta === undefined ||
+			gachaMeta === null ||
+			gachaRemoteCorrupt
+		)
+			return
+		if (
+			lastReconciledGachaRef.current === gachaMeta.lastUpdated ||
+			isReconcilingGachaRef.current
+		)
+			return
 
 		const key = keyRef.current
 		if (!key) return
 
-		decryptBackupPayload<GachaBackupData>(
-			key,
-			gachaRow.ciphertext,
-			gachaRow.iv
-		)
-			.then(async (data) => {
-				if (!mountedRef.current) return
-				lastReconciledGachaRef.current = gachaRow.lastUpdated
-				lastPushedGachaHashRef.current = await hashBackupPayload(data)
+		isReconcilingGachaRef.current = true
+		convex
+			.query(api.gachaBackups.getBackup, {})
+			.then(async (gachaRow) => {
+				if (!mountedRef.current || !gachaRow) return
 
-				if (data.gachaPulls) {
-					mergePullsRecord(data.gachaPulls)
-					const localGachaLastUpdated = memoryStorage.getItem<number>(
-						"gachaLastUpdated",
-						0
+				try {
+					const data = await decryptBackupPayload<GachaBackupData>(
+						key,
+						gachaRow.ciphertext,
+						gachaRow.iv
 					)
-					if (gachaRow.lastUpdated > localGachaLastUpdated) {
-						memoryStorage.setItem(
+					if (!mountedRef.current) return
+					lastReconciledGachaRef.current = gachaRow.lastUpdated
+					lastPushedGachaHashRef.current = await hashBackupPayload(data)
+
+					if (data.gachaPulls) {
+						mergePullsRecord(data.gachaPulls)
+						const localGachaLastUpdated = memoryStorage.getItem<number>(
 							"gachaLastUpdated",
-							gachaRow.lastUpdated
+							0
 						)
+						if (gachaRow.lastUpdated > localGachaLastUpdated) {
+							memoryStorage.setItem(
+								"gachaLastUpdated",
+								gachaRow.lastUpdated
+							)
+						}
+					}
+				} catch (error) {
+					console.error("Failed to decrypt gacha backup from Convex", error)
+					if (mountedRef.current) {
+						setFailedGachaRow(gachaRow.lastUpdated)
+						setStatus("error")
 					}
 				}
 			})
 			.catch((error) => {
-				console.error("Failed to decrypt gacha backup from Convex", error)
+				console.error("Failed to fetch gacha backup from Convex", error)
+				if (mountedRef.current) setStatus("error")
 			})
-	}, [gachaRow, keyReady])
+			.finally(() => {
+				isReconcilingGachaRef.current = false
+			})
+	}, [convex, gachaMeta, keyReady, gachaRemoteCorrupt])
 
 	const upsertBackup = useMutation(api.backups.upsertBackup)
 	const upsertGachaBackup = useMutation(api.gachaBackups.upsertBackup)
+	const deleteCloudBackup = useMutation(api.backups.deleteBackup)
+	const deleteGachaBackup = useMutation(api.gachaBackups.deleteBackup)
+	const markUnlinked = useMutation(api.backups.markUnlinked)
 
 	// Encrypts and pushes main payload and/or gacha payload to Convex
-	const pushToConvex = useCallback(async () => {
-		const key = keyRef.current
-		if (!key) return
+	const pushToConvex = useCallback(
+		async (options?: { overwriteCorruptGacha?: boolean }) => {
+			const key = keyRef.current
+			if (!key) return
 
-		setStatus("syncing")
-		try {
+			setStatus("syncing")
+			try {
 			const localLastUpdated = memoryStorage.getItem<number>(
 				"lastUpdated",
 				0
@@ -376,25 +444,36 @@ export function CloudSyncProvider({ children }: { children: React.ReactNode }) {
 				const lastUpdated = Number(mainPayload.lastUpdated) || Date.now()
 				const hash = await hashBackupPayload(mainPayload)
 
-				// Content fingerprint unchanged since the last push - skip the
-				// mutation (and its bandwidth) even though lastUpdated ticked.
+				// Skip the mutation when content hash matches our last confirmed payload.
 				if (hash !== lastPushedMainHashRef.current) {
 					const { ciphertext, iv } = await encryptBackupPayload(
 						key,
 						mainPayload
 					)
-					await upsertBackup({ ciphertext, iv, lastUpdated })
+					const prevReconciled = lastReconciledRef.current
+					// Record before the mutation so our own meta update doesn't re-fetch.
+					lastReconciledRef.current = lastUpdated
+					try {
+						await upsertBackup({ ciphertext, iv, lastUpdated })
+					} catch (error) {
+						lastReconciledRef.current = prevReconciled
+						throw error
+					}
 					lastPushedMainHashRef.current = hash
+				} else {
+					lastReconciledRef.current = lastUpdated
 				}
 
-				lastReconciledRef.current = lastUpdated
 				setLatestBackupUpdatedAt(lastUpdated)
 			}
 
-			// Push gacha payload if local gacha is newer than what we last reconciled/pushed
+			// Push gacha payload unless its remote revision is unreadable and awaiting user choice.
+			const canPushGacha =
+				!gachaRemoteCorrupt || options?.overwriteCorruptGacha === true
 			if (
-				lastReconciledGachaRef.current === null ||
-				localGachaLastUpdated > lastReconciledGachaRef.current
+				canPushGacha &&
+				(lastReconciledGachaRef.current === null ||
+					localGachaLastUpdated > lastReconciledGachaRef.current)
 			) {
 				const gachaPayload = buildGachaPayload()
 				const gachaLastUpdated =
@@ -406,25 +485,36 @@ export function CloudSyncProvider({ children }: { children: React.ReactNode }) {
 						key,
 						gachaPayload
 					)
-					await upsertGachaBackup({
-						ciphertext,
-						iv,
-						lastUpdated: gachaLastUpdated,
-					})
+					const prevGachaReconciled = lastReconciledGachaRef.current
+					lastReconciledGachaRef.current = gachaLastUpdated
+					try {
+						await upsertGachaBackup({
+							ciphertext,
+							iv,
+							lastUpdated: gachaLastUpdated,
+						})
+					} catch (error) {
+						lastReconciledGachaRef.current = prevGachaReconciled
+						throw error
+					}
 					lastPushedGachaHashRef.current = gachaHash
+				} else {
+					lastReconciledGachaRef.current = gachaLastUpdated
 				}
-
-				lastReconciledGachaRef.current = gachaLastUpdated
 			}
 
 			markSynced()
-			setStatus("synced")
+			setStatus(
+				gachaRemoteCorrupt && !options?.overwriteCorruptGacha
+					? "error"
+					: "synced"
+			)
 			setLastSyncedAt(Date.now())
 		} catch (error) {
 			console.error("Failed to sync backup to Convex", error)
 			setStatus("error")
 		}
-	}, [upsertBackup, upsertGachaBackup])
+	}, [upsertBackup, upsertGachaBackup, gachaRemoteCorrupt])
 
 	// True LWW's "local wins" half: once the initial reconcile against `row`
 	// is done, push local up right away if it's strictly ahead of (or there's
@@ -442,16 +532,16 @@ export function CloudSyncProvider({ children }: { children: React.ReactNode }) {
 
 		const localLastUpdated = memoryStorage.getItem<number>("lastUpdated", 0)
 		const localIsAhead =
-			row === null ||
-			row.lastUpdated == null ||
-			localLastUpdated > row.lastUpdated
+			meta === null ||
+			meta.lastUpdated == null ||
+			localLastUpdated > meta.lastUpdated
 		if (!localIsAhead || hasPushedThisEpochRef.current) return
 
 		hasPushedThisEpochRef.current = true
 		pushToConvex()
 	}, [
 		initialCheckComplete,
-		row,
+		meta,
 		restorePrompt,
 		hasCorruption,
 		remoteCorrupt,
@@ -565,11 +655,21 @@ export function CloudSyncProvider({ children }: { children: React.ReactNode }) {
 	}
 
 	const resyncFromCloud = async () => {
+		const key = keyRef.current
+		if (!key) return
+
+		let row
+		try {
+			row = await convex.query(api.backups.getBackup, {})
+		} catch (error) {
+			console.error("Failed to fetch cloud backup for re-sync", error)
+			setStatus("error")
+			return
+		}
+
 		if (!row) return
 		const { ciphertext, iv, lastUpdated } = row
 		if (ciphertext == null || iv == null || lastUpdated == null) return
-		const key = keyRef.current
-		if (!key) return
 
 		try {
 			const data = await decryptBackupPayload<MainBackupData>(
@@ -577,6 +677,8 @@ export function CloudSyncProvider({ children }: { children: React.ReactNode }) {
 				ciphertext,
 				iv
 			)
+			lastReconciledRef.current = lastUpdated
+			lastPushedMainHashRef.current = await hashBackupPayload(data)
 			clearCorruption()
 			setFailedRemoteRow(null)
 			backupSetMainImport(data)
@@ -590,10 +692,20 @@ export function CloudSyncProvider({ children }: { children: React.ReactNode }) {
 		}
 	}
 
+	const overwriteGachaCloudWithLocal = async () => {
+		setFailedGachaRow(null)
+		setDismissedGachaRow(null)
+		lastReconciledGachaRef.current = null
+		lastPushedGachaHashRef.current = null
+		await pushToConvex({ overwriteCorruptGacha: true })
+	}
+
 	const eraseAndResync = () => {
 		eraseLocalData()
 		clearCorruption()
 		setFailedRemoteRow(null)
+		setFailedGachaRow(null)
+		setDismissedGachaRow(null)
 		setStatus("idle")
 		setLastSyncedAt(null)
 		setLatestBackupUpdatedAt(null)
@@ -618,9 +730,8 @@ export function CloudSyncProvider({ children }: { children: React.ReactNode }) {
 		corruptionConfirmAction = () => overwriteCloudWithLocal()
 		corruptionCancelAction = () => eraseAndResync()
 	} else {
-		// A row that exists only to carry an unlink marker (no ciphertext) has
-		// nothing to resync from - treat it the same as no cloud backup.
-		const hasCloudContent = row != null && row.lastUpdated != null
+		// A row with only an unlink marker has no cloud content to resync from.
+		const hasCloudContent = meta != null && meta.lastUpdated != null
 		corruptionMessage = hasCloudContent
 			? t("sync.corruption.local.messageWithCloud")
 			: t("sync.corruption.local.messageNoCloud")
@@ -635,10 +746,39 @@ export function CloudSyncProvider({ children }: { children: React.ReactNode }) {
 			: undefined
 	}
 
-	return (
-		<CloudSyncContext.Provider
-			value={{ status, lastSyncedAt, latestBackupUpdatedAt, syncNow }}>
-			{children}
+	const contextValue = useMemo<CloudSyncContextValue>(
+		() => ({
+			status,
+			lastSyncedAt,
+			latestBackupUpdatedAt,
+			syncNow,
+			deleteCloudBackup,
+			deleteGachaBackup,
+			markUnlinked,
+		}),
+		[
+			status,
+			lastSyncedAt,
+			latestBackupUpdatedAt,
+			syncNow,
+			deleteCloudBackup,
+			deleteGachaBackup,
+			markUnlinked,
+		]
+	)
+
+	useEffect(() => {
+		onStateChange?.(contextValue)
+	}, [onStateChange, contextValue])
+
+	useEffect(() => {
+		return () => {
+			onStateChange?.(null)
+		}
+	}, [onStateChange])
+
+	const overlays = (
+		<>
 			<SyncToast state={initialSyncToastState} />
 			{restorePrompt && (
 				<SyncConflictModal
@@ -662,6 +802,35 @@ export function CloudSyncProvider({ children }: { children: React.ReactNode }) {
 					</AlertContainer>
 				</ModalContainer>
 			)}
+			{gachaRemoteCorrupt &&
+				dismissedGachaRow !== gachaMeta?.lastUpdated &&
+				!restorePrompt &&
+				!hasCorruption &&
+				!remoteCorrupt && (
+					<ModalContainer>
+						<AlertContainer
+							type="choices"
+							onConfirm={() => overwriteGachaCloudWithLocal()}
+							confirmLabel={t("sync.corruption.gacha.confirm")}
+							onCancel={() =>
+								setDismissedGachaRow(gachaMeta?.lastUpdated ?? null)
+							}
+							cancelLabel={t("sync.corruption.gacha.dismiss")}>
+							{t("sync.corruption.gacha.message")}
+						</AlertContainer>
+					</ModalContainer>
+				)}
+		</>
+	)
+
+	if (onStateChange) {
+		return overlays
+	}
+
+	return (
+		<CloudSyncContext.Provider value={contextValue}>
+			{children}
+			{overlays}
 		</CloudSyncContext.Provider>
 	)
 }

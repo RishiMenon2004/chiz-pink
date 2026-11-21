@@ -1,10 +1,8 @@
 "use client"
 
-import { ReactNode, useCallback } from "react"
+import { ReactNode, useCallback, useEffect, useState } from "react"
 import { getSession, useSession } from "next-auth/react"
 import { ConvexProviderWithAuth, ConvexReactClient } from "convex/react"
-
-const convex = new ConvexReactClient(process.env.NEXT_PUBLIC_CONVEX_URL as string)
 
 // Convex's generic "bring your own OIDC provider" auth hook, fed by the
 // Google id_token next-auth already holds - Convex verifies it directly
@@ -40,7 +38,47 @@ function useAuthFromNextAuth() {
 	}
 }
 
+let sharedConvexClient: ConvexReactClient | null = null
+let activeConvexMounts = 0
+let pendingCloseTimer: ReturnType<typeof setTimeout> | null = null
+
+// Shares one Convex client across StrictMode remounts and closes it on real unmount.
+function acquireConvexClient(): ConvexReactClient {
+	if (pendingCloseTimer) {
+		clearTimeout(pendingCloseTimer)
+		pendingCloseTimer = null
+	}
+	if (!sharedConvexClient) {
+		sharedConvexClient = new ConvexReactClient(
+			process.env.NEXT_PUBLIC_CONVEX_URL as string
+		)
+	}
+	return sharedConvexClient
+}
+
 export function ConvexClientProvider({ children }: { children: ReactNode }) {
+	const [convex] = useState(acquireConvexClient)
+
+	useEffect(() => {
+		activeConvexMounts += 1
+		if (pendingCloseTimer) {
+			clearTimeout(pendingCloseTimer)
+			pendingCloseTimer = null
+		}
+		return () => {
+			activeConvexMounts -= 1
+			if (activeConvexMounts === 0) {
+				pendingCloseTimer = setTimeout(() => {
+					pendingCloseTimer = null
+					if (activeConvexMounts === 0 && sharedConvexClient) {
+						void sharedConvexClient.close()
+						sharedConvexClient = null
+					}
+				}, 0)
+			}
+		}
+	}, [])
+
 	return (
 		<ConvexProviderWithAuth client={convex} useAuth={useAuthFromNextAuth}>
 			{children}

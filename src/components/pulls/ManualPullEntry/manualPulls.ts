@@ -154,6 +154,7 @@ function unreleasedAt(timestamp: number, server: GameServer) {
 // and leaves out what's still to come then (see unreleasedAt).
 export function candidatesFor(
 	bannerType: BannerType,
+	t: (key: MessageKey) => string,
 	at?: { timestamp: number; server: GameServer }
 ): Candidate[] {
 	const featured = at ? featuredAt(bannerType, at.timestamp, at.server) : []
@@ -162,12 +163,15 @@ export function candidatesFor(
 		const index = featured.indexOf(candidateKey(candidate.rewardType, candidate.id))
 		return index === -1 ? candidate : { ...candidate, featured: index }
 	}
-	return allCandidatesFor(bannerType)
+	return allCandidatesFor(bannerType, t)
 		.filter((candidate) => !unreleased.has(candidateKey(candidate.rewardType, candidate.id)))
 		.map(rank)
 }
 
-function allCandidatesFor(bannerType: BannerType): Candidate[] {
+function allCandidatesFor(
+	bannerType: BannerType,
+	t: (key: MessageKey) => string
+): Candidate[] {
 	const arcs = getAllArcsList().map((arc) => ({
 		id: arc.id,
 		name: arc.name,
@@ -198,19 +202,22 @@ function allCandidatesFor(bannerType: BannerType): Candidate[] {
 		(character) => character.rarity !== EnumRarity.Epic || sRanks.has(character.id)
 	)
 	const shownArcs = arcs.filter((arc) => arc.rarity !== EnumRarity.Epic)
-	return withUniqueNames([...shownCharacters, ...shownArcs, ...rewards])
+	return withUniqueNames([...shownCharacters, ...shownArcs, ...rewards], t)
 }
 
-const TYPE_LABELS: Record<RewardType, string> = {
-	character: "Character",
-	arc: "Arc",
-	item: "Item",
-	cosmetic: "Cosmetic",
+const TYPE_LABEL_KEYS: Record<RewardType, MessageKey> = {
+	character: "pulls.manual.types.character",
+	arc: "pulls.manual.types.arc",
+	item: "pulls.manual.types.item",
+	cosmetic: "pulls.manual.types.cosmetic",
 }
 
 // Items are picked by name, so where two share one (the Clear Skies arc
 // and outfit) each gets its type after it: "Clear Skies (Arc)".
-function withUniqueNames(candidates: Candidate[]): Candidate[] {
+function withUniqueNames(
+	candidates: Candidate[],
+	t: (key: MessageKey) => string
+): Candidate[] {
 	const counts = new Map<string, number>()
 	for (const c of candidates) {
 		const name = c.name.toLowerCase()
@@ -218,12 +225,12 @@ function withUniqueNames(candidates: Candidate[]): Candidate[] {
 	}
 	return candidates.map((c) => {
 		if ((counts.get(c.name.toLowerCase()) ?? 0) < 2) return c
-		const label = c.imageSrc.includes("/outfits/")
-			? "Outfit"
+		const labelKey: MessageKey = c.imageSrc.includes("/outfits/")
+			? "pulls.manual.types.outfit"
 			: c.imageSrc.includes("/gliders/")
-				? "Glider"
-				: TYPE_LABELS[c.rewardType]
-		return { ...c, name: `${c.name} (${label})` }
+				? "pulls.manual.types.glider"
+				: TYPE_LABEL_KEYS[c.rewardType]
+		return { ...c, name: `${c.name} (${t(labelKey)})` }
 	})
 }
 

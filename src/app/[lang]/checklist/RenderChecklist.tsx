@@ -59,7 +59,7 @@ function RenderActivityList({
 	const { checklist, actions } = useChecklistStore()
 	const tasks = checklist.activities[recordType] ?? {}
 
-	const now = useNow()
+	const now = useNow(60_000)
 
 	return getAllActivitiesList()
 		.filter((activity) => activity.type === type)
@@ -137,7 +137,7 @@ function RenderCustomTaskList({
 	const { settings } = useSettingsStore()
 	const { checklist, actions } = useChecklistStore()
 
-	const now = useNow()
+	const now = useNow(60_000)
 
 	return Object.values(checklist.customTasks ?? {})
 		.filter((task) => task.schedule.type === type)
@@ -325,7 +325,7 @@ export default function RenderChecklist() {
 	const { settings } = useSettingsStore()
 	const { checklist } = useChecklistStore()
 
-	const now = useNow()
+	const now = useNow(60_000)
 
 	const daily = checklist.activities.daily ?? {}
 	const weekly = checklist.activities.weekly ?? {}

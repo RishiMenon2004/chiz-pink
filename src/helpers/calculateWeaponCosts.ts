@@ -2,6 +2,7 @@ import { WeaponMaterialsCost, WeaponRecord } from "@/types/planner"
 
 import { findArc } from "@/data/arcs"
 import { weaponPhasesMaterials } from "@/data/arcs/arc"
+import { EnumRarity } from "@/data/items/item"
 
 import { getCostAmount } from "@/helpers/getCostAmountWithRarity"
 
@@ -60,7 +61,7 @@ export function calculateWeaponCosts({
 		ascMaterial2: { common: 0, uncommon: 0, rare: 0 },
 	}
 
-	const weaponRarity = findArc(id).rarity
+	const weaponRarity = findArc(id)?.rarity ?? EnumRarity.Common
 
 	if (currentLvl < targetLvl) {
 		for (const [key, phase] of Object.entries(weaponPhasesMaterials)) {

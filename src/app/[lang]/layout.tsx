@@ -5,7 +5,7 @@ import { notFound } from "next/navigation"
 import { ChangeLogs } from "@/data/changelog"
 
 import { isLocale, LOCALES } from "@/helpers/locale"
-import { getMessages } from "@/helpers/messages"
+import { getLayoutMessages } from "@/helpers/messages"
 import {
 	getMetadataTranslator,
 	ogLocale,
@@ -18,7 +18,6 @@ import { splashInitScript } from "@/helpers/splashState"
 import "../globals.css"
 
 import { AuthProvider } from "@/components/layout/AuthProvider"
-import { ConvexClientProvider } from "@/components/layout/ConvexClientProvider"
 import { CurrencyBar } from "@/components/layout/CurrencyBar/CurrencyBar"
 import { DomainMoveGate } from "@/components/layout/DomainMoveGate"
 import { Footer } from "@/components/layout/Footer"
@@ -26,8 +25,8 @@ import { Sidebar } from "@/components/layout/Sidebar"
 import { SiteAnalytics } from "@/components/layout/SiteAnalytics"
 import { SplashScreen } from "@/components/layout/SplashScreen"
 
+import { CloudSyncGate } from "@/helpers/CloudSyncGate"
 import { ServiceWorkerRegister } from "@/helpers/ServiceWorkerRegister"
-import { SyncErrorBoundary } from "@/helpers/SyncErrorBoundary"
 import { AppStorageInitializer } from "@/helpers/AppStorageInitializer"
 
 import { SettingsProvider } from "@/hooks/useSettingsStore"
@@ -113,7 +112,8 @@ export default async function RootLayout({
 }>) {
 	const { lang } = await params
 	if (!isLocale(lang)) notFound()
-	const messages = await getMessages(lang)
+	const messages = await getLayoutMessages(lang)
+	const latestVersion = Object.keys(ChangeLogs).at(-1) ?? "0.0.0"
 
 	return (
 		<html
@@ -125,9 +125,7 @@ export default async function RootLayout({
 			<head>
 				<script
 					dangerouslySetInnerHTML={{
-						__html: splashInitScript(
-							Object.keys(ChangeLogs).at(-1) ?? "0.0.0",
-						),
+						__html: splashInitScript(latestVersion),
 					}}
 				/>
 			</head>
@@ -136,16 +134,14 @@ export default async function RootLayout({
 					<AppStorageInitializer />
 					<AuthProvider>
 						<SettingsProvider>
-							<ConvexClientProvider>
-								<SyncErrorBoundary>
-									<ServiceWorkerRegister />
-									<DomainMoveGate />
-									<Sidebar />
-									<CurrencyBar />
-									<SplashScreen />
-									{children}
-								</SyncErrorBoundary>
-							</ConvexClientProvider>
+							<CloudSyncGate>
+								<ServiceWorkerRegister />
+								<DomainMoveGate />
+								<Sidebar />
+								<CurrencyBar />
+								<SplashScreen latestVersion={latestVersion} />
+								{children}
+							</CloudSyncGate>
 						</SettingsProvider>
 					</AuthProvider>
 					<Footer locale={lang} />

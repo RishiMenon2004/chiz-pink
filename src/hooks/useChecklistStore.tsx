@@ -1,6 +1,6 @@
 "use client"
 
-import { useSyncExternalStore } from "react"
+import { useEffect, useSyncExternalStore } from "react"
 
 import type {
 	ChecklistRecord,
@@ -10,7 +10,7 @@ import type {
 
 import { getAllActivitiesList } from "@/data/activities/activities"
 
-import { isInitialSyncPending } from "@/helpers/syncGate"
+import { isInitialSyncPending, useInitialSyncPending } from "@/helpers/syncGate"
 import { dismissToolIntro } from "@/helpers/toolIntro"
 import { createRecordStore } from "@/helpers/storage/recordStore"
 import * as memoryStorage from "@/helpers/storage/memoryStorage"
@@ -249,6 +249,22 @@ export const checklistActions = {
 	},
 }
 
+let needsRepairPersist = false
+
+function persistRepairedChecklist() {
+	if (
+		!needsRepairPersist ||
+		!memoryStorage.isHydrated() ||
+		isInitialSyncPending()
+	) {
+		return
+	}
+
+	needsRepairPersist = false
+	lastProcessed = cachedChecklist
+	store.write(cachedChecklist, { silent: true })
+}
+
 function getSnapshot(): ChecklistRecord {
 	if (typeof window === "undefined") return SERVER_FALLBACK
 
@@ -260,8 +276,7 @@ function getSnapshot(): ChecklistRecord {
 	const next = structuredClone(current)
 
 	// Pre-resetTimestamps records kept lastDailyReset at the top level -
-	// fold it into resetTimestamps (creating it first, since old data
-	// won't have one) before the missing-key backfill below.
+	// fold it into resetTimestamps before the missing-key backfill below.
 	const legacy = next as Record<string, unknown>
 	const hadOldKey = "lastDailyReset" in legacy
 	if (hadOldKey) {
@@ -275,24 +290,12 @@ function getSnapshot(): ChecklistRecord {
 		...next.resetTimestamps,
 	}
 
-	// Fill in any activity ids that ship in the catalog but are missing
-	// from the stored save (players upgrading from an older version),
-	// dropping orphaned ids.
+	// Fill in catalog activities missing from older saves and drop orphaned ids.
 	const repaired = reconcileMissingActivities(next)
 
 	lastProcessed = current
 	cachedChecklist = next
-
-	// Only persist the repair once local data has actually loaded - before
-	// hydration store.read() returns SERVER_FALLBACK, and writing that back
-	// would queue an IndexedDB write that overwrites the real save.
-	if ((hadOldKey || repaired) && !isInitialSyncPending()) {
-		// Set before writing: store.write() notifies synchronously, which
-		// re-enters getSnapshot() and must hit the early return above now
-		// that the store holds `next`.
-		lastProcessed = next
-		store.write(next, { silent: true })
-	}
+	needsRepairPersist = hadOldKey || repaired
 
 	return cachedChecklist
 }
@@ -301,12 +304,20 @@ const getServerSnapshot = () => {
 	return SERVER_FALLBACK
 }
 
+const subscribeChecklist = (listener: () => void) =>
+	memoryStorage.subscribeKey("checklist", listener)
+
 export function useChecklistStore() {
 	const checklist = useSyncExternalStore<ChecklistRecord>(
-		memoryStorage.subscribe,
+		subscribeChecklist,
 		getSnapshot,
 		getServerSnapshot
 	)
+	const syncPending = useInitialSyncPending()
+
+	useEffect(() => {
+		persistRepairedChecklist()
+	}, [checklist, syncPending])
 
 	return {
 		checklist,

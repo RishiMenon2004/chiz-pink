@@ -149,7 +149,7 @@ const PlannerArcsSelect = () => {
 	const [filterQuery, setFilterQuery] = useState<
 		[EnumArcType | null, EnumRarity | null]
 	>([null, null])
-	const now = useNow()
+	const now = useNow(60_000)
 
 	if (!newArcRecord) return null
 

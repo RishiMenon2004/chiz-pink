@@ -1,10 +1,7 @@
 "use client"
 
 import { signOut, useSession } from "next-auth/react"
-import { useMutation } from "convex/react"
 import { useMemo, useState } from "react"
-
-import { api } from "@convex/_generated/api"
 
 import { BackupData } from "@/types/settings"
 
@@ -18,6 +15,7 @@ import { getCachedInventory } from "@/hooks/useInventoryStore"
 import { getCachedPlanner } from "@/hooks/usePlannerStore"
 
 import { ExternalImportResult } from "@/helpers/importExternal"
+import { unlinkGoogleAccount } from "@/helpers/unlinkGoogleAccount"
 
 import {
 	backupImport,
@@ -28,8 +26,9 @@ import {
 	isNteWizBackup,
 	parseNtePlannerImport,
 	parseNteWizImport,
-	unlinkGoogleAccount,
 } from "@/helpers"
+
+import { useCloudSyncContext } from "@/contexts"
 
 import {
 	AppearanceSection,
@@ -42,14 +41,17 @@ import {
 } from "@/components/settings"
 import { Section, SectionColumns } from "@/components/settings/SettingsShared"
 import {
+	CloudEraseErrorModal,
 	ExternalImportPendingModal,
 	ExternalImportSummaryModal,
 	EraseDataWarningModal,
 	ErasePullsWarningModal,
 	EraseSyncChoiceModal,
+	ImportErrorModal,
 	ImportOverwriteModal,
 	SignoutWarningModal,
 	UnlinkAccountModal,
+	type SettingsImportError,
 } from "@/components/settings/SettingsModals"
 
 import styles from "./settings.module.css"
@@ -67,9 +69,8 @@ function hasExistingPlannerData() {
 
 export function RenderSettings() {
 	const { data: session, status } = useSession()
-	const deleteCloudBackup = useMutation(api.backups.deleteBackup)
-	const deleteGachaBackup = useMutation(api.gachaBackups.deleteBackup)
-	const markUnlinked = useMutation(api.backups.markUnlinked)
+	const { deleteCloudBackup, deleteGachaBackup, markUnlinked } =
+		useCloudSyncContext()
 
 	const [isImportOlder, setImportOlder] = useState<boolean>(false)
 	const [askOverwrite, setAskOverwrite] = useState<boolean>(false)
@@ -83,6 +84,10 @@ export function RenderSettings() {
 		useState<ExternalImportResult | null>(null)
 	const [externalImportSummary, setExternalImportSummary] =
 		useState<ExternalImportResult | null>(null)
+	const [importError, setImportError] = useState<SettingsImportError | null>(
+		null
+	)
+	const [cloudEraseError, setCloudEraseError] = useState<boolean>(false)
 
 	const applyExternalPlannerImport = useMemo(() => {
 		return (report: ExternalImportResult, mode: "merge" | "overwrite") => {
@@ -123,14 +128,23 @@ export function RenderSettings() {
 				if (!file) return
 
 				const reader = new FileReader()
+				reader.onerror = () => {
+					console.error("Failed to read backup file", reader.error)
+					setImportError("readFailed")
+				}
 				reader.onload = () => {
-					const result = reader.result as string
+					if (typeof reader.result !== "string") {
+						setImportError("readFailed")
+						return
+					}
+					const result = reader.result
 
 					let parsed: unknown = null
 					try {
 						parsed = JSON.parse(result)
 					} catch (error) {
 						console.error(error)
+						setImportError("invalidJson")
 						return
 					}
 
@@ -156,6 +170,7 @@ export function RenderSettings() {
 
 					switch (status) {
 						case "error":
+							setImportError("unsupportedFormat")
 							break
 						case "newer":
 							backupSetImport(data)
@@ -202,6 +217,14 @@ export function RenderSettings() {
 				<BehaviourSection />
 			</Section>
 
+			<ImportErrorModal
+				importError={importError}
+				onClose={() => setImportError(null)}
+			/>
+			<CloudEraseErrorModal
+				open={cloudEraseError}
+				onClose={() => setCloudEraseError(false)}
+			/>
 			<ImportOverwriteModal
 				isImportOlder={isImportOlder}
 				askOverwrite={askOverwrite}
@@ -251,6 +274,7 @@ export function RenderSettings() {
 								"Failed to delete gacha cloud backup",
 								error
 							)
+							setCloudEraseError(true)
 						})
 					}
 				}}
@@ -261,6 +285,7 @@ export function RenderSettings() {
 				setEraseSyncChoice={setEraseSyncChoice}
 				eraseLocalData={eraseLocalData}
 				deleteGachaBackup={deleteGachaBackup}
+				onDeleteGachaError={() => setCloudEraseError(true)}
 				signOut={() => signOut()}
 			/>
 			<UnlinkAccountModal

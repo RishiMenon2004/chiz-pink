@@ -8,7 +8,6 @@ import {
 } from "@/types/ntePlannerImport"
 import { SettingsRecord } from "@/types/settings"
 
-import { EnumItemLvls } from "@/data/items"
 import { findCharacter } from "@/data/characters"
 import { findArc } from "@/data/arcs"
 
@@ -18,6 +17,7 @@ import {
 	ImportedCharacter,
 	kebabToSnake,
 	mapMaterialAmounts,
+	maxItemLvl,
 	normalizeId,
 	snapItemLvl,
 	ExternalImportResult,
@@ -115,7 +115,7 @@ export function mapNteCharacter(
 	return {
 		id,
 		currentLvl,
-		targetLvl: Math.max(currentLvl, targetLvl) as EnumItemLvls,
+		targetLvl: maxItemLvl(currentLvl, targetLvl),
 		abilitySet,
 		awakening: nteChar.awakeningTier ?? 0,
 	}
@@ -133,7 +133,7 @@ export function mapNteArc(
 	return {
 		id,
 		currentLvl,
-		targetLvl: Math.max(currentLvl, targetLvl) as EnumItemLvls,
+		targetLvl: maxItemLvl(currentLvl, targetLvl),
 	}
 }
 

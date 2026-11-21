@@ -2,8 +2,6 @@ import { Metadata } from "next"
 
 import { buildRouteMetadata } from "@/helpers/metadata"
 
-import { LocaleLink } from "@/components/layout"
-
 import styles from "./privacy.module.css"
 
 type Props = {
@@ -105,13 +103,13 @@ export default function PrivacyPolicy() {
 								{
 									"The encrypted data is stored in a cloud database hosted by "
 								}
-								<LocaleLink
+								<a
 									className="btn-anchor"
 									href="https://www.convex.dev"
 									target="_blank"
 									rel="noopener noreferrer">
 									Convex
-								</LocaleLink>
+								</a>
 								{
 									". Convex only ever receives ciphertext. Neither Convex nor Chiz.Pink has your key, so neither can read your data."
 								}
@@ -154,13 +152,13 @@ export default function PrivacyPolicy() {
 								{
 									" handles authentication and stores your encryption key in your private appDataFolder. Governed by "
 								}
-								<LocaleLink
+								<a
 									className="btn-anchor"
 									href="https://policies.google.com/privacy"
 									target="_blank"
 									rel="noopener noreferrer">
 									{"Google's Privacy Policy"}
-								</LocaleLink>
+								</a>
 								{"."}
 							</li>
 							<li>
@@ -168,13 +166,13 @@ export default function PrivacyPolicy() {
 								{
 									" stores the encrypted backup blobs and sync metadata. Governed by "
 								}
-								<LocaleLink
+								<a
 									className="btn-anchor"
 									href="https://www.convex.dev/privacy"
 									target="_blank"
 									rel="noopener noreferrer">
 									{"Convex's Privacy Policy"}
-								</LocaleLink>
+								</a>
 								{"."}
 							</li>
 							<li>
@@ -182,13 +180,13 @@ export default function PrivacyPolicy() {
 								{
 									" hosts the application and serves static assets, and counts page visits through Vercel Web Analytics. Standard web server access logs (IP addresses, request paths) may be collected by Vercel for operational and security purposes, governed by "
 								}
-								<LocaleLink
+								<a
 									className="btn-anchor"
 									href="https://vercel.com/legal/privacy-policy"
 									target="_blank"
 									rel="noopener noreferrer">
 									{"Vercel's Privacy Policy"}
-								</LocaleLink>
+								</a>
 								{"."}
 							</li>
 						</ul>
@@ -228,13 +226,13 @@ export default function PrivacyPolicy() {
 								{
 									" you can delete Chiz.Pink's hidden configuration and encryption key directly from your Google account at any time by visiting "
 								}
-								<LocaleLink
+								<a
 									className="btn-anchor"
 									href="https://myaccount.google.com/connections"
 									target="_blank"
 									rel="noopener noreferrer">
 									Google Account Connections
-								</LocaleLink>
+								</a>
 								{
 									', selecting Chiz.Pink, and clicking "Delete all data that you shared with Chiz.Pink".'
 								}

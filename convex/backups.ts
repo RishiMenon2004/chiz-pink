@@ -12,6 +12,19 @@ async function getOwnBackup(ctx: QueryCtx) {
 		.unique()
 }
 
+export const getBackupMeta = query({
+	args: {},
+	handler: async (ctx) => {
+		const existing = await getOwnBackup(ctx)
+		if (!existing) return null
+
+		return {
+			lastUpdated: existing.lastUpdated,
+			unlinkedAt: existing.unlinkedAt,
+		}
+	},
+})
+
 export const getBackup = query({
 	args: {},
 	handler: async (ctx) => {
@@ -74,7 +87,7 @@ export const deleteBackup = mutation({
 })
 
 // Called when a device unlinks the account, so every other signed-in device
-// can react to the live getBackup query result and force its own sign-out.
+// can react to the live getBackupMeta query result and force its own sign-out.
 export const markUnlinked = mutation({
 	args: {},
 	handler: async (ctx) => {

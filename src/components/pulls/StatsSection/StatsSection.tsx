@@ -19,7 +19,10 @@ import {
 	isScarboroughPull,
 } from "@/helpers"
 
+import { formatLocale } from "@/helpers/locale"
+
 import {
+	useLocale,
 	usePullTrackerContext,
 	useSettingsConfigContext,
 	useT,
@@ -244,6 +247,7 @@ export function StatsSection() {
 		userdata: { server },
 	} = useSettingsConfigContext()
 	const t = useT()
+	const locale = useLocale()
 
 	const [activeTab, setActiveTab] = useState<Tab>("overview")
 	const tabRefs = useRef<(HTMLButtonElement | null)[]>([])
@@ -395,7 +399,9 @@ export function StatsSection() {
 							/>
 							<Stat
 								label={t("pulls.stats.annulithSpent")}
-								value={(stats.totalPulls * ANNULITH_PER_PULL).toLocaleString()}
+								value={(stats.totalPulls * ANNULITH_PER_PULL).toLocaleString(
+									formatLocale(locale)
+								)}
 								icon={
 									<Image
 										src={`/materials/${annulith.imageSrc}`}

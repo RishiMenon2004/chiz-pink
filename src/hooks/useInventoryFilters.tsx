@@ -8,19 +8,26 @@ import type {
 	FilterRarityType,
 	SortByType,
 } from "@/types/inventory"
+import type { AggregateMaterialsType } from "@/types/planner"
 
 import { EnumMaterialType, getInventoryMaterialsList } from "@/data/items"
 
-import { useInventoryStore } from "./useInventoryStore"
+import { useInventoryWhen } from "./useInventoryStore"
 import { getAggregatedMaterials, usePlannerStore } from "./usePlannerStore"
 
 export function useInventoryFilters(
 	filter: FilterByType,
 	rarity: FilterRarityType,
 	sorting: SortByType,
-	sortReverse: boolean
+	sortReverse: boolean,
+	precomputedAggregated?: AggregateMaterialsType
 ) {
-	const { inventory } = useInventoryStore()
+	const needsInventory =
+		filter === "owned" ||
+		filter === "acquired" ||
+		sorting === "owned" ||
+		sorting === "required"
+	const inventory = useInventoryWhen(needsInventory)
 	const { plannerData } = usePlannerStore()
 
 	return useMemo(() => {
@@ -31,7 +38,7 @@ export function useInventoryFilters(
 			filter === "acquired" ||
 			sorting === "required"
 		const agregatedMaterials = needsAggregate
-			? getAggregatedMaterials(plannerData)
+			? (precomputedAggregated ?? getAggregatedMaterials(plannerData))
 			: null
 
 		let filteredInventoryList = cachedInventoryList
@@ -43,9 +50,9 @@ export function useInventoryFilters(
 			}
 
 			case "required": {
-				filteredInventoryList = cachedInventoryList.filter((material) => {
-					return Object.keys(agregatedMaterials!).includes(material.id)
-				})
+				filteredInventoryList = cachedInventoryList.filter(
+					(material) => material.id in agregatedMaterials!
+				)
 				break
 			}
 
@@ -158,5 +165,13 @@ export function useInventoryFilters(
 		}
 
 		return [...sortedInventoryList]
-	}, [filter, rarity, sorting, sortReverse, inventory, plannerData])
+	}, [
+		filter,
+		rarity,
+		sorting,
+		sortReverse,
+		inventory,
+		plannerData,
+		precomputedAggregated,
+	])
 }

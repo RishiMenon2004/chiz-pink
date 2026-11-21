@@ -12,7 +12,7 @@ import {
 
 import { useLocale, useT } from "@/contexts"
 
-import { LocaleLink } from "@/components/layout"
+import { LocaleLink } from "@/components/layout/LocaleLink"
 
 import {
 	ConfigSelect,
@@ -42,6 +42,12 @@ export function LanguageSection() {
 		// The proxy reads this before the browser's language, so unprefixed
 		// URLs (bookmarks, the installed app) keep opening in this language.
 		document.cookie = `${LOCALE_COOKIE}=${next}; path=/; max-age=${ONE_YEAR}; samesite=lax`
+
+		// Refresh the offline shell cache for the new locale.
+		navigator.serviceWorker?.controller?.postMessage({
+			type: "LOCALE_CHANGED",
+			locale: next,
+		})
 
 		// A full load: every page's text comes from the root layout, which
 		// only runs again for a fresh document.

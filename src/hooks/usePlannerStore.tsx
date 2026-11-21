@@ -1,13 +1,15 @@
 "use client"
 
 import { useSyncExternalStore } from "react"
-import { v4 as uuidv4 } from "uuid"
+
+import { randomId } from "@/helpers/randomId"
 
 import { isInitialSyncPending } from "@/helpers/syncGate"
 import { dismissToolIntro } from "@/helpers/toolIntro"
 import { safeParse } from "@/helpers/dataCorruption"
 import * as idbStorage from "@/helpers/storage/idbStorage"
 import * as memoryStorage from "@/helpers/storage/memoryStorage"
+import { reportStorageWriteError } from "@/helpers/storage/storageError"
 
 import type { Material } from "@/types/item"
 import type {
@@ -58,12 +60,13 @@ function writeLegacyBlob(planner: PlannerRecord) {
 		window.localStorage.setItem(LEGACY_KEY, JSON.stringify(planner))
 	} catch (error) {
 		console.error("localStorage fallback write failed for planner", error)
+		reportStorageWriteError()
 	}
 }
 
 memoryStorage.onCustomBroadcast(PLANNER_BROADCAST_CHANNEL, (payload) => {
 	cachedPlanner = payload as PlannerRecord
-	memoryStorage.notifyListeners()
+	memoryStorage.notifyListeners(PLANNER_BROADCAST_CHANNEL)
 })
 
 // Bootstraps the planner cache from IndexedDB. Safe to call more than once -
@@ -77,7 +80,7 @@ export async function hydratePlannerCache(): Promise<void> {
 	if (memoryStorage.isFallbackMode() || !idbStorage.isIndexedDBAvailable()) {
 		cachedPlanner = refreshRequiredMaterials(readLegacyBlob())
 		loaded = true
-		memoryStorage.notifyListeners()
+		memoryStorage.notifyListeners(PLANNER_BROADCAST_CHANNEL)
 		return
 	}
 
@@ -93,7 +96,7 @@ export async function hydratePlannerCache(): Promise<void> {
 		console.error("IndexedDB planner hydration failed", error)
 	}
 	loaded = true
-	memoryStorage.notifyListeners()
+	memoryStorage.notifyListeners(PLANNER_BROADCAST_CHANNEL)
 }
 
 // Diffs two PlannerRecords by reference (every mutation helper below always
@@ -172,12 +175,12 @@ export const plannerActions = {
 
 			idbStorage.writePlannerChanges(puts, deletes).catch((error) => {
 				console.error("IndexedDB write-through failed for planner", error)
+				reportStorageWriteError()
 			})
 			memoryStorage.broadcastCustom(PLANNER_BROADCAST_CHANNEL, updatedPlanner)
 		}
 
-		// setItem("lastUpdated", ...) notifies this tab's subscribers - see
-		// memoryStorage.notifyListeners()'s doc comment.
+		memoryStorage.notifyListeners(PLANNER_BROADCAST_CHANNEL)
 		memoryStorage.setItem("lastUpdated", Date.now())
 	},
 
@@ -221,7 +224,7 @@ export const plannerActions = {
 	addWeapon(
 		weapon: Omit<WeaponRecord, "uid" | "requiredMaterials" | "isDisabled">
 	) {
-		const newUID = uuidv4()
+		const newUID = randomId()
 
 		this.updatePlanner((current) => ({
 			arcs: {
@@ -267,7 +270,7 @@ export function replacePlanner(restored: PlannerRecord): void {
 	const data = refreshRequiredMaterials(restored)
 
 	cachedPlanner = data
-	memoryStorage.notifyListeners()
+	memoryStorage.notifyListeners(PLANNER_BROADCAST_CHANNEL)
 
 	if (memoryStorage.isFallbackMode()) {
 		writeLegacyBlob(data)
@@ -293,6 +296,7 @@ export function replacePlanner(restored: PlannerRecord): void {
 
 	idbStorage.replaceAllPlannerItems(items).catch((error) => {
 		console.error("IndexedDB replace failed for planner", error)
+		reportStorageWriteError()
 	})
 	memoryStorage.broadcastCustom(PLANNER_BROADCAST_CHANNEL, data)
 }
@@ -302,7 +306,7 @@ export function clearPlanner(): void {
 	if (typeof window === "undefined") return
 
 	cachedPlanner = SERVER_FALLBACK
-	memoryStorage.notifyListeners()
+	memoryStorage.notifyListeners(PLANNER_BROADCAST_CHANNEL)
 
 	if (memoryStorage.isFallbackMode()) {
 		window.localStorage.removeItem(LEGACY_KEY)
@@ -311,6 +315,7 @@ export function clearPlanner(): void {
 
 	idbStorage.clearPlannerItems().catch((error) => {
 		console.error("IndexedDB clear failed for planner", error)
+		reportStorageWriteError()
 	})
 	memoryStorage.broadcastCustom(PLANNER_BROADCAST_CHANNEL, SERVER_FALLBACK)
 }
@@ -385,7 +390,9 @@ export function getAggregatedMaterial(
 	materialRef: Material,
 	type: "arc" | "char" | "both" = "both"
 ) {
-	if (typeof window === "undefined") return {} as AggregateMaterial
+	if (typeof window === "undefined") {
+		return { sources: {}, amount: 0 }
+	}
 
 	let aggregatedMaterial: AggregateMaterial = {
 		sources: {},
@@ -459,14 +466,17 @@ const getServerSnapshot = () => {
 const getLoadedSnapshot = () => loaded
 const getServerLoadedSnapshot = () => false
 
+const subscribePlanner = (listener: () => void) =>
+	memoryStorage.subscribeKey(PLANNER_BROADCAST_CHANNEL, listener)
+
 export function usePlannerStore() {
 	const plannerData = useSyncExternalStore<PlannerRecord>(
-		memoryStorage.subscribe,
+		subscribePlanner,
 		getSnapshot,
 		getServerSnapshot
 	)
 	const isLoaded = useSyncExternalStore(
-		memoryStorage.subscribe,
+		subscribePlanner,
 		getLoadedSnapshot,
 		getServerLoadedSnapshot
 	)

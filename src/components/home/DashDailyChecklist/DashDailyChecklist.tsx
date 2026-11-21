@@ -76,7 +76,7 @@ function CustomChecklistItem({ task }: { task: CustomTask }) {
 	const t = useT()
 	const { settings } = useSettingsStore()
 	const { actions } = useChecklistStore()
-	const now = useNow()
+	const now = useNow(60_000)
 
 	const checked =
 		now !== null &&

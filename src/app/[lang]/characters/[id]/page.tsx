@@ -9,6 +9,7 @@ import {
 	getMetadataTranslator,
 	rankForIntro,
 } from "@/helpers/metadata"
+import { PageMessages } from "@/helpers/PageMessages"
 
 import { CharacterProfile } from "@/components/profile"
 
@@ -65,5 +66,9 @@ export default async function CharacterInfoPage({ params }: Props) {
 		notFound()
 	}
 
-	return <CharacterProfile character={char} locale={toLocale(lang)} />
+	return (
+		<PageMessages lang={lang} namespaces={["profile"]}>
+			<CharacterProfile character={char} locale={toLocale(lang)} />
+		</PageMessages>
+	)
 }

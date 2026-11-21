@@ -1,58 +1,21 @@
-"use client"
+import type { ReactNode } from "react"
 
-import { ToolIntro } from "@/components/layout"
-import { PlannerSwitch } from "@/components/planner/PlannerSwitch"
-import { PlannerToolbar } from "@/components/planner/PlannerToolbar"
-import { localizePath } from "@/helpers/locale"
-import { PlannerSection, PlannerSectionContext, useLocale, useT } from "@/contexts"
-import { useSelectedLayoutSegment } from "next/navigation"
-import { ReactNode, useEffect, useState } from "react"
+import { PageMessages } from "@/helpers/PageMessages"
 
-export default function PlannerLayout({ children }: { children: ReactNode }) {
-	const segment = useSelectedLayoutSegment()
-	const locale = useLocale()
-	const t = useT()
-	const [section, setSectionState] = useState<PlannerSection>(
-		segment === "arcs" ? "arcs" : "characters"
-	)
+import { PlannerLayoutClient } from "./PlannerLayoutClient"
 
-	useEffect(() => {
-		if (segment === "arcs" || segment === "characters") {
-			// eslint-disable-next-line react-hooks/set-state-in-effect
-			setSectionState(segment)
-		}
-	}, [segment])
-
-	useEffect(() => {
-		const handlePopState = () => {
-			const path = window.location.pathname
-			if (path.endsWith("/arcs")) {
-				setSectionState("arcs")
-			} else if (path.endsWith("/characters")) {
-				setSectionState("characters")
-			}
-		}
-		window.addEventListener("popstate", handlePopState)
-		return () => window.removeEventListener("popstate", handlePopState)
-	}, [])
-
-	const setSection = (nextSection: PlannerSection) => {
-		setSectionState(nextSection)
-		window.history.replaceState(
-			null,
-			"",
-			localizePath(`/planner/${nextSection}`, locale)
-		)
-	}
+export default async function PlannerLayout({
+	children,
+	params,
+}: {
+	children: ReactNode
+	params: Promise<{ lang: string }>
+}) {
+	const { lang } = await params
 
 	return (
-		<PlannerSectionContext.Provider value={{ section, setSection }}>
-			<PlannerToolbar />
-			<PlannerSwitch />
-			<ToolIntro id="planner">
-				<div>{t("planner.intro")}</div>
-			</ToolIntro>
-			{children}
-		</PlannerSectionContext.Provider>
+		<PageMessages lang={lang} namespaces={["planner"]}>
+			<PlannerLayoutClient>{children}</PlannerLayoutClient>
+		</PageMessages>
 	)
 }

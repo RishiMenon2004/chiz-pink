@@ -84,8 +84,8 @@ export function ManualPullEntry() {
 	// What's running when the form is first shown goes first.
 	const [openedAt] = useState(() => Date.now())
 	const candidates = useMemo(
-		() => candidatesFor(selectedBanner, { timestamp: openedAt, server }),
-		[selectedBanner, openedAt, server]
+		() => candidatesFor(selectedBanner, t, { timestamp: openedAt, server }),
+		[selectedBanner, t, openedAt, server]
 	)
 	const byName = useMemo(
 		() => new Map(candidates.map((c) => [c.name.toLowerCase(), c])),

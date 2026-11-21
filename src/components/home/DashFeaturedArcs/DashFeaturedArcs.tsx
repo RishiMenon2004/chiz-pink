@@ -19,7 +19,7 @@ import {
 
 import { useT } from "@/contexts"
 
-import { LocaleLink } from "@/components/layout"
+import { LocaleLink } from "@/components/layout/LocaleLink"
 
 import styles from "./DashFeaturedArcs.module.css"
 
@@ -27,7 +27,7 @@ type Entry = { item: Arc; status: ItemStatus }
 
 function BannerTiming({ arc }: { arc: Arc }) {
 	const t = useT()
-	const now = useNow()
+	const now = useNow(60_000)
 	if (now === null) return null
 
 	const banner = getActiveBannerWindow(arc.id, now)

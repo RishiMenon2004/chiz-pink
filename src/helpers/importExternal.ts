@@ -77,8 +77,24 @@ export function mapMaterialAmounts(
 	return { matched, unmatched }
 }
 
+const DECADE_LEVELS: Record<
+	number,
+	readonly [EnumItemLvls, EnumItemLvls, EnumItemLvls]
+> = {
+	20: [EnumItemLvls.Lvl20, EnumItemLvls.Lvl20A, EnumItemLvls.Lvl30],
+	30: [EnumItemLvls.Lvl30, EnumItemLvls.Lvl30A, EnumItemLvls.Lvl40],
+	40: [EnumItemLvls.Lvl40, EnumItemLvls.Lvl40A, EnumItemLvls.Lvl50],
+	50: [EnumItemLvls.Lvl50, EnumItemLvls.Lvl50A, EnumItemLvls.Lvl60],
+	60: [EnumItemLvls.Lvl60, EnumItemLvls.Lvl60A, EnumItemLvls.Lvl70],
+	70: [EnumItemLvls.Lvl70, EnumItemLvls.Lvl70A, EnumItemLvls.Lvl80],
+}
+
+export function maxItemLvl(a: EnumItemLvls, b: EnumItemLvls): EnumItemLvls {
+	return a >= b ? a : b
+}
+
 export function snapItemLvl(level: number): EnumItemLvls {
-	if (level <= 1) return EnumItemLvls.Lvl1
+	if (!Number.isFinite(level) || level <= 1) return EnumItemLvls.Lvl1
 	if (level >= 80) return EnumItemLvls.Lvl80
 
 	if (level < 20) {
@@ -87,11 +103,16 @@ export function snapItemLvl(level: number): EnumItemLvls {
 
 	const low = Math.floor(level / 10) * 10
 	const remainder = level - low
+	const [base, ascended, next] = DECADE_LEVELS[low] ?? [
+		EnumItemLvls.Lvl70,
+		EnumItemLvls.Lvl70A,
+		EnumItemLvls.Lvl80,
+	]
 
-	if (remainder === 0 || remainder === 5) return low as EnumItemLvls
-	if (remainder <= 4) return (low + 1) as EnumItemLvls
+	if (remainder === 0 || remainder === 5) return base
+	if (remainder <= 4) return ascended
 
-	return (low + 10) as EnumItemLvls
+	return next
 }
 
 export type ImportedCharacter = {

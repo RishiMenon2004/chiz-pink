@@ -26,7 +26,17 @@ let cloudSyncPending = false
 // Starts true: every load has an unhydrated window before
 // AppStorageInitializer's effect resolves.
 let localBootstrapPending = true
+// Tracks whether this tab saw a signed-out session before signing in.
+let observedUnauthenticated = false
 const listeners = new Set<Listener>()
+
+export function markSessionUnauthenticated() {
+	observedUnauthenticated = true
+}
+
+export function hasObservedUnauthenticated() {
+	return observedUnauthenticated
+}
 
 function notify() {
 	listeners.forEach((listener) => listener())
