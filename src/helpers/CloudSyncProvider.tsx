@@ -84,6 +84,10 @@ export function CloudSyncProvider({
 	// (derived below, once `row` exists) naturally clears without needing an
 	// explicit reset.
 	const [failedRemoteRow, setFailedRemoteRow] = useState<number | null>(null)
+	const [failedGachaRow, setFailedGachaRow] = useState<number | null>(null)
+	const [dismissedGachaRow, setDismissedGachaRow] = useState<number | null>(
+		null
+	)
 	// Any localStorage-backed record that failed to parse (see
 	// dataCorruption.ts). Blocks auto-sync until the user picks a recovery
 	// path, same as restorePrompt does - we don't want to push corrupt data
@@ -179,6 +183,8 @@ export function CloudSyncProvider({
 			setStatus("idle")
 			setRestorePrompt(null)
 			setFailedRemoteRow(null)
+			setFailedGachaRow(null)
+			setDismissedGachaRow(null)
 			setInitialReconcileDone(false)
 		}
 	}, [convexAuth.isLoading, convexAuth.isAuthenticated])
@@ -215,6 +221,8 @@ export function CloudSyncProvider({
 
 	// True when this specific remote revision failed to decrypt or parse.
 	const remoteCorrupt = meta != null && failedRemoteRow === meta.lastUpdated
+	const gachaRemoteCorrupt =
+		gachaMeta != null && failedGachaRow === gachaMeta.lastUpdated
 
 	const initialCheckComplete =
 		keyReady &&
@@ -335,7 +343,13 @@ export function CloudSyncProvider({
 
 	// Fetches and auto-merges decoupled gacha pulls only when remote lastUpdated changes.
 	useEffect(() => {
-		if (!keyReady || gachaMeta === undefined || gachaMeta === null) return
+		if (
+			!keyReady ||
+			gachaMeta === undefined ||
+			gachaMeta === null ||
+			gachaRemoteCorrupt
+		)
+			return
 		if (
 			lastReconciledGachaRef.current === gachaMeta.lastUpdated ||
 			isReconcilingGachaRef.current
@@ -351,36 +365,45 @@ export function CloudSyncProvider({
 			.then(async (gachaRow) => {
 				if (!mountedRef.current || !gachaRow) return
 
-				const data = await decryptBackupPayload<GachaBackupData>(
-					key,
-					gachaRow.ciphertext,
-					gachaRow.iv
-				)
-				if (!mountedRef.current) return
-				lastReconciledGachaRef.current = gachaRow.lastUpdated
-				lastPushedGachaHashRef.current = await hashBackupPayload(data)
-
-				if (data.gachaPulls) {
-					mergePullsRecord(data.gachaPulls)
-					const localGachaLastUpdated = memoryStorage.getItem<number>(
-						"gachaLastUpdated",
-						0
+				try {
+					const data = await decryptBackupPayload<GachaBackupData>(
+						key,
+						gachaRow.ciphertext,
+						gachaRow.iv
 					)
-					if (gachaRow.lastUpdated > localGachaLastUpdated) {
-						memoryStorage.setItem(
+					if (!mountedRef.current) return
+					lastReconciledGachaRef.current = gachaRow.lastUpdated
+					lastPushedGachaHashRef.current = await hashBackupPayload(data)
+
+					if (data.gachaPulls) {
+						mergePullsRecord(data.gachaPulls)
+						const localGachaLastUpdated = memoryStorage.getItem<number>(
 							"gachaLastUpdated",
-							gachaRow.lastUpdated
+							0
 						)
+						if (gachaRow.lastUpdated > localGachaLastUpdated) {
+							memoryStorage.setItem(
+								"gachaLastUpdated",
+								gachaRow.lastUpdated
+							)
+						}
+					}
+				} catch (error) {
+					console.error("Failed to decrypt gacha backup from Convex", error)
+					if (mountedRef.current) {
+						setFailedGachaRow(gachaRow.lastUpdated)
+						setStatus("error")
 					}
 				}
 			})
 			.catch((error) => {
-				console.error("Failed to decrypt gacha backup from Convex", error)
+				console.error("Failed to fetch gacha backup from Convex", error)
+				if (mountedRef.current) setStatus("error")
 			})
 			.finally(() => {
 				isReconcilingGachaRef.current = false
 			})
-	}, [convex, gachaMeta, keyReady])
+	}, [convex, gachaMeta, keyReady, gachaRemoteCorrupt])
 
 	const upsertBackup = useMutation(api.backups.upsertBackup)
 	const upsertGachaBackup = useMutation(api.gachaBackups.upsertBackup)
@@ -389,12 +412,13 @@ export function CloudSyncProvider({
 	const markUnlinked = useMutation(api.backups.markUnlinked)
 
 	// Encrypts and pushes main payload and/or gacha payload to Convex
-	const pushToConvex = useCallback(async () => {
-		const key = keyRef.current
-		if (!key) return
+	const pushToConvex = useCallback(
+		async (options?: { overwriteCorruptGacha?: boolean }) => {
+			const key = keyRef.current
+			if (!key) return
 
-		setStatus("syncing")
-		try {
+			setStatus("syncing")
+			try {
 			const localLastUpdated = memoryStorage.getItem<number>(
 				"lastUpdated",
 				0
@@ -436,10 +460,13 @@ export function CloudSyncProvider({
 				setLatestBackupUpdatedAt(lastUpdated)
 			}
 
-			// Push gacha payload if local gacha is newer than what we last reconciled/pushed
+			// Push gacha payload unless its remote revision is unreadable and awaiting user choice.
+			const canPushGacha =
+				!gachaRemoteCorrupt || options?.overwriteCorruptGacha === true
 			if (
-				lastReconciledGachaRef.current === null ||
-				localGachaLastUpdated > lastReconciledGachaRef.current
+				canPushGacha &&
+				(lastReconciledGachaRef.current === null ||
+					localGachaLastUpdated > lastReconciledGachaRef.current)
 			) {
 				const gachaPayload = buildGachaPayload()
 				const gachaLastUpdated =
@@ -470,13 +497,17 @@ export function CloudSyncProvider({
 			}
 
 			markSynced()
-			setStatus("synced")
+			setStatus(
+				gachaRemoteCorrupt && !options?.overwriteCorruptGacha
+					? "error"
+					: "synced"
+			)
 			setLastSyncedAt(Date.now())
 		} catch (error) {
 			console.error("Failed to sync backup to Convex", error)
 			setStatus("error")
 		}
-	}, [upsertBackup, upsertGachaBackup])
+	}, [upsertBackup, upsertGachaBackup, gachaRemoteCorrupt])
 
 	// True LWW's "local wins" half: once the initial reconcile against `row`
 	// is done, push local up right away if it's strictly ahead of (or there's
@@ -654,10 +685,20 @@ export function CloudSyncProvider({
 		}
 	}
 
+	const overwriteGachaCloudWithLocal = async () => {
+		setFailedGachaRow(null)
+		setDismissedGachaRow(null)
+		lastReconciledGachaRef.current = null
+		lastPushedGachaHashRef.current = null
+		await pushToConvex({ overwriteCorruptGacha: true })
+	}
+
 	const eraseAndResync = () => {
 		eraseLocalData()
 		clearCorruption()
 		setFailedRemoteRow(null)
+		setFailedGachaRow(null)
+		setDismissedGachaRow(null)
 		setStatus("idle")
 		setLastSyncedAt(null)
 		setLatestBackupUpdatedAt(null)
@@ -754,6 +795,24 @@ export function CloudSyncProvider({
 					</AlertContainer>
 				</ModalContainer>
 			)}
+			{gachaRemoteCorrupt &&
+				dismissedGachaRow !== gachaMeta?.lastUpdated &&
+				!restorePrompt &&
+				!hasCorruption &&
+				!remoteCorrupt && (
+					<ModalContainer>
+						<AlertContainer
+							type="choices"
+							onConfirm={() => overwriteGachaCloudWithLocal()}
+							confirmLabel={t("sync.corruption.gacha.confirm")}
+							onCancel={() =>
+								setDismissedGachaRow(gachaMeta?.lastUpdated ?? null)
+							}
+							cancelLabel={t("sync.corruption.gacha.dismiss")}>
+							{t("sync.corruption.gacha.message")}
+						</AlertContainer>
+					</ModalContainer>
+				)}
 		</>
 	)
 

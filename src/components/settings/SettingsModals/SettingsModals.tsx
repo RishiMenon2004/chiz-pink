@@ -16,6 +16,73 @@ import {
 
 import { useCloudSyncContext, useT } from "@/contexts"
 
+export type SettingsImportError =
+	| "readFailed"
+	| "invalidJson"
+	| "unsupportedFormat"
+
+/* ------------------------------------------------------------------ */
+/*  Import error notice                                                */
+/* ------------------------------------------------------------------ */
+
+export function ImportErrorModal({
+	importError,
+	onClose,
+}: {
+	importError: SettingsImportError | null
+	onClose: () => void
+}) {
+	const t = useT()
+
+	if (!importError) return null
+
+	return (
+		<ModalContainer onClickOut={onClose}>
+			<AlertContainer
+				type="acknowledge"
+				confirmLabel={t("settings.modals.importError.confirm")}
+				onConfirm={onClose}>
+				{t("settings.modals.importError.title")}
+				<br />
+				<p className={alertMessage}>
+					{t(`settings.modals.importError.${importError}`)}
+				</p>
+			</AlertContainer>
+		</ModalContainer>
+	)
+}
+
+/* ------------------------------------------------------------------ */
+/*  Cloud erase error notice                                           */
+/* ------------------------------------------------------------------ */
+
+export function CloudEraseErrorModal({
+	open,
+	onClose,
+}: {
+	open: boolean
+	onClose: () => void
+}) {
+	const t = useT()
+
+	if (!open) return null
+
+	return (
+		<ModalContainer onClickOut={onClose}>
+			<AlertContainer
+				type="acknowledge"
+				confirmLabel={t("settings.modals.cloudEraseError.confirm")}
+				onConfirm={onClose}>
+				{t("settings.modals.cloudEraseError.title")}
+				<br />
+				<p className={alertMessage}>
+					{t("settings.modals.cloudEraseError.message")}
+				</p>
+			</AlertContainer>
+		</ModalContainer>
+	)
+}
+
 /* ------------------------------------------------------------------ */
 /*  Import overwrite / older warning                                   */
 /* ------------------------------------------------------------------ */
@@ -307,12 +374,14 @@ export function EraseSyncChoiceModal({
 	setEraseSyncChoice,
 	eraseLocalData,
 	deleteGachaBackup,
+	onDeleteGachaError,
 	signOut,
 }: {
 	eraseSyncChoice: boolean
 	setEraseSyncChoice: (v: boolean) => void
 	eraseLocalData: () => void
 	deleteGachaBackup: (args: Record<string, never>) => Promise<unknown>
+	onDeleteGachaError: () => void
 	signOut: () => void
 }) {
 	const t = useT()
@@ -331,6 +400,7 @@ export function EraseSyncChoiceModal({
 					// empty local push can't erase them - the row has to go.
 					deleteGachaBackup({}).catch((error) => {
 						console.error("Failed to delete gacha cloud backup", error)
+						onDeleteGachaError()
 					})
 					setEraseSyncChoice(false)
 				}}

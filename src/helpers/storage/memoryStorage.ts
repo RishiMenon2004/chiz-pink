@@ -3,6 +3,7 @@
 import { safeParse, validateShape } from "@/helpers/dataCorruption"
 
 import * as idbStorage from "./idbStorage"
+import { reportStorageWriteError } from "./storageError"
 
 // Synchronous in-memory cache backing the *Store hooks' getSnapshot(), with
 // async write-through to IndexedDB. See
@@ -200,6 +201,7 @@ async function flushWrite(key: string) {
 		await idbStorage.set(key, cache.get(key))
 	} catch (error) {
 		console.error(`IndexedDB write-through failed for "${key}"`, error)
+		reportStorageWriteError()
 	} finally {
 		state.writing = false
 		if (state.dirty) {
@@ -243,6 +245,7 @@ export function setItem<T>(key: string, value: T): void {
 			window.localStorage.setItem(key, JSON.stringify(value))
 		} catch (error) {
 			console.error(`localStorage fallback write failed for "${key}"`, error)
+			reportStorageWriteError()
 		}
 		return
 	}
@@ -291,6 +294,7 @@ export function removeItem(key: string): void {
 
 	idbStorage.del(key).catch((error) => {
 		console.error(`IndexedDB delete failed for "${key}"`, error)
+		reportStorageWriteError()
 	})
 }
 

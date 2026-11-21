@@ -855,6 +855,18 @@
 			"eraseAll": "All Data"
 		},
 		"modals": {
+			"importError": {
+				"title": "Couldn't Import File",
+				"readFailed": "The selected file couldn't be read. Please try again.",
+				"invalidJson": "This file isn't valid JSON and couldn't be imported.",
+				"unsupportedFormat": "This file isn't a recognized Chiz.Pink, NTE Planner, or NTEWiz backup.",
+				"confirm": "OK"
+			},
+			"cloudEraseError": {
+				"title": "Cloud Pull Backup Wasn't Deleted",
+				"message": "Your pull history was erased on this device, but the cloud copy couldn't be deleted. Try again once you're back online.",
+				"confirm": "Got it"
+			},
 			"importOverwrite": {
 				"confirm": "Overwrite",
 				"cancel": "Cancel",
@@ -928,12 +940,21 @@
 				"message": "Your cloud backup couldn't be read and may be corrupted. Overwrite it with this device's data, or erase this device to start fresh.",
 				"confirm": "Overwrite Cloud with Local"
 			},
+			"gacha": {
+				"message": "Your cloud pull history backup couldn't be read and may be corrupted. Overwrite it with this device's pull history, or dismiss for now.",
+				"confirm": "Overwrite Cloud Pulls",
+				"dismiss": "Dismiss"
+			},
 			"local": {
 				"messageWithCloud": "Some of your local data couldn't be read and may be corrupted. Restore your last cloud backup, or erase this device's copy and pull it fresh.",
 				"messageNoCloud": "Some of your local data couldn't be read and may be corrupted. No cloud backup is available yet, so erase this device's data to start fresh.",
 				"confirmResync": "Resync from Cloud",
 				"confirmErase": "Erase Local Data"
 			}
+		},
+		"storageError": {
+			"message": "Your browser couldn't save your latest changes. Check that storage isn't full or restricted, and consider exporting a backup in Settings.",
+			"confirm": "Got it"
 		}
 	},
 	"migrate": {

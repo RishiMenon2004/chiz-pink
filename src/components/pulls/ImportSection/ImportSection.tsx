@@ -61,8 +61,27 @@ export function ImportSection() {
 	const parseData = useMemo(() => {
 		return (file: File) => {
 			const reader = new FileReader()
+			reader.onerror = () => {
+				console.error("Failed to read pull history file", reader.error)
+				setImportMessages([
+					{
+						message: "pulls.import.messages.readFailed",
+						params: { error: String(reader.error ?? "File read error") },
+						status: "error",
+					},
+				])
+			}
 			reader.onload = () => {
-				if (typeof reader.result !== "string") return
+				if (typeof reader.result !== "string") {
+					setImportMessages([
+						{
+							message: "pulls.import.messages.readFailed",
+							params: { error: "Unreadable file content" },
+							status: "error",
+						},
+					])
+					return
+				}
 				const result = reader.result
 
 				let parsed: unknown = null

@@ -9,6 +9,7 @@ import { dismissToolIntro } from "@/helpers/toolIntro"
 import { safeParse } from "@/helpers/dataCorruption"
 import * as idbStorage from "@/helpers/storage/idbStorage"
 import * as memoryStorage from "@/helpers/storage/memoryStorage"
+import { reportStorageWriteError } from "@/helpers/storage/storageError"
 
 import type { Material } from "@/types/item"
 import type {
@@ -59,6 +60,7 @@ function writeLegacyBlob(planner: PlannerRecord) {
 		window.localStorage.setItem(LEGACY_KEY, JSON.stringify(planner))
 	} catch (error) {
 		console.error("localStorage fallback write failed for planner", error)
+		reportStorageWriteError()
 	}
 }
 
@@ -173,6 +175,7 @@ export const plannerActions = {
 
 			idbStorage.writePlannerChanges(puts, deletes).catch((error) => {
 				console.error("IndexedDB write-through failed for planner", error)
+				reportStorageWriteError()
 			})
 			memoryStorage.broadcastCustom(PLANNER_BROADCAST_CHANNEL, updatedPlanner)
 		}
@@ -293,6 +296,7 @@ export function replacePlanner(restored: PlannerRecord): void {
 
 	idbStorage.replaceAllPlannerItems(items).catch((error) => {
 		console.error("IndexedDB replace failed for planner", error)
+		reportStorageWriteError()
 	})
 	memoryStorage.broadcastCustom(PLANNER_BROADCAST_CHANNEL, data)
 }
@@ -311,6 +315,7 @@ export function clearPlanner(): void {
 
 	idbStorage.clearPlannerItems().catch((error) => {
 		console.error("IndexedDB clear failed for planner", error)
+		reportStorageWriteError()
 	})
 	memoryStorage.broadcastCustom(PLANNER_BROADCAST_CHANNEL, SERVER_FALLBACK)
 }

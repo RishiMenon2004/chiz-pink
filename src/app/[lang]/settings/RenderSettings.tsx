@@ -41,14 +41,17 @@ import {
 } from "@/components/settings"
 import { Section, SectionColumns } from "@/components/settings/SettingsShared"
 import {
+	CloudEraseErrorModal,
 	ExternalImportPendingModal,
 	ExternalImportSummaryModal,
 	EraseDataWarningModal,
 	ErasePullsWarningModal,
 	EraseSyncChoiceModal,
+	ImportErrorModal,
 	ImportOverwriteModal,
 	SignoutWarningModal,
 	UnlinkAccountModal,
+	type SettingsImportError,
 } from "@/components/settings/SettingsModals"
 
 import styles from "./settings.module.css"
@@ -81,6 +84,10 @@ export function RenderSettings() {
 		useState<ExternalImportResult | null>(null)
 	const [externalImportSummary, setExternalImportSummary] =
 		useState<ExternalImportResult | null>(null)
+	const [importError, setImportError] = useState<SettingsImportError | null>(
+		null
+	)
+	const [cloudEraseError, setCloudEraseError] = useState<boolean>(false)
 
 	const applyExternalPlannerImport = useMemo(() => {
 		return (report: ExternalImportResult, mode: "merge" | "overwrite") => {
@@ -121,8 +128,15 @@ export function RenderSettings() {
 				if (!file) return
 
 				const reader = new FileReader()
+				reader.onerror = () => {
+					console.error("Failed to read backup file", reader.error)
+					setImportError("readFailed")
+				}
 				reader.onload = () => {
-					if (typeof reader.result !== "string") return
+					if (typeof reader.result !== "string") {
+						setImportError("readFailed")
+						return
+					}
 					const result = reader.result
 
 					let parsed: unknown = null
@@ -130,6 +144,7 @@ export function RenderSettings() {
 						parsed = JSON.parse(result)
 					} catch (error) {
 						console.error(error)
+						setImportError("invalidJson")
 						return
 					}
 
@@ -155,6 +170,7 @@ export function RenderSettings() {
 
 					switch (status) {
 						case "error":
+							setImportError("unsupportedFormat")
 							break
 						case "newer":
 							backupSetImport(data)
@@ -201,6 +217,14 @@ export function RenderSettings() {
 				<BehaviourSection />
 			</Section>
 
+			<ImportErrorModal
+				importError={importError}
+				onClose={() => setImportError(null)}
+			/>
+			<CloudEraseErrorModal
+				open={cloudEraseError}
+				onClose={() => setCloudEraseError(false)}
+			/>
 			<ImportOverwriteModal
 				isImportOlder={isImportOlder}
 				askOverwrite={askOverwrite}
@@ -250,6 +274,7 @@ export function RenderSettings() {
 								"Failed to delete gacha cloud backup",
 								error
 							)
+							setCloudEraseError(true)
 						})
 					}
 				}}
@@ -260,6 +285,7 @@ export function RenderSettings() {
 				setEraseSyncChoice={setEraseSyncChoice}
 				eraseLocalData={eraseLocalData}
 				deleteGachaBackup={deleteGachaBackup}
+				onDeleteGachaError={() => setCloudEraseError(true)}
 				signOut={() => signOut()}
 			/>
 			<UnlinkAccountModal

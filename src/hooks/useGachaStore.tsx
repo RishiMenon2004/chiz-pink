@@ -8,6 +8,7 @@ import { safeParse } from "@/helpers/dataCorruption"
 import { randomId } from "@/helpers/randomId"
 import * as idbStorage from "@/helpers/storage/idbStorage"
 import * as memoryStorage from "@/helpers/storage/memoryStorage"
+import { reportStorageWriteError } from "@/helpers/storage/storageError"
 import {
 	BannerType,
 	ImportMessage,
@@ -270,6 +271,7 @@ export function mergePullsRecord(remotePulls: PullsRecord) {
 		)
 		.catch((error) => {
 			console.error("IndexedDB merge replace failed for pulls", error)
+			reportStorageWriteError()
 		})
 }
 
@@ -351,6 +353,7 @@ export function importParsedPulls(rowsByBanner: StoredPull[][]) {
 				`IndexedDB bulk put failed for pulls (${bannerType})`,
 				error
 			)
+			reportStorageWriteError()
 		})
 	}
 
@@ -369,6 +372,7 @@ function writeLegacyBlob(pullsRecord: PullsRecord) {
 		window.localStorage.setItem(LEGACY_KEY, JSON.stringify(pullsRecord))
 	} catch (error) {
 		console.error("localStorage fallback write failed for pulls", error)
+		reportStorageWriteError()
 	}
 }
 
@@ -472,6 +476,7 @@ export const gachaPullsActions = {
 					`IndexedDB write-through failed for pulls (${bannerType})`,
 					error
 				)
+				reportStorageWriteError()
 			})
 
 			// Bumps gachaLastUpdated instead of lastUpdated, keeping routine
@@ -510,6 +515,7 @@ export const gachaPullsActions = {
 			})
 			idbStorage.putPulls(storedPulls, bannerType).catch((error) => {
 				console.error(`IndexedDB write failed for manual pulls (${bannerType})`, error)
+				reportStorageWriteError()
 			})
 		}
 
@@ -553,6 +559,7 @@ export const gachaPullsActions = {
 				})
 				idbStorage.deletePulls(removed).catch((error) => {
 					console.error("IndexedDB delete failed for pulls", error)
+					reportStorageWriteError()
 				})
 			}
 			memoryStorage.broadcastCustom(PULLS_BROADCAST_CHANNEL, {
@@ -562,6 +569,7 @@ export const gachaPullsActions = {
 			})
 			idbStorage.putPulls([replacement], bannerType).catch((error) => {
 				console.error("IndexedDB write failed for an edited pull", error)
+				reportStorageWriteError()
 			})
 		}
 
@@ -591,6 +599,7 @@ export const gachaPullsActions = {
 			})
 			idbStorage.deletePulls(uids).catch((error) => {
 				console.error("IndexedDB delete failed for pulls", error)
+				reportStorageWriteError()
 			})
 		}
 
@@ -622,6 +631,7 @@ export function replaceAllPulls(pullsRecord: PullsRecord): void {
 		)
 		.catch((error) => {
 			console.error("IndexedDB replace failed for pulls", error)
+			reportStorageWriteError()
 		})
 
 	memoryStorage.broadcastCustom(PULLS_BROADCAST_CHANNEL, {
@@ -644,6 +654,7 @@ export function clearAllPulls(): void {
 
 	idbStorage.clearAllPulls().catch((error) => {
 		console.error("IndexedDB clear failed for pulls", error)
+		reportStorageWriteError()
 	})
 
 	memoryStorage.broadcastCustom(PULLS_BROADCAST_CHANNEL, { kind: "clear" })

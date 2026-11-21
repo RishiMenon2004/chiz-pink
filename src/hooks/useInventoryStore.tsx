@@ -7,6 +7,7 @@ import { dismissToolIntro } from "@/helpers/toolIntro"
 import { safeParse } from "@/helpers/dataCorruption"
 import * as idbStorage from "@/helpers/storage/idbStorage"
 import * as memoryStorage from "@/helpers/storage/memoryStorage"
+import { reportStorageWriteError } from "@/helpers/storage/storageError"
 import type { Inventory, StoredInventoryItem } from "@/types/inventory"
 
 // Inventory lives in IndexedDB's normalized `inventory` store (one row per
@@ -35,6 +36,7 @@ function writeLegacyBlob(inventory: Inventory) {
 		window.localStorage.setItem(LEGACY_KEY, JSON.stringify(inventory))
 	} catch (error) {
 		console.error("localStorage fallback write failed for inventory", error)
+		reportStorageWriteError()
 	}
 }
 
@@ -83,6 +85,7 @@ export function updateInventory(data: Inventory) {
 		)
 		idbStorage.putInventoryItems(rows).catch((error) => {
 			console.error("IndexedDB write-through failed for inventory", error)
+			reportStorageWriteError()
 		})
 		memoryStorage.broadcastCustom(INVENTORY_BROADCAST_CHANNEL, cachedInventory)
 	}
@@ -107,6 +110,7 @@ export function replaceInventory(data: Inventory) {
 		)
 		idbStorage.replaceAllInventory(rows).catch((error) => {
 			console.error("IndexedDB replace failed for inventory", error)
+			reportStorageWriteError()
 		})
 		memoryStorage.broadcastCustom(INVENTORY_BROADCAST_CHANNEL, data)
 	}
@@ -129,6 +133,7 @@ export function clearInventory(): void {
 
 	idbStorage.clearInventory().catch((error) => {
 		console.error("IndexedDB clear failed for inventory", error)
+		reportStorageWriteError()
 	})
 
 	memoryStorage.broadcastCustom(INVENTORY_BROADCAST_CHANNEL, SERVER_FALLBACK)

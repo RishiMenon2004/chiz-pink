@@ -5,6 +5,7 @@ import { type ReactNode, useCallback, useEffect, useState } from "react"
 import { useSession } from "next-auth/react"
 
 import { useCorruptedKeys } from "@/helpers/dataCorruption"
+import { useStorageWriteError } from "@/helpers/storage/storageError"
 import {
 	markSessionUnauthenticated,
 	setInitialSyncPending,
@@ -22,6 +23,14 @@ const ActiveCloudSync = dynamic(
 const LocalCorruptionModal = dynamic(
 	() =>
 		import("./LocalCorruptionModal").then((mod) => mod.LocalCorruptionModal),
+	{ ssr: false }
+)
+
+const StorageWriteErrorModal = dynamic(
+	() =>
+		import("./StorageWriteErrorModal").then(
+			(mod) => mod.StorageWriteErrorModal
+		),
 	{ ssr: false }
 )
 
@@ -55,6 +64,7 @@ const ERROR_SYNC_CONTEXT: CloudSyncContextValue = {
 export function CloudSyncGate({ children }: { children: ReactNode }) {
 	const { status: sessionStatus } = useSession()
 	const corruptedKeys = useCorruptedKeys()
+	const hasStorageWriteError = useStorageWriteError()
 	const [activeContext, setActiveContext] =
 		useState<CloudSyncContextValue | null>(null)
 	const [syncFailed, setSyncFailed] = useState(false)
@@ -105,6 +115,7 @@ export function CloudSyncGate({ children }: { children: ReactNode }) {
 			{!isAuthenticated && corruptedKeys.length > 0 && (
 				<LocalCorruptionModal />
 			)}
+			{hasStorageWriteError && <StorageWriteErrorModal />}
 		</CloudSyncContext.Provider>
 	)
 }
