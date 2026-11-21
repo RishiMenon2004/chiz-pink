@@ -48,9 +48,12 @@ export function createRecordStore<T>(key: string, fallback: T) {
 		return fallback
 	}
 
+	const subscribe = (listener: () => void) =>
+		memoryStorage.subscribeKey(key, listener)
+
 	function useValue(): T {
 		return useSyncExternalStore(
-			memoryStorage.subscribe,
+			subscribe,
 			getSnapshot,
 			getServerSnapshot
 		)

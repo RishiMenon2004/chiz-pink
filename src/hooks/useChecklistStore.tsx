@@ -301,9 +301,12 @@ const getServerSnapshot = () => {
 	return SERVER_FALLBACK
 }
 
+const subscribeChecklist = (listener: () => void) =>
+	memoryStorage.subscribeKey("checklist", listener)
+
 export function useChecklistStore() {
 	const checklist = useSyncExternalStore<ChecklistRecord>(
-		memoryStorage.subscribe,
+		subscribeChecklist,
 		getSnapshot,
 		getServerSnapshot
 	)

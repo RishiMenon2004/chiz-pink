@@ -58,7 +58,7 @@ export function SplashScreen({ latestVersion }: { latestVersion: string }) {
 
 function SplashCard({ latestVersion }: { latestVersion: string }) {
 	const isHydrated = useSyncExternalStore(
-		memoryStorage.subscribe,
+		memoryStorage.subscribeHydration,
 		memoryStorage.isHydrated,
 		() => false
 	)

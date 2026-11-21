@@ -42,9 +42,12 @@ const getSnapshot = (): boolean => getFirstVisit() ?? false
 
 const getServerSnapshot = (): boolean => false
 
+const subscribeFirstVisit = (listener: () => void) =>
+	memoryStorage.subscribeKey(key, listener)
+
 export function useFirstVisit() {
 	const isFirstVisit = useSyncExternalStore(
-		memoryStorage.subscribe,
+		subscribeFirstVisit,
 		getSnapshot,
 		getServerSnapshot
 	)

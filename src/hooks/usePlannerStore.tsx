@@ -64,7 +64,7 @@ function writeLegacyBlob(planner: PlannerRecord) {
 
 memoryStorage.onCustomBroadcast(PLANNER_BROADCAST_CHANNEL, (payload) => {
 	cachedPlanner = payload as PlannerRecord
-	memoryStorage.notifyListeners()
+	memoryStorage.notifyListeners(PLANNER_BROADCAST_CHANNEL)
 })
 
 // Bootstraps the planner cache from IndexedDB. Safe to call more than once -
@@ -78,7 +78,7 @@ export async function hydratePlannerCache(): Promise<void> {
 	if (memoryStorage.isFallbackMode() || !idbStorage.isIndexedDBAvailable()) {
 		cachedPlanner = refreshRequiredMaterials(readLegacyBlob())
 		loaded = true
-		memoryStorage.notifyListeners()
+		memoryStorage.notifyListeners(PLANNER_BROADCAST_CHANNEL)
 		return
 	}
 
@@ -94,7 +94,7 @@ export async function hydratePlannerCache(): Promise<void> {
 		console.error("IndexedDB planner hydration failed", error)
 	}
 	loaded = true
-	memoryStorage.notifyListeners()
+	memoryStorage.notifyListeners(PLANNER_BROADCAST_CHANNEL)
 }
 
 // Diffs two PlannerRecords by reference (every mutation helper below always
@@ -177,8 +177,7 @@ export const plannerActions = {
 			memoryStorage.broadcastCustom(PLANNER_BROADCAST_CHANNEL, updatedPlanner)
 		}
 
-		// setItem("lastUpdated", ...) notifies this tab's subscribers - see
-		// memoryStorage.notifyListeners()'s doc comment.
+		memoryStorage.notifyListeners(PLANNER_BROADCAST_CHANNEL)
 		memoryStorage.setItem("lastUpdated", Date.now())
 	},
 
@@ -268,7 +267,7 @@ export function replacePlanner(restored: PlannerRecord): void {
 	const data = refreshRequiredMaterials(restored)
 
 	cachedPlanner = data
-	memoryStorage.notifyListeners()
+	memoryStorage.notifyListeners(PLANNER_BROADCAST_CHANNEL)
 
 	if (memoryStorage.isFallbackMode()) {
 		writeLegacyBlob(data)
@@ -303,7 +302,7 @@ export function clearPlanner(): void {
 	if (typeof window === "undefined") return
 
 	cachedPlanner = SERVER_FALLBACK
-	memoryStorage.notifyListeners()
+	memoryStorage.notifyListeners(PLANNER_BROADCAST_CHANNEL)
 
 	if (memoryStorage.isFallbackMode()) {
 		window.localStorage.removeItem(LEGACY_KEY)
@@ -462,14 +461,17 @@ const getServerSnapshot = () => {
 const getLoadedSnapshot = () => loaded
 const getServerLoadedSnapshot = () => false
 
+const subscribePlanner = (listener: () => void) =>
+	memoryStorage.subscribeKey(PLANNER_BROADCAST_CHANNEL, listener)
+
 export function usePlannerStore() {
 	const plannerData = useSyncExternalStore<PlannerRecord>(
-		memoryStorage.subscribe,
+		subscribePlanner,
 		getSnapshot,
 		getServerSnapshot
 	)
 	const isLoaded = useSyncExternalStore(
-		memoryStorage.subscribe,
+		subscribePlanner,
 		getLoadedSnapshot,
 		getServerLoadedSnapshot
 	)

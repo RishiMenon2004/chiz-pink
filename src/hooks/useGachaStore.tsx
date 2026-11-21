@@ -251,7 +251,7 @@ export function mergePullsRecord(remotePulls: PullsRecord) {
 		}
 	}
 	applyPulls(pullsToApply)
-	memoryStorage.notifyListeners()
+	memoryStorage.notifyListeners(PULLS_BROADCAST_CHANNEL)
 
 	if (memoryStorage.isFallbackMode()) {
 		writeLegacyBlob(cachedPulls)
@@ -289,7 +289,7 @@ memoryStorage.onCustomBroadcast(PULLS_BROADCAST_CHANNEL, (payload) => {
 	} else {
 		cachedPulls = SERVER_FALLBACK
 	}
-	memoryStorage.notifyListeners()
+	memoryStorage.notifyListeners(PULLS_BROADCAST_CHANNEL)
 })
 
 // Bootstraps the pulls cache from IndexedDB. Safe to call more than once -
@@ -301,7 +301,7 @@ export async function hydratePullsCache(): Promise<void> {
 
 	if (memoryStorage.isFallbackMode() || !idbStorage.isIndexedDBAvailable()) {
 		cachedPulls = readLegacyBlob()
-		memoryStorage.notifyListeners()
+		memoryStorage.notifyListeners(PULLS_BROADCAST_CHANNEL)
 		return
 	}
 
@@ -316,7 +316,7 @@ export async function hydratePullsCache(): Promise<void> {
 			BANNER_TYPES.map((bannerType) => idbStorage.getPullsByBanner(bannerType))
 		)
 		applyPulls(rowsByBanner.flat())
-		memoryStorage.notifyListeners()
+		memoryStorage.notifyListeners(PULLS_BROADCAST_CHANNEL)
 	} catch (error) {
 		console.error("IndexedDB pulls hydration failed", error)
 	}
@@ -331,11 +331,13 @@ export function importParsedPulls(rowsByBanner: StoredPull[][]) {
 	if (memoryStorage.isFallbackMode()) {
 		applyPulls(rowsByBanner.flat())
 		writeLegacyBlob(cachedPulls)
+		memoryStorage.notifyListeners(PULLS_BROADCAST_CHANNEL)
 		memoryStorage.setItem("gachaLastUpdated", Date.now())
 		return
 	}
 
 	applyPulls(rowsByBanner.flat())
+	memoryStorage.notifyListeners(PULLS_BROADCAST_CHANNEL)
 	memoryStorage.broadcastCustom(PULLS_BROADCAST_CHANNEL, {
 		kind: "add",
 		pulls: rowsByBanner.flat(),
@@ -429,6 +431,7 @@ export const gachaPullsActions = {
 
 			writeLegacyBlob(updatedPulls)
 			cachedPulls = updatedPulls
+			memoryStorage.notifyListeners(PULLS_BROADCAST_CHANNEL)
 			memoryStorage.setItem("gachaLastUpdated", Date.now())
 
 			response.status = "success"
@@ -457,6 +460,7 @@ export const gachaPullsActions = {
 			}))
 
 			applyPulls(storedPulls, true)
+			memoryStorage.notifyListeners(PULLS_BROADCAST_CHANNEL)
 			memoryStorage.broadcastCustom(PULLS_BROADCAST_CHANNEL, {
 				kind: "add",
 				pulls: storedPulls,
@@ -509,7 +513,7 @@ export const gachaPullsActions = {
 			})
 		}
 
-		memoryStorage.notifyListeners()
+		memoryStorage.notifyListeners(PULLS_BROADCAST_CHANNEL)
 		memoryStorage.setItem("gachaLastUpdated", Date.now())
 	},
 
@@ -536,7 +540,7 @@ export const gachaPullsActions = {
 
 		cachedPulls = withoutPulls(cachedPulls, bannerType, removed)
 		applyPulls([replacement], true)
-		memoryStorage.notifyListeners()
+		memoryStorage.notifyListeners(PULLS_BROADCAST_CHANNEL)
 
 		if (memoryStorage.isFallbackMode()) {
 			writeLegacyBlob(cachedPulls)
@@ -575,7 +579,7 @@ export const gachaPullsActions = {
 			return
 
 		cachedPulls = withoutPulls(cachedPulls, bannerType, uids)
-		memoryStorage.notifyListeners()
+		memoryStorage.notifyListeners(PULLS_BROADCAST_CHANNEL)
 
 		if (memoryStorage.isFallbackMode()) {
 			writeLegacyBlob(cachedPulls)
@@ -600,7 +604,7 @@ export function replaceAllPulls(pullsRecord: PullsRecord): void {
 	if (typeof window === "undefined") return
 
 	cachedPulls = pullsRecord
-	memoryStorage.notifyListeners()
+	memoryStorage.notifyListeners(PULLS_BROADCAST_CHANNEL)
 
 	if (memoryStorage.isFallbackMode()) {
 		writeLegacyBlob(pullsRecord)
@@ -631,7 +635,7 @@ export function clearAllPulls(): void {
 	if (typeof window === "undefined") return
 
 	cachedPulls = SERVER_FALLBACK
-	memoryStorage.notifyListeners()
+	memoryStorage.notifyListeners(PULLS_BROADCAST_CHANNEL)
 
 	if (memoryStorage.isFallbackMode()) {
 		window.localStorage.removeItem(LEGACY_KEY)
@@ -660,9 +664,12 @@ const getServerSnapshot = () => {
 	return SERVER_FALLBACK
 }
 
+const subscribeGacha = (listener: () => void) =>
+	memoryStorage.subscribeKey(PULLS_BROADCAST_CHANNEL, listener)
+
 export function useGachaStore() {
 	const gachaPulls = useSyncExternalStore<PullsRecord>(
-		memoryStorage.subscribe,
+		subscribeGacha,
 		getSnapshot,
 		getServerSnapshot
 	)

@@ -22,6 +22,9 @@ function compareVersions(a: string, b: string) {
 	return 0
 }
 
+const subscribeLastSeen = (listener: () => void) =>
+	memoryStorage.subscribeKey(key, listener)
+
 export function useLastSeen(version: string) {
 	const getSnapshot = (): boolean => {
 		if (typeof window === "undefined") return false
@@ -47,7 +50,7 @@ export function useLastSeen(version: string) {
 	}
 
 	const lastSeenOld = useSyncExternalStore(
-		memoryStorage.subscribe,
+		subscribeLastSeen,
 		getSnapshot,
 		getServerSnapshot
 	)
