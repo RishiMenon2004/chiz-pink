@@ -2,8 +2,8 @@
 // listed in that folder's content.json, ready for content:add to copy into
 // public/:
 //
-//   arc_<id>.webp         the arc's 1024px art
-//   full_<id>.webp        the character's 2160x2560 outfit art
+//   arc_<id>.webp         the arc's 512px art
+//   full_<id>.webp        the character's 1080x1280 outfit art
 //   avatar_<id>.webp      a 256px square cut from that art, where the game's
 //                         circle-cropped icon sits (the icons themselves
 //                         can't be used since the circle crop)
@@ -16,6 +16,7 @@ import path from "node:path"
 
 import sharp from "sharp"
 
+import { IMAGE_PRESETS, optimizeImageBuffer } from "../image-optimize"
 import { SITE_IDS } from "./characters"
 import {
 	fail,
@@ -204,12 +205,14 @@ export async function importImages(folderArg: string) {
 		}
 	}
 
-	const webp = (image: Buffer | sharp.Sharp) => (Buffer.isBuffer(image) ? sharp(image) : image).webp({ quality: 90 }).toBuffer()
-
 	for (const arc of intake.arcs ?? []) {
 		const row = arcRows.get(matchKey(arc.name))
 		const painting = row?.ElementData.OriginalPainting?.AssetPathName
-		await save(`arc_${arc.id}.webp`, async () => (painting ? webp(await readAsset(painting)) : undefined))
+		await save(`arc_${arc.id}.webp`, async () => {
+			if (!painting) return undefined
+			const { buffer } = await optimizeImageBuffer(await readAsset(painting), "arc", { forceEncode: true })
+			return buffer
+		})
 	}
 
 	const awakenFolders = (intake.characters?.length ?? 0) > 0 ? await listAssets("/Game/UI/UI/Awaken") : []
@@ -220,12 +223,21 @@ export async function importImages(folderArg: string) {
 		const icon = row?.ItemIconBig?.AssetPathName
 		const art = illustration ? await readAsset(illustration).catch(() => undefined) : undefined
 
-		await save(`full_${character.id}.webp`, async () => art && webp(art))
+		await save(`full_${character.id}.webp`, async () => {
+			if (!art) return undefined
+			const { buffer } = await optimizeImageBuffer(art, "characterFull", { forceEncode: true })
+			return buffer
+		})
 
 		await save(`avatar_${character.id}.webp`, async () => {
 			if (!art || !icon) return undefined
 			const { x, y, size } = await findIconSquare(await readAsset(icon), art)
-			return webp(sharp(art).extract({ left: x, top: y, width: size, height: size }).resize(256, 256))
+			const { maxWidth, maxHeight, quality, effort } = IMAGE_PRESETS.characterAvatar
+			return sharp(art)
+				.extract({ left: x, top: y, width: size, height: size })
+				.resize(maxWidth, maxHeight)
+				.webp({ quality, effort })
+				.toBuffer()
 		})
 
 		// The awakening art lives under the character's code name, the one
@@ -239,7 +251,9 @@ export async function importImages(folderArg: string) {
 			const files = await listAssets(`/Game/UI/UI/Awaken/${awakenFolder}`)
 			const background = files.find((name) => /_Awaken_.*_Bg(\.png)?$/i.test(name))
 			if (!background) return undefined
-			return readAsset(`/Game/UI/UI/Awaken/${awakenFolder}/${background.replace(/\.png$/i, "")}`)
+			const raw = await readAsset(`/Game/UI/UI/Awaken/${awakenFolder}/${background.replace(/\.png$/i, "")}`)
+			const { buffer } = await optimizeImageBuffer(raw, "characterBackground", { forceEncode: true })
+			return buffer
 		})
 	}
 

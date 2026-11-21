@@ -13,15 +13,20 @@
 // The content.json fields are described in the content pipeline guide and
 // typed in src/types/content.ts. The /content-tool dev page writes them.
 
-import { copyFileSync, existsSync, mkdirSync, readdirSync, readFileSync, writeFileSync } from "node:fs"
+import { existsSync, mkdirSync, readdirSync, readFileSync, writeFileSync } from "node:fs"
 import path from "node:path"
 import { fileURLToPath } from "node:url"
-
-import sharp from "sharp"
 
 import type { ContentDateRef as DateRef, ContentFile } from "@/types/content"
 
 import { findIntakeImage, snakeCase } from "@/helpers/contentJson"
+
+import {
+	formatKb,
+	IMAGE_PRESETS,
+	type ImagePresetKey,
+	optimizeImageFile,
+} from "./image-optimize"
 
 // ---------- Setup ----------
 
@@ -128,11 +133,11 @@ const intakeFiles = readdirSync(folder)
 // Conversions run in the background; awaited before the report prints.
 const conversions: Promise<void>[] = []
 
-// Places <name>.<extension> from the intake folder if it's there, taking a
-// .webp, .png, .jpg or .jpeg and converting it when it isn't already the
-// destination's format. Returns whether the destination exists afterwards
-// (placed now or already in public/).
-function placeImage(name: string, destination: string, extension = "webp") {
+// Places <name>.<extension> from the intake folder if it's there, resizing and
+// compressing it to its preset when oversized or in another format. Returns
+// whether the destination exists afterwards (placed now or already in public/).
+function placeImage(name: string, destination: string, presetKey: ImagePresetKey) {
+	const extension = IMAGE_PRESETS[presetKey].format
 	const file = findIntakeImage(`${name}.${extension}`, intakeFiles)
 	const target = fromRoot("public", destination)
 	if (!file) return existsSync(target)
@@ -140,17 +145,19 @@ function placeImage(name: string, destination: string, extension = "webp") {
 	const source = path.join(folder, file)
 	mkdirSync(path.dirname(target), { recursive: true })
 
-	if (path.extname(file) === `.${extension}`) {
-		copyFileSync(source, target)
-		report.push(`Image: ${file} → public/${destination}`)
-	} else {
-		const image = sharp(source)
-		conversions.push(
-			(extension === "png" ? image.png() : image.webp({ quality: 90 }))
-				.toFile(target)
-				.then(() => void report.push(`Image: ${file} → public/${destination} (converted)`))
-		)
-	}
+	conversions.push(
+		optimizeImageFile(source, presetKey).then((result) => {
+			writeFileSync(target, result.buffer)
+			const notes = [
+				result.resized && "resized",
+				result.converted && "converted",
+				result.changed && `${formatKb(result.beforeBytes)} → ${formatKb(result.afterBytes)}`,
+			].filter(Boolean)
+			report.push(
+				`Image: ${file} → public/${destination}${notes.length ? ` (${notes.join(", ")})` : ""}`
+			)
+		})
+	)
 
 	return true
 }
@@ -309,7 +316,7 @@ if (content.patch || content.events) {
 	const entries: string[] = []
 
 	const patchName = content.patch?.name ?? `Version ${version}`
-	const patchImage = placeImage(`version_${version}`, `events/${eventsFolder}/version_${version}.webp`)
+	const patchImage = placeImage(`version_${version}`, `events/${eventsFolder}/version_${version}.webp`, "event")
 	entries.push(
 		[
 			`\t{`,
@@ -337,7 +344,7 @@ if (content.patch || content.events) {
 		})
 
 		const imageName = event.image ?? `event_${snakeCase(event.name)}`
-		const hasImage = placeImage(imageName, `events/${eventsFolder}/${imageName}.webp`)
+		const hasImage = placeImage(imageName, `events/${eventsFolder}/${imageName}.webp`, "event")
 		if (!hasImage) warnings.push(`${where}: no ${imageName}.webp yet`)
 
 		entries.push(
@@ -405,12 +412,12 @@ for (const [index, character] of (content.characters ?? []).entries()) {
 
 	// Images go in whether or not the character has real data yet (the game
 	// art usually arrives after the kit).
-	const hasAvatar = placeImage(`avatar_${character.id}`, `characters/avatar/${character.id}.webp`)
-	const hasFull = placeImage(`full_${character.id}`, `characters/full/${character.id}.webp`)
+	const hasAvatar = placeImage(`avatar_${character.id}`, `characters/avatar/${character.id}.webp`, "characterAvatar")
+	const hasFull = placeImage(`full_${character.id}`, `characters/full/${character.id}.webp`, "characterFull")
 	const hasBackground = placeImage(
 		`background_${character.id}`,
 		`characters/background/${character.id}.png`,
-		"png"
+		"characterBackground"
 	)
 	if (!hasFull) warnings.push(`${where}: no full_${character.id}.webp yet`)
 	if (!hasAvatar) warnings.push(`${where}: no avatar_${character.id}.webp yet`)
@@ -558,7 +565,7 @@ for (const [index, arc] of (content.arcs ?? []).entries()) {
 	const entry = new RegExp(`\\t${arc.id}: \\{\\n[\\s\\S]*?\\n\\t\\},\\n`)
 	const existing = arcList.match(entry)?.[0]
 
-	const hasArt = placeImage(`arc_${arc.id}`, `arcs/${arc.id}.webp`)
+	const hasArt = placeImage(`arc_${arc.id}`, `arcs/${arc.id}.webp`, "arc")
 	if (!hasArt) warnings.push(`${where}: no arc_${arc.id}.webp yet`)
 
 	if (existing && !existing.includes("isPlaceholder: true")) {
@@ -635,7 +642,7 @@ if (content.banners?.length) {
 				read(characterFile(banner.character)).match(/\tname: "([^"]+)"/)?.[1] ??
 				banner.character
 			const image = `gacha_${banner.character}`
-			const hasImage = placeImage(image, `events/${eventsFolder}/${image}.webp`)
+			const hasImage = placeImage(image, `events/${eventsFolder}/${image}.webp`, "event")
 			if (!hasImage) warnings.push(`${where} ${characterName}: no ${image}.webp yet`)
 
 			return [
