@@ -19,7 +19,7 @@ import {
 } from "@/helpers/splashState"
 import * as memoryStorage from "@/helpers/storage/memoryStorage"
 
-import { useT } from "@/contexts"
+import { useSplashVersion, useT } from "@/contexts"
 
 import { LocaleLink } from "../LocaleLink"
 import { SplashButtons } from "./SplashButtons"
@@ -37,6 +37,19 @@ const NO_SPLASH_PATHS = new Set([
 	"/pulls/import-external",
 ])
 
+// These pages render the card themselves, below their toolbar and intro.
+const PAGE_PLACED_PATHS = new Set([
+	"/planner",
+	"/checklist",
+	"/inventory",
+	"/pulls",
+	"/characters",
+	"/arcs",
+])
+
+const isPagePlaced = (pathname: string) =>
+	PAGE_PLACED_PATHS.has(pathname) || pathname.startsWith("/planner/")
+
 const SPLASH_LINKS = [
 	{ href: "/", key: "layout.splash.links.dashboard" },
 	{ href: "/checklist", key: "layout.splash.links.checklist" },
@@ -48,10 +61,12 @@ const SPLASH_LINKS = [
 const closeSplash = () => setSplashState("none")
 
 // Welcome / updates card; which view shows is CSS, via data-splash on <html>.
-export function SplashScreen({ latestVersion }: { latestVersion: string }) {
+export function SplashScreen({ placement = "layout" }: { placement?: "layout" | "page" }) {
 	const pathname = useLocalePathname()
+	const latestVersion = useSplashVersion()
 
 	if (NO_SPLASH_PATHS.has(pathname)) return null
+	if (isPagePlaced(pathname) !== (placement === "page")) return null
 
 	return <SplashCard latestVersion={latestVersion} />
 }

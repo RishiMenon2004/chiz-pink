@@ -11,7 +11,7 @@ import type {
 
 import { useInventoryStore } from "@/hooks"
 import { InventoryFilterContext, useT } from "@/contexts"
-import { InfoBox, ToolIntro } from "@/components/layout"
+import { InfoBox, SplashScreen, ToolIntro } from "@/components/layout"
 import { InventoryFilterToolbar, GroupedInventory } from "@/components/inventory"
 
 import styles from "./page.module.css"
@@ -52,6 +52,7 @@ export default function RenderInventory() {
 			<ToolIntro id="inventory">
 				<div>{t("inventory.intro")}</div>
 			</ToolIntro>
+			<SplashScreen placement="page" />
 
 			{!doesInventoryExist && (
 				<InfoBox className={styles.emptyFilter} sticker="peek">

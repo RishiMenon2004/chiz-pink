@@ -198,6 +198,23 @@ export function useCalendarContext() {
 	return useContext(CalendarContext)
 }
 
+// Newest changelog version, so pages can place the splash card themselves.
+export const SplashVersionContext = createContext("0.0.0")
+
+export function SplashVersionProvider({
+	version,
+	children,
+}: {
+	version: string
+	children: ReactNode
+}) {
+	return createElement(SplashVersionContext, { value: version }, children)
+}
+
+export function useSplashVersion() {
+	return useContext(SplashVersionContext)
+}
+
 // The page's language and its active message subset.
 export const LocaleContext = createContext<{
 	locale: Locale

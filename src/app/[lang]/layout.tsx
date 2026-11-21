@@ -31,7 +31,7 @@ import { AppStorageInitializer } from "@/helpers/AppStorageInitializer"
 
 import { SettingsProvider } from "@/hooks/useSettingsStore"
 
-import { LocaleProvider } from "@/contexts"
+import { LocaleProvider, SplashVersionProvider } from "@/contexts"
 
 const barlowCondensed = Barlow_Condensed({
 	variable: "--font-barlow-condensed",
@@ -139,8 +139,10 @@ export default async function RootLayout({
 								<DomainMoveGate />
 								<Sidebar />
 								<CurrencyBar />
-								<SplashScreen latestVersion={latestVersion} />
-								{children}
+								<SplashVersionProvider version={latestVersion}>
+									<SplashScreen />
+									{children}
+								</SplashVersionProvider>
 							</CloudSyncGate>
 						</SettingsProvider>
 					</AuthProvider>

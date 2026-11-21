@@ -27,7 +27,7 @@ import {
 	useT,
 } from "@/contexts"
 
-import { ToolIntro } from "@/components/layout"
+import { SplashScreen, ToolIntro } from "@/components/layout"
 import {
 	BannerSelector,
 	PullsListSection,
@@ -201,6 +201,7 @@ export function RenderPulls() {
 			<ToolIntro id="pulls">
 				<div>{t("pulls.intro")}</div>
 			</ToolIntro>
+			<SplashScreen placement="page" />
 
 			<main className={`page ${styles.page}`} role="main">
 				<PullTrackerContext.Provider

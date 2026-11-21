@@ -30,6 +30,7 @@ import { ArcIcon } from "@/components/layout/ArcIcon"
 import { CharacterAvatar, CharacterElement } from "@/components/layout/CharacterAvatar"
 
 import { InfoBox } from "@/components/layout/InfoBox"
+import { SplashScreen } from "@/components/layout/SplashScreen"
 import { MaterialGroup } from "@/components/inventory/MaterialGroup"
 
 import {
@@ -328,6 +329,7 @@ export function CharacterCatalog() {
 				arcTypes={characterArcTypes}
 			/>
 			<CatalogSwitch active="characters" />
+			<SplashScreen placement="page" />
 			<main role="main" className={`page ${pageStyles.page}`}>
 				{filtered.length === 0 ? (
 					<EmptyFilterNotice onReset={() => setFilters(NO_FILTERS)} />
@@ -379,6 +381,7 @@ export function ArcCatalog() {
 				arcTypes={arcTypes}
 			/>
 			<CatalogSwitch active="arcs" />
+			<SplashScreen placement="page" />
 			<main role="main" className={`page ${pageStyles.page}`}>
 				{filtered.length === 0 ? (
 					<EmptyFilterNotice onReset={() => setFilters(NO_FILTERS)} />

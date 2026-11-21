@@ -29,7 +29,12 @@ import {
 
 import { useT } from "@/contexts"
 
-import { ModalContainer, PullOutToolbar, ToolIntro } from "@/components/layout"
+import {
+	ModalContainer,
+	PullOutToolbar,
+	SplashScreen,
+	ToolIntro,
+} from "@/components/layout"
 import { DashDailyActivity } from "@/components/home"
 import { CustomTaskBox } from "@/components/checklist"
 
@@ -385,6 +390,7 @@ export default function RenderChecklist() {
 			<ToolIntro id="checklist">
 				<div>{t("checklist.intro")}</div>
 			</ToolIntro>
+			<SplashScreen placement="page" />
 
 			<main className={`page ${styles.page}`}>
 				<div className={styles.activitySection}>

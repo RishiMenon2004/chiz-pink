@@ -12,6 +12,7 @@ import {
 	useT,
 } from "@/contexts"
 
+import { SplashScreen } from "@/components/layout/SplashScreen"
 import { ToolIntro } from "@/components/layout/ToolIntro"
 import { PlannerSwitch } from "@/components/planner/PlannerSwitch"
 import { PlannerToolbar } from "@/components/planner/PlannerToolbar"
@@ -61,6 +62,7 @@ export function PlannerLayoutClient({ children }: { children: ReactNode }) {
 			<ToolIntro id="planner">
 				<div>{t("planner.intro")}</div>
 			</ToolIntro>
+			<SplashScreen placement="page" />
 			{children}
 		</PlannerSectionContext.Provider>
 	)
