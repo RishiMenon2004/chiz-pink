@@ -1,6 +1,6 @@
 import type { Metadata } from "next"
 
-import { getMetadataTranslator } from "@/helpers/metadata"
+import { buildMetadata, getMetadataTranslator } from "@/helpers/metadata"
 import { PageMessages } from "@/helpers/PageMessages"
 
 import { RenderNteWizMigrate } from "./RenderNteWizMigrate"
@@ -11,10 +11,18 @@ type Props = {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
 	const t = await getMetadataTranslator((await params).lang)
-	return {
-		title: t("routes.migrate_ntewiz.head"),
-		description: t("routes.migrate_ntewiz.description"),
-	}
+	return buildMetadata(
+		{
+			title: t("routes.migrate_ntewiz.head"),
+			description: t("routes.migrate_ntewiz.description"),
+			path: "/migrate/ntewiz",
+			image: {
+				url: "/layout/migrate-ntewiz-og.png",
+				alt: t("routes.migrate_ntewiz.ogImageAlt"),
+			},
+		},
+		t,
+	)
 }
 
 export default async function MigrateNteWizPage({ params }: Props) {

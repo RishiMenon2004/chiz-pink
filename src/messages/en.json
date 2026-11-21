@@ -85,9 +85,10 @@
 		},
 		"migrate_ntewiz": {
 			"title": "NTEWIZ MIGRATION",
-			"head": "Migrate from NTEWiz to Chiz.Pink",
+			"head": "Migrate from NTEWiz",
 			"tooltip": "Migrate from NTEWiz",
-			"description": "Move your locally saved NTEWiz characters, arcs, inventory, stamina, and pull history straight into Chiz.Pink without needing a backup file."
+			"description": "Move your locally saved NTEWiz characters, arcs, inventory, stamina, and pull history straight into Chiz.Pink without needing a backup file.",
+			"ogImageAlt": "Migrate from NTEWiz to Chiz.Pink"
 		},
 		"import_external": {
 			"title": "IMPORT PULLS",
