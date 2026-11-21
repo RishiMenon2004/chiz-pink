@@ -426,6 +426,9 @@
 		"materialEditor": {
 			"icon": "{name} icon"
 		},
+		"materialHint": {
+			"touch": "Tap and hold on a material to view details"
+		},
 		"modal": {
 			"dismissHint": "Click the empty space to exit"
 		},
@@ -754,6 +757,8 @@
 			"searchPlaceholder": "Search...",
 			"searchLabel": "Search pulls by item name",
 			"clearSearch": "Clear search",
+			"editHintDesktop": "Right-click to edit",
+			"editHintTouch": "Tap and hold on an entry to edit",
 			"prev": "PREV",
 			"next": "NEXT"
 		},

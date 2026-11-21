@@ -20,6 +20,7 @@ import { useLocale, useT } from "@/contexts"
 
 import { MaterialGroup } from "@/components/inventory/"
 import { InfoBox } from "@/components/layout/InfoBox"
+import { MaterialDrawerTip } from "@/components/layout/MaterialDrawerTip"
 import { PlannerArcBox } from "../ArcBox"
 import { PlannerCharacterBox } from "../CharacterBox"
 import { PlannerMaterialsList } from "../MaterialsList"
@@ -101,19 +102,22 @@ export function RenderPlanner({
 		<PlannerInventoryProvider itemRecords={itemsList}>
 			<main className={`page ${styles.page}`} role="main">
 				{allRequiredMaterials.length > 0 && (
-					<MaterialGroup title={t("planner.requiredMaterials")}>
-						<div
-							className={`${plannerBoxStyles.plannerRequiredMaterialsBox} ${styles.plannerRequiredMaterialsBox}`}>
-							<PlannerMaterialsList
-								materials={allRequiredMaterials.map(
-									([id, { amount }]) => ({
-										id,
-										amount,
-									})
-								)}
-							/>
-						</div>
-					</MaterialGroup>
+					<>
+						<MaterialDrawerTip />
+						<MaterialGroup title={t("planner.requiredMaterials")}>
+							<div
+								className={`${plannerBoxStyles.plannerRequiredMaterialsBox} ${styles.plannerRequiredMaterialsBox}`}>
+								<PlannerMaterialsList
+									materials={allRequiredMaterials.map(
+										([id, { amount }]) => ({
+											id,
+											amount,
+										})
+									)}
+								/>
+							</div>
+						</MaterialGroup>
+					</>
 				)}
 
 				{isLoaded && itemsList.length === 0 && (

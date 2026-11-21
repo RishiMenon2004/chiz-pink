@@ -15,7 +15,7 @@ import { getRarityName } from "@/helpers"
 
 import { useInventoryFilterContext, useT } from "@/contexts"
 
-import { InfoBox } from "@/components/layout"
+import { InfoBox, MaterialDrawerTip } from "@/components/layout"
 import { MaterialGroup } from "../MaterialGroup"
 import { MaterialList } from "../MaterialList"
 
@@ -354,51 +354,65 @@ export function GroupedInventory({
 		return <EmptyFilterNotice onReset={onResetFilters} />
 	}
 
+	let content
 	switch (group) {
 		case "rarity":
-			return (
+			content = (
 				<RarityGroup
 					materials={filteredMaterials}
 					aggregatedMaterials={aggregatedMaterials}
 				/>
 			)
+			break
 		case "type":
-			return (
+			content = (
 				<TypeGroup
 					materials={filteredMaterials}
 					aggregatedMaterials={aggregatedMaterials}
 				/>
 			)
+			break
 		case "owned":
-			return (
+			content = (
 				<OwnedGroup
 					materials={filteredMaterials}
 					inventoryStore={inventoryStore}
 					aggregatedMaterials={aggregatedMaterials}
 				/>
 			)
+			break
 		case "required":
-			return (
+			content = (
 				<RequiredGroup
 					materials={filteredMaterials}
 					aggregatedMaterials={aggregatedMaterials}
 				/>
 			)
+			break
 		case "acquired":
-			return (
+			content = (
 				<AcquiredGroup
 					materials={filteredMaterials}
 					inventoryStore={inventoryStore}
 					aggregatedMaterials={aggregatedMaterials}
 				/>
 			)
+			break
 		case "default":
 		default:
-			return (
+			content = (
 				<DefaultGroup
 					materials={filteredMaterials}
 					aggregatedMaterials={aggregatedMaterials}
 				/>
 			)
+			break
 	}
+
+	return (
+		<>
+			<MaterialDrawerTip />
+			{content}
+		</>
+	)
 }

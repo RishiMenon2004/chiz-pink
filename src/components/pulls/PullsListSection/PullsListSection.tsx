@@ -26,7 +26,7 @@ import {
 	useT,
 } from "@/contexts"
 
-import { AlertContainer, ModalContainer } from "@/components/layout"
+import { ActionHint, AlertContainer, ModalContainer } from "@/components/layout"
 import { alertMessage } from "@/components/layout/Alert/AlertContainer"
 
 import { PullEditOverlay } from "./PullEditOverlay"
@@ -224,6 +224,13 @@ export function PullsListSection() {
 					setPage(0)
 				}}
 			/>
+			{visiblePulls.length > 0 && (
+				<ActionHint
+					surface="light"
+					touch={t("pulls.list.editHintTouch")}
+					className={styles.editHint}
+				/>
+			)}
 			<div
 				data-bannertype={selectedBanner}
 				style={{

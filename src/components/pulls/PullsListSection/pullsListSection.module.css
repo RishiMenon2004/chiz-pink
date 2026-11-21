@@ -3,6 +3,15 @@
 	scroll-margin-top: 1rem;
 }
 
+.editHint {
+	margin: -0.25rem 1rem 0.5rem;
+}
+
+.editTooltip {
+	font-size: 0.75rem;
+	font-weight: 500;
+}
+
 /* Header search box, styled like the catalog toolbar's. */
 .searchField {
 	position: relative;

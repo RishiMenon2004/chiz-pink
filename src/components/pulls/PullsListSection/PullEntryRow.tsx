@@ -1,6 +1,6 @@
 "use client"
 
-import { CSSProperties, ReactNode, useMemo, useRef } from "react"
+import { CSSProperties, ReactNode, useMemo, useRef, useState } from "react"
 import Image from "next/image"
 
 import type { MiracleBoxPull, ScarboroughFairPull } from "@/types/pulls"
@@ -28,6 +28,7 @@ import styles from "./pullsListSection.module.css"
 
 const HOLD_MS = 500
 const HOLD_SLOP = 10
+const TOOLTIP_OFFSET = { x: 32, y: 0 }
 
 export type PullActions = {
 	onMenu: (pull: Pull, anchor: HTMLElement, x: number, y: number) => void
@@ -82,6 +83,7 @@ export function PullEntry({
 }) {
 	const t = useT()
 	const { Tooltip, showTooltip, hideTooltip } = useTooltip()
+	const [hoveringManualTag, setHoveringManualTag] = useState(false)
 	const hold = useRef<{ timer: number; x: number; y: number; fired: boolean } | null>(null)
 	const lastPointer = useRef<string>("mouse")
 
@@ -146,9 +148,19 @@ export function PullEntry({
 					if (!actions || e.target !== e.currentTarget) return
 					if (e.key === "Enter" || e.key === " ") {
 						e.preventDefault()
+						hideTooltip()
 						actions.onEdit(pull, e.currentTarget)
 					}
 				}}
+				onPointerEnter={actions ? showTooltip : undefined}
+				onPointerLeave={
+					actions
+						? () => {
+								setHoveringManualTag(false)
+								hideTooltip()
+							}
+						: undefined
+				}
 				onPointerDown={(e) => {
 					lastPointer.current = e.pointerType
 					if (!actions || e.pointerType === "mouse") return
@@ -177,6 +189,7 @@ export function PullEntry({
 				onContextMenu={(e) => {
 					if (!actions) return
 					e.preventDefault()
+					hideTooltip()
 					// Long-press on touch also raises contextmenu; edit instead.
 					if (lastPointer.current !== "mouse") {
 						if (!hold.current?.fired) {
@@ -217,16 +230,19 @@ export function PullEntry({
 								pull.quantity > 0 &&
 								` ×${pull.quantity}`}
 							{pull.manual && (
-								<>
-									<span
-										role="img"
-										className={styles.manualTag}
-										aria-label={t("pulls.manual.tag_tooltip")}
-										onPointerEnter={showTooltip}
-										onPointerLeave={hideTooltip}
-									/>
-									<Tooltip offset={{ x: 32, y: 0 }}>{t("pulls.manual.tag_tooltip")}</Tooltip>
-								</>
+								<span
+									role="img"
+									className={styles.manualTag}
+									aria-label={t("pulls.manual.tag_tooltip")}
+									onPointerEnter={(e) => {
+										setHoveringManualTag(true)
+										showTooltip(e)
+									}}
+									onPointerLeave={(e) => {
+										setHoveringManualTag(false)
+										showTooltip(e)
+									}}
+								/>
 							)}
 						</>
 					)}
@@ -234,6 +250,21 @@ export function PullEntry({
 				<div className={styles.pullPity}>
 					{slots ? slots.pity : pullNumber > 0 ? pity : "-"}
 				</div>
+				{actions && (
+					<Tooltip
+						offset={TOOLTIP_OFFSET}
+						subText={
+							hoveringManualTag ? t("pulls.list.editHintDesktop") : undefined
+						}>
+						{hoveringManualTag ? (
+							t("pulls.manual.tag_tooltip")
+						) : (
+							<div className={styles.editTooltip}>
+								{t("pulls.list.editHintDesktop")}
+							</div>
+						)}
+					</Tooltip>
+				)}
 			</div>
 		</>
 	)
