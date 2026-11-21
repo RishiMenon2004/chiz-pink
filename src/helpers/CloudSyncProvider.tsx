@@ -166,19 +166,13 @@ export function CloudSyncProvider({
 	// current row (if any) hasn't been reconciled against it yet - leaving
 	// this stale would let initialCheckComplete go true off last epoch's
 	// reconcile before the fresh one actually runs.
-	useEffect(() => {
-		if (convexAuth.isLoading) return
-		if (!convexAuth.isAuthenticated) {
-			hasBeenUnauthenticatedRef.current = true
-			hasClearedUnlinkRef.current = false
-			hasStartedKeyFetchRef.current = false
-			keyRef.current = null
-			lastReconciledRef.current = null
-			lastReconciledGachaRef.current = null
-			lastPushedMainHashRef.current = null
-			lastPushedGachaHashRef.current = null
-			hasPushedThisEpochRef.current = false
-			// eslint-disable-next-line react-hooks/set-state-in-effect
+	const isUnauthenticated = !convexAuth.isLoading && !convexAuth.isAuthenticated
+	const [wasUnauthenticated, setWasUnauthenticated] =
+		useState(isUnauthenticated)
+
+	if (isUnauthenticated !== wasUnauthenticated) {
+		setWasUnauthenticated(isUnauthenticated)
+		if (isUnauthenticated) {
 			setKeyReady(false)
 			setStatus("idle")
 			setRestorePrompt(null)
@@ -187,7 +181,20 @@ export function CloudSyncProvider({
 			setDismissedGachaRow(null)
 			setInitialReconcileDone(false)
 		}
-	}, [convexAuth.isLoading, convexAuth.isAuthenticated])
+	}
+
+	useEffect(() => {
+		if (!isUnauthenticated) return
+		hasBeenUnauthenticatedRef.current = true
+		hasClearedUnlinkRef.current = false
+		hasStartedKeyFetchRef.current = false
+		keyRef.current = null
+		lastReconciledRef.current = null
+		lastReconciledGachaRef.current = null
+		lastPushedMainHashRef.current = null
+		lastPushedGachaHashRef.current = null
+		hasPushedThisEpochRef.current = false
+	}, [isUnauthenticated])
 
 	const clearUnlinked = useMutation(api.backups.clearUnlinked)
 

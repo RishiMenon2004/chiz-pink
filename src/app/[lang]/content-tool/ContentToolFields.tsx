@@ -293,7 +293,6 @@ export function BannerPreview({
 			)}
 			<div className={`${styles.preview} ${isVersion ? styles.versionItem : ""}`}>
 				{src ? (
-					// eslint-disable-next-line @next/next/no-img-element
 					<img className={styles.previewImage} src={src} alt="" />
 				) : (
 					<span className={styles.previewEmpty}>No image yet</span>
@@ -323,7 +322,6 @@ export function BannerPreview({
 						if (e.currentTarget.hasPointerCapture(e.pointerId)) dragTo(e)
 					}}
 				>
-					{/* eslint-disable-next-line @next/next/no-img-element */}
 					<img src={src} alt="" draggable={false} />
 					<div ref={bandRef} className={styles.cropBand} />
 				</div>
@@ -345,7 +343,6 @@ export function ImageThumbs({
 				<figure key={label} className={styles.thumb}>
 					<div className={`${styles.thumbFrame} ${src ? "" : styles.thumbMissing}`} style={{ aspectRatio: aspect }}>
 						{src ? (
-							// eslint-disable-next-line @next/next/no-img-element
 							<img src={src} alt={label} />
 						) : (
 							"Missing"

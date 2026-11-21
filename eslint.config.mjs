@@ -37,6 +37,11 @@ const eslintConfig = defineConfig([
     ],
     rules: { "no-restricted-imports": "off" },
   },
+  {
+    // Dev-only tool previewing arbitrary local content-intake images via API route.
+    files: ["src/app/*/content-tool/**"],
+    rules: { "@next/next/no-img-element": "off" },
+  },
   // Override default ignores of eslint-config-next.
   globalIgnores([
     // Default ignores of eslint-config-next:

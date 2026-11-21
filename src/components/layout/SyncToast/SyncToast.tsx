@@ -40,13 +40,15 @@ export function SyncToast({ state: realState }: { state: SyncToastState }) {
 	)
 	const state = devOverride ?? realState
 	const [delayPassed, setDelayPassed] = useState(false)
+	const [prevState, setPrevState] = useState(state)
+
+	if (state !== prevState) {
+		setPrevState(state)
+		if (state !== "syncing") setDelayPassed(false)
+	}
 
 	useEffect(() => {
-		if (state === "hidden") {
-			// eslint-disable-next-line react-hooks/set-state-in-effect
-			setDelayPassed(false)
-			return
-		}
+		if (state !== "syncing") return
 		const timer = setTimeout(() => setDelayPassed(true), SHOW_DELAY_MS)
 		return () => clearTimeout(timer)
 	}, [state])

@@ -38,21 +38,46 @@ function useAuthFromNextAuth() {
 	}
 }
 
-export function ConvexClientProvider({ children }: { children: ReactNode }) {
-	const [convex, setConvex] = useState<ConvexReactClient | null>(null)
+let sharedConvexClient: ConvexReactClient | null = null
+let activeConvexMounts = 0
+let pendingCloseTimer: ReturnType<typeof setTimeout> | null = null
 
-	useEffect(() => {
-		const client = new ConvexReactClient(
+// Shares one Convex client across StrictMode remounts and closes it on real unmount.
+function acquireConvexClient(): ConvexReactClient {
+	if (pendingCloseTimer) {
+		clearTimeout(pendingCloseTimer)
+		pendingCloseTimer = null
+	}
+	if (!sharedConvexClient) {
+		sharedConvexClient = new ConvexReactClient(
 			process.env.NEXT_PUBLIC_CONVEX_URL as string
 		)
-		// eslint-disable-next-line react-hooks/set-state-in-effect
-		setConvex(client)
+	}
+	return sharedConvexClient
+}
+
+export function ConvexClientProvider({ children }: { children: ReactNode }) {
+	const [convex] = useState(acquireConvexClient)
+
+	useEffect(() => {
+		activeConvexMounts += 1
+		if (pendingCloseTimer) {
+			clearTimeout(pendingCloseTimer)
+			pendingCloseTimer = null
+		}
 		return () => {
-			void client.close()
+			activeConvexMounts -= 1
+			if (activeConvexMounts === 0) {
+				pendingCloseTimer = setTimeout(() => {
+					pendingCloseTimer = null
+					if (activeConvexMounts === 0 && sharedConvexClient) {
+						void sharedConvexClient.close()
+						sharedConvexClient = null
+					}
+				}, 0)
+			}
 		}
 	}, [])
-
-	if (!convex) return null
 
 	return (
 		<ConvexProviderWithAuth client={convex} useAuth={useAuthFromNextAuth}>

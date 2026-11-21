@@ -221,7 +221,6 @@ export function PlannerArcBox({
 					toggleDisable: handleDisable,
 					handleEnhancement,
 					handleDelete,
-					changeHandlers: null!,
 					dragRef: handleRef,
 				}}>
 				<div

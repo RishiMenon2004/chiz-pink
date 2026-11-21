@@ -1,6 +1,6 @@
 "use client"
 
-import { ReactNode, useEffect, useState } from "react"
+import { ReactNode, useCallback, useEffect, useState } from "react"
 
 export function TooltipDrawer({
 	subtext,
@@ -18,10 +18,10 @@ export function TooltipDrawer({
 		return () => clearTimeout(mount)
 	}, [])
 
-	const handleClose = () => {
+	const handleClose = useCallback(() => {
 		setVisible(false)
 		setTimeout(onClose, 200)
-	}
+	}, [onClose])
 
 	useEffect(() => {
 		const handleKeyDown = (e: globalThis.KeyboardEvent) => {
@@ -30,8 +30,7 @@ export function TooltipDrawer({
 
 		window.addEventListener("keydown", handleKeyDown)
 		return () => window.removeEventListener("keydown", handleKeyDown)
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [])
+	}, [handleClose])
 
 	return (
 		<div

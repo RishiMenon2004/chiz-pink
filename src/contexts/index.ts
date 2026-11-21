@@ -1,6 +1,7 @@
 "use client"
 
 import {
+	ChangeEvent,
 	createContext,
 	createElement,
 	Dispatch,
@@ -44,6 +45,18 @@ export function usePlannerMaterialsContext() {
 	return useContext(PlannerMaterialsContext)
 }
 
+export type CharacterSkillChangeHandlers = [
+	(
+		e: ChangeEvent<HTMLSelectElement>,
+		ability?: keyof CharacterRecord["abilitySet"]
+	) => void,
+	(
+		e: ChangeEvent<HTMLSelectElement>,
+		ability?: keyof CharacterRecord["abilitySet"]
+	) => void,
+	(ability: keyof CharacterRecord["abilitySet"]) => void,
+]
+
 export const PlannerBoxContext = createContext<{
 	itemRecord: CharacterRecord | WeaponRecord
 	entryIndex: number
@@ -51,8 +64,7 @@ export const PlannerBoxContext = createContext<{
 	toggleDisable: (e: MouseEvent<HTMLElement>) => void
 	handleEnhancement: (e: MouseEvent<HTMLElement>) => void
 	handleDelete: (e: MouseEvent<HTMLElement>) => void
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	changeHandlers: Array<(...args: any[]) => void>
+	changeHandlers?: CharacterSkillChangeHandlers
 	dragRef: (element: Element | null) => void
 }>(null!)
 export function usePlannerBoxContext() {
