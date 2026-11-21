@@ -320,6 +320,10 @@
 		}
 	},
 	"layout": {
+		"loading": {
+			"title": "Loading...",
+			"stickerAlt": "Peeking Chiz sticker"
+		},
 		"alert": {
 			"yes": "YES",
 			"no": "NO"

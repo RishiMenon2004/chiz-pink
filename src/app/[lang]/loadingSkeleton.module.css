@@ -1,0 +1,377 @@
+@keyframes shimmer {
+	0% {
+		background-position: 200% 0;
+	}
+	100% {
+		background-position: -200% 0;
+	}
+}
+
+@keyframes bar-slide {
+	0% {
+		transform: translateX(-100%);
+	}
+	100% {
+		transform: translateX(300%);
+	}
+}
+
+/* Shared shimmer surfaces */
+.shimmerDark {
+	background-color: var(--interactive-bg);
+	background-image: linear-gradient(
+		90deg,
+		rgba(255, 255, 255, 0.05) 25%,
+		rgba(255, 165, 206, 0.28) 50%,
+		rgba(255, 255, 255, 0.05) 75%
+	);
+	background-size: 200% 100%;
+	animation: shimmer 1.6s ease-in-out infinite;
+}
+
+.shimmerLight {
+	background-color: rgba(51, 51, 51, 0.12);
+	background-image: linear-gradient(
+		90deg,
+		rgba(51, 51, 51, 0.12) 25%,
+		rgba(255, 150, 198, 0.36) 50%,
+		rgba(51, 51, 51, 0.12) 75%
+	);
+	background-size: 200% 100%;
+	animation: shimmer 1.6s ease-in-out infinite;
+}
+
+.shimmerPink.shimmerPink {
+	background-color: var(--pink) !important;
+	background-image: linear-gradient(
+		90deg,
+		transparent 25%,
+		rgba(255, 255, 255, 0.28) 50%,
+		transparent 75%
+	) !important;
+	background-size: 200% 100% !important;
+	background-repeat: no-repeat !important;
+	animation: shimmer 1.6s ease-in-out infinite;
+	pointer-events: none;
+	cursor: default;
+}
+
+/* Default fallback ([lang]/loading.tsx) */
+.defaultPage {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	min-height: 60dvh;
+}
+
+.defaultCard {
+	width: 100%;
+	max-width: 22rem;
+	padding: 1rem 1.25rem 1.25rem;
+	border-radius: 1.5rem;
+	display: flex;
+	flex-direction: column;
+	gap: 0.75rem;
+}
+
+.defaultHeader {
+	display: flex;
+	align-items: center;
+	gap: 0.875rem;
+}
+
+.defaultSticker {
+	width: 3.5rem;
+	height: auto;
+	flex-shrink: 0;
+	filter: drop-shadow(var(--shadow-dark-40) 0 2px 3px);
+}
+
+.defaultTitle {
+	font-family: var(--font-syne);
+	font-size: 1.25rem;
+	font-weight: 750;
+	letter-spacing: 0.04em;
+	text-transform: uppercase;
+	color: var(--interactive-bg);
+	user-select: none;
+}
+
+.recessedBar {
+	position: relative;
+	height: 0.875rem;
+	border-radius: 100vh;
+	overflow: hidden;
+}
+
+.progressFill {
+	position: absolute;
+	inset: 2px auto 2px 0;
+	width: 36%;
+	border-radius: 100vh;
+	background: linear-gradient(90deg, var(--darker-pink), var(--pink), #ff8ec0);
+	box-shadow: 0 0 8px color-mix(in srgb, var(--pink) 55%, transparent);
+	animation: bar-slide 1.35s ease-in-out infinite;
+}
+
+/* Reusable placeholder blocks */
+.block {
+	border-radius: 0.5rem;
+}
+
+.pill {
+	border-radius: 100vh;
+}
+
+.inert {
+	pointer-events: none;
+	cursor: default;
+}
+
+/* Planner skeleton overrides */
+.reqSummary {
+	min-height: 3.25rem;
+	padding: 1rem 2rem;
+	display: flex;
+	align-items: center;
+}
+
+.reqTitleBar {
+	width: 11rem;
+	height: 1.125rem;
+}
+
+.portraitTile {
+	width: 3.25rem;
+	height: 4.25rem;
+	border-radius: 0.5rem;
+	pointer-events: none;
+	cursor: default;
+}
+
+.plannerNameBar {
+	height: 2.25rem;
+	border-bottom-left-radius: 0.5rem;
+	background-color: rgba(255, 165, 206, 0.22);
+	background-image: linear-gradient(
+		90deg,
+		rgba(255, 165, 206, 0.18) 25%,
+		rgba(255, 195, 224, 0.48) 50%,
+		rgba(255, 165, 206, 0.18) 75%
+	);
+	background-size: 200% 100%;
+	animation: shimmer 1.6s ease-in-out infinite;
+}
+
+.plannerLevelRow {
+	grid-column: 1 / -1;
+	display: flex;
+	align-items: center;
+	gap: 0.75rem;
+	padding: 0.25rem 0.75rem 0.25rem 1rem;
+}
+
+.plannerLevelLabel {
+	width: 5.5rem;
+	height: 0.875rem;
+	flex-shrink: 0;
+}
+
+.plannerLevelSelect {
+	flex: 1;
+	height: 1.5rem;
+	border-radius: 100vh;
+}
+
+.plannerSkillStack {
+	display: flex;
+	flex-direction: column;
+	gap: 0.5rem;
+	padding: 0.75rem 1rem 0.25rem 1.5rem;
+}
+
+.plannerSkillBar {
+	height: 1.25rem;
+	border-radius: 100vh;
+}
+
+.plannerMatsHeading {
+	width: 8.5rem;
+	height: 0.875rem;
+}
+
+.plannerAvatarOverride.plannerAvatarOverride {
+	background-color: var(--interactive-bg) !important;
+	background-image: linear-gradient(
+		90deg,
+		rgba(255, 255, 255, 0.05) 25%,
+		rgba(255, 165, 206, 0.28) 50%,
+		rgba(255, 255, 255, 0.05) 75%
+	) !important;
+	background-size: 200% 100% !important;
+	animation: shimmer 1.6s ease-in-out infinite;
+}
+
+/* Inventory skeleton overrides */
+.invToolbarPill {
+	flex: 1;
+	min-width: 8rem;
+	height: 2rem;
+	border-radius: 100vh;
+}
+
+.invIconOverride.invIconOverride {
+	background-color: var(--interactive-bg) !important;
+	background-image: linear-gradient(
+		90deg,
+		rgba(255, 255, 255, 0.05) 25%,
+		rgba(255, 165, 206, 0.28) 50%,
+		rgba(255, 255, 255, 0.05) 75%
+	) !important;
+	background-size: 200% 100% !important;
+	background-repeat: repeat !important;
+	animation: shimmer 1.6s ease-in-out infinite;
+}
+
+.invQtyPill {
+	height: 2rem;
+	padding: 0.25rem;
+	overflow: hidden;
+}
+
+.invQtyDot {
+	width: 1.5rem;
+	height: 1.5rem;
+	border-radius: 50%;
+	flex-shrink: 0;
+	background-color: var(--button-background);
+	box-shadow: var(--shadow-button);
+	opacity: 0.75;
+}
+
+/* Pulls skeleton overrides */
+.pullsTitleBar {
+	width: 6.5rem;
+	height: 1.35rem;
+}
+
+.pullsTabsBar {
+	width: 9rem;
+	height: 1.75rem;
+	margin-inline-start: auto;
+	border-radius: 100vh;
+}
+
+.pullsRowsWrap {
+	display: flex;
+	flex-direction: column;
+	gap: 0.5rem;
+	padding: 0.75rem;
+	border-radius: 1.25rem;
+}
+
+.pullsRow {
+	height: 2.5rem;
+	border-radius: 0.75rem;
+}
+
+.pullsStatTile.pullsStatTile {
+	height: 3.5rem;
+	background-color: var(--interactive-bg) !important;
+	background-image: linear-gradient(
+		90deg,
+		rgba(255, 255, 255, 0.05) 25%,
+		rgba(255, 165, 206, 0.28) 50%,
+		rgba(255, 255, 255, 0.05) 75%
+	) !important;
+	background-size: 200% 100% !important;
+	animation: shimmer 1.6s ease-in-out infinite;
+}
+
+.pullsMeterBar {
+	height: 2.25rem;
+	border-radius: 0.75rem;
+}
+
+.importDescBar {
+	height: 1rem;
+	width: 85%;
+	margin: 0 1rem 0.5rem;
+}
+
+.importDrop.importDrop {
+	outline-style: dotted;
+	pointer-events: none;
+	cursor: default;
+}
+
+.importSelectBar {
+	background-image: linear-gradient(
+		90deg,
+		transparent 25%,
+		rgba(255, 255, 255, 0.16) 50%,
+		transparent 75%
+	);
+	background-size: 200% 100%;
+	animation: shimmer 1.6s ease-in-out infinite;
+}
+
+.importFileSpacer {
+	flex: 1;
+}
+
+.importFileBtn.importFileBtn {
+	min-width: 5.5rem;
+	pointer-events: none;
+	cursor: default;
+}
+
+.importSubmitBtn.importSubmitBtn {
+	opacity: 0.55;
+	pointer-events: none;
+	cursor: default;
+}
+
+.rateupFilterBar {
+	width: 9rem;
+	height: 1rem;
+	margin-inline-start: auto;
+}
+
+.rateupBannerTitle {
+	width: 10rem;
+	height: 1rem;
+	margin: 0.25rem 0.25rem 0;
+}
+
+.rateupTile.rateupTile {
+	width: 64px;
+	height: 64px;
+	background-color: var(--interactive-bg) !important;
+	background-image: linear-gradient(
+		90deg,
+		rgba(255, 255, 255, 0.05) 25%,
+		rgba(255, 165, 206, 0.28) 50%,
+		rgba(255, 255, 255, 0.05) 75%
+	) !important;
+	background-size: 200% 100% !important;
+	background-repeat: repeat !important;
+	animation: shimmer 1.6s ease-in-out infinite;
+	pointer-events: none;
+	cursor: default;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.shimmerDark,
+	.shimmerLight,
+	.shimmerPink,
+	.progressFill,
+	.plannerNameBar,
+	.plannerAvatarOverride,
+	.invIconOverride,
+	.pullsStatTile,
+	.importSelectBar,
+	.rateupTile {
+		animation: none;
+	}
+}
