@@ -6,6 +6,13 @@ export const SPLASH_MARKER_KEY = "splashSeenVersion"
 export type SplashState = "welcome" | "update" | "none"
 
 const listeners = new Set<() => void>()
+let confirmedVersion: string | null = null
+let userInteracted = false
+
+function applySplashState(state: SplashState) {
+	document.documentElement.setAttribute(SPLASH_ATTRIBUTE, state)
+	listeners.forEach((listener) => listener())
+}
 
 export function subscribeSplashState(listener: () => void) {
 	listeners.add(listener)
@@ -22,8 +29,17 @@ export function getSplashStateSnapshot(): SplashState | null {
 }
 
 export function setSplashState(state: SplashState) {
-	document.documentElement.setAttribute(SPLASH_ATTRIBUTE, state)
-	listeners.forEach((listener) => listener())
+	userInteracted = true
+	applySplashState(state)
+}
+
+// Runs once per session after storage hydrates so remounting SplashCard on
+// navigation (or hydrating after the user already closed it) never reopens it.
+export function confirmSplashState(state: SplashState, version: string) {
+	if (confirmedVersion === version) return
+	confirmedVersion = version
+	setSplashMarker(version)
+	if (!userInteracted) applySplashState(state)
 }
 
 export function setSplashMarker(version: string) {

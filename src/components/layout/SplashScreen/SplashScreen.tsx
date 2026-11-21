@@ -11,8 +11,8 @@ import { useLocalePathname } from "@/hooks/useLocalePathname"
 import { useLastSeen } from "@/hooks/useLastSeen"
 
 import {
+	confirmSplashState,
 	getSplashStateSnapshot,
-	setSplashMarker,
 	setSplashState,
 	subscribeSplashState,
 	type SplashState,
@@ -94,8 +94,7 @@ function SplashCard({ latestVersion }: { latestVersion: string }) {
 			: isLastSeenOld
 				? "update"
 				: "none"
-		setSplashState(state)
-		setSplashMarker(latestVersion)
+		confirmSplashState(state, latestVersion)
 	}, [isHydrated, isFirstVisit, isLastSeenOld, latestVersion])
 
 	return (
