@@ -21,6 +21,8 @@ import { useInitialSyncPending } from "@/helpers/syncGate"
 
 import { usePullTrackerContext, useT } from "@/contexts"
 
+import { LocaleLink } from "@/components/layout/LocaleLink"
+
 import { ManualPullEntry } from "../ManualPullEntry"
 
 import pageStyles from "@/app/[lang]/pulls/page.module.css"
@@ -200,15 +202,26 @@ export function ImportSection() {
 				{tab === "json" ? (
 					<>
 						<div className={styles.description}>
-							{t.rich("pulls.import.description", {
-								link: (text) => (
-									<a
-										href="https://github.com/RishiMenon2004/nte-exporter/releases/latest"
-										target="_blank">
-										{text}
-									</a>
-								),
-							})}
+							<p>
+								{t.rich("pulls.import.description", {
+									link: (text) => (
+										<a
+											href="https://github.com/RishiMenon2004/nte-exporter/releases/latest"
+											target="_blank">
+											{text}
+										</a>
+									),
+								})}
+							</p>
+							<p>
+								{t.rich("pulls.import.ntewizMigration", {
+									link: (text) => (
+										<LocaleLink className="btn-anchor" href="/migrate/ntewiz">
+											{text}
+										</LocaleLink>
+									),
+								})}
+							</p>
 						</div>
 						<div
 							onDragEnter={() => {

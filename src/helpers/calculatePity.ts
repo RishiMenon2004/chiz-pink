@@ -114,7 +114,7 @@ export function findPoolBanner<T extends { startDate: number; endDate: number }>
 export function isScarboroughPull(
 	pull: MiracleBoxPull | ScarboroughFairPull
 ): pull is ScarboroughFairPull {
-	return Boolean(pull && "diceRoll" in pull && typeof pull.diceRoll === "number")
+	return Boolean(pull && "resultType" in pull)
 }
 
 export function isArcRateUp(

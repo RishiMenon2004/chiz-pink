@@ -33,6 +33,7 @@ const SplashUpdateView = dynamic(
 
 const NO_SPLASH_PATHS = new Set([
 	"/migrate",
+	"/migrate/ntewiz",
 	"/content-tool",
 	"/pulls/import-external",
 ])
@@ -179,9 +180,9 @@ function WelcomeView() {
 							),
 							nteWiz: (text) => (
 								<LocaleLink
+									onClick={closeSplash}
 									className="btn-anchor"
-									href="https://www.ntewiz.xyz/"
-									target="_blank">
+									href="/migrate/ntewiz">
 									{text}
 								</LocaleLink>
 							),

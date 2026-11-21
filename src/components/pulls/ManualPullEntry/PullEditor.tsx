@@ -34,7 +34,7 @@ import styles from "./manualPullEntry.module.css"
 
 function resultOf(pull: Pull): Result {
 	if (!isScarboroughPull(pull)) return "1"
-	if (pull.resultType === "dice") return String(pull.diceRoll) as Result
+	if (pull.resultType === "dice") return String(pull.diceRoll ?? 1) as Result
 	return pull.resultType
 }
 

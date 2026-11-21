@@ -6,14 +6,11 @@ import { useMemo, useState } from "react"
 import { BackupData } from "@/types/settings"
 
 import {
-	plannerActions,
-	replaceInventory,
-	settingsActions,
-	updateInventory,
-} from "@/hooks"
-import { getCachedInventory } from "@/hooks/useInventoryStore"
-import { getCachedPlanner } from "@/hooks/usePlannerStore"
-
+	applyExternalImport,
+	hasExistingPlannerData,
+	hasIncomingPlannerData,
+	type AppliedExternalImportResult,
+} from "@/helpers/applyExternalImport"
 import { ExternalImportResult } from "@/helpers/importExternal"
 import { unlinkGoogleAccount } from "@/helpers/unlinkGoogleAccount"
 
@@ -56,17 +53,6 @@ import {
 
 import styles from "./settings.module.css"
 
-function hasExistingPlannerData() {
-	const inventory = getCachedInventory()
-	const planner = getCachedPlanner()
-
-	return (
-		Object.keys(inventory).length > 0 ||
-		Object.keys(planner.characters ?? {}).length > 0 ||
-		Object.keys(planner.arcs ?? {}).length > 0
-	)
-}
-
 export function RenderSettings() {
 	const { data: session, status } = useSession()
 	const { deleteCloudBackup, deleteGachaBackup, markUnlinked } =
@@ -83,7 +69,7 @@ export function RenderSettings() {
 	const [externalImportPending, setExternalImportPending] =
 		useState<ExternalImportResult | null>(null)
 	const [externalImportSummary, setExternalImportSummary] =
-		useState<ExternalImportResult | null>(null)
+		useState<AppliedExternalImportResult | null>(null)
 	const [importError, setImportError] = useState<SettingsImportError | null>(
 		null
 	)
@@ -91,24 +77,7 @@ export function RenderSettings() {
 
 	const applyExternalPlannerImport = useMemo(() => {
 		return (report: ExternalImportResult, mode: "merge" | "overwrite") => {
-			if (mode === "overwrite") {
-				replaceInventory(report.inventory)
-				plannerActions.updatePlanner(() => ({ characters: {}, arcs: {} }))
-			} else if (Object.keys(report.inventory).length > 0) {
-				updateInventory(report.inventory)
-			}
-
-			report.characters.forEach(({ character }) =>
-				plannerActions.addCharacter(character)
-			)
-
-			report.arcs.forEach(({ arc }) => plannerActions.addWeapon(arc))
-
-			if (report.staminaPatch) {
-				settingsActions.setConfig("userdata", report.staminaPatch)
-			}
-
-			setExternalImportSummary(report)
+			setExternalImportSummary(applyExternalImport(report, mode))
 		}
 	}, [])
 
@@ -157,7 +126,7 @@ export function RenderSettings() {
 					}
 
 					if (report) {
-						if (hasExistingPlannerData()) {
+						if (hasExistingPlannerData() && hasIncomingPlannerData(report)) {
 							setExternalImportPending(report)
 						} else {
 							applyExternalPlannerImport(report, "merge")

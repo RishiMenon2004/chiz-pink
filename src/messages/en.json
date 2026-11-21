@@ -83,6 +83,12 @@
 			"head": "Moving to chiz.pink",
 			"tooltip": "Moving to chiz.pink"
 		},
+		"migrate_ntewiz": {
+			"title": "NTEWIZ MIGRATION",
+			"head": "Migrate from NTEWiz to Chiz.Pink",
+			"tooltip": "Migrate from NTEWiz",
+			"description": "Move your locally saved NTEWiz characters, arcs, inventory, stamina, and pull history straight into Chiz.Pink without needing a backup file."
+		},
 		"import_external": {
 			"title": "IMPORT PULLS",
 			"head": "Import Pulls",
@@ -739,6 +745,7 @@
 			"diceRollAlt": "Dice Roll: {roll}",
 			"pointsGift": "Points Gift",
 			"slumberland": "Slumberland",
+			"ntewizSource": "NTEWiz",
 			"unknownBanner": "Unknown",
 			"endOf": "End of {banners}",
 			"noHistory": "No Pull History",
@@ -752,6 +759,7 @@
 		"import": {
 			"title": "Import",
 			"description": "Export your pull history using: <link>NTE History Exporter</link>. Then import them here to see your pull history and pity.",
+			"ntewizMigration": "Switching from NTEWiz? <link>Migrate your data & pulls</link>.",
 			"dropHere": "Drop JSON here",
 			"noFile": "no file selected (.json)",
 			"changeFile": "CHANGE FILE",
@@ -859,6 +867,7 @@
 			"title": "LOCAL DATA",
 			"description": "Manage the data stored in your browser's IndexedDB.",
 			"migrating": "Migrating from another app? Import compatible data from: ",
+			"migrateTool": "Migration Tool",
 			"backup": "Backup",
 			"import": "Import Data",
 			"export": "Export Data",
@@ -891,7 +900,9 @@
 				"overwrite": "Overwrite",
 				"merge": "Add to Existing",
 				"mergeInfo": "Add to Existing: Replaces your Inventory. Appends Characters and Arcs onto your existing planner.",
-				"overwriteInfo": "Overwrite: Replaces your Inventory, Characters, and Arcs entirely."
+				"overwriteInfo": "Overwrite: Replaces your Inventory, Characters, and Arcs entirely.",
+				"pullsNote_one": "Includes {count} pull. Pull history is always merged safely without overwriting existing pulls.",
+				"pullsNote_other": "Includes {count} pulls. Pull history is always merged safely without overwriting existing pulls."
 			},
 			"externalSummary": {
 				"title": "{source} Data Imported",
@@ -902,6 +913,9 @@
 				"charactersSkipped": "Characters: {imported} imported, {skipped} skipped (unknown character)",
 				"arcs": "Arcs: {imported} imported",
 				"arcsSkipped": "Arcs: {imported} imported, {skipped} skipped (unknown arc)",
+				"pulls": "Pulls: {imported} imported",
+				"pullsSkipped": "Pulls: {imported} imported, {skipped} skipped (already saved or unreadable)",
+				"ntewizDiceNote": "Note: NTEWiz doesn't save dice rolls, so migrated pulls show an NTEWiz tag instead of dice icons.",
 				"staminaUpdated": "Stamina & Pixels updated",
 				"activitiesUnsupported": "Importing Activity/Event completion isn't supported yet."
 			},
@@ -987,6 +1001,50 @@
 			"old": "Old address",
 			"oldNewer": "Old address (newer)",
 			"unknown": "Unknown"
+		},
+		"ntewiz": {
+			"title": "Migrate from NTEWiz",
+			"subtitle": "Even though www.ntewiz.xyz is down, your browser still holds your saved characters, arcs, inventory, stamina, and pull history. Transfer everything directly here without downloading a file.",
+			"sameBrowserNote": "Use the same browser and profile where you previously used NTEWiz.",
+			"copied": "Copied!",
+			"viewPulls": "View Pulls",
+			"viewPlanner": "Open Planner",
+			"goHome": "Go Home",
+			"popup": {
+				"connecting": "Reading your NTEWiz data...",
+				"conflict": "Waiting for your import choice...",
+				"saving": "Saving your migrated data...",
+				"error": "Couldn't receive data from NTEWiz automatically. You can try again or paste the data manually below.",
+				"showManual": "Show Manual Options"
+			},
+			"bookmarklet": {
+				"title": "Option 1: Bookmarklet (No File)",
+				"badge": "Recommended",
+				"description": "Save the button below as a bookmark, then click it while on www.ntewiz.xyz to send your local data straight to Chiz.Pink.",
+				"button": "Migrate NTEWiz to Chiz.Pink",
+				"copyLink": "Copy URL",
+				"dragHint": "Don't click it here. Save it as a bookmark first (either drag it to your bookmarks bar or right-click it and choose \"Bookmark Link...\", or copy the URL), then open your bookmark while on www.ntewiz.xyz.",
+				"step1": "Drag \"Migrate NTEWiz to Chiz.Pink\" onto your bookmarks bar, or right-click it and choose \"Bookmark Link...\" (on mobile, copy the bookmarklet URL and save it as a bookmark).",
+				"step2": "Open <link>www.ntewiz.xyz</link>. Even though it shows an error / disabled page, your local browser data is still accessible there.",
+				"step3": "Click your new bookmark on that page. Chiz.Pink will open and import your planner, inventory, and pulls automatically."
+			},
+			"console": {
+				"title": "Option 2: Browser Console (Desktop)",
+				"description": "Prefer not to add a bookmark? Run this one-line script in DevTools while on www.ntewiz.xyz. It puts a \"Send to Chiz.Pink\" button right on the page.",
+				"openNteWiz": "Open www.ntewiz.xyz",
+				"copyScript": "Copy Script",
+				"step1": "Open <link>www.ntewiz.xyz</link> in a new tab.",
+				"step2": "Press F12 (or Ctrl+Shift+I / Cmd+Option+I), open the Console tab, paste the script, and press Enter (in Chrome/Edge, type \"allow pasting\" first if prompted).",
+				"step3": "Click \"Send to Chiz.Pink\" on the page (or \"Copy Data\" and paste it below if popups are blocked).",
+				"viewScript": "Inspect script source"
+			},
+			"manual": {
+				"title": "Option 3: Paste Data or Upload Backup File",
+				"description": "Paste JSON copied from the \"Copy Data\" button above, or upload a previously exported ntewiz-backup-*.json file.",
+				"placeholder": "Paste NTEWiz JSON here...",
+				"importPasted": "Import Pasted Data",
+				"uploadFile": "Upload Backup JSON"
+			}
 		}
 	},
 	"offline": {

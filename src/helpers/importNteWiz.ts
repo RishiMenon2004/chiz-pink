@@ -3,37 +3,110 @@ import { CharacterAbilitySet } from "@/types/character"
 import {
 	NteWizAnalystCharacter,
 	NteWizAnalystWeapon,
-	NteWizBackup,
+	NteWizCharacterState,
+	NteWizGoalState,
+	NteWizImportData,
+	NteWizInventoryRow,
 	NteWizProfile,
 	NteWizTalents,
+	NteWizWeaponGoalState,
+	NteWizWeaponState,
+	NteWizWish,
 } from "@/types/nteWizImport"
+import { BannerType, MiracleBoxPull, ScarboroughFairPull } from "@/types/pulls"
 import { SettingsRecord } from "@/types/settings"
 
-import { EnumItemLvls } from "@/data/items"
-import { findCharacter } from "@/data/characters"
-import { findArc } from "@/data/arcs"
+import { EnumItemLvls, EnumRarity, findReward, findRewardByName } from "@/data/items"
+import { findCharacter, findCharacterByName } from "@/data/characters"
+import { findArc, findArcByName } from "@/data/arcs"
 
 import { generateNewCharacter } from "./generateNewCharacter"
 import {
+	ExternalImportResult,
 	ImportedArc,
 	ImportedCharacter,
+	ImportedPullsByBanner,
 	kebabToSnake,
 	mapMaterialAmounts,
 	maxItemLvl,
 	snapItemLvl,
-	ExternalImportResult,
 } from "./importExternal"
+import { poolIdForBanner } from "./pullBanner"
 
-export function isNteWizBackup(data: unknown): data is NteWizBackup {
-	if (typeof data !== "object" || data === null) return false
+// NTEWiz character slugs that differ from chiz-pink's character IDs.
+const NTEWIZ_CHARACTER_ALIASES: Record<string, string> = {
+	"akane-rin": "akane",
+	"esper-zero": "zero",
+}
 
-	const record = data as Record<string, unknown>
+function isPlainObject(value: unknown): value is Record<string, unknown> {
+	return typeof value === "object" && value !== null && !Array.isArray(value)
+}
 
-	return (
-		typeof record.schema_version === "number" &&
-		typeof record.analyst === "object" &&
-		record.analyst !== null
-	)
+export function isNteWizBackup(data: unknown): data is NteWizImportData {
+	if (!isPlainObject(data)) return false
+
+	if (data.source === "ntewiz-idb") return true
+
+	if (typeof data.schema_version === "number") {
+		const hasAnalyst = isPlainObject(data.analyst)
+		const hasNativeStores =
+			isPlainObject(data.characters) ||
+			isPlainObject(data.inventory) ||
+			Array.isArray(data.wishes)
+		return hasAnalyst || hasNativeStores
+	}
+
+	return false
+}
+
+function resolveNteWizCharacterId(slug: string): string {
+	const aliased = NTEWIZ_CHARACTER_ALIASES[slug.toLowerCase()]
+	if (aliased) return aliased
+	return kebabToSnake(slug)
+}
+
+function pickSingleton<T>(value: T | T[] | undefined): T | undefined {
+	if (Array.isArray(value)) return value[0]
+	return value
+}
+
+function toSlugMap<T extends { slug?: string }>(
+	input: T[] | Record<string, T> | undefined
+): Record<string, T> {
+	if (!input) return {}
+	if (!Array.isArray(input)) return input
+
+	const map: Record<string, T> = {}
+	for (const row of input) {
+		if (row && typeof row.slug === "string" && row.slug.length > 0) {
+			map[row.slug] = row
+		}
+	}
+	return map
+}
+
+function toRawInventoryMap(
+	inventory: NteWizInventoryRow[] | Record<string, unknown> | undefined,
+	currencies: Record<string, unknown> | Record<string, unknown>[] | undefined
+): Record<string, unknown> {
+	const currencyObj = pickSingleton(currencies)
+	const raw: Record<string, unknown> = {
+		...(isPlainObject(currencyObj) ? currencyObj : {}),
+	}
+
+	if (Array.isArray(inventory)) {
+		for (const row of inventory) {
+			if (row && typeof row.slug === "string" && typeof row.qty === "number") {
+				raw[row.slug] = row.qty
+			}
+		}
+	} else if (isPlainObject(inventory)) {
+		Object.assign(raw, inventory)
+	}
+
+	delete raw.id
+	return raw
 }
 
 function mapNteWizStamina(profile?: NteWizProfile) {
@@ -211,7 +284,7 @@ export function mapNteWizCharacter(
 	talentsCurrent: NteWizTalents | undefined,
 	talentsGoal: NteWizTalents | undefined
 ): Omit<CharacterRecord, "requiredMaterials" | "isDisabled"> | null {
-	const id = kebabToSnake(analystChar.slug)
+	const id = resolveNteWizCharacterId(analystChar.slug)
 	if (!findCharacter(id)) return null
 
 	const currentLvl = snapAscensionLevel(
@@ -250,26 +323,323 @@ export function mapNteWizArc(
 	}
 }
 
-export function parseNteWizImport(data: NteWizBackup): ExternalImportResult {
-	const rawInventory: Record<string, unknown> = {
-		...(data.currencies ?? {}),
-		...(data.inventory ?? {}),
-	}
-	delete rawInventory.id
+function buildAnalystCharactersFromNative(
+	charactersMap: Record<string, NteWizCharacterState>,
+	goalsMap: Record<string, NteWizGoalState>
+): NteWizAnalystCharacter[] {
+	return Object.entries(charactersMap).map(([slug, state]) => {
+		const goal = goalsMap[slug]
+		return {
+			slug,
+			owned: Boolean(state.owned),
+			currentLevel: typeof state.level === "number" ? state.level : 1,
+			currentAscension:
+				typeof state.ascension_phase === "number" ? state.ascension_phase : 0,
+			currentAwakening:
+				typeof state.awakening_rank === "number" ? state.awakening_rank : 0,
+			goalLevel: typeof goal?.level === "number" ? goal.level : null,
+			goalAscension:
+				typeof goal?.ascension_phase === "number" ? goal.ascension_phase : null,
+			goalAwakening:
+				typeof goal?.awakening_rank === "number" ? goal.awakening_rank : null,
+		}
+	})
+}
 
+function buildAnalystWeaponsFromNative(
+	weaponsMap: Record<string, NteWizWeaponState>,
+	weaponGoalsMap: Record<string, NteWizWeaponGoalState>
+): NteWizAnalystWeapon[] {
+	return Object.entries(weaponsMap).map(([slug, state]) => {
+		const goal = weaponGoalsMap[slug]
+		return {
+			slug,
+			owned: Boolean(state.owned),
+			currentLevel: typeof state.level === "number" ? state.level : 1,
+			goalLevel: typeof goal?.level === "number" ? goal.level : null,
+		}
+	})
+}
+
+function parseWishRarity(rarity: string | undefined): EnumRarity | null {
+	switch (rarity?.toUpperCase()) {
+		case "B":
+			return EnumRarity.Uncommon
+		case "A":
+			return EnumRarity.Rare
+		case "S":
+			return EnumRarity.Epic
+		default:
+			return null
+	}
+}
+
+function parseWishResultType(
+	kind: string | null | undefined
+): ScarboroughFairPull["resultType"] {
+	switch (kind) {
+		case "points_gift":
+		case "pointsGift":
+			return "pointsGift"
+		case "slumberland":
+		case "chase_reward":
+			return "slumberland"
+		default:
+			return "dice"
+	}
+}
+
+function parseWishBanner(banner: string): {
+	bannerType: BannerType
+	poolId?: string
+} {
+	const normalized = banner.trim().toLowerCase()
+	if (normalized === "standard" || normalized === "permanent") {
+		return {
+			bannerType: "permanentBanner",
+			poolId: poolIdForBanner("permanentBanner", undefined),
+		}
+	}
+
+	const arcMatch = normalized.match(/^([a-z0-9-]+?)-arc(?:-|$)/)
+	if (arcMatch) {
+		const character = resolveNteWizCharacterId(arcMatch[1])
+		return {
+			bannerType: "arcsBanner",
+			poolId: poolIdForBanner("arcsBanner", { character }),
+		}
+	}
+
+	const charSlug = normalized.replace(/-v\d.*$/, "")
+	const character = resolveNteWizCharacterId(charSlug)
+	return {
+		bannerType: "limitedBanner",
+		poolId: poolIdForBanner("limitedBanner", { rateupItem: character }),
+	}
+}
+
+function resolveWishItem(
+	rawItem: string,
+	bannerType: BannerType
+): {
+	rewardId: string
+	rewardType: ScarboroughFairPull["rewardType"]
+	rarity?: EnumRarity
+} {
+	const trimmed = rawItem.trim()
+	const snake = kebabToSnake(trimmed)
+
+	if (bannerType === "arcsBanner") {
+		const arc = findArc(snake) ?? findArcByName(trimmed)
+		return {
+			rewardId: arc?.id ?? trimmed,
+			rewardType: "arc",
+			rarity: arc?.rarity,
+		}
+	}
+
+	const characterId = resolveNteWizCharacterId(trimmed)
+	const character = findCharacter(characterId) ?? findCharacterByName(trimmed)
+	if (character) {
+		return {
+			rewardId: character.id,
+			rewardType: "character",
+			rarity: character.rarity,
+		}
+	}
+
+	// NTEWiz stores arcs as kebab-case slugs ("clear-skies") and cosmetics/items
+	// as title-case display names ("Clear Skies", "Warp Piece", "Day Adrift").
+	// Checking lowercase slug arcs first avoids colliding with same-named outfits.
+	const isSlugLike = trimmed === trimmed.toLowerCase() && !trimmed.includes(" ")
+	if (isSlugLike) {
+		const arc = findArc(snake)
+		if (arc) {
+			return {
+				rewardId: arc.id,
+				rewardType: "arc",
+				rarity: arc.rarity,
+			}
+		}
+	}
+
+	const reward = findRewardByName(trimmed) ?? findReward(snake)
+	if (reward) {
+		return {
+			rewardId: reward.id,
+			rewardType: reward.imageSrc.includes("cosmetics/") ? "cosmetic" : "item",
+			rarity: reward.rarity,
+		}
+	}
+
+	const arcByName = findArc(snake) ?? findArcByName(trimmed)
+	if (arcByName) {
+		return {
+			rewardId: arcByName.id,
+			rewardType: "arc",
+			rarity: arcByName.rarity,
+		}
+	}
+
+	return {
+		rewardId: trimmed,
+		rewardType: "item",
+	}
+}
+
+function parseWishTimestamp(pulledAt: string | number | undefined): number | null {
+	if (typeof pulledAt === "number" && Number.isFinite(pulledAt)) {
+		return pulledAt
+	}
+	if (typeof pulledAt === "string" && pulledAt.trim().length > 0) {
+		const parsed = Date.parse(pulledAt)
+		if (!Number.isNaN(parsed)) return parsed
+	}
+	return null
+}
+
+function parseNteWizWishes(wishes: NteWizWish[] | undefined): {
+	pulls?: ImportedPullsByBanner
+	skippedPullsCount: number
+} {
+	if (!Array.isArray(wishes) || wishes.length === 0) {
+		return { skippedPullsCount: 0 }
+	}
+
+	type NormalizedWish = {
+		bannerType: BannerType
+		timestamp: number
+		id: number
+		index: number
+		pull: MiracleBoxPull | ScarboroughFairPull
+	}
+
+	const parsed: NormalizedWish[] = []
+	let skippedPullsCount = 0
+
+	for (let index = 0; index < wishes.length; index++) {
+		const wish = wishes[index]
+		if (!wish || typeof wish.banner !== "string" || typeof wish.item !== "string") {
+			skippedPullsCount++
+			continue
+		}
+
+		const timestamp = parseWishTimestamp(wish.pulled_at)
+		if (timestamp === null) {
+			skippedPullsCount++
+			continue
+		}
+
+		const { bannerType, poolId } = parseWishBanner(wish.banner)
+		const resolved = resolveWishItem(wish.item, bannerType)
+		const rank =
+			parseWishRarity(wish.rarity) ?? resolved.rarity ?? EnumRarity.Uncommon
+		const uid =
+			typeof wish.uid === "string" && wish.uid.trim().length > 0
+				? wish.uid.trim()
+				: `ntewiz-${bannerType}-${wish.id ?? index}-${timestamp}-${resolved.rewardId}`
+
+		if (bannerType === "arcsBanner") {
+			const pull: MiracleBoxPull = {
+				uid,
+				timestamp,
+				rank,
+				rewardId: resolved.rewardId,
+				...(poolId ? { poolId } : {}),
+			}
+			parsed.push({
+				bannerType,
+				timestamp,
+				id: typeof wish.id === "number" ? wish.id : index,
+				index,
+				pull,
+			})
+		} else {
+			const pull: ScarboroughFairPull = {
+				uid,
+				timestamp,
+				rank,
+				rewardId: resolved.rewardId,
+				...(poolId ? { poolId } : {}),
+				resultType: parseWishResultType(wish.kind),
+				rewardType: resolved.rewardType,
+				quantity: 0,
+			}
+			parsed.push({
+				bannerType,
+				timestamp,
+				id: typeof wish.id === "number" ? wish.id : index,
+				index,
+				pull,
+			})
+		}
+	}
+
+	// Chiz.Pink expects pulls newest-first; within a shared timestamp, NTEWiz's
+	// ascending auto-increment `id` is chronological (oldest-first), so higher
+	// `id` is newer.
+	parsed.sort((a, b) => {
+		if (a.timestamp !== b.timestamp) return b.timestamp - a.timestamp
+		if (a.id !== b.id) return b.id - a.id
+		return b.index - a.index
+	})
+
+	const pulls: ImportedPullsByBanner = {
+		arcsBanner: [],
+		limitedBanner: [],
+		permanentBanner: [],
+	}
+
+	for (const entry of parsed) {
+		if (entry.bannerType === "arcsBanner") {
+			pulls.arcsBanner.push(entry.pull as MiracleBoxPull)
+		} else if (entry.bannerType === "limitedBanner") {
+			pulls.limitedBanner.push(entry.pull as ScarboroughFairPull)
+		} else {
+			pulls.permanentBanner.push(entry.pull as ScarboroughFairPull)
+		}
+	}
+
+	const total =
+		pulls.arcsBanner.length +
+		pulls.limitedBanner.length +
+		pulls.permanentBanner.length
+
+	return {
+		pulls: total > 0 ? pulls : undefined,
+		skippedPullsCount,
+	}
+}
+
+export function parseNteWizImport(data: NteWizImportData): ExternalImportResult {
+	const rawInventory = toRawInventoryMap(data.inventory, data.currencies)
 	const { matched: inventory, unmatched: unmatchedMaterials } =
 		mapMaterialAmounts(rawInventory)
 
-	const staminaPatch = mapNteWizStamina(data.profile)
+	const staminaPatch = mapNteWizStamina(pickSingleton(data.profile))
+
+	const charactersMap = toSlugMap(data.characters)
+	const goalsMap = toSlugMap(data.goals)
+	const weaponsMap = toSlugMap(data.weapons)
+	const weaponGoalsMap = toSlugMap(data.weapon_goals)
+
+	const analyst =
+		"analyst" in data && isPlainObject(data.analyst) ? data.analyst : undefined
+	const analystCharacters = Array.isArray(analyst?.characters)
+		? (analyst.characters as NteWizAnalystCharacter[])
+		: buildAnalystCharactersFromNative(charactersMap, goalsMap)
+	const analystWeapons = Array.isArray(analyst?.weapons)
+		? (analyst.weapons as NteWizAnalystWeapon[])
+		: buildAnalystWeaponsFromNative(weaponsMap, weaponGoalsMap)
 
 	const characters: ImportedCharacter[] = []
 	const skippedCharacterIds: string[] = []
 
-	for (const analystChar of data.analyst?.characters ?? []) {
+	for (const analystChar of analystCharacters) {
 		if (!analystChar.owned) continue
 
-		const talentsCurrent = data.characters?.[analystChar.slug]?.talents
-		const talentsGoal = data.goals?.[analystChar.slug]?.talents
+		const talentsCurrent = charactersMap[analystChar.slug]?.talents
+		const talentsGoal = goalsMap[analystChar.slug]?.talents
 
 		const mapped = mapNteWizCharacter(analystChar, talentsCurrent, talentsGoal)
 
@@ -283,7 +653,7 @@ export function parseNteWizImport(data: NteWizBackup): ExternalImportResult {
 	const arcs: ImportedArc[] = []
 	const skippedArcIds: string[] = []
 
-	for (const analystWeapon of data.analyst?.weapons ?? []) {
+	for (const analystWeapon of analystWeapons) {
 		if (!analystWeapon.owned) continue
 
 		const mapped = mapNteWizArc(analystWeapon)
@@ -295,6 +665,8 @@ export function parseNteWizImport(data: NteWizBackup): ExternalImportResult {
 		}
 	}
 
+	const { pulls, skippedPullsCount } = parseNteWizWishes(data.wishes)
+
 	return {
 		source: "NTEWiz",
 		inventory,
@@ -304,6 +676,8 @@ export function parseNteWizImport(data: NteWizBackup): ExternalImportResult {
 		skippedCharacterIds,
 		arcs,
 		skippedArcIds,
+		pulls,
+		skippedPullsCount,
 		hasActivitiesData: Array.isArray(data.checklist) && data.checklist.length > 0,
 		hasEventsData: false,
 	}

@@ -1,5 +1,6 @@
 import { CharacterRecord, WeaponRecord } from "@/types/planner"
 import { Inventory } from "@/types/inventory"
+import { MiracleBoxPull, ScarboroughFairPull } from "@/types/pulls"
 import { SettingsRecord } from "@/types/settings"
 
 import { EnumItemLvls, getAllMaterialsList } from "@/data/items"
@@ -125,6 +126,12 @@ export type ImportedArc = {
 	arc: Omit<WeaponRecord, "uid" | "requiredMaterials" | "isDisabled">
 }
 
+export type ImportedPullsByBanner = {
+	arcsBanner: MiracleBoxPull[]
+	limitedBanner: ScarboroughFairPull[]
+	permanentBanner: ScarboroughFairPull[]
+}
+
 export type ExternalImportResult = {
 	source: string
 	inventory: Inventory
@@ -134,6 +141,8 @@ export type ExternalImportResult = {
 	skippedCharacterIds: string[]
 	arcs: ImportedArc[]
 	skippedArcIds: string[]
+	pulls?: ImportedPullsByBanner
+	skippedPullsCount?: number
 	hasActivitiesData: boolean
 	hasEventsData: boolean
 }

@@ -114,7 +114,8 @@ export type ScarboroughFairPull = {
 	manual?: true
 	pity?: number
 	editedFrom?: string
-	diceRoll: number
+	// Optional for pulls migrated from tools that don't record dice rolls (e.g. NTEWiz).
+	diceRoll?: number
 	resultType: ImportedPull["resultType"]
 	rewardType: ImportedPull["rewardType"]
 	quantity: number

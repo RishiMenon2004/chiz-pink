@@ -41,17 +41,19 @@ function DiceRoll({ pull }: { pull: MiracleBoxPull | ScarboroughFairPull }) {
 	if (selectedBanner === "arcsBanner") return null
 
 	const isScarborough = isScarboroughPull(pull)
-	if (isScarborough && pull.diceRoll !== undefined) {
+	if (isScarborough) {
 		const pullDice = () => {
 			switch (pull.resultType) {
 				case "dice":
-					return (
+					return pull.diceRoll !== undefined ? (
 						<Image
 							width={84}
 							height={32}
 							src={`/pulls/dice_${pull.diceRoll}.png`}
 							alt={t("pulls.list.diceRollAlt", { roll: pull.diceRoll })}
 						/>
+					) : (
+						<div className={styles.nonDice}>{t("pulls.list.ntewizSource")}</div>
 					)
 				case "pointsGift":
 					return <div className={styles.nonDice}>{t("pulls.list.pointsGift")}</div>
@@ -212,6 +214,7 @@ export function PullEntry({
 							{item?.name}
 							{isScarborough &&
 								pull.rewardType === "item" &&
+								pull.quantity > 0 &&
 								` ×${pull.quantity}`}
 							{pull.manual && (
 								<>

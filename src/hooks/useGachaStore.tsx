@@ -59,7 +59,8 @@ function cloneCache(): PullsRecord {
 export function getPullSignature(
 	pull: Pull & { bannerType?: BannerType }
 ): string {
-	const diceRoll = "diceRoll" in pull ? pull.diceRoll : ""
+	const diceRoll =
+		"diceRoll" in pull && pull.diceRoll !== undefined ? pull.diceRoll : ""
 	const quantity = "quantity" in pull ? pull.quantity : 1
 	const banner = pull.bannerType ?? ""
 	return `${banner}:${pull.timestamp}:${pull.rewardId}:${diceRoll}:${quantity}`

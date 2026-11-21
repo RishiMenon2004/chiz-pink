@@ -51,6 +51,13 @@ export {
 } from "@/helpers/importNtePlanner"
 export { isNteWizBackup, parseNteWizImport } from "@/helpers/importNteWiz"
 export type { ExternalImportResult } from "@/helpers/importExternal"
+export {
+	applyExternalImport,
+	countIncomingPulls,
+	hasExistingPlannerData,
+	hasIncomingPlannerData,
+	type AppliedExternalImportResult,
+} from "@/helpers/applyExternalImport"
 
 export {
 	isScarboroughPull,

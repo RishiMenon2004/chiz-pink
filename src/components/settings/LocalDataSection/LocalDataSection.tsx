@@ -50,12 +50,21 @@ export function LocalDataSection({
 								</LocaleLink>
 								{", "}
 							</span>
-							<LocaleLink
-								className="btn-anchor"
-								href="https://www.ntewiz.xyz/"
-								target="_blank">
-								NTEWiz
-							</LocaleLink>
+							<span>
+								<LocaleLink
+									className="btn-anchor"
+									href="https://www.ntewiz.xyz/"
+									target="_blank">
+									NTEWiz
+								</LocaleLink>
+								{" ("}
+								<LocaleLink
+									className="btn-anchor"
+									href="/migrate/ntewiz">
+									{t("settings.local.migrateTool")}
+								</LocaleLink>
+								{")"}
+							</span>
 						</span>
 					</Blockquote>
 				</ContentColumn>

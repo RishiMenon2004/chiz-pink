@@ -21,6 +21,7 @@ export const RoutesData = {
 	"/settings": { id: "settings" },
 	"/privacy": { id: "privacy_policy", hasDescription: true },
 	"/migrate": { id: "migrate" },
+	"/migrate/ntewiz": { id: "migrate_ntewiz", hasDescription: true },
 	"/pulls/import-external": { id: "import_external" },
 	"/content-tool": { id: "content_tool" },
 	"/auth/popup-callback": { id: "popup-callback" },

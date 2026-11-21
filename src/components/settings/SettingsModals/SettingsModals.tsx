@@ -2,6 +2,10 @@
 
 import { Session } from "next-auth"
 
+import {
+	countIncomingPulls,
+	type AppliedExternalImportResult,
+} from "@/helpers/applyExternalImport"
 import { ExternalImportResult } from "@/helpers/importExternal"
 
 import {
@@ -170,6 +174,13 @@ export function ExternalImportPendingModal({
 					<p>{t("settings.modals.externalPending.mergeInfo")}</p>
 					<p>{t("settings.modals.externalPending.overwriteInfo")}</p>
 				</div>
+				{countIncomingPulls(externalImportPending) > 0 && (
+					<p className={alertMessage}>
+						{t("settings.modals.externalPending.pullsNote", {
+							count: countIncomingPulls(externalImportPending),
+						})}
+					</p>
+				)}
 			</AlertContainer>
 		</ModalContainer>
 	)
@@ -183,12 +194,18 @@ export function ExternalImportSummaryModal({
 	externalImportSummary,
 	setExternalImportSummary,
 }: {
-	externalImportSummary: ExternalImportResult | null
+	externalImportSummary: AppliedExternalImportResult | null
 	setExternalImportSummary: (v: null) => void
 }) {
 	const t = useT()
 
 	if (!externalImportSummary) return null
+
+	const totalIncomingPulls = countIncomingPulls(externalImportSummary)
+	const pullsImported = externalImportSummary.pullsImportedCount ?? 0
+	const pullsDuplicate = externalImportSummary.pullsDuplicateCount ?? 0
+	const pullsUnreadable = externalImportSummary.skippedPullsCount ?? 0
+	const pullsSkippedTotal = pullsDuplicate + pullsUnreadable
 
 	return (
 		<ModalContainer>
@@ -241,9 +258,25 @@ export function ExternalImportSummaryModal({
 									imported: externalImportSummary.arcs.length,
 								})}
 					</div>
+					{(totalIncomingPulls > 0 || pullsUnreadable > 0) && (
+						<div>
+							{pullsSkippedTotal > 0
+								? t("settings.modals.externalSummary.pullsSkipped", {
+										imported: pullsImported,
+										skipped: pullsSkippedTotal,
+									})
+								: t("settings.modals.externalSummary.pulls", {
+										imported: pullsImported,
+									})}
+						</div>
+					)}
 					{externalImportSummary.staminaPatch && (
 						<div>{t("settings.modals.externalSummary.staminaUpdated")}</div>
 					)}
+					{externalImportSummary.source === "NTEWiz" &&
+						totalIncomingPulls > 0 && (
+							<div>{t("settings.modals.externalSummary.ntewizDiceNote")}</div>
+						)}
 				</div>
 				{(externalImportSummary.hasActivitiesData ||
 					externalImportSummary.hasEventsData) && (
