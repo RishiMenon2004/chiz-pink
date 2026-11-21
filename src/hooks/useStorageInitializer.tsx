@@ -4,6 +4,7 @@ import { useEffect } from "react"
 
 import { setLocalBootstrapPending } from "@/helpers/syncGate"
 import * as memoryStorage from "@/helpers/storage/memoryStorage"
+import { markVisited } from "./useFirstVisit"
 import { hydratePullsCache } from "./useGachaStore"
 import { hydrateInventoryCache } from "./useInventoryStore"
 import { hydratePlannerCache } from "./usePlannerStore"
@@ -37,6 +38,7 @@ export function useStorageInitializer() {
 					hydratePlannerCache(),
 				])
 				decideToolIntros()
+				markVisited()
 			} catch (error) {
 				console.error("Storage hydration failed", error)
 			} finally {
