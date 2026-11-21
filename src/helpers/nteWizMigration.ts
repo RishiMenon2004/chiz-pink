@@ -10,6 +10,7 @@ import { NEW_ORIGIN } from "./domainMigration"
 // one-click clipboard fallback on the same page).
 
 export const NTEWIZ_MIGRATE_PATH = "/migrate/ntewiz"
+export const NTEWIZ_SCRIPT_PATH = "/ntewiz-migrate.js"
 export const NTEWIZ_SOURCE_URL = "https://www.ntewiz.xyz/"
 export const NTEWIZ_MESSAGE_CHANNEL = "chiz-pink-ntewiz-migrate"
 
@@ -62,7 +63,7 @@ const NTEWIZ_STORES = [
 	"checklist",
 ]
 
-function buildExtractorBody(targetOrigin: string, autoOpen: boolean): string {
+function buildExtractorBody(targetOrigin: string): string {
 	const originJson = JSON.stringify(targetOrigin)
 	const urlJson = JSON.stringify(`${targetOrigin}${NTEWIZ_MIGRATE_PATH}`)
 	const channelJson = JSON.stringify(NTEWIZ_MESSAGE_CHANNEL)
@@ -70,7 +71,7 @@ function buildExtractorBody(targetOrigin: string, autoOpen: boolean): string {
 
 	// Self-contained ES2017 script executed on https://www.ntewiz.xyz/.
 	// Keep statements semicolon-terminated with no `//` comments so line-stripping
-	// produces a valid single-line bookmarklet and console snippet.
+	// produces a valid single-line console snippet and route script.
 	return `(function () {
   if (!/(^|\\.)ntewiz\\.xyz$/i.test(location.hostname)) {
     alert("Open https://www.ntewiz.xyz/ first, then run this there.");
@@ -78,7 +79,7 @@ function buildExtractorBody(targetOrigin: string, autoOpen: boolean): string {
   }
 
   var ORIGIN = ${originJson};
-  var URL = ${urlJson};
+  var TARGET_URL = ${urlJson};
   var CH = ${channelJson};
   var STORES = ${storesJson};
   var popup = null;
@@ -107,27 +108,34 @@ function buildExtractorBody(targetOrigin: string, autoOpen: boolean): string {
       setStatus("Migration complete! You can close this tab.");
     } else if (e.data.type === "error") {
       sent = false;
-      setStatus("Transfer failed. Try Copy Data and paste it into Chiz.Pink.");
+      setStatus("Transfer failed. Try Download JSON or Copy Data below.");
     }
   });
 
   function openTarget() {
     ready = false;
     sent = false;
-    popup = window.open(URL, "chiz-pink-ntewiz-migrate");
+    popup = window.open(TARGET_URL, "chiz-pink-ntewiz-migrate");
     if (!popup) {
-      setStatus("Popup blocked. Allow popups or click Copy Data below.");
+      setStatus("Popup blocked. Allow popups, or use Download JSON / Copy Data below.");
       return;
     }
     setStatus("Connecting to Chiz.Pink...");
   }
-${autoOpen ? "\n  openTarget();\n" : ""}
+
   function renderCard(summary) {
+    if (!document.querySelector('meta[name="viewport"]')) {
+      var vp = document.createElement("meta");
+      vp.name = "viewport";
+      vp.content = "width=device-width,initial-scale=1";
+      (document.head || document.documentElement).appendChild(vp);
+    }
+
     document.body.innerHTML = "";
-    document.body.style.cssText = "margin:0;min-height:100vh;display:grid;place-items:center;background:#121016;color:#fff;font-family:system-ui,sans-serif;padding:24px;box-sizing:border-box";
+    document.body.style.cssText = "margin:0;min-height:100vh;display:grid;place-items:center;background:#121016;color:#fff;font-family:system-ui,sans-serif;padding:20px;box-sizing:border-box";
 
     var card = document.createElement("div");
-    card.style.cssText = "max-width:460px;width:100%;background:#1e1a24;border:1px solid #3a3146;border-radius:16px;padding:24px;display:grid;gap:14px";
+    card.style.cssText = "max-width:460px;width:100%;background:#1e1a24;border:1px solid #3a3146;border-radius:16px;padding:22px;display:grid;gap:14px;box-sizing:border-box";
 
     var h = document.createElement("h2");
     h.textContent = "Migrate NTEWiz Data to Chiz.Pink";
@@ -135,23 +143,39 @@ ${autoOpen ? "\n  openTarget();\n" : ""}
 
     var info = document.createElement("div");
     info.textContent = summary;
-    info.style.cssText = "font-size:14px;color:#d8d0e2";
+    info.style.cssText = "font-size:14px;color:#d8d0e2;line-height:1.4";
 
     statusEl = document.createElement("div");
-    statusEl.textContent = popup ? "Connecting to Chiz.Pink..." : "Ready. Click Send to Chiz.Pink below.";
-    statusEl.style.cssText = "font-size:14px;color:#fff;background:#2b2434;padding:10px 12px;border-radius:10px";
+    statusEl.textContent = "Ready. Tap Send to Chiz.Pink below (or Download JSON / Copy Data).";
+    statusEl.style.cssText = "font-size:14px;color:#fff;background:#2b2434;padding:10px 12px;border-radius:10px;line-height:1.4";
 
     var row = document.createElement("div");
     row.style.cssText = "display:flex;gap:10px;flex-wrap:wrap";
 
     var sendBtn = document.createElement("button");
     sendBtn.textContent = "Send to Chiz.Pink";
-    sendBtn.style.cssText = "flex:1;padding:10px 16px;border:0;border-radius:999px;background:#ff66a3;color:#121016;font-weight:700;cursor:pointer;font-size:14px";
+    sendBtn.style.cssText = "flex:1 1 100%;padding:12px 16px;border:0;border-radius:999px;background:#ff66a3;color:#121016;font-weight:700;cursor:pointer;font-size:15px";
     sendBtn.onclick = function () { openTarget(); };
+
+    var dlBtn = document.createElement("button");
+    dlBtn.textContent = "Download JSON";
+    dlBtn.style.cssText = "flex:1 1 140px;padding:10px 14px;border:1px solid #5a4c6b;border-radius:999px;background:#2b2434;color:#fff;font-weight:600;cursor:pointer;font-size:14px";
+    dlBtn.onclick = function () {
+      var blob = new Blob([JSON.stringify(payload)], { type: "application/json" });
+      var href = URL.createObjectURL(blob);
+      var a = document.createElement("a");
+      a.href = href;
+      a.download = "ntewiz-export.json";
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      setTimeout(function () { URL.revokeObjectURL(href); }, 5000);
+      setStatus("Downloaded ntewiz-export.json. Upload it on Chiz.Pink.");
+    };
 
     var copyBtn = document.createElement("button");
     copyBtn.textContent = "Copy Data";
-    copyBtn.style.cssText = "flex:1;padding:10px 16px;border:1px solid #5a4c6b;border-radius:999px;background:#2b2434;color:#fff;font-weight:600;cursor:pointer;font-size:14px";
+    copyBtn.style.cssText = "flex:1 1 140px;padding:10px 14px;border:1px solid #5a4c6b;border-radius:999px;background:#2b2434;color:#fff;font-weight:600;cursor:pointer;font-size:14px";
     copyBtn.onclick = function () {
       var txt = JSON.stringify(payload);
       if (navigator.clipboard && navigator.clipboard.writeText) {
@@ -165,7 +189,7 @@ ${autoOpen ? "\n  openTarget();\n" : ""}
       function fallbackCopy() {
         var ta = document.createElement("textarea");
         ta.value = txt;
-        ta.style.cssText = "width:100%;height:120px;background:#121016;color:#fff;border:1px solid #5a4c6b;border-radius:8px;padding:8px;font-size:12px";
+        ta.style.cssText = "width:100%;height:120px;background:#121016;color:#fff;border:1px solid #5a4c6b;border-radius:8px;padding:8px;font-size:12px;box-sizing:border-box";
         card.appendChild(ta);
         ta.select();
         try {
@@ -178,6 +202,7 @@ ${autoOpen ? "\n  openTarget();\n" : ""}
     };
 
     row.appendChild(sendBtn);
+    row.appendChild(dlBtn);
     row.appendChild(copyBtn);
     card.appendChild(h);
     card.appendChild(info);
@@ -198,7 +223,6 @@ ${autoOpen ? "\n  openTarget();\n" : ""}
     if (!names.length) {
       db.close();
       try { indexedDB.deleteDatabase("ntewiz"); } catch (_) {}
-      if (popup && !popup.closed) popup.close();
       alert("No NTEWiz data was found in this browser.");
       return;
     }
@@ -237,14 +261,18 @@ function minifyExtractor(source: string): string {
 }
 
 export function buildNteWizBookmarklet(targetOrigin = NEW_ORIGIN): string {
-	const minified = minifyExtractor(buildExtractorBody(targetOrigin, true))
-	return `javascript:${encodeURIComponent(minified)}`
+	// Keep the bookmarklet tiny (~340 chars) with no regex/backslash/pipe chars
+	// so mobile Chrome never truncates or mangles it in the bookmark editor or
+	// omnibox. The 402 page on ntewiz.xyz has no CSP blocking chiz.pink scripts.
+	const scriptUrl = `${targetOrigin}${NTEWIZ_SCRIPT_PATH}`
+	const loader = `(function(){var h=location.hostname.toLowerCase();if(h!='ntewiz.xyz'&&h.slice(-11)!='.ntewiz.xyz'){alert('Open https://www.ntewiz.xyz/ first, then run this there.');return;}var s=document.createElement('script');s.src='${scriptUrl}';s.onerror=function(){alert('Failed to load migration script from Chiz.Pink.');};(document.head?document.head:document.documentElement).appendChild(s);})();`
+	return `javascript:${loader.replace(/ /g, "%20")}`
 }
 
 export function buildNteWizConsoleScript(targetOrigin = NEW_ORIGIN): string {
-	return minifyExtractor(buildExtractorBody(targetOrigin, false))
+	return minifyExtractor(buildExtractorBody(targetOrigin))
 }
 
 export function buildNteWizReadableScript(targetOrigin = NEW_ORIGIN): string {
-	return buildExtractorBody(targetOrigin, false)
+	return buildExtractorBody(targetOrigin)
 }

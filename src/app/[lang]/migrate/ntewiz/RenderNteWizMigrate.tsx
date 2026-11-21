@@ -60,7 +60,7 @@ type TokenKind =
 	| "prop"
 
 const JS_TOKEN_RE =
-	/"(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*'|\/(?:\\.|[^/\\\n])+\/[gimsuy]*|\b(?:function|var|if|else|return|try|catch|true|false|null)\b|\b(?:window|document|location|indexedDB|navigator|alert|JSON)\b|\b\d+\b|\.[A-Za-z_$][\w$]*/g
+	/"(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*'|\/(?:\\.|[^/\\\n])+\/[gimsuy]*|\b(?:function|var|if|else|return|try|catch|new|true|false|null)\b|\b(?:window|document|location|indexedDB|navigator|alert|JSON|Blob|URL|setTimeout)\b|\b\d+\b|\.[A-Za-z_$][\w$]*/g
 
 function tokenizeJs(code: string): { kind: TokenKind; text: string }[] {
 	const tokens: { kind: TokenKind; text: string }[] = []
@@ -83,7 +83,9 @@ function tokenizeJs(code: string): { kind: TokenKind; text: string }[] {
 		} else if (/^\d/.test(text)) {
 			kind = "number"
 		} else if (
-			/^(?:window|document|location|indexedDB|navigator|alert|JSON)$/.test(text)
+			/^(?:window|document|location|indexedDB|navigator|alert|JSON|Blob|URL|setTimeout)$/.test(
+				text
+			)
 		) {
 			kind = "global"
 		} else {
@@ -150,6 +152,16 @@ export function RenderNteWizMigrate() {
 		() => window.location.origin,
 		() => NEW_ORIGIN
 	)
+	const isCoarsePointer = useSyncExternalStore<boolean>(
+		noopSubscribe,
+		() => window.matchMedia("(pointer: coarse)").matches,
+		() => false
+	)
+	const [selectedPlatform, setSelectedPlatform] = useState<
+		"desktop" | "mobile" | null
+	>(null)
+	const bookmarkletPlatform =
+		selectedPlatform ?? (isCoarsePointer ? "mobile" : "desktop")
 
 	const bookmarkletUrl = useMemo(() => buildNteWizBookmarklet(origin), [origin])
 	const consoleScript = useMemo(() => buildNteWizConsoleScript(origin), [origin])
@@ -459,23 +471,98 @@ export function RenderNteWizMigrate() {
 							)}
 						</div>
 
-						<ol className={`inset-control ${styles.steps}`}>
-							<li>{t("migrate.ntewiz.bookmarklet.step1")}</li>
-							<li>
-								{t.rich("migrate.ntewiz.bookmarklet.step2", {
-									link: (text) => (
-										<a
-											className="btn-anchor"
-											href={NTEWIZ_SOURCE_URL}
-											target="_blank"
-											rel="noopener noreferrer">
-											{text}
-										</a>
-									),
-								})}
-							</li>
-							<li>{t("migrate.ntewiz.bookmarklet.step3")}</li>
-						</ol>
+						<div className={`inset-control ${styles.stepsPanel}`}>
+							<div className={styles.platformTabs} role="tablist">
+								<button
+									type="button"
+									role="tab"
+									aria-selected={bookmarkletPlatform === "desktop"}
+									className={`${styles.platformTab} ${
+										bookmarkletPlatform === "desktop"
+											? styles.platformTabActive
+											: ""
+									}`}
+									onClick={() => setSelectedPlatform("desktop")}>
+									{t("migrate.ntewiz.bookmarklet.tabDesktop")}
+								</button>
+								<button
+									type="button"
+									role="tab"
+									aria-selected={bookmarkletPlatform === "mobile"}
+									className={`${styles.platformTab} ${
+										bookmarkletPlatform === "mobile"
+											? styles.platformTabActive
+											: ""
+									}`}
+									onClick={() => setSelectedPlatform("mobile")}>
+									{t("migrate.ntewiz.bookmarklet.tabMobile")}
+								</button>
+							</div>
+
+							{bookmarkletPlatform === "desktop" ? (
+								<ol className={styles.steps}>
+									<li>
+										{t.rich("migrate.ntewiz.bookmarklet.desktop.step1", {
+											b: (text) => <strong>{text}</strong>,
+										})}
+									</li>
+									<li>
+										{t.rich("migrate.ntewiz.bookmarklet.desktop.step2", {
+											link: (text) => (
+												<a
+													className="btn-anchor"
+													href={NTEWIZ_SOURCE_URL}
+													target="_blank"
+													rel="noopener noreferrer">
+													{text}
+												</a>
+											),
+										})}
+									</li>
+									<li>
+										{t.rich("migrate.ntewiz.bookmarklet.desktop.step3", {
+											b: (text) => <strong>{text}</strong>,
+										})}
+									</li>
+								</ol>
+							) : (
+								<>
+									<ol className={styles.steps}>
+										<li>
+											{t.rich("migrate.ntewiz.bookmarklet.mobile.step1", {
+												b: (text) => <strong>{text}</strong>,
+											})}
+										</li>
+										<li>
+											{t.rich("migrate.ntewiz.bookmarklet.mobile.step2", {
+												b: (text) => <strong>{text}</strong>,
+											})}
+										</li>
+										<li>
+											{t.rich("migrate.ntewiz.bookmarklet.mobile.step3", {
+												link: (text) => (
+													<a
+														className="btn-anchor"
+														href={NTEWIZ_SOURCE_URL}
+														target="_blank"
+														rel="noopener noreferrer">
+														{text}
+													</a>
+												),
+											})}
+										</li>
+										<li>
+											{t.rich("migrate.ntewiz.bookmarklet.mobile.step4", {
+												b: (text) => <strong>{text}</strong>,
+											})}
+										</li>
+									</ol>
+									<p className={styles.stepsNote}>
+										{t("migrate.ntewiz.bookmarklet.mobile.chromeNote")}
+									</p>
+								</>
+							)}
+						</div>
 					</section>
 
 					<section className={`metallic-panel ${styles.card}`}>
@@ -506,23 +593,36 @@ export function RenderNteWizMigrate() {
 							</div>
 						</div>
 
-						<ol className={`inset-control ${styles.steps}`}>
-							<li>
-								{t.rich("migrate.ntewiz.console.step1", {
-									link: (text) => (
-										<a
-											className="btn-anchor"
-											href={NTEWIZ_SOURCE_URL}
-											target="_blank"
-											rel="noopener noreferrer">
-											{text}
-										</a>
-									),
-								})}
-							</li>
-							<li>{t("migrate.ntewiz.console.step2")}</li>
-							<li>{t("migrate.ntewiz.console.step3")}</li>
-						</ol>
+						<div className={`inset-control ${styles.stepsPanel}`}>
+							<ol className={styles.steps}>
+								<li>
+									{t.rich("migrate.ntewiz.console.step1", {
+										link: (text) => (
+											<a
+												className="btn-anchor"
+												href={NTEWIZ_SOURCE_URL}
+												target="_blank"
+												rel="noopener noreferrer">
+												{text}
+											</a>
+										),
+									})}
+								</li>
+								<li>
+									{t.rich("migrate.ntewiz.console.step2", {
+										b: (text) => <strong>{text}</strong>,
+										code: (text) => (
+											<code className={styles.inlineCode}>{text}</code>
+										),
+									})}
+								</li>
+								<li>
+									{t.rich("migrate.ntewiz.console.step3", {
+										b: (text) => <strong>{text}</strong>,
+									})}
+								</li>
+							</ol>
+						</div>
 
 						<details className={styles.codeDetails}>
 							<summary>{t("migrate.ntewiz.console.viewScript")}</summary>

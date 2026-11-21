@@ -1021,13 +1021,24 @@
 			"bookmarklet": {
 				"title": "Option 1: Bookmarklet (No File)",
 				"badge": "Recommended",
-				"description": "Save the button below as a bookmark, then click it while on www.ntewiz.xyz to send your local data straight to Chiz.Pink.",
+				"description": "Save the button below as a bookmark, then run it while on www.ntewiz.xyz to send your saved data straight to Chiz.Pink.",
 				"button": "Migrate NTEWiz to Chiz.Pink",
 				"copyLink": "Copy URL",
-				"dragHint": "Don't click it here. Save it as a bookmark first (either drag it to your bookmarks bar or right-click it and choose \"Bookmark Link...\", or copy the URL), then open your bookmark while on www.ntewiz.xyz.",
-				"step1": "Drag \"Migrate NTEWiz to Chiz.Pink\" onto your bookmarks bar, or right-click it and choose \"Bookmark Link...\" (on mobile, copy the bookmarklet URL and save it as a bookmark).",
-				"step2": "Open <link>www.ntewiz.xyz</link>. Even though it shows an error / disabled page, your local browser data is still accessible there.",
-				"step3": "Click your new bookmark on that page. Chiz.Pink will open and import your planner, inventory, and pulls automatically."
+				"dragHint": "Don't click it here. Save it as a bookmark first (drag it to your bookmarks bar, right-click -> Bookmark Link, or tap Copy URL on mobile), then run it on www.ntewiz.xyz.",
+				"tabDesktop": "Desktop",
+				"tabMobile": "Mobile",
+				"desktop": {
+					"step1": "Drag <b>Migrate NTEWiz to Chiz.Pink</b> onto your bookmarks bar, or right-click it and choose <b>Bookmark Link</b>.",
+					"step2": "Open <link>www.ntewiz.xyz</link>. Even though it shows a disabled page, your browser still holds your saved data there.",
+					"step3": "Click your new bookmark on that page, then click <b>Send to Chiz.Pink</b> (or use <b>Download JSON</b> / <b>Copy Data</b>)."
+				},
+				"mobile": {
+					"step1": "Tap <b>Copy URL</b> above.",
+					"step2": "Bookmark any page, edit that bookmark, give it a short name like <b>ntewiz</b>, and replace its URL with the copied link.",
+					"step3": "Open <link>www.ntewiz.xyz</link> (ignore the disabled/error page).",
+					"step4": "Tap the <b>address bar</b>, type <b>ntewiz</b>, and tap the <b>starred bookmark suggestion</b>. Then tap <b>Send to Chiz.Pink</b> (or <b>Download JSON</b> and upload it below).",
+					"chromeNote": "On Chrome Mobile, don't tap the bookmark from the Bookmarks menu. Launching it from the address bar dropdown is required so it runs on the NTEWiz tab."
+				}
 			},
 			"console": {
 				"title": "Option 2: Browser Console (Desktop)",
@@ -1035,13 +1046,13 @@
 				"openNteWiz": "Open www.ntewiz.xyz",
 				"copyScript": "Copy Script",
 				"step1": "Open <link>www.ntewiz.xyz</link> in a new tab.",
-				"step2": "Press F12 (or Ctrl+Shift+I / Cmd+Option+I), open the Console tab, paste the script, and press Enter (in Chrome/Edge, type \"allow pasting\" first if prompted).",
-				"step3": "Click \"Send to Chiz.Pink\" on the page (or \"Copy Data\" and paste it below if popups are blocked).",
+				"step2": "Press <b>F12</b> (or <b>Ctrl+Shift+I</b> / <b>Cmd+Option+I</b>), open the <b>Console</b> tab, paste the script, and press <b>Enter</b> (in Chrome/Edge, type <code>allow pasting</code> first if prompted).",
+				"step3": "Click <b>Send to Chiz.Pink</b> on the page (or <b>Download JSON</b> / <b>Copy Data</b> if popups are blocked).",
 				"viewScript": "Inspect script source"
 			},
 			"manual": {
 				"title": "Option 3: Paste Data or Upload Backup File",
-				"description": "Paste JSON copied from the \"Copy Data\" button above, or upload a previously exported ntewiz-backup-*.json file.",
+				"description": "Paste JSON copied from \"Copy Data\" above, or upload a downloaded ntewiz-export.json / ntewiz-backup-*.json file.",
 				"placeholder": "Paste NTEWiz JSON here...",
 				"importPasted": "Import Pasted Data",
 				"uploadFile": "Upload Backup JSON"
