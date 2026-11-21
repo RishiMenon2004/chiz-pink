@@ -19,6 +19,7 @@ import {
 	ImportedCharacter,
 	kebabToSnake,
 	mapMaterialAmounts,
+	maxItemLvl,
 	snapItemLvl,
 	ExternalImportResult,
 } from "./importExternal"
@@ -64,22 +65,31 @@ function mapNteWizStamina(profile?: NteWizProfile) {
 // currentAscension/goalAscension) counts how many of chiz-pink's six
 // ascendable breakpoints (20/30/40/50/60/70) have actually been passed, so
 // it can be trusted directly instead of guessing from the raw level alone.
-const ASCENSION_BREAKPOINTS = [20, 30, 40, 50, 60, 70] as const
+const ASCENSION_RANGES: readonly (readonly [EnumItemLvls, EnumItemLvls])[] = [
+	[EnumItemLvls.Lvl20A, EnumItemLvls.Lvl30],
+	[EnumItemLvls.Lvl30A, EnumItemLvls.Lvl40],
+	[EnumItemLvls.Lvl40A, EnumItemLvls.Lvl50],
+	[EnumItemLvls.Lvl50A, EnumItemLvls.Lvl60],
+	[EnumItemLvls.Lvl60A, EnumItemLvls.Lvl70],
+	[EnumItemLvls.Lvl70A, EnumItemLvls.Lvl80],
+]
 
 function snapAscensionLevel(level: number, ascensionPhase: number): EnumItemLvls {
-	const phase = Math.max(0, Math.min(6, Math.round(ascensionPhase)))
+	const phase = Number.isFinite(ascensionPhase)
+		? Math.max(0, Math.min(6, Math.round(ascensionPhase)))
+		: 0
 
 	if (phase === 0) {
 		return level >= 20 ? EnumItemLvls.Lvl20 : EnumItemLvls.Lvl1
 	}
 
-	const lower = ASCENSION_BREAKPOINTS[phase - 1]
-	const upper = phase < 6 ? ASCENSION_BREAKPOINTS[phase] : 80
-
-	return (level >= upper ? upper : lower + 1) as EnumItemLvls
+	const [ascended, upper] = ASCENSION_RANGES[phase - 1]
+	return level >= upper ? upper : ascended
 }
 
-const DIRECT_SKILL_KEY_MAP: Partial<Record<keyof CharacterAbilitySet, string>> = {
+const DIRECT_SKILL_KEY_MAP: Partial<
+	Record<keyof CharacterAbilitySet, keyof NteWizTalents>
+> = {
 	basicAttack: "basic-attack",
 	skill: "skill",
 	ultimate: "ultimate",
@@ -168,14 +178,8 @@ function buildNteWizAbilitySet(
 		let targetOverride: number | undefined
 
 		if (directKey) {
-			currentOverride = readTalentValue(
-				talentsCurrent,
-				directKey as keyof NteWizTalents
-			)
-			targetOverride = readTalentValue(
-				talentsGoal,
-				directKey as keyof NteWizTalents
-			)
+			currentOverride = readTalentValue(talentsCurrent, directKey)
+			targetOverride = readTalentValue(talentsGoal, directKey)
 		} else if (key in currentPassives || key in targetPassives) {
 			currentOverride = currentPassives[key]
 			targetOverride = targetPassives[key]
@@ -222,7 +226,7 @@ export function mapNteWizCharacter(
 	return {
 		id,
 		currentLvl,
-		targetLvl: Math.max(currentLvl, targetLvl) as EnumItemLvls,
+		targetLvl: maxItemLvl(currentLvl, targetLvl),
 		abilitySet: buildNteWizAbilitySet(id, talentsCurrent, talentsGoal),
 		awakening: analystChar.currentAwakening ?? 0,
 	}
@@ -242,7 +246,7 @@ export function mapNteWizArc(
 	return {
 		id,
 		currentLvl,
-		targetLvl: Math.max(currentLvl, targetLvl) as EnumItemLvls,
+		targetLvl: maxItemLvl(currentLvl, targetLvl),
 	}
 }
 

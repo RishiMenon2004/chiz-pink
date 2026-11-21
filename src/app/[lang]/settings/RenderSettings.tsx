@@ -122,7 +122,8 @@ export function RenderSettings() {
 
 				const reader = new FileReader()
 				reader.onload = () => {
-					const result = reader.result as string
+					if (typeof reader.result !== "string") return
+					const result = reader.result
 
 					let parsed: unknown = null
 					try {
