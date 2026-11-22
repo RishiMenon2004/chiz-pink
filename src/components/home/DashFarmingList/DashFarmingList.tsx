@@ -50,8 +50,6 @@ export function DashFarmingList() {
 			if (columns > 0) setColumnCount(columns)
 		}
 
-		updateColumnCount()
-
 		const observer = new ResizeObserver(updateColumnCount)
 		observer.observe(el)
 		return () => observer.disconnect()

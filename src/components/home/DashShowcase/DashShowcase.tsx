@@ -2,7 +2,7 @@ import { ReactNode } from "react"
 
 import { useT } from "@/contexts"
 
-import { useArcCatalog, useCharacterCatalog } from "@/components/catalog"
+import { useArcCatalog, useCharacterCatalog } from "@/components/catalog/useCatalog"
 
 import { DashFeaturedArcs } from "../DashFeaturedArcs"
 import { DashFeaturedCarousel } from "../DashFeaturedCarousel"

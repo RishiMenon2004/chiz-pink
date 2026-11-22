@@ -100,28 +100,7 @@ export function BETATag() {
 /*  Config input components                                           */
 /* ------------------------------------------------------------------ */
 
-export function ConfigCheckbox({
-	checked,
-	onChange,
-	name,
-}: {
-	name: string
-	checked: boolean
-	onChange: ChangeEventHandler<HTMLInputElement>
-}) {
-	return (
-		<div className={styles.configCheckboxRow}>
-			<input
-				className={`inset-control ${styles.configInput}`}
-				name={name}
-				type="checkbox"
-				checked={checked}
-				onChange={onChange}
-			/>
-			<b>{name}</b>
-		</div>
-	)
-}
+export { ConfigCheckbox } from "../ConfigCheckbox"
 
 export function ConfigInputbox(
 	props: DetailedHTMLProps<

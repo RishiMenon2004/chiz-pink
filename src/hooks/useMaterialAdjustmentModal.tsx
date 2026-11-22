@@ -8,7 +8,7 @@ import type { Material } from "@/types/item"
 
 import { MatAdjustmentContext } from "@/contexts"
 
-import { ModalContainer, MaterialEditorBox } from "@/components/layout"
+import { ModalContainer, MaterialEditorBox } from "@/components/layout/Modal"
 
 export function useMaterialEditorModal(className: string | undefined) {
 	const [showMaterialEditorModal, setShowMaterialEditorModal] =

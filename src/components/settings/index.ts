@@ -1,5 +1,5 @@
 export { StaminaResetCountdown, PixelRefillCountdown } from "./SettingsTimers"
-export { ConfigCheckbox } from "./SettingsShared"
+export { ConfigCheckbox } from "./ConfigCheckbox"
 export { AppraiserSection } from "./AppraiserSection"
 export { LocalDataSection } from "./LocalDataSection"
 export { CloudBackupSection } from "./CloudBackupSection"

@@ -145,7 +145,7 @@ export function CalendarEventItem({
 					alt={t("home.calendar.eventBannerAlt", { name: eventData.name })}
 					width={1920}
 					height={1080}
-					sizes={`${Math.ceil(widthDays)}rem`}
+					sizes={`(max-width: 800px) ${Math.min(Math.ceil(widthDays), 40)}rem, ${Math.min(Math.ceil(widthDays), 75)}rem`}
 				/>
 			)}
 			<div className={styles.eventName}>

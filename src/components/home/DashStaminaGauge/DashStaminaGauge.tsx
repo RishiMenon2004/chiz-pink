@@ -9,11 +9,12 @@ import { useSettingsStore } from "@/hooks"
 import {
 	PixelRefillCountdown,
 	StaminaResetCountdown,
-} from "@/components/settings"
+} from "@/components/settings/SettingsTimers"
 
 import { useT } from "@/contexts"
 
-import { LocaleLink, MaterialIcon } from "@/components/layout"
+import { LocaleLink } from "@/components/layout/LocaleLink"
+import { MaterialIcon } from "@/components/layout/MaterialIcon"
 
 import pageStyles from "@/app/[lang]/page.module.css"
 import styles from "./DashStaminaGauge.module.css"

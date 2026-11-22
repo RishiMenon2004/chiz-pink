@@ -57,11 +57,13 @@ function BannerTiming({ character }: { character: Character }) {
 function Slide({
 	entry: { item: character, status },
 	active,
+	loadImages,
 	onPointerEnter,
 	onPointerLeave,
 }: {
 	entry: Entry
 	active: boolean
+	loadImages: boolean
 	onPointerEnter: PointerEventHandler<HTMLElement>
 	onPointerLeave: () => void
 }) {
@@ -78,25 +80,27 @@ function Slide({
 			onPointerEnter={onPointerEnter}
 			onPointerLeave={onPointerLeave}>
 			<div className={styles.background}>
-				<Image
-					src={`/characters/background/${character.id}.png`}
-					alt={t("home.featuredCarousel.backgroundAlt", { name: character.name, gender: character.gender })}
-					width={1384}
-					height={830}
-					sizes="(max-width: 800px) 100vw, 50vw"
-					onError={(e) => (e.currentTarget.style.display = "none")}
-				/>
+				{loadImages && (
+					<Image
+						src={`/characters/background/${character.id}.png`}
+						alt={t("home.featuredCarousel.backgroundAlt", { name: character.name, gender: character.gender })}
+						width={1384}
+						height={830}
+						sizes="(max-width: 800px) 100vw, 50vw"
+						onError={(e) => (e.currentTarget.style.display = "none")}
+					/>
+				)}
 			</div>
 			<div className={styles.art}>
-				<Image
-					src={`/characters/full/${character.imageSrc}`}
-					alt={t("home.featuredCarousel.artAlt", { name: character.name, gender: character.gender })}
-					width={1080}
-					height={1280}
-					sizes="(max-width: 800px) 70vw, 30vw"
-					loading={active ? "eager" : "lazy"}
-					fetchPriority={active ? "high" : undefined}
-				/>
+				{loadImages && (
+					<Image
+						src={`/characters/full/${character.imageSrc}`}
+						alt={t("home.featuredCarousel.artAlt", { name: character.name, gender: character.gender })}
+						width={1080}
+						height={1280}
+						sizes="(max-width: 800px) 70vw, 30vw"
+					/>
+				)}
 			</div>
 			<div className={styles.info}>
 				<div className={styles.tag}>
@@ -124,12 +128,17 @@ function Slide({
 export function DashFeaturedCarousel({ entries }: { entries: Entry[] }) {
 	const t = useT()
 	const [index, setIndex] = useState(0)
+	const [visited, setVisited] = useState<Set<number>>(() => new Set([0]))
 	const touchStartX = useRef<number | null>(null)
 	const { Tooltip, showTooltip, hideTooltip } = useTooltip()
 
 	const count = entries.length
 	const active = Math.min(index, count - 1)
-	const go = (to: number) => setIndex(((to % count) + count) % count)
+	const go = (to: number) => {
+		const next = ((to % count) + count) % count
+		setIndex(next)
+		setVisited((prev) => (prev.has(next) ? prev : new Set(prev).add(next)))
+	}
 
 	return (
 		<div
@@ -155,6 +164,7 @@ export function DashFeaturedCarousel({ entries }: { entries: Entry[] }) {
 						key={entry.item.id}
 						entry={entry}
 						active={i === active}
+						loadImages={i === active || visited.has(i)}
 						onPointerEnter={showTooltip}
 						onPointerLeave={hideTooltip}
 					/>

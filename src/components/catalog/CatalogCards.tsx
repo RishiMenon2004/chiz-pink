@@ -1,6 +1,6 @@
 "use client"
 
-import { CSSProperties, ReactNode, useMemo, useState } from "react"
+import { CSSProperties, ReactNode, useState } from "react"
 
 import type { Character } from "@/types/character"
 import type { Arc } from "@/types/weapon"
@@ -10,17 +10,12 @@ import { getItemRarityStyle } from "@/data/items"
 import { getAllCharactersList } from "@/data/characters/characterList"
 import { getAllArcsList } from "@/data/arcs"
 
-import { useNow } from "@/hooks"
-
 import { fuzzyFilter } from "@/helpers/fuzzyMatch"
 import { getRarityName } from "@/helpers/getRarityName"
 
 import {
 	getArcBannerThemeColor,
 	getCharacterBannerThemeColor,
-	getItemStatus,
-	isItemRevealed,
-	sortByStatus,
 	type ItemStatus,
 } from "@/helpers/bannerStatus"
 
@@ -42,12 +37,11 @@ import {
 	type CatalogSort,
 } from "./CatalogFilterToolbar"
 import { CatalogSwitch } from "./CatalogSwitch"
+import { useArcCatalog, useCharacterCatalog } from "./useCatalog"
 import { LocaleLink } from "@/components/layout/LocaleLink"
 
 import styles from "./catalog.module.css"
 import pageStyles from "@/app/[lang]/page.module.css"
-
-const MINUTE_MS = 60_000
 
 type WithStatus<T> = { item: T; status: ItemStatus }
 
@@ -139,31 +133,8 @@ function ArcCard({ arc, status }: { arc: Arc; status: ItemStatus }) {
 	)
 }
 
-function useCatalogItems<T extends Item>(items: T[], onlyFlagged: boolean) {
-	const now = useNow(MINUTE_MS)
-	const minute = now === null ? null : Math.floor(now / MINUTE_MS)
-
-	return useMemo(() => {
-		const at = minute === null ? null : minute * MINUTE_MS
-		return sortByStatus(items, at)
-			.filter((item) => isItemRevealed(item, at))
-			.map((item) => ({ item, status: getItemStatus(item, at) }))
-			.filter(({ status }) => !onlyFlagged || status !== null)
-	}, [items, onlyFlagged, minute])
-}
-
 const allCharacters = getAllCharactersList()
 const allArcs = getAllArcsList()
-
-// `onlyFlagged` limits the list to featured and preview items (the
-// dashboard showcase); otherwise every item is shown.
-export function useCharacterCatalog(onlyFlagged = false) {
-	return useCatalogItems(allCharacters, onlyFlagged)
-}
-
-export function useArcCatalog(onlyFlagged = false) {
-	return useCatalogItems(allArcs, onlyFlagged)
-}
 
 function CharacterCards({ entries }: { entries: WithStatus<Character>[] }) {
 	return entries.map(({ item, status }) => (

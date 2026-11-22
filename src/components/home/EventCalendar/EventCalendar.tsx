@@ -18,7 +18,7 @@ import {
 
 import { CalendarContext, useCalendarContext, useLocale, useT } from "@/contexts"
 
-import { ConfigCheckbox } from "@/components/settings"
+import { ConfigCheckbox } from "@/components/settings/ConfigCheckbox"
 
 import { CalendarEventItem } from "./CalendarEventItem"
 
@@ -438,7 +438,7 @@ export function EventCalendar() {
 						}
 					}
 				},
-				{ root: container, rootMargin: "0px 300px", threshold: 0 }
+				{ root: container, rootMargin: "0px 100px", threshold: 0 }
 			)
 			imageObserverRef.current = observer
 			for (const el of imageCallbacksRef.current.keys()) {
@@ -446,24 +446,40 @@ export function EventCalendar() {
 			}
 		}
 
-		// Jump straight to today before observing so past banners stay unloaded.
+		// Jump straight to today before observing so past banners stay unloaded,
+		// and wait until the calendar nears the viewport before loading banners.
 		let didScroll = false
+		let nearViewport = false
+
+		function maybeStartImageObserver() {
+			if (didScroll && nearViewport) startImageObserver()
+		}
 
 		function tryScrollToNow() {
 			if (didScroll) return
 			if (container!.clientWidth === 0 || content!.offsetWidth === 0) return
 			scrollToNow("instant")
 			didScroll = true
-			startImageObserver()
+			maybeStartImageObserver()
 		}
 
-		tryScrollToNow()
+		const viewportObserver = new IntersectionObserver(
+			([entry]) => {
+				if (!entry?.isIntersecting) return
+				nearViewport = true
+				viewportObserver.disconnect()
+				maybeStartImageObserver()
+			},
+			{ rootMargin: "200px 0px", threshold: 0 }
+		)
+		viewportObserver.observe(container)
 
 		const observer = new ResizeObserver(() => tryScrollToNow())
 		observer.observe(container)
 		observer.observe(content)
 
 		return () => {
+			viewportObserver.disconnect()
 			observer.disconnect()
 			imageObserverRef.current?.disconnect()
 			imageObserverRef.current = null

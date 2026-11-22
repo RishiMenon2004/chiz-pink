@@ -92,8 +92,8 @@ export function CurrencyBox({ currency }: { currency: Material }) {
 		if (isEdit) inputBoxRef?.current?.focus()
 	}, [isEdit])
 	useEffect(() => {
-		changeInputWidth()
-	}, [currencyValue])
+		if (isEdit) changeInputWidth()
+	}, [currencyValue, isEdit])
 
 	const handleEdit = (e: ChangeEvent<HTMLInputElement>) => {
 		if (e.currentTarget) {

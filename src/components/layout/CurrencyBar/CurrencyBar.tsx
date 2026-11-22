@@ -20,14 +20,22 @@ export function CurrencyBar() {
 		const bar = barRef.current
 		if (!bar) return
 		const root = document.documentElement
+		let rafId = 0
+		let lastBottom = ""
 		const observer = new ResizeObserver(() => {
-			root.style.setProperty(
-				"--titlebar-bottom",
-				`${bar.getBoundingClientRect().bottom}px`
-			)
+			const nextBottom = `${bar.getBoundingClientRect().bottom}px`
+			if (nextBottom === lastBottom) return
+			lastBottom = nextBottom
+			cancelAnimationFrame(rafId)
+			// Defer the root style write so other ResizeObserver callbacks in
+			// the same frame don't hit a forced reflow after we dirty <html>.
+			rafId = requestAnimationFrame(() => {
+				root.style.setProperty("--titlebar-bottom", nextBottom)
+			})
 		})
 		observer.observe(bar)
 		return () => {
+			cancelAnimationFrame(rafId)
 			observer.disconnect()
 			root.style.removeProperty("--titlebar-bottom")
 		}

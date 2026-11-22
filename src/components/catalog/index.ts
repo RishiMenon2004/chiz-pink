@@ -1,6 +1,2 @@
-export {
-	ArcCatalog,
-	CharacterCatalog,
-	useArcCatalog,
-	useCharacterCatalog,
-} from "./CatalogCards"
+export { ArcCatalog, CharacterCatalog } from "./CatalogCards"
+export { useArcCatalog, useCharacterCatalog } from "./useCatalog"

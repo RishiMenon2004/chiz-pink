@@ -16,7 +16,7 @@ import {
 	getWeeklyResetBoundaries,
 } from "@/helpers"
 
-import styles from "@/app/[lang]/settings/settings.module.css"
+import styles from "./settingsTimers.module.css"
 
 export function StaminaResetCountdown({
 	server,
