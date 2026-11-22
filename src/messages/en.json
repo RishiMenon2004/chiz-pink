@@ -650,7 +650,7 @@
 			"showPull": "{name}, pity {pity}. Show in the pulls list",
 			"title": "RECENT S-RANKS",
 			"onlyRateUpArcs": "Only show Rate-Up Arcs",
-			"empty": "Y-you haven't pulled any S-Ranks yet... I'll show them here as soon as you do!"
+			"empty": "No S-Ranks pulled yet."
 		},
 		"stats": {
 			"title": "STATS",
@@ -689,7 +689,7 @@
 			"addOneLabel": "Add a pull",
 			"addTenLabel": "Add a ten-pull",
 			"clear": "Clear",
-			"empty": "N-no pulls queued... press +1 or +10 and I'll set up rows for you to fill in!",
+			"empty": "Nothing here yet... tap +1 or +10 above to log your pulls!",
 			"advanced": "Advanced...",
 			"advancedTitle": "Add Pulls",
 			"close": "Close",

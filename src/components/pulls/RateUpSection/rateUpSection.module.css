@@ -1,8 +1,13 @@
 .rateupSection {
 
-	/* The shared InfoBox is spaced for a full page; here it fills the list. */
 	.emptyNotice {
-		margin: 0.5rem;
+		margin: 0;
+		padding: 0.75rem 0.5rem;
+		color: color-mix(in srgb, var(--foreground) 65%, transparent);
+		font-family: var(--font-barlow-condensed);
+		font-size: 0.95rem;
+		font-style: italic;
+		text-align: center;
 	}
 
 	.rateupBannerList {

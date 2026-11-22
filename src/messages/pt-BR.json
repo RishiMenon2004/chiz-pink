@@ -619,7 +619,7 @@
 			"showPull": "{name}, pity {pity}. Mostrar na lista de rolagens",
 			"title": "RANQUES S RECENTES",
 			"onlyRateUpArcs": "Mostrar apenas Discos de Destaque",
-			"empty": "Vo-Você ainda não fez rolagens de ranques S ainda... Eu irei mostrar eles assim que você fizer!"
+			"empty": "Nenhum Ranque S obtido ainda."
 		},
 		"stats": {
 			"title": "ESTATÍSTICAS",
@@ -658,7 +658,7 @@
 			"addOneLabel": "Adicionar uma invocação",
 			"addTenLabel": "Adicionar 10 rolagens",
 			"clear": "Limpar",
-			"empty": "N-Não há invocação na fila... pressione +1 ou +10 e eu criarei linhas para você preencher!",
+			"empty": "Nada por aqui ainda... toque em +1 ou +10 acima para registrar suas rolagens!",
 			"advanced": "Avançado...",
 			"advancedTitle": "Adicionar rolagens",
 			"close": "Fechar",

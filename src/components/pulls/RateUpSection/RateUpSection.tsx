@@ -11,7 +11,7 @@ import { findPullItem, isArcRateUp, isScarboroughPull } from "@/helpers"
 
 import { RateUpPull, usePullTrackerContext, useT } from "@/contexts"
 
-import { ArcIcon, CharacterAvatar, InfoBox } from "@/components/layout"
+import { ArcIcon, CharacterAvatar } from "@/components/layout"
 
 import pageStyles from "@/app/[lang]/pulls/page.module.css"
 import styles from "./rateUpSection.module.css"
@@ -83,9 +83,7 @@ export function RateUpSection() {
 			</div>
 			<div className={`inset-control ${styles.rateupBannerList}`}>
 				{!hasPulls && (
-					<InfoBox sticker="peek" className={styles.emptyNotice}>
-						<div>{t("pulls.rateUp.empty")}</div>
-					</InfoBox>
+					<p className={styles.emptyNotice}>{t("pulls.rateUp.empty")}</p>
 				)}
 				{(
 					Object.entries(rateUpPulls) as [

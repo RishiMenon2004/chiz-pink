@@ -26,7 +26,7 @@ import {
 	useT,
 } from "@/contexts"
 
-import { InfoBox, ModalContainer } from "@/components/layout"
+import { ModalContainer } from "@/components/layout"
 
 import { AdvancedPullEntry } from "./AdvancedPullEntry"
 import { DicePicker } from "./DicePicker"
@@ -248,9 +248,7 @@ export function ManualPullEntry() {
 				</div>
 
 				{rows.length === 0 && (
-					<InfoBox sticker="peek" className={styles.emptyNotice}>
-						<div>{t("pulls.manual.empty")}</div>
-					</InfoBox>
+					<p className={styles.emptyNotice}>{t("pulls.manual.empty")}</p>
 				)}
 
 				{rows.length > 0 && (
