@@ -32,7 +32,11 @@ import { alertMessage } from "@/components/layout/Alert/AlertContainer"
 import { PullEditOverlay } from "./PullEditOverlay"
 import { PullEntry, type PullActions } from "./PullEntryRow"
 import { PullMenu } from "./PullRowMenu"
-import { PullsPagination, PullsSearchBar } from "./PullsListToolbar"
+import {
+	PullsBatchBar,
+	PullsPagination,
+	PullsSearchBar,
+} from "./PullsListToolbar"
 import {
 	buildArcPages,
 	buildPullBannerMaps,
@@ -60,6 +64,10 @@ export function PullsListSection() {
 	const [search, setSearch] = useState<string>("")
 	const [handledRequest, setHandledRequest] = useState(0)
 	const [highlighted, setHighlighted] = useState<string | null>(null)
+	const [selectMode, setSelectMode] = useState(false)
+	const [selectedUids, setSelectedUids] = useState<Set<string>>(() => new Set())
+	const [confirmingBatchDelete, setConfirmingBatchDelete] = useState(false)
+	const lastSelectedUidRef = useRef<string | null>(null)
 	const sectionRef = useRef<HTMLDivElement>(null)
 	const mounted = useSyncExternalStore(
 		emptySubscribe,
@@ -71,6 +79,9 @@ export function PullsListSection() {
 	if (prevBanner !== selectedBanner) {
 		setPrevBanner(selectedBanner)
 		setPage(0)
+		if (selectMode) setSelectMode(false)
+		if (selectedUids.size > 0) setSelectedUids(new Set())
+		if (confirmingBatchDelete) setConfirmingBatchDelete(false)
 	}
 
 	const pullsPerPage = 10
@@ -198,6 +209,117 @@ export function PullsListSection() {
 		[]
 	)
 
+	const existingUidSet = useMemo(
+		() => new Set(pulls.map((pull) => pull.uid)),
+		[pulls]
+	)
+	const activeSelectedUids = useMemo(() => {
+		const valid = new Set<string>()
+		for (const uid of selectedUids) {
+			if (existingUidSet.has(uid)) valid.add(uid)
+		}
+		return valid
+	}, [selectedUids, existingUidSet])
+
+	const pagePulls = useMemo(
+		() => pageGroups.flatMap((group) => group.pulls),
+		[pageGroups]
+	)
+	const allPageSelected =
+		pagePulls.length > 0 &&
+		pagePulls.every((pull) => activeSelectedUids.has(pull.uid))
+	const allVisibleSelected =
+		visiblePulls.length > 0 &&
+		visiblePulls.every((pull) => activeSelectedUids.has(pull.uid))
+
+	const exitSelectMode = useCallback(() => {
+		setSelectMode(false)
+		setSelectedUids(new Set())
+		setConfirmingBatchDelete(false)
+		lastSelectedUidRef.current = null
+	}, [])
+
+	const toggleSelectMode = useCallback(() => {
+		setSelectMode((active) => {
+			if (active) {
+				setSelectedUids(new Set())
+				setConfirmingBatchDelete(false)
+				lastSelectedUidRef.current = null
+				return false
+			}
+			setMenu(null)
+			setEditing(null)
+			setDeleting(null)
+			return true
+		})
+	}, [])
+
+	const handleToggleSelect = useCallback(
+		(uid: string, shiftKey: boolean) => {
+			setSelectedUids((prev) => {
+				const next = new Set(prev)
+				const anchorUid = lastSelectedUidRef.current
+				if (shiftKey && anchorUid && anchorUid !== uid) {
+					const from = visiblePulls.findIndex((p) => p.uid === anchorUid)
+					const to = visiblePulls.findIndex((p) => p.uid === uid)
+					if (from !== -1 && to !== -1) {
+						const start = Math.min(from, to)
+						const end = Math.max(from, to)
+						const shouldSelect = !prev.has(uid)
+						for (let i = start; i <= end; i++) {
+							if (shouldSelect) next.add(visiblePulls[i].uid)
+							else next.delete(visiblePulls[i].uid)
+						}
+						return next
+					}
+				}
+				if (next.has(uid)) next.delete(uid)
+				else next.add(uid)
+				return next
+			})
+			lastSelectedUidRef.current = uid
+		},
+		[visiblePulls]
+	)
+
+	const handleTogglePage = useCallback(() => {
+		setSelectedUids((prev) => {
+			const next = new Set(prev)
+			if (allPageSelected) {
+				for (const pull of pagePulls) next.delete(pull.uid)
+			} else {
+				for (const pull of pagePulls) next.add(pull.uid)
+			}
+			return next
+		})
+		lastSelectedUidRef.current = null
+	}, [allPageSelected, pagePulls])
+
+	const handleSelectAllVisible = useCallback(() => {
+		setSelectedUids((prev) => {
+			const next = new Set(prev)
+			for (const pull of visiblePulls) next.add(pull.uid)
+			return next
+		})
+		lastSelectedUidRef.current = null
+	}, [visiblePulls])
+
+	const handleClearSelection = useCallback(() => {
+		setSelectedUids(new Set())
+		lastSelectedUidRef.current = null
+	}, [])
+
+	useEffect(() => {
+		if (!selectMode || confirmingBatchDelete) return
+		const onKeyDown = (e: KeyboardEvent) => {
+			if (e.key === "Escape") exitSelectMode()
+		}
+		window.addEventListener("keydown", onKeyDown)
+		return () => window.removeEventListener("keydown", onKeyDown)
+	}, [selectMode, confirmingBatchDelete, exitSelectMode])
+
+	const isSelecting = selectMode && pulls.length > 0
+
 	const renderPull = (pull: MiracleBoxPull | ScarboroughFairPull) => (
 		<PullEntry
 			key={pull.uid}
@@ -206,6 +328,9 @@ export function PullsListSection() {
 			pullNumber={pullNumberMap[selectedBanner].get(pull.uid) ?? -1}
 			actions={pullActions}
 			highlighted={pull.uid === highlighted}
+			selectMode={isSelecting}
+			selected={activeSelectedUids.has(pull.uid)}
+			onToggleSelect={handleToggleSelect}
 		/>
 	)
 
@@ -223,13 +348,30 @@ export function PullsListSection() {
 					setSearch("")
 					setPage(0)
 				}}
+				canSelect={pulls.length > 0}
+				selectMode={isSelecting}
+				onToggleSelectMode={toggleSelectMode}
 			/>
-			{visiblePulls.length > 0 && (
-				<ActionHint
-					surface="light"
-					touch={t("pulls.list.editHintTouch")}
-					className={styles.editHint}
+			{isSelecting ? (
+				<PullsBatchBar
+					selectedCount={activeSelectedUids.size}
+					allPageSelected={allPageSelected}
+					allVisibleSelected={allVisibleSelected}
+					hasPagePulls={pagePulls.length > 0}
+					hasVisiblePulls={visiblePulls.length > 0}
+					onTogglePage={handleTogglePage}
+					onSelectAll={handleSelectAllVisible}
+					onClearSelection={handleClearSelection}
+					onDeleteSelected={() => setConfirmingBatchDelete(true)}
 				/>
+			) : (
+				visiblePulls.length > 0 && (
+					<ActionHint
+						surface="light"
+						touch={t("pulls.list.editHintTouch")}
+						className={styles.editHint}
+					/>
+				)
 			)}
 			<div
 				data-bannertype={selectedBanner}
@@ -238,7 +380,27 @@ export function PullsListSection() {
 				}}
 				className={`inset-control ${styles.pullsList}`}>
 				<div className={styles.listHeader}>
-					<div className={styles.pullNumber}>#</div>
+					<div
+						className={styles.pullNumber}
+						data-selectable={isSelecting || undefined}>
+						{isSelecting ? (
+							<button
+								type="button"
+								className={styles.headerSelectBtn}
+								aria-label={t("pulls.list.selectAllPageLabel")}
+								aria-pressed={allPageSelected}
+								disabled={pagePulls.length === 0}
+								onClick={handleTogglePage}>
+								<span
+									className={styles.selectBox}
+									data-checked={allPageSelected || undefined}
+									aria-hidden="true"
+								/>
+							</button>
+						) : (
+							"#"
+						)}
+					</div>
 					{selectedBanner !== "arcsBanner" && (
 						<div className={`${styles.pullDice} ${styles.showDivider}`}>
 							{t("pulls.list.dice")}
@@ -311,6 +473,29 @@ export function PullsListSection() {
 							{t("pulls.manual.deleteConfirm")}
 							<br />
 							<p className={alertMessage}>{t("pulls.manual.deleteConfirmNote")}</p>
+						</AlertContainer>
+					</ModalContainer>,
+					document.body
+				)}
+			{confirmingBatchDelete &&
+				activeSelectedUids.size > 0 &&
+				createPortal(
+					<ModalContainer>
+						<AlertContainer
+							type="dangerous-confirm"
+							confirmLabel={t("pulls.manual.deleteButton")}
+							cancelLabel={t("pulls.manual.cancel")}
+							onCancel={() => setConfirmingBatchDelete(false)}
+							onConfirm={() => {
+								if (isInitialSyncPending()) return
+								gachaActions.removePulls(selectedBanner, [...activeSelectedUids])
+								exitSelectMode()
+							}}>
+							{t("pulls.list.batchDeleteConfirm", {
+								count: activeSelectedUids.size,
+							})}
+							<br />
+							<p className={alertMessage}>{t("pulls.list.batchDeleteNote")}</p>
 						</AlertContainer>
 					</ModalContainer>,
 					document.body

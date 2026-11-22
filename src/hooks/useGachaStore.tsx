@@ -577,8 +577,7 @@ export const gachaPullsActions = {
 		memoryStorage.setItem("gachaLastUpdated", Date.now())
 	},
 
-	// Deletes pulls of one banner by uid (the list only offers this for
-	// manual pulls).
+	// Deletes pulls of one banner by uid.
 	removePulls(bannerType: BannerType, uids: string[]) {
 		if (
 			typeof window === "undefined" ||

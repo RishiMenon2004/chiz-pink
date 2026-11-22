@@ -12,18 +12,136 @@
 	font-weight: 500;
 }
 
-/* Header search box, styled like the catalog toolbar's. */
+/* Header search box + select toggle, kept together so the toggle never wraps alone. */
+.searchControls {
+	display: flex;
+	align-items: center;
+	gap: 0.5rem;
+	margin-left: auto;
+	flex: 1 1 16.125rem;
+	max-width: 16.125rem;
+	min-width: 0;
+}
+
 .searchField {
 	position: relative;
 	display: flex;
 	align-items: center;
 
-	flex: 0 1 14rem;
-	min-width: 8rem;
+	flex: 1 1 14rem;
+	min-width: 0;
 	height: 2rem;
-	margin-left: auto;
 	border-radius: 100vh;
 	overflow: hidden;
+}
+
+.selectToggleBtn {
+	width: 1.625rem;
+	height: 1.625rem;
+	padding: 0;
+	border-radius: 50%;
+	flex-shrink: 0;
+
+	background-image: url("/button_icons/select.png");
+	background-size: 68%;
+	background-position: center;
+	background-repeat: no-repeat;
+
+	&:hover,
+	&:focus-visible,
+	&[data-active] {
+		background-image: url("/button_icons/select_white.png");
+	}
+
+	&[data-active] {
+		background-color: var(--pink);
+		box-shadow: var(--shadow-button-inset-hover);
+	}
+
+	/* .pill-button styles :focus pink, which leaves a mouse-clicked toggle
+	   looking active after deselecting it. Keep pink only for active/hover/keyboard focus. */
+	&:focus:not(:focus-visible):not(:hover):not([data-active]) {
+		background-color: var(--button-background);
+		box-shadow: var(--shadow-button-inset);
+	}
+}
+
+.batchBar {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 0.5rem 0.75rem;
+	margin: -0.125rem 0.75rem 0.5rem;
+	padding: 0.5rem 0.5rem 0.5rem 0.95rem;
+	border-radius: 1.5rem;
+	background-color: color-mix(in srgb, var(--interactive-bg) 14%, transparent);
+	box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.18);
+	color: var(--interactive-bg);
+	font-family: var(--font-barlow-condensed);
+}
+
+.batchCount {
+	min-width: 9ch;
+	font-size: 1rem;
+	font-weight: 700;
+	font-style: italic;
+	font-variant-numeric: tabular-nums;
+	letter-spacing: 0.02em;
+	white-space: nowrap;
+	user-select: none;
+}
+
+.batchActions {
+	display: flex;
+	align-items: center;
+	gap: 0.625rem 0.75rem;
+	margin-left: auto;
+}
+
+.batchBtn {
+	padding: 0.1rem 0.7rem;
+	font-size: 0.9rem;
+	white-space: nowrap;
+
+	/* Extra breathing room before Delete so it doesn't sit right against Clear. */
+	&[data-variant="danger"] {
+		margin-inline-start: 0.5rem;
+	}
+}
+
+@container (width < 480px) {
+	.batchBar {
+		flex-direction: column;
+		align-items: stretch;
+		gap: 0.5rem;
+		padding: 0.55rem 0.65rem 0.6rem;
+		border-radius: 1.125rem;
+	}
+
+	.batchCount {
+		padding-inline: 0.25rem;
+	}
+
+	.batchActions {
+		display: grid;
+		grid-template-columns: repeat(4, minmax(max-content, 1fr));
+		margin-left: 0;
+	}
+
+	.batchBtn[data-variant="danger"] {
+		margin-inline-start: 0;
+	}
+}
+
+@container (width < 390px) {
+	.searchControls {
+		max-width: none;
+		margin-left: 0;
+	}
+
+	.batchActions {
+		grid-template-columns: repeat(2, 1fr);
+	}
 }
 
 .searchInput {
@@ -147,6 +265,12 @@
 	.pullNumber {
 		margin-right: 0;
 		min-width: 3ch;
+
+		/* .listHeader's 0.5rem subgrid column-gap already trims 0.25rem from
+		   column 1's right edge, matching row .pullNumber[data-selectable]. */
+		&[data-selectable] {
+			padding-right: 0;
+		}
 	}
 
 	.pullPity,
@@ -183,6 +307,54 @@
 	margin-right: 0.75em;
 
 	user-select: none;
+
+	/* Center the circle evenly between the banner group border (-0.25rem) and
+	   the pull row's left edge without changing the column width. */
+	&[data-selectable] {
+		margin-right: 0;
+		padding-right: 0.25rem;
+		cursor: var(--pointer-cursor);
+	}
+}
+
+.headerSelectBtn {
+	display: grid;
+	place-items: center;
+	padding: 0;
+	border: none;
+	background: transparent;
+	cursor: var(--pointer-cursor);
+
+	&:disabled {
+		opacity: 0.4;
+		cursor: not-allowed;
+	}
+
+	&:focus-visible {
+		outline: 2px solid var(--foreground);
+		outline-offset: 2px;
+		border-radius: 50%;
+	}
+}
+
+.selectBox {
+	width: 1.15rem;
+	height: 1.15rem;
+	border-radius: 50%;
+	border: 1px solid rgba(255, 255, 255, 0.7);
+	background-color: rgba(0, 0, 0, 0.35);
+	transition:
+		background-color 120ms ease-out,
+		border-color 120ms ease-out;
+
+	&[data-checked] {
+		border-color: white;
+		background-color: var(--pink);
+		background-image: url("/button_icons/check.png");
+		background-size: 105%;
+		background-position: calc(50% + 0.25px) calc(50% - 0.25px);
+		background-repeat: no-repeat;
+	}
 }
 
 .pullEntry {
@@ -216,6 +388,16 @@
 	&:focus-visible {
 		outline: 2px solid var(--foreground);
 		outline-offset: -2px;
+	}
+
+	&[data-selectable] {
+		cursor: var(--pointer-cursor);
+	}
+
+	&[data-selected] {
+		outline: 2px solid var(--pink);
+		outline-offset: -2px;
+		filter: brightness(1.12);
 	}
 
 	& > * {

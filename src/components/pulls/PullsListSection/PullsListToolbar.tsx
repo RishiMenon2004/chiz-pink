@@ -2,48 +2,144 @@
 
 import { useEffect, useRef, useState } from "react"
 
+import { useTooltip } from "@/hooks/useTooltip"
+
 import { useT } from "@/contexts"
 
 import pageStyles from "@/app/[lang]/pulls/page.module.css"
 import styles from "./pullsListSection.module.css"
 
+const TOOLTIP_OFFSET = { x: 24, y: 0 }
+
 export function PullsSearchBar({
 	search,
 	onSearchChange,
 	onClear,
+	canSelect,
+	selectMode,
+	onToggleSelectMode,
 }: {
 	search: string
 	onSearchChange: (value: string) => void
 	onClear: () => void
+	canSelect: boolean
+	selectMode: boolean
+	onToggleSelectMode: () => void
 }) {
 	const t = useT()
+	const { Tooltip, showTooltip, hideTooltip } = useTooltip()
+
+	const selectLabel = selectMode
+		? t("pulls.list.cancelSelect")
+		: t("pulls.list.select")
 
 	return (
 		<div className={pageStyles.sectionTitleRow}>
 			<span className={pageStyles.sectionTitle}>{t("pulls.list.title")}</span>
-			<div className={`inset-control ${styles.searchField}`}>
-				<input
-					type="search"
-					name="pull search"
-					placeholder={t("pulls.list.searchPlaceholder")}
-					aria-label={t("pulls.list.searchLabel")}
-					autoComplete="off"
-					enterKeyHint="done"
-					value={search}
-					onChange={(e) => onSearchChange(e.currentTarget.value)}
-					onKeyDown={(e) => {
-						if (e.key === "Enter") e.currentTarget.blur()
-					}}
-					className={styles.searchInput}
-				/>
-				{search && (
+			<div className={styles.searchControls}>
+				<div className={`inset-control ${styles.searchField}`}>
+					<input
+						type="search"
+						name="pull search"
+						placeholder={t("pulls.list.searchPlaceholder")}
+						aria-label={t("pulls.list.searchLabel")}
+						autoComplete="off"
+						enterKeyHint="done"
+						value={search}
+						onChange={(e) => onSearchChange(e.currentTarget.value)}
+						onKeyDown={(e) => {
+							if (e.key === "Enter") e.currentTarget.blur()
+						}}
+						className={styles.searchInput}
+					/>
+					{search && (
+						<button
+							type="button"
+							className={styles.searchClear}
+							aria-label={t("pulls.list.clearSearch")}
+							onClick={onClear}
+						/>
+					)}
+				</div>
+				{canSelect && (
 					<button
 						type="button"
-						className={styles.searchClear}
-						aria-label={t("pulls.list.clearSearch")}
-						onClick={onClear}
-					/>
+						className={`pill-button ${styles.selectToggleBtn}`}
+						aria-label={selectLabel}
+						aria-pressed={selectMode}
+						data-active={selectMode || undefined}
+						onPointerEnter={showTooltip}
+						onPointerLeave={hideTooltip}
+						onClick={() => {
+							hideTooltip()
+							onToggleSelectMode()
+						}}>
+						<Tooltip offset={TOOLTIP_OFFSET}>{selectLabel}</Tooltip>
+					</button>
 				)}
+			</div>
+		</div>
+	)
+}
+
+export function PullsBatchBar({
+	selectedCount,
+	allPageSelected,
+	allVisibleSelected,
+	hasPagePulls,
+	hasVisiblePulls,
+	onTogglePage,
+	onSelectAll,
+	onClearSelection,
+	onDeleteSelected,
+}: {
+	selectedCount: number
+	allPageSelected: boolean
+	allVisibleSelected: boolean
+	hasPagePulls: boolean
+	hasVisiblePulls: boolean
+	onTogglePage: () => void
+	onSelectAll: () => void
+	onClearSelection: () => void
+	onDeleteSelected: () => void
+}) {
+	const t = useT()
+
+	return (
+		<div className={styles.batchBar}>
+			<span className={styles.batchCount}>
+				{t("pulls.list.selectedCount", { count: selectedCount })}
+			</span>
+			<div className={styles.batchActions}>
+				<button
+					type="button"
+					className={`pill-button ${styles.batchBtn}`}
+					disabled={!hasPagePulls || allPageSelected}
+					onClick={onTogglePage}>
+					{t("pulls.list.selectPage")}
+				</button>
+				<button
+					type="button"
+					className={`pill-button ${styles.batchBtn}`}
+					disabled={!hasVisiblePulls || allVisibleSelected}
+					onClick={onSelectAll}>
+					{t("pulls.list.selectAll")}
+				</button>
+				<button
+					type="button"
+					className={`pill-button ${styles.batchBtn}`}
+					disabled={selectedCount === 0}
+					onClick={onClearSelection}>
+					{t("pulls.list.clearSelection")}
+				</button>
+				<button
+					type="button"
+					className={`pill-button ${styles.batchBtn}`}
+					data-variant="danger"
+					disabled={selectedCount === 0}
+					onClick={onDeleteSelected}>
+					{t("pulls.list.deleteSelected")}
+				</button>
 			</div>
 		</div>
 	)

@@ -181,6 +181,9 @@ export function PullEntry({
 	actions,
 	slots,
 	highlighted = false,
+	selectMode = false,
+	selected = false,
+	onToggleSelect,
 }: {
 	pull: MiracleBoxPull | ScarboroughFairPull
 	pity: number
@@ -188,6 +191,9 @@ export function PullEntry({
 	highlighted?: boolean
 	actions?: PullActions
 	slots?: { dice?: ReactNode; name: ReactNode; pity: ReactNode }
+	selectMode?: boolean
+	selected?: boolean
+	onToggleSelect?: (uid: string, shiftKey: boolean) => void
 }) {
 	const t = useT()
 	const { Tooltip, showTooltip, hideTooltip } = useTooltip()
@@ -239,43 +245,84 @@ export function PullEntry({
 		[selectedBanner, gachaBanners, pull, server]
 	)
 
+	const interactive = selectMode ? Boolean(onToggleSelect) : Boolean(actions)
+
 	return (
 		<>
-			<div className={styles.pullNumber}>
-				{pullNumber > 0 ? pullNumber : "-"}
+			<div
+				className={styles.pullNumber}
+				data-selectable={selectMode || undefined}
+				onClick={
+					selectMode && onToggleSelect
+						? (e) => onToggleSelect(pull.uid, e.shiftKey)
+						: undefined
+				}>
+				{selectMode ? (
+					<span
+						className={styles.selectBox}
+						data-checked={selected || undefined}
+						aria-hidden="true"
+					/>
+				) : pullNumber > 0 ? (
+					pullNumber
+				) : (
+					"-"
+				)}
 			</div>
 			<div
 				key={pull.uid}
 				data-rateup={isRateup}
 				data-rewardtype={rewardType}
 				data-highlighted={highlighted || undefined}
+				data-selectable={selectMode || undefined}
+				data-selected={selectMode && selected ? true : undefined}
 				style={
 					{
 						"--bg-image": `url("${getOptimizedImageUrl(imageSrc)}")`,
 					} as CSSProperties
 				}
 				className={`${styles.pullEntry} ${getItemRarityStyle(item)}`}
-				tabIndex={actions ? 0 : undefined}
+				role={selectMode ? "checkbox" : undefined}
+				aria-checked={selectMode ? selected : undefined}
+				tabIndex={interactive ? 0 : undefined}
 				aria-label={
-					actions
-						? t("pulls.manual.rowLabel", {
+					selectMode
+						? t("pulls.list.selectRowLabel", {
 								name: item?.name ?? pull.rewardId,
 								pity: pullNumber > 0 ? pity : "-",
 							})
+						: actions
+							? t("pulls.manual.rowLabel", {
+									name: item?.name ?? pull.rewardId,
+									pity: pullNumber > 0 ? pity : "-",
+								})
+							: undefined
+				}
+				aria-haspopup={!selectMode && actions ? "menu" : undefined}
+				onClick={
+					selectMode && onToggleSelect
+						? (e) => onToggleSelect(pull.uid, e.shiftKey)
 						: undefined
 				}
-				aria-haspopup={actions ? "menu" : undefined}
 				onKeyDown={(e) => {
-					if (!actions || e.target !== e.currentTarget) return
+					if (e.target !== e.currentTarget) return
+					if (selectMode) {
+						if (onToggleSelect && (e.key === "Enter" || e.key === " ")) {
+							e.preventDefault()
+							onToggleSelect(pull.uid, e.shiftKey)
+						}
+						return
+					}
+					if (!actions) return
 					if (e.key === "Enter" || e.key === " ") {
 						e.preventDefault()
 						hideTooltip()
 						actions.onEdit(pull, e.currentTarget)
 					}
 				}}
-				onPointerEnter={actions ? showTooltip : undefined}
+				onPointerEnter={!selectMode && actions ? showTooltip : undefined}
 				onPointerLeave={
-					actions
+					!selectMode && actions
 						? () => {
 								setHoveringManualTag(false)
 								hideTooltip()
@@ -284,7 +331,7 @@ export function PullEntry({
 				}
 				onPointerDown={(e) => {
 					lastPointer.current = e.pointerType
-					if (!actions || e.pointerType === "mouse") return
+					if (selectMode || !actions || e.pointerType === "mouse") return
 					cancelHold()
 					if (!e.isPrimary) return
 					const anchor = e.currentTarget
@@ -319,7 +366,7 @@ export function PullEntry({
 					if (hold.current?.pointerId === e.pointerId) cancelHold()
 				}}
 				onContextMenu={(e) => {
-					if (!actions) return
+					if (selectMode || !actions) return
 					e.preventDefault()
 					hideTooltip()
 					// Long-press on touch also raises contextmenu; edit instead.
@@ -368,14 +415,22 @@ export function PullEntry({
 									role="img"
 									className={styles.manualTag}
 									aria-label={t("pulls.manual.tag_tooltip")}
-									onPointerEnter={(e) => {
-										setHoveringManualTag(true)
-										showTooltip(e)
-									}}
-									onPointerLeave={(e) => {
-										setHoveringManualTag(false)
-										showTooltip(e)
-									}}
+									onPointerEnter={
+										selectMode
+											? undefined
+											: (e) => {
+													setHoveringManualTag(true)
+													showTooltip(e)
+												}
+									}
+									onPointerLeave={
+										selectMode
+											? undefined
+											: (e) => {
+													setHoveringManualTag(false)
+													showTooltip(e)
+												}
+									}
 								/>
 							)}
 						</>
@@ -384,7 +439,7 @@ export function PullEntry({
 				<div className={styles.pullPity}>
 					{slots ? slots.pity : pullNumber > 0 ? pity : "-"}
 				</div>
-				{actions && (
+				{!selectMode && actions && (
 					<Tooltip
 						offset={TOOLTIP_OFFSET}
 						subText={
