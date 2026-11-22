@@ -54,7 +54,7 @@
 		},
 		"character_list": {
 			"title": "PERSONAGENS",
-			"head": "Personagens do Neverness to Everness",
+			"head": "Personagens do NTE",
 			"tooltip": "Personagens",
 			"description": "Todo Esper de Neverness to Everness tem seu elemento, tipo de disco, habilidades, passivas e materiais de ascensão."
 		},
@@ -65,7 +65,7 @@
 		},
 		"arc_list": {
 			"title": "DISCOS",
-			"head": "Discos do Neverness to Everness",
+			"head": "Discos do NTE",
 			"tooltip": "Discos",
 			"description": "Todo disco do Neverness to Everness tem seu efeito, atributos e materiais de ascensão."
 		},

@@ -17,7 +17,7 @@
 		},
 		"character_list": {
 			"title": "CHARACTERS",
-			"head": "Neverness to Everness Characters",
+			"head": "NTE Characters",
 			"tooltip": "Characters",
 			"description": "Every Neverness to Everness Esper with their element, arc type, abilities, passive skills and ascension materials."
 		},
@@ -28,7 +28,7 @@
 		},
 		"arc_list": {
 			"title": "ARCS",
-			"head": "Neverness to Everness Arcs",
+			"head": "NTE Arcs",
 			"tooltip": "Arcs",
 			"description": "Every Neverness to Everness arc with its effects, stats and ascension materials."
 		},
