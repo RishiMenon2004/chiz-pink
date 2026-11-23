@@ -83,4 +83,10 @@ export const ChangeLogs = {
 		"<tag>NEW</> NTEWiz backup JSON imports now include your pull history too (migrated pulls show an NTEWiz tag in place of dice rolls)",
 		"<tag color='#ffbd47'>FIX</> Splash screen cards no longer overlap page toolbars and intro boxes",
 	],
+	"1.2.5": [
+		"<tag>NEW</> Select multiple pulls at once to delete them in the Pull Tracker",
+		"<tag>NEW</> Swipe down to close material drawers on mobile, plus quick tips for editing pulls and checking materials",
+		"<tag color='#ffbd47'>FIX</> Fixed manual pull rows overflowing on smaller screens, and improved touch editing",
+		"<tag color='#ffbd47'>FIX</> Faster page loads on mobile, and dismissed update notices no longer pop back up when switching pages",
+	],
 }
