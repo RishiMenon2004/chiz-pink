@@ -28,6 +28,7 @@ const arcTranslations: Partial<
 	Record<Locale, () => Promise<Partial<ArcMessages>>>
 > = {
 	en: async () => enArcs,
+	"pt-BR": async () => (await import("@/messages/game/arcs/pt-BR.json")).default,
 }
 
 /**
