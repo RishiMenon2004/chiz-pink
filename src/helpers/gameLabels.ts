@@ -30,6 +30,7 @@ const MATERIAL_TYPE_KEYS: Partial<Record<EnumMaterialType, MessageKey>> = {
 	[EnumMaterialType.WeaponAscension]: "game.materialTypes.weaponAscension",
 	[EnumMaterialType.WeaponExp]: "game.materialTypes.weaponExp",
 	[EnumMaterialType.Substitute]: "game.materialTypes.substitute",
+	[EnumMaterialType.Currency]: "game.materialTypes.currency",
 	[EnumMaterialType.Reward]: "game.materialTypes.reward",
 }
 
@@ -99,4 +100,27 @@ export function getActivityDescription(
 	const key = `checklist.tasks.${activity.id}.description` as MessageKey
 	const translated = t(key)
 	return translated === key ? activity.description : translated
+}
+
+export function getMaterialName(
+	material: { id: string; name: string },
+	t: Translate,
+): string {
+	const key = `materials.names.${material.id}` as MessageKey
+	const translated = t(key)
+	return translated === key ? material.name : translated
+}
+
+function sourceToKey(source: string): string {
+	return source
+		.toLowerCase()
+		.replace(/['"]/g, "")
+		.replace(/[^a-z0-9]+/g, "_")
+		.replace(/^_|_$/g, "")
+}
+
+export function getMaterialSourceLabel(source: string, t: Translate): string {
+	const key = `materials.sources.${sourceToKey(source)}` as MessageKey
+	const translated = t(key)
+	return translated === key ? source : translated
 }

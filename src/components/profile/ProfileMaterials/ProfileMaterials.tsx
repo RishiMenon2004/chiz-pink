@@ -5,6 +5,7 @@ import { CSSProperties, useMemo, useState } from "react"
 import { EnumItemLvls, findMaterial, getItemRarityStyle } from "@/data/items"
 
 import { generateNewCharacter } from "@/helpers/generateNewCharacter"
+import { getMaterialName } from "@/helpers/gameLabels"
 import {
 	getCharRequiredMaterials,
 	getWeaponRequiredMaterials,
@@ -161,7 +162,7 @@ export function ProfileMaterials({
 									/>
 								</span>
 								<span className={styles.materialName}>
-									{material.name}
+									{getMaterialName(material, t)}
 								</span>
 								<span className={styles.materialAmount}>
 									×{amountFormat.format(amount)}

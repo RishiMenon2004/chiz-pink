@@ -2,6 +2,7 @@ import { cache } from "react"
 
 import type {
 	ArcMessages,
+	MaterialMessages,
 	Messages,
 	PartialMessages,
 	Translate,
@@ -9,11 +10,12 @@ import type {
 
 import en from "@/messages/en.json"
 import enArcs from "@/messages/game/arcs/en.json"
+import enMaterials from "@/messages/game/materials/en.json"
 
 import { DEFAULT_LOCALE, type Locale } from "@/helpers/locale"
 import { createTranslator } from "@/helpers/translate"
 
-const enAll: Messages = { ...en, arcs: enArcs }
+const enAll: Messages = { ...en, arcs: enArcs, materials: enMaterials }
 
 // One entry per locale in LOCALES (TypeScript flags a missing one). Loaded on
 // the server only; pages get the merged result through LocaleProvider.
@@ -31,6 +33,15 @@ const arcTranslations: Partial<
 	"pt-BR": async () => (await import("@/messages/game/arcs/pt-BR.json")).default,
 }
 
+// Separate Weblate component (src/messages/game/materials/*.json). Optional per
+// locale: languages without a materials file fall back to English names/sources.
+const materialTranslations: Partial<
+	Record<Locale, () => Promise<Partial<{ names: Partial<MaterialMessages["names"]>; sources: Partial<MaterialMessages["sources"]> }>>>
+> = {
+	en: async () => enMaterials,
+	"pt-BR": async () => (await import("@/messages/game/materials/pt-BR.json")).default,
+}
+
 /**
  * The messages for a locale, with anything it hasn't translated yet (missing
  * or empty) filled in from English. Cached per request, so server
@@ -41,14 +52,16 @@ export const getMessages = cache(async function getMessages(
 ): Promise<Messages> {
 	if (locale === DEFAULT_LOCALE) return enAll
 
-	const [translated, translatedArcs] = await Promise.all([
+	const [translated, translatedArcs, translatedMaterials] = await Promise.all([
 		translations[locale](),
 		arcTranslations[locale]?.() ?? Promise.resolve({}),
+		materialTranslations[locale]?.() ?? Promise.resolve({}),
 	])
 
 	return withFallback(enAll, {
 		...translated,
 		arcs: translatedArcs,
+		materials: translatedMaterials,
 	}) as Messages
 })
 
@@ -79,6 +92,7 @@ export async function getLayoutMessages(
 		auth: messages.auth,
 		game: messages.game,
 		arcs: messages.arcs,
+		materials: messages.materials,
 		settings: {
 			shared: messages.settings.shared,
 			timers: messages.settings.timers,

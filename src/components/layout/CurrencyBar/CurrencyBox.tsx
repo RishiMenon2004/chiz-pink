@@ -25,7 +25,12 @@ import { usePlannerStore } from "@/hooks/usePlannerStore"
 import { useTooltip } from "@/hooks/useTooltip"
 import { getAggregatedMaterial } from "@/hooks/usePlannerStore"
 
-import { getItemDisplayName } from "@/helpers/gameLabels"
+import {
+	getItemDisplayName,
+	getMaterialName,
+	getMaterialSourceLabel,
+	getMaterialTypeLabel,
+} from "@/helpers/gameLabels"
 import { formatLocale } from "@/helpers/locale"
 
 import { useLocale, useT } from "@/contexts"
@@ -144,7 +149,7 @@ export function CurrencyBox({ currency }: { currency: Material }) {
 				data-currency-id={currency.id}
 				width={64}
 				height={64}
-				alt={t("layout.currencyBox.icon", { name: currency.name })}
+				alt={t("layout.currencyBox.icon", { name: getMaterialName(currency, t) })}
 				loading="eager"
 			/>
 
@@ -155,7 +160,7 @@ export function CurrencyBox({ currency }: { currency: Material }) {
 			)}
 
 			<input
-				name={currency.name}
+				name={getMaterialName(currency, t)}
 				ref={inputBoxRef}
 				type={"text"}
 				min="0"
@@ -177,13 +182,13 @@ export function CurrencyBox({ currency }: { currency: Material }) {
 			<button
 				type="button"
 				className={styles.editBtn}
-				aria-label={t("layout.currencyBox.edit", { name: currency.name })}
+				aria-label={t("layout.currencyBox.edit", { name: getMaterialName(currency, t) })}
 				onClick={toggleEdit}
 				ref={editBtnRef}
 			/>
 
-			<Tooltip subText={currency.materialType} offset={{ x: 32, y: 0 }}>
-				<div>{currency.name}</div>
+			<Tooltip subText={getMaterialTypeLabel(currency.materialType, t)} offset={{ x: 32, y: 0 }}>
+				<div>{getMaterialName(currency, t)}</div>
 				{hasRequired && (
 					<>
 						<div className="tooltip-details">
@@ -219,7 +224,7 @@ export function CurrencyBox({ currency }: { currency: Material }) {
 												}
 												width={16}
 												height={16}
-												alt={t("layout.materialTooltip.sourceAlt", { name: currency.name })}
+												alt={t("layout.materialTooltip.sourceAlt", { name: getMaterialName(currency, t) })}
 											/>
 											{amount > 1
 												? t("layout.currencyBox.sourceItem", {
@@ -244,7 +249,7 @@ export function CurrencyBox({ currency }: { currency: Material }) {
 								src={"/materials/rewards/dice_limited.png"}
 								width={24}
 								height={24}
-								alt={t("layout.materialTooltip.sourceAlt", { name: currency.name })}
+								alt={t("layout.materialTooltip.sourceAlt", { name: getMaterialName(currency, t) })}
 							/>
 							{t("layout.currencyBox.solidDice", {
 								amount: Math.floor(currencyValue / 160),
@@ -258,7 +263,7 @@ export function CurrencyBox({ currency }: { currency: Material }) {
 							{t("layout.materialTooltip.sources")}
 							{currency.sources.map((source) => (
 								<div className="tooltip-source" key={source}>
-									{source}
+									{getMaterialSourceLabel(source, t)}
 								</div>
 							))}
 						</div>

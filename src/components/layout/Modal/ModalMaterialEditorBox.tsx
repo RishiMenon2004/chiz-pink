@@ -18,6 +18,8 @@ import { getItemRarityStyle } from "@/data/items"
 import { useInventoryStore } from "@/hooks/useInventoryStore"
 import { useTooltip } from "@/hooks/useTooltip"
 
+import { getMaterialName, getMaterialTypeLabel } from "@/helpers/gameLabels"
+
 import { useMaterialAdjustmentContext, useT } from "@/contexts"
 
 import { MaterialIcon } from "../MaterialIcon"
@@ -125,19 +127,19 @@ export function MaterialEditorBox({ material }: { material: Material }) {
 					material={material}
 					width={128}
 					height={128}
-					alt={t("layout.materialEditor.icon", { name: material.name })}
+					alt={t("layout.materialEditor.icon", { name: getMaterialName(material, t) })}
 					loading="eager"
 				/>
 			</div>
 
-			<span className={`${styles.label}`}>{material.name}</span>
+			<span className={`${styles.label}`}>{getMaterialName(material, t)}</span>
 
-			<Tooltip subText={material.materialType} offset={{ x: 32, y: 0 }}>
-				{material.name}
+			<Tooltip subText={getMaterialTypeLabel(material.materialType, t)} offset={{ x: 32, y: 0 }}>
+				{getMaterialName(material, t)}
 			</Tooltip>
 
 			<QuantityInput
-				name={material.name}
+				name={getMaterialName(material, t)}
 				styles={styles}
 				inputRef={countRef}
 				value={displayQuantity}

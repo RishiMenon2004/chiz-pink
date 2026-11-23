@@ -9,6 +9,8 @@ import { getAllActivities } from "@/data/activities/activities"
 
 import { useChecklistStore, useInventoryStore, useSettingsStore } from "@/hooks"
 
+import { getMaterialName } from "@/helpers/gameLabels"
+
 import { useT } from "@/contexts"
 
 import { MaterialIcon } from "@/components/layout/MaterialIcon"
@@ -183,7 +185,7 @@ export function DashDailyActivity({
 						data-complete={claimed >= total}>
 						<MaterialIcon
 							material={material}
-							alt={material.name}
+							alt={getMaterialName(material, t)}
 							className={styles.rewardIcon}
 							width={64}
 							height={64}

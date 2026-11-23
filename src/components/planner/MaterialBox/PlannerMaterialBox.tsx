@@ -8,7 +8,12 @@ import { EnumMaterialType, findMaterial, getItemRarityStyle } from "@/data/items
 
 import { useTooltip, useMaterialEditorModal, useInventoryStore } from "@/hooks"
 
-import { getCraftRatio, getLinkedMaterials } from "@/helpers"
+import {
+	getCraftRatio,
+	getLinkedMaterials,
+	getMaterialName,
+	getMaterialSourceLabel,
+} from "@/helpers"
 import { formatLocale } from "@/helpers/locale"
 
 import {
@@ -124,7 +129,7 @@ export function PlannerMaterialBox({
 				subText={
 					isDrawerShown ? undefined : t("planner.material.clickToEdit")
 				}>
-				<div>{material.name}</div>
+				<div>{getMaterialName(material, t)}</div>
 				<div className="tooltip-details">
 					{t.rich("planner.material.totalNeeded", {
 						n: (text) => <span className="font-barlow">{text}</span>,
@@ -162,7 +167,7 @@ export function PlannerMaterialBox({
 									)
 									return (
 										<div key={id}>
-											{`${craftingMaterial.name}: `}
+											{`${getMaterialName(craftingMaterial, t)}: `}
 											<span className="font-barlow">
 												{`${amount.toLocaleString(numberLocale)} \u2192 + ${Math.round(amount / divisor).toLocaleString(numberLocale)}`}
 											</span>
@@ -178,7 +183,7 @@ export function PlannerMaterialBox({
 					{t("layout.materialTooltip.sources")}
 					{material.sources.map((source) => (
 						<div className="tooltip-source" key={source}>
-							{source}
+							{getMaterialSourceLabel(source, t)}
 						</div>
 					))}
 				</div>

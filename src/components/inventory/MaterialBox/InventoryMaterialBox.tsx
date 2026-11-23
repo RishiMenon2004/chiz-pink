@@ -23,7 +23,13 @@ import {
 	useTooltip,
 } from "@/hooks"
 
-import { getItemDisplayName, getLinkedMaterials } from "@/helpers"
+import {
+	getItemDisplayName,
+	getLinkedMaterials,
+	getMaterialName,
+	getMaterialSourceLabel,
+	getMaterialTypeLabel,
+} from "@/helpers"
 import { formatLocale } from "@/helpers/locale"
 
 import { useLocale, useT } from "@/contexts"
@@ -162,14 +168,14 @@ export function MaterialItemBox({
 				)}
 			</div>
 
-			<span className={styles.label}>{material.name}</span>
+			<span className={styles.label}>{getMaterialName(material, t)}</span>
 
 			<MaterialEditor materials={linkedMaterials} />
 
 			<Tooltip
-				subText={material.materialType}
+				subText={getMaterialTypeLabel(material.materialType, t)}
 				offset={isMultiMat ? { x: 36, y: -9 } : { x: 32, y: 0 }}>
-				<div>{material.name}</div>
+				<div>{getMaterialName(material, t)}</div>
 
 				{hasRequired && (
 					<>
@@ -205,7 +211,7 @@ export function MaterialItemBox({
 												width={16}
 												height={16}
 												alt={t("layout.materialTooltip.sourceAlt", {
-													name: material.name,
+													name: getMaterialName(material, t),
 												})}
 											/>
 											{`${getItemDisplayName(item, t)} ${amount > 1 ? `\u00d7${amount}` : ""}`}
@@ -229,7 +235,7 @@ export function MaterialItemBox({
 							{t("inventory.material.grantsOneOf")}
 							{material.selectionOptions.map(({ id, amount }) => (
 								<div className="tooltip-source" key={id}>
-									{`${findMaterial(id).name}${amount > 1 ? ` ×${amount.toLocaleString(formatLocale(locale))}` : ""}`}
+									{`${getMaterialName(findMaterial(id), t)}${amount > 1 ? ` ×${amount.toLocaleString(formatLocale(locale))}` : ""}`}
 								</div>
 							))}
 						</div>
@@ -240,7 +246,7 @@ export function MaterialItemBox({
 					{t("layout.materialTooltip.sources")}
 					{material.sources.map((source) => (
 						<div className="tooltip-source" key={source}>
-							{source}
+							{getMaterialSourceLabel(source, t)}
 						</div>
 					))}
 				</div>
@@ -248,7 +254,7 @@ export function MaterialItemBox({
 			</Tooltip>
 
 			<QuantityInput
-				name={material.name}
+				name={getMaterialName(material, t)}
 				styles={styles}
 				inputRef={countRef}
 				value={itemQuantity}

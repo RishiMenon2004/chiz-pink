@@ -30,6 +30,11 @@ const COMPONENTS = [
 		dir: path.join(messagesDir, "game", "arcs"),
 		requiredForLocales: false,
 	},
+	{
+		name: "game/materials",
+		dir: path.join(messagesDir, "game", "materials"),
+		requiredForLocales: false,
+	},
 ] as const
 
 const PLURAL_FORM = /^(.*)_(zero|one|two|few|many|other)$/

@@ -15,6 +15,8 @@ export {
 	getArcTypeLabel,
 	getElementLabel,
 	getItemDisplayName,
+	getMaterialName,
+	getMaterialSourceLabel,
 	getMaterialTypeLabel,
 	getRankLabel,
 } from "./gameLabels"
