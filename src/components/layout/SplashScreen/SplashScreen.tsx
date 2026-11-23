@@ -69,10 +69,21 @@ export function SplashScreen({ placement = "layout" }: { placement?: "layout" | 
 	if (NO_SPLASH_PATHS.has(pathname)) return null
 	if (isPagePlaced(pathname) !== (placement === "page")) return null
 
-	return <SplashCard latestVersion={latestVersion} />
+	return (
+		<SplashCard
+			latestVersion={latestVersion}
+			noSnippet={pathname !== "/"}
+		/>
+	)
 }
 
-function SplashCard({ latestVersion }: { latestVersion: string }) {
+function SplashCard({
+	latestVersion,
+	noSnippet,
+}: {
+	latestVersion: string
+	noSnippet: boolean
+}) {
 	const isHydrated = useSyncExternalStore(
 		memoryStorage.subscribeHydration,
 		memoryStorage.isHydrated,
@@ -98,7 +109,9 @@ function SplashCard({ latestVersion }: { latestVersion: string }) {
 	}, [isHydrated, isFirstVisit, isLastSeenOld, latestVersion])
 
 	return (
-		<section className={`metallic-panel ${styles.card}`}>
+		<section
+			className={`metallic-panel ${styles.card}`}
+			data-nosnippet={noSnippet ? "" : undefined}>
 			<WelcomeView />
 			{splashState === "update" && (
 				<SplashUpdateView latestVersion={latestVersion} />
