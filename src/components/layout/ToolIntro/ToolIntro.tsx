@@ -42,9 +42,7 @@ export function ToolIntro({
 					<path d="M8 7.25v4" />
 					<circle cx="8" cy="4.75" r="0.5" fill="currentColor" />
 				</svg>
-				{t("layout.toolIntro.about", {
-					tool: t(`routes.${id}.tooltip`),
-				})}
+				{t(`layout.toolIntro.${id}`)}
 			</summary>
 			<InfoBox className={styles.box}>{children}</InfoBox>
 		</details>

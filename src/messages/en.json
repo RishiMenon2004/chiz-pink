@@ -455,7 +455,10 @@
 			"sticker": "Chiz sticker"
 		},
 		"toolIntro": {
-			"about": "About the {tool}"
+			"planner": "About the Ascension Planner",
+			"pulls": "About the Pull Tracker",
+			"checklist": "About the Checklist",
+			"inventory": "About the Inventory"
 		},
 		"installPwa": {
 			"button": "INSTALL APP",

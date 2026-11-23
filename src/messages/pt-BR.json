@@ -440,9 +440,6 @@
 			"title": "Carregando...",
 			"stickerAlt": "Figurinha da Chiz espiando"
 		},
-		"toolIntro": {
-			"about": "Sobre a {tool}"
-		},
 		"materialHint": {
 			"touch": "Toque e segure no material para ver detalhes"
 		},
