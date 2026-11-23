@@ -25,6 +25,7 @@ import { usePlannerStore } from "@/hooks/usePlannerStore"
 import { useTooltip } from "@/hooks/useTooltip"
 import { getAggregatedMaterial } from "@/hooks/usePlannerStore"
 
+import { getItemDisplayName } from "@/helpers/gameLabels"
 import { formatLocale } from "@/helpers/locale"
 
 import { useLocale, useT } from "@/contexts"
@@ -187,7 +188,7 @@ export function CurrencyBox({ currency }: { currency: Material }) {
 					<>
 						<div className="tooltip-details">
 							<span>
-								{t("layout.currencyBox.need")}{" "}
+								{t("layout.materialTooltip.need")}{" "}
 								<span className="font-barlow">
 									{requiredQuantity}
 								</span>
@@ -203,7 +204,7 @@ export function CurrencyBox({ currency }: { currency: Material }) {
 						</div>
 						<hr className="tooltip-hr" />
 						<div className="tooltip-source-list">
-							{t("layout.currencyBox.neededFor")}
+							{t("layout.materialTooltip.neededFor")}
 							{Object.entries(requiredSources).map(
 								([id, amount]) => {
 									const item = findItem(id) ?? undefined
@@ -218,14 +219,14 @@ export function CurrencyBox({ currency }: { currency: Material }) {
 												}
 												width={16}
 												height={16}
-												alt={t("layout.currencyBox.source", { name: currency.name })}
+												alt={t("layout.materialTooltip.sourceAlt", { name: currency.name })}
 											/>
 											{amount > 1
 												? t("layout.currencyBox.sourceItem", {
-														name: item.name,
+														name: getItemDisplayName(item, t),
 														amount,
 													})
-												: item.name}
+												: getItemDisplayName(item, t)}
 										</div>
 									)
 								}
@@ -243,7 +244,7 @@ export function CurrencyBox({ currency }: { currency: Material }) {
 								src={"/materials/rewards/dice_limited.png"}
 								width={24}
 								height={24}
-								alt={t("layout.currencyBox.source", { name: currency.name })}
+								alt={t("layout.materialTooltip.sourceAlt", { name: currency.name })}
 							/>
 							{t("layout.currencyBox.solidDice", {
 								amount: Math.floor(currencyValue / 160),
@@ -254,7 +255,7 @@ export function CurrencyBox({ currency }: { currency: Material }) {
 				{currency.sources.length > 0 && (
 					<>
 						<div className="tooltip-source-list">
-							{t("layout.currencyBox.sources")}
+							{t("layout.materialTooltip.sources")}
 							{currency.sources.map((source) => (
 								<div className="tooltip-source" key={source}>
 									{source}

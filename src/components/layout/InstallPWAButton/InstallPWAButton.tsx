@@ -112,7 +112,7 @@ export function InstallPWAButton({
 				<ModalContainer>
 					<AlertContainer
 						type="acknowledge"
-						confirmLabel={t("layout.installPwa.gotIt")}
+						confirmLabel={t("layout.actions.confirm")}
 						onConfirm={() => setShowInstructions(false)}>
 						{t(instructions.title)}
 						<div className={`inset-control ${alertTextBox}`}>

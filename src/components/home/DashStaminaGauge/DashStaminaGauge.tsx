@@ -229,7 +229,7 @@ export function DashStaminaGauge() {
 						/>
 					</div>
 					<QuickAdjust
-						label={t("home.stamina.cityStamina")}
+						label={t("game.cityStamina")}
 						current={currentStamina}
 						max={maxStamina}
 						cap={maxStamina}

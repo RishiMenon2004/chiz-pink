@@ -16,6 +16,7 @@ import {
 	getArcBannerThemeColor,
 	type ItemStatus,
 } from "@/helpers/bannerStatus"
+import { getArcName, getArcTypeLabel } from "@/helpers/gameLabels"
 
 import { useT } from "@/contexts"
 
@@ -72,7 +73,7 @@ function ArcRow({
 			<div className={styles.art}>
 				<Image
 					src={`/arcs/${arc.imageSrc}`}
-					alt={t("home.featuredArcs.artAlt", { name: arc.name })}
+					alt={t("home.featuredArcs.artAlt", { name: getArcName(arc, t) })}
 					width={512}
 					height={512}
 					sizes="10rem"
@@ -81,12 +82,12 @@ function ArcRow({
 			<div className={styles.info}>
 				<div className={styles.tag}>
 					{status === "preview"
-						? t("home.featured.preview")
-						: t("home.featured.featured")}
+						? t("game.preview")
+						: t("game.featured")}
 				</div>
-				<h3 className={styles.name}>{arc.name}</h3>
+				<h3 className={styles.name}>{getArcName(arc, t)}</h3>
 				<div className={styles.meta}>
-					<span>{arc.type}</span>
+					<span>{getArcTypeLabel(arc.type, t)}</span>
 					<span className={styles.divider} />
 					<BannerTiming arc={arc} />
 				</div>
@@ -110,7 +111,7 @@ export function DashFeaturedArcs({ entries }: { entries: Entry[] }) {
 				/>
 			))}
 
-			<Tooltip offset={{ x: 6, y: 0 }}>{t("home.featuredArcs.viewIndex")}</Tooltip>
+			<Tooltip offset={{ x: 6, y: 0 }}>{t("layout.actions.viewIndex")}</Tooltip>
 		</div>
 	)
 }

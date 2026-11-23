@@ -1,6 +1,6 @@
 import type { BannerType, ScarboroughFairPull } from "@/types/pulls"
 import type { GameServer } from "@/types/server"
-import type { MessageKey } from "@/types/messages"
+import type { MessageKey, Translate } from "@/types/messages"
 
 import { EnumRarity, getAllRewardsList } from "@/data/items"
 import { getAllArcsList } from "@/data/arcs"
@@ -11,6 +11,7 @@ import { characterBanners } from "@/data/activities/banners"
 import { bannerCosmetics } from "@/data/activities/bannerCosmetics"
 
 import { isPullInBannerWindow, permanentRateupSet } from "@/helpers/calculatePity"
+import { getArcName } from "@/helpers/gameLabels"
 import { randomId } from "@/helpers/randomId"
 
 type RewardType = ScarboroughFairPull["rewardType"]
@@ -154,7 +155,7 @@ function unreleasedAt(timestamp: number, server: GameServer) {
 // and leaves out what's still to come then (see unreleasedAt).
 export function candidatesFor(
 	bannerType: BannerType,
-	t: (key: MessageKey) => string,
+	t: Translate,
 	at?: { timestamp: number; server: GameServer }
 ): Candidate[] {
 	const featured = at ? featuredAt(bannerType, at.timestamp, at.server) : []
@@ -170,11 +171,11 @@ export function candidatesFor(
 
 function allCandidatesFor(
 	bannerType: BannerType,
-	t: (key: MessageKey) => string
+	t: Translate
 ): Candidate[] {
 	const arcs = getAllArcsList().map((arc) => ({
 		id: arc.id,
-		name: arc.name,
+		name: getArcName(arc, t),
 		rarity: arc.rarity,
 		rewardType: "arc" as const,
 		imageSrc: `/arcs/${arc.imageSrc}`,

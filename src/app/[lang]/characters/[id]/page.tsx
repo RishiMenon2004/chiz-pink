@@ -3,6 +3,7 @@ import { notFound } from "next/navigation"
 
 import { findCharacter, getAllCharactersList } from "@/data/characters"
 
+import { getElementLabel } from "@/helpers/gameLabels"
 import { toLocale } from "@/helpers/locale"
 import {
 	buildMetadata,
@@ -35,8 +36,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 		}
 	}
 
-	const element = char.element[0].toUpperCase() + char.element.slice(1)
-	const { rank, takesAn } = rankForIntro(char.rarity)
+	const element = getElementLabel(char.element, t)
+	const { rank, takesAn } = rankForIntro(char.rarity, t)
 	const intro = t(takesAn ? "meta.character.introAn" : "meta.character.introA", {
 		name: char.name,
 		gender: char.gender,

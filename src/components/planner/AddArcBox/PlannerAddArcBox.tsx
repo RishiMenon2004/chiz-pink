@@ -15,7 +15,12 @@ import type { Arc } from "@/types/weapon"
 import { EnumItemLvls, EnumRarity, getItemRarityStyle } from "@/data/items"
 import { findArc, EnumArcType, getAllArcsList } from "@/data/arcs"
 
-import { getRarityName, stopPropagation } from "@/helpers"
+import {
+	getArcName,
+	getArcTypeLabel,
+	getRankLabel,
+	stopPropagation,
+} from "@/helpers"
 import {
 	getArcBannerThemeColor,
 	isItemRevealed,
@@ -169,6 +174,7 @@ const PlannerArcsSelect = () => {
 		)
 	})
 	const filteredArcs = fuzzyFilter(availableArcs, searchQuery, (arc) => [
+		getArcName(arc, t),
 		arc.name,
 		arc.id,
 	])
@@ -190,11 +196,11 @@ const PlannerArcsSelect = () => {
 				}}>
 				<ArcTile arc={selected} className={styles.arcTileLarge} />
 				<span className={styles.arcSelectInfo}>
-					<span className={styles.arcSelectName}>{selected.name}</span>
+					<span className={styles.arcSelectName}>{getArcName(selected, t)}</span>
 					<span className={styles.arcSelectMeta}>
 						{t("planner.addArc.meta", {
-							rank: getRarityName(selected.rarity),
-							type: selected.type,
+							rank: getRankLabel(selected.rarity, t),
+							type: getArcTypeLabel(selected.type, t),
 						})}
 					</span>
 				</span>
@@ -232,7 +238,7 @@ const PlannerArcsSelect = () => {
 										key={arcType}
 										className={`${styles.arcFilter} ${isActive ? styles.active : ""}`}
 										onClick={toggleType}>
-										{arcType}
+										{getArcTypeLabel(arcType, t)}
 									</button>
 								)
 							})}
@@ -254,7 +260,7 @@ const PlannerArcsSelect = () => {
 										key={arcRank}
 										className={`${styles.arcFilter} ${isActive ? styles.active : ""}`}
 										onClick={toggleRank}>
-										{getRarityName(arcRank)}
+										{getRankLabel(arcRank, t)}
 									</button>
 								)
 							})}
@@ -281,11 +287,11 @@ const PlannerArcsSelect = () => {
 										onClick={addArc}>
 										<ArcTile arc={arc} className={styles.arcTileSmall} />
 										<span className={styles.arcSelectInfo}>
-											<span className={styles.arcSelectName}>{arc.name}</span>
+											<span className={styles.arcSelectName}>{getArcName(arc, t)}</span>
 											<span className={styles.arcSelectMeta}>
 												{t("planner.addArc.meta", {
-													rank: getRarityName(arc.rarity),
-													type: arc.type,
+													rank: getRankLabel(arc.rarity, t),
+													type: getArcTypeLabel(arc.type, t),
 												})}
 											</span>
 										</span>
@@ -353,7 +359,7 @@ export function PlannerAddArcBox({
 				<div
 					className={`pill-button always-hover ${styles.addArcCancelButton}`}
 					onClick={onCancel}>
-					{t("planner.addArc.cancel")}
+					{t("layout.actions.cancel").toLocaleUpperCase(t.locale)}
 				</div>
 				<div
 					className={`pill-button always-hover ${styles.addArcConfirmButton}`}

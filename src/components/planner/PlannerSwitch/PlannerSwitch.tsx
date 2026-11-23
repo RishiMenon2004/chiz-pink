@@ -38,8 +38,8 @@ export function PlannerSwitch() {
 			style={{
 				display: segment ? "grid" : "none",
 			}}>
-			<SwitchButton id="characters">{t("planner.switch.characters")}</SwitchButton>
-			<SwitchButton id="arcs">{t("planner.switch.arcs")}</SwitchButton>
+			<SwitchButton id="characters">{t("game.characters")}</SwitchButton>
+			<SwitchButton id="arcs">{t("game.arcs")}</SwitchButton>
 		</div>
 	)
 }

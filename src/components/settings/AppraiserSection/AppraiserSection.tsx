@@ -85,7 +85,7 @@ export function AppraiserSection() {
 						}}
 					/>
 					<ConfigNumberBox
-						name={t("settings.appraiser.cityStamina")}
+						name={t("game.cityStamina")}
 						min={0}
 						max={settings.userdata["max-stamina"]}
 						value={settings.userdata["current-stamina"]}

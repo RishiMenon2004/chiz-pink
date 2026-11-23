@@ -34,7 +34,7 @@ export default async function Home({ params }: Props) {
 					__html: JSON.stringify(websiteJsonLd).replace(/</g, "\\u003c"),
 				}}
 			/>
-			<PageMessages lang={lang} namespaces={["home", "planner"]}>
+			<PageMessages lang={lang} namespaces={["home", "planner", "checklist"]}>
 				<RenderHome />
 			</PageMessages>
 		</>

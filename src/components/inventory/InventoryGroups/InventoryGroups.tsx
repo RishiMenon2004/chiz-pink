@@ -11,7 +11,7 @@ import { EnumRarity, EnumMaterialType } from "@/data/items"
 import { useInventoryFilters, useInventoryWhen } from "@/hooks"
 import { getAggregatedMaterials, usePlannerStore } from "@/hooks/usePlannerStore"
 
-import { getRarityName } from "@/helpers"
+import { getMaterialTypeLabel, getRankLabel } from "@/helpers"
 
 import { useInventoryFilterContext, useT } from "@/contexts"
 
@@ -46,6 +46,7 @@ export function RarityGroup({
 	materials: Material[]
 	aggregatedMaterials: AggregateMaterialsType
 }) {
+	const t = useT()
 	const ranks = Object.entries(EnumRarity)
 		.filter((v) => typeof v[1] === "number")
 		.reverse()
@@ -61,7 +62,7 @@ export function RarityGroup({
 				return (
 					<MaterialGroup
 						key={rarity[1]}
-						title={getRarityName(Number(rarity[1]))}>
+						title={getRankLabel(Number(rarity[1]), t)}>
 						<MaterialList
 							materials={filteredRarity}
 							aggregatedMaterials={aggregatedMaterials}
@@ -81,6 +82,7 @@ export function TypeGroup({
 	materials: Material[]
 	aggregatedMaterials: AggregateMaterialsType
 }) {
+	const t = useT()
 	const types = Object.values(EnumMaterialType)
 
 	return (
@@ -92,7 +94,7 @@ export function TypeGroup({
 				if (filteredType.length <= 0) return null
 
 				return (
-					<MaterialGroup key={type} title={type}>
+					<MaterialGroup key={type} title={getMaterialTypeLabel(type, t)}>
 						<MaterialList
 							materials={filteredType}
 							aggregatedMaterials={aggregatedMaterials}

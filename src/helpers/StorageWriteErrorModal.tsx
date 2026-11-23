@@ -15,7 +15,7 @@ export function StorageWriteErrorModal() {
 			<AlertContainer
 				type="acknowledge"
 				onConfirm={dismissStorageWriteError}
-				confirmLabel={t("sync.storageError.confirm")}>
+				confirmLabel={t("layout.actions.confirm")}>
 				{t("sync.storageError.message")}
 			</AlertContainer>
 		</ModalContainer>

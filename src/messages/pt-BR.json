@@ -138,8 +138,6 @@
 	},
 	"home": {
 		"showcase": {
-			"characters": "Personagens",
-			"arcs": "Discos",
 			"viewAll": "VER TUDO"
 		},
 		"stamina": {
@@ -152,8 +150,7 @@
 			"editMax": "EDITAR VIGOR MÁXIMO",
 			"currentPixels": "Pixels atuais",
 			"currentCityStamina": "Vigor da Cidade Atual",
-			"pixels": "Pixels",
-			"cityStamina": "Vigor da Cidade"
+			"pixels": "Pixels"
 		},
 		"dailyTasks": {
 			"title": "Tarefas Diárias",
@@ -162,10 +159,7 @@
 		},
 		"dailyChecklist": {
 			"title": "Lista de Tarefas Diárias",
-			"editTasks": "EDITAR TAREFAS",
 			"editTitle": "Editar Tarefas Diárias",
-			"visible": "Visível",
-			"hidden": "Oculto",
 			"completed": "Completo",
 			"customTask": "Tarefa customizada"
 		},
@@ -177,15 +171,12 @@
 			"collapse": "RECOLHER"
 		},
 		"featured": {
-			"preview": "Pre-Visualizar",
-			"featured": "Destaque",
 			"bannerTba": "Datas do tabuleiro a ser definido",
 			"bannerEnds": "Tabuleiro termina em <b>{time}</b>",
 			"bannerStarts": "Tabuleiro começa em <b>{time}</b>"
 		},
 		"featuredArcs": {
-			"artAlt": "Arte do Disco {name}",
-			"viewIndex": "Ver Índice"
+			"artAlt": "Arte do Disco {name}"
 		},
 		"featuredCarousel": {
 			"label": "Personagens em destaque",
@@ -193,7 +184,6 @@
 			"slideFeatured": "{name} - destaque",
 			"artAlt": "Arte Completa de {name}",
 			"show": "Mostrar {name}",
-			"viewProfile": "Ver Perfil",
 			"backgroundAlt": "{name} arte de fundo",
 			"artAlt_male": "Arte completa de {name}",
 			"artAlt_female": "Arte completa de {name}",
@@ -219,13 +209,9 @@
 		}
 	},
 	"catalog": {
-		"preview": "Pre-Visualizar",
-		"featured": "Destaque",
 		"emptyFilters": "E-Eu não consegui achar nada com esses filtros. Gostaria de <link>tentar novamente?</link>",
 		"switch": {
-			"label": "Catálogo",
-			"characters": "Personagens",
-			"arcs": "Discos"
+			"label": "Catálogo"
 		},
 		"toolbar": {
 			"groupBy": "Agrupar por",
@@ -272,10 +258,6 @@
 			"allCollected": "Ah, uau! Você ja coletou tu-tudo que precida!"
 		},
 		"material": {
-			"need": "Necessita:",
-			"neededFor": "Necessário Para:",
-			"sources": "Fontes:",
-			"sourceAlt": "{name} Fonte",
 			"more_one": "Mais +{count}",
 			"more_many": "Mais +{count}",
 			"more_other": "Mais +{count}",
@@ -316,7 +298,6 @@
 			"hintSeasonal": "Reseta quando uma nova versão do jogo entra em vigor.",
 			"hintServerTime": "Reseta as 05:00 no tempo do servidor.",
 			"delete": "DELETAR",
-			"cancel": "CANCELAR",
 			"save": "SALVAR",
 			"orLastDay": "{day} (ou último dia)",
 			"ordinal": {
@@ -335,12 +316,8 @@
 		"currencyBox": {
 			"icon": "Icone de {name}",
 			"edit": "Editar {name}",
-			"source": "{name} Fonte",
-			"need": "Precisa:",
-			"neededFor": "Necessário Por:",
 			"annulithProcessing": "Processamento de Annulith:",
 			"solidDice": "Dados Sólidos x{amount}",
-			"sources": "Fontes:",
 			"sourceItem": "{name} x{amount}"
 		},
 		"domainMove": {
@@ -379,7 +356,6 @@
 		},
 		"installPwa": {
 			"button": "INSTALAR APLICATIVO",
-			"gotIt": "Entendi",
 			"iosSafari": {
 				"title": "Instalar no iPhone/iPad",
 				"step1": "Toque no ícone Compartilhar na barra de ferramentas do Safari.",
@@ -469,6 +445,18 @@
 		},
 		"materialHint": {
 			"touch": "Toque e segure no material para ver detalhes"
+		},
+		"actions": {
+			"cancel": "Cancelar",
+			"confirm": "Entendi",
+			"viewProfile": "Ver Perfil",
+			"viewIndex": "Ver Índice"
+		},
+		"materialTooltip": {
+			"need": "Precisa:",
+			"neededFor": "Necessário Para:",
+			"sources": "Fontes:",
+			"sourceAlt": "{name} Fonte"
 		}
 	},
 	"error": {
@@ -481,11 +469,6 @@
 		"currentLevel": "Nível atual",
 		"targetLevel": "Nivel pretendido",
 		"requiredMaterials": "Materiais necessários",
-		"cancel": "CANCELAR",
-		"switch": {
-			"characters": "Personagens",
-			"arcs": "Discos"
-		},
 		"toolbar": {
 			"addCharacter": "ADICIONAR PERSONAGEM",
 			"addArc": "ADICIONAR DISCO",
@@ -503,33 +486,25 @@
 			"search": "Pesquisar",
 			"filterType": "Tipo",
 			"filterRank": "Ranque",
-			"cancel": "CANCELAR",
 			"add": "ADICIONAR"
 		},
 		"addCharacter": {
 			"title": "Adicionar Personagem",
 			"search": "Pesquisar",
-			"preview": "Pré-Visualizar",
-			"featured": "Destaque",
 			"rankIcon": "Ícone {rank}"
 		},
 		"arcBox": {
 			"view": "Ver {name}",
-			"viewIndex": "Ver Índice",
 			"confirmDelete": "Vo-Você tem certeza de que deseja deletar esse Disco?"
 		},
 		"characterBox": {
 			"view": "Ver {name} perfil",
-			"viewProfile": "Ver Perfil",
 			"esperAbilities": "Habilidades Esper",
-			"basicAttack": "Ataque Básico",
 			"redirectSkill": "Habilidade",
-			"ultimate": "Suprema",
 			"supportSkill": "Habilidade de Suporte",
 			"passive1": "Passiva I",
 			"passive2": "Passiva II",
 			"passive3": "Passiva III",
-			"lifeSkills": "Habilidade de Vida",
 			"lifeSkill1": "Habilidade de Vida 1",
 			"lifeSkill2": "Habilidade de Vida 2",
 			"confirmDelete": "Vo-Você deseja deletar esse personagem?",
@@ -542,8 +517,7 @@
 			"ownedAvailable": "Obtido: <n>{owned}</n> | Disponível: <n>{available}</n>",
 			"fromSubstitutes": "(<n>+{amount}</n> para substitutos de menor EXP)",
 			"fromCrafting": "(<n>+{amount}</n> da criação)",
-			"using": "Usando:",
-			"sources": "Fontes:"
+			"using": "Usando:"
 		},
 		"buttons": {
 			"dragToReorder": "Arraste para reordenar",
@@ -601,15 +575,12 @@
 		},
 		"abilities": {
 			"esper": "HABILIDADES ESPER",
-			"basicAttack": "Ataque Básico",
 			"skill": "Habilidade",
-			"ultimate": "Suprema",
 			"support": "Habilidade de Suporte",
 			"passiveSkills": "Habilidade Passiva",
 			"passive1": "Passiva I",
 			"passive2": "Passiva II",
 			"passive3": "Passiva III",
-			"lifeSkills": "Habilidades de Vida",
 			"lifeSkill1": "Habilidades de Vida 1",
 			"lifeSkill2": "Habilidades de Vida 2"
 		},
@@ -708,9 +679,6 @@
 			"filters": {
 				"label": "Mostrar",
 				"all": "Todos",
-				"sRank": "Ranque S",
-				"aRank": "Ranques A",
-				"bRank": "Ranques B",
 				"items": "Itens",
 				"cosmetics": "Cosméticos"
 			},
@@ -741,7 +709,6 @@
 			"editNote": "Salvar qualquer alteração fará essa ser uma entrada manual.",
 			"quantity": "Quantidade",
 			"pityReset": "Redefinir",
-			"cancel": "Cancelar",
 			"saveEdit": "Salvar",
 			"deleteButton": "Deletar",
 			"deleteConfirm": "Apagar essa invocação manual?",
@@ -762,21 +729,6 @@
 			"searchPlaceholder": "Pesquisar...",
 			"searchLabel": "Pesquisar invocação pelo nome do item",
 			"clearSearch": "Limpar pesquisa",
-			"select": "Selecionar",
-			"cancelSelect": "Cancelar",
-			"selectedCount_one": "{count} selecionada",
-			"selectedCount_many": "{count} selecionadas",
-			"selectedCount_other": "{count} selecionadas",
-			"selectPage": "Selecionar página",
-			"selectAll": "Selecionar tudo",
-			"clearSelection": "Limpar",
-			"deleteSelected": "Apagar",
-			"batchDeleteConfirm_one": "Apagar {count} invocação selecionada?",
-			"batchDeleteConfirm_many": "Apagar {count} invocações selecionadas?",
-			"batchDeleteConfirm_other": "Apagar {count} invocações selecionadas?",
-			"batchDeleteNote": "Isso não pode ser desfeito. Invocações importadas apagadas podem ser importadas novamente depois.",
-			"selectRowLabel": "{name}, pity {pity}. Clique para selecionar.",
-			"selectAllPageLabel": "Selecionar todas as invocações desta página",
 			"prev": "ANTERIOR",
 			"next": "PRÓXIMO",
 			"ntewizSource": "NTEWiz",
@@ -859,7 +811,6 @@
 			},
 			"characterPixels": "Pixels de Personagem",
 			"maxPixels": "Máximo de Pixels",
-			"cityStamina": "Vigor da Cidade",
 			"maxStamina": "Vigor Máximo"
 		},
 		"pwa": {
@@ -910,7 +861,6 @@
 		"modals": {
 			"importOverwrite": {
 				"confirm": "Sobrescrever",
-				"cancel": "Cancelar",
 				"older": "Esse arquivo contem informações velhas.",
 				"overwritten": "Os dados existentes serão sobrescritos.",
 				"question": "Você tem certeza de que deseja substituir seus dados atuais?"
@@ -927,7 +877,6 @@
 			},
 			"externalSummary": {
 				"title": "Dados de {source} importado",
-				"confirm": "Entendi",
 				"inventory": "Inventario: {imported} itens importados",
 				"inventorySkipped": "Inventario: {imported} itens importado, {skipped} pulados (sem correspondência)",
 				"characters": "Personagens: {imported} importado",
@@ -949,15 +898,13 @@
 			"eraseAll": {
 				"title": "Apagar todos os dados locais?",
 				"message": "Essa ação ira apagar todos os dados desse dispositivo.",
-				"confirm": "Apagar",
-				"cancel": "Cancelar"
+				"confirm": "Apagar"
 			},
 			"erasePulls": {
 				"title": "Apagar histórico de invocação?",
 				"message": "Isso ira apagar todas as suas rolagens importadas desse dispositivo.",
 				"messageSignedIn": "Isso ira apagar suas rolagens importadas desse dispositivo e também de seu backup em nuvem.",
-				"confirm": "Apagar",
-				"cancel": "Cancelar"
+				"confirm": "Apagar"
 			},
 			"eraseSyncChoice": {
 				"title": "Manter seu salvamento em nuvem?",
@@ -980,8 +927,7 @@
 			},
 			"cloudEraseError": {
 				"title": "Backup do histórico de rolagens em nuvem não foi apagado",
-				"message": "Seu histórico de rolagem foi apagado desse dispositivo, mas a copia em nuvem não deletada. Por favor tente novamente ao estar online.",
-				"confirm": "Entendi"
+				"message": "Seu histórico de rolagem foi apagado desse dispositivo, mas a copia em nuvem não deletada. Por favor tente novamente ao estar online."
 			}
 		}
 	},
@@ -1012,8 +958,7 @@
 			"errorMessage": "Mudanças foram pausadas, recarregue a pagina e tente novamente."
 		},
 		"storageError": {
-			"message": "Seu navegador não pode salvar suas alterações. Veja se o armazenamento não esta cheio ou restrito, e considere exportar um backup nas Configurações.",
-			"confirm": "Entendi"
+			"message": "Seu navegador não pode salvar suas alterações. Veja se o armazenamento não esta cheio ou restrito, e considere exportar um backup nas Configurações."
 		}
 	},
 	"migrate": {
@@ -1032,8 +977,7 @@
 			"current": "Chiz.Pink",
 			"currentNewer": "Chiz.Pink (novo)",
 			"old": "Endereço antigo",
-			"oldNewer": "Endereço antigo (recente)",
-			"unknown": "Desconhecido"
+			"oldNewer": "Endereço antigo (recente)"
 		},
 		"ntewiz": {
 			"title": "Migrar do NTEWiz",
@@ -1098,5 +1042,22 @@
 	"auth": {
 		"signedIn": "Logado com Google",
 		"closeWindow": "Você pode fechar essa janela."
+	},
+	"game": {
+		"cityStamina": "Vigor da Cidade",
+		"ranks": {
+			"uncommon": "Ranque B",
+			"rare": "Ranque A",
+			"epic": "Ranque S"
+		},
+		"characters": "Personagens",
+		"arcs": "Discos",
+		"featured": "Destaque",
+		"preview": "Pré-Visualizar",
+		"abilities": {
+			"basicAttack": "Ataque Básico",
+			"ultimate": "Suprema",
+			"lifeSkills": "Habilidades de Vida"
+		}
 	}
 }

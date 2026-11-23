@@ -10,6 +10,11 @@ import { characterLevelStats } from "@/data/characters"
 import { placeholderAbilities } from "@/data/characters/placeholder"
 
 import { getCharacterBannerThemeColor } from "@/helpers/bannerStatus"
+import {
+	getArcTypeLabel,
+	getElementLabel,
+	getRankLabel,
+} from "@/helpers/gameLabels"
 import { formatLocale, type Locale } from "@/helpers/locale"
 import { getTranslator } from "@/helpers/messages"
 
@@ -108,6 +113,7 @@ export async function CharacterProfile({
 						<ProfileHero
 							name={character.name}
 							rarity={character.rarity}
+							rankAlt={getRankLabel(character.rarity, t)}
 							variant="character"
 							quoteColor={quoteColor}
 							art={
@@ -164,11 +170,17 @@ export async function CharacterProfile({
 							stats={[
 								{
 									label: t("profile.stats.element"),
-									value: <span className={styles.capitalize}>{character.element}</span>,
+									value: (
+										<span className={styles.capitalize}>
+											{getElementLabel(character.element, t)}
+										</span>
+									),
 								},
 								{
 									label: t("profile.stats.arcType"),
-									value: character.hasPlaceholderArcType ? t("profile.stats.tbd") : character.arcType,
+									value: character.hasPlaceholderArcType
+										? t("profile.stats.tbd")
+										: getArcTypeLabel(character.arcType, t),
 								},
 								...(levelStats ?? []).map(({ label, values }) => ({
 									label,
@@ -191,9 +203,9 @@ export async function CharacterProfile({
 						<ProfileAbilityGroup
 							title={t("profile.abilities.esper")}
 							entries={[
-								[t("profile.abilities.basicAttack"), known(abilities.basicAttack)],
+								[t("game.abilities.basicAttack"), known(abilities.basicAttack)],
 								[t("profile.abilities.skill"), known(abilities.skill)],
-								[t("profile.abilities.ultimate"), known(abilities.ultimate)],
+								[t("game.abilities.ultimate"), known(abilities.ultimate)],
 								[t("profile.abilities.support"), known(abilities.support)],
 							]}
 						/>
@@ -206,7 +218,7 @@ export async function CharacterProfile({
 							]}
 						/>
 						<ProfileAbilityGroup
-							title={t("profile.abilities.lifeSkills")}
+							title={t("game.abilities.lifeSkills")}
 							entries={[
 								[t("profile.abilities.lifeSkill1"), known(abilities.lifeSkill1)],
 								[t("profile.abilities.lifeSkill2"), known(abilities.lifeSkill2)],

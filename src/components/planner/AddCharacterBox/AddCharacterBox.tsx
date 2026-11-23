@@ -56,8 +56,8 @@ function CharacterListItem({
 			{status && (
 				<div className={styles.featureTag}>
 					{status === "preview"
-						? t("planner.addCharacter.preview")
-						: t("planner.addCharacter.featured")}
+						? t("game.preview")
+						: t("game.featured")}
 				</div>
 			)}
 			<div className={styles.charSelectOptionAvatarContainer}>

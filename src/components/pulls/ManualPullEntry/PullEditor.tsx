@@ -10,7 +10,7 @@ import { EnumRarity } from "@/data/items"
 import { useGachaStore } from "@/hooks"
 import { useTooltip } from "@/hooks/useTooltip"
 
-import { findPullItem, isScarboroughPull } from "@/helpers"
+import { findPullItem, getItemDisplayName, isScarboroughPull } from "@/helpers"
 import { useInitialSyncPending } from "@/helpers/syncGate"
 
 import { usePullTrackerContext, useSettingsConfigContext, useT } from "@/contexts"
@@ -80,7 +80,7 @@ export function PullEditor({
 	const originalType = scarborough ? scarborough.rewardType : "arc"
 	const originalName =
 		candidates.find((c) => c.id === pull.rewardId && c.rewardType === originalType)?.name ??
-		findPullItem(pull.rewardId, originalType).name
+		getItemDisplayName(findPullItem(pull.rewardId, originalType), t)
 	const originalDate = toLocalInput(pull.timestamp)
 
 	const [itemName, setItemName] = useState(originalName)
@@ -292,7 +292,7 @@ export function PullEditor({
 						</button>
 					)}
 					<button type="button" className="pill-button" onClick={onClose}>
-						{t("pulls.manual.cancel")}
+						{t("layout.actions.cancel")}
 					</button>
 					<button
 						type="submit"
@@ -309,7 +309,7 @@ export function PullEditor({
 						<AlertContainer
 							type="dangerous-confirm"
 							confirmLabel={t("pulls.manual.deleteButton")}
-							cancelLabel={t("pulls.manual.cancel")}
+							cancelLabel={t("layout.actions.cancel")}
 							onCancel={() => setConfirmingDelete(false)}
 							onConfirm={() => {
 								if (syncPending) return

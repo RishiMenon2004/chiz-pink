@@ -6,6 +6,7 @@ import { arcLevelStats } from "@/data/arcs"
 
 import { getArcBannerThemeColor } from "@/helpers/bannerStatus"
 import { formatAttributeValue } from "@/helpers/formatAttributeValue"
+import { getArcName, getArcTypeLabel, getRankLabel } from "@/helpers/gameLabels"
 import type { Locale } from "@/helpers/locale"
 import { getTranslator } from "@/helpers/messages"
 import { parseDescription } from "@/helpers/parseDescription"
@@ -24,6 +25,8 @@ import styles from "../profile.module.css"
 
 export async function ArcProfile({ arc, locale }: { arc: Arc; locale: Locale }) {
 	const t = await getTranslator(locale)
+	const arcName = getArcName(arc, t)
+	const arcTypeLabel = getArcTypeLabel(arc.type, t)
 	// Follow the Materials slider's level when the game data has the
 	// per-level values; otherwise show the level 1 stats.
 	const levelStats = arcLevelStats[arc.id]
@@ -47,14 +50,15 @@ export async function ArcProfile({ arc, locale }: { arc: Arc; locale: Locale }) 
 							{t("profile.arc.allArcs")}
 						</LocaleLink>
 						<ProfileHero
-							name={arc.name}
+							name={arcName}
 							rarity={arc.rarity}
+							rankAlt={getRankLabel(arc.rarity, t)}
 							variant="arc"
 							themeColor={getArcBannerThemeColor(arc.id)}
 							art={
 								<Image
 									src={`/arcs/${arc.imageSrc}`}
-									alt={arc.name}
+									alt={arcName}
 									width={512}
 									height={512}
 									sizes="(max-width: 1000px) 100vw, 26rem"
@@ -65,12 +69,12 @@ export async function ArcProfile({ arc, locale }: { arc: Arc; locale: Locale }) 
 							stats={
 								arc.isPlaceholder
 									? [
-											{ label: t("profile.stats.type"), value: arc.type },
+											{ label: t("profile.stats.type"), value: arcTypeLabel },
 											{ label: t("profile.stats.baseAtk"), value: t("profile.stats.tbd") },
 											{ label: t("profile.stats.mainStat"), value: t("profile.stats.tbd") },
 										]
 									: [
-											{ label: t("profile.stats.type"), value: arc.type },
+											{ label: t("profile.stats.type"), value: arcTypeLabel },
 											{
 												label: levelStats ? t("profile.stats.atk") : t("profile.stats.baseAtk"),
 												value: atk,
@@ -88,7 +92,7 @@ export async function ArcProfile({ arc, locale }: { arc: Arc; locale: Locale }) 
 						<ArcEffect effect={arc.effect} />
 						{arc.isPlaceholder ? (
 							<InfoBox sticker="peek">
-								{t("profile.arc.placeholderNote", { name: arc.name })}
+								{t("profile.arc.placeholderNote", { name: arcName })}
 							</InfoBox>
 						) : (
 							<ProfileMaterials

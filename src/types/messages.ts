@@ -1,12 +1,14 @@
 import type { ReactNode } from "react"
 
 import type en from "@/messages/en.json"
+import type enArcs from "@/messages/game/arcs/en.json"
 
 import type { Locale } from "@/helpers/locale"
 
-// English is the source language: its file defines every key, and other
+// English is the source language: its files define every key, and other
 // languages may leave any of them out (they fall back to English).
-export type Messages = typeof en
+export type ArcMessages = typeof enArcs
+export type Messages = typeof en & { arcs: ArcMessages }
 export type PartialMessages = {
 	[K in keyof Messages]?: DeepPartial<Messages[K]>
 }

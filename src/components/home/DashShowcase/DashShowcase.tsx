@@ -21,12 +21,12 @@ export function DashShowcase() {
 	return (
 		<div className={pageStyles.twoColumns}>
 			{characters.length > 0 && (
-				<ShowcaseSection title={t("home.showcase.characters")} href="/characters">
+				<ShowcaseSection title={t("game.characters")} href="/characters">
 					<DashFeaturedCarousel entries={characters} />
 				</ShowcaseSection>
 			)}
 			{arcs.length > 0 && (
-				<ShowcaseSection title={t("home.showcase.arcs")} href="/arcs">
+				<ShowcaseSection title={t("game.arcs")} href="/arcs">
 					<DashFeaturedArcs entries={arcs} />
 				</ShowcaseSection>
 			)}

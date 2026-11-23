@@ -8,6 +8,16 @@ export { getLinkedMaterials } from "./getLinkedMaterials"
 export { getCraftRatio } from "./crafting"
 export { getPhases } from "./getPhases"
 export { getRarityName } from "./getRarityName"
+export {
+	getActivityDescription,
+	getActivityName,
+	getArcName,
+	getArcTypeLabel,
+	getElementLabel,
+	getItemDisplayName,
+	getMaterialTypeLabel,
+	getRankLabel,
+} from "./gameLabels"
 export { getCostAmount } from "./getCostAmountWithRarity"
 export { getOptimizedImageUrl } from "./getOptimizedImageUrl"
 

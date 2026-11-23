@@ -1,17 +1,33 @@
 import { cache } from "react"
 
-import type { Messages, PartialMessages, Translate } from "@/types/messages"
+import type {
+	ArcMessages,
+	Messages,
+	PartialMessages,
+	Translate,
+} from "@/types/messages"
 
 import en from "@/messages/en.json"
+import enArcs from "@/messages/game/arcs/en.json"
 
 import { DEFAULT_LOCALE, type Locale } from "@/helpers/locale"
 import { createTranslator } from "@/helpers/translate"
+
+const enAll: Messages = { ...en, arcs: enArcs }
 
 // One entry per locale in LOCALES (TypeScript flags a missing one). Loaded on
 // the server only; pages get the merged result through LocaleProvider.
 const translations: Record<Locale, () => Promise<PartialMessages>> = {
 	en: async () => en,
 	"pt-BR": async () => (await import("@/messages/pt-BR.json")).default,
+}
+
+// Separate Weblate component (src/messages/game/arcs/*.json). Optional per
+// locale: languages without an arcs file fall back to English arc names.
+const arcTranslations: Partial<
+	Record<Locale, () => Promise<Partial<ArcMessages>>>
+> = {
+	en: async () => enArcs,
 }
 
 /**
@@ -22,10 +38,17 @@ const translations: Record<Locale, () => Promise<PartialMessages>> = {
 export const getMessages = cache(async function getMessages(
 	locale: Locale,
 ): Promise<Messages> {
-	const translated = await translations[locale]()
-	if (locale === DEFAULT_LOCALE) return en
+	if (locale === DEFAULT_LOCALE) return enAll
 
-	return withFallback(en, translated) as Messages
+	const [translated, translatedArcs] = await Promise.all([
+		translations[locale](),
+		arcTranslations[locale]?.() ?? Promise.resolve({}),
+	])
+
+	return withFallback(enAll, {
+		...translated,
+		arcs: translatedArcs,
+	}) as Messages
 })
 
 export type MessageNamespace = keyof Messages
@@ -53,6 +76,8 @@ export async function getLayoutMessages(
 		error: messages.error,
 		notFound: messages.notFound,
 		auth: messages.auth,
+		game: messages.game,
+		arcs: messages.arcs,
 		settings: {
 			shared: messages.settings.shared,
 			timers: messages.settings.timers,

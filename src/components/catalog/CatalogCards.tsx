@@ -11,7 +11,12 @@ import { getAllCharactersList } from "@/data/characters/characterList"
 import { getAllArcsList } from "@/data/arcs"
 
 import { fuzzyFilter } from "@/helpers/fuzzyMatch"
-import { getRarityName } from "@/helpers/getRarityName"
+import {
+	getArcName,
+	getArcTypeLabel,
+	getElementLabel,
+	getRankLabel,
+} from "@/helpers/gameLabels"
 
 import {
 	getArcBannerThemeColor,
@@ -52,8 +57,8 @@ function FeatureTag({ status }: { status: ItemStatus }) {
 	return (
 		<div className={styles.featureTag}>
 			{status === "preview"
-				? t("catalog.preview")
-				: t("catalog.featured")}
+				? t("game.preview")
+				: t("game.featured")}
 		</div>
 	)
 }
@@ -108,6 +113,7 @@ const arcThemeColors = new Map(
 )
 
 function ArcCard({ arc, status }: { arc: Arc; status: ItemStatus }) {
+	const t = useT()
 	const themeColor = arcThemeColors.get(arc.id)
 
 	return (
@@ -128,7 +134,7 @@ function ArcCard({ arc, status }: { arc: Arc; status: ItemStatus }) {
 					<ArcIcon arc={arc} className={styles.arcImage} height={256} width={256} />
 				</div>
 			</div>
-			<div className={styles.name}>{arc.name}</div>
+			<div className={styles.name}>{getArcName(arc, t)}</div>
 		</LocaleLink>
 	)
 }
@@ -182,8 +188,6 @@ const arcRarities = uniqueSorted(
 )
 const arcTypes = uniqueSorted(allArcs.map((a) => a.type))
 
-const capitalise = (text: string) => text.charAt(0).toUpperCase() + text.slice(1)
-
 type Group<T> = { key: string | number; title: string; entries: T[] }
 
 // Buckets entries in the order `keys` lists them (empty buckets dropped);
@@ -227,9 +231,14 @@ function CatalogGrid<T>({
 // orders the rest best match first (ties keep featured/preview-first).
 function applySearch<T extends Item>(
 	entries: WithStatus<T>[],
-	search: string
+	search: string,
+	extraTerms?: (item: T) => string[]
 ): WithStatus<T>[] {
-	return fuzzyFilter(entries, search, ({ item }) => [item.name, item.id])
+	return fuzzyFilter(entries, search, ({ item }) => [
+		...(extraTerms ? extraTerms(item) : []),
+		item.name,
+		item.id,
+	])
 }
 
 const byName = (a: Item, b: Item) => a.name.localeCompare(b.name)
@@ -258,9 +267,8 @@ const characterSorts = {
 		a.element.localeCompare(b.element) || byRarity(a, b),
 }
 
-const arcSorts = { rarity: byRarity, name: byName }
-
 export function CharacterCatalog() {
+	const t = useT()
 	const entries = useCharacterCatalog()
 	const [filters, setFilters] = useState<CatalogFilters>(NO_FILTERS)
 	const [groupBy, setGroupBy] = useState<CatalogGroupBy>(null)
@@ -279,11 +287,11 @@ export function CharacterCatalog() {
 
 	const groups =
 		groupBy === "rarity"
-			? groupEntries(sorted, characterRarities, (e) => e.item.rarity, getRarityName)
+			? groupEntries(sorted, characterRarities, (e) => e.item.rarity, (r) => getRankLabel(r, t))
 			: groupBy === "element"
-				? groupEntries(sorted, characterElements, (e) => e.item.element, capitalise)
+				? groupEntries(sorted, characterElements, (e) => e.item.element, (el) => getElementLabel(el, t))
 				: groupBy === "arcType"
-					? groupEntries(sorted, characterArcTypes, (e) => e.item.arcType, String)
+					? groupEntries(sorted, characterArcTypes, (e) => e.item.arcType, (at) => getArcTypeLabel(at, t))
 					: null
 
 	return (
@@ -317,10 +325,18 @@ export function CharacterCatalog() {
 }
 
 export function ArcCatalog() {
+	const t = useT()
 	const entries = useArcCatalog()
 	const [filters, setFilters] = useState<CatalogFilters>(NO_FILTERS)
 	const [groupBy, setGroupBy] = useState<CatalogGroupBy>(null)
 	const [sort, setSort] = useState<CatalogSort>(DEFAULT_SORT)
+
+	const byArcName = (a: Arc, b: Arc) =>
+		getArcName(a, t).localeCompare(getArcName(b, t), t.locale)
+	const localizedArcSorts = {
+		rarity: (a: Arc, b: Arc) => b.rarity - a.rarity || byArcName(a, b),
+		name: byArcName,
+	}
 
 	const filtered = applySearch(
 		entries.filter(
@@ -328,15 +344,16 @@ export function ArcCatalog() {
 				(filters.rarity === null || item.rarity === filters.rarity) &&
 				(filters.arcType === null || item.type === filters.arcType)
 		),
-		filters.search
+		filters.search,
+		(arc) => [getArcName(arc, t)]
 	)
-	const sorted = applySort(filtered, sort, arcSorts)
+	const sorted = applySort(filtered, sort, localizedArcSorts)
 
 	const groups =
 		groupBy === "rarity"
-			? groupEntries(sorted, arcRarities, (e) => e.item.rarity, getRarityName)
+			? groupEntries(sorted, arcRarities, (e) => e.item.rarity, (r) => getRankLabel(r, t))
 			: groupBy === "arcType"
-				? groupEntries(sorted, arcTypes, (e) => e.item.type, String)
+				? groupEntries(sorted, arcTypes, (e) => e.item.type, (at) => getArcTypeLabel(at, t))
 				: null
 
 	return (

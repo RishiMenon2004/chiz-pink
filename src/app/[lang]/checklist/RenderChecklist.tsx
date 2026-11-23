@@ -17,6 +17,8 @@ import type {
 
 import {
 	formatTimeRemaining,
+	getActivityDescription,
+	getActivityName,
 	getBiWeeklyMondayResetBoundaries,
 	getCustomTaskResetBoundaries,
 	getBiWeeklyWednesdayResetBoundaries,
@@ -116,10 +118,10 @@ function RenderActivityList({
 							checked={checked}
 							readOnly
 						/>
-						<div className={styles.itemTitle}>{item.name}</div>
+						<div className={styles.itemTitle}>{getActivityName(item, t)}</div>
 					</div>
 					<div className={styles.itemDescription}>
-						{item.description}
+						{getActivityDescription(item, t)}
 					</div>
 					{type === "Bi-Weekly" && (
 						<div className={styles.itemTime}>
@@ -251,7 +253,7 @@ function ChecklistItem({
 			<input type="checkbox" name={item.name} checked={checked} readOnly />
 			<span className={checklistStyles.checklistItemLabel}>
 				<div className={checklistStyles.checklistItemName}>
-					{item.name}
+					{getActivityName(item, t)}
 				</div>
 				<div className={checklistStyles.checklistItemDesc}>
 					{checked

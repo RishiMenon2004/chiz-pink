@@ -9,7 +9,7 @@ import type {
 
 import { EnumRarity, EnumMaterialType } from "@/data/items"
 
-import { getRarityName } from "@/helpers"
+import { getMaterialTypeLabel, getRankLabel } from "@/helpers"
 
 import { useInventoryFilterContext, useT } from "@/contexts"
 
@@ -79,7 +79,7 @@ export function InventoryFilterToolbar() {
 						if (type !== EnumMaterialType.Currency)
 							return (
 								<option value={type} key={type}>
-									{type}
+									{getMaterialTypeLabel(type, t)}
 								</option>
 							)
 					})}
@@ -114,7 +114,7 @@ export function InventoryFilterToolbar() {
 						.map((rarity) => {
 							return (
 								<option value={rarity[1]} key={rarity[0]}>
-									{getRarityName(Number(rarity[1]))}
+									{getRankLabel(Number(rarity[1]), t)}
 								</option>
 							)
 						})}

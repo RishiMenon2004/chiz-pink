@@ -324,7 +324,7 @@ export function CustomTaskBox({
 						type="button"
 						className="pill-button"
 						onClick={onClose}>
-						{t("checklist.customTask.cancel")}
+						{t("layout.actions.cancel").toLocaleUpperCase(t.locale)}
 					</button>
 					<button
 						type="submit"

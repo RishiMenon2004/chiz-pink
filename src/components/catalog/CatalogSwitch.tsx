@@ -12,8 +12,8 @@ import styles from "@/components/planner/PlannerSwitch/plannerSwitch.module.css"
 import catalogStyles from "./catalog.module.css"
 
 const SECTIONS = [
-	{ href: "/characters", icon: "character", label: "catalog.switch.characters" },
-	{ href: "/arcs", icon: "arc", label: "catalog.switch.arcs" },
+	{ href: "/characters", icon: "character", label: "game.characters" },
+	{ href: "/arcs", icon: "arc", label: "game.arcs" },
 ] as const satisfies { href: string; icon: string; label: MessageKey }[]
 
 // The planner's Characters | Arcs switch, as links between the two catalog

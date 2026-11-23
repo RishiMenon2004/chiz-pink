@@ -16,6 +16,7 @@ import {
 	getCharacterBannerThemeColor,
 	type ItemStatus,
 } from "@/helpers/bannerStatus"
+import { getElementLabel } from "@/helpers/gameLabels"
 
 import { CharacterAvatar, CharacterElement } from "@/components/layout/CharacterAvatar"
 
@@ -105,8 +106,8 @@ function Slide({
 			<div className={styles.info}>
 				<div className={styles.tag}>
 					{status === "preview"
-						? t("home.featured.preview")
-						: t("home.featured.featured")}
+						? t("game.preview")
+						: t("game.featured")}
 				</div>
 				<h3 className={styles.name}>{character.name}</h3>
 				<div className={styles.meta}>
@@ -116,7 +117,7 @@ function Slide({
 						width={64}
 						height={64}
 					/>
-					<span className={styles.capitalize}>{character.element}</span>
+					<span className={styles.capitalize}>{getElementLabel(character.element, t)}</span>
 					<span className={styles.divider} />
 					<BannerTiming character={character} />
 				</div>
@@ -200,7 +201,7 @@ export function DashFeaturedCarousel({ entries }: { entries: Entry[] }) {
 				</div>
 			)}
 
-			<Tooltip offset={{ x: 6, y: 0 }}>{t("home.featuredCarousel.viewProfile")}</Tooltip>
+			<Tooltip offset={{ x: 6, y: 0 }}>{t("layout.actions.viewProfile")}</Tooltip>
 		</div>
 	)
 }

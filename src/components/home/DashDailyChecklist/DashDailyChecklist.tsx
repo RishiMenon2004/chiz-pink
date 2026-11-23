@@ -9,7 +9,12 @@ import { ActivityData, getAllActivitiesList } from "@/data/activities/activities
 
 import { useChecklistStore, useNow, useSettingsStore } from "@/hooks"
 
-import { getDailyResetBoundaries, stopPropagation } from "@/helpers"
+import {
+	getActivityDescription,
+	getActivityName,
+	getDailyResetBoundaries,
+	stopPropagation,
+} from "@/helpers"
 
 import { useT } from "@/contexts"
 
@@ -57,15 +62,15 @@ function ChecklistItem({
 			}}>
 			<input type="checkbox" name={item.name} checked={checked} readOnly />
 			<span className={styles.checklistItemLabel}>
-				<div className={styles.checklistItemName}>{item.name}</div>
+				<div className={styles.checklistItemName}>{getActivityName(item, t)}</div>
 				<div className={styles.checklistItemDesc}>
 					{toggle
 						? checked
-							? t("home.dailyChecklist.visible")
-							: t("home.dailyChecklist.hidden")
+							? t("checklist.visible")
+							: t("checklist.hidden")
 						: checked
 							? t("home.dailyChecklist.completed")
-							: item.description}
+							: getActivityDescription(item, t)}
 				</div>
 			</span>
 		</label>
@@ -135,7 +140,7 @@ export function DashDailyChecklist() {
 					type="button"
 					className={`pill-button ${pageStyles.sectionButton}`}
 					onClick={() => setShowEditTasksModal(true)}>
-					{t("home.dailyChecklist.editTasks")}
+					{t("checklist.editTasks.button")}
 				</button>
 				{showEditTasksModal &&
 					createPortal(

@@ -394,7 +394,7 @@ export function PlannerCharacterBox({
 									onPointerLeave={hideProfileTooltip}>
 									{char.name}
 								</LocaleLink>
-								<ProfileTooltip offset={{ x: 6, y: 0 }}>{t("planner.characterBox.viewProfile")}</ProfileTooltip>
+								<ProfileTooltip offset={{ x: 6, y: 0 }}>{t("layout.actions.viewProfile")}</ProfileTooltip>
 								<span
 									className={`${topStyles.arcStatsLvlContainer} ${topStyles.currentLvl}`}>
 									<div className={topStyles.arcPhases}>
@@ -491,7 +491,7 @@ export function PlannerCharacterBox({
 								<div className={styles.charStatsGrid}>
 									<CharacterSkillGroup
 										skill="basicAttack"
-										label={t("planner.characterBox.basicAttack")}
+										label={t("game.abilities.basicAttack")}
 									/>
 									<CharacterSkillGroup
 										skill="skill"
@@ -499,7 +499,7 @@ export function PlannerCharacterBox({
 									/>
 									<CharacterSkillGroup
 										skill="ultimate"
-										label={t("planner.characterBox.ultimate")}
+										label={t("game.abilities.ultimate")}
 									/>
 									<CharacterSkillGroup
 										skill="support"
@@ -526,7 +526,7 @@ export function PlannerCharacterBox({
 									className={
 										plannerBoxStyles.plannerSectionLabel
 									}>
-									{t("planner.characterBox.lifeSkills")}
+									{t("game.abilities.lifeSkills")}
 									<br />
 									<div
 										className={styles.charStatPreview}
@@ -582,7 +582,7 @@ export function PlannerCharacterBox({
 						<AlertContainer
 							type="confirm"
 							onConfirm={confirmDelete}
-							cancelLabel={t("planner.cancel")}
+							cancelLabel={t("layout.actions.cancel").toLocaleUpperCase(t.locale)}
 							onCancel={cancelDelete}>
 							{t("planner.characterBox.confirmDelete")}
 						</AlertContainer>

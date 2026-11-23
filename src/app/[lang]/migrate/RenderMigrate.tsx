@@ -203,7 +203,7 @@ export function RenderMigrate() {
 								<p>
 									{formatTimestamp(
 										localLastUpdated,
-										t("migrate.conflict.unknown"),
+										t("layout.syncConflict.unknown"),
 										locale,
 									)}
 								</p>
@@ -217,7 +217,7 @@ export function RenderMigrate() {
 								<p>
 									{formatTimestamp(
 										incoming.lastUpdated,
-										t("migrate.conflict.unknown"),
+										t("layout.syncConflict.unknown"),
 										locale,
 									)}
 								</p>

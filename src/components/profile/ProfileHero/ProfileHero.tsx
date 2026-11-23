@@ -17,6 +17,7 @@ export type ProfileStat = {
 type ProfileHeroProps = {
 	name: string
 	rarity: EnumRarity
+	rankAlt?: string
 	variant: "character" | "arc"
 	art: ReactNode
 	background?: ReactNode
@@ -33,6 +34,7 @@ type ProfileHeroProps = {
 export function ProfileHero({
 	name,
 	rarity,
+	rankAlt,
 	variant,
 	art,
 	background,
@@ -62,7 +64,7 @@ export function ProfileHero({
 				<Image
 					className={styles.heroRank}
 					src={`/icons/ranks/${rarityStyle}.png`}
-					alt={getRarityName(rarity)}
+					alt={rankAlt ?? getRarityName(rarity)}
 					width={64}
 					height={64}
 				/>

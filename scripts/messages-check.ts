@@ -14,7 +14,7 @@
 // A language is only served once it's in LOCALES (src/helpers/locale.ts)
 // and in the loader map in src/helpers/messages.ts.
 
-import { readdirSync, readFileSync } from "node:fs"
+import { existsSync, readdirSync, readFileSync } from "node:fs"
 import path from "node:path"
 import { fileURLToPath } from "node:url"
 
@@ -22,6 +22,15 @@ import { DEFAULT_LOCALE, LOCALES } from "@/helpers/locale"
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..")
 const messagesDir = path.join(root, "src", "messages")
+
+const COMPONENTS = [
+	{ name: "interface", dir: messagesDir, requiredForLocales: true },
+	{
+		name: "game/arcs",
+		dir: path.join(messagesDir, "game", "arcs"),
+		requiredForLocales: false,
+	},
+] as const
 
 const PLURAL_FORM = /^(.*)_(zero|one|two|few|many|other)$/
 const GENDER_FORM = /_(male|female)(_(zero|one|two|few|many|other))?$/
@@ -45,33 +54,11 @@ function flatten(node: unknown, prefix = "", out: Leaves = new Map()): Leaves {
 const names = (text: string, pattern: RegExp) =>
 	[...text.matchAll(pattern)].map((m) => m[1]).sort()
 
-function readJson(file: string): unknown {
-	return JSON.parse(readFileSync(path.join(messagesDir, file), "utf8"))
-}
-
-const english = flatten(readJson(`${DEFAULT_LOCALE}.json`)) as Map<string, string>
-const pluralBases = new Set(
-	[...english.keys()]
-		.map((key) => PLURAL_FORM.exec(key))
-		.filter((m) => m?.[2] === "other")
-		.map((m) => m![1]),
-)
-
-/** The English base of a plural form ("x.pulls_few" -> "x.pulls"), if any. */
-function pluralBase(key: string) {
-	const match = PLURAL_FORM.exec(key)
-	return match && pluralBases.has(match[1])
-		? { base: match[1], category: match[2] }
-		: null
+function readJson(dir: string, file: string): unknown {
+	return JSON.parse(readFileSync(path.join(dir, file), "utf8"))
 }
 
 const only = process.argv[2]
-const files = readdirSync(messagesDir)
-	.filter((file) => file.endsWith(".json"))
-	.map((file) => file.slice(0, -".json".length))
-	.filter((locale) => locale !== DEFAULT_LOCALE)
-	.filter((locale) => !only || locale === only)
-
 let failed = false
 const report = (title: string, lines: string[]) => {
 	if (!lines.length) return
@@ -79,94 +66,124 @@ const report = (title: string, lines: string[]) => {
 	for (const line of lines) console.log(`    ${line}`)
 }
 
-if (only && !files.length) {
-	console.error(`No src/messages/${only}.json`)
-	process.exit(1)
-}
+for (const component of COMPONENTS) {
+	const sourceFile = `${DEFAULT_LOCALE}.json`
+	if (!existsSync(path.join(component.dir, sourceFile))) continue
 
-for (const locale of LOCALES) {
-	if (locale !== DEFAULT_LOCALE && !files.includes(locale) && !only) {
-		console.log(`${locale}: in LOCALES but src/messages/${locale}.json doesn't exist`)
-		failed = true
-	}
-}
+	const english = flatten(readJson(component.dir, sourceFile)) as Map<string, string>
+	const pluralBases = new Set(
+		[...english.keys()]
+			.map((key) => PLURAL_FORM.exec(key))
+			.filter((m) => m?.[2] === "other")
+			.map((m) => m![1]),
+	)
 
-for (const locale of files) {
-	const problems: string[] = []
-	const warnings: string[] = []
-
-	let categories: Set<string>
-	let translated: Leaves
-	try {
-		categories = new Set(new Intl.PluralRules(locale).resolvedOptions().pluralCategories)
-		translated = flatten(readJson(`${locale}.json`))
-	} catch (error) {
-		console.log(`\n${locale}: ${(error as Error).message}`)
-		failed = true
-		continue
+	/** The English base of a plural form ("x.pulls_few" -> "x.pulls"), if any. */
+	const pluralBase = (key: string) => {
+		const match = PLURAL_FORM.exec(key)
+		return match && pluralBases.has(match[1])
+			? { base: match[1], category: match[2] }
+			: null
 	}
 
-	for (const [key, value] of translated) {
-		const plural = pluralBase(key)
-		const source = english.get(key) ?? (plural ? english.get(`${plural.base}_other`) : undefined)
+	const files = readdirSync(component.dir)
+		.filter((file) => file.endsWith(".json"))
+		.map((file) => file.slice(0, -".json".length))
+		.filter((locale) => locale !== DEFAULT_LOCALE)
+		.filter((locale) => !only || locale === only)
 
-		if (source === undefined) {
-			const group = [...english.keys()].some((k) => k.startsWith(`${key}.`))
-			problems.push(group ? `${key}: should be a group of texts, not text` : `${key}: not in English (removed or misspelt?)`)
+	if (only && component.requiredForLocales && !files.length) {
+		console.error(`No src/messages/${only}.json`)
+		process.exit(1)
+	}
+
+	if (component.requiredForLocales) {
+		for (const locale of LOCALES) {
+			if (locale !== DEFAULT_LOCALE && !files.includes(locale) && !only) {
+				console.log(`${locale}: in LOCALES but src/messages/${locale}.json doesn't exist`)
+				failed = true
+			}
+		}
+	}
+
+	for (const locale of files) {
+		const problems: string[] = []
+		const warnings: string[] = []
+
+		let categories: Set<string>
+		let translated: Leaves
+		try {
+			categories = new Set(new Intl.PluralRules(locale).resolvedOptions().pluralCategories)
+			translated = flatten(readJson(component.dir, `${locale}.json`))
+		} catch (error) {
+			console.log(`\n${locale} (${component.name}): ${(error as Error).message}`)
+			failed = true
 			continue
 		}
-		if (typeof value !== "string") {
-			problems.push(`${key}: should be text`)
-			continue
-		}
-		if (plural && !categories.has(plural.category)) {
-			warnings.push(`${key}: ${locale} has no "${plural.category}" plural form, so this is never shown`)
-		}
-		if (!value.trim()) continue
 
-		const expected = new Set(names(source, PLACEHOLDER))
-		const used = new Set(names(value, PLACEHOLDER))
-		for (const name of used) {
-			if (!expected.has(name)) problems.push(`${key}: unknown placeholder {${name}}`)
-		}
-		for (const name of expected) {
-			// "one" forms may spell the number out ("um item").
-			if (!used.has(name) && !(plural && name === "count")) {
-				problems.push(`${key}: missing placeholder {${name}}`)
+		for (const [key, value] of translated) {
+			const plural = pluralBase(key)
+			const source = english.get(key) ?? (plural ? english.get(`${plural.base}_other`) : undefined)
+
+			if (source === undefined) {
+				const group = [...english.keys()].some((k) => k.startsWith(`${key}.`))
+				problems.push(group ? `${key}: should be a group of texts, not text` : `${key}: not in English (removed or misspelt?)`)
+				continue
+			}
+			if (typeof value !== "string") {
+				problems.push(`${key}: should be text`)
+				continue
+			}
+			if (plural && !categories.has(plural.category)) {
+				warnings.push(`${key}: ${locale} has no "${plural.category}" plural form, so this is never shown`)
+			}
+			if (!value.trim()) continue
+
+			const expected = new Set(names(source, PLACEHOLDER))
+			const used = new Set(names(value, PLACEHOLDER))
+			for (const name of used) {
+				if (!expected.has(name)) problems.push(`${key}: unknown placeholder {${name}}`)
+			}
+			for (const name of expected) {
+				// "one" forms may spell the number out ("um item").
+				if (!used.has(name) && !(plural && name === "count")) {
+					problems.push(`${key}: missing placeholder {${name}}`)
+				}
+			}
+
+			if (names(source, TAG).join() !== names(value, TAG).join()) {
+				const tags = names(source, TAG).map((tag) => `<${tag}>`).join(" ") || "none"
+				problems.push(`${key}: tags don't match English (expected ${tags})`)
 			}
 		}
 
-		if (names(source, TAG).join() !== names(value, TAG).join()) {
-			const tags = names(source, TAG).map((tag) => `<${tag}>`).join(" ") || "none"
-			problems.push(`${key}: tags don't match English (expected ${tags})`)
-		}
+		// English plural forms the language doesn't use (a "_one" in a language
+		// without one) aren't needed, and gendered forms ("view_male") are
+		// optional: left out, the neutral text is used.
+		const needed = [...english.keys()].filter((key) => {
+			const plural = pluralBase(key)
+			return (!plural || categories.has(plural.category)) && !GENDER_FORM.test(key)
+		})
+		const missing = needed.filter((key) => {
+			const value = translated.get(key)
+			return typeof value !== "string" || !value.trim()
+		})
+
+		const done = needed.length - missing.length
+		const percent = Math.floor((done / needed.length) * 100)
+		const enabled = (LOCALES as readonly string[]).includes(locale)
+		const label = component.name === "interface" ? locale : `${locale} (${component.name})`
+		console.log(
+			`\n${label}: ${done} / ${needed.length} translated (${percent}%)` +
+				(enabled ? "" : ", not enabled (not in LOCALES)"),
+		)
+
+		report("Problems", problems)
+		report("Warnings", warnings)
+		if (only) report("Untranslated (shown in English)", missing)
+
+		if (problems.length) failed = true
 	}
-
-	// English plural forms the language doesn't use (a "_one" in a language
-	// without one) aren't needed, and gendered forms ("view_male") are
-	// optional: left out, the neutral text is used.
-	const needed = [...english.keys()].filter((key) => {
-		const plural = pluralBase(key)
-		return (!plural || categories.has(plural.category)) && !GENDER_FORM.test(key)
-	})
-	const missing = needed.filter((key) => {
-		const value = translated.get(key)
-		return typeof value !== "string" || !value.trim()
-	})
-
-	const done = needed.length - missing.length
-	const percent = Math.floor((done / needed.length) * 100)
-	const enabled = (LOCALES as readonly string[]).includes(locale)
-	console.log(
-		`\n${locale}: ${done} / ${needed.length} translated (${percent}%)` +
-			(enabled ? "" : ", not enabled (not in LOCALES)"),
-	)
-
-	report("Problems", problems)
-	report("Warnings", warnings)
-	if (only) report("Untranslated (shown in English)", missing)
-
-	if (problems.length) failed = true
 }
 
 process.exit(failed ? 1 : 0)

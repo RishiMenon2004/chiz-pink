@@ -30,7 +30,7 @@ export function PullsSearchBar({
 	const { Tooltip, showTooltip, hideTooltip } = useTooltip()
 
 	const selectLabel = selectMode
-		? t("pulls.list.cancelSelect")
+		? t("layout.actions.cancel")
 		: t("pulls.list.select")
 
 	return (

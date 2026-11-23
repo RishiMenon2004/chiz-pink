@@ -175,7 +175,7 @@ export function PlannerMaterialBox({
 				</div>
 				<hr className="tooltip-hr" />
 				<div className="tooltip-source-list">
-					{t("planner.material.sources")}
+					{t("layout.materialTooltip.sources")}
 					{material.sources.map((source) => (
 						<div className="tooltip-source" key={source}>
 							{source}

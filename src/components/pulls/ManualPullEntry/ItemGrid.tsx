@@ -21,9 +21,9 @@ type Filter = "all" | "sRank" | "aRank" | "bRank" | "items" | "cosmetics"
 
 const FILTER_LABELS: Record<Filter, MessageKey> = {
 	all: "pulls.manual.filters.all",
-	sRank: "pulls.manual.filters.sRank",
-	aRank: "pulls.manual.filters.aRank",
-	bRank: "pulls.manual.filters.bRank",
+	sRank: "game.ranks.epic",
+	aRank: "game.ranks.rare",
+	bRank: "game.ranks.uncommon",
 	items: "pulls.manual.filters.items",
 	cosmetics: "pulls.manual.filters.cosmetics",
 }

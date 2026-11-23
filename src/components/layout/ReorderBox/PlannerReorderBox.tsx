@@ -9,6 +9,7 @@ import { CharacterRecord, WeaponRecord } from "@/types/planner"
 import { getItemRarityStyle } from "@/data/items"
 import { findItem } from "@/data/items/findItem"
 
+import { getArcName } from "@/helpers/gameLabels"
 import { stopPropagation } from "@/helpers/stopPropagation"
 
 import { useT } from "@/contexts"
@@ -25,6 +26,7 @@ function ReorderItem({
 	itemRecord: WeaponRecord | CharacterRecord
 	index: number
 }) {
+	const t = useT()
 	const item = findItem(itemRecord.id)
 	const isArc = "uid" in itemRecord
 
@@ -52,7 +54,9 @@ function ReorderItem({
 					loading="eager"
 				/>
 			)}
-			<span className={styles.itemName}>{item.name}</span>
+			<span className={styles.itemName}>
+				{isArc ? getArcName(item, t) : item.name}
+			</span>
 		</div>
 	)
 }

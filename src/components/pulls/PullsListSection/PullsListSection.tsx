@@ -16,7 +16,7 @@ import type { MiracleBoxPull, ScarboroughFairPull } from "@/types/pulls"
 
 import { useGachaStore } from "@/hooks"
 
-import { findPullItem, isScarboroughPull } from "@/helpers"
+import { findPullItem, getItemDisplayName, isScarboroughPull } from "@/helpers"
 import { fuzzyScoreAny } from "@/helpers/fuzzyMatch"
 import { isInitialSyncPending } from "@/helpers/syncGate"
 
@@ -93,12 +93,14 @@ export function PullsListSection() {
 
 	const searchTerms = useMemo(
 		() =>
-			pulls.map((pull) => [
-				findPullItem(pull.rewardId, isScarboroughPull(pull) ? pull.rewardType : "arc")
-					.name,
-				pull.rewardId,
-			]),
-		[pulls]
+			pulls.map((pull) => {
+				const item = findPullItem(
+					pull.rewardId,
+					isScarboroughPull(pull) ? pull.rewardType : "arc"
+				)
+				return [getItemDisplayName(item, t), item.name, pull.rewardId]
+			}),
+		[pulls, t]
 	)
 
 	// Matches stay in newest-first order so pull numbers and pity read sequentially.
@@ -463,7 +465,7 @@ export function PullsListSection() {
 						<AlertContainer
 							type="dangerous-confirm"
 							confirmLabel={t("pulls.manual.deleteButton")}
-							cancelLabel={t("pulls.manual.cancel")}
+							cancelLabel={t("layout.actions.cancel")}
 							onCancel={() => setDeleting(null)}
 							onConfirm={() => {
 								if (isInitialSyncPending()) return
@@ -484,7 +486,7 @@ export function PullsListSection() {
 						<AlertContainer
 							type="dangerous-confirm"
 							confirmLabel={t("pulls.manual.deleteButton")}
-							cancelLabel={t("pulls.manual.cancel")}
+							cancelLabel={t("layout.actions.cancel")}
 							onCancel={() => setConfirmingBatchDelete(false)}
 							onConfirm={() => {
 								if (isInitialSyncPending()) return

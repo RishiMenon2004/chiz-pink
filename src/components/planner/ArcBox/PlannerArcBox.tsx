@@ -23,6 +23,7 @@ import {
 	getCraftAdjustmentMaterials,
 	getCraftedYield,
 } from "@/helpers/crafting"
+import { getArcName } from "@/helpers/gameLabels"
 
 import { PlannerBoxContext, usePlannerMaterialsContext, useT } from "@/contexts"
 
@@ -239,7 +240,7 @@ export function PlannerArcBox({
 											} as CSSProperties)
 										: undefined
 								}
-								aria-label={t("planner.arcBox.view", { name: arc.name })}
+								aria-label={t("planner.arcBox.view", { name: getArcName(arc, t) })}
 								onPointerEnter={showProfileTooltip}
 								onPointerLeave={hideProfileTooltip}>
 								<ArcIcon
@@ -255,9 +256,9 @@ export function PlannerArcBox({
 									className={styles.arcStatsName}
 									onPointerEnter={showProfileTooltip}
 									onPointerLeave={hideProfileTooltip}>
-									{arc.name}
+									{getArcName(arc, t)}
 								</LocaleLink>
-								<ProfileTooltip offset={{ x: 6, y: 0 }}>{t("planner.arcBox.viewIndex")}</ProfileTooltip>
+								<ProfileTooltip offset={{ x: 6, y: 0 }}>{t("layout.actions.viewIndex")}</ProfileTooltip>
 								<span
 									className={`${styles.arcStatsLvlContainer} ${styles.currentLvl}`}>
 									<div className={styles.arcPhases}>
@@ -324,7 +325,7 @@ export function PlannerArcBox({
 						<AlertContainer
 							type="confirm"
 							onConfirm={onDeleteConfim}
-							cancelLabel={t("planner.cancel")}
+							cancelLabel={t("layout.actions.cancel").toLocaleUpperCase(t.locale)}
 							onCancel={onDeleteCancel}>
 							{t("planner.arcBox.confirmDelete")}
 						</AlertContainer>

@@ -4,6 +4,7 @@ import type { MessageKey, Translate } from "@/types/messages"
 import type { EnumRarity } from "@/data/items/item"
 import { RoutesData, type RoutePath } from "@/data/routes"
 
+import { getRankLabel } from "./gameLabels"
 import { getRarityName } from "./getRarityName"
 import { LOCALES, localizePath, toLocale, type Locale } from "./locale"
 import { getTranslator } from "./messages"
@@ -112,9 +113,12 @@ export function buildMetadata(
  * "a B-Rank"). Descriptions have an introA and an introAn message for this;
  * other languages can translate both the same way.
  */
-export function rankForIntro(rarity: EnumRarity) {
-	const rank = getRarityName(rarity)
-	return { rank, takesAn: /^[AS]/.test(rank) }
+export function rankForIntro(rarity: EnumRarity, t?: Translate) {
+	const englishRank = getRarityName(rarity)
+	return {
+		rank: t ? getRankLabel(rarity, t) : englishRank,
+		takesAn: /^[AS]/.test(englishRank),
+	}
 }
 
 /** Metadata for a static route, with its text from routes.<id>. */

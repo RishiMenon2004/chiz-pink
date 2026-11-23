@@ -7,7 +7,12 @@ import { Arc } from "@/types/weapon"
 import { Character } from "@/types/character"
 import { PullsRecord } from "@/types/pulls"
 
-import { findPullItem, isArcRateUp, isScarboroughPull } from "@/helpers"
+import {
+	findPullItem,
+	getItemDisplayName,
+	isArcRateUp,
+	isScarboroughPull,
+} from "@/helpers"
 
 import { RateUpPull, usePullTrackerContext, useT } from "@/contexts"
 
@@ -124,7 +129,7 @@ export function RateUpSection() {
 														className={`epic ${styles.rateupItem}`}
 														key={pull.uid}
 														aria-label={t("pulls.rateUp.showPull", {
-															name: item.name,
+															name: getItemDisplayName(item, t),
 															pity,
 														})}
 														onClick={() => showPull(banner, pull.uid)}

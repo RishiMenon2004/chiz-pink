@@ -3,7 +3,11 @@
 import type { EnumCharacterElement } from "@/data/characters/character"
 import type { EnumArcType } from "@/data/arcs/arc"
 
-import { getRarityName } from "@/helpers/getRarityName"
+import {
+	getArcTypeLabel,
+	getElementLabel,
+	getRankLabel,
+} from "@/helpers/gameLabels"
 
 import { useT } from "@/contexts"
 
@@ -169,8 +173,6 @@ function SortSelect({
 	)
 }
 
-const capitalise = (text: string) => text.charAt(0).toUpperCase() + text.slice(1)
-
 // Rank, element and arc type dropdowns in the same pull-out toolbar the
 // inventory uses. Options are passed in from the items actually on the
 // page, so a rank or type nobody has never shows up as an empty choice.
@@ -243,7 +245,7 @@ export function CatalogFilterToolbar({
 				value={filters.rarity}
 				options={rarities.map((rarity) => ({
 					value: rarity,
-					label: getRarityName(rarity),
+					label: getRankLabel(rarity, t),
 				}))}
 				onChange={(rarity) => onChange({ ...filters, rarity })}
 			/>
@@ -255,7 +257,7 @@ export function CatalogFilterToolbar({
 					value={filters.element}
 					options={elements.map((element) => ({
 						value: element,
-						label: capitalise(element),
+						label: getElementLabel(element, t),
 					}))}
 					onChange={(element) => onChange({ ...filters, element })}
 				/>
@@ -267,7 +269,7 @@ export function CatalogFilterToolbar({
 				value={filters.arcType}
 				options={arcTypes.map((arcType) => ({
 					value: arcType,
-					label: arcType,
+					label: getArcTypeLabel(arcType, t),
 				}))}
 				onChange={(arcType) => onChange({ ...filters, arcType })}
 			/>

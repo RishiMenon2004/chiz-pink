@@ -3,6 +3,7 @@ import { notFound } from "next/navigation"
 
 import { findArc, getAllArcsList } from "@/data/arcs"
 
+import { getArcName, getArcTypeLabel } from "@/helpers/gameLabels"
 import { toLocale } from "@/helpers/locale"
 import {
 	buildMetadata,
@@ -35,15 +36,16 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 		}
 	}
 
-	const { rank, takesAn } = rankForIntro(arc.rarity)
+	const arcName = getArcName(arc, t)
+	const { rank, takesAn } = rankForIntro(arc.rarity, t)
 	const intro = t(takesAn ? "meta.arc.introAn" : "meta.arc.introA", {
-		name: arc.name,
+		name: arcName,
 		rank,
-		type: arc.type,
+		type: getArcTypeLabel(arc.type, t),
 	})
 
 	return buildMetadata({
-		title: t("meta.arc.title", { name: arc.name }),
+		title: t("meta.arc.title", { name: arcName }),
 		description: t(
 			arc.isPlaceholder ? "meta.arc.comingSoon" : "meta.arc.released",
 			{ intro },
@@ -51,7 +53,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 		path: `/arcs/${id}`,
 		image: {
 			url: `/arcs/${id}/opengraph-image`,
-			alt: t("meta.arc.imageAlt", { name: arc.name }),
+			alt: t("meta.arc.imageAlt", { name: arcName }),
 		},
 	}, t)
 }

@@ -14,6 +14,7 @@ import { annulith } from "@/data/items/materials"
 import {
 	findPullBanner,
 	findPullItem,
+	getItemDisplayName,
 	getResolvedGachaBanners,
 	isRateUp,
 	isScarboroughPull,
@@ -189,13 +190,15 @@ function PityLineup({
 					</div>
 				))}
 				<div className={styles.columns}>
-					{sRanks.map((sRank) => (
+					{sRanks.map((sRank) => {
+						const itemName = getItemDisplayName(sRank.item, t)
+						return (
 						<div
 							key={sRank.uid}
 							className={styles.column}
 							tabIndex={0}
 							aria-label={t("pulls.stats.columnLabel", {
-								name: sRank.item.name,
+								name: itemName,
 								pity: sRank.pity,
 							})}>
 							<div
@@ -206,11 +209,12 @@ function PityLineup({
 								</div>
 								<div className={styles.columnTip} aria-hidden>
 									<strong>{sRank.pity}</strong>
-									<span>{sRank.item.name}</span>
+									<span>{itemName}</span>
 								</div>
 							</div>
 						</div>
-					))}
+						)
+					})}
 				</div>
 				{soft !== undefined && (
 					<div className={styles.softLine} style={{ bottom: at(soft) }} />

@@ -23,7 +23,7 @@ import {
 	useTooltip,
 } from "@/hooks"
 
-import { getLinkedMaterials } from "@/helpers"
+import { getItemDisplayName, getLinkedMaterials } from "@/helpers"
 import { formatLocale } from "@/helpers/locale"
 
 import { useLocale, useT } from "@/contexts"
@@ -175,7 +175,7 @@ export function MaterialItemBox({
 					<>
 						<div className="tooltip-details">
 							<span>
-								{t("inventory.material.need")}{" "}
+								{t("layout.materialTooltip.need")}{" "}
 								<span className="font-barlow">
 									{requiredQuantity}
 								</span>
@@ -188,7 +188,7 @@ export function MaterialItemBox({
 							)}
 						</div>
 						<div className="tooltip-source-list">
-							{t("inventory.material.neededFor")}
+							{t("layout.materialTooltip.neededFor")}
 							{requiredSorcesList
 								.slice(0, 3)
 								.map(([id, amount]) => {
@@ -204,11 +204,11 @@ export function MaterialItemBox({
 												}
 												width={16}
 												height={16}
-												alt={t("inventory.material.sourceAlt", {
+												alt={t("layout.materialTooltip.sourceAlt", {
 													name: material.name,
 												})}
 											/>
-											{`${item.name} ${amount > 1 ? `\u00d7${amount}` : ""}`}
+											{`${getItemDisplayName(item, t)} ${amount > 1 ? `\u00d7${amount}` : ""}`}
 										</div>
 									)
 								})}
@@ -237,7 +237,7 @@ export function MaterialItemBox({
 				)}
 				<hr className="tooltip-hr" />
 				<div className="tooltip-source-list">
-					{t("inventory.material.sources")}
+					{t("layout.materialTooltip.sources")}
 					{material.sources.map((source) => (
 						<div className="tooltip-source" key={source}>
 							{source}

@@ -75,7 +75,7 @@ export function CloudEraseErrorModal({
 		<ModalContainer onClickOut={onClose}>
 			<AlertContainer
 				type="acknowledge"
-				confirmLabel={t("settings.modals.cloudEraseError.confirm")}
+				confirmLabel={t("layout.actions.confirm")}
 				onConfirm={onClose}>
 				{t("settings.modals.cloudEraseError.title")}
 				<br />
@@ -113,7 +113,7 @@ export function ImportOverwriteModal({
 				confirmLabel={t("settings.modals.importOverwrite.confirm")}
 				onConfirm={onConfirm}
 				isConfirmDanger={true}
-				cancelLabel={t("settings.modals.importOverwrite.cancel")}
+				cancelLabel={t("layout.actions.cancel")}
 				onCancel={onCancel}>
 				{isImportOlder
 					? t("settings.modals.importOverwrite.older")
@@ -211,7 +211,7 @@ export function ExternalImportSummaryModal({
 		<ModalContainer>
 			<AlertContainer
 				type="acknowledge"
-				confirmLabel={t("settings.modals.externalSummary.confirm")}
+				confirmLabel={t("layout.actions.confirm")}
 				onConfirm={() => setExternalImportSummary(null)}>
 				{t("settings.modals.externalSummary.title", {
 					source: externalImportSummary.source,
@@ -348,7 +348,7 @@ export function EraseDataWarningModal({
 				onConfirm={onConfirm}
 				onCancel={() => setEraseWarning(false)}
 				confirmLabel={t("settings.modals.eraseAll.confirm")}
-				cancelLabel={t("settings.modals.eraseAll.cancel")}>
+				cancelLabel={t("layout.actions.cancel")}>
 				{t("settings.modals.eraseAll.title")}
 				<br />
 				<p className={alertMessage}>
@@ -385,7 +385,7 @@ export function ErasePullsWarningModal({
 				onConfirm={onConfirm}
 				onCancel={() => setErasePullsWarning(false)}
 				confirmLabel={t("settings.modals.erasePulls.confirm")}
-				cancelLabel={t("settings.modals.erasePulls.cancel")}>
+				cancelLabel={t("layout.actions.cancel")}>
 				{t("settings.modals.erasePulls.title")}
 				<br />
 				<p className={alertMessage}>

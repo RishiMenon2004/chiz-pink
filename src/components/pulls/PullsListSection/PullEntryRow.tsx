@@ -18,6 +18,7 @@ import { useTooltip } from "@/hooks/useTooltip"
 
 import {
 	findPullItem,
+	getItemDisplayName,
 	getOptimizedImageUrl,
 	isRateUp,
 	isScarboroughPull,
@@ -230,6 +231,7 @@ export function PullEntry({
 		pull.rewardId,
 		isScarborough ? pull.rewardType : "arc"
 	)
+	const itemName = item ? getItemDisplayName(item, t) : pull.rewardId
 
 	const rewardType = isScarborough ? pull.rewardType : "arc"
 	const sourceDir: Record<ScarboroughFairPull["rewardType"], string> = {
@@ -288,12 +290,12 @@ export function PullEntry({
 				aria-label={
 					selectMode
 						? t("pulls.list.selectRowLabel", {
-								name: item?.name ?? pull.rewardId,
+								name: itemName,
 								pity: pullNumber > 0 ? pity : "-",
 							})
 						: actions
 							? t("pulls.manual.rowLabel", {
-									name: item?.name ?? pull.rewardId,
+									name: itemName,
 									pity: pullNumber > 0 ? pity : "-",
 								})
 							: undefined
@@ -405,7 +407,7 @@ export function PullEntry({
 						slots.name
 					) : (
 						<>
-							{item?.name}
+							{itemName}
 							{isScarborough &&
 								pull.rewardType === "item" &&
 								pull.quantity > 0 &&
