@@ -155,7 +155,7 @@
 		"dailyTasks": {
 			"title": "Tarefas Diárias",
 			"addToInventory": "Adicionar ao Inventário",
-			"quickClaim": "RECEBER RAPIDAMENTE"
+			"quickClaim": "COMPLETAR RAPIDAMENTE"
 		},
 		"dailyChecklist": {
 			"title": "Lista de Tarefas Diárias",
@@ -306,6 +306,103 @@
 				"rd": "{day}",
 				"th": "{day}"
 			}
+		},
+		"tasks": {
+			"circle_bounty_daily": {
+				"name": "Recompensa do Círculo: Missão Diária",
+				"description": "Missões Diárias do Passe"
+			},
+			"manage_cafe": {
+				"name": "Café da Origen",
+				"description": "Restabelecer Café e Coletar Ganhos"
+			},
+			"bond_gift": {
+				"name": "Presentes de Vínculo",
+				"description": "Presentear 10x"
+			},
+			"display_case": {
+				"description": "Colete os ganhos de \"Dou-lhe Uma, Dou-lhe Duas... Vendido!\"",
+				"name": "Ganhos da Vitrine"
+			},
+			"witch_house": {
+				"name": "Casa da Bruxa",
+				"description": "Obtenha Leitura da Sorte"
+			},
+			"nacupeda": {
+				"name": "Lago de Nacupeda",
+				"description": "Faça um desejo ou roube Fons"
+			},
+			"fortune_shades": {
+				"name": "Sombras da Fortuna",
+				"description": "Faça uma oferenda na colina Yuanmu"
+			},
+			"bond_date": {
+				"name": "Encontro na Cidade",
+				"description": "Floe Cinema ou Encontro na roda gigante Ferris"
+			},
+			"hobby_delivery": {
+				"name": "Entregas da Cidade",
+				"description": "Entregas Diárias"
+			},
+			"hobby_fishing": {
+				"name": "Ponto de Pesca",
+				"description": "Compre 3x Isca Universal & Pesque no lugar recomendado"
+			},
+			"anomaly_cloud": {
+				"name": "Nuvem Bum Bum Comprimida",
+				"description": "Colete Algodão Fofo"
+			},
+			"anomaly_hamster": {
+				"name": "Bola de Hamster",
+				"description": "Colete um modulo aleatorio"
+			},
+			"anomaly_crate": {
+				"name": "Caixa Danificada",
+				"description": "Colete Moedas Besouro"
+			},
+			"circle_bounty_weekly": {
+				"name": "Recompensa do Círculo: Missão Semanal",
+				"description": "Missões Semanais do Passe"
+			},
+			"circle_bounty_seasonal": {
+				"name": "Recompensa do Círculo: Missão de Temporada",
+				"description": "Missões da Versão do Passe"
+			},
+			"city_stamina": {
+				"description": "Gaste Vigor da Cidade"
+			},
+			"anomaly_pilgrimage": {
+				"name": "Peregrinação da Anomalias",
+				"description": "Faça 3x Peregrinação da Anomalias"
+			},
+			"auction": {
+				"name": "Casa de Leilões Ebisu",
+				"description": "Leilões Semanais"
+			},
+			"anomaly_mammon": {
+				"name": "Mammon: Reino da Ganância",
+				"description": "Derrote Mammon para ganhar Fons"
+			},
+			"anomaly_mailbox": {
+				"name": "Caixa de Correio 93/4",
+				"description": "Faça a entrega especial"
+			},
+			"anomaly_butler": {
+				"name": "Mordomo Pessoal",
+				"description": "Explore rapidamente Zonas de Anomalias"
+			},
+			"btr": {
+				"name": "Além dos Trilhos",
+				"description": "Limpe as 12 estações na Rota Especial"
+			},
+			"pink_paws_heist": {
+				"name": "Fundo de Incentivo do Magnata",
+				"description": "Colete 1 Milhão de Fons"
+			},
+			"fair_exchange": {
+				"name": "Trocas do Tabuleiro",
+				"description": "Loja de troca de Warp/Perdida"
+			}
 		}
 	},
 	"layout": {
@@ -422,7 +519,7 @@
 				"settings": "<link>Configurações</link> — Migrando do <ntePlanner>NTE Planner</ntePlanner> ou <nteWiz>NTEWiz</nteWiz>? Importe seus dados com facilidade."
 			},
 			"continue": "CONTINUAR >>",
-			"recentUpdates": "ATUALIZAÇÃO RECENTES",
+			"recentUpdates": "ATUALIZAÇÕES RECENTES",
 			"latestVersion": "Ultima Versão: {version}",
 			"chizAlt": "Arte da Chiz - Completa",
 			"discord": "DISCORD",
@@ -730,7 +827,21 @@
 			"next": "PRÓXIMO",
 			"ntewizSource": "NTEWiz",
 			"editHintDesktop": "Botão direito para editar",
-			"editHintTouch": "Toque e segure em uma entrada para editar"
+			"editHintTouch": "Toque e segure em uma entrada para editar",
+			"select": "Selecionar",
+			"selectedCount_one": "{count} selecionado",
+			"selectedCount_many": "{count} selecionados",
+			"selectedCount_other": "{count} selecionados",
+			"selectPage": "Selecionar pagina",
+			"selectAll": "Selecionar tudo",
+			"clearSelection": "Limpar",
+			"deleteSelected": "Deletar",
+			"batchDeleteConfirm_one": "Deletar {count} rolagem selecionada?",
+			"batchDeleteConfirm_many": "Deletar {count} rolagens selecionadas?",
+			"batchDeleteConfirm_other": "Deletar {count} rolagens selecionadas?",
+			"batchDeleteNote": "Isso não pode ser desfeito. Deletar rolagens importadas pode ser reimportada futuramente.",
+			"selectRowLabel": "{name}, pity {pity}. Click para selecionar.",
+			"selectAllPageLabel": "Selecionar todas as rolagens nessa pagina"
 		},
 		"import": {
 			"title": "Importar",
@@ -1045,7 +1156,8 @@
 		"ranks": {
 			"uncommon": "Ranque B",
 			"rare": "Ranque A",
-			"epic": "Ranque S"
+			"epic": "Ranque S",
+			"common": "Ranque C"
 		},
 		"characters": "Personagens",
 		"arcs": "Discos",
@@ -1055,6 +1167,33 @@
 			"basicAttack": "Ataque Básico",
 			"ultimate": "Suprema",
 			"lifeSkills": "Habilidades de Vida"
+		},
+		"elements": {
+			"cosmos": "Cosmos",
+			"anima": "Ânima",
+			"incantation": "Encantamento",
+			"chaos": "Caos",
+			"psyche": "Psique",
+			"lakshana": "Lakshana"
+		},
+		"arcTypes": {
+			"gas": "Gás",
+			"condensate": "Condensado",
+			"solid": "Sólido",
+			"liquid": "Líquido",
+			"plasma": "Plasma"
+		},
+		"materialTypes": {
+			"weeklyBossDrop": "Recompensas dos Chefes Semanais",
+			"bossDrop": "Recompensas do Boss Mundial",
+			"characterExp": "XP de Esper",
+			"characterAscension": "Ascensão de Esper",
+			"talent": "Talento de Esper",
+			"weaponAscension": "Ascensão de Disco",
+			"weaponExp": "XP de Disco",
+			"substitute": "Substitutos",
+			"currency": "Moedas",
+			"reward": "Recompensas"
 		}
 	}
 }
