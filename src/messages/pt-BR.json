@@ -20,9 +20,9 @@
 		},
 		"pulls": {
 			"title": "RASTREADOR DE INVOCAÇÃO",
-			"head": "Invocação e rastreador de pity do NTE",
+			"head": "Rastreador de rolagens e pity do NTE",
 			"tooltip": "Rastreador de invocação",
-			"description": "Rastreie suas invocações e seu pity no Neverness to Everness para cada tabuleiro, ou importe seu histórico de rolagens para ver suas vitórias na chance aumentada."
+			"description": "Acompanhe suas invocações e seu pity no Neverness to Everness para cada tabuleiro, ou importe seu histórico de rolagens para ver cada personagem Ranque S, seu índice de garantia e se houve um aumento na probabilidade."
 		},
 		"inventory": {
 			"title": "INVENTÁRIO",
@@ -93,6 +93,13 @@
 			"title": "ÍNDICE DE DISCOS",
 			"head": "Índice de Discos",
 			"tooltip": "Índice de Discos"
+		},
+		"migrate_ntewiz": {
+			"title": "MIGRAÇÃO DO NTEWIZ",
+			"head": "Migrar do NTEWiz",
+			"tooltip": "Migrar do NTEWiz",
+			"description": "Mova seus personagens salvos, discos, inventario, vigor e histórico de rolagem do NTEWiz direto para Chiz.Pink sem precisar de um arquivo de backup.",
+			"ogImageAlt": "Migrar do NTEWiz para Chiz.Pink"
 		}
 	},
 	"site": {
@@ -222,7 +229,7 @@
 		},
 		"toolbar": {
 			"groupBy": "Agrupar por",
-			"searchPlaceholder": "Pesquisar",
+			"searchPlaceholder": "Pesquisar...",
 			"searchLabel": "Pesquisar por nome",
 			"allRanks": "Ranques",
 			"allElements": "Elementos",
@@ -236,13 +243,13 @@
 		}
 	},
 	"inventory": {
-		"intro": "Rastreie seus materiais pada o planejador saber o que você tem.",
+		"intro": "Acompanhe e altere a quantidade de seus materiais para o planejador saber o que você tem que farmar.",
 		"newUser": "Parece que você é novo por aqui. Vo-você gostaria de abrir uma conta conosco? <start>Edite qualquer item para começar.</start>",
 		"toolbar": {
 			"filterBy": "Filtrar por",
 			"owned": "Obtido",
 			"required": "Necessário",
-			"acquired": "Adquirido",
+			"acquired": "Farmado",
 			"allRanks": "Todos os Ranques",
 			"groupBy": "Agrupar por",
 			"byOwned": "Por Obtido",
@@ -254,10 +261,10 @@
 		},
 		"groups": {
 			"emptyFilter": "E-Eu não consegui achar nada com esses filtros. Você deseja <retry>tentar de novo?</retry>",
-			"owned": "Adquirido",
+			"owned": "Possuí",
 			"notOwned": "Não adquirido",
 			"required": "Necessário",
-			"acquired": "Adquirido",
+			"acquired": "Farmado",
 			"noOwned": "Des-desculpe... Você parece não ter nada.",
 			"noRequired": "Hmm, parece que... você não precisa de nada agora.",
 			"nothingToCollect": "Na-Nada para coletar ainda... Planeje algo, e eu i-irei ficar de olho no que foi reunido!",
@@ -271,11 +278,12 @@
 			"sourceAlt": "{name} Fonte",
 			"more_one": "Mais +{count}",
 			"more_many": "Mais +{count}",
-			"more_other": "Mais +{count}"
+			"more_other": "Mais +{count}",
+			"grantsOneOf": "Concede um dos seguintes:"
 		}
 	},
 	"checklist": {
-		"intro": "Suas diárias e semanais, reseta baseada no tempo do servidor.",
+		"intro": "Acompanhe Suas tarefas diárias e semanais, reseta baseada no tempo do servidor. Você pode ocultar as que você não fará ou criar novas!",
 		"resetsIn": "Reseta em: {time}",
 		"edit": "EDITAR",
 		"editTask": "Editar {title}",
@@ -387,7 +395,7 @@
 			"macosSafari": {
 				"title": "Instalar no Mac",
 				"step1": "Clique no ícone Compartilhar na barra de ferramentas do Safari.",
-				"step2": "Selecione 'Adicionar ao Dock'",
+				"step2": "Selecione 'Adicionar ao Dock'.",
 				"step3": "Confirme clicando em 'Adicionar'."
 			},
 			"firefox": {
@@ -431,7 +439,7 @@
 			"subtitle": "Sua companhia rosada, planejador de ascensão e rastreio de invocação para NTE :3",
 			"links": {
 				"dashboard": "<link>Painel</link> — Rastreie seu vigor, eventos atuais, e tabuleiros em destaque.",
-				"checklist": "<link>Lista de Tarefas</link> — Sua Lista de Tarefas Diárias e Semanais",
+				"checklist": "<link>Lista de Tarefas</link> — Sua Lista de Tarefas Diárias e Semanais.",
 				"planner": "<link>Planejador</link> — Planejador de ascensão para seus personagens e discos.",
 				"pulls": "<link>Rolagens</link> — Importe e rastreie seu histórico de rolagens.",
 				"inventory": "<link>Inventário</link> — Rastreie seus itens no jogo.",
@@ -440,7 +448,9 @@
 			"continue": "CONTINUAR >>",
 			"recentUpdates": "ATUALIZAÇÃO RECENTES",
 			"latestVersion": "Ultima Versão: {version}",
-			"chizAlt": "Arte da Chiz - Completa"
+			"chizAlt": "Arte da Chiz - Completa",
+			"discord": "DISCORD",
+			"close": "FECHAR"
 		},
 		"syncConflict": {
 			"unknown": "Desconhecido",
@@ -449,6 +459,16 @@
 			"message": "Nos encontramos dados ja existentes em sua nuvem. Deseja manter qual versão?",
 			"thisDevice": "Esse Dispositivo",
 			"cloud": "Nuvem"
+		},
+		"loading": {
+			"title": "Carregando...",
+			"stickerAlt": "Figurinha da Chiz espiando"
+		},
+		"toolIntro": {
+			"about": "Sobre a {tool}"
+		},
+		"materialHint": {
+			"touch": "Toque e segure no material para ver detalhes"
 		}
 	},
 	"error": {
@@ -457,7 +477,7 @@
 		"stickerAlt": "Figurinha da Chiz Desmaiada"
 	},
 	"planner": {
-		"intro": "Planeje seus Espers e discos e veja quais materiais você ainda precisa.",
+		"intro": "Adicione os Espers e Discos que deseja evoluir e defina seu nível objetivo. O planejador mostra quais materiais você ainda precisa, com base no seu inventário, o que você pode fabricar e quaisquer caixas de seleção disponíveis. Você também pode reordenar seus planos por prioridade.",
 		"currentLevel": "Nível atual",
 		"targetLevel": "Nivel pretendido",
 		"requiredMaterials": "Materiais necessários",
@@ -506,9 +526,9 @@
 			"redirectSkill": "Habilidade",
 			"ultimate": "Suprema",
 			"supportSkill": "Habilidade de Suporte",
-			"passive1": "Passiva 1",
-			"passive2": "Passiva 2",
-			"passive3": "Passiva 3",
+			"passive1": "Passiva I",
+			"passive2": "Passiva II",
+			"passive3": "Passiva III",
 			"lifeSkills": "Habilidade de Vida",
 			"lifeSkill1": "Habilidade de Vida 1",
 			"lifeSkill2": "Habilidade de Vida 2",
@@ -586,9 +606,9 @@
 			"ultimate": "Suprema",
 			"support": "Habilidade de Suporte",
 			"passiveSkills": "Habilidade Passiva",
-			"passive1": "Passiva 1",
-			"passive2": "Passiva 2",
-			"passive3": "Passiva 3",
+			"passive1": "Passiva I",
+			"passive2": "Passiva II",
+			"passive3": "Passiva III",
 			"lifeSkills": "Habilidades de Vida",
 			"lifeSkill1": "Habilidades de Vida 1",
 			"lifeSkill2": "Habilidades de Vida 2"
@@ -606,10 +626,25 @@
 			"targetLevel": "Objetivo de Nível",
 			"levelValue": "Nível {level}",
 			"empty": "Nada é necessário para nível 1."
+		},
+		"bannerHistory": {
+			"title": "Histórico de Tabuleiro",
+			"phase": "v{version} · Fase {phase}",
+			"daysSince_one": "dia desde o ultimo banner",
+			"daysSince_many": "dias desde o ultimo banner",
+			"daysSince_other": "dias desde o ultimo banner",
+			"versions_one": "{count} Versão",
+			"versions_many": "{count} Versões",
+			"versions_other": "{count} Versões",
+			"days_one": "{count} Dia",
+			"days_many": "{count} Dias",
+			"days_other": "{count} Dias",
+			"debut": "Estreia",
+			"live": "Disponível agora"
 		}
 	},
 	"pulls": {
-		"intro": "Importe suas rolagens e rastreie seu pity em cada tabuleiro.",
+		"intro": "Importe seu histórico de rolagens do NTE ou adicione invocações manualmente para ver seu nível de garantia em cada tabuleiro. O nível de garantia é transferido entre banners do mesmo tipo, assim como no jogo. Você também pode ver todos os personagens de Ranque S que invocou, o nível de garantia correspondente e se a taxa de invocação foi aumentada.",
 		"banners": {
 			"limited": "Tabuleiro de Personagem Limitado",
 			"arc": "Caixa Milagrosa de Discos",
@@ -673,7 +708,7 @@
 			"filters": {
 				"label": "Mostrar",
 				"all": "Todos",
-				"sRank": "Ranques S",
+				"sRank": "Ranque S",
 				"aRank": "Ranques A",
 				"bRank": "Ranques B",
 				"items": "Itens",
@@ -683,7 +718,9 @@
 				"character": "Personagem",
 				"arc": "Disco",
 				"item": "Item",
-				"cosmetic": "Cosmético"
+				"cosmetic": "Cosmético",
+				"outfit": "Traje",
+				"glider": "Planador"
 			},
 			"itemLabel": "Item da invocação {number}",
 			"resultLabel": "Resultado da invocação {number}",
@@ -706,7 +743,7 @@
 			"pityReset": "Redefinir",
 			"cancel": "Cancelar",
 			"saveEdit": "Salvar",
-			"deleteButton": "Apagar",
+			"deleteButton": "Deletar",
 			"deleteConfirm": "Apagar essa invocação manual?",
 			"deleteConfirmNote": "Isso não pode ser desfeito."
 		},
@@ -741,7 +778,10 @@
 			"selectRowLabel": "{name}, pity {pity}. Clique para selecionar.",
 			"selectAllPageLabel": "Selecionar todas as invocações desta página",
 			"prev": "ANTERIOR",
-			"next": "PRÓXIMO"
+			"next": "PRÓXIMO",
+			"ntewizSource": "NTEWiz",
+			"editHintDesktop": "Botão direito para editar",
+			"editHintTouch": "Toque e segure em uma entrada para editar"
 		},
 		"import": {
 			"title": "Importar",
@@ -774,7 +814,8 @@
 				"summarySkipped_one": "(Pulado {count} rolagem já existente)",
 				"summarySkipped_many": "(Pulado {count} rolagens já existentes)",
 				"summarySkipped_other": "(Pulado {count} rolagens já existentes)"
-			}
+			},
+			"ntewizMigration": "Migrando do NTEWiz? <link>Migre seus dados e rolagens</link>."
 		},
 		"external": {
 			"title": "Importar Rolagens",
@@ -813,7 +854,7 @@
 			"servers": {
 				"america": "America",
 				"europe": "Europa",
-				"asia": "Asia",
+				"asia": "Ásia",
 				"sea": "Pacífico"
 			},
 			"characterPixels": "Pixels de Personagem",
@@ -863,7 +904,8 @@
 			"export": "Exportar Dados",
 			"erase": "Apagar",
 			"erasePulls": "Histórico de Invocação",
-			"eraseAll": "Todos os Dados"
+			"eraseAll": "Todos os Dados",
+			"migrateTool": "Ferramenta de Migração"
 		},
 		"modals": {
 			"importOverwrite": {
@@ -878,7 +920,10 @@
 				"overwrite": "Sobrescrever",
 				"merge": "Adicionar ao Existente",
 				"mergeInfo": "Adicionar ao existente: Substitui seu inventário. Anexa personagens e discos ao seu planejador existente.",
-				"overwriteInfo": "Sobrescrever: Substitui seu inventario, Personagens e Discos por completo."
+				"overwriteInfo": "Sobrescrever: Substitui seu inventario, Personagens e Discos por completo.",
+				"pullsNote_one": "Incluído {count} rolagem. Histórico de rolagens sempre seja mesclado se forma segura sem sobrescrever rolagens já existentes.",
+				"pullsNote_many": "Incluído {count} rolagens. Histórico de rolagens sempre seja mesclado se forma segura sem sobrescrever rolagens já existentes.",
+				"pullsNote_other": "Incluído {count} rolagens. Histórico de rolagens sempre seja mesclado se forma segura sem sobrescrever rolagens já existentes."
 			},
 			"externalSummary": {
 				"title": "Dados de {source} importado",
@@ -890,7 +935,10 @@
 				"arcs": "Discos: {imported} importado",
 				"arcsSkipped": "Discos: {imported} importado, {skipped} pulado (disco desconhecido)",
 				"staminaUpdated": "Vigor e Pixels atualizado",
-				"activitiesUnsupported": "Importar conclusão de Atividade/Evento ainda não é suportado."
+				"activitiesUnsupported": "Importar conclusão de Atividade/Evento ainda não é suportado.",
+				"pulls": "Rolagens: {imported} importadas",
+				"pullsSkipped": "Rolagens: {imported} importadas, {skipped} ignoradas (já estão salvas ou não são legíveis)",
+				"ntewizDiceNote": "Aviso: NTEWiz não salva o numero do dado, então migrar as rolagens vai mostrar o ícone do NTEWiz em vez do numero do dado."
 			},
 			"signout": {
 				"title": "Parar sincronização em nuvem?",
@@ -922,6 +970,18 @@
 				"message": "Isso apagara seu backup em nuvem.",
 				"confirm": "Desvincular",
 				"cancel": "Manter vinculado"
+			},
+			"importError": {
+				"title": "Não foi possível importar o arquivo",
+				"readFailed": "O arquivo selecionado não pode ser lido. Por favor, tente novamente.",
+				"invalidJson": "Esse arquivo não é um .JSON valido e não pode ser importado.",
+				"unsupportedFormat": "Esse arquivo não é reconhecido como um backup Chiz.Pink, NTE Planner ou NTEWiz.",
+				"confirm": "OK"
+			},
+			"cloudEraseError": {
+				"title": "Backup do histórico de rolagens em nuvem não foi apagado",
+				"message": "Seu histórico de rolagem foi apagado desse dispositivo, mas a copia em nuvem não deletada. Por favor tente novamente ao estar online.",
+				"confirm": "Entendi"
 			}
 		}
 	},
@@ -940,11 +1000,20 @@
 				"messageNoCloud": "Alguns de seus dados locais não puderam ser lidos e podem estar corrompidos. Nenhum backup em nuvem esta disponível, apague os dados nesse dispositivo e inicie do zero.",
 				"confirmResync": "Re-Sincronizar da nuvem",
 				"confirmErase": "Apagar Dados Locais"
+			},
+			"gacha": {
+				"message": "Seu backup do histórico de rolagens não pode ser lido e pode estar corrompido. Sobrescrever com o histórico desse dispositivo, ou ignorar por enquanto?",
+				"confirm": "Sobrescrever Rolagens em Nuvem",
+				"dismiss": "Ignorar"
 			}
 		},
 		"initialToast": {
 			"message": "Alterações são pausadas enquanto seu backup em nuvem é feito.",
 			"errorMessage": "Mudanças foram pausadas, recarregue a pagina e tente novamente."
+		},
+		"storageError": {
+			"message": "Seu navegador não pode salvar suas alterações. Veja se o armazenamento não esta cheio ou restrito, e considere exportar um backup nas Configurações.",
+			"confirm": "Entendi"
 		}
 	},
 	"migrate": {
@@ -965,6 +1034,61 @@
 			"old": "Endereço antigo",
 			"oldNewer": "Endereço antigo (recente)",
 			"unknown": "Desconhecido"
+		},
+		"ntewiz": {
+			"title": "Migrar do NTEWiz",
+			"subtitle": "Mesmo que o site www.ntewiz.xyz esteja fora do ar, seu navegador ainda contém seus personagens salvos, arcos, inventário, energia e histórico de rolagens. Transfira tudo diretamente para cá sem precisar baixar nenhum arquivo.",
+			"sameBrowserNote": "Use o mesmo navegador e perfil que você usou previamente no NTEWiz.",
+			"copied": "Copiado!",
+			"viewPulls": "Ver Rolagens",
+			"viewPlanner": "Abrir Planejador",
+			"goHome": "Ir ao Painel",
+			"popup": {
+				"connecting": "Lendo seus dados do NTEWiz...",
+				"conflict": "Esperando sua escolha de importação...",
+				"saving": "Salvando seus dados migrados...",
+				"error": "Não foi possível receber os dados do NTEWiz automaticamente. Você pode tentar novamente ou colar os dados manualmente abaixo.",
+				"showManual": "Mostrar Opções Manuais"
+			},
+			"bookmarklet": {
+				"title": "Opção 1: Favorito (Sem Arquivo)",
+				"badge": "Recomendado",
+				"description": "Salve o botão abaixo como um favorito e, em seguida, execute-o enquanto estiver em www.ntewiz.xyz para enviar seus dados salvos diretamente para Chiz.Pink.",
+				"button": "Migrar do NTEWiz para Chiz.Pink",
+				"copyLink": "Copiar URL",
+				"dragHint": "Não clique aqui. Salve o link como um favorito primeiro (arraste-o para a barra de favoritos, clique com o botão direito -> Adicionar aos favoritos ou toque em Copiar URL no celular) e, em seguida, execute-o em www.ntewiz.xyz.",
+				"tabDesktop": "Computador",
+				"tabMobile": "Telefone",
+				"desktop": {
+					"step1": "Arraste <b>Migrar do NTEWiz para Chiz.Pink</b> para a sua barra de favoritos ou clique com o botão direito do mouse e escolha <b>Adicionar link aos favoritos</b>.",
+					"step2": "Acesse <link>www.ntewiz.xyz</link>. Mesmo que a página esteja desativada, seu navegador ainda mantém os dados salvos lá.",
+					"step3": "Clique no seu novo favorito nessa página e, em seguida, clique em <b>Enviar para Chiz.Pink</b> (ou use <b>Baixar JSON</b> / <b>Copiar dados</b>)."
+				},
+				"mobile": {
+					"step1": "Toque em <b>Copiar URL</b> acima.",
+					"step2": "Adicione qualquer página aos favoritos, edite esse favorito, dê a ele um nome curto como <b>migrar</b> e substitua o URL pelo link copiado.",
+					"step3": "Acesse <link>www.ntewiz.xyz</link> (ignore a página desativada/com erro).",
+					"step4": "Toque na <b>barra de endereço</b>, digite <b>migrar</b> e toque na <b>sugestão de favorito com estrela</b>. Em seguida, toque em <b>Enviar para Chiz.Pink</b> (ou em <b>Baixar JSON</b> e faça o upload abaixo).",
+					"chromeNote": "No Chrome para dispositivos móveis, não toque no marcador no menu \"Favoritos\". É necessário abri-lo a partir da barra de endereços para que seja executado na guia NTEWiz."
+				}
+			},
+			"console": {
+				"title": "Opção 2: Console do navegador (Computador)",
+				"description": "Prefere não adicionar um favorito? Execute este script de uma linha nas Ferramentas de Desenvolvedor enquanto estiver em www.ntewiz.xyz. Ele adicionará um botão \"Enviar para Chiz.Pink\" diretamente na página.",
+				"openNteWiz": "Abrir www.ntewiz.xyz",
+				"copyScript": "Copiar Script",
+				"step1": "Abrir <link>www.ntewiz.xyz</link> em uma nova aba.",
+				"step2": "Pressione <b>F12</b> (ou <b>Ctrl+Shift+I</b> / <b>Windows+Option+I</b>), abra a guia <b>Console</b>, cole o script e pressione <b>Enter</b> (no Chrome/Edge, digite <code>allow pasting</code> primeiro, se solicitado).",
+				"step3": "Clique em <b>Enviar para Chiz.Pink</b> na página (ou em <b>Baixar JSON</b> / <b>Copiar dados</b> se os pop-ups estiverem bloqueados).",
+				"viewScript": "Inspecionar fonte do script"
+			},
+			"manual": {
+				"title": "Opção 3: Colar dados ou carregar arquivo de backup",
+				"description": "Cole o JSON copiado de \"Copiar Dados\" acima ou carregue um arquivo ntewiz-export.json / ntewiz-backup-*.json baixado.",
+				"placeholder": "Cole o JSON do NTEWiz aqui...",
+				"importPasted": "Importar Dados Colados",
+				"uploadFile": "Carregar Backup JSON"
+			}
 		}
 	},
 	"offline": {
