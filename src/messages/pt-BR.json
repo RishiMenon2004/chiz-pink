@@ -229,6 +229,7 @@
 		}
 	},
 	"inventory": {
+		"about": "Sobre o Inventário",
 		"intro": "Acompanhe e altere a quantidade de seus materiais para o planejador saber o que você tem que farmar.",
 		"newUser": "Parece que você é novo por aqui. Vo-você gostaria de abrir uma conta conosco? <start>Edite qualquer item para começar.</start>",
 		"toolbar": {
@@ -265,6 +266,7 @@
 		}
 	},
 	"checklist": {
+		"about": "Sobre as Tarefas",
 		"intro": "Acompanhe Suas tarefas diárias e semanais, reseta baseada no tempo do servidor. Você pode ocultar as que você não fará ou criar novas!",
 		"resetsIn": "Reseta em: {time}",
 		"edit": "EDITAR",
@@ -559,6 +561,7 @@
 		"stickerAlt": "Figurinha da Chiz Desmaiada"
 	},
 	"planner": {
+		"about": "Sobre o Planejador de ascensão",
 		"intro": "Adicione os Espers e Discos que deseja evoluir e defina seu nível objetivo. O planejador mostra quais materiais você ainda precisa, com base no seu inventário, o que você pode fabricar e quaisquer caixas de seleção disponíveis. Você também pode reordenar seus planos por prioridade.",
 		"currentLevel": "Nível atual",
 		"targetLevel": "Nivel pretendido",
@@ -709,6 +712,7 @@
 		}
 	},
 	"pulls": {
+		"about": "Sobre o Rastreador de rolagem",
 		"intro": "Importe seu histórico de rolagens do NTE ou adicione invocações manualmente para ver seu nível de garantia em cada tabuleiro. O nível de garantia é transferido entre banners do mesmo tipo, assim como no jogo. Você também pode ver todos os personagens de Ranque S que invocou, o nível de garantia correspondente e se a taxa de invocação foi aumentada.",
 		"banners": {
 			"limited": "Tabuleiro de Personagem Limitado",

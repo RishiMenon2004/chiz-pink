@@ -229,6 +229,7 @@
 		}
 	},
 	"inventory": {
+		"about": "About the Inventory",
 		"intro": "Keep track of the materials you have in-game. The planner uses your inventory to work out what you still need to farm.",
 		"newUser": "Seems like you're new here. W-would you like to open an account with us? <start>Edit any item to get started.</start>",
 		"toolbar": {
@@ -264,6 +265,7 @@
 		}
 	},
 	"checklist": {
+		"about": "About the Checklist",
 		"intro": "Keep track of your recurring tasks and when they reset. You can hide ones you don't need or even add your own.",
 		"resetsIn": "Resets in: {time}",
 		"edit": "EDIT",
@@ -454,12 +456,6 @@
 			"dismiss": "Dismiss",
 			"sticker": "Chiz sticker"
 		},
-		"toolIntro": {
-			"planner": "About the Ascension Planner",
-			"pulls": "About the Pull Tracker",
-			"checklist": "About the Checklist",
-			"inventory": "About the Inventory"
-		},
 		"installPwa": {
 			"button": "INSTALL APP",
 			"iosSafari": {
@@ -564,6 +560,7 @@
 		"stickerAlt": "Fainted Chiz sticker"
 	},
 	"planner": {
+		"about": "About the Ascension Planner",
 		"intro": "Add the Espers and Arcs you want to build and set their target levels. The planner shows what materials you still need, based on your inventory, what you can craft and any selection boxes you have. You can also reorder your plans by priority.",
 		"currentLevel": "Current Level",
 		"targetLevel": "Target Level",
@@ -711,6 +708,7 @@
 		}
 	},
 	"pulls": {
+		"about": "About the Pull Tracker",
 		"intro": "Import your NTE pull history or add pulls by hand to see your pity on every banner. Pity carries over between banners of the same type, like it does in-game. You can also see every S-Rank you've pulled, its pity, and whether it was a rate-up.",
 		"banners": {
 			"limited": "Limited Character Board",
