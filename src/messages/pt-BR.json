@@ -1078,7 +1078,7 @@
 				"openNteWiz": "Abrir www.ntewiz.xyz",
 				"copyScript": "Copiar Script",
 				"step1": "Abrir <link>www.ntewiz.xyz</link> em uma nova aba.",
-				"step2": "Pressione <b>F12</b> (ou <b>Ctrl+Shift+I</b> / <b>Windows+Option+I</b>), abra a guia <b>Console</b>, cole o script e pressione <b>Enter</b> (no Chrome/Edge, digite <code>allow pasting</code> primeiro, se solicitado).",
+				"step2": "Pressione <b>F12</b> (ou <b>Ctrl+Shift+I</b> / <b>Cmd+Option+I</b>), abra a guia <b>Console</b>, cole o script e pressione <b>Enter</b> (no Chrome/Edge, digite <code>allow pasting</code> primeiro, se solicitado).",
 				"step3": "Clique em <b>Enviar para Chiz.Pink</b> na página (ou em <b>Baixar JSON</b> / <b>Copiar dados</b> se os pop-ups estiverem bloqueados).",
 				"viewScript": "Inspecionar fonte do script"
 			},
