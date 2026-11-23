@@ -9,6 +9,7 @@ import { useT } from "@/contexts"
 import styles from "./currencyBar.module.css"
 
 const dynamicPattern = /^\/(characters|arcs)\/[^/]+$/
+const OWN_H1_PATHS = new Set(["/migrate/ntewiz"])
 
 function getRouteLookupKey(pathname: string): string {
 	if (dynamicPattern.test(pathname)) {
@@ -29,9 +30,10 @@ export function PageTitle() {
 		| (typeof RoutesData)[RoutePath]
 		| undefined
 
-	// Character/arc profile pages render their own <h1> (the profile name),
-	// so the section label here must not be a second one.
-	const Tag = dynamicPattern.test(pathname) ? "p" : "h1"
+	// Pages that render their own <h1> (profile names, NTEWiz migration)
+	// shouldn't get a second one from the top bar.
+	const Tag =
+		dynamicPattern.test(pathname) || OWN_H1_PATHS.has(pathname) ? "p" : "h1"
 
 	return (
 		<Tag className={styles.pageTitle}>
