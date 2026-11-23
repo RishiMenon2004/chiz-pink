@@ -118,7 +118,7 @@ const PlannerArcsSelect = () => {
 				getAllArcsList().find((arc) => !arc.isPlaceholder)!.id
 		)
 	)
-	const [dropdown, setDropdown] = useState<boolean>(false)
+	const [dropdown, setDropdown] = useState<boolean>(true)
 	const selectRef = useRef<HTMLDivElement>(null)
 	const searchRef = useRef<HTMLInputElement>(null)
 
