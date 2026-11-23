@@ -256,9 +256,10 @@ export function PullsListSection() {
 
 	const handleToggleSelect = useCallback(
 		(uid: string, shiftKey: boolean) => {
+			const anchorUid = lastSelectedUidRef.current
+			lastSelectedUidRef.current = uid
 			setSelectedUids((prev) => {
 				const next = new Set(prev)
-				const anchorUid = lastSelectedUidRef.current
 				if (shiftKey && anchorUid && anchorUid !== uid) {
 					const from = visiblePulls.findIndex((p) => p.uid === anchorUid)
 					const to = visiblePulls.findIndex((p) => p.uid === uid)
@@ -277,7 +278,6 @@ export function PullsListSection() {
 				else next.add(uid)
 				return next
 			})
-			lastSelectedUidRef.current = uid
 		},
 		[visiblePulls]
 	)
