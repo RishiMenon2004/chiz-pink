@@ -19,10 +19,10 @@
 			"description": "Planeje nível do Esper, ascensão e talentos no Neverness to Everness e veja exatamente quanto material você precisa farmar."
 		},
 		"pulls": {
-			"title": "RASTREADOR DE INVOCAÇÃO",
-			"head": "Rastreador de rolagens e pity do NTE",
-			"tooltip": "Rastreador de invocação",
-			"description": "Acompanhe suas invocações e seu pity no Neverness to Everness para cada tabuleiro, ou importe seu histórico de rolagens para ver cada personagem Ranque S, seu índice de garantia e se houve um aumento na probabilidade."
+			"title": "RASTREADOR DE ROLAGEM",
+			"head": "Rastreador de invocações e pity do NTE",
+			"tooltip": "Rastreador de rolagem",
+			"description": "Acompanhe suas invocações e seu pity no Neverness to Everness para cada tabuleiro, ou importe seu histórico de invocações para ver cada personagem Ranque S, seu índice de garantia e se houve um aumento na probabilidade."
 		},
 		"inventory": {
 			"title": "INVENTÁRIO",
@@ -43,7 +43,7 @@
 		},
 		"home": {
 			"title": "PAINEL",
-			"head": "Chiz.Pink: Planejadora & Rastreadora de invocação para Neverness to Everness",
+			"head": "Chiz.Pink: Planejadora & Rastreadora de rolagem para Neverness to Everness",
 			"tooltip": "Painel"
 		},
 		"checklist": {
@@ -75,9 +75,9 @@
 			"tooltip": "Movendo para Chiz.Pink"
 		},
 		"import_external": {
-			"title": "IMPORTAR ROLAGENS",
-			"head": "Importar Rolagens",
-			"tooltip": "Importar rolagens"
+			"title": "IMPORTAR INVOCAÇÕES",
+			"head": "Importar Invocações",
+			"tooltip": "Importar Invocações"
 		},
 		"content_tool": {
 			"title": "FERRAMENTA DE CONTEÚDO",
@@ -103,8 +103,8 @@
 		}
 	},
 	"site": {
-		"description": "Sua companheira mais rosada, planejadora de ascensão e rastreadora de rolagens para NTE :D",
-		"ogImageAlt": "Chiz.Pink: Planejadora de ascensão e rastreadora de invocação para Neverness to Everness"
+		"description": "Sua companheira mais rosada, planejadora de ascensão e rastreadora de invocações para NTE :D",
+		"ogImageAlt": "Chiz.Pink: Planejadora de ascensão e rastreadora de rolagem para Neverness to Everness"
 	},
 	"meta": {
 		"offline": "Você está desconectado",
@@ -184,11 +184,11 @@
 			"slideFeatured": "{name} - destaque",
 			"artAlt": "Arte Completa de {name}",
 			"show": "Mostrar {name}",
-			"backgroundAlt": "{name} arte de fundo",
-			"artAlt_male": "Arte completa de {name}",
-			"artAlt_female": "Arte completa de {name}",
-			"backgroundAlt_male": "Arte de fundo de {name}",
-			"backgroundAlt_female": "Arte de fundo de {name}"
+			"backgroundAlt": "Arte de fundo {name}",
+			"artAlt_male": "Arte completa do {name}",
+			"artAlt_female": "Arte completa da {name}",
+			"backgroundAlt_male": "Arte de fundo do {name}",
+			"backgroundAlt_female": "Arte de fundo da {name}"
 		},
 		"calendar": {
 			"title": "Calendário de eventos",
@@ -446,7 +446,7 @@
 			"links": "<privacy>POLÍTICA DE PRIVACIDADE</privacy> | Bugs ou idéias? Entre no <discord>DISCORD</discord> | Feito com <nextjs>NextJS</nextjs>",
 			"gameContents": "Conteudo do jogo percente a <studio>HOTTA STUDIO™</studio>",
 			"aboutLabel": "Sobre Chiz.Pink",
-			"aboutText": "<name>Chiz.Pink</name> é um aplicativo de companhia para Neverness to Everness (NTE). Planeje seus Espers e materiais de ascensão de discos, rastreie suas rolagens e pity de todos os tabuleiros cheque suas diárias e semanais, além de contar os seus materiais. Tudo é salvo em seu navegador localmente sem uma conta.",
+			"aboutText": "<name>Chiz.Pink</name> é um aplicativo de companhia para Neverness to Everness (NTE). Planeje seus Espers e materiais de ascensão de discos, rastreie suas invocações e pity de todos os tabuleiros cheque suas diárias e semanais, além de contar os seus materiais. Tudo é salvo em seu navegador localmente sem uma conta.",
 			"disclaimer": "<about>CHIZ.PINK</about> é um projeto não oficial e não possui afiliação com <studio>HOTTA STUDIO™</studio>"
 		},
 		"infoBox": {
@@ -511,12 +511,12 @@
 		"splash": {
 			"joinDiscord": "ENTRAR NO DISCORD",
 			"welcome": "BEM-VINDO A <title>CHIZ.PINK!</title>",
-			"subtitle": "Sua companhia rosada, planejador de ascensão e rastreio de invocação para NTE :3",
+			"subtitle": "Sua companhia rosada, planejador de ascensão e rastreio de rolagem para NTE :3",
 			"links": {
 				"dashboard": "<link>Painel</link> — Rastreie seu vigor, eventos atuais, e tabuleiros em destaque.",
 				"checklist": "<link>Lista de Tarefas</link> — Sua Lista de Tarefas Diárias e Semanais.",
 				"planner": "<link>Planejador</link> — Planejador de ascensão para seus personagens e discos.",
-				"pulls": "<link>Rolagens</link> — Importe e rastreie seu histórico de rolagens.",
+				"pulls": "<link>Invocações</link> — Importe e rastreie seu histórico de invocações.",
 				"inventory": "<link>Inventário</link> — Rastreie seus itens no jogo.",
 				"settings": "<link>Configurações</link> — Migrando do <ntePlanner>NTE Planner</ntePlanner> ou <nteWiz>NTEWiz</nteWiz>? Importe seus dados com facilidade."
 			},
@@ -712,28 +712,28 @@
 		}
 	},
 	"pulls": {
-		"about": "Sobre o Rastreador de rolagem",
-		"intro": "Importe seu histórico de rolagens do NTE ou adicione invocações manualmente para ver seu nível de garantia em cada tabuleiro. O nível de garantia é transferido entre banners do mesmo tipo, assim como no jogo. Você também pode ver todos os personagens de Ranque S que invocou, o nível de garantia correspondente e se a taxa de invocação foi aumentada.",
+		"about": "Sobre o Rastreador de Invocações",
+		"intro": "Importe seu histórico de invocações do NTE ou adicione invocações manualmente para ver seu nível de garantia em cada tabuleiro. O nível de garantia é transferido entre banners do mesmo tipo, assim como no jogo. Você também pode ver todos os personagens de Ranque S que invocou, o nível de garantia correspondente e se a taxa de invocação foi aumentada.",
 		"banners": {
 			"limited": "Tabuleiro de Personagem Limitado",
 			"arc": "Caixa Milagrosa de Discos",
 			"permanent": "Encontros Misteriosos"
 		},
 		"rateUp": {
-			"showPull": "{name}, pity {pity}. Mostrar na lista de rolagens",
+			"showPull": "{name}, pity {pity}. Mostrar na lista de invocações",
 			"title": "RANQUES S RECENTES",
 			"onlyRateUpArcs": "Mostrar apenas Discos de Destaque",
 			"empty": "Nenhum Ranque S obtido ainda."
 		},
 		"stats": {
 			"title": "ESTATÍSTICAS",
-			"empty": "Nada para contar ainda... Importe algumas rolagens e eu farei as contas por você!",
+			"empty": "Nada para contar ainda... Importe algumas invocações e eu farei as contas por você!",
 			"tabs": {
 				"overview": "Visão geral",
 				"sRanks": "Ranques S",
 				"banners": "Tabuleiros"
 			},
-			"totalPulls": "Rolagens",
+			"totalPulls": "Invocações",
 			"sRanks": "Ranques S",
 			"rateUpArcs": "Discos em Destaque",
 			"currentPity": "Pity Atual",
@@ -760,18 +760,18 @@
 			"pityHint": "Ajuste a contagem de pity manualmente. Próximo registro será feito do 0.",
 			"pityHintAny": "Ajuste a contagem de pity manualmente. Próximo registro ira continua a contagem.",
 			"addOneLabel": "Adicionar uma invocação",
-			"addTenLabel": "Adicionar 10 rolagens",
+			"addTenLabel": "Adicionar 10 invocações",
 			"clear": "Limpar",
-			"empty": "Nada por aqui ainda... toque em +1 ou +10 acima para registrar suas rolagens!",
+			"empty": "Nada por aqui ainda... toque em +1 ou +10 acima para registrar suas invocações!",
 			"advanced": "Avançado...",
-			"advancedTitle": "Adicionar rolagens",
+			"advancedTitle": "Adicionar invocações",
 			"close": "Fechar",
 			"date": "Data & Hora",
 			"banner": "Tabuleiro",
 			"noBanner": "Nenhum tabuleiro ativo agora",
-			"count": "Rolagens",
+			"count": "invocações",
 			"single": "individual",
-			"tenPull": "10 rolagens",
+			"tenPull": "10 invocações",
 			"itemPlaceholder": "Procurar itens...",
 			"noItems": "Sem item encontrado.",
 			"filters": {
@@ -794,12 +794,12 @@
 			"removeRow": "Remover invocação {number}",
 			"dice": "Dado {roll}",
 			"addRow": "Adicionar",
-			"save_one": "Adicionar {count} rolagem",
-			"save_many": "Adicionar {count} rolagens",
-			"save_other": "Adicionar {count} rolagens",
-			"saved_one": "Adicionado {count} rolagem.",
-			"saved_many": "Adicionado {count} rolagens.",
-			"saved_other": "Adicionado {count} rolagens.",
+			"save_one": "Adicionar {count} invocação",
+			"save_many": "Adicionar {count} invocações",
+			"save_other": "Adicionar {count} invocações",
+			"saved_one": "Adicionado {count} invocação.",
+			"saved_many": "Adicionado {count} invocações.",
+			"saved_other": "Adicionado {count} invocações.",
 			"tag_tooltip": "Entrada Manual",
 			"edit": "Editar",
 			"rowLabel": "{name}, pity {pity}. Aperte Enter para editar.",
@@ -813,7 +813,7 @@
 			"deleteConfirmNote": "Isso não pode ser desfeito."
 		},
 		"list": {
-			"title": "ROLAGENS",
+			"title": "INVOCAÇÕES",
 			"dice": "Dado",
 			"item": "Item",
 			"pity": "Pity",
@@ -840,23 +840,23 @@
 			"selectAll": "Selecionar tudo",
 			"clearSelection": "Limpar",
 			"deleteSelected": "Deletar",
-			"batchDeleteConfirm_one": "Deletar {count} rolagem selecionada?",
-			"batchDeleteConfirm_many": "Deletar {count} rolagens selecionadas?",
-			"batchDeleteConfirm_other": "Deletar {count} rolagens selecionadas?",
-			"batchDeleteNote": "Isso não pode ser desfeito. Deletar rolagens importadas pode ser reimportada futuramente.",
+			"batchDeleteConfirm_one": "Deletar {count} invocação selecionada?",
+			"batchDeleteConfirm_many": "Deletar {count} invocações selecionadas?",
+			"batchDeleteConfirm_other": "Deletar {count} invocações selecionadas?",
+			"batchDeleteNote": "Isso não pode ser desfeito. Deletar invocações importadas pode ser reimportada futuramente.",
 			"selectRowLabel": "{name}, pity {pity}. Click para selecionar.",
-			"selectAllPageLabel": "Selecionar todas as rolagens nessa pagina"
+			"selectAllPageLabel": "Selecionar todas as invocações nessa pagina"
 		},
 		"import": {
 			"title": "Importar",
-			"description": "Exporte suas rolagens usando <link>NTE History Exporter</link>. Então importe aqui para ver seu histórico de rolagens e pity.",
+			"description": "Exporte suas invocações usando <link>NTE History Exporter</link>. Então importe aqui para ver seu histórico de invocações e pity.",
 			"dropHere": "Solte o .JSON aqui",
 			"noFile": "sem arquivo selecionado (.json)",
 			"changeFile": "TROCAR ARQUIVO",
 			"selectFile": "SELECIONAR ARQUIVO",
-			"importButton_one": "Importar {count} rolagem",
-			"importButton_many": "Importar {count} rolagens",
-			"importButton_other": "Importar {count} rolagens",
+			"importButton_one": "Importar {count} invocação",
+			"importButton_many": "Importar {count} invocações",
+			"importButton_other": "Importar {count} invocações",
 			"manual": "Manual",
 			"jsonTab": "JSON",
 			"messages": {
@@ -869,27 +869,27 @@
 				"readFailed": "Não foi possível ser o arquivo - {error}",
 				"unrecognisedFile": "O arquivo não foi reconhecido ou não contém histórico de invocação.",
 				"parseFailed": "Erro ao analisar o arquivo",
-				"summary_one": "{count} rolagem importada.",
-				"summary_many": "{count} rolagens importadas.",
-				"summary_other": "{count} rolagens importadas.",
-				"summaryUpdated_one": "({count} rolagem já existente atualizada)",
-				"summaryUpdated_many": "({count} rolagens já existente atualizadas)",
-				"summaryUpdated_other": "({count} rolagens já existente atualizadas)",
-				"summarySkipped_one": "(Pulado {count} rolagem já existente)",
-				"summarySkipped_many": "(Pulado {count} rolagens já existentes)",
-				"summarySkipped_other": "(Pulado {count} rolagens já existentes)"
+				"summary_one": "{count} invocação importada.",
+				"summary_many": "{count} invocações importadas.",
+				"summary_other": "{count} invocações importadas.",
+				"summaryUpdated_one": "({count} invocação já existente atualizada)",
+				"summaryUpdated_many": "({count} invocações já existente atualizadas)",
+				"summaryUpdated_other": "({count} invocações já existente atualizadas)",
+				"summarySkipped_one": "(Pulado {count} invocação já existente)",
+				"summarySkipped_many": "(Pulado {count} invocações já existentes)",
+				"summarySkipped_other": "(Pulado {count} invocações já existentes)"
 			},
-			"ntewizMigration": "Migrando do NTEWiz? <link>Migre seus dados e rolagens</link>."
+			"ntewizMigration": "Migrando do NTEWiz? <link>Migre seus dados e invocações</link>."
 		},
 		"external": {
-			"title": "Importar Rolagens",
+			"title": "Importar Invocações",
 			"source": "Do NTE History Exporter",
-			"loading": "Buscando suas rolagens...",
+			"loading": "Buscando suas invocações...",
 			"failed": "Esse link de importação expirou ou já foi usado. Exporte novamente, ou <link>importe um arquivo</link>.",
-			"bannerRow_one": "{bannerName}: {count} rolagem ({server})",
-			"bannerRow_many": "{bannerName}: {count} rolagens ({server})",
-			"bannerRow_other": "{bannerName}: {count} rolagens ({server})",
-			"viewPulls": "Ver rolagens"
+			"bannerRow_one": "{bannerName}: {count} invocação ({server})",
+			"bannerRow_many": "{bannerName}: {count} invocações ({server})",
+			"bannerRow_other": "{bannerName}: {count} invocações ({server})",
+			"viewPulls": "Ver invocações"
 		}
 	},
 	"settings": {
@@ -983,9 +983,9 @@
 				"merge": "Adicionar ao Existente",
 				"mergeInfo": "Adicionar ao existente: Substitui seu inventário. Anexa personagens e discos ao seu planejador existente.",
 				"overwriteInfo": "Sobrescrever: Substitui seu inventario, Personagens e Discos por completo.",
-				"pullsNote_one": "Incluído {count} rolagem. Histórico de rolagens sempre seja mesclado se forma segura sem sobrescrever rolagens já existentes.",
-				"pullsNote_many": "Incluído {count} rolagens. Histórico de rolagens sempre seja mesclado se forma segura sem sobrescrever rolagens já existentes.",
-				"pullsNote_other": "Incluído {count} rolagens. Histórico de rolagens sempre seja mesclado se forma segura sem sobrescrever rolagens já existentes."
+				"pullsNote_one": "Incluído {count} invocação. Histórico de invocações sempre será mesclado de forma segura sem sobrescrever invocações já existentes.",
+				"pullsNote_many": "Incluído {count} invocações. Histórico de invocações sempre será mesclado de forma segura sem sobrescrever invocações já existentes.",
+				"pullsNote_other": "Incluído {count} invocações. Histórico de invocações sempre será mesclado de forma segura sem sobrescrever invocações já existentes."
 			},
 			"externalSummary": {
 				"title": "Dados de {source} importado",
@@ -997,9 +997,9 @@
 				"arcsSkipped": "Discos: {imported} importado, {skipped} pulado (disco desconhecido)",
 				"staminaUpdated": "Vigor e Pixels atualizado",
 				"activitiesUnsupported": "Importar conclusão de Atividade/Evento ainda não é suportado.",
-				"pulls": "Rolagens: {imported} importadas",
-				"pullsSkipped": "Rolagens: {imported} importadas, {skipped} ignoradas (já estão salvas ou não são legíveis)",
-				"ntewizDiceNote": "Aviso: NTEWiz não salva o numero do dado, então migrar as rolagens vai mostrar o ícone do NTEWiz em vez do numero do dado."
+				"pulls": "Invocações: {imported} importadas",
+				"pullsSkipped": "Invocações: {imported} importadas, {skipped} ignoradas (já estão salvas ou não são legíveis)",
+				"ntewizDiceNote": "Aviso: NTEWiz não salva o numero do dado, então migrar as invocações vai mostrar o ícone do NTEWiz em vez do numero do dado."
 			},
 			"signout": {
 				"title": "Parar sincronização em nuvem?",
@@ -1014,8 +1014,8 @@
 			},
 			"erasePulls": {
 				"title": "Apagar histórico de invocação?",
-				"message": "Isso ira apagar todas as suas rolagens importadas desse dispositivo.",
-				"messageSignedIn": "Isso ira apagar suas rolagens importadas desse dispositivo e também de seu backup em nuvem.",
+				"message": "Isso ira apagar todas as suas invocações importadas desse dispositivo.",
+				"messageSignedIn": "Isso ira apagar suas invocações importadas desse dispositivo e também de seu backup em nuvem.",
 				"confirm": "Apagar"
 			},
 			"eraseSyncChoice": {
@@ -1038,7 +1038,7 @@
 				"confirm": "OK"
 			},
 			"cloudEraseError": {
-				"title": "Backup do histórico de rolagens em nuvem não foi apagado",
+				"title": "Backup do histórico de invocações em nuvem não foi apagado",
 				"message": "Seu histórico de rolagem foi apagado desse dispositivo, mas a copia em nuvem não deletada. Por favor tente novamente ao estar online."
 			}
 		}
@@ -1060,8 +1060,8 @@
 				"confirmErase": "Apagar Dados Locais"
 			},
 			"gacha": {
-				"message": "Seu backup do histórico de rolagens não pode ser lido e pode estar corrompido. Sobrescrever com o histórico desse dispositivo, ou ignorar por enquanto?",
-				"confirm": "Sobrescrever Rolagens em Nuvem",
+				"message": "Seu backup do histórico de invocações não pode ser lido e pode estar corrompido. Sobrescrever com o histórico desse dispositivo, ou ignorar por enquanto?",
+				"confirm": "Sobrescrever Rnvocações em Nuvem",
 				"dismiss": "Ignorar"
 			}
 		},
@@ -1093,10 +1093,10 @@
 		},
 		"ntewiz": {
 			"title": "Migrar do NTEWiz",
-			"subtitle": "Mesmo que o site www.ntewiz.xyz esteja fora do ar, seu navegador ainda contém seus personagens salvos, arcos, inventário, energia e histórico de rolagens. Transfira tudo diretamente para cá sem precisar baixar nenhum arquivo.",
+			"subtitle": "Mesmo que o site www.ntewiz.xyz esteja fora do ar, seu navegador ainda contém seus personagens salvos, arcos, inventário, energia e histórico de invocações. Transfira tudo diretamente para cá sem precisar baixar nenhum arquivo.",
 			"sameBrowserNote": "Use o mesmo navegador e perfil que você usou previamente no NTEWiz.",
 			"copied": "Copiado!",
-			"viewPulls": "Ver Rolagens",
+			"viewPulls": "Ver Invocações",
 			"viewPlanner": "Abrir Planejador",
 			"goHome": "Ir ao Painel",
 			"popup": {
@@ -1165,7 +1165,7 @@
 		},
 		"characters": "Personagens",
 		"arcs": "Discos",
-		"featured": "Destaque",
+		"featured": "Em Destaque",
 		"preview": "Pré-Visualizar",
 		"abilities": {
 			"basicAttack": "Ataque Básico",
