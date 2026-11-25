@@ -90,8 +90,17 @@ export function findRateUpBanner<
 }
 
 // "Lottery_LingKe" (limited board) and "ForkLottery_LingKe" (arc board) are
-// both the pool of the character filed under "LingKe".
-const POOL_ID_PATTERN = /^(?:Fork)?Lottery_(.+)$/
+// both the pool of the character filed under "LingKe". Casing can differ
+// between the arc table and live limited pool IDs (e.g. "ForkLottery_Zhenhong"
+// vs "Lottery_ZhenHong"), so match pool codes case-insensitively.
+const POOL_ID_PATTERN = /^(?:Fork)?Lottery_(.+)$/i
+
+const bannerPoolCharactersByCode = new Map(
+	Object.entries(bannerPoolCharacters).map(([code, character]) => [
+		code.toLowerCase(),
+		character,
+	])
+)
 
 // The banner a pull was made on, going by the pool the exporter recorded for
 // it. Unlike a date, that tells banners running side by side apart. A rerun
@@ -105,7 +114,9 @@ export function findPoolBanner<T extends { startDate: number; endDate: number }>
 	characterOf: (banner: T) => string | undefined
 ): T | undefined {
 	const code = pull.poolId?.match(POOL_ID_PATTERN)?.[1]
-	const character = code ? bannerPoolCharacters[code] : undefined
+	const character = code
+		? bannerPoolCharactersByCode.get(code.toLowerCase())
+		: undefined
 	if (!character) return undefined
 
 	return closestBanner(banners, pull, (b) => characterOf(b) === character)
