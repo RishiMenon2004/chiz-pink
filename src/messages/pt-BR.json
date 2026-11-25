@@ -1061,7 +1061,7 @@
 			},
 			"gacha": {
 				"message": "Seu backup do histórico de invocações não pode ser lido e pode estar corrompido. Sobrescrever com o histórico desse dispositivo, ou ignorar por enquanto?",
-				"confirm": "Sobrescrever Rnvocações em Nuvem",
+				"confirm": "Sobrescrever Invocações em Nuvem",
 				"dismiss": "Ignorar"
 			}
 		},
